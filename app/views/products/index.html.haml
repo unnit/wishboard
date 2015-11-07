@@ -1,0 +1,71 @@
+= content_for :header_extra do
+  = render "layouts/search_form"
+  .col-lg-1.no-padding.tb3
+    .hidden-xs
+      %a.btn.btn-primary.btn-sm.pull-left.adv-button{href: "#upApp1", data: {toggle: 'collapse', parent: '#accordion'}}
+        Advanced Filters
+        %span.fa.fa-fw.fa-chevron-down
+
+.intro-header2{style: "backgound-img:none"}
+  #upApp1.panel-collapse.collapse{style: "border-top:1px; border-bottom:1px solid #ccc;"}
+    .panel-body.no-padding
+      .search.tb5
+        .container
+          .row
+            .col-md-12
+              .form-section
+                .row
+                  %form
+                    .col-md-3{style: "text-align:center;"}
+                      .input-group.ipg
+                        %b.ipg1 Price INR 0-999999
+                        %div
+                          - value = params[:price].blank? ? '300,500' : params[:price]
+                          = text_field_tag :price_range, '', class: 'slider span2 input-md form-control', data: {"slider-min": "0", "slider-max": "999999", "slider-step": "10", "slider-value": "[#{value}]", target: '#price'}
+                    .col-md-3
+                      .form-group.ipg2
+                        %label.sr-only owner
+                        = select_tag :ownertype, options_for_select(["Individual", "Dealer/Agency"], params[:owner_type]), class: "form-control filter", prompt: "Owner Type", data: {target: "#owner_type"}
+                    .col-md-3.ipg3
+                      .form-group.ipg2
+                        %label.sr-only Product Condition
+                        = select_tag :product_cond, options_for_select(["New", "Excellent", "Good", "Average", "Okayish"], params[:product_condition]), prompt: "Product Condition", class: "form-control filter", data: {target: "#product_condition"}
+                    .col-md-1
+                      = link_to "Run Filter", "javascript:;", class: "btn btn-primary", id: "filter", style: "background-color: #e84242;border:none; border-radius: 0; margin-top: 10px;"
+%div
+  .row.clearfix
+    .col-md-8.mob-map-view-con.pad-0
+      .tabbale-panel-mp
+        .tabbable-line-mp
+          %ul.nav.nav-tabs.pad-nav
+            %li.tabs-mar{class: "#{'active' if params[:tab].blank? || params[:tab] == "1"}"}
+              = link_to "Popular", "javascript:;", data: {tab: '1'}, class: 'product-tab'
+            %li.tabs-mar{class: "#{'active' if params[:tab] == "2"}"}
+              = link_to "Low Price", "javascript:;", data: {tab: '2'}, class: 'product-tab'
+            %li.tabs-mar{class: "#{'active' if params[:tab] == "3"}"}
+              = link_to "High Price", "javascript:;", data: {tab: '3'}, class: 'product-tab'
+            %li.tabs-mar{class: "#{'active' if params[:tab] == "4"}"}
+              = link_to "New", "javascript:;", data: {tab: '4'}, class: 'product-tab'
+          .tab-content.tabbable-panel-mp-height{style: "padding-left: 18px;"}
+            #tab-1.tab-pane.active
+              - if @products.blank?
+                .col-sm-12.no-mar-pad 
+                  %h3.text-center No product found
+              - else
+                - @products.each_slice(2) do |products|
+                  .col-sm-12.no-mar-pad
+                    - products.each do |product|
+                      .col-sm-6.mob-map-view-con
+                        = render partial: "product", locals: {product: product, height: 264, length: 25}
+                .col-md-12
+                  %center= paginate @products
+
+    .col-md-4.hidden-xs.hide-tablet{style: "padding-left:0;"}
+      %div{style: "padding-left: 0;"}
+        - loc = params[:location]
+        - loc = "India" if loc.blank?
+        - @products.each do |product|
+          = hidden_field_tag :map_location, product.location_address, class: "marker", data: {title: product.title, image: product.image, price: product.price, path: user_product_path(product.user.profile, product), lat: product.lat, lng: product.lng}
+
+        #gmap.col-sm-12.no-mar-pad{style: "height: 600px; position: fixed !important; width: 100%; overflow: hidden;", data: {drag: "false"}}
+  - @footer_visible = 'none'

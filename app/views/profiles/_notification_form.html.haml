@@ -1,0 +1,28 @@
+.panel.panel-primary.collbod#profile_notification_form
+  .collbocol.panel-heading{:style => "background-color:#e84242; border: none;"}
+    %h3.panel-title.about-text Notification
+    %span.pull-right.clickable
+      %i.glyphicon.glyphicon-chevron-up
+  .panel-body.about-para
+    ~ form_for @profile, html: {class: 'form-horizontal profile_notification_form', role: "form"} do |f|
+      .errors
+      %p Update emails
+      - Global.profile.update_emails.hash.each do |key, value|
+        .checkbox
+          = f.radio_button :update_emails, key
+          %label= value.html_safe
+
+      %p Newsletters
+      .checkbox
+        %label
+          = f.check_box :newsletters
+          I'm willing to receive occasional updates from the administrator(s).
+      %p I want to get an email notification when...
+      - Global.profile.email_notification.hash.each do |key, value|
+        .checkbox
+          %label
+            = f.check_box :email_notification, {multiple: true}, key, nil
+            \...
+            = value.html_safe
+      = f.hidden_field :email_notification, multiple: true, value: ''
+      %button.save-button.pull-right{:name => "button", :style => "color:#fff;", :type => "submit"} Save information

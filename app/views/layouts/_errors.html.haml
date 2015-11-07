@@ -1,0 +1,8 @@
+- unless errors.blank?
+  .alert.alert-danger.alert-dismissable{:role => "alert"}
+    %button.close{:type => "button", :data => {:dismiss => "alert"} }
+      %span{:aria => {:hidden => "true"} } &times;
+      %span.sr-only Close
+    %ul
+      - errors.each do |msg|
+        %li= msg

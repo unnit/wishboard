@@ -1,0 +1,32 @@
+.container
+  .page-header
+    .col-sm-5
+      %h1 
+        Transactions
+        %small= "#{@transactions.total_count} transactions"
+
+  .col-xs-12.no-mar-pad
+    = paginate @transactions
+    .table-responsive
+      %table.table.table-striped.table-bordered.table-hover
+        %thead
+          %tr
+            %th &nbsp;
+            %th ID
+            %th Product
+            %th Owner
+            %th Renter
+            %th Order Date
+            %th Duration
+            %th Amount
+            %th Transaction Type
+            %th Status
+            %th Details
+        %tbody
+          - @transactions.each_with_index do |transaction, i|
+            %tr
+              %td
+                - page = params[:page].blank? ? 1 : params[:page].to_i
+                = (i+1) + 20*(page-1)
+              = render partial: "transaction", locals: { transaction: transaction }
+    = paginate @transactions

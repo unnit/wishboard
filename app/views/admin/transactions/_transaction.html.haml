@@ -1,0 +1,89 @@
+%td= transaction.txnid
+%td= link_to transaction.product.title, user_product_path(transaction.product.user.profile, transaction.product), target: "_blank"
+%td= link_to transaction.product.user.name, "#profile-#{transaction.product.user.profile_id}", data: {toggle: "modal" }
+%td= link_to transaction.user.name, "#profile-#{transaction.user.profile_id}", data: {toggle: "modal" }
+%td= transaction.created_at.strftime("%d %a, %Y")
+%td= transaction.duration
+%td= rupee transaction.amount
+%td= transaction.product.listing_type
+%td= transaction.display_status
+%td
+  = link_to "#trans-#{transaction.id}", class: "btn btn-sm btn-success", data: {toggle: "modal"} do
+    %span.glyphicon.glyphicon-eye-open
+
+= render partial: "admin/users/profile", locals: {profile: transaction.user.profile}
+= render partial: "admin/users/profile", locals: {profile: transaction.product.user.profile}
+
+.modal.profile-modal.fade{id: "trans-#{transaction.id}"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
+        %h2 Transaction Details
+      .modal-body
+        .col-sm-12.no-mar-pad
+          .col-sm-4
+            = image_tag transaction.product.image
+          .col-sm-8
+            %strong= transaction.product.title
+            %br
+            %label Owner:
+            = transaction.product.user.name
+            %br
+            %label Transaction Type:
+            = transaction.product.listing_type
+
+        .col-sm-12.no-mar-pad.mtop10
+          %label.col-sm-4 Status
+          .col-sm-8= transaction.display_status
+        .col-sm-12.no-mar-pad
+          %label.col-sm-4 Transaction ID
+          .col-sm-8= transaction.txnid
+        
+
+        .col-sm-12.no-mar-pad
+          %label.col-sm-4 Renter
+          .col-sm-8= transaction.user.name
+        .col-sm-12.no-mar-pad
+          %label.col-sm-4 Order Date
+          .col-sm-8= transaction.created_at.strftime("%d %a, %Y")
+        .col-sm-12.no-mar-pad
+          %label.col-sm-4 Duration
+          .col-sm-8= transaction.duration
+        .col-sm-12.no-mar-pad
+          %label.col-sm-4 Shipping
+          .col-sm-8= rupee transaction.shipping, true, true
+        .col-sm-12.no-mar-pad
+          %label.col-sm-4 Tax
+          .col-sm-8= rupee transaction.product.tax_amount(transaction.duration_days, transaction.operator_type)
+        - if transaction.operator_type == 1
+          .col-sm-12.no-mar-pad
+            %label.col-sm-4 Service
+            .col-sm-8= rupee transaction.product.operator_price
+        .col-sm-12.no-mar-pad
+          %label.col-sm-4 Security Deposit
+          .col-sm-8= rupee transaction.product.security_deposit
+        .col-sm-12.no-mar-pad
+          %label.col-sm-4 Amount
+          .col-sm-8= rupee transaction.amount
+        
+        - conversation = transaction.mailbox.inbox.first
+        - messages = conversation.messages.order(:created_at) if conversation
+        .col-sm-12.mtop10
+          %h3 Transaction Messages
+          - if messages.blank?
+            %strong No conversation
+          - else
+            - messages.each do |message|
+              .col-sm-12.pad-v-5
+                .col-sm-2
+                  %strong
+                    = image_tag message.sender.avatar, size: "32x32", class: "img-circle"
+                    = message.sender.name
+                .col-sm-10
+                  %small= message.created_at.strftime("%y-%m-%d %H:%M:%S")
+                  %p= simple_format message.body
+                
+      .clearfix
+      .modal-footer
+        = link_to "Close", "javascript:;", class: "btn btn-danger pull right", data: {dismiss: "modal"}

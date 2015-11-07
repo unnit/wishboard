@@ -1,0 +1,4 @@
+- if current_user
+  location.reload();
+- else
+  $("#login .errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: ["Email or Password wrong!"]})}")

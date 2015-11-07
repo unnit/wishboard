@@ -1,0 +1,11 @@
+- if current_user.review_comment(product).blank?
+  %h4 What is on your mind?
+  ~ form_for Review.new, url: review_product_path(product), remote: true do |f|
+    .input-group
+      = f.text_field :comment, placeholder: "Write your message here...", class: "form-control input-sm chat-input"
+      %span.input-group-btn
+        %button.btn.btn-primary.btn-sm{href: "javascript:;", type: 'submit'}
+          %span.glyphicon.glyphicon-comment Add Comment
+- else
+  %h4 Your review
+  %p.rev-p= current_user.review_comment(product)

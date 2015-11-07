@@ -1,0 +1,88 @@
+.container
+  .page-header
+    = link_to "#new-category", data: {toggle: "modal", dismiss: true}, class: "btn btn-success pull-right" do
+      %span.glyphicon.glyphicon-plus
+      New Category
+    %h1 Categories
+
+  .table-responsive
+    %table.table.table-striped.table-bordered.table-hover
+      %thead
+        %tr
+          %th Name
+          %th Image
+          %th 
+          %th
+          %th
+
+      %tbody
+        - @categories.each do |category|
+          %tr.parent-row{id: "category-row-#{category.id}"}
+            %td
+              %strong= category.name
+            %td= category.image
+            %td= link_to "add subcategory", "#add-subcategory", data: {toggle: "modal", dismiss: true, id: category.id}, class: "btn btn-sm btn-success add-sub"
+            %td
+              = link_to "#edit-category", data: {toggle: "modal", dismiss: true, id: category.id, parent_id: category.parent_id, name: category.name, image: category.image}, class: "btn btn-sm btn-success edit-cat" do
+                %span.glyphicon.glyphicon-pencil
+            %td
+              = link_to admin_category_path(category), class: "btn btn-sm btn-danger", :data => { :confirm => "Delete category will delete all it's sub-category. Are you sure?" }, method: :delete, remote: true do
+                %span.glyphicon.glyphicon-trash
+          - category.subs.each do |sub|
+            %tr{id: "category-row-#{sub.id}", class: "sub-row sub-row-#{category.id}"}
+              %td.pleft30= sub.name
+              %td= sub.image
+              %td
+              %td
+                = link_to "#edit-category", data: {toggle: "modal", dismiss: true, id: sub.id, name: sub.name, image: sub.image}, class: "btn btn-sm btn-success edit-cat" do
+                  %span.glyphicon.glyphicon-pencil
+              %td
+                = link_to admin_category_path(sub), class: "btn btn-sm btn-danger", :data => { :confirm => 'Are you sure to delete category?' }, method: :delete, remote: true do
+                  %span.glyphicon.glyphicon-trash
+
+          
+#new-category.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
+        %h2=t "Add new Category"
+      .modal-body
+        = render partial: "form", locals: {category: @category}
+
+- if Category.first
+  #edit-category.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
+          %h2=t "Edit Category"
+        .modal-body
+          = render partial: "form", locals: {category: Category.first}
+
+#add-subcategory.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
+        %h2=t "Add new Sub Category"
+      .modal-body
+        = render partial: "form", locals: {category: @category}
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".add-sub").click(function(){
+        $(".errors").html("");
+        $("#add-subcategory input[type=text]").val("");
+        $("#add-subcategory").find("#category_parent_id").val($(this).data("id"));
+      });
+      $(".edit-cat").click(function(){
+        $(".errors").html("");
+        $(this).closest("form").attr("action", "/admin/categories/" + $(this).data("id"));
+        $("#edit-category input[name*=name]").val($(this).data("name"));
+        $("#edit-category input[name*=image]").val($(this).data("image"));
+        $("#edit-category").find("#category_parent_id").val($(this).data("parent_id"));
+      });
+
+    });

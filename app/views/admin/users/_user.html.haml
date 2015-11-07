@@ -1,0 +1,21 @@
+%td= link_to user.name, "#profile-#{user.profile_id}", data: {toggle: "modal" } 
+%td= user.email
+%td= user.phone
+%td= user.created_at.strftime("%d %b, %Y")
+%td= user.role
+%td
+  = link_to "#edit-user-#{user.id}", data: {toggle: "modal", dismiss: true, email: user.email, role: user.role, id: user.id}, class: "btn btn-sm btn-primary edit-user" do
+    %span.glyphicon.glyphicon-pencil
+%td.lock-actions
+  = render partial: "lock_actions", locals: {user: user}
+= render partial: "profile", locals: {profile: user.profile}
+
+.modal.fade{id: "edit-user-#{user.id}"}
+  .modal-dialog
+    .modal-content.modal-sm
+      .modal-header
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
+        %h3 Update User Role
+      .modal-body
+        = render partial: "form", locals: {user: user}
+      .clearfix

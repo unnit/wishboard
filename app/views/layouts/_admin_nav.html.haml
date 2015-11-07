@@ -1,0 +1,22 @@
+%nav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
+  .container
+    .navbar-header.navb
+      %button.navbar-toggle{data: {toggle: "collapse", target: ".navbar-collapse"}}
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand.hidden-xs.logoh{href: "#"}
+        = image_tag "coc.png", class: "img-responsive"
+      %a.navbar-brand.visible-xs{href: "#"}
+        = image_tag "coc.png", class: "img-responsive"
+
+    #navbar.collapse.navbar-collapse
+      %ul.nav.navbar-nav
+        %li{class: "#{'active' if controller_name=='users'}"}= link_to "Users", admin_users_path
+        %li{class: "#{'active' if controller_name=='categories'}"}= link_to "Categories", admin_categories_path
+        %li{class: "#{'active' if controller_name=='categories'}"}= link_to "Products", admin_products_path
+        %li{class: "#{'active' if controller_name=='transactions'}"}= link_to "Transactions", admin_transactions_path
+        %li
+          = link_to destroy_user_session_path, method: :delete do
+            %span Sign out
+            %span.glyphicon.glyphicon-log-out

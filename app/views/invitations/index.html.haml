@@ -1,0 +1,18 @@
+= content_for :header_extra do
+  = render partial: "layouts/category_filter"
+.container-fluid.aboutpad
+  .container.container-pad
+    .container
+      .row
+        .col-md-12
+          %p Add the email addresses of the people you are inviting to the field below. If you add multiple email addresses, separate them with comma.
+          ~ form_tag send_email_invitations_path, class: "form-horizontal" do
+            %fieldset
+              .form-group
+                %label.col-sm-2.control-label Emails
+                .col-sm-10= text_area_tag :emails, "", rows: "3", placeholder: "Emails", class: "form-control textarea"
+              .form-group
+                %label.col-sm-2.control-label Personal Messages
+                .col-sm-10= text_area_tag :message, "", rows: "3", placeholder: "Personal Messages", class: "form-control textarea"
+              .pull-right{style: "margin-bottom:50px;"}
+                = submit_tag "Send Invite", class: "btn btn-info save-button"

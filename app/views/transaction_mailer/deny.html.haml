@@ -1,0 +1,9 @@
+Dear #{@user.name},
+%p
+  Your order request is denied by the owner
+  %br
+  %strong Product:
+  = link_to @transaction.product.title, "#{@base_url}#{user_product_path(@owner, @product)}"
+  %br
+  %strong Owner:
+  = @owner.name

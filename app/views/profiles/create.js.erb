@@ -1,0 +1,8 @@
+$('form.profile_form').closest('#profile_form').replaceWith("<%= j(render 'profiles/form') %>")
+<% if @profile.errors.blank? %>
+  $("form.profile_form .errors").html("<%= j(render 'layouts/messages') %>")
+<% else %>
+  $("form.profile_form .errors").html("<%= j(render 'layouts/errors', errors: @profile.errors.full_messages) %>")
+<% end %>
+
+$('form.profile_notification_form').closest('#profile_notification_form').replaceWith("<%= j(render 'profiles/notification_form') %>")

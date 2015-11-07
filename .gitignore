@@ -1,4 +1,4 @@
 #####Log Files######
 *.log
 ####Database connection file####
-
+config/database.yml

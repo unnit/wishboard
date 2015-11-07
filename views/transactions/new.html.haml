@@ -1,0 +1,15 @@
+.container-fluid.aboutpad
+  .container
+    = form_for @transaction, html:{class: "form-horizonral"} do |f|
+      = hidden_field_tag :product_id, @product.id
+      = f.hidden_field :startdate
+      = f.hidden_field :enddate
+      = f.hidden_field :operator_type
+      .col-md-12.mtop10
+        %h4 Request for #{@product.title}
+      .col-md-12.mtop10
+        %label.col-md-2.control-label Message
+        .col-md-10= text_area_tag :message, "",rows: "3", placeholder: "Message", class: "form-control"
+      .col-md-12.mtop10
+        .pull-right{style: "margin-bottom: 50px;"}
+          = f.submit "Send Message", class: "btn btn-info save-button"

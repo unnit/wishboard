@@ -1,0 +1,45 @@
+.container.pbottom50
+  .row.mar-des-page
+    %h2.mbottom20
+      = @conversation.subject
+    
+    .col-sm-12
+      %h3 Transaction details
+    .col-sm-6.no-mar-pad.mbottom20
+      .col-sm-4 Start Date
+      .col-sm-8= @transaction.startdate.strftime("%Y-%m-%d") if @transaction.startdate
+      .col-sm-4 End Date
+      .col-sm-8= @transaction.enddate.strftime("%Y-%m-%d") if @transaction.enddate
+      .col-sm-4 Status
+      .col-sm-8= @transaction.status.humanize
+      .col-sm-4 Operator Type
+      .col-sm-8= Product::OPERATOR_TYPE[@transaction.operator_type]
+    .col-sm-6
+      - if @transaction.seller == current_user && @transaction.requesting?
+        = link_to "Accept", accept_transaction_path(@transaction), method: :post, class: "btn btn-success"
+        = link_to "Deny", deny_transaction_path(@transaction), method: :post, class: "btn btn-danger"
+      - elsif @transaction.user == current_user && @transaction.accepted?
+        = link_to "Pay", checkout_transaction_path(@transaction), class: "btn btn-success"
+    .col-sm-12
+      %h3 Messages
+    - @messages.each do |message|
+      .col-sm-12.pad-v-5
+        .col-sm-2
+          %strong
+            = image_tag message.sender.avatar, size: "32x32", class: "img-circle"
+            = message.sender.name
+          %br
+          %small= message.created_at.strftime("%y-%m-%d %H:%M:%S")
+        .col-sm-10
+          %p= simple_format message.body
+
+    .col-sm-12
+      ~ form_tag reply_message_path(@transaction), class: "form-horizonral" do
+        %fieldset
+          .form-group{style: "margin-top: 50px"}
+            %h4 Reply
+            %label.col-sm-2.control-label Message
+            .col-sm-10
+              = text_area_tag :message, "",rows: "3", placeholder: "Message", class: "form-control"
+          .pull-right{style: "margin-bottom: 50px;"}
+            = submit_tag "Send Message", class: "btn btn-info save-button"

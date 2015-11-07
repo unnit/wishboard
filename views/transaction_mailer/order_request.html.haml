@@ -1,0 +1,15 @@
+= @user.name
+has requested product
+= @product.title
+for dates
+= @transaction.duration
+for an estimated total
+= rupee @transaction.amount
+%br
+%br
+%strong Message from #{@user.name}:
+= simple_format @message
+%br
+Please click 
+= link_to "here", "#{@base_url}#{message_path(@transaction)}"
+to accept or deny the request.

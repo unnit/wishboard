@@ -1,0 +1,1 @@
+$("#product-row-#{@product.id} .avail").html("#{escape_javascript(render partial: 'avail_toggle', locals: {product: @product})}");

@@ -1,0 +1,31 @@
+defaults: &defaults
+  update_emails:
+    '1': Send me an update email <b>daily</b> if there are new listings
+    '2': Send me an update email <b>weekly</b> if there are new listings
+    '3': "Don't send me update emails"
+
+  email_notification:
+    somebody_sends_me_a_message: somebody sends me a message
+    somebody_comments_my_offer_or_request: somebody comments my offer or request
+    somebody_accepts_my_offer_or_request: somebody accepts my offer or request
+    somebody_rejects_my_offer_or_request: somebody rejects my offer or request
+    somebody_gives_me_feedback: somebody gives me feedback
+    I_have_forgotten_to_accept_an_offer_or_a_request: I have forgotten to accept an offer or a request
+    I_have_forgotten_to_confirm_a_request_as_completed: I have forgotten to confirm a request as completed
+    I_have_forgotten_to_give_feedback_on_an_event: I have forgotten to give feedback on an event
+    someone_marks_my_offer_or_request_as_completed: someone marks my offer or request as completed
+    I_receive_a_new_payment: I receive a new payment
+    I_have_forgotten_to_pay: I have forgotten to pay
+    somebody_I_follow_posts_a_new_listing: somebody I follow posts a new listing
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+staging:
+  <<: *defaults
+
+production:
+  <<: *defaults

@@ -1,0 +1,11 @@
+= form_for [:admin, user], hrml: {"data-parsley-validate" => true}, remote: true do |f|   
+  .errors
+  .form-group
+    = f.radio_button :role, 'user'
+    %label{for: 'user_role_user'} User
+  .form-group
+    = f.radio_button :role, 'admin'
+    %label{for: 'user_role_admin'} Admin
+  .form-group
+    .col-sm-12.mtop20.mbottom20.text-center
+      = f.submit 'Save', class: "btn btn-success"

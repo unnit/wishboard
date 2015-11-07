@@ -1,0 +1,141 @@
+%nav.navbar.navbar-default.navbar-fixed-top.topnav.nav-bar-color{:role => "navigation"}
+  .navbar.navbar-fixed-top
+    .container
+      .navbar-header
+        %button.navbar-toggle{data: {toggle: "collapse", target: ".navbar-collapse"}}
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        %a.navbar-brand.hidden-xs.logoh{href: "/"}
+          = image_tag "coc.png", class: "img-responsive"
+        %a.navbar-brand.visible-xs{href: "/"}
+          = image_tag "coc.png", class: "img-responsive"
+        = yield :header_extra
+      .navbar-collapse.collapse.nav-border
+        %ul.nav.navbar-nav.navbar-right
+          - if current_user
+            %li.hidden-xs
+              %ul.pro-view
+                %li.dropdown
+                  = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
+                    = current_user.name
+                    %span.avatar.pull-right.mleft5{style: "margin-top: -15px; margin-right: 1px;"}= image_tag current_user.avatar, class: 'pull-right', height: "48"
+                    / %i.glyphicon.glyphicon-user.pull-right.mleft5
+                  %ul.dropdown-menu
+                    %li
+                      = link_to messages_path, style: "white-space: normal;" do
+                        %span Messages
+                        %span.glyphicon.glyphicon-cog.pull-right
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to my_profile_profiles_path, style: "white-space: normal;" do
+                        %span Profile
+                        %span.glyphicon.glyphicon-user.pull-right
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to settings_path, style: "white-space: normal;" do
+                        %span Settings
+                        %span.glyphicon.glyphicon-cog.pull-right
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to invitations_path, style: "white-space: normal;" do
+                        %span Invite friends
+                        %span.glyphicon.glyphicon-envelope.pull-right
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
+                        %span Sign Out
+                        %span.glyphicon.glyphicon-log-out.pull-right
+            %li.pa= link_to "Post Ad", new_product_path, class: "pa", style: "color: #fff"
+          - else
+            
+            %li.active.nav-login= link_to "Login", "#login", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
+            %li.active.nav-login= link_to "Register", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"      
+            %li.pa= link_to "Post Ad", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
+
+
+
+#login.modal.fade
+  .modal-dialog
+    .modal-content.pop-up-mar
+      .modal-header.pop-bac
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
+          %i.fa.fa-times
+        %h4.modal-title Login
+      .modal-body
+        .col-sm-9.col-sm-offset-3
+          = link_to user_omniauth_authorize_path(:facebook), style: "border-radius:0;", class: "btn btn-primary btn-block" do
+            %i.icon-facebook
+            Login with Facebook
+        .col-sm-9.col-sm-offset-3.or-text
+          %span OR
+        = form_for(User.new, :url => new_user_session_path, html: {"data-parsley-validate" => true, remote: true}) do |f|
+          .col-sm-12.errors
+          .form-group.clearfix
+            = f.label :email, :class => 'col-sm-3 control-label', required: true
+            .col-sm-9
+              .input-group
+                %span.input-group-addon
+                  %i.fa.fa-user
+                = f.text_field :email, :autofocus => true, placeholder: t("email_address", default: "Email Address"), class: "form-control", "data-parsley-trigger" => "change", required: true
+          .form-group.clearfix
+            = f.label :Password, :class => 'col-sm-3 control-label', required: true
+            .col-sm-9
+              .input-group
+                %span.input-group-addon
+                  %i.fa.fa-lock
+                = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+          .form-group.clearfix
+            .col-sm-offset-3.col-sm-9
+              = f.submit "Login",:class => 'btn btn-primary pop-up-but'
+      .clearfix
+
+#signup.modal.fade
+  .modal-dialog
+    .modal-content.pop-up-mar
+      .modal-header.pop-bac
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
+          %i.fa.fa-times
+        %h4.modal-title Sign Up New User"
+      .modal-body
+        .col-sm-9.col-sm-offset-3
+          = link_to user_omniauth_authorize_path(:facebook), style: "border-radius:0;", class: "btn btn-primary btn-block" do
+            %i.icon-facebook
+            Sign Up/Register with Facebook
+        .col-sm-9.col-sm-offset-3.or-text
+          %span OR
+        = form_for(User.new, :url => user_registration_path, html: {"data-parsley-validate" => true, remote: true, class: "agreement-require"}) do |f|
+          .col-sm-12.errors
+          .form-group.clearfix
+            = f.label :email, :class => 'col-sm-3 control-label', required: true
+            .col-sm-9
+              .input-group
+                %span.input-group-addon
+                  %i.fa.fa-user
+                = f.text_field :email, :autofocus => true, placeholder: t("email_address", default: "Email Address"), class: "form-control", "data-parsley-trigger" => "change", required: true
+          .form-group.clearfix
+            = f.label :Password, :class => 'col-sm-3 control-label', required: true
+            .col-sm-9
+              .input-group
+                %span.input-group-addon
+                  %i.fa.fa-lock
+                = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+          .form-group.clearfix
+            = f.label :password_confirmation, :class => 'col-sm-3 control-label'
+            .col-sm-9
+              .input-group
+                %span.input-group-addon
+                  %i.fa.fa-lock
+                = f.password_field :password_confirmation, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+          .form-group.clearfix
+            = label_tag :agreement, "Agreement", :class => 'col-sm-3 control-label'
+            .col-sm-9
+              .input-group
+                = check_box_tag :agreement
+                %span.mleft10 By sign up on Cocociti you agree all Terms and policies of Cocociti
+              %span.agreement-error.text-danger{style: "display: none;"} You must agree to sign up. 
+
+          .form-group.clearfix
+            .col-sm-offset-3.col-sm-9
+              = f.submit "Sign up", :class => 'btn btn-primary pop-up-but'
+      .clearfix

@@ -1,4 +1,0 @@
-- if @user.errors.blank?
-  location.reload();
-- else
-  $("#edit-user .errors").html("#{escape_javascript(render partial: '/layouts/errors', locals: {errors: @user.errors.full_messages})}");

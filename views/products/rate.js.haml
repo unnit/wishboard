@@ -1,3 +1,0 @@
-$(".rate_stars").html("#{escape_javascript(render partial: 'rating', locals: {rate: @rate})}");
-$(".rated-#{current_user.id}").html("#{escape_javascript(render partial: 'rated', locals: {rate: @rate})}");
-$(".product-rated").html("#{escape_javascript(render partial: 'rated', locals: {rate: @product.rate})}");

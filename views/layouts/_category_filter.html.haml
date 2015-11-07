@@ -1,8 +1,0 @@
-.nav.navbar-nav.navbar-right.hidden-xs.nav-cat
-  .dropdown.navbar-collapse.collapse
-    %button#dropdownMenu1.btn.dropdown-toggle.nav-cat-button{data: {toggle: "dropdown"}, :"area-expanded" =>true}
-      CATEGORIES
-      %span.caret
-    %ul.dropdown-menu{role: "menu", "area-labelledby" => "dropdownMenu1"}
-      - Category.root.each do |cat|
-        %li= link_to cat.name, category_path(cat)

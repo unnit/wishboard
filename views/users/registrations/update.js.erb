@@ -1,4 +1,0 @@
-$('form.user_form').closest('#user_form').replaceWith("<%= j(render 'users/registrations/edit') %>")
-<% if @user.errors.blank? %>
-  $("form.user_form .errors").html("<%= j(render 'layouts/messages') %>")
-<% end %>

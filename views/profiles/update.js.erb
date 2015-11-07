@@ -1,7 +1,0 @@
-//$('form.profile_form').closest('#profile_form').replaceWith("<%= j(render 'profiles/form') %>")
-$('.avatar-preview').html("<%= j(render '/profiles/avatar') %>");
-<% if @profile.errors.blank? %>
-  $("form.profile_form .errors").html("<%= j(render 'layouts/messages') %>")
-<% else %>
-  $("form.profile_form .errors").html("<%= j(render 'layouts/errors', errors: @profile.errors.full_messages) %>")
-<% end %>

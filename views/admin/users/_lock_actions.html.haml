@@ -1,7 +1,0 @@
-- unless current_user.id == user.id
-  - if user.access_locked?
-    = link_to unlock_admin_user_path(user), class: "btn btn-sm btn-success", method: :post, remote: true, title: "unclock user" do
-      %span.glyphicon.glyphicon-ok-circle
-  - else
-    = link_to lock_admin_user_path(user), class: "btn btn-sm btn-danger",:data => { :confirm => "Are you sure to ban this user?" }, method: :post, remote: true, title: "lock user" do
-      %span.glyphicon.glyphicon-ban-circle

@@ -1,5 +1,0 @@
-- if @category.errors.blank?
-  location.reload();
-- else
-  $("#new-category .errors").html("#{escape_javascript(render partial: '/layouts/errors', locals: {errors: @category.errors.full_messages})}");
-  $("#edit-category .errors").html("#{escape_javascript(render partial: '/layouts/errors', locals: {errors: @category.errors.full_messages})}");

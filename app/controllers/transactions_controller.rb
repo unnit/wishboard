@@ -4,6 +4,47 @@ class TransactionsController < ApplicationController
   before_filter :set_product, only: [:new, :create, :get_price]
   before_filter :set_transaction, only: [:accept, :deny]
 
+  def new
+    @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
+    @transaction.user = current_user
+    if @transaction.valid?
+      if @product.owner_type == Product::OWNER_TYPE[0][1]
+        @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
+        @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
+        @transaction.save
+        redirect_to checkout_transaction_path(@transaction)
+      end
+      @address = current_user.address || current_user.copy_address!
+    else
+      flash[:danger] = @transaction.errors.full_messages.first
+      redirect_to user_product_path(@product.user.profile, @product)
+    end
+  end
+
+  def create
+    @transaction = Transaction.new
+    @transacrion.user = current_user
+    @transaction.startdate = session[:start_date_time]
+    @transaction.enddate = session[:end_date_time]
+    @transaction.operator_type = params[:operator_type]
+    @transaction.product = @product
+    @transaction.amount = @product.calculate_price(@transaction.duration_days)
+    @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
+    logger.info '********************'
+    logger.info '---------CREATE---------------'
+    logger.info @product.owner_type
+    logger.info '********************'
+    if @transaction.save
+      current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
+      TransactionMailer.order_request(@transaction, params[:message]).deliver_now
+
+      redirect_to my_profile_profiles_path
+    else
+      flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
+      render :new
+    end
+  end
+
   def checkout
     @transaction = current_user.transactions.find params[:id]
     @product = @transaction.product
@@ -13,8 +54,8 @@ class TransactionsController < ApplicationController
   end
 
   def get_price
-    transaction = Transaction.new(user_id: 1, startdate: params[:startdate], enddate: params[:enddate], product_id: params[:product_id])
-    
+    transaction = Transaction.new(user_id: 1, startdate: session[:start_date_time], enddate: session[:end_date_time], product_id: params[:product_id])
+
     unless transaction.valid?
       render json: {error: transaction.errors.full_messages.first}
     else
@@ -27,23 +68,6 @@ class TransactionsController < ApplicationController
     end
   end
 
-  def new
-    @transaction = @product.transactions.build(startdate: params[:from], enddate: params[:to], operator_type: params[:operator_type])
-    @transaction.user = current_user
-    if @transaction.valid?
-      if @product.owner_type == "Dealer/Agency"
-        @transaction.status = "waiting_payment"
-        @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
-        @transaction.save
-        redirect_to checkout_transaction_path(@transaction)
-      end
-      @address = current_user.address || current_user.copy_address!
-    else
-      flash[:danger] = @transaction.errors.full_messages.first
-      redirect_to user_product_path(@product.user.profile, @product)
-    end
-  end
-
   def accept
     @transaction.accept!
     redirect_to message_path(@transaction)
@@ -52,23 +76,6 @@ class TransactionsController < ApplicationController
   def deny
     @transaction.deny!
     redirect_to message_path(@transaction)
-  end
-
-  def create
-    @transaction = current_user.transactions.build(transaction_params)
-    @transaction.product = @product
-    @transaction.amount = @product.calculate_price(@transaction.duration_days)
-    @transaction.status = "requesting"
-
-    if @transaction.save
-      current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
-      TransactionMailer.order_request(@transaction, params[:message]).deliver
-
-      redirect_to my_profile_profiles_path
-    else
-      flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
-      render :new
-    end
   end
 
   def callback
@@ -89,9 +96,6 @@ class TransactionsController < ApplicationController
   end
 
   private
-  def transaction_params
-    params.require(:transaction).permit(:startdate, :enddate, :operator_type)
-  end
 
   def set_product
     @product = Product.friendly.find params[:product_id]

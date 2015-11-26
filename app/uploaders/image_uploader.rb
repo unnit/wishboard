@@ -2,7 +2,7 @@
 
 class ImageUploader < CarrierWave::Uploader::Base
 
-  include Cloudinary::CarrierWave #if Rails.env.production? || Rails.env.staging?
+  include Cloudinary::CarrierWave if Rails.env.production? || Rails.env.staging? || Rails.env.development?
   #include CarrierWave::RMagick if Rails.env.development?
 
   version :thumb do
@@ -13,8 +13,12 @@ class ImageUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
+  #def cache_dir
+  #  "tmp/image-cache"
+  #end
+
   def extension_white_list
-    %w(jpg jpeg gif png)
+    %w(jpg jpeg png)
   end
 
 end

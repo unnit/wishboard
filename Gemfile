@@ -6,7 +6,7 @@ gem 'countries'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 gem 'bower-rails'
-gem 'carrierwave'
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem 'cloudinary'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'devise'
@@ -49,7 +49,7 @@ group :development, :test do
   gem 'capistrano-passenger'
 end
 
-group :production, :staging do
+group :production, :staging, :development do
   gem "rails_stdout_logging"
   gem 'rails_12factor'
 end

@@ -1,10 +1,10 @@
 .container-fluid.aboutpad
   .container
     .col-sm-12
-      %h3 Question about payments and refunds? Dial: 96 8686 0303. All payments are protected and kept in an escrow account untill fulfillment of the service offered 
+      %h3 Question about payments and refunds? Dial: 96 8686 0303. All payments are protected and kept in an escrow account untill fulfillment of the service offered
     = form_for @transaction, html:{class: "form-horizonral", id: "checkout-form"} do |f|
       = hidden_field_tag :product_id, @product.id
-      
+
       .col-md-3.pull-right.no-mar-pad
         %h3 Summary
         = image_tag @product.image, style: "width: 100%;"
@@ -45,17 +45,17 @@
             .col-md-5= af.text_field :zip, class: "form-control check_zip", required: true
           .col-md-12.mtop10
             %label.col-md-3 City
-            .col-md-5= af.text_field :city, class: "form-control city", required: true        
+            .col-md-5= af.text_field :city, class: "form-control city", required: true
           .col-md-12.mtop10
             %label.col-md-3 State
             .col-md-5
-              = af.select :state, options_for_select(india_states), {prompt: 'State'}, class: "select_box state", required: true         
+              = af.select :state, options_for_select(india_states), {prompt: 'State'}, class: "select_box state", required: true
         %h3.col-md-12.mtop20 Card info
         .col-md-12
           #error.col-md-12.text-danger{style: "font-weight: bold; margin-left: 5px;"}
         .col-md-8.no-mar-pad
           .col-md-12.mtop20
-            %label.col-md-5 Card Holder's Name
+            %label.col-md-5 Card Holder Name
             .col-md-7= text_field_tag :card_holder, "",name: nil, class: "form-control"
           .col-md-12.mtop10
             %label.col-md-5 Card Number
@@ -74,8 +74,8 @@
           .col-sm-8.no-mar-pad
             .col-sm-12
               = check_box_tag :agreement
-              %span.mleft10 By charging on Cocociti you agree all Terms and policies of Cocociti 
-            .col-sm-12.agreement-error.text-danger{style: "display: none; font-weight: bold;"} You must agree to pay. 
+              %span.mleft10 By charging on Cocociti you agree all Terms and policies of Cocociti
+            .col-sm-12.agreement-error.text-danger{style: "display: none; font-weight: bold;"} You must agree to pay.
         .col-md-8.mtop10
           .pull-right{style: "margin-bottom: 50px;"}
             = f.submit "Pay", class: "btn btn-info save-button"

@@ -4,6 +4,9 @@ class Location < ActiveRecord::Base
 
   scope :for_product, -> {where(locatable_type: "Product")}
 
+  validates :name, presence: true
+  validates :name, length: { maximum: 240 }
+
   def self.near_by(address, distance=10)
     g=Geokit::Geocoders::GoogleGeocoder.geocode address
     place = new(lat: g.lat, lng: g.lng)

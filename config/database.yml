@@ -2,10 +2,10 @@
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 development:
     adapter: mysql2
-    database: sharetribe_development
+    database: cocodb_dev
     encoding: utf8
-    username: sharetribe
-    password: secret
+    username: cocodb_user
+    password: cocoadmin123
     host: localhost
 
 # Warning: The database defined as "test" will be erased and

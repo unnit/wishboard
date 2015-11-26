@@ -8,10 +8,12 @@ class Transaction < ActiveRecord::Base
 
   has_one :address, through: :user
 
+  TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"]]
+
   validates :user_id, :product_id, :startdate, :enddate, presence: true
   validate :date_range_validation
 
-  scope :renting, -> {where("transactions.enddate > ? and (transactions.status = 'waiting_payment' or transactions.status='paid')", Date.today)}
+  scope :renting, -> {where("transactions.enddate > ? and (transactions.status = ? or transactions.status = ?)", Date.today, Transaction::TRANSACTION_STATUS[1][1], Transaction::TRANSACTION_STATUS[2][1])}
   scope :paid, -> {where status: 'paid'}
 
   def duration
@@ -35,8 +37,8 @@ class Transaction < ActiveRecord::Base
     product.user
   end
 
-  def accepted? 
-    status == 'waiting_payment'
+  def accepted?
+    status == Transaction::TRANSACTION_STATUS[1][1]
   end
 
   def display_status
@@ -44,21 +46,21 @@ class Transaction < ActiveRecord::Base
   end
 
   def paid?
-    status == 'paid' 
+    status == Transaction::TRANSACTION_STATUS[2][1]
   end
 
   def requesting?
-    status == 'requesting'
+    status == Transaction::TRANSACTION_STATUS[0][1]
   end
 
   #actions
   def accept!
-    update_column :status, 'waiting_payment'
+    update_column :status, Transaction::TRANSACTION_STATUS[1][1]
     TransactionMailer.accept(self).deliver
   end
 
   def deny!
-    update_column :status, 'denied'
+    update_column :status, Transaction::TRANSACTION_STATUS[3][1]
     TransactionMailer.deny(self).deliver
   end
 
@@ -67,10 +69,10 @@ class Transaction < ActiveRecord::Base
   end
 
   def paid!(transaction_id, tamount)
-    update_columns status: 'paid', amount: tamount, txnid: transaction_id
+    update_columns status: Transaction::TRANSACTION_STATUS[2][1], amount: tamount, txnid: transaction_id
     TransactionMailer.paid(self).deliver
   end
-  
+
   #methods for mailboxer
   def name
     product.title
@@ -87,7 +89,7 @@ class Transaction < ActiveRecord::Base
   private
   def date_range_validation
     if self.enddate < self.startdate
-      errors.add(:base, "Invalid date range. startdate should before enddate") 
+      errors.add(:base, "Invalid date range. startdate should before enddate")
     else
       range = (self.startdate.to_date..self.enddate.to_date).to_a.map{|d| d.strftime("%Y-%m-%d")}
       errors.add(:base, "Invalid date range. Including disabled date") if !(range & self.product.unavailable_dates).blank?

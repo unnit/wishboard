@@ -18,18 +18,18 @@
                   %form
                     .col-md-3{style: "text-align:center;"}
                       .input-group.ipg
-                        %b.ipg1 Price INR 0-999999
+                        %b.ipg1 Price INR= "#{@min_price} - #{@max_price}"
                         %div
-                          - value = params[:price].blank? ? '300,500' : params[:price]
-                          = text_field_tag :price_range, '', class: 'slider span2 input-md form-control', data: {"slider-min": "0", "slider-max": "999999", "slider-step": "10", "slider-value": "[#{value}]", target: '#price'}
+                          - value = params[:price].blank? ? "#{@min_price},#{@max_price}" : params[:price]
+                          = text_field_tag :price_range, '', class: 'slider span2 input-md form-control', data: {"slider-min": "#{@min_price}", "slider-max": "#{@max_price}", "slider-step": "500", "slider-value": "[#{value}]", target: '#price'}
                     .col-md-3
                       .form-group.ipg2
                         %label.sr-only owner
-                        = select_tag :ownertype, options_for_select(["Individual", "Dealer/Agency"], params[:owner_type]), class: "form-control filter", prompt: "Owner Type", data: {target: "#owner_type"}
+                        = select_tag :ownertype, options_for_select(Product::OWNER_TYPE, params[:owner_type]), class: "form-control filter", prompt: "Booking Type", data: {target: "#owner_type"}
                     .col-md-3.ipg3
                       .form-group.ipg2
                         %label.sr-only Product Condition
-                        = select_tag :product_cond, options_for_select(["New", "Excellent", "Good", "Average", "Okayish"], params[:product_condition]), prompt: "Product Condition", class: "form-control filter", data: {target: "#product_condition"}
+                        = select_tag :product_cond, options_for_select(Product::PRODUCT_CONDITION, params[:product_condition]), prompt: "Product Condition", class: "form-control filter", data: {target: "#product_condition"}
                     .col-md-1
                       = link_to "Run Filter", "javascript:;", class: "btn btn-primary", id: "filter", style: "background-color: #e84242;border:none; border-radius: 0; margin-top: 10px;"
 %div
@@ -49,7 +49,7 @@
           .tab-content.tabbable-panel-mp-height{style: "padding-left: 18px;"}
             #tab-1.tab-pane.active
               - if @products.blank?
-                .col-sm-12.no-mar-pad 
+                .col-sm-12.no-mar-pad
                   %h3.text-center No product found
               - else
                 - @products.each_slice(2) do |products|

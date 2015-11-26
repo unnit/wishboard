@@ -1,0 +1,4 @@
+class ChangeColumnTaxProducts < ActiveRecord::Migration
+  def change
+  end
+end

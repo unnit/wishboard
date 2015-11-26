@@ -6,11 +6,25 @@
       - unless @product.images.blank?
         %ul.bxslider
           - @product.images.each do |image|
-            %li{style: "text-align: center"}= image_tag image.file_url, style: "max-height: 650px; margin-left: auto; margin-right: auto;"
+            %li{style: "text-align: center"}= image_tag image, style: "max-height: 650px; margin-left: auto; margin-right: auto;"
+            /%li{style: "text-align: center"}= cl_image_tag image.filename, width: 740, height: 313, crop: :fill
         #bx-pager
           - @product.images.each_with_index do |image, i|
-            = link_to "", "data-slide-index" => i do 
-              = image_tag image.file_url, height: "100"
+            = link_to "", "data-slide-index" => i do
+              = image_tag image, height: "100"
+        .col-xs-12.col-md-12.available
+          .col-xs-12.col-sm-4
+            = image_tag @product.user.avatar, class: "img-circle", size: "70x70"
+            %h6.des-own-det= @product.user.name
+          .col-xs-12.col-sm-4
+            = image_tag "img/des-assets/time.png", class: "des-assests"
+            %h6.des-own-det= "#{@product.user.profile.open_time} - #{@product.user.profile.close_time}"
+          .col-xs-12.col-sm-4
+            = image_tag "img/des-assets/individual.png", class: "des-assests"
+            - if @product.owner_type == Product::OWNER_TYPE[0][1]
+              %h6.des-own-det= Product::OWNER_TYPE[0][0].upcase
+            - elsif @product.owner_type == Product::OWNER_TYPE[1][1]
+              %h6.des-own-det= Product::OWNER_TYPE[1][0].upcase
 
     .col-md-4
       %h2.product-name= @product.title
@@ -24,20 +38,20 @@
           .tabbable-line-rs
             %ul.nav.nav-tabs.rent-sale-text
               %li.active
-                = link_to @product.listing_type, "#tab_default_1_1", "data-toggle" => "tab"
+                = link_to @product.listing_type_name, "#tab_default_1_1", "data-toggle" => "tab"
             .tab-content.table-panel-rs-heoght
               #tab_default_1_1.tab-pane.active{style: "min-height: 100px;"}
-                - if @product.operator_type != 0
+                - if @product.operator_type != Product::OPERATOR_TYPE[0][1]
                   %p
-                    - if @product.operator_type != 1
-                      = radio_button_tag :operator, 0, true, class: "operator_type"
-                      %label Rent
+                    - if @product.operator_type != Product::OPERATOR_TYPE[1][1]
+                      = radio_button_tag :operator, Product::OPERATOR_TYPE[0][1], true, class: "operator_type"
+                      %label Product Only
                       %span.pull-right
                         %i.fa.fa-rupee
                         0
                     %br
-                    = radio_button_tag :operator, 1, @product.operator_type == 1, class: "operator_type"
-                    %label Wet Hire 
+                    = radio_button_tag :operator, Product::OPERATOR_TYPE[1][1], @product.operator_type == Product::OPERATOR_TYPE[1][1], class: "operator_type"
+                    %label With Operator/Driver (Assisted)
                     %span.pull-right
                       %i.fa.fa-rupee
                       = @product.operator_price
@@ -54,136 +68,117 @@
                     %li Daily price
                     %li Days
                     %li Tax ( #{@product.tax}% )
-                    %li Shipping
+                    /%li Shipping
                     %li Discount
                     %li Pay amount
                   %ul.pull-right.sale-details2.text-right
                     %li
                       %i.fa.fa-rupee
                       = @product.security_deposit
-                    %Li
+                    %li
                       %i.fa.fa-rupee
                       = @product.price
                     %li.days= 1
-                    %Li
-                      %i.fa.fa-rupee
-                      - type = @product.operator_type== 1 ? 1 : 0
-                      %span.tax-amount= @product.tax_amount(1, type)
-                    %li
-                      %i.fa.fa-rupee
-                      = @product.ship_price
                     %li
                       %span.min-sign
                       %i.fa.fa-rupee
                       %span.discount 0
                     %li
                       %i.fa.fa-rupee
+                      - type = @product.operator_type== Product::OPERATOR_TYPE[1][1] ? 1 : 0
+                      %span.tax-amount= @product.tax_amount(1, type)
+                    %li
+                      /%i.fa.fa-rupee
+                      =# @product.ship_price
+                    %li
+                      %i.fa.fa-rupee
                       %span.total-amount= @product.calculate_price(1)
-      .col-md-12.from-bar
+      .col-xs-12.col-md-12.from-bar
         - if current_user != @product.user
           ~ form_tag product_checkout_path(@product) do
             = hidden_field_tag :product_id, @product.id
             = hidden_field_tag :operator_type, 0
             .col-md-12.date-error{style: "color: red"}
-            .col-md-6.from-pad
-              = text_field_tag :from, "", placeholder: "From", class: "form-control datepicker price-trigger startdate", "area-describedby" => "sizing-addon1", readonly: 'readonly', required: true, "data-date-disabled-dates" => "#{@product.unavailable_dates}", "data-date-days-of-week-disabled" => "#{@product.disabled_days}", "data-date-enabled-hours" => "#{@product.enabled_hours}", data: {min_h: @product.min_h, min_m: @product.min_m, first_avail: @product.first_avail}
-
-            .col-md-6.from-pad.in-put-to
-              = text_field_tag :to, "", placeholder: "To", readonly: 'readonly', class: "form-control datepicker price-trigger enddate", "area-describedby" => "sizing-addon1", required: true, "data-date-disabled-dates" => "#{@product.unavailable_dates}", "data-date-days-of-week-disabled" => "#{@product.disabled_days}", "data-date-enabled-hours" => "#{@product.enabled_hours}", data: {min_h: @product.min_h, min_m: @product.min_m, first_avail: @product.first_avail}
             .col-md-12{style: "padding: 0; margin-left: 15px"}
-              - if current_user
+              - if current_user && @product.available?
                 %button#rent-btn.src-but{type: "submit", style: "width: 100%;padding: 0"}= @product.for_free? ? "Get" : "Rent"
-              - else 
-                %button.src-but{type: "button", style: "width: 100%;padding: 0", data: {toggle: "modal", target: "#login"}}= @product.for_free? ? "Get" : "Rent"
+              - else
+                %button.src-but{type: "button", style: "width: 100%;padding: 0", data: {toggle: "modal", target: "#login"}}
+                  Login to Rent
+  .col-xs-12.col-md-8.mtop20.no-padding-left
+    %h4.list-detail-head Description
+    %hr.col-md-12.mtop-v-5
+    %p.list-detail-desc.text-justify= @product.description
+  .col-xs-12.col-md-8.mtop20.no-padding-left
+    #myTab
+      %ul.nav.nav-tabs
+        %li.active
+          %a{"data-toggle" => "tab", :href => "#product_details"} Product Details
+        %li
+          %a{"data-toggle" => "tab", :href => "#tech_specification"} Tech Specification
+        %li
+          %a{"data-toggle" => "tab", :href => "#terms_and_policy"} Terms and Policy
+        %li
+          %a{"data-toggle" => "tab", :href => "#reviews"} Reviews
+      .tab-content.ptop10
+        #product_details.tab-pane.fade.in.active
+          .col-md-12.no-padding-left.list-prod-detail Location
+          .col-md-12.mbottom10.no-padding-left
+            = @product.location_address
+          .col-md-12.no-padding-left.list-prod-detail Product condition
+          .col-md-12.mbottom10.no-padding-left
+            = @product.product_condition_name
+          .col-md-12.no-padding-left.list-prod-detail Year of Manufacture
+          .col-md-12.mbottom10.no-padding-left
+            = @product.year_of_manufacture
+          .col-md-12.no-padding-left.list-prod-detail Documents Required
+          .col-md-12.no-padding-left
+            = @product.documents
+        #tech_specification.tab-pane.fade.text-justify
+          = @product.tech_spec
+        #terms_and_policy.tab-pane.fade.text-justify
+          = @product.terms_and_conditions
+        #reviews.tab-pane.fade
+          %h4.rev-head= @product.reviews_count
+          - @product.reviews.each do |review|
+            = render partial: "review", locals: {review: review}
 
-.container
-  .row
-    .col-xs-12.col-md-12.available
-      .col-xs-6.col-sm-2
-        = image_tag @product.user.avatar, class: "img-circle", size: "70x70"
-        %h6.des-own-det= @product.user.name
-      .col-xs-6.col-sm-2
-        = image_tag "img/des-assets/calender.png", class: "des-assests"
-        %h6.des-own-det SUN-SAT
-      .col-xs-6.col-sm-2
-        = image_tag "img/des-assets/time.png", class: "des-assests"
-        %h6.des-own-det 8AM-8PM
-      .col-xs-6.col-sm-2
-        = image_tag "img/des-assets/individual.png", class: "des-assests"
-        %h6.des-own-det INDIVIDUAL
-      .col-xs-6.col-sm-2
-        = image_tag "img/des-assets/verified.png", class: "des-assests"
-        %h6.des-own-det VERIFIED
-
-.container
-  .row.des-mar
-    %h4.des-head Description
-    %p.des-para= simple_format @product.description
-.container.product
-  .row
-    .col-md-12.pr-mar
-      .tabbable-panel-pd.pr-bor
-        .tabbable-line-pd
-          %ul.nav.nav-tabs.pr-details-tab
-            %li.active.mar-pd
-              %a{href: "#tab_default_1", data: {toggle: "tab"}} Product Details
-            %li.mar-cp
-              %a{href: "#tab_default_2", data: {toggle: "tab"}} Contact Person
-            %li.mar-pt
-              %a{href: "#tab_default_3", data: {toggle: "tab"}} Terms and Policy fields
-          .tab-content
-            #tab_default_1.tab-pane.active.temp-font
-              .col-sm-3 Location
-              .col-sm-9.text-right
-                = @product.location_address
-                &nbsp;
-              %hr.col-sm-12
-              .col-sm-3 Product condition
-              .col-sm-9.text-right
-                = @product.product_condition
-                &nbsp;
-              %hr.col-sm-12
-              .col-sm-3 Year Manufacture
-              .col-sm-9.text-right
-                = @product.year_of_manufacture
-                &nbsp;
-              %hr.col-sm-12
-              .col-sm-3 Tech Spec
-              .col-sm-9.text-right
-                = simple_format @product.tech_spec
-                &nbsp;
-              %hr.col-sm-12
-              .col-sm-3 Documents Required
-              .col-sm-9.text-right
-                = @product.documents
-                &nbsp;
-              %p{style: "margin-bottom: 0"} &nbsp;
-            #tab_default_2.tab-pane
-              %p= @product.user.name
-            #tab_default_3.tab-pane
-              %p= simple_format @product.terms_and_conditions
-.container
-  .row
-    .col-md-12.rev-mar
-      %h4.rev-head= @product.reviews_count
-      - if current_user && current_user.can_review?(@product)
-        .well
-          .my-review= render partial: "my_review", locals: {product: @product}
-          
-          - if current_user.rated_value(@product) > 0
-            %h4 Your rating
-            %i.star-mar.rate_stars
-              = render partial: "rated", locals: {rate: current_user.rated_value(@product)}
-          - else
-            %h4 Rate here
-            %i.star-mar.rate_stars
-              = render partial: "rating", locals: {rate: 0}          
-          
-      #reviews
-        - @product.reviews.each do |review|
-          = render partial: "review", locals: {review: review}
-
+  .col-xs-12.col-md-8.mtop20.no-padding-left
+    - if current_user && current_user.can_review?(@product)
+      .well
+        .my-review= render partial: "my_review", locals: {product: @product}
+        - if current_user.rated_value(@product) > 0
+          %h4 Your rating
+          %i.star-mar.rate_stars
+            = render partial: "rated", locals: {rate: current_user.rated_value(@product)}
+        - else
+          %h4 Rate here
+          %i.star-mar.rate_stars
+            = render partial: "rating", locals: {rate: 0}
 .row
   = hidden_field_tag :map_location, @product.location_address, class: "map-location"
   .map-mar.hidden-xs
-    #gmap{style: "min-height: 300px;", data: {draggable: false}}
+    #gmap.hidden{style: "min-height: 300px;", data: {drag: false}}
+
+= content_for :extra_js do
+  :javascript
+    $(function(){
+      getPrice();
+      $("input[name=operator]").click(function(){
+         getPrice();
+       });
+     function getPrice(){
+       operator_type = $("input[name=operator]:checked").val();
+       data = {startdate: "#{session[:start_date_time]}", enddate: "#{session[:end_date_time]}", id: $("#product_id").val(), operator_type: operator_type}
+        $.get("/products/get_price", data)
+         .done(function(result){
+             $(".days").text(result.days);
+             $(".tax-amount").text(result.tax);
+             $(".total-price").text(result.total_price);
+             $(".total-amount").text(result.pay_amount);
+             $(".discount").text(result.discount);
+             $(".min-sign").text(result.sign);
+             $("#operator_type").val(operator_type);
+        });
+      }
+    });

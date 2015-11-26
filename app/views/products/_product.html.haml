@@ -27,7 +27,7 @@
 - length ||= 13
 .brdr.bgc-fff.pad-10.box-shad.btm-mrg-20.property-listing
   .media
-    = link_to user_product_path(product.user.profile, product) do
+    = link_to user_product_path(product) do
       = image_tag product.image, class: "img-responsive img-style-new", style: "height: #{height}"
     = link_to "javascript:;" do
       = image_tag product.user.avatar, class: "img-circle profile_pic"
@@ -42,6 +42,6 @@
         %li.name-tag= truncate product.title, length: length
         %li.pull-right.place= truncate product.location_address, length: length
       %div
-        %h6.month-week &nbsp:
+        %h6.month-week &nbsp;
         %i.pull-right.star-mar
           = render partial: "products/rated", locals: {rate: product.rate}

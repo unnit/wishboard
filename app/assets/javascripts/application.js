@@ -18,23 +18,29 @@
 //= require bootstrap-slider.min
 //= require bootstrap-select
 //= require jquery.remotipart
-//= require moment
+//= require sweetalert2.min
 //= require bootstrap-datetimepicker
-//= require admin/products
-//= require jquery-fileupload/basic
-// require jquery-upload/jquery.ui.widget
-// require jquery-upload/jquery.iframe-transport
-// require jquery-upload/jquery.fileupload
-//= require general
+//= require jquery.mCustomScrollbar.concat.min
+
 
 $(document).ready(function(){
+  //Help links in home page
+  var root = $('html, body');
+  $('.help-links a').click(function() {
+      root.animate({
+          scrollTop: $( $.attr(this, 'href') ).offset().top
+          }, 500);
+      return false;
+  });
+
+  //Slider in product page
   var slider = $('.bxslider').bxSlider({
-    pagerCustom: '#bx-pager', 
+    pagerCustom: '#bx-pager',
     keyboardEnabled: true
   });
 
   $(document).keydown(function(e){
-    if (e.keyCode == 39){ // Right arrow 
+    if (e.keyCode == 39){ // Right arrow
       slider.goToNextSlide();
       return false;
     }
@@ -44,42 +50,11 @@ $(document).ready(function(){
     }
   });
 
-  $(".product-tab").click(function(){
-    $("#tab").val($(this).data('tab'));
-    $(".search-form").submit();
-  });
 
-  first_avail_date = new Date();
-  $('.datepicker').each(function(){
-    min_h = parseInt($(this).data("min-h"));
-    min_m = parseInt($(this).data("min-m"));
-    if(min_m==30){
-      min_m = 29;
-    }else{
-      min_m = 59;
-      min_h = min_h-1;
-    }
-    mo = moment().hour(min_h).minutes(min_m);
-
-    var first_avail = $(this).data('first-avail');
-    if(first_avail.length){
-      first_avail_date = new Date(first_avail);
-    }
-
-    $(this).datetimepicker({
-      format: "YYYY-MM-DD HH:mm",
-      stepping: 30,
-      ignoreReadonly: true,
-      sideBySide: true,
-      disabledTimeIntervals: [[moment().hour(0).minutes(0), mo]],
-      minDate: first_avail
-    });
-  });
-  
   //Map
   if($("#gmap").length){
     values = [];
-    zoom = 10;
+    zoom = 6;
     bounds = new google.maps.LatLngBounds();
     //search page map
     $(".marker").map(function(){
@@ -96,17 +71,15 @@ $(document).ready(function(){
         latLng = new google.maps.LatLng(lat, lng)
         bounds.extend(latLng);
       }
-      
+
     });
-    
     if(values.length < 1){
       values = [{address:  "Begaluru"}];
     }
- 
     $("#gmap").gmap3({
       map:{
         options:{
-          zoom: 10
+          zoom: 6
         }
       },
       marker:{
@@ -125,7 +98,7 @@ $(document).ready(function(){
               } else {
                 $(this).gmap3({
                   infowindow:{
-                    anchor:marker, 
+                    anchor:marker,
                     options:{content: context.data}
                   }
                 });
@@ -139,54 +112,6 @@ $(document).ready(function(){
           map.setCenter(bounds.getCenter());
         }
       }
-    });
-  
-    //post product map
-    $(".map-location").focusout(function() {
-      address = $(this).val();
-      $lat = $(this).closest('.closest').find(".lat");
-      $lng = $(this).closest('.closest').find(".lng");
-      $("#gmap").gmap3({
-        clear: {
-          name:["marker"],
-          last: true
-        },
-        getlatlng:{
-          address: address,
-          callback: function(results){
-            if ( !results ) return;
-            $(this).gmap3({
-              action: "addMaker",
-              marker: {
-                address: address,
-                options:{
-                  draggable:true
-                },
-                events:{
-                  dragend: function(marker){
-                    $(this).gmap3({
-                      getaddress:{
-                        latLng:marker.getPosition(),
-                        callback:function(results){
-                          var map = $(this).gmap3("get"),
-                            infowindow = $(this).gmap3({get:"infowindow"}),
-                            content = results && results[1] ? results && results[1].formatted_address : "no address";
-                          $(".map-location").val(content);
-                        }
-                      }
-                    });
-                  }
-                }
-              }
-            });
-            $(this).gmap3('get').panTo(results[0].geometry.location);
-            lat = results[0].geometry.location.lat();
-            lng = results[0].geometry.location.lng();
-            $lat.val(lat);
-            $lng.val(lng);
-          }
-        }
-      });
     });
   }//END MAP
 
@@ -212,23 +137,28 @@ $(document).ready(function(){
 
 
   //Searching
+  $(".search-form").submit(function(){
+    $(this).find("#start_date_time").val($('#start_date_time_header').val());
+    $(this).find("#end_date_time").val($('#end_date_time_header').val());
+  });
+
   if($("#adv-search").length){
     $.get("/products/sub_categories", {category: $("#category").val(), selected: $("#filter-sub-cat").data("selected")});
   }
 
   $("#category").change(function(){
-    $.get("/products/sub_categories", {category: $(this).val(), selected: $("#filter-sub-cat").data("selected")});
+    $.get("/products/sub_categories", {category: $(this).val(), selected: ""});
   });
 
   if($('.slider').length){
     $('.slider').slider({});
   }
-
+// Value for Price Range
   $('.slider').on("slideStop", function(slideEvt) {
     $($(this).data('target')).val(slideEvt.value);
     //$(".search-form").submit();
   });
-
+//Value for product cond and owner type
   $(".filter").change(function(){
     e = $($(this).data("target"));
     e.val($(this).val());
@@ -236,33 +166,26 @@ $(document).ready(function(){
 
   $("#search_term").on("keyup", function(e){
     if(e.keyCode==13){
-      $("#term").val($('#search_term').val());
+      $("#start_date_time").val($('#start_date_time_header').val());
+      $("#end_date_time").val($('#end_date_time_header').val());
       $(".search-form").submit();
     }
   });
 
   $("button#search, a#filter").click(function(){
-    $("#term").val($('#search_term').val());
+    $("#start_date_time").val($('#start_date_time_header').val());
+    $("#end_date_time").val($('#end_date_time_header').val());
     $(".search-form").submit();
   });
 
-  $(".search-form").submit(function(){
-    $(this).find("#term").val($('#search_term').val());
+  $(".product-tab").click(function(){
+    $("#tab").val($(this).data('tab'));
+    $(".search-form").submit();
   });
   //End Searching
 
-  //Calculate price
-  if($(".price-trigger").length){
-    getPrice();
-  }
-  $(".price-trigger").on("dp.hide", function (e) {
-    getPrice();
-  });
 
-  $(".operator_type").click(function(){
-    getPrice();
-  });
-
+  // Update available in user profile page
   $(".available-switch").click(function(){
     available = $(this).is(":checked");
     status = available ? "Available" : "Unavailable";
@@ -277,44 +200,71 @@ $(document).ready(function(){
       }
     });
   });
-  //end price
 
-  //general
-  $(".agreement-require").on('submit', function(e){
-    $(".agreement-error").hide();
-    if(!$(this).find("#agreement").is(":checked")){
-      $(".agreement-error").show();
-      e.preventDefault();
-      return false;
-    }else{
-      return true;
+  //MASTER SEARCH DATE PICKER
+  $(".from_date_time").datetimepicker({
+    format: 'dd-mm-yyyy hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    startDate: new Date(),
+    minuteStep: 30,
+    pickerPosition: "bottom-right"
+  });
+  $(".end_date_time").datetimepicker({
+    format: 'dd-mm-yyyy hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    startDate: new Date(),
+    minuteStep: 30,
+    pickerPosition: "bottom-right"
+  });
+
+  //Datepicker in Product page
+  first_avail_date = new Date();
+  $('.datepicker').each(function(){
+    var first_avail = $(this).data('first-avail');
+    if(first_avail.length){
+      first_avail_date = new Date(first_avail);
     }
+    $(this).datetimepicker({
+      format: "YYYY-MM-DD",
+      stepping: 30,
+      ignoreReadonly: true,
+      sideBySide: true,
+      minDate: first_avail
+    });
+  });
+
+  $("#myTab .tab-pane").mCustomScrollbar({
+					setHeight:380,
+					theme:"inset-2-dark"
+				});
+
+  // Featured button toggle
+  $(".featured-toggle").click(function() {
+    var $closest, featured;
+    featured = $(this).is(":checked");
+    $closest = $(this).closest('.closest');
+    $closest.find('.update-error').html("");
+    $closest.find('.update-msg').html("");
+    $.post("/admin/products/" + ($(this).data('id')) + "/set_featured", {}, function(result) {
+      if (result["error"]) {
+        $closest.find('.update-msg').html("");
+        $closest.find('.update-error').html(result["error"]);
+      } else {
+        $closest.find('.update-error').html("");
+        $closest.find('.update-msg').html('saved!');
+      }
+    });
+  });
+
+  $(".check_zip").on("change", function() {
+    $.get("/home/get_state_and_city", {
+      zip: $(this).val()
+    }, function(result) {
+      $('.city').val(result.city);
+      $('.state').val(result.state);
+    }, "json");
   });
 
 });
-
-function getPrice(){
-  $(".date-error").html("");
-  var startdate = $(".startdate").val();
-  var enddate = $(".enddate").val();
-  operator_type = $("#operator_1").is(":checked") ? 1 : 0;
-  if(startdate.length && enddate.length){
-    data = {startdate: startdate, enddate: enddate, product_id: $("#product_id").val(), operator_type: operator_type}
-    $.get("/transactions/get_price", data)
-    .done(function(result){
-      if(result.error){
-        $(".date-error").html(result.error);
-        $("#rent-btn").attr("disabled", "disabled")
-      }else{
-        $(".days").text(result.days);
-        $(".tax-amount").text(result.tax);
-        $(".total-price").text(result.total_price);
-        $(".total-amount").text(result.pay_amount);
-        $(".discount").text(result.discount);
-        $(".min-sign").text(result.sign);
-        $("#operator_type").val(operator_type);
-        $("#rent-btn").removeAttr("disabled");
-      }
-    });
-  }
-}

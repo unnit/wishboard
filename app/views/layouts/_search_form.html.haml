@@ -1,32 +1,39 @@
 #adv-search.input-group.pull-left.serpa
-  = text_field_tag :search_term, params[:term], placeholder: "Search for Anything", class: "form-control"
+  .col-xs-6.no-mar-pad
+    .input-group.mbottom0.input-append.date.from_date_time
+      %span#sizing-addon2.input-group-addon.bg-white
+        %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+      = text_field_tag :start_date_time_header, params[:start_date_time], placeholder: "Pickup Date & Time", class: "form-control pickup_date bg-white pon", style: "border-radius:0;font-size: 12px;", readonly: true
+  .col-xs-6.no-mar-pad
+    .input-group.mbottom0.input-append.date.end_date_time
+      %span#sizing-addon2.input-group-addon.bg-white{:style => "border-radius:0;"}
+        %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+      = text_field_tag :end_date_time_header, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control dropoff_time bg-white pon", style: "border-radius:0;font-size: 12px;", readonly: true
   .input-group-btn
     .btn-group{role: "group"}
       .dropdown.dropdown-lg
         %button.btn.btn-default.dropdown-toggle{type: "button", "area-expandable" => false, data: {toggle: "dropdown"}}
           %span.caret
         .dropdown-menu.dropdown-menu-right.dpw{role: "menu"}
-          ~ form_tag search_products_path, class: "form-horizontal search-form", role: "form", method: "post" do |f|
-            = hidden_field_tag :term
+          ~ form_tag search_products_path, class: "form-horizontal search-form", role: "form", method: "get" do |f|
+            = hidden_field_tag :start_date_time
+            = hidden_field_tag :end_date_time
             = hidden_field_tag :price, params[:price]
-            - if params[:listing_type] == 'Rent'
-              = hidden_field_tag :weekly_rent, params[:weekly_rent]
-              = hidden_field_tag :monthly_rent, params[:monthly_rent]
-            = hidden_field_tag :owner_type
-            = hidden_field_tag :product_condition
-            = hidden_field_tag :tab
+            = hidden_field_tag :owner_type, params[:owner_type]
+            = hidden_field_tag :product_condition, params[:product_condition]
+            = hidden_field_tag :tab, params[:tab]
             .form-group
               %label{for: "category"} Category
-              = select_tag :category, options_from_collection_for_select(Category.root, :slug, :name, params[:category]), prompt: "Category", class: "form-control"
-            .form-group
-              %label{for: "listing_type"} Type
-              = select_tag :listing_type, options_for_select(['Free', 'Rent', 'Sell', 'Request'], params[:listing_type]), prompt: "listing Type",class: "form-control"
+              = select_tag :category, options_from_collection_for_select(Product.distinct_parent_category, :name, :name, params[:category]), prompt: "Category", class: "form-control"
             .form-group
               %label{for: "sub_category"} Subcategory
-              %span#filter-sub-cat{data: {selected: params[:sub_category_id]}}= select_tag :sub_category_id, options_from_collection_for_select(Category.root.first.subs, :slug, :name), prompt: "Subcategory", class: "form-control"
-            .form-group
-              %label{for: "location"} Location
-              = text_field_tag :location, params[:location], class: "form-control"
+              %span#filter-sub-cat{data: {selected: params[:sub_category_id]}}
+            .form-group.hidden
+              /%label{for: "listing_type"} Type
+              =# select_tag :listing_type, options_for_select(Product::LISTING_TYPE, params[:listing_type]), prompt: "listing Type",class: "form-control"
+            .form-group.hidden
+              / %label{for: "location"} Location
+              =# text_field_tag :location, params[:location], class: "form-control"
             %button.btn.btn-primary{type: "submit", style: "background-color: #e84242;border:none; border-radius: 0;"}
               %span.glyphicon.glyphicon-search{"area-hidden" => "true"}
       %button#search.btn.btn-primary{type: "button", style: "background-color: #e84242;border:none; border-radius: 0;"}

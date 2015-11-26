@@ -17,6 +17,10 @@
  *= require jquery.fileupload
  *= require jquery.fileupload-ui
  *= require_self
+ *= require sweetalert2
+ *= require bootstrap-select
+ *= require bootstrap-datetimepicker
+ *= require jquery.mCustomScrollbar
  */
 
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
@@ -24,7 +28,7 @@
 @import "font-awesome-sass/assets/stylesheets/font-awesome-sprockets";
 @import "font-awesome-sass/assets/stylesheets/font-awesome";
 
-@import 'bootstrap-datetimepicker';
+//@import 'bootstrap-datetimepicker';
 
 @font-face {
   font-family: 'museo_sans_rounded100';
@@ -40,7 +44,8 @@
 }
 
 body{
-  font-family: 'museo_sans_rounded100';
+  /*font-family: 'museo_sans_rounded100';*/
+  font-family: 'Open Sans', sans-serif;
 }
 
 #gmap{
@@ -111,14 +116,18 @@ body{
 .mtop50{
   margin-top: 50px;
 }
-
+.mtop-v-5
+{
+  margin: 5px 0;
+}
+.no-padding-left{padding-left: 0px !important;}
+.ptop10{padding-top: 10px;};
 .pbottom50{
   padding-bottom: 50px;
 }
 .pleft30{
   padding-left: 30px !important;
 }
-
 .ptop20{
   padding-top: 20px;
 }
@@ -187,7 +196,7 @@ small{
 
 .pagination li.hover a {
     background-color: green;
-} 
+}
 
 .pagination li.active a {
   background: #e84242;
@@ -244,3 +253,9 @@ small{
     background: green;
   }
 }
+
+
+
+/***Extra CSS ***/
+.pleft-10{padding-left: 10px;}
+.pright-10{padding-right: 10px;}

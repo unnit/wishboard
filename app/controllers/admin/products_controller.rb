@@ -13,6 +13,6 @@ class Admin::ProductsController < AdminController
     @product = Product.friendly.find params[:id]
     @product.toggle!
     @product.reload
-    respond_to :js 
+    respond_to :js
   end
 end

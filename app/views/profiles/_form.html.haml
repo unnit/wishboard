@@ -44,12 +44,12 @@
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Open Time
             .col-sm-10
-              = f.select :open_time, options_for_select(Profile.time_options, @profile.open_time)
+              = f.select :open_time, options_for_select(Profile.create_open_close_time, @profile.open_time), {}, class: "selectpicker"
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Close Time
             .col-sm-10
-              = f.select :close_time, options_for_select(Profile.time_options, @profile.close_time)
-          
+              = f.select :close_time, options_for_select(Profile.create_open_close_time, @profile.close_time), {}, class: "selectpicker"
+
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Image
             .col-sm-10

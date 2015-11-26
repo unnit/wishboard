@@ -1,6 +1,5 @@
 = content_for :header_extra do
-  - if current_user
-    = render "layouts/search_form"
+  = render "layouts/search_form"
   = render partial: "layouts/category_filter"
 
 .intro-header
@@ -14,40 +13,49 @@
             .col-md-10.col-md-offset-2
               .form-section
                 .row
-                  = form_tag search_products_path, method: "post" do |f|
-                    .col-md-6.col-md-offset-1
-                      .form-group
-                        %label.sr-only{for: "location"}
-                        = text_field_tag :term, "", placeholder: "Product", class: "form-control", style: "border:none; border-radius:0; height:50px;"
+                  = form_tag search_products_path, method: "get" do |f|
+                    .col-md-3
+                      .input-group.mbottom0.input-append.date.from_date_time
+                        %span#sizing-addon2.input-group-addon.bg-white
+                          %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+                        = text_field_tag :start_date_time, params[:start_date_time], placeholder: "Pickup Date & Time", class: "form-control pickup_date bg-white pon", style: "border-radius:0", readonly: true
+                    .col-md-3.land-src-mar
+                      .input-group.mbottom0.input-append.date.end_date_time
+                        %span#sizing-addon2.input-group-addon.bg-white{:style => "border-radius:0;"}
+                          %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+                        = text_field_tag :end_date_time, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control dropoff_time bg-white pon", style: "border-radius:0", readonly: true
+                    .col-md-3.land-src-mar
+                      .form-group.mbottom0
+                        /= text_field_tag :term, "", placeholder: "Search an Item", class: "form-control", style: "border-radius:0"
+                        = select_tag :category, options_from_collection_for_select(Product.select(:parent_category).distinct, :parent_category, :parent_category, params[:category]), prompt: "Category", class: "form-control selectpicker"
                     .col-md-2.land-src-mar
                       %button.btn.land-src-button{type: "submit"} Search
+                .row
+                  .col-md-3.col-md-offset-2.help-links.mtop20
+                    %a{:href => "#best-deals"} Best Deals
+                    %a{:href => "#how-it-works"} How it Works
+                  .col-md-3.help-links.mtop20.land-src-mar-help-links
+                    %a{:href => "#why-us"} Why us
+                    %a{:href => "#list-product"} List Product
 
-.head-mar
-  .col-md-5
-    %hr.hr-land
-  .col-md-2
-    %h4.header-text BEST DEALS
-  .col-md-5
-    %hr.hr-land
+#best-deals.ht-home-header
 
 .container-fluid.mob-fluid-con
+  .col-md-4.col-md-offset-4.text-center
+    %span.header-text BEST DEALS
   .container.container-pad.head-mar.mob-con
     .row
       - Product.featured.best_deal.each_slice(4) do |slide|
         .col-md-12.col-sm-12
           - slide.each do |product|
             .col-md-3.col-sm-4
-              = render partial: "products/product", locals: {product: product} 
+              = render partial: "products/product", locals: {product: product}
 
-.head-mar
-  .col-md-4
-    %hr.hr-land
-  .col-md-4
-    %h4.header-text HOW IT WORKS
-  .col-md-4
-    %hr.hr-land
+#how-it-works.ht-home-header
 
-.container
+.container.pbottom50
+  .col-md-4.col-md-offset-4.text-center
+    %span.header-text.pleft-10.pright-10 HOW IT WORKS
   .row.hw-mar
     #myCarousel.carousel.slide{data: {ride: "carousel"}}
       %ol.carousel-indicators.slide-bot
@@ -74,7 +82,7 @@
               %h1.work-num 2
               %hr.intro-divider
               %h6.work-h
-              %p.work-p The renter books the product and pays online. The car owner accepts the request and the renter receives further instructions. 
+              %p.work-p The renter books the product and pays online. The car owner accepts the request and the renter receives further instructions.
 
         .item
           .col-md-12
@@ -98,21 +106,18 @@
               %p.work-p Renter returns the product safely. Cocociti initiates the refund process to renters’ account and credits rent to owners’ account.
 
 
-.head-mar
-  .col-md-5
-    %hr.hr-land
-  .col-md-2
-    %h4.header-text WHY US
-  .col-md-5
-    %hr.hr-land
+#why-us.ht-home-header
+
 .container
+  .col-md-4.col-md-offset-4.text-center
+    %span.header-text WHY US
   .row.yu-mar
     .col-md-12
       .col-md-6-offset-1
         .col-md-2
           = image_tag "coco-yu/24h.png", class: "img-responsive pad pull-right"
         .col-md-4
-          %p.y-u.pad 
+          %p.y-u.pad
             100% verified profiles, photos & products.
             %br
             Every seller on Cocociti has been personally selected for quality products & customer service.
@@ -124,7 +129,7 @@
           %p.y-u.pad
             Simple, safe and fast payments & refunds
             %br
-            All financial transactions are facilitated through our secure system with payment protection enabled. 
+            All financial transactions are facilitated through our secure system with payment protection enabled.
 
     .col-md-12
       .col-md-6-offset-1
@@ -145,14 +150,11 @@
             %br
             When something goes wrong, just let us know and we’ll make make it right. It’s as simple as that.
 
-.head-mar
-  .col-md-4
-    %hr.hr-land
-  .col-md-4
-    %h4.header-text LIST PRODUCT
-  .col-md-4
-    %hr.hr-land
+#list-product.ht-home-header
+
 .container
+  .col-md-4.col-md-offset-4.text-center
+    %span.header-text.pleft-10.pright-10 LIST PRODUCT
   .row.lp-mar
     .col-md-12
       %p.list-p-p Number of sixes conceded by Mitchell Starc in Pepsi IPL 2015. Eoin Morgan and Shreyas Iyer are the two batsmen to hit him for a six in this edition. Number of rain-affected games Royal Challengers Bangalore have been part of this season. Number of run-outs made by Royal Challengers Bangalore in Pepsi IPL 2015 - joint most by any side.
@@ -163,7 +165,7 @@
 .tag-bg.tag-container
   .container.hidden-xs
     .row.tag-mar
-      
+
       - Category.root.each_slice(4) do |slice|
         .col-md-12
           - slice.each do |cat|
@@ -175,7 +177,7 @@
                 - cat.subs.each do |sub|
                   %li.tag-ul-li=link_to sub.name, products_path(sub_category_id: sub.id)
 
-    
+
 
 
 / %h1{"ng-if" => "name"}

@@ -21,3 +21,7 @@
 
 en:
   hello: "Hello world"
+en:
+  errors:
+    messages:
+      extension_white_list_error: "- Please upload %{allowed_types} files"

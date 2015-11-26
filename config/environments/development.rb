@@ -22,14 +22,19 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
+  config.force_ssl = true
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
 
+  # Use the lowest log level to ensure availability of diagnostic information
+  # when problems arise.
+  config.log_level = :debug
+
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
-  config.assets.digest = true
+  config.assets.digest = false
 
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
@@ -46,9 +51,9 @@ Rails.application.configure do
     :authentication => :plain,
     :user_name      =>"app37675653@heroku.com",
     :password       => "r3pzc9eu1065",
-    :domain         => 'localhost.st'
+    :domain         => 'localhost'
   }
 
-  config.action_mailer.default_url_options = { :host => 'http://localhost.st:3000' }
+  config.action_mailer.default_url_options = { :host => 'https://localhost:443' }
 
 end

@@ -1,4 +1,5 @@
 #####Log Files######
 *.log
-####Database connection file####
+####tmp file####
+tmp/
 

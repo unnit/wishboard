@@ -1,26 +1,29 @@
-- klass = @product.new_record? ? " agreement-require" : ""
-~ form_for @product, html: {class: "form-horizontal#{klass}"} do |f|
-  
-  .col-md-12
-    .errors= render partial: "/layouts/errors", locals: {errors: @product.errors.full_messages}
+~ form_for @product, html: {class: "form-horizontal", multipart: true} do |f|
+
+  .col-md-12.head-mar
     .panel.panel-primary.collbod
       .collbocol.panel-heading{style: "background-color: #e84242"}
-        %h3.panel-title.post-cat Select Category
-        %span.pull-right.clickable
-          %i.glyphicon.glyphicon-chevron-up
+        - if @edit_page
+          %h3.panel-title.post-cat Edit your Item
+        - else
+          %h3.panel-title.post-cat List your Item
       .panel-body
         .row
           .col-md-12
             %fieldset
               .form-group
+                %label.col-sm-2.control-label.pro-detail Item Name
+                .col-sm-4
+                  = f.text_field :title, class: "form-control", required: true, maxlength: 80
+              .form-group
                 %label.col-sm-2.control-label.pro-detail Category
                 .col-sm-10
                   - Category.feature.each do |cat|
                     %span.button-checkbox
-                      %button.btn.btn-default.cat-text.cat-select{type: "button", class: "#{'btn-primary' if cat.id==@selected_cat}",data: {color: "primary", id: cat.id}}
+                      %button.btn.btn-default.cat-text.cat-select{type: "button", class: "#{'btn-primary' if cat.name==@selected_cat}",data: {color: "primary", id: cat.name}}
                         = image_tag cat.image
                         = cat.name
-                      = check_box_tag :category, "", false,class: "hidden"
+                      = check_box_tag :category, "", false, class: "hidden"
                   %span.button-checkbox
                     .btn-group
                       %button.btn.btn-default.dropdown-toggle.other-btn{type: "button", data: {color: "primary", toggle: "dropdown"}}
@@ -29,164 +32,90 @@
                         %span.caret
                       %ul.dropdown-menu.cat-text{role: "menu"}
                         - Category.root.other.each do |cat|
-                          %li= link_to cat.name, "javascript:;", class: "cat-select cat-other", data: {id: cat.id}
+                          %li= link_to cat.name, "javascript:;", class: "cat-select cat-other", data: {id: cat.name}
               .form-group
                 %label.col-sm-2.control-label.pro-detail{for: "textinput"} Sub-category
                 = f.hidden_field :category_id
                 #sub-categories.col-sm-10
-
-              .form-group
-                %label.col-sm-2.control-label.pro-detail Listing Type
-                = f.hidden_field :listing_type
-                .col-sm-10
-                  %span.button-checkbox
-                    %button.btn-default.btn.cat-text.type-select{type: "button", class: "#{'btn-primary' if @product.listing_type=='Free'}", data: {color: "primary", type: "Free"}}
-                      = image_tag "icons/Free.png"
-                      Free
-                    = check_box_tag :listing_type, "Free", false, class: "hidden"
-                  %span.button-checkbox
-                    %button.btn-default.btn.cat-text.type-select{type: "button", class: "#{'btn-primary' if @product.listing_type=='Rent'}", data: {color: "primary", type: "Rent"}}
-                      = image_tag "icons/Rent.png"
-                      Rent
-                    = check_box_tag :listing_type, "Rent", false, class: "hidden"
-                  %span.button-checkbox
-                    %button.btn-default.btn.cat-text.type-select{type: "button", class: "#{'btn-primary' if @product.listing_type=='Sale'}", data: {color: "primary", type: "Sale"}}
-                      = image_tag "icons/Sale.png"
-                      Sale
-                    = check_box_tag :listing_type, "Sale", false, class: "hidden"
-                  %span.button-checkbox
-                    %button.btn-default.btn.cat-text.type-select{type: "button", class: "#{'btn-primary' if @product.listing_type=='Free'}", data: {color: "primary", type: "Requesting"}}
-                      = image_tag "icons/Requesting.png"
-                      Requesting
-                    = check_box_tag :listing_type, "Requesting", false, class: "hidden"
-  .col-md-12
-    .panel.panel-primary.collbod
-      .collbocol.panel-heading{style: "background-color: #e84242"}
-        %h3.panel-title.post-cat Select Category
-        %span.pull-right.clickable
-          %i.glyphicon.glyphicon-chevron-up
-      .panel-body
-        .row
-          .col-md-12
-            %fieldset
-              .form-group
-                %label.col-sm-2.control-label Listing Title
-                .col-sm-4
-                  = f.text_field :title, class: "form-control"
+                
               .form-group.none-free
-                %label.col-sm-2.control-label Price
-                .col-sm-4
-                  = f.text_field :price, placeholder: "Perday", class: "form-control"
-
-              .form-group.none-free
-                %label.col-sm-2.control-label Tax
-                .col-sm-2.no-mar-pad
-                  .col-sm-8= f.text_field :tax, placeholder: "Percent", class: "form-control"
-                  %small.col-sm-4.no-mar-pad{style: "margin-top: 10px"} %
+                %label.col-sm-2.control-label.pro-detail Price
+                .col-sm-2
+                  = f.text_field :price, placeholder: "Perday", class: "form-control", maxlength: 10
+                %label.col-sm-2.control-label.pro-detail Security Deposit
+                .col-sm-2
+                  - @product.security_deposit ||=0
+                  =f.text_field :security_deposit, placeholder: "Security Deposit", class: "form-control", maxlength: 10
+                %label.col-sm-2.control-label.pro-detail Tax in %
+                .col-sm-2
+                  = f.text_field :tax, placeholder: "Percent", class: "form-control", maxlength: 10
               .form-group
-                %label.col-sm-2.control-label Ship Price
-                .col-sm-10
-                  .checkbox-group-container
-                    - Product::WEIGHTS.count.times do |i|
-                      .col-sm-4
-                        .checkbox-container
-                          = f.radio_button :ship_price, Product::SHIP_PRICES[i], class: "custom_field_checkbox", id: "ship_price-#{i}"
-                          %label.light{for: "ship_price-#{i}"}= "#{Product::SHIP_PRICES[i]} ( #{Product::WEIGHTS[i]} )"
-      
-
+                /%label.col-sm-2.control-label.pro-detail Ship Price
+                .col-sm-2
+                  =# f.select :ship_price, Product::SHIP_PRICES_WITH_WEIGHTS, {}, class: "selectpicker"
+              .form-group
+                %label.col-sm-2.control-label.pro-detail Product Condition
+                .col-sm-2
+                  = f.select :product_condition, Product::PRODUCT_CONDITION, { include_blank: "Select" }, class: "selectpicker"
               .form-group.none-free
-                %label.col-sm-2.control-label Discounts 
+                %label.col-sm-2.control-label.pro-detail Booking Type
+                .col-sm-2
+                  = f.select :owner_type, options_for_select(Product::OWNER_TYPE, @product.owner_type), { include_blank: "Select" }, class: "selectpicker"
+              .form-group.none-free
+                %label.col-sm-2.control-label.pro-detail Operator Type
+                .col-sm-2
+                  = f.select :operator_type, options_for_select(Product::OPERATOR_TYPE, @product.operator_type), { include_blank: "Select" }, class: "selectpicker"
+                %label.col-sm-2.control-label.oprice.pro-detail{class: "#{'hide' if f.object.operator_type==Product::OPERATOR_TYPE[0][1]}"} Operator Price
+                .col-sm-2.oprice{class: "#{'hide' if f.object.operator_type==Product::OPERATOR_TYPE[0][1] }"}
+                  = f.text_field :operator_price, class: "form-control", maxlength: 10
+              .form-group
+                %label.col-sm-2.control-label.pro-detail Year of Manufacture
+                .col-sm-2
+                  =f.select :year_of_manufacture, options_for_select(Product::YEAR_OF_MANUFACTURE, @product.year_of_manufacture), {include_blank: "Select"}, class: "selectpicker"
+              .form-group
+                %label.col-sm-2.control-label.pro-detail Available
+                .col-sm-2
+                  .checkbox-container.mtop5
+                    = f.select :available, options_for_select(Product::AVAILABLE, @product.available), {}, class: "selectpicker"
+              .form-group.none-free
+                %label.col-sm-2.control-label.pro-detail Give Discounts
                 .col-sm-2
                   %small.col-sm-12 > 3 days
-                  %span.col-sm-8= f.text_field :discount_3, class: "form-control"
+                  %span.col-sm-8= f.text_field :discount_3, class: "form-control", maxlength: 10
                   %small.col-sm-4.no-mar-pad{style: "margin-top: 10px"} %
                 .col-sm-2
                   %small.col-sm-12 > 10 days
-                  %span.col-sm-8= f.text_field :discount_10, class: "form-control"
+                  %span.col-sm-8= f.text_field :discount_10, class: "form-control", maxlength: 10
                   %small.col-sm-4.no-mar-pad{style: "margin-top: 10px"} %
                 .col-sm-2
                   %small.col-sm-12 > 20 days
-                  %span.col-sm-8= f.text_field :discount_20, class: "form-control"
+                  %span.col-sm-8= f.text_field :discount_20, class: "form-control", maxlength: 10
                   %small.col-sm-4.no-mar-pad{style: "margin-top: 10px"} %
                 .col-sm-2
                   %small.col-sm-12 > 30 days
-                  %span.col-sm-8= f.text_field :discount_30, class: "form-control"
+                  %span.col-sm-8= f.text_field :discount_30, class: "form-control", maxlength: 10
                   %small.col-sm-4.no-mar-pad{style: "margin-top: 10px"} %
                 .col-sm-2
                   %small.col-sm-12 > 90 days
-                  %span.col-sm-8= f.text_field :discount_90, class: "form-control"
+                  %span.col-sm-8= f.text_field :discount_90, class: "form-control", maxlength: 10
                   %small.col-sm-4.no-mar-pad{style: "margin-top: 10px"} %
-
               .form-group
-                %label.col-sm-2.control-label Available
-                .col-sm-4
-                  .checkbox-container
-                    = f.check_box :available, class: "custom_field_checkbox"
-                    %lable.light{for: "product_available"} Available
-              .form-group
-                %label.col-sm-2.control-label Detail Description
+                %label.col-sm-2.control-label.pro-detail Detail Description
                 .col-sm-10
-                  = f.text_area :description, class: "form-control textarea", rows: "3", placeholder: "Description"
-              
-              .form-group
-                %label.col-sm-2.control-label Owner Type
-                .col-sm-10
-                  = f.select :owner_type, options_for_select(["Individual", "Dealer/Agency"], @product.owner_type), {}, class: "selectpicker"
-
-
-              .form-group
-                %label.col-sm-2.control-label Operator Type
-                .col-sm-3
-                  = f.select :operator_type, options_for_select([["Dry Rental", 0], ["Wet Hire", 1], ["Both", 2]], @product.operator_type.to_s), {}, class: "selectpicker"
-                %label.col-sm-2.no-mar-pad.control-label.oprice{class: "#{'hide' if f.object.operator_type==0}"} Operator Price
-                %span.col-sm-5.oprice{class: "#{'hide' if f.object.operator_type==0 }"}
-                  .col-sm-3= f.text_field :operator_price, class: "form-control"
-
-              .form-group
-                %label.col-sm-2.control-label Product Condition
-                .col-sm-10
-                  .checkbox-group-container
-                    .col-sm-5
-                      .checkbox-container
-                        = f.radio_button :product_condition, "New", class: "custom_field_checkbox", id: "cond-1"
-                        %label.light{for: "cond-1"} New
-                      .checkbox-container
-                        = f.radio_button :product_condition, "Excellent", class: "custom_field_checkbox", id: "cond-2"
-                        %label.light{for: "cond-2"} Excellent
-                      .checkbox-container
-                        = f.radio_button :product_condition, "Good", class: "custom_field_checkbox", id: "cond-3"
-                        %label.light{for: "cond-3"} Good
-                    .col-sm-5
-                      .checkbox-container
-                        = f.radio_button :product_condition, "Average", class: "custom_field_checkbox", id: "cond-4"
-                        %label.light{for: "cond-4"} Average
-                      .checkbox-container
-                        = f.radio_button :product_condition, "Okeyish", class: "custom_field_checkbox", id: "cond-5"
-                        %label.light{for: "cond-5"} Okeyish
-              .form-group
-                %label.col-sm-2.control-label Tech Spec/Instructions (If any)
-                .col-sm-10
-                  =f.text_area :tech_spec, placeholder: "Tech Specs/Instructions(If any)", class: "form-control textarea", rows: "3"
-              
+                  = f.text_area :description, class: "form-control textarea", rows: "4", placeholder: "KISS (Keep it simple and short)", maxlength: 1000, required: true
               .form-group.none-free
-                %label.col-sm-2.control-label Security Deposit
+                %label.col-sm-2.control-label.pro-detail Tech Spec/Instructions (If any)
                 .col-sm-10
-                  - @product.security_deposit ||=0
-                  =f.text_field :security_deposit, placeholder: "Security Deposit", class: "form-control"
+                  =f.text_area :tech_spec, placeholder: "Tech Specs/Instructions(If any)", class: "form-control textarea", rows: "8", maxlength: 65000
               .form-group
-                %label.col-sm-2.control-label Terms & Conditions
+                %label.col-sm-2.control-label.pro-detail Terms & Conditions
                 .col-sm-10
-                  =f.text_area :terms_and_conditions, placeholder: "Terms & Conditions", class: "form-control textarea", rows: "3"
+                  =f.text_area :terms_and_conditions, placeholder: "Terms & Conditions", class: "form-control textarea", rows: "8", maxlength: 65000, required: true
               .form-group
-                %label.col-sm-2.control-label Year of Manufacture
-                .col-sm-10
-                  =f.text_field :year_of_manufacture, placeholder: "Year of Manufacture", class: "form-control"
-
-              .form-group
-                %label.col-sm-2.control-label Doc Requirement
-                .col-sm-10
+                %label.col-sm-2.control-label.pro-detail Doc Requirement
+                .col-sm-4
                   .row.checkbox-group-container
-                    .col-sm-5
+                    .col-sm-12
                       - @product.doc_requirement ||= []
                       .checkbox-container
                         = check_box_tag "product[doc_requirement][]", "Aadhar/ Govt ID/ Passport", @product.doc_requirement.include?("Aadhar/ Govt ID/ Passport"), class: "custom_field_checkbox", id: "req-1"
@@ -197,124 +126,135 @@
                       .checkbox-container
                         = check_box_tag "product[doc_requirement][]", "Local Reference", @product.doc_requirement.include?("Local Reference"), class: "custom_field_checkbox", id: "req-3"
                         %lable.light{for: "req-3"} Local Reference
-                    .col-sm-5
                       .checkbox-container
                         = check_box_tag "product[doc_requirement][]", "Driving License", @product.doc_requirement.include?("Driving License"), class: "custom_field_checkbox", id: "req-4"
                         %lable.light{for: "req-4"} Driving License
                       .checkbox-container
                         = check_box_tag "product[doc_requirement][]", "Company ID", @product.doc_requirement.include?("Company ID"), class: "custom_field_checkbox", id: "req-5"
                         %lable.light{for: "req-5"} Company ID
-
-              .form-group.none-free
-                %label.col-sm-2.control-label Replacement Cost
-                .col-sm-10
-                  = f.text_field :replacement_cost, placeholder: "Replacement Cost", class: "form-control"
-              .form-group
-                %label.col-sm-2.control-label Location
-                .col-sm-10.closest
+                %label.col-sm-2.control-label.pro-detail Location
+                .col-sm-4.closest
                   = f.fields_for :location do |lf|
-                    = lf.text_field :name, placeholder: "Location", class: "form-control map-location"
-                    = lf.hidden_field :lat, class: "lat"
-                    = lf.hidden_field :lng, class: "lng"
-              .col-md-offset-2
-                #gmap.col-sm-11.mleft15.mbottom20{data: {drag: "true"}}
-                
+                    = lf.text_field :name, placeholder: "Enter a location", class: "form-control map-location controls", id: "pac-input",required: true, maxlength: 240
+
+              - if @edit_page
+                .form-group
+                  %label.col-sm-2.control-label.pro-detail Uploaded Images
+                  .col-sm-10.mbottom20
+                    - @product.image_objs.each do |image|
+                      = cl_image_tag image.filename, width: 100, height: 100, crop: :fill
+                      - unless @product.image_objs.length == 1
+                        = link_to remove_image_product_path(@product, image: image.filename), method: :post, data: {confirm: "Are you sure you want to delete the image?"} do
+                          %span.glyphicon.glyphicon-remove
               .form-group
-                %label.col-sm-2.control-label Images
-                .col-md-10
-                  = f.hidden_field :image_ids, value: @images.map(&:id), id: "image_ids"
-                  = link_to "upload images", "javascript:;", class: "btn btn-success upload-image"
-                  %br
-                  %br
-                  .col-sm-1.progress-count 0%
-                  #progress.col-sm-10.no-mar-pad{style: "display: none;"}
-                    .bar{style:"width: 0%;"}
-                  %br
-                  #preview
-                    - @images.each do |image|
-                      .col-sm-2= image_tag image.file.thumb.url
-                    
-                  / .col-sm-12
-                  /   %h4 The photo uploading should be original, clear and recent
-                  / .col-sm-4
-                  /   = image_tag @product.image_1_url, size: "128x128" if @product.image_1_url && !@product.new_record?
-                  /   .fileinput-button.upload-image-placeholder
-                  /     .fileupload-text-container
-                  /       .fileupload-centered-text
-                  /         .fileupload-text Select file
-                  /         .fileupload-small-text
-                  /     = f.file_field :image_1, style: "display: inline-block;" , class: "fileupload"
-                  /     %img.fileupload-preview-image{style: "display: none;"}
-                  /     .fileupload-preview-remove-image
-                  /       %i.icon-remove.icon-fix
-                  / .col-sm-4
-                  /   = image_tag @product.image_2_url, size: "128x128" if @product.image_2_url && !@product.new_record?
-                  /   .fileinput-button.upload-image-placeholder
-                  /     .fileupload-text-container
-                  /       .fileupload-centered-text
-                  /         .fileupload-text Select file
-                  /         .fileupload-small-text
-                  /     = f.file_field :image_2, style: "display: inline-block;" , class: "fileupload"
-                  /     %img.fileupload-preview-image{style: "display: none;"}
-                  /     .fileupload-preview-remove-image
-                  /       %i.icon-remove.icon-fix
-                  / .col-sm-4
-                  /   = image_tag @product.image_3_url, size: "128x128" if @product.image_3_url && !@product.new_record?
-                  /   .fileinput-button.upload-image-placeholder
-                  /     .fileupload-text-container
-                  /       .fileupload-centered-text
-                  /         .fileupload-text Select file
-                  /         .fileupload-small-text
-                  /     = f.file_field :image_3, style: "display: inline-block;" , class: "fileupload"
-                  /     %img.fileupload-preview-image{style: "display: none;"}
-                  /     .fileupload-preview-remove-image
-                  /       %i.icon-remove.icon-fix
-              - if @product.new_record?
-                .form-group.clearfix
-                  = label_tag :agreement, "Agreement", :class => 'col-sm-2 control-label'
-                  .col-sm-10.mtop10
-                    .col-sm-12
-                      = check_box_tag :agreement
-                      %span.mleft10 By posting on Cocociti you agree all Terms and policies of Cocociti 
-                    .col-sm-12.agreement-error.text-danger{style: "display: none; font-weight: bold;"} You must agree to post a listing. 
+                - if @edit_page
+                  %label.col-sm-2.control-label.pro-detail Add/Update Images
+                - else
+                  %label.col-sm-2.control-label.pro-detail Add Images
+                .col-sm-10
+                  %label.control-label Image 1
+                  = f.file_field :image_1
+                  = f.hidden_field :image_1_cache
+                  %br/
+                  %label.control-label Image 2
+                  = f.file_field :image_2
+                  = f.hidden_field :image_2_cache
+                  %br/
+                  %label.control-label Image 3
+                  = f.file_field :image_3
+                  = f.hidden_field :image_3_cache
+                  %br/
+                  %label.control-label Image 4
+                  = f.file_field :image_4
+                  = f.hidden_field :image_4_cache
+                  %br/
+                  %label.control-label Image 5
+                  = f.file_field :image_5
+                  = f.hidden_field :image_4_cache
 
               .form-group
-                .col-sm-offset-2.col-sm-10
-                  .pull-right
-                    = f.submit "Save Listing", class: "btn btn-info save-button"
-.clearfix
-= file_field_tag "files[]", multiple: true, class: "fileupload", data: {url: images_path}, style: "opacity: 0", id: "image-uploader"
+                .col-md-2.col-md-offset-5
+                  = f.submit "Save Listing", class: "btn btn-info save-button"
 
-= content_for :extra_js do   
-  :coffee
-    $ ->
-      $.get("/products/sub_categories", {category: "#{@selected_cat}", selected: "#{@selected_sub}"})
-      $(document).on "click", '.cat-select', ->
-        if $(@).hasClass("cat-other")
-          $(@).closest(".form-group").find(".cat-text").removeClass("btn-primary")
-          $(@).closest(".form-group").find(".other-btn").addClass("btn-primary")
-        $.get("/products/sub_categories", {category: $(@).data("id"), selected: "#{@selected_sub}"})
-      $(".cat-text").click ->
-        $(@).closest(".form-group").find(".cat-text").removeClass("btn-primary")
-        $(@).closest(".form-group").find(".other-btn").removeClass("btn-primary")
-        $(@).addClass("btn-primary")
-        if $(@).hasClass("type-select")
-          type = $(@).data('type')
-          $("#product_listing_type").val(type)
-          if type=='Free'
-            $('.none-free').hide()
-          else
-            $('.none-free').show()
-      $(document).on "click", '.cat-sub', ->
-        $("#product_category_id").val($(@).data("id"))
-        $(@).closest(".btn-group").find("span.selection").html($(@).data("name"))
+= content_for :extra_js do
+  :javascript
+    google.maps.event.addDomListener(window, 'load', function () {
+        var input= document.getElementById('pac-input');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        google.maps.event.addDomListener(input, 'keydown', function(e) {
+          if (e.keyCode == 13 && $('.pac-container:visible').length) {
+            e.preventDefault();
+          }
+        });
+    });
+    var toggleOperator;
+    $(function() {
+    if ("#{@error_messages}" != "")
+    {
+        swal({html: "<ul style='text-align:left;padding-left:32%;'><li>#{raw(@error_messages)}</li></ul>", type: "warning"});
+    }
+    $.get("/products/sub_categories", {
+      category: "#{@selected_cat}",
+      selected: "#{@selected_sub}"
+    });
+    $(document).on("click", '.cat-select', function() {
+      if ($(this).hasClass("cat-other")) {
+        $(this).closest(".form-group").find(".cat-text").removeClass("btn-primary");
+        $(this).closest(".form-group").find(".other-btn").addClass("btn-primary");
+      }
+      return $.get("/products/sub_categories", {
+        category: $(this).data("id"),
+        selected: ""
+      });
+    });
+    $(".cat-text").click(function() {
+      var type;
+      $(this).closest(".form-group").find(".cat-text").removeClass("btn-primary");
+      $(this).closest(".form-group").find(".other-btn").removeClass("btn-primary");
+      $(this).addClass("btn-primary");
+      if ($(this).hasClass("type-select")) {
+        type = $(this).data('type');
+        $("#product_listing_type").val(type);
+        if (type == "#{Product::LISTING_TYPE[0][1]}") {
+          $("#product_price,#product_security_deposit,#product_tax,#product_tech_spec").val("");
+          $("#product_operator_price").val("0");
+          $("#product_discount_3,#product_discount_10,#product_discount_20,#product_discount_30,#product_discount_90").val("");
+          return $('.none-free').hide();
+        } else {
+          $("#product_discount_3").val("10");
+          $("#product_discount_10").val("20");
+          $("#product_discount_20").val("30");
+          $("#product_discount_30").val("40");
+          $("#product_discount_90").val("50");
+          $("#product_security_deposit,#product_tax").val("0");
+          $("#product_owner_type").val("");
+          return $('.none-free').show();
+        }
+      }
+    });
+    $(document).on("click", '.cat-sub', function() {
+      $("#product_category_id").val($(this).data("id"));
+      return $(this).closest(".btn-group").find("span.selection").html($(this).data("name"));
+    });
+    toggleOperator();
+    if ("#{@product.listing_type}" == "#{Product::LISTING_TYPE[0][1]}") {
+      $("#product_price,#product_security_deposit,#product_tax,#product_tech_spec").val("");
+      $("#product_operator_price").val("0");
+      $("#product_discount_3,#product_discount_10,#product_discount_20,#product_discount_30,#product_discount_90").val("");
+      $('.none-free').hide();
+    }
+    return $("#product_operator_type").change(function() {
+      return toggleOperator();
+    });
+    });
 
-      toggleOperator()
-      $("#product_operator_type").change ->
-        toggleOperator()
-
-    toggleOperator = () =>
-      if $("#product_operator_type").val()=="0"
-        $(".oprice").addClass('hide');
-      else
-        $(".oprice").removeClass('hide');
+    toggleOperator = (function(_this) {
+    return function() {
+      if ($("#product_operator_type").val() == "0" || $("#product_operator_type").val() == "") {
+        $("#product_operator_price").val("0");
+        return $(".oprice").addClass('hide');
+      } else {
+        return $(".oprice").removeClass('hide');
+      }
+    };
+    })(this);

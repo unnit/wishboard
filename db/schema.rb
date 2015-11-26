@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151030072946) do
+ActiveRecord::Schema.define(version: 20151125115242) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -50,14 +50,6 @@ ActiveRecord::Schema.define(version: 20151030072946) do
   end
 
   add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
-
-  create_table "images", force: :cascade do |t|
-    t.integer  "owner_id",   limit: 4
-    t.string   "owner_type", limit: 255
-    t.string   "file",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
 
   create_table "locations", force: :cascade do |t|
     t.string   "name",           limit: 255
@@ -130,7 +122,7 @@ ActiveRecord::Schema.define(version: 20151030072946) do
     t.integer  "category_id",          limit: 4
     t.string   "listing_type",         limit: 255
     t.string   "title",                limit: 255
-    t.decimal  "price",                              precision: 10, scale: 1
+    t.decimal  "price",                              precision: 10
     t.text     "description",          limit: 65535
     t.string   "owner_type",           limit: 255
     t.string   "product_condition",    limit: 255
@@ -149,8 +141,8 @@ ActiveRecord::Schema.define(version: 20151030072946) do
     t.datetime "created_at",                                                                  null: false
     t.datetime "updated_at",                                                                  null: false
     t.integer  "rate",                 limit: 4,                              default: 0
+    t.decimal  "ship_price",                         precision: 10,           default: 0
     t.datetime "available_date"
-    t.decimal  "ship_price",                         precision: 10, scale: 1, default: 0.0
     t.integer  "discount_3",           limit: 4,                              default: 10
     t.integer  "discount_10",          limit: 4,                              default: 20
     t.integer  "discount_20",          limit: 4,                              default: 30
@@ -158,10 +150,13 @@ ActiveRecord::Schema.define(version: 20151030072946) do
     t.integer  "discount_90",          limit: 4,                              default: 50
     t.boolean  "available",            limit: 1,                              default: true
     t.string   "parent_category",      limit: 255
-    t.decimal  "tax",                                precision: 10,           default: 0
+    t.decimal  "tax",                                precision: 10, scale: 2, default: 0.0
     t.integer  "operator_type",        limit: 4,                              default: 0
-    t.decimal  "operator_price",                     precision: 10, scale: 1, default: 0.0
+    t.decimal  "operator_price",                     precision: 10,           default: 0
     t.boolean  "featured",             limit: 1,                              default: false
+    t.string   "image_4",              limit: 255
+    t.string   "image_5",              limit: 255
+    t.boolean  "admin_approved",       limit: 1,                              default: false
   end
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
@@ -213,14 +208,14 @@ ActiveRecord::Schema.define(version: 20151030072946) do
     t.integer  "user_id",        limit: 4
     t.integer  "product_id",     limit: 4
     t.string   "status",         limit: 255
-    t.decimal  "amount",                     precision: 10, scale: 1
+    t.decimal  "amount",                     precision: 10
     t.datetime "startdate"
     t.datetime "enddate"
-    t.datetime "created_at",                                                      null: false
-    t.datetime "updated_at",                                                      null: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
     t.string   "txnid",          limit: 255
-    t.integer  "operator_type",  limit: 4,                            default: 0
-    t.decimal  "operator_price",             precision: 10, scale: 1
+    t.integer  "operator_type",  limit: 4,                  default: 0
+    t.decimal  "operator_price",             precision: 10
   end
 
   add_index "transactions", ["product_id"], name: "index_transactions_on_product_id", using: :btree

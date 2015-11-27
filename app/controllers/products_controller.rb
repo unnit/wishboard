@@ -315,15 +315,11 @@ class ProductsController < ApplicationController
     search_end_day = params[:end_date_time].to_date.wday unless params[:end_date_time].blank?
     search_end_time = params[:end_date_time].split(" ").last unless params[:end_date_time].blank?
 
-    search_start_date_time = params[:start_date_time].to_datetime
-    search_end_date_time = params[:start_date_time].to_datetime
+    search_start_date_time = params[:start_date_time].in_time_zone("Kolkata")
+    search_end_date_time = params[:end_date_time].in_time_zone("Kolkata")
 
     i = 0
     @products.each do |product|
-      logger.info '*************************'
-      logger.info product.transactions.renting.first.startdate unless product.transactions.blank?
-      logger.info product.transactions.renting.first.enddate unless product.transactions.blank?
-      logger.info '**************************'
       transaction_start_date_time =  product.transactions.renting.first.startdate - 1.hour unless product.transactions.renting.blank?
       transaction_end_date_time =  product.transactions.renting.first.enddate + 1.hour unless product.transactions.renting.blank?
 
@@ -336,13 +332,7 @@ class ProductsController < ApplicationController
           logger.info i
         end
       else
-        if session[:end_date_time].to_datetime > (transaction_end_date_time)
-          logger.info session[:end_date_time].to_datetime
-          logger.info transaction_end_date_time
-          logger.info 'Entered Loop *******************************************'
-        end
-
-        if product.enabled_days.include?("#{search_start_day}") && product.enabled_days.include?("#{search_end_day}") && product.enabled_hours.include?("#{search_start_time}") && product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time) ) || ( (search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time))  )
+        if product.enabled_days.include?("#{search_start_day}") && product.enabled_days.include?("#{search_end_day}") && product.enabled_hours.include?("#{search_start_time}") && product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
         else
           @products = @products.reject{|p| p.id == product.id}
           i+=1

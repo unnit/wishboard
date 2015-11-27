@@ -2,4 +2,5 @@
 *.log
 ####tmp file####
 tmp/
+log/
 

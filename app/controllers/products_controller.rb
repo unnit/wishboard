@@ -100,7 +100,6 @@ class ProductsController < ApplicationController
     discount = @product.discount_by_days(days)
     tax = @product.tax_amount(days, params[:operator_type])
     sign = discount > 0 ? "-" : ""
-    logger.info '********************GET PRICE'
     render json: {days: days,tax: tax, total_price: @product.price*days, pay_amount: pay_amount, discount: discount, sign: sign}
   end
 
@@ -116,6 +115,7 @@ class ProductsController < ApplicationController
         end
       end
     end
+    @days = (session[:end_date_time].to_date - session[:start_date_time].to_date).to_i
   end
 
   def update_available
@@ -307,20 +307,48 @@ class ProductsController < ApplicationController
     end
     session[:start_date_time] = params[:start_date_time] unless params[:start_date_time].blank?
     session[:end_date_time] = params[:end_date_time] unless params[:end_date_time].blank?
+
     logger.info '*************************'
     logger.info @products.count
     search_start_day = params[:start_date_time].to_date.wday unless params[:start_date_time].blank?
     search_start_time = params[:start_date_time].split(" ").last unless params[:start_date_time].blank?
     search_end_day = params[:end_date_time].to_date.wday unless params[:end_date_time].blank?
     search_end_time = params[:end_date_time].split(" ").last unless params[:end_date_time].blank?
+
+    search_start_date_time = params[:start_date_time].to_datetime
+    search_end_date_time = params[:start_date_time].to_datetime
+
     i = 0
     @products.each do |product|
-      if product.enabled_days.include?("#{search_start_day}") && product.enabled_days.include?("#{search_end_day}") && product.enabled_hours.include?("#{search_start_time}") && product.enabled_hours.include?("#{search_end_time}")
+      logger.info '*************************'
+      logger.info product.transactions.renting.first.startdate unless product.transactions.blank?
+      logger.info product.transactions.renting.first.enddate unless product.transactions.blank?
+      logger.info '**************************'
+      transaction_start_date_time =  product.transactions.renting.first.startdate - 1.hour unless product.transactions.renting.blank?
+      transaction_end_date_time =  product.transactions.renting.first.enddate + 1.hour unless product.transactions.renting.blank?
+
+      if transaction_start_date_time.blank? && transaction_end_date_time.blank?
+        if product.enabled_days.include?("#{search_start_day}") && product.enabled_days.include?("#{search_end_day}") && product.enabled_hours.include?("#{search_start_time}") && product.enabled_hours.include?("#{search_end_time}")
+        else
+          @products = @products.reject{|p| p.id == product.id}
+          i+=1
+          logger.info '********** Removed'
+          logger.info i
+        end
       else
-        @products = @products.reject{|p| p.id == product.id}
-        i+=1
-        logger.info '********** Removed'
-        logger.info i
+        if session[:end_date_time].to_datetime > (transaction_end_date_time)
+          logger.info session[:end_date_time].to_datetime
+          logger.info transaction_end_date_time
+          logger.info 'Entered Loop *******************************************'
+        end
+
+        if product.enabled_days.include?("#{search_start_day}") && product.enabled_days.include?("#{search_end_day}") && product.enabled_hours.include?("#{search_start_time}") && product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time) ) || ( (search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time))  )
+        else
+          @products = @products.reject{|p| p.id == product.id}
+          i+=1
+          logger.info '********** Removed'
+          logger.info i
+        end
       end
     end
     @products = Kaminari.paginate_array(@products).page(params[:page]).per(10)

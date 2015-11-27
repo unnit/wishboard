@@ -278,7 +278,7 @@ class Product < ActiveRecord::Base
     dates = []
     transactions.renting.each do |tran|
       (tran.startdate.to_date..tran.enddate.to_date).to_a.each do |d|
-        dates << d.strftime("%Y-%m-%d")
+        dates << d
       end
     end
     dates
@@ -300,7 +300,7 @@ class Product < ActiveRecord::Base
   end
 
   #pricing
-  def calculate_price(days, operator_type=0)
+  def calculate_price(days, operator_type)
     return ship_price if for_free?
     amount = price_without_deposit(days, operator_type) + tax_amount(days, operator_type) + security_deposit
     amount
@@ -323,9 +323,25 @@ class Product < ActiveRecord::Base
     discount * price * days
   end
 
+  def discount_percent(days)
+    d = 0
+    if days > 90
+      d = discount_90 || 0
+    elsif days > 30
+      d = discount_30 || 0
+    elsif days > 20
+      d = discount_20 || 0
+    elsif days > 10
+      d = discount_10 || 0
+    elsif days > 3
+      d = discount_3 || 0
+    end
+    d
+  end
+
   def price_without_deposit(days, operator_type)
     amount = price*days + ship_price - discount_by_days(days)
-    amount += operator_price if operator_type.to_i == 1
+    amount += operator_price if operator_type.to_i == Product::OPERATOR_TYPE[1][1]
     amount
   end
 

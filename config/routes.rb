@@ -61,14 +61,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :transactions, only: [:create, :update] do
+  resources :transactions, only: [:new, :create, :update] do
     member do
       post :accept
       post :deny
       get :checkout
     end
     collection do
-      get :get_price
       get :thankyou
       post :callback
     end

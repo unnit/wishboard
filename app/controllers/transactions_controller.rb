@@ -17,7 +17,7 @@ class TransactionsController < ApplicationController
       @address = current_user.address || current_user.copy_address!
     else
       flash[:danger] = @transaction.errors.full_messages.first
-      redirect_to user_product_path(@product.user.profile, @product)
+      redirect_to user_product_path(@product)
     end
   end
 
@@ -28,7 +28,7 @@ class TransactionsController < ApplicationController
     @transaction.enddate = session[:end_date_time]
     @transaction.operator_type = params[:operator_type]
     @transaction.product = @product
-    @transaction.amount = @product.calculate_price(@transaction.duration_days)
+    @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
     logger.info '********************'
     logger.info '---------CREATE---------------'
@@ -51,21 +51,6 @@ class TransactionsController < ApplicationController
     @transaction.amount
     @transaction.generate_txnid!
     @address = current_user.address || current_user.copy_address!
-  end
-
-  def get_price
-    transaction = Transaction.new(user_id: 1, startdate: session[:start_date_time], enddate: session[:end_date_time], product_id: params[:product_id])
-
-    unless transaction.valid?
-      render json: {error: transaction.errors.full_messages.first}
-    else
-      days = transaction.duration_days
-      pay_amount = @product.calculate_price(days, params[:operator_type])
-      discount = @product.discount_by_days(days)
-      tax = @product.tax_amount(days, params[:operator_type])
-      sign = discount > 0 ? "-" : ""
-      render json: {days: days,tax: tax, total_price: @product.price*days, pay_amount: pay_amount, discount: discount, sign: sign}
-    end
   end
 
   def accept

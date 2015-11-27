@@ -30,74 +30,81 @@
       %h2.product-name= @product.title
       .col-md-6
         %h6.reviw= @product.reviews_count
-      .col-md-6.rat
+      .col-md-6.rat.pbottom10
         %i.product-rated
           = render partial: "rated", locals: {rate: @product.rate}
-      .col-md-12
-        .tabbable-panel-rs
-          .tabbable-line-rs
-            %ul.nav.nav-tabs.rent-sale-text
-              %li.active
-                = link_to @product.listing_type_name, "#tab_default_1_1", "data-toggle" => "tab"
-            .tab-content.table-panel-rs-heoght
-              #tab_default_1_1.tab-pane.active{style: "min-height: 100px;"}
-                - if @product.operator_type != Product::OPERATOR_TYPE[0][1]
-                  %p
-                    - if @product.operator_type != Product::OPERATOR_TYPE[1][1]
-                      = radio_button_tag :operator, Product::OPERATOR_TYPE[0][1], true, class: "operator_type"
-                      %label Product Only
+      .col-md-6
+        From Date
+        %br/
+        = session[:start_date_time]
+      .col-md-6
+        To Date
+        %br/
+        = session[:end_date_time]
+      ~ form_tag product_checkout_path(@product) do
+        .col-md-12
+          .tabbable-panel-rs
+            .tabbable-line-rs
+              %ul.nav.nav-tabs.rent-sale-text
+                %li.active
+                  = link_to @product.listing_type_name, "#tab_default_1_1", "data-toggle" => "tab"
+              .tab-content.table-panel-rs-heoght
+                #tab_default_1_1.tab-pane.active{style: "min-height: 160px;"}
+                  - if @product.operator_type != Product::OPERATOR_TYPE[0][1]
+                    %p
+                      - if @product.operator_type != Product::OPERATOR_TYPE[1][1]
+                        = radio_button_tag :operator_type, Product::OPERATOR_TYPE[0][1], true, class: "operator_type"
+                        %label Product Only
+                        %span.pull-right
+                          %i.fa.fa-rupee
+                          0
+                      %br
+                      = radio_button_tag :operator_type, Product::OPERATOR_TYPE[1][1], @product.operator_type == Product::OPERATOR_TYPE[1][1], class: "operator_type"
+                      %label With Operator/Driver (Assisted)
                       %span.pull-right
                         %i.fa.fa-rupee
-                        0
-                    %br
-                    = radio_button_tag :operator, Product::OPERATOR_TYPE[1][1], @product.operator_type == Product::OPERATOR_TYPE[1][1], class: "operator_type"
-                    %label With Operator/Driver (Assisted)
-                    %span.pull-right
-                      %i.fa.fa-rupee
-                      = @product.operator_price
-                - if @product.for_free?
-                  %ul.sale-details.pull-left
-                    %li Shipping
-                  %ul.pull-right.sale-details2.text-right
-                    %li
-                      %i.fa.fa-rupee
-                      = @product.ship_price
-                - else
-                  %ul.sale-details.pull-left
-                    %li Deposit
-                    %li Daily price
-                    %li Days
-                    %li Tax ( #{@product.tax}% )
-                    /%li Shipping
-                    %li Discount
-                    %li Pay amount
-                  %ul.pull-right.sale-details2.text-right
-                    %li
-                      %i.fa.fa-rupee
-                      = @product.security_deposit
-                    %li
-                      %i.fa.fa-rupee
-                      = @product.price
-                    %li.days= 1
-                    %li
-                      %span.min-sign
-                      %i.fa.fa-rupee
-                      %span.discount 0
-                    %li
-                      %i.fa.fa-rupee
-                      - type = @product.operator_type== Product::OPERATOR_TYPE[1][1] ? 1 : 0
-                      %span.tax-amount= @product.tax_amount(1, type)
-                    %li
-                      /%i.fa.fa-rupee
-                      =# @product.ship_price
-                    %li
-                      %i.fa.fa-rupee
-                      %span.total-amount= @product.calculate_price(1)
-      .col-xs-12.col-md-12.from-bar
-        - if current_user != @product.user
-          ~ form_tag product_checkout_path(@product) do
+                        = @product.operator_price
+                  - if @product.for_free?
+                    %ul.sale-details.pull-left
+                      %li Shipping
+                    %ul.pull-right.sale-details2.text-right
+                      %li
+                        %i.fa.fa-rupee
+                        = @product.ship_price
+                  - else
+                    %ul.sale-details.pull-left
+                      %li Deposit
+                      %li Daily price
+                      %li Days
+                      %li Discount ( #{@product.discount_percent(@days)}% )
+                      %li Tax ( #{@product.tax}% )
+                      /%li Shipping
+                      %li Pay amount
+                    %ul.pull-right.sale-details2.text-right
+                      %li
+                        %i.fa.fa-rupee
+                        = @product.security_deposit
+                      %li
+                        %i.fa.fa-rupee
+                        = @product.price
+                      %li.days= 1
+                      %li
+                        %span.min-sign
+                        %i.fa.fa-rupee
+                        %span.discount 0
+                      %li
+                        %i.fa.fa-rupee
+                        - type = @product.operator_type== Product::OPERATOR_TYPE[1][1] ? 1 : 0
+                        %span.tax-amount= @product.tax_amount(1, type)
+                      %li
+                        /%i.fa.fa-rupee
+                        =# @product.ship_price
+                      %li
+                        %i.fa.fa-rupee
+                        %span.total-amount= @product.calculate_price(1, type)
+        .col-xs-12.col-md-12.from-bar
+          - if current_user != @product.user
             = hidden_field_tag :product_id, @product.id
-            = hidden_field_tag :operator_type, 0
             .col-md-12.date-error{style: "color: red"}
             .col-md-12{style: "padding: 0; margin-left: 15px"}
               - if current_user && @product.available?

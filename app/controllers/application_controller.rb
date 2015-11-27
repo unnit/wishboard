@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   skip_before_filter :check_profile, if: :devise_controller?
   before_filter :set_timezone, :check_profile
-  
+
   def set_timezone
     Time.zone = "Kolkata"
   end

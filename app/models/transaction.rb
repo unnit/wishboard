@@ -13,7 +13,7 @@ class Transaction < ActiveRecord::Base
   validates :user_id, :product_id, :startdate, :enddate, presence: true
   validate :date_range_validation
 
-  scope :renting, -> {where("transactions.enddate > ? and (transactions.status = ? or transactions.status = ?)", Date.today, Transaction::TRANSACTION_STATUS[1][1], Transaction::TRANSACTION_STATUS[2][1])}
+  scope :renting, -> {where("transactions.enddate > ? and (transactions.status = ? or transactions.status = ?)", DateTime.current, Transaction::TRANSACTION_STATUS[1][1], Transaction::TRANSACTION_STATUS[2][1])}
   scope :paid, -> {where status: 'paid'}
 
   def duration

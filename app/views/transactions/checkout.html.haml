@@ -5,7 +5,7 @@
     = form_for @transaction, html:{class: "form-horizonral", id: "checkout-form"} do |f|
       = hidden_field_tag :product_id, @product.id
 
-      .col-md-3.pull-right.no-mar-pad
+      .col-md-4.pull-right.no-mar-pad
         %h3 Summary
         = image_tag @product.image, style: "width: 100%;"
         %h4= @product.title
@@ -19,7 +19,7 @@
           = f.text_field :enddate, placeholder: "To" ,class: "form-control enddate hide"
         .col-md-12.no-mar-pad.date-error{style: "color: red"}
 
-      .col-md-9
+      .col-md-8
         %h3.col-md-12.mtop20 Billing Address
         = fields_for @address do |af|
           .col-md-12.mtop20

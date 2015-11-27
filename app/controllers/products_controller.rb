@@ -12,8 +12,23 @@ class ProductsController < ApplicationController
 
   def search
     #product_paginate
+    error_messages = []
+    error_messages << "Please select Pickup Date" if params[:start_date_time].blank?
+    error_messages << "Please select Drop off Date" if params[:end_date_time].blank?
+
+    unless params[:start_date_time].blank? || params[:end_date_time].blank?
+      if params[:start_date_time].in_time_zone("Kolkata") > params[:end_date_time].in_time_zone("Kolkata")
+        error_messages << "Pickup Date cannot be greater than Drop off Date"
+      end
+    end
+    unless error_messages.blank?
+      flash[:alert] = error_messages.join(", ")
+      redirect_to root_path
+      return
+    end
     product_search
     render :index
+    return
   end
 
   def new

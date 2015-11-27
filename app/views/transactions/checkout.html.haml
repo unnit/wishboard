@@ -6,13 +6,14 @@
       = hidden_field_tag :product_id, @product.id
 
       .col-md-4.pull-right.no-mar-pad
-        %h3 Summary
         = image_tag @product.image, style: "width: 100%;"
-        %h4= @product.title
-        .col-md-12.mtop10= @transaction.duration
+        %h4.text-center= @product.title
+        .col-md-12.mtop10.text-center{style: "font-weight: bold"}
+          = @transaction.duration
+        %hr.col-md-12.mtop-v-5
         - days = (@transaction.enddate.to_date - @transaction.startdate.to_date).to_i
         - days = 1 if days < 1
-        .col-md-12.summary-info.no-mar-pad= render partial: "price", locals: {product: @product, days: days}
+        .col-md-12.summary-info= render partial: "price", locals: {product: @product, days: days}
         .col-md-12.mtop20.no-mar-pad
           = f.text_field :startdate, placeholder: "From" ,class: "form-control startdate hide"
         .col-md-12.mtop10.no-mar-pad
@@ -50,25 +51,34 @@
             %label.col-md-3 State
             .col-md-5
               = af.select :state, options_for_select(india_states), {prompt: 'State'}, class: "select_box state", required: true
-        %h3.col-md-12.mtop20 Card info
         .col-md-12
           #error.col-md-12.text-danger{style: "font-weight: bold; margin-left: 5px;"}
-        .col-md-8.no-mar-pad
-          .col-md-12.mtop20
-            %label.col-md-5 Card Holder Name
-            .col-md-7= text_field_tag :card_holder, "",name: nil, class: "form-control"
-          .col-md-12.mtop10
-            %label.col-md-5 Card Number
-            .col-md-7= text_field_tag :card_number, "",name: nil, class: "form-control"
-          .col-md-12.mtop10
-            %label.col-md-5 Expiry date
-            .col-md-3= text_field_tag :card_expiry, "", placeholder: "mm/yy", name: nil, class: "form-control"
-            %label.col-md-2{style: "text-align: right;"} cvv/cvc
-            .col-md-2= text_field_tag :card_cvv, "",name: nil, class: "form-control"
-        .col-md-4.no-mar-pad
-          = image_tag "verified.jpg"
-          %br
-          = image_tag "citrus.jpg"
+        .col-md-12
+          %ul.nav.nav-tabs
+            %li.active
+              %a{"data-toggle" => "tab", :href => "#credit_card"} Credit Card
+            %li
+              %a{"data-toggle" => "tab", :href => "#net_banking"} Net Banking
+          .tab-content.ptop10
+            #credit_card.tab-pane.fade.in.active
+              .col-md-8.no-mar-pad
+                .col-md-12.mtop20
+                  %label.col-md-5 Card Holder Name
+                  .col-md-7= text_field_tag :card_holder, "",name: nil, class: "form-control"
+                .col-md-12.mtop10
+                  %label.col-md-5 Card Number
+                  .col-md-7= text_field_tag :card_number, "",name: nil, class: "form-control"
+                .col-md-12.mtop10
+                  %label.col-md-5 Expiry date
+                  .col-md-3= text_field_tag :card_expiry, "", placeholder: "mm/yy", name: nil, class: "form-control"
+                  %label.col-md-2{style: "text-align: right;"} cvv/cvc
+                  .col-md-2= text_field_tag :card_cvv, "",name: nil, class: "form-control"
+              .col-md-4.no-mar-pad
+                = image_tag "verified.jpg"
+                %br
+            #net_banking.tab-pane.fade
+              %select#citrusAvailableOptions
+
         .col-md-12.mtop10
           = label_tag :agreement, "Agreement", :class => 'col-md-3'
           .col-sm-8.no-mar-pad
@@ -83,4 +93,34 @@
 #transaction{data: {key: CITRUS_CONFIG[:merchant_access_key], id: @transaction.txnid, price: @transaction.amount, signature: @transaction.hmac_sha1, url: request.protocol + request.host_with_port}}
 
 = content_for :extra_js do
-  = javascript_include_tag "jquery.payment", "citrus", "checkout"
+  = javascript_include_tag "//icp.citruspay.com/js/citrus.js"
+  = javascript_include_tag "//icp.citruspay.com/js/jquery.payment.min.js"
+  = javascript_include_tag "checkout"
+  :javascript
+    $(document).ready(function(){
+      CitrusPay.Merchant.Config = {
+            // Merchant details
+            Merchant: {
+                accessKey: 'HONXN1991PP1DDWG6CF2', //Replace with your access key
+                vanityUrl: 'https://sandbox.citruspay.com/cocociti'  //Replace with your vanity URL
+            }
+        };
+      var merchantAccessKey = $('#transaction').data('key');
+      var id = $('#transaction').data('id');
+      var price = $("#transaction").data("price");
+      var signature = $("#transaction").data("signature");
+      var url = $('#transaction').data('url') + "/transactions/callback";
+
+      fetchPaymentOptions();
+
+      function handleCitrusPaymentOptions(citrusPaymentOptions) {
+          if (citrusPaymentOptions.netBanking != null)
+              for (i = 0; i < citrusPaymentOptions.netBanking.length; i++) {
+                  var obj = document.getElementById("citrusAvailableOptions");
+                  var option = document.createElement("option");
+                  option.text = citrusPaymentOptions.netBanking[i].bankName;
+                  option.value = citrusPaymentOptions.netBanking[i].issuerCode;
+                  obj.add(option);
+              }
+      }
+    });

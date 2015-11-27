@@ -6,7 +6,7 @@ class TransactionsController < ApplicationController
   before_filter :check_product_availability, only: [:new]
 
   def new
-    TransactionsResetJob.set(wait: 4.minutes).perform_later
+    #TransactionsResetJob.set(wait: 4.minutes).perform_later
     @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
     @transaction.user = current_user
     if @transaction.valid?

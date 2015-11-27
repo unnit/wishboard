@@ -10,43 +10,43 @@
     %span.price
       %i.fa.fa-rupee
       = product.price
+  %hr.col-md-12.mtop-v-5
   .col-md-12
     %label Days
     %span.price.days= days
+  %hr.col-md-12.mtop-v-5
   .col-md-12
     %label Total price
     %span.price
       %i.fa.fa-rupee
-      %span.total-price= days * product.price  
+      %span.total-price= days * product.price
+  %hr.col-md-12.mtop-v-5
   .col-md-12
-    %label Shipping
+    %label Discounts( #{product.discount_percent(days)}% )
+    %span.price
+      %span.min-sign= " - " if product.discount_by_days(days) > 0
+      %i.fa.fa-rupee
+      %span.discount= product.discount_by_days(days)
+  %hr.col-md-12.mtop-v-5
+  .col-md-12
+    %label Tax( #{product.tax}% )
     %span.price
       %i.fa.fa-rupee
-      %span.total-price= product.ship_price
+      %span.total-price= product.tax_amount(days, @transaction.operator_type)
+  %hr.col-md-12.mtop-v-5
+  - if @transaction.operator_type != 0
+    .col-md-12
+      %label Operator Charge
+      %span.price
+        %i.fa.fa-rupee
+        %span.total-price= product.service_charge(@transaction.operator_type)
+    %hr.col-md-12.mtop-v-5
   .col-md-12
     %label Refunable Security Deposit
     %span.price
       %i.fa.fa-rupee
       = product.security_deposit
-  .col-md-12
-    %label Discounts
-    %span.price
-      %span.min-sign= " - " if product.discount_by_days(days) > 0
-      %i.fa.fa-rupee
-      %span.discount= product.discount_by_days(days)
-  .col-md-12
-    %label Tax
-    %span.price
-      %i.fa.fa-rupee
-      %span.total-price= product.tax_amount(days, @transaction.operator_type)
-  - if @transaction.operator_type != 0
-    .col-md-12
-      %label Service Charge
-      %span.price
-        %i.fa.fa-rupee
-        %span.total-price= product.service_charge(@transaction.operator_type)
-.col-md-12
-  %hr.col-md-12
+.col-md-12.ptop10.pbottom10{style: "background-color:#BFBFBF"}
   %label Pay Amount
   %span.price
     %i.fa.fa-rupee

@@ -1,14 +1,10 @@
-var citruspg = $.citrus.gateway($.citrus.env.production);
+//var citruspg = $.citrus.gateway($.citrus.env.production);
 //var citruspg = $.citrus.gateway($.citrus.env.sandbox);
 //var citruswallet = $.citrus.wallet($('#options').data("token"), $.citrus.env.sandbox);
 
 $(document).ready(function(){
-  var merchantAccessKey = $('#transaction').data('key');
-  var id = $('#transaction').data('id');
-  var price = $("#transaction").data("price");
-  var signature = $("#transaction").data("signature");
-  var url = $('#transaction').data('url') + "/transactions/callback";
   
+
   function createPayment(){
     $('#error').html("");
     var firstName= $("#address_first_name").val();

@@ -8,7 +8,7 @@ class Transaction < ActiveRecord::Base
 
   has_one :address, through: :user
 
-  TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"]]
+  TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"], ["Expired", "4"]]
 
   validates :user_id, :product_id, :startdate, :enddate, presence: true
   validate :date_range_validation
@@ -89,10 +89,10 @@ class Transaction < ActiveRecord::Base
   private
   def date_range_validation
     if self.enddate < self.startdate
-      errors.add(:base, "Invalid date range. startdate should before enddate")
-    else
-      range = (self.startdate.to_date..self.enddate.to_date).to_a.map{|d| d.strftime("%Y-%m-%d")}
-      errors.add(:base, "Invalid date range. Including disabled date") if !(range & self.product.unavailable_dates).blank?
+      errors.add(:base, "Invalid date range. To Date should be greater than From Date.")
+    end
+    if self.startdate < Time.now.in_time_zone("Kolkata") || self.enddate < Time.now.in_time_zone("Kolkata")
+      errors.add(:base, "Invalid date range. Cannot book for past dates.")
     end
   end
 

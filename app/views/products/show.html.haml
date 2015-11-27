@@ -104,7 +104,6 @@
                         %span.total-amount= @product.calculate_price(1, type)
         .col-xs-12.col-md-12.from-bar
           - if current_user != @product.user
-            = hidden_field_tag :product_id, @product.id
             .col-md-12.date-error{style: "color: red"}
             .col-md-12{style: "padding: 0; margin-left: 15px"}
               - if current_user && @product.available?
@@ -171,12 +170,12 @@
   :javascript
     $(function(){
       getPrice();
-      $("input[name=operator]").click(function(){
+      $("input[name=operator_type]").click(function(){
          getPrice();
        });
      function getPrice(){
-       operator_type = $("input[name=operator]:checked").val();
-       data = {startdate: "#{session[:start_date_time]}", enddate: "#{session[:end_date_time]}", id: $("#product_id").val(), operator_type: operator_type}
+       operator_type = $("input[name=operator_type]:checked").val();
+       data = {startdate: "#{session[:start_date_time]}", enddate: "#{session[:end_date_time]}", id: "#{@product.id}", operator_type: operator_type}
         $.get("/products/get_price", data)
          .done(function(result){
              $(".days").text(result.days);

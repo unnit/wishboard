@@ -310,6 +310,8 @@ class ProductsController < ApplicationController
 
     logger.info '*************************'
     logger.info @products.count
+    logger.info '*************************'
+
     search_start_day = params[:start_date_time].to_date.wday unless params[:start_date_time].blank?
     search_start_time = params[:start_date_time].split(" ").last unless params[:start_date_time].blank?
     search_end_day = params[:end_date_time].to_date.wday unless params[:end_date_time].blank?

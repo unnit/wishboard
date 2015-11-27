@@ -73,7 +73,7 @@ Rails.application.routes.draw do
     end
   end
 
-  post "product/:product_id/checkout", to: "transactions#new", as: :product_checkout
+  post "product/:id/checkout", to: "transactions#new", as: :product_checkout
   #get "/products/:category", to: "products#index", as: :category
   get "/listings/:id", to: "products#show", as: :user_product
 

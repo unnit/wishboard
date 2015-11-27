@@ -3,8 +3,10 @@ class TransactionsController < ApplicationController
   before_filter :authenticate_user!, except: [:get_price]
   before_filter :set_product, only: [:new, :create, :get_price]
   before_filter :set_transaction, only: [:accept, :deny]
+  before_filter :check_product_availability, only: [:new]
 
   def new
+    TransactionsResetJob.set(wait: 4.minutes).perform_later
     @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
     @transaction.user = current_user
     if @transaction.valid?
@@ -83,7 +85,7 @@ class TransactionsController < ApplicationController
   private
 
   def set_product
-    @product = Product.friendly.find params[:product_id]
+    @product = Product.friendly.find params[:id]
   end
 
   def set_transaction
@@ -93,4 +95,34 @@ class TransactionsController < ApplicationController
       redirect_to root_path
     end
   end
+
+  def check_product_availability
+    search_start_day = session[:start_date_time].to_date.wday unless session[:start_date_time].blank?
+    search_start_time = session[:start_date_time].split(" ").last unless session[:start_date_time].blank?
+    search_end_day = session[:end_date_time].to_date.wday unless session[:end_date_time].blank?
+    search_end_time = session[:end_date_time].split(" ").last unless session[:end_date_time].blank?
+
+    search_start_date_time = session[:start_date_time].in_time_zone("Kolkata")
+    search_end_date_time = session[:end_date_time].in_time_zone("Kolkata")
+
+    transaction_start_date_time =  @product.transactions.renting.first.startdate - 1.hour unless @product.transactions.renting.blank?
+    transaction_end_date_time =  @product.transactions.renting.first.enddate + 1.hour unless @product.transactions.renting.blank?
+
+    if transaction_start_date_time.blank? && transaction_end_date_time.blank?
+      if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")
+      else
+        flash[:danger] = "Sorry, Item is not available for the selected dates.1st"
+        redirect_to user_product_path(@product)
+        return
+      end
+    else
+      if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
+      else
+        flash[:danger] = "Sorry, Item is not available for the selected dates."
+        redirect_to user_product_path(@product)
+        return
+      end
+    end
+  end
+
 end

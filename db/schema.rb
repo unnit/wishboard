@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151125115242) do
+ActiveRecord::Schema.define(version: 20151128111854) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -205,17 +205,18 @@ ActiveRecord::Schema.define(version: 20151125115242) do
   add_index "reviews", ["user_id"], name: "index_reviews_on_user_id", using: :btree
 
   create_table "transactions", force: :cascade do |t|
-    t.integer  "user_id",        limit: 4
-    t.integer  "product_id",     limit: 4
-    t.string   "status",         limit: 255
-    t.decimal  "amount",                     precision: 10
+    t.integer  "user_id",             limit: 4
+    t.integer  "product_id",          limit: 4
+    t.string   "status",              limit: 255
+    t.decimal  "amount",                          precision: 10
     t.datetime "startdate"
     t.datetime "enddate"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
-    t.string   "txnid",          limit: 255
-    t.integer  "operator_type",  limit: 4,                  default: 0
-    t.decimal  "operator_price",             precision: 10
+    t.datetime "created_at",                                                 null: false
+    t.datetime "updated_at",                                                 null: false
+    t.string   "txnid",               limit: 255
+    t.integer  "operator_type",       limit: 4,                  default: 0
+    t.decimal  "operator_price",                  precision: 10
+    t.string   "coco_transaction_id", limit: 255
   end
 
   add_index "transactions", ["product_id"], name: "index_transactions_on_product_id", using: :btree

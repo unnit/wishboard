@@ -10,13 +10,13 @@ class TransactionsController < ApplicationController
     @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
     @transaction.user = current_user
     if @transaction.valid?
+      @address = current_user.address || current_user.copy_address!
       if @product.owner_type == Product::OWNER_TYPE[0][1]
         @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
         @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
         @transaction.save
         redirect_to checkout_transaction_path(@transaction)
       end
-      @address = current_user.address || current_user.copy_address!
     else
       flash[:danger] = @transaction.errors.full_messages.first
       redirect_to user_product_path(@product)
@@ -105,22 +105,23 @@ class TransactionsController < ApplicationController
     search_start_date_time = session[:start_date_time].in_time_zone("Kolkata")
     search_end_date_time = session[:end_date_time].in_time_zone("Kolkata")
 
-    transaction_start_date_time =  @product.transactions.renting.first.startdate - 1.hour unless @product.transactions.renting.blank?
-    transaction_end_date_time =  @product.transactions.renting.first.enddate + 1.hour unless @product.transactions.renting.blank?
-
-    if transaction_start_date_time.blank? && transaction_end_date_time.blank?
+    if @product.transactions.renting.blank?
       if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")
-      else
-        flash[:danger] = "Sorry, Item is not available for the selected dates.1st"
-        redirect_to user_product_path(@product)
-        return
-      end
-    else
-      if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
       else
         flash[:danger] = "Sorry, Item is not available for the selected dates."
         redirect_to user_product_path(@product)
         return
+      end
+    else
+      @product.transactions.renting.each do |transaction|
+        transaction_start_date_time =  transaction.startdate - 1
+        transaction_end_date_time =  transaction.enddate + 1
+        if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
+        else
+          flash[:danger] = "Sorry, Item is not available for the selected dates."
+          redirect_to user_product_path(@product)
+          return
+        end
       end
     end
   end

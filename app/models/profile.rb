@@ -20,7 +20,11 @@ class Profile < ActiveRecord::Base
   acts_as_mappable through: :location
   accepts_nested_attributes_for :location
 
-  validates :first_name, :last_name, presence: true, on: :update
+  validates :first_name, :last_name, :phone, :avail_days, :open_time, :close_time, presence: true, on: :update
+  validates :phone, uniqueness: true, on: :update
+  validates :phone, length: { is: 10 }, on: :update
+  validates :phone, numericality: true, on: :update
+  validates :about, length: { maximum: 1000 }, on: :update, unless: :about_entered?
 
   class << self
     def create_open_close_time
@@ -35,6 +39,10 @@ class Profile < ActiveRecord::Base
        "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30",
        "22:00", "22:30", "23:00", "23:30"]
     end
+  end
+
+  def about_entered?
+    about.blank?
   end
 
   def avail_days_arr

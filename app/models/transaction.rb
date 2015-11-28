@@ -73,6 +73,14 @@ class Transaction < ActiveRecord::Base
     TransactionMailer.paid(self).deliver
   end
 
+  def transaction_status_name
+    return Transaction::TRANSACTION_STATUS[0][0] if status == Transaction::TRANSACTION_STATUS[0][1]
+    return Transaction::TRANSACTION_STATUS[1][0] if status == Transaction::TRANSACTION_STATUS[1][1]
+    return Transaction::TRANSACTION_STATUS[2][0] if status == Transaction::TRANSACTION_STATUS[2][1]
+    return Transaction::TRANSACTION_STATUS[3][0] if status == Transaction::TRANSACTION_STATUS[3][1]
+    return Transaction::TRANSACTION_STATUS[4][0] if status == Transaction::TRANSACTION_STATUS[4][1] 
+  end
+
   #methods for mailboxer
   def name
     product.title

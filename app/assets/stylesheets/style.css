@@ -1,13 +1,13 @@
 .tabbable-panel-about {
- 
- 
+
+
 
 }
 
 /* Default mode */
 .tabbable-line-about-pad{
   padding-left: 50px;
-  padding-right: 50px;   
+  padding-right: 50px;
 }
 .tabbable-line-about > .nav-tabs {
   border-top:1px solid rgba(51, 51, 51, 0.18);
@@ -25,7 +25,7 @@
   color: #a6a6a6;
 }
 .tabbable-line-about > .nav-tabs > li.open, .tabbable-line-about > .nav-tabs > li:hover {
- 
+
 }
 .tabbable-line-about > .nav-tabs > li.open > a, .tabbable-line-about > .nav-tabs > li:hover > a {
   border: 0;
@@ -53,7 +53,7 @@
   color: #404040;
 }
 .tabbable-line-about > .tab-content {
-  margin-top: px; 
+  margin-top: px;
   background-color: #fff;
   border: 0;
   padding: 15px 0;
@@ -64,24 +64,24 @@
 }
 .prof-header{
   padding-top: 50px;
-  font-size:40px; 
-  font-weight:700; 
-  color:#333333;   
+  font-size:40px;
+  font-weight:700;
+  color:#333333;
 }
 .prof-para{
-  font-size:18px; 
-  font-weight:300; 
+  font-size:18px;
+  font-weight:300;
   color:#333333;
   line-height: 1.33;
 }
-.prof-or-list{    
-  font-size:38px; 
-  color:#e84242; 
+.prof-or-list{
+  font-size:38px;
+  color:#e84242;
   font-weight:500;
 }
 .prof-or-list-text{
-  font-size:30px; 
-  color:#e84242; 
+  font-size:30px;
+  color:#e84242;
   font-weight:500;
 }
 .pro-or-list-pad{
@@ -101,10 +101,10 @@
     margin-left: 139px !important;
 }
 .pro-tabs-mar{
-  margin-left:265px;   
+  margin-left:265px;
 }
 .pro-tabs-mar2{
-    margin-left:265px; 
+    margin-left:265px;
     margin-right:139px;
 }
 .pro-tab-in-text{
@@ -127,31 +127,31 @@
 
 
 .pro-am-header{margin-top: 50px;
-    font-size:26px; 
-    font-weight:700; 
+    font-size:26px;
+    font-weight:700;
     color:#333333;
-    
+
 }
 .pro-am-para{
     margin-top: 30px;
-    font-size:22px; 
-    font-weight:300; 
+    font-size:22px;
+    font-weight:300;
     color:#333333;
     margin-bottom: 100px;
 }
 @media only screen and (max-width: 776px) {
     .pro-tab-in-text{
         padding-left:10px;
-        
+
     }
     .pro-tab-in-text2{
-       padding-right: 10px;  
-        
+       padding-right: 10px;
+
     }
     .pro-tabs-pad{
-      padding-left:15px; 
-    padding-right:15px;  
-        
+      padding-left:15px;
+    padding-right:15px;
+
     }
     .pro-tabs-text{
     font-size: 15px;
@@ -164,12 +164,11 @@
     }
 }
 .aboutpad{
-	
 	padding-top:75px;
-	
+
 	}
 .about-text{
-    font-size: 25px;
+    font-size: 23px;
     font-weight: 700;
     color:#fff;
 }
@@ -179,7 +178,7 @@
     color:#333;
 }
 .sett-button{
-   
+
   background-color: #e84242;
   border: none;
   border-radius: 0;
@@ -189,11 +188,11 @@
   font-weight: 700;
 }
 .del-button{
-    margin-top: 50px;
+  margin-top: 50px;
   background-color: #e84242;
   border: none;
   border-radius: 0;
-  width: 164px;
+  width: 174px;
   height: 48px;
   font-size: 17px;
   font-weight: 700;
@@ -226,7 +225,7 @@
  .mob-con{
      padding-left: 0;
      padding-right: 0;
-    
+
  }
 .mob-fluid-con{
     padding-left: 0;
@@ -243,24 +242,24 @@
         padding-left: 0;
         padding-right: 0;
     }
-        
-    
-        
+
+
+
 }
 .postadd-mob{
     display: block;
   background-color:#e84242;
-    font-size:16px; 
-    padding-left:5px; 
-    padding-right:5px; 
-    padding-top:20px;  
+    font-size:16px;
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:20px;
 }
 .postadd-mob:hover{
     color:#e84242 !important;
     background-color: red !important;
 }
 .ver-symb{
-    position: absolute !important;  
+    position: absolute !important;
 }
 .postadd-button{
     margin-top: 13px;
@@ -273,4 +272,3 @@
 body{
     overflow-x: hidden;
 }
-

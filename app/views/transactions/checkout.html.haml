@@ -50,7 +50,7 @@
           .col-md-12.mtop10
             %label.col-md-3 State
             .col-md-5
-              = af.select :state, options_for_select(india_states), {prompt: 'State'}, class: "select_box state", required: true
+              = af.select :state, options_for_select(india_states), {prompt: 'State'}, class: "select_box state selectpicker", required: true
         .col-md-12
           #error.col-md-12.text-danger{style: "font-weight: bold; margin-left: 5px;"}
         .col-md-12
@@ -61,8 +61,8 @@
               %a{"data-toggle" => "tab", :href => "#net_banking"} Net Banking
           .tab-content.ptop10
             #credit_card.tab-pane.fade.in.active
-              .col-md-8.no-mar-pad
-                .col-md-12.mtop20
+              .col-md-8.mtop10
+                .col-md-12
                   %label.col-md-5 Card Holder Name
                   .col-md-7= text_field_tag :card_holder, "",name: nil, class: "form-control"
                 .col-md-12.mtop10
@@ -73,11 +73,13 @@
                   .col-md-3= text_field_tag :card_expiry, "", placeholder: "mm/yy", name: nil, class: "form-control"
                   %label.col-md-2{style: "text-align: right;"} cvv/cvc
                   .col-md-2= text_field_tag :card_cvv, "",name: nil, class: "form-control"
-              .col-md-4.no-mar-pad
+              .col-md-4
                 = image_tag "verified.jpg"
                 %br
             #net_banking.tab-pane.fade
-              %select#citrusAvailableOptions
+              .col-md-12.mtop10
+                %label.col-md-4 Select Your Bank
+                %select.col-md-6#citrusAvailableOptions
 
         .col-md-12.mtop10
           = label_tag :agreement, "Agreement", :class => 'col-md-3'
@@ -95,14 +97,14 @@
 = content_for :extra_js do
   = javascript_include_tag "//icp.citruspay.com/js/citrus.js"
   = javascript_include_tag "//icp.citruspay.com/js/jquery.payment.min.js"
-  = javascript_include_tag "checkout"
+
   :javascript
     $(document).ready(function(){
       CitrusPay.Merchant.Config = {
             // Merchant details
             Merchant: {
                 accessKey: 'HONXN1991PP1DDWG6CF2', //Replace with your access key
-                vanityUrl: 'https://sandbox.citruspay.com/cocociti'  //Replace with your vanity URL
+                vanityUrl: 'cocociti'  //Replace with your vanity URL
             }
         };
       var merchantAccessKey = $('#transaction').data('key');

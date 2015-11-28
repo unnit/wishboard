@@ -46,7 +46,7 @@
             .col-sm-12.box-row
               .col-sm-3 Email
               .col-sm-3.help-text Private info
-              .col-sm-6.text-right= current_user.email 
+              .col-sm-6.text-right= current_user.email
             .col-sm-12.box-row
               .col-sm-3 Location
               .col-sm-3.help-text Private info
@@ -68,7 +68,7 @@
             - current_user.products.each_with_index do |product, i|
               .col-xs-12.closest{id: "product-#{product.id}", style: "border: 1px solid #ccc; padding: 5px 0; border-top: none;"}
                 = render partial: "product", locals: {product: product, i: i}
-              
+
           #tab_default_3.tab-pane
             .col-md-12.alert.alert-info.no-mar-left{style: "margin-bottom: 1px"}
               .col-md-3 Product
@@ -83,7 +83,7 @@
                 .col-md-2
                   %i.fa.fa-rupee
                   = trans.amount || trans.product.calculate_price(trans.duration_days)
-                .col-md-2= trans.status.humanize
+                .col-md-2= trans.transaction_status_name
                 .col-md-2.text-right
                   - if trans.accepted?
                     = link_to "checkout", checkout_transaction_path(trans)

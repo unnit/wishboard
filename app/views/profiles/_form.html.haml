@@ -9,49 +9,25 @@
         .errors= render partial: "/layouts/errors", locals: {errors: @profile.errors.full_messages}
         %fieldset
           .form-group
+            .col-sm-4
+              %h3.mtop10 You
+          .form-group
             %label.col-sm-2.control-label{:for => "textinput"} First Name
-            .col-sm-10
-              = f.text_field :first_name, :placeholder => "First Name", class: "form-control"
-          .form-group
+            .col-sm-3
+              = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 200
             %label.col-sm-2.control-label{:for => "textinput"} Last Name
-            .col-sm-10
-              = f.text_field :last_name, :placeholder => "Last Name", class: "form-control"
-          .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Location
-            .col-sm-10.closest
-              = f.fields_for :location do |lf|
-                = lf.text_field :name, :placeholder => "Location", class: "form-control map-location"
-                = lf.hidden_field :lat, class: "lat"
-                = lf.hidden_field :lng, class: "lng"
-          .col-md-offset-2.list-map
-            #gmap.col-sm-11.mleft15.mbottom20{data: {drag: "true"}}
-
+            .col-sm-3
+              = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Phone No
-            .col-sm-10
-              = f.text_field :phone, :placeholder => "Phone No", class: "form-control"
+            .col-sm-3
+              = f.text_field :phone, :placeholder => "Phone No", class: "form-control", maxlength: 10
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} About You
-            .col-sm-10
-              = f.text_area :about, class: "form-control textarea", row: "3", placeholder: "About You"
+            %label.col-sm-2.control-label{:for => "textinput"} About
+            .col-sm-6
+              = f.text_area :about, class: "form-control textarea", row: "5", placeholder: "About You", maxlength: 1000
           .form-group
-            %label.col-sm-2.control-label.mtop5{:for => "textinput"} Days available
-            .col-sm-10.mtop10
-              - Date::DAYNAMES.each_with_index do |day, i|
-                %span.mleft15
-                  = check_box_tag "profile[avail_days][]", i, @profile.avail_days_arr.include?(i.to_s), class: "styled", id: "#{day}"
-                  %label{:for => "#{day}"}= day
-          .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Open Time
-            .col-sm-10
-              = f.select :open_time, options_for_select(Profile.create_open_close_time, @profile.open_time), {}, class: "selectpicker"
-          .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Close Time
-            .col-sm-10
-              = f.select :close_time, options_for_select(Profile.create_open_close_time, @profile.close_time), {}, class: "selectpicker"
-
-          .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Image
+            %label.col-sm-2.control-label{:for => "textinput"} Profile Pic
             .col-sm-10
               #fileupload.fileinput-button.upload-image-placeholder
                 .fileupload-text-container
@@ -63,6 +39,44 @@
                 .fileupload-preview-remove-image
                   %i.icon-remove.icon-fix
                 %input.listing-image-id{:name => "listing_images[][id]", :type => "hidden"}
+          .form-group
+            .col-sm-4
+              %h3.mtop10 Address
+          = fields_for 'address' do |af|
+            .form-group
+              %label.col-sm-2.control-label Address Line 1
+              .col-sm-4= af.text_field :address1, class: "form-control", required: true, placeholder: "Flat/House No, Floor, Building"
+            .form-group
+              %label.col-sm-2.control-label Address Line 2
+              .col-sm-4= af.text_field :address2, class: "form-control", required: true, placeholder: "Colony/Society, Street, Locality/Area"
+            .form-group
+              %label.col-sm-2.control-label Town/City
+              .col-sm-4= af.text_field :city, class: "form-control city", required: true
+            .form-group
+              %label.col-sm-2.control-label State
+              .col-sm-4
+                = af.select :state, options_for_select(india_states), {prompt: 'State'}, class: "select_box state selectpicker"
+            .form-group
+              %label.col-sm-2.control-label Pincode
+              .col-sm-4= af.text_field :zip, class: "form-control check_zip", required: true
+          .form-group
+            .col-sm-4
+              %h3.mtop10 Availability
+          .form-group
+            %label.col-sm-2.control-label.mtop5{:for => "textinput"} Days available
+            .col-sm-10.mtop10
+              - Date::DAYNAMES.each_with_index do |day, i|
+                %span.mleft15
+                  = check_box_tag "profile[avail_days][]", i, @profile.avail_days_arr.include?(i.to_s), class: "styled", id: "#{day}"
+                  %label{:for => "#{day}"}= day
+          .form-group
+            %label.col-sm-2.control-label{:for => "textinput"} Open Time
+            .col-sm-4
+              = f.select :open_time, options_for_select(Profile.create_open_close_time, @profile.open_time), {}, class: "selectpicker"
+          .form-group
+            %label.col-sm-2.control-label{:for => "textinput"} Close Time
+            .col-sm-4
+              = f.select :close_time, options_for_select(Profile.create_open_close_time, @profile.close_time), {}, class: "selectpicker"
           .form-group
             .col-sm-offset-2.col-sm-10
               .pull-right

@@ -107,9 +107,6 @@ class Transaction < ActiveRecord::Base
       if self.enddate < self.startdate
         errors.add(:base, "Invalid date range. To Date should be greater than From Date.")
       end
-      if self.startdate < Time.now.in_time_zone("Kolkata") || self.enddate < Time.now.in_time_zone("Kolkata")
-        errors.add(:base, "Invalid date range. Cannot book for past dates.")
-      end
     end
   end
 

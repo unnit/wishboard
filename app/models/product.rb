@@ -33,11 +33,11 @@ class Product < ActiveRecord::Base
 
   algoliasearch do
     attribute :title, :category_path, :description, :price, :created_at, :rate, :available, :admin_approved
-    attribute :location_address, :operator
+    attribute :location_address
     tags do
       [listing_type, owner_type, category_slug, parent_cat, product_condition]
     end
-    attributesToIndex [:title, :category_path, :description, :price, :created_at, :rate, :location_address, :operator, :available, :admin_approved]
+    attributesToIndex [:title, :category_path, :description, :price, :created_at, :rate, :location_address, :available, :admin_approved]
     add_slave 'admin_search', per_environment: true do
       attributesToIndex [:title, :category_path]
     end

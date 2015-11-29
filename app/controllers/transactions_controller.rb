@@ -4,12 +4,10 @@ class TransactionsController < ApplicationController
   before_filter :set_transaction, only: [:accept, :deny, :checkout, :delete_non_coco]
   before_filter :check_product_owner, only: [:accept, :deny, :delete_non_coco]
   before_filter :set_product, only: [:new, :create, :checkout, :non_coco]
-  before_filter :check_product_availability, only: [:new, :create]
+  before_filter :check_product_availability, only: [:new, :create, :checkout]
+  before_filter :check_past_dates_and_operator_type, only: [:new, :create]
 
   def new
-    #TransactionsResetJob.set(wait: 4.minutes).perform_later
-    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank?
-    params[:operator_type] = Product::OPERATOR_TYPE[1][1] if @product.operator_type == Product::OPERATOR_TYPE[1][1]
     @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
     @transaction.user = current_user
     if @transaction.valid?
@@ -18,6 +16,7 @@ class TransactionsController < ApplicationController
         @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
         @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
         @transaction.save
+        TransactionsResetJob.set(wait: 10.minutes).perform_later
         redirect_to checkout_transaction_path(@transaction)
       end
     else
@@ -27,8 +26,6 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank?
-    params[:operator_type] = Product::OPERATOR_TYPE[1][1] if @product.operator_type == Product::OPERATOR_TYPE[1][1]
     @transaction = Transaction.new
     @transacrion.user = current_user
     @transaction.startdate = session[:start_date_time]
@@ -37,7 +34,6 @@ class TransactionsController < ApplicationController
     @transaction.product = @product
     @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
-    logger.info @product.owner_type
     if @transaction.save
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
@@ -81,6 +77,21 @@ class TransactionsController < ApplicationController
   end
 
   def checkout
+    unless @transaction.user == current_user
+      flash[:danger] = "Sorry, You can't execute this action"
+      redirect_to root_path
+      return
+    end
+    if @transaction.status == Transaction::TRANSACTION_STATUS[4][1]
+      flash[:danger] = "Sorry, This transaction got expired, Please select the product again."
+      redirect_to root_path
+      return
+    end
+    if @transaction.startdate < Time.now.in_time_zone("Kolkata") || @transaction.enddate < Time.now.in_time_zone("Kolkata")
+      flash[:danger] = "Invalid date range. Cannot book for past dates."
+      render :new
+      return
+    end
     @transaction.amount
     @transaction.generate_txnid!
     @address = current_user.address || current_user.copy_address!
@@ -133,6 +144,16 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def check_past_dates_and_operator_type
+    if session[:start_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata") || session[:end_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
+      flash[:danger] = "Invalid date range. Cannot book for past dates."
+      redirect_to user_product_path(@product)
+      return
+    end
+    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank?
+    params[:operator_type] = Product::OPERATOR_TYPE[1][1] if @product.operator_type == Product::OPERATOR_TYPE[1][1]
+  end
+
   def check_product_availability
     search_start_day = session[:start_date_time].to_date.wday unless session[:start_date_time].blank?
     search_start_time = session[:start_date_time].split(" ").last unless session[:start_date_time].blank?
@@ -141,6 +162,17 @@ class TransactionsController < ApplicationController
 
     search_start_date_time = session[:start_date_time].in_time_zone("Kolkata")
     search_end_date_time = session[:end_date_time].in_time_zone("Kolkata")
+
+    #This condition is for those transactions which will happen after confirmation
+    unless @transaction.blank?
+      search_start_day = @transaction.startdate.wday
+      search_start_time = @transaction.startdate.strftime("%H:%M")
+      search_end_day = @transaction.enddate.wday
+      search_end_time = @transaction.enddate.strftime("%H:%M")
+
+      search_start_date_time = @transaction.startdate
+      search_end_date_time = @transaction.enddate
+    end
 
     if @product.transactions.renting.blank?
       if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")

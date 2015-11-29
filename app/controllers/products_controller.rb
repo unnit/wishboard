@@ -130,7 +130,8 @@ class ProductsController < ApplicationController
         end
       end
     end
-    @days = (session[:end_date_time].to_date - session[:start_date_time].to_date).to_i
+    @days = 1
+    @days = (session[:end_date_time].to_date - session[:start_date_time].to_date).to_i unless session[:end_date_time].blank? || session[:start_date_time].blank?
   end
 
   def update_available

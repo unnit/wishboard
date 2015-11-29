@@ -8,13 +8,18 @@ class Transaction < ActiveRecord::Base
 
   has_one :address, through: :user
 
-  TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"], ["Expired", "4"]]
+  TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"], ["Expired", "4"], ["Non Cocociti Booking", "5"], ["Accepted", "6"]]
 
   validates :user_id, :product_id, :startdate, :enddate, presence: true
   validate :date_range_validation
 
-  scope :renting, -> {where("transactions.enddate > ? and (transactions.status = ? or transactions.status = ?)", DateTime.current, Transaction::TRANSACTION_STATUS[1][1], Transaction::TRANSACTION_STATUS[2][1])}
-  scope :paid, -> {where status: 'paid'}
+  scope :renting, -> {where( "transactions.enddate > ? and (transactions.status = ? or transactions.status = ? or transactions.status = ?)", DateTime.current, Transaction::TRANSACTION_STATUS[1][1], Transaction::TRANSACTION_STATUS[2][1], Transaction::TRANSACTION_STATUS[5][1] )}
+
+  scope :paid, -> {where status: Transaction::TRANSACTION_STATUS[2][1]}
+
+  scope :non_coco, -> {where status: Transaction::TRANSACTION_STATUS[5][1]}
+
+  scope :dashboard_transactions, -> {where( "transactions.status = ? or transactions.status = ? or transactions.status = ? or transactions.status = ? or transactions.status = ?", Transaction::TRANSACTION_STATUS[0][1], Transaction::TRANSACTION_STATUS[2][1], Transaction::TRANSACTION_STATUS[3][1], Transaction::TRANSACTION_STATUS[4][1], Transaction::TRANSACTION_STATUS[6][1] )}
 
   def duration
     "#{startdate.strftime('%d %b, %y %H:%M')} - #{enddate.strftime('%d %b, %y %H:%M')}"
@@ -38,7 +43,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def accepted?
-    status == Transaction::TRANSACTION_STATUS[1][1]
+    status == Transaction::TRANSACTION_STATUS[6][1]
   end
 
   def display_status
@@ -55,7 +60,7 @@ class Transaction < ActiveRecord::Base
 
   #actions
   def accept!
-    update_column :status, Transaction::TRANSACTION_STATUS[1][1]
+    update_column :status, Transaction::TRANSACTION_STATUS[6][1]
     TransactionMailer.accept(self).deliver
   end
 
@@ -78,7 +83,9 @@ class Transaction < ActiveRecord::Base
     return Transaction::TRANSACTION_STATUS[1][0] if status == Transaction::TRANSACTION_STATUS[1][1]
     return Transaction::TRANSACTION_STATUS[2][0] if status == Transaction::TRANSACTION_STATUS[2][1]
     return Transaction::TRANSACTION_STATUS[3][0] if status == Transaction::TRANSACTION_STATUS[3][1]
-    return Transaction::TRANSACTION_STATUS[4][0] if status == Transaction::TRANSACTION_STATUS[4][1] 
+    return Transaction::TRANSACTION_STATUS[4][0] if status == Transaction::TRANSACTION_STATUS[4][1]
+    return Transaction::TRANSACTION_STATUS[5][0] if status == Transaction::TRANSACTION_STATUS[5][1]
+    return Transaction::TRANSACTION_STATUS[6][0] if status == Transaction::TRANSACTION_STATUS[6][1]
   end
 
   #methods for mailboxer

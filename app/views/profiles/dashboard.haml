@@ -1,0 +1,156 @@
+.container
+  .row.mar-des-page
+    .col-md-12
+      .row
+        .col-md-3
+          = image_tag current_user.avatar, class: "img-responsive img-circle img-width"
+        .col-md-6
+          .col-sm-12
+            %h3.no-mar-pad.mbottom10= current_user.name
+            .prof-para.mbottom10= simple_format @profile.about
+          .col-sm-12.mbottom10
+            %span.glyphicon.glyphicon-phone
+            &nbsp;
+            = @profile.phone
+            %small *Not visible to others
+          .col-sm-12.mbottom10
+            %span.glyphicon.glyphicon-envelope
+            &nbsp;
+            = current_user.email
+            %small *Not visible to others
+        .col-md-3
+          .col-xs-12
+            .col-xs-5.round-border
+              %h2.prof-or-list.mtop10.mbottom0
+                %strong= current_user.products.count
+              %p.prof-or-list-test
+                %small= current_user.products.count == 1 ? "Listing" : "Listings"
+            .col-xs-5.round-border.mleft20
+              %h2.prof-or-list.mtop10.mbottom0
+                %strong= current_user.transactions.count
+              %p.prof-or-list-test
+                %small= current_user.transactions.count == 1 ? "Order" : "Orders"
+          .col-xs-12.mtop20.text-center
+            = link_to "Edit Profile", settings_path, class: "btn btn-success"
+  %ul.nav.nav-tabs.mtop20.hidden-xs
+    %li.active
+      %a{"data-toggle" => "tab", :href => "#booking_requests"} Booking Requests(Received)
+    %li
+      %a{"data-toggle" => "tab", :href => "#my_listings"} My Listings
+    %li
+      %a{"data-toggle" => "tab", :href => "#my_orders"} Things I Ordered
+    %li
+      %a{"data-toggle" => "tab", :href => "#non_coco_bookings"} Add Other Bookings
+    %li
+      %a{"data-toggle" => "tab", :href => "#delete_non_coco_bookings"} Delete Other Bookings
+  .tab-content.ptop10.pbottom50.hidden-xs{style: "min-height: 500px;"}
+    #booking_requests.tab-pane.fade.in.active
+      .col-md-12.alert.alert-info.no-mar-left{style: "border-radius: 0; margin-bottom: 0; font-weight: bold"}
+        .col-md-2 User
+        .col-md-7 Subject
+        .col-md-2 Transaction Status
+        .col-md-1
+      - @conversations.each do |conv|
+        - user = receiver(conv)
+        - if user
+          - trans = get_transaction(conv)
+          .col-md-12.pad-v-10
+            .col-md-2
+              = image_tag user.avatar, size: "32x32", class: "img-circle"
+              = user.name
+            .col-md-7
+              = link_to message_path(trans) do
+                = conv.subject
+            .col-md-2
+              = trans.status.humanize
+            .col-md-1
+              = link_to message_path(conv), class: "btn btn-sm btn-danger", method: :delete, data: {confirm: "Are you sure to delete conversation?"} do
+                %span.glyphicon.glyphicon-trash
+    #my_listings.tab-pane.fade
+      .update-error
+      .col-md-12.alert.alert-info.no-mar-left{style: "border-radius: 0; margin-bottom: 0; font-weight: bold"}
+        .col-sm-1 Image
+        .col-sm-2 Title
+        .col-sm-1 ID
+        .col-sm-2 Category
+        .col-sm-1.no-mar-pad Price
+        .col-sm-1.no-mar-pad Shipping
+        .col-sm-1 Status
+        .col-sm-1 Orders
+        .col-sm-1.text-right Edit
+        .col-sm-1 On / Off
+      - i = 1
+      - current_user.products.each do |product|
+        .col-xs-12.closest{id: "product-#{product.id}", style: "border: 1px solid #ccc; padding: 5px 0; border-top: none;"}
+          = render partial: "product", locals: {product: product, i: i}
+        - i+=1
+    #my_orders.tab-pane.fade
+      .col-md-12.alert.alert-info.no-mar-left{style: "border-radius: 0; margin-bottom: 0; font-weight: bold"}
+        .col-md-3 Product
+        .col-md-3 Duration
+        .col-md-2 Amount
+        .col-md-2 Status
+        .col-md-2.text-right
+      - current_user.transactions.dashboard_transactions.each do |trans|
+        .col-md-12.alert.alert-default.no-mar-left{style: "margin-bottom: 1px"}
+          .col-md-3= trans.product.title
+          .col-md-3= trans.duration
+          .col-md-2
+            %i.fa.fa-rupee
+            = trans.amount || trans.product.calculate_price(trans.duration_days)
+          .col-md-2= trans.transaction_status_name
+          .col-md-2.text-right
+            - if trans.accepted?
+              = link_to "checkout", checkout_transaction_path(trans)
+    #non_coco_bookings.tab-pane.fade
+      .col-md-12.alert.alert-info.no-mar-left{style: "border-radius: 0; margin-bottom: 0; font-weight: bold"}
+        .col-sm-1.text-right Image
+        .col-sm-2 Title
+        .col-sm-1 ID
+        .col-sm-2 Category
+        .col-sm-2 Start Date
+        .col-sm-2 End Date
+        .col-sm-1.text-right
+      - current_user.products.each do |product|
+        .col-sm-12
+          .col-sm-1
+            %span.pull-right= image_tag product.image, size: "32x32"
+          .col-sm-2= product.title
+          .col-sm-1= product.id
+          .col-sm-2= product.category_name
+          ~ form_tag non_coco_transaction_path(product) do
+            .col-sm-2
+              .input-group.mbottom0.input-append.date.from_date_time
+                %span#sizing-addon2.input-group-addon.bg-white
+                  %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+                = text_field_tag :non_coco_start_date, params[:non_coco_start_date], placeholder: "Pickup Date & Time", class: "form-control pickup_date bg-white pon", style: "border-radius:0", readonly: true
+            .col-sm-2
+              .input-group.mbottom0.input-append.date.from_date_time
+                %span#sizing-addon2.input-group-addon.bg-white
+                  %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+                = text_field_tag :non_coco_end_date, params[:non_coco_end_date], placeholder: "Pickup Date & Time", class: "form-control pickup_date bg-white pon", style: "border-radius:0", readonly: true
+            .col-sm-1
+              %button{type: "submit", style: "width: 100%;padding: 0"}
+                Create
+
+    #delete_non_coco_bookings.tab-pane.fade
+      .col-md-12.alert.alert-info.no-mar-left{style: "border-radius: 0; margin-bottom: 0; font-weight: bold"}
+        .col-sm-1.text-right Image
+        .col-sm-2 Title
+        .col-sm-1 ID
+        .col-sm-2 Category
+        .col-sm-2 Start Date
+        .col-sm-2 End Date
+        .col-sm-1.text-right
+      - current_user.transactions.non_coco.each do |transaction|
+        .col-sm-12
+          .col-sm-1
+            %span.pull-right= image_tag transaction.product.image, size: "32x32"
+          .col-sm-2= transaction.product.title
+          .col-sm-1= transaction.product.id
+          .col-sm-2= transaction.product.category_name
+          .col-sm-2= transaction.startdate
+          .col-sm-2= transaction.enddate
+          .col-sm-1
+          = link_to delete_non_coco_transaction_path(transaction), method: :delete, data: {confirm: "Are you sure you want to delete the booking?"} do
+            %span.glyphicon.glyphicon-remove

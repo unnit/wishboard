@@ -50,7 +50,7 @@
           .col-md-12.mtop10
             %label.col-md-3 State
             .col-md-5
-              = af.select :state, options_for_select(india_states), {prompt: 'State'}, class: "select_box state selectpicker", required: true
+              = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", required: true
         .col-md-12
           #error.col-md-12.text-danger{style: "font-weight: bold; margin-left: 5px;"}
         .col-md-12

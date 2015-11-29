@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151128111854) do
+ActiveRecord::Schema.define(version: 20151129073323) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 20151128111854) do
     t.integer  "operator_type",       limit: 4,                  default: 0
     t.decimal  "operator_price",                  precision: 10
     t.string   "coco_transaction_id", limit: 255
+    t.string   "non_coco_operator",   limit: 255
   end
 
   add_index "transactions", ["product_id"], name: "index_transactions_on_product_id", using: :btree

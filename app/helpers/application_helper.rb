@@ -8,9 +8,9 @@ module ApplicationHelper
 
   def india_states
     country = Country.new("IN")
-    country.states.map{|key, value| [value["name"], key]}
+    country.states.map{|key, value| [value["name"], value["name"]]}
   end
-  
+
   def receiver(conv)
     receipt = conv.receipts.where("receiver_type='User' and receiver_id <> ?", current_user.id).first
     user = receipt.receiver if receipt

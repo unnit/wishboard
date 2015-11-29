@@ -1,7 +1,11 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_profile, only: [:my_profile, :update]
+  before_action :set_profile, only: [:dashboard, :update]
   skip_before_filter :check_profile, only: [:update]
+
+  def dashboard
+    @conversations = current_user.mailbox.inbox
+  end
 
   def update
     if current_user.address
@@ -19,9 +23,15 @@ class ProfilesController < ApplicationController
     @address.city = params[:address][:city]
     @address.zip = params[:address][:zip]
     @address.state = params[:address][:state]
+    @address.valid?
+    unless @address.errors.full_messages.blank?
+      flash[:danger] = @address.errors.full_messages.join("<br/>")
+      redirect_to settings_path
+      return
+    end
     if @profile.update(profile_params)
       @address.save
-      flash[:success] = 'Profile was successfully updated.'
+      flash[:success] = 'Your profile has been successfully updated.'
     else
       flash[:danger] = @profile.errors.full_messages.join("<br/>")
     end
@@ -34,6 +44,6 @@ class ProfilesController < ApplicationController
     end
 
     def profile_params
-      params.require(:profile).permit(:user_id, :first_name, :last_name, :image, :open_time, :close_time, :phone, :about, :update_emails, :newsletters, avail_days: [], email_notification: [])
+      params.require(:profile).permit(:user_id, :first_name, :last_name, :image, :open_time, :close_time, :phone, :about, avail_days: [])
     end
 end

@@ -23,13 +23,8 @@
                     / %i.glyphicon.glyphicon-user.pull-right.mleft5
                   %ul.dropdown-menu
                     %li
-                      = link_to messages_path, style: "white-space: normal;" do
-                        %span Messages
-                        %span.glyphicon.glyphicon-cog.pull-right
-                    %li.divider{style: "overflow: visible"}
-                    %li
-                      = link_to my_profile_profiles_path, style: "white-space: normal;" do
-                        %span Profile
+                      = link_to dashboard_profiles_path, style: "white-space: normal;" do
+                        %span Dashboard
                         %span.glyphicon.glyphicon-user.pull-right
                     %li.divider{style: "overflow: visible"}
                     %li
@@ -48,9 +43,9 @@
                         %span.glyphicon.glyphicon-log-out.pull-right
             %li.pa= link_to "Post Ad", new_product_path, class: "pa", style: "color: #fff"
           - else
-            
+
             %li.active.nav-login= link_to "Login", "#login", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
-            %li.active.nav-login= link_to "Register", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"      
+            %li.active.nav-login= link_to "Register", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
             %li.pa= link_to "Post Ad", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
 
 
@@ -133,7 +128,7 @@
               .input-group
                 = check_box_tag :agreement
                 %span.mleft10 By sign up on Cocociti you agree all Terms and policies of Cocociti
-              %span.agreement-error.text-danger{style: "display: none;"} You must agree to sign up. 
+              %span.agreement-error.text-danger{style: "display: none;"} You must agree to sign up.
 
           .form-group.clearfix
             .col-sm-offset-3.col-sm-9

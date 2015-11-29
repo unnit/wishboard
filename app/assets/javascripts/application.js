@@ -218,21 +218,19 @@ $(document).ready(function(){
     minuteStep: 30,
     pickerPosition: "bottom-right"
   });
-
-  //Datepicker in Product page
-  first_avail_date = new Date();
-  $('.datepicker').each(function(){
-    var first_avail = $(this).data('first-avail');
-    if(first_avail.length){
-      first_avail_date = new Date(first_avail);
-    }
-    $(this).datetimepicker({
-      format: "YYYY-MM-DD",
-      stepping: 30,
-      ignoreReadonly: true,
-      sideBySide: true,
-      minDate: first_avail
-    });
+  $(".non_coco_start_date").datetimepicker({
+    format: 'dd-mm-yyyy hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    minuteStep: 30,
+    pickerPosition: "bottom-right"
+  });
+  $(".non_coco_end_date").datetimepicker({
+    format: 'dd-mm-yyyy hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    minuteStep: 30,
+    pickerPosition: "bottom-right"
   });
 
   $("#myTab .tab-pane").mCustomScrollbar({
@@ -258,7 +256,7 @@ $(document).ready(function(){
     });
   });
 
-  $(".check_zip").on("change", function() {
+  $(".check_zip").on("focusout", function() {
     $.get("/home/get_state_and_city", {
       zip: $(this).val()
     }, function(result) {

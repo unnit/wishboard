@@ -37,7 +37,7 @@
                 %label.col-sm-2.control-label.pro-detail{for: "textinput"} Sub-category
                 = f.hidden_field :category_id
                 #sub-categories.col-sm-10
-                
+
               .form-group.none-free
                 %label.col-sm-2.control-label.pro-detail Price
                 .col-sm-2
@@ -191,7 +191,7 @@
     $(function() {
     if ("#{@error_messages}" != "")
     {
-        swal({html: "<ul style='text-align:left;padding-left:32%;'><li>#{raw(@error_messages)}</li></ul>", type: "warning"});
+        swal({html: "<ul style='text-align:left;'><li>#{raw(@error_messages)}</li></ul>", type: "warning"});
     }
     $.get("/products/sub_categories", {
       category: "#{@selected_cat}",

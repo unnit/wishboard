@@ -14,18 +14,18 @@
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} First Name
             .col-sm-3
-              = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 200
+              = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 200, required: true
             %label.col-sm-2.control-label{:for => "textinput"} Last Name
             .col-sm-3
-              = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200
+              = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200, required: true
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Phone No
             .col-sm-3
-              = f.text_field :phone, :placeholder => "Phone No", class: "form-control", maxlength: 10
+              = f.text_field :phone, :placeholder => "Phone No", class: "form-control", maxlength: 10, required: true
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} About
             .col-sm-6
-              = f.text_area :about, class: "form-control textarea", row: "5", placeholder: "About You", maxlength: 1000
+              = f.text_area :about, class: "form-control textarea", row: "5", placeholder: "About You", maxlength: 1000, required: true
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Profile Pic
             .col-sm-10
@@ -45,20 +45,20 @@
           = fields_for 'address' do |af|
             .form-group
               %label.col-sm-2.control-label Address Line 1
-              .col-sm-4= af.text_field :address1, class: "form-control", required: true, placeholder: "Flat/House No, Floor, Building"
+              .col-sm-4= af.text_field :address1, class: "form-control", required: true, placeholder: "Flat/House No, Floor, Building", maxlength: 200
             .form-group
               %label.col-sm-2.control-label Address Line 2
-              .col-sm-4= af.text_field :address2, class: "form-control", required: true, placeholder: "Colony/Society, Street, Locality/Area"
+              .col-sm-4= af.text_field :address2, class: "form-control", required: true, placeholder: "Colony/Society, Street, Locality/Area", maxlength: 200
+            .form-group
+              %label.col-sm-2.control-label Pincode
+              .col-sm-4= af.text_field :zip, class: "form-control check_zip", required: true, maxlength: 10
             .form-group
               %label.col-sm-2.control-label Town/City
-              .col-sm-4= af.text_field :city, class: "form-control city", required: true
+              .col-sm-4= af.text_field :city, class: "form-control city", required: true, maxlength: 200
             .form-group
               %label.col-sm-2.control-label State
               .col-sm-4
-                = af.select :state, options_for_select(india_states), {prompt: 'State'}, class: "select_box state selectpicker"
-            .form-group
-              %label.col-sm-2.control-label Pincode
-              .col-sm-4= af.text_field :zip, class: "form-control check_zip", required: true
+                = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", required: true
           .form-group
             .col-sm-4
               %h3.mtop10 Availability
@@ -72,11 +72,11 @@
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Open Time
             .col-sm-4
-              = f.select :open_time, options_for_select(Profile.create_open_close_time, @profile.open_time), {}, class: "selectpicker"
+              = f.select :open_time, Profile.create_open_close_time, {include_blank: "Select Open Time"}, class: "coco-select-box", required: true
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Close Time
             .col-sm-4
-              = f.select :close_time, options_for_select(Profile.create_open_close_time, @profile.close_time), {}, class: "selectpicker"
+              = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
           .form-group
             .col-sm-offset-2.col-sm-10
               .pull-right

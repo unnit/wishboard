@@ -367,10 +367,6 @@ class Product < ActiveRecord::Base
     title
   end
 
-  def operator
-    OPERATOR_TYPE[operator_type || 0]
-  end
-
   def reviews_count
     return "( no ) Reviews" if reviews.blank?
     return "( 1 ) Review" if reviews.count == 1

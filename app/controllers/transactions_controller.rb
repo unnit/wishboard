@@ -1,12 +1,15 @@
 class TransactionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:callback]
-  before_filter :authenticate_user!, except: [:get_price]
-  before_filter :set_product, only: [:new, :create, :get_price]
-  before_filter :set_transaction, only: [:accept, :deny]
-  before_filter :check_product_availability, only: [:new]
+  before_filter :authenticate_user!
+  before_filter :set_transaction, only: [:accept, :deny, :checkout, :delete_non_coco]
+  before_filter :check_product_owner, only: [:accept, :deny, :delete_non_coco]
+  before_filter :set_product, only: [:new, :create, :checkout, :non_coco]
+  before_filter :check_product_availability, only: [:new, :create]
 
   def new
     #TransactionsResetJob.set(wait: 4.minutes).perform_later
+    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank?
+    params[:operator_type] = Product::OPERATOR_TYPE[1][1] if @product.operator_type == Product::OPERATOR_TYPE[1][1]
     @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
     @transaction.user = current_user
     if @transaction.valid?
@@ -24,6 +27,8 @@ class TransactionsController < ApplicationController
   end
 
   def create
+    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank?
+    params[:operator_type] = Product::OPERATOR_TYPE[1][1] if @product.operator_type == Product::OPERATOR_TYPE[1][1]
     @transaction = Transaction.new
     @transacrion.user = current_user
     @transaction.startdate = session[:start_date_time]
@@ -32,14 +37,10 @@ class TransactionsController < ApplicationController
     @transaction.product = @product
     @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
-    logger.info '********************'
-    logger.info '---------CREATE---------------'
     logger.info @product.owner_type
-    logger.info '********************'
     if @transaction.save
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
-
       redirect_to my_profile_profiles_path
     else
       flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
@@ -47,9 +48,39 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def non_coco
+    unless @product.user == current_user
+      flash[:danger] = "You can't execute this action"
+      redirect_to root_path
+      return
+    end
+    if params[:non_coco_start_date].blank? || params[:non_coco_end_date].blank?
+      flash[:danger] = "Please select a date"
+      redirect_to dashboard_profiles_path
+      return
+    end
+    @transaction = Transaction.new
+    @transaction.user = current_user
+    @transaction.startdate = params[:non_coco_start_date]
+    @transaction.enddate = params[:non_coco_end_date]
+    @transaction.operator_type = Product::OPERATOR_TYPE[0][1]
+    @transaction.product = @product
+    @transaction.amount = 0
+    @transaction.status = Transaction::TRANSACTION_STATUS[5][1]
+    if @transaction.save
+      redirect_to dashboard_profiles_path
+      return
+    end
+  end
+
+  def delete_non_coco
+    if @transaction.destroy
+      redirect_to dashboard_profiles_path
+      return
+    end
+  end
+
   def checkout
-    @transaction = current_user.transactions.find params[:id]
-    @product = @transaction.product
     @transaction.amount
     @transaction.generate_txnid!
     @address = current_user.address || current_user.copy_address!
@@ -86,10 +117,16 @@ class TransactionsController < ApplicationController
 
   def set_product
     @product = Product.friendly.find params[:id]
+    if params[:id].blank?
+      @product = @transaction.product
+    end
   end
 
   def set_transaction
     @transaction = Transaction.find params[:id]
+  end
+
+  def check_product_owner
     unless @transaction.seller == current_user
       flash[:danger] = "You can't execute this action"
       redirect_to root_path

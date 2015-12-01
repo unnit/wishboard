@@ -349,8 +349,14 @@ class ProductsController < ApplicationController
         end
       else
         product.transactions.renting.each do |transaction|
-          transaction_start_date_time =  transaction.startdate - 1
-          transaction_end_date_time =  transaction.enddate + 1
+          transaction_start_date_time =  transaction.startdate - 1.hour
+          transaction_end_date_time =  transaction.enddate + 1.hour
+          logger.info '**************************'
+          logger.info search_start_date_time
+          logger.info '**************************'
+          logger.info '**************************'
+          logger.info transaction_end_date_time
+          logger.info '**************************'
           if product.enabled_days.include?("#{search_start_day}") && product.enabled_days.include?("#{search_end_day}") && product.enabled_hours.include?("#{search_start_time}") && product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
           else
             @products = @products.reject{|p| p.id == product.id}

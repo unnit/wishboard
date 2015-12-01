@@ -3,9 +3,11 @@ class TransactionsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :set_transaction, only: [:accept, :deny, :checkout, :delete_non_coco]
   before_filter :check_product_owner, only: [:accept, :deny, :delete_non_coco]
-  before_filter :set_product, only: [:new, :create, :checkout, :non_coco]
-  before_filter :check_product_availability, only: [:new, :create, :checkout]
+  before_filter :set_product, only: [:new, :create, :non_coco]
+  before_filter :check_product_availability, only: [:new, :create]
   before_filter :check_past_dates_and_operator_type, only: [:new, :create]
+  before_filter :product_availability_for_accepted, only: [:checkout]
+  before_filter :basic_checks_before_checkout, only: [:checkout]
 
   def new
     @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
@@ -16,7 +18,8 @@ class TransactionsController < ApplicationController
         @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
         @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
         @transaction.save
-        TransactionsResetJob.set(wait: 10.minutes).perform_later
+        @transaction.generate_txnid!
+        #TransactionsResetJob.set(wait: 10.minutes).perform_later
         redirect_to checkout_transaction_path(@transaction)
       end
     else
@@ -35,6 +38,7 @@ class TransactionsController < ApplicationController
     @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
     if @transaction.save
+      @transaction.generate_txnid!
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
       redirect_to my_profile_profiles_path
@@ -87,13 +91,18 @@ class TransactionsController < ApplicationController
       redirect_to root_path
       return
     end
-    if @transaction.startdate < Time.now.in_time_zone("Kolkata") || @transaction.enddate < Time.now.in_time_zone("Kolkata")
-      flash[:danger] = "Invalid date range. Cannot book for past dates."
-      render :new
-      return
-    end
-    @transaction.amount
-    @transaction.generate_txnid!
+    #if @transaction.startdate < Time.now.in_time_zone("Kolkata") || @transaction.enddate < Time.now.in_time_zone("Kolkata")
+    #  flash[:danger] = "Invalid date range. Cannot book for past dates."
+    #  redirect_to root_path
+    #  return
+    #end
+    logger.info '*****************'
+    logger.info @transaction.security_signature
+    logger.info '*****************'
+    @product = @transaction.product
+    @amount=1
+    @return_url="https://localhost/transactions/callback"
+    #@notifyUrl="http://www.yourwebsite.com/notifyResponsePage.php"
     @address = current_user.address || current_user.copy_address!
   end
 
@@ -108,19 +117,45 @@ class TransactionsController < ApplicationController
   end
 
   def callback
-    id = params["TxId"].split("_").last
-    @transaction = current_user.transactions.find_by_id id
-    if params["TxStatus"] == "PG_REJECTED"
-      flash[:danger] = params["TxMsg"]
-      TransactionMailer.fail(@transaction, params["TxMsg"])
-      redirect_to checkout_transaction_path(@transaction)
+    id = params["TxId"]
+    @transaction = current_user.transactions.find_by_coco_transaction_id id
+    @secret_key = CITRUS_CONFIG[:secret_key]
+
+    @verification_data = params["TxId"]\
+          + params["TxStatus"] \
+          + params["amount"]\
+          + params["pgTxnNo"]\
+          + params["issuerRefNo"]\
+          + params["authIdCode"]\
+          + params["firstName"]\
+          + params["lastName"]\
+          + params["pgRespCode"]\
+          + params["addressZip"]
+    @signature=Transaction.hmac_sha1(@verification_data,@secret_key)
+    logger.info '*****************'
+    logger.info @verification_data
+    logger.info @signature
+    logger.info params["signature"]
+    logger.info '*****************'
+    #render :text=>@verification_data
+    #require 'json'
+    if @signature == params["signature"]
+
+       #@json_object = @data.to_json
+       # take some actions
+       @transaction.paid!(params["transactionId"], params["amount"])
+       @address = current_user.address
+       @address.update_columns first_name: params["firstName"], last_name: params["lastName"], address1: params["addressStreet1"], address2: params["addressStreet2"], city: params["addressCity"], zip: params["addressZip"], state: params["addressState"], country: params["addressCountry"], mobile: params["mobileNo"], email: params["email"]
+       render :thankyou
+
     else
-      @transaction.paid!(params["transactionId"], params["amount"])
-      @address = current_user.address
-      @address.update_columns first_name: params["firstName"], last_name: params["lastName"], address1: params["addressStreet1"],
-                              address2: params["addressStreet2"], city: params["addressCity"], zip: params["addressZip"], state: params["addressState"],
-                              country: params["addressCountry"], mobile: params["mobileNo"], email: params["email"]
-      render :thankyou
+
+       #@response_data = {"Error" => "Transaction Failed","Reason" => "Signature Verification Failed"}
+       #@json_object=@response_data.to_json
+       TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
+       redirect_to checkout_transaction_path(@transaction)
+       # take some actions
+
     end
   end
 
@@ -128,9 +163,6 @@ class TransactionsController < ApplicationController
 
   def set_product
     @product = Product.friendly.find params[:id]
-    if params[:id].blank?
-      @product = @transaction.product
-    end
   end
 
   def set_transaction
@@ -163,17 +195,6 @@ class TransactionsController < ApplicationController
     search_start_date_time = session[:start_date_time].in_time_zone("Kolkata")
     search_end_date_time = session[:end_date_time].in_time_zone("Kolkata")
 
-    #This condition is for those transactions which will happen after confirmation
-    unless @transaction.blank?
-      search_start_day = @transaction.startdate.wday
-      search_start_time = @transaction.startdate.strftime("%H:%M")
-      search_end_day = @transaction.enddate.wday
-      search_end_time = @transaction.enddate.strftime("%H:%M")
-
-      search_start_date_time = @transaction.startdate
-      search_end_date_time = @transaction.enddate
-    end
-
     if @product.transactions.renting.blank?
       if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")
       else
@@ -183,8 +204,8 @@ class TransactionsController < ApplicationController
       end
     else
       @product.transactions.renting.each do |transaction|
-        transaction_start_date_time =  transaction.startdate - 1
-        transaction_end_date_time =  transaction.enddate + 1
+        transaction_start_date_time =  transaction.startdate - 1.hour
+        transaction_end_date_time =  transaction.enddate + 1.hour
         if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
         else
           flash[:danger] = "Sorry, Item is not available for the selected dates."
@@ -192,6 +213,56 @@ class TransactionsController < ApplicationController
           return
         end
       end
+    end
+  end
+
+  def product_availability_for_accepted
+    if @transaction.accepted?
+      search_start_day = @transaction.startdate.wday
+      search_start_time = @transaction.startdate.strftime("%H:%M")
+      search_end_day = @transaction.enddate.wday
+      search_end_time = @transaction.enddate.strftime("%H:%M")
+
+      search_start_date_time = @transaction.startdate
+      earch_end_date_time = @transaction.enddate
+
+      if @product.transactions.renting.blank?
+        if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")
+        else
+          flash[:danger] = "Sorry, Item is not available for the selected dates."
+          redirect_to user_product_path(@product)
+          return
+        end
+      else
+        @product.transactions.renting.each do |transaction|
+          transaction_start_date_time =  transaction.startdate - 1.hour
+          transaction_end_date_time =  transaction.enddate + 1.hour
+          if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
+          else
+            flash[:danger] = "Sorry, Item is not available for the selected dates."
+            redirect_to user_product_path(@product)
+            return
+          end
+        end
+      end
+    end
+  end
+
+  def basic_checks_before_checkout
+    unless @transaction.user == current_user
+      flash[:danger] = "Sorry, You can't execute this action"
+      redirect_to root_path
+      return
+    end
+    if @transaction.expired?
+      flash[:danger] = "Sorry, This transaction got expired, Please select the product again."
+      redirect_to root_path
+      return
+    end
+    if @transaction.paid?
+      flash[:danger] = "Sorry, You cannot access this page."
+      redirect_to root_path
+      return
     end
   end
 

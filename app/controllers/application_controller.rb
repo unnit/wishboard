@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def check_profile
     if current_user && !current_user.finished_info?
-      redirect_to settings_path, alert: "please fill your profile before continue."
+      redirect_to settings_path, alert: "Please fill your profile before continue."
     end
   end
 end

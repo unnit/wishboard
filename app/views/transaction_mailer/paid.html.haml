@@ -1,13 +1,13 @@
 Dear #{@user.name},
 %br
-you has successfully paid for the order of #{@product.name}.
+You has successfully paid for the order of #{@product.name}.
 %br
 
 %strong Owner:
 = @owner.name
 %br
 %strong TransactionID:
-= @transaction.txnid
+= @transaction.coco_transaction_id
 %br
 %strong Duration:
 = @transaction.duration

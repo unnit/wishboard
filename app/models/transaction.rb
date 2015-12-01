@@ -1,5 +1,7 @@
-require 'openssl'
 require 'hmac-sha1'
+require 'base64'
+require 'cgi'
+require 'openssl'
 
 class Transaction < ActiveRecord::Base
   acts_as_messageable
@@ -31,23 +33,36 @@ class Transaction < ActiveRecord::Base
     days
   end
 
-  def hmac_sha1
-    key = CITRUS_CONFIG[:secret_key]
-    merchant_access_key = CITRUS_CONFIG[:merchant_access_key]
-    data = "merchantAccessKey=#{merchant_access_key}&transactionId=#{txnid}&amount=#{amount}"
-    OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha1'), key, data)
+  def hmac_sha1(data, secret)
+    hmac = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret.encode("ASCII"), data.encode("ASCII"))
+    return hmac
+  end
+
+  def self.hmac_sha1(data, secret)
+    hmac = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret.encode("ASCII"), data.encode("ASCII"))
+    return hmac
+  end
+
+  def security_signature
+    @access_key = "HONXN1991PP1DDWG6CF2"#CITRUS_CONFIG[:merchant_access_key]
+    @secret_key  = "0e79d25da17d97df835d2c7a7dd262f8096966f2"#CITRUS_CONFIG[:secret_key]
+    @txn_id = self.coco_transaction_id
+    @amount = 1
+    @data_string="merchantAccessKey=#{@access_key}&transactionId=#{@txn_id}&amount=#{@amount}"
+    @securitySignature= hmac_sha1(@data_string,@secret_key) # signature generated
+    return @securitySignature
   end
 
   def seller
     product.user
   end
 
-  def accepted?
-    status == Transaction::TRANSACTION_STATUS[6][1]
-  end
-
   def display_status
     status.humanize
+  end
+
+  def accepted?
+    status == Transaction::TRANSACTION_STATUS[6][1]
   end
 
   def paid?
@@ -58,6 +73,10 @@ class Transaction < ActiveRecord::Base
     status == Transaction::TRANSACTION_STATUS[0][1]
   end
 
+  def expired?
+    status == Transaction::TRANSACTION_STATUS[4][1]
+  end
+
   #actions
   def accept!
     update_column :status, Transaction::TRANSACTION_STATUS[6][1]
@@ -66,16 +85,16 @@ class Transaction < ActiveRecord::Base
 
   def deny!
     update_column :status, Transaction::TRANSACTION_STATUS[3][1]
-    TransactionMailer.deny(self).deliver
+    TransactionMailer.deny(self).deliver_now
   end
 
   def generate_txnid!
-    update_column :txnid, "#{id}-#{SecureRandom.hex(3)}"
+    update_column :coco_transaction_id, "#{id}-#{SecureRandom.hex(7)}"
   end
 
   def paid!(transaction_id, tamount)
     update_columns status: Transaction::TRANSACTION_STATUS[2][1], amount: tamount, txnid: transaction_id
-    TransactionMailer.paid(self).deliver
+    TransactionMailer.paid(self).deliver_now
   end
 
   def transaction_status_name

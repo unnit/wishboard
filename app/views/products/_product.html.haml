@@ -7,7 +7,7 @@
     = link_to "javascript:;" do
       = image_tag product.user.avatar, class: "img-circle profile_pic"
     %h4.media-heading.price-bg
-      = link_to "javascript:;", target: "_parent", class: "bd-#{product.listing_type.downcase}" do
+      = link_to "javascript:;", target: "_parent", class: "bd-#{product.listing_type_name.downcase}" do
         - if product.for_free?
           Free
         - else

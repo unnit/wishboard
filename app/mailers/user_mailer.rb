@@ -10,4 +10,17 @@ class UserMailer < ApplicationMailer
     @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
     mail to: @user.email, subject: "Welcome to Cocociti"
   end
+
+  def reset_password_token_with_instructions(user, token)
+    @user = user
+    @token = token
+    mail to: @user.email, subject: "Reset password instructions"
+  end
+
+  def confirmation_token_with_instructions(user, token)
+    @user = user
+    @token = token
+    mail to: @user.email, subject: "Account confirmation instructions"
+  end
+
 end

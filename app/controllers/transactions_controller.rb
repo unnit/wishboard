@@ -30,7 +30,7 @@ class TransactionsController < ApplicationController
 
   def create
     @transaction = Transaction.new
-    @transacrion.user = current_user
+    @transaction.user = current_user
     @transaction.startdate = session[:start_date_time]
     @transaction.enddate = session[:end_date_time]
     @transaction.operator_type = params[:operator_type]
@@ -41,7 +41,7 @@ class TransactionsController < ApplicationController
       @transaction.generate_txnid!
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
-      redirect_to my_profile_profiles_path
+      redirect_to dashboard_profiles_path
     else
       flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
       render :new
@@ -140,7 +140,6 @@ class TransactionsController < ApplicationController
     #render :text=>@verification_data
     #require 'json'
     if @signature == params["signature"]
-
        #@json_object = @data.to_json
        # take some actions
        @transaction.paid!(params["transactionId"], params["amount"])

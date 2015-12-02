@@ -7,6 +7,11 @@ respond_to :js, :html
     resource = User.new(user_params)
     if resource.save
       user = User.find resource.id
+      confirmation_token = user.generate_account_confirmation_token
+      user.confirmation_token = confirmation_token
+      user.confirmation_sent_at = DateTime.current
+      user.save
+      UserMailer.confirmation_token_with_instructions(user, confirmation_token).deliver_now
       sign_in(user, bypass: true)
       set_flash_message :notice, :signed_up
     end

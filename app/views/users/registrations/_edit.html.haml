@@ -6,7 +6,7 @@
   .panel-body
     .row
       .col-md-12
-        ~ form_for(@user, as: :user, url: registration_path(:user), method: :post, remote: true, html: {class: 'form-horizontal user_form', role: "form", method: :put}) do |f|
+        ~ form_for(@user, as: :user, url: registration_path(:user), remote: true, html: {class: 'form-horizontal user_form', role: "form", method: :put}) do |f|
           .errors= render partial: "/layouts/errors", locals: {errors: @user.errors.full_messages}
           %fieldset
             .form-group
@@ -30,4 +30,4 @@
                 Information where other members are involved (conversations with other people, transactions you've made, reviews you've given to others, etc) is not removed when you delete your account. However, your name will no longer be displayed next to this information.
               .pull-right
                 = link_to user_registration_path, method: :delete do
-                  %button.btn.btn-info.del-button{:type => "button"} Delete My account
+                  %button.btn.btn-info.del-button{:type => "button"} Deactivate My Account

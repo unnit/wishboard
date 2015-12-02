@@ -1,0 +1,22 @@
+.container.head-mar
+  .row
+    .col-md-12
+      %h2 Change your password
+      = form_for(:user, url: password_path(:user), html: { method: :put, class: "form-horizontal" }) do |f|
+        = f.hidden_field :reset_password_token
+        = f.hidden_field :id
+        .form-group
+          .col-md-12.no-mar-pad
+            %label.control-label.pro-detail New Password
+        .form-group
+          .col-md-6.no-mar-pad
+            = f.password_field :password, autofocus: true, class: "form-control", autocomplete: "off"
+        .form-group
+          .col-md-12.no-mar-pad
+            %label.control-label.pro-detail Confirm New Password
+        .form-group
+          .col-md-6.no-mar-pad
+            = f.password_field :password_confirmation, autofocus: true, class: "form-control", autocomplete: "off"
+        .form-group{style: "margin-bottom: 100px;"}
+          .col-md-12.no-mar-pad
+            = f.submit "Change my password", class: "btn btn-info save-button", style: "width:auto;"

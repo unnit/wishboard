@@ -1,0 +1,14 @@
+.container.head-mar
+  .row
+    .col-md-12
+      %h2 Forgot your password?
+      = form_for(:user, url: user_password_path, html: { method: :post, class: "form-horizontal" }) do |f|
+        .form-group
+          .col-md-12.no-mar-pad
+            %label.control-label.pro-detail Email
+        .form-group
+          .col-md-6.no-mar-pad
+            = f.text_field :email, autofocus: true, class: "form-control"
+        .form-group{style: "margin-bottom: 100px;"}
+          .col-md-12.no-mar-pad
+            = f.submit "Send me reset password instructions", class: "btn btn-info save-button", style: "width:auto;"

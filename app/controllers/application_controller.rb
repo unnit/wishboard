@@ -4,10 +4,20 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   skip_before_filter :check_profile, if: :devise_controller?
-  before_filter :set_timezone, :check_profile
+  before_filter :set_timezone, :check_user_status, :check_profile
 
   def set_timezone
     Time.zone = "Kolkata"
+  end
+
+  def check_user_status
+    if user_signed_in?
+      if current_user.inactive
+        flash[:notice] = "Welcome to Cocociti. Please activate your account by following the instructions in email. If you haven't received instructions, Please <a href='/resource/confirmation' method='post'>Click here</a> to resend instructions".html_safe
+        redirect_to root_path
+        return
+      end
+    end
   end
 
   def check_profile

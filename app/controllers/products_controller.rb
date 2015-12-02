@@ -109,8 +109,10 @@ class ProductsController < ApplicationController
   end
 
   def get_price
-    days = (params[:enddate].to_date - params[:startdate].to_date).to_i
-    days = 1 if days == 0
+    unless params[:enddate].blank? || params[:startdate].blank?
+      days = (params[:enddate].to_date - params[:startdate].to_date).to_i
+    end
+    days = 1 if days == 0 || days.blank?
     pay_amount = @product.calculate_price(days, params[:operator_type])
     discount = @product.discount_by_days(days)
     tax = @product.tax_amount(days, params[:operator_type])

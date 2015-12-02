@@ -2,24 +2,24 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable
   acts_as_messageable
-  
+
   has_one :address, dependent: :destroy
   has_many :credentials, dependent: :destroy
   has_many :transactions, dependent: :destroy
   has_many :products, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :reviews, dependent: :destroy
-  
-  
+
+
   has_one :profile, dependent: :destroy
 
   class << self
     def search(term)
       results = joins(:profile)
       unless term.blank?
-        results = results.where("lower(profiles.first_name) like ? or lower(profiles.last_name) like ? or lower(profiles.phone) like ? or lower(users.email) like ? ", 
+        results = results.where("lower(profiles.first_name) like ? or lower(profiles.last_name) like ? or lower(profiles.phone) like ? or lower(users.email) like ? ",
                             "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%")
       end
       results
@@ -37,6 +37,14 @@ class User < ActiveRecord::Base
 
   def can_review?(product)
     transactions.paid.where(product_id: product.id).count > 0
+  end
+
+  def generate_reset_password_token
+    return Digest::SHA1.hexdigest([Time.now, rand].join)
+  end
+
+  def generate_account_confirmation_token
+    return Digest::SHA1.hexdigest([Time.now, rand].join)
   end
 
   def avatar
@@ -61,17 +69,17 @@ class User < ActiveRecord::Base
 
   def profile_id
     create_profile unless profile
-    profile.id 
+    profile.id
   end
 
   def rated_value(product)
     rating = ratings.find_by_product_id product.id
-    return rating ? rating.value : 0 
+    return rating ? rating.value : 0
   end
 
   def review_comment(product)
     review = reviews.find_by_product_id product.id
-    return review ? review.comment : "" 
+    return review ? review.comment : ""
   end
 
   #actions

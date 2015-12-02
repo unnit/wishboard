@@ -1,5 +1,4 @@
 class TransactionMailer < ApplicationMailer
-  default bcc: "hello@cocociti.com"
   #to renter
   def accept(transaction)
     @transaction = transaction

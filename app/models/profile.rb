@@ -22,9 +22,16 @@ class Profile < ActiveRecord::Base
 
   validates :first_name, :last_name, :phone, :avail_days, :open_time, :close_time, presence: true, on: :update
   validates :phone, uniqueness: true, on: :update
-  validates :phone, length: { is: 10 }, on: :update
+  validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update
   validates :phone, numericality: true, on: :update
   validates :about, length: { maximum: 1000 }, on: :update, unless: :about_entered?
+
+  HUMANIZED_ATTRIBUTES = {
+    :phone => "Mobile No"
+  }
+  def self.human_attribute_name(attr, options = {})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
 
   class << self
     def create_open_close_time

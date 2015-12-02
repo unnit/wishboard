@@ -81,6 +81,9 @@
                   %i.fa.fa-lock
                 = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
           .form-group.clearfix
+            .col-sm-offset-3.col-sm-9.text-center
+              = link_to "Forgot password?", new_user_password_path
+          .form-group.clearfix
             .col-sm-offset-3.col-sm-9
               = f.submit "Login",:class => 'btn btn-primary pop-up-but'
       .clearfix

@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_user_status
-    if user_signed_in?
+    if current_user
       if current_user.inactive
-        flash[:notice] = "Welcome to Cocociti. Please activate your account by following the instructions in email. If you haven't received instructions, Please <a href='/resource/confirmation' method='post'>Click here</a> to resend instructions".html_safe
+        flash[:notice] = "Welcome to Cocociti. Please activate your account by following the instructions in email. If you haven't received instructions, Please <a href='/users/confirmation/new' >Click here</a> to resend instructions".html_safe
         redirect_to root_path
         return
       end
@@ -21,8 +21,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_profile
-    if current_user && !current_user.finished_info?
+    if current_user && !current_user.finished_info? && !current_user.inactive
       redirect_to settings_path, alert: "Please fill your profile before continue."
+      return
     end
   end
 end

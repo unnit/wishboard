@@ -24,7 +24,7 @@ class Transaction < ActiveRecord::Base
   scope :dashboard_transactions, -> {where( "transactions.status = ? or transactions.status = ? or transactions.status = ? or transactions.status = ? or transactions.status = ?", Transaction::TRANSACTION_STATUS[0][1], Transaction::TRANSACTION_STATUS[2][1], Transaction::TRANSACTION_STATUS[3][1], Transaction::TRANSACTION_STATUS[4][1], Transaction::TRANSACTION_STATUS[6][1] )}
 
   def duration
-    "#{startdate.strftime('%d %b, %y %H:%M')} - #{enddate.strftime('%d %b, %y %H:%M')}"
+    "#{startdate.strftime('%d %b, %y  %H:%M')} - #{enddate.strftime('%d %b, %y  %H:%M')}"
   end
 
   def duration_days
@@ -75,6 +75,10 @@ class Transaction < ActiveRecord::Base
 
   def expired?
     status == Transaction::TRANSACTION_STATUS[4][1]
+  end
+
+  def past?
+    self.startdate < Time.now.in_time_zone("Kolkata") || self.enddate < Time.now.in_time_zone("Kolkata")
   end
 
   #actions

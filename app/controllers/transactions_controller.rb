@@ -81,28 +81,10 @@ class TransactionsController < ApplicationController
   end
 
   def checkout
-    unless @transaction.user == current_user
-      flash[:danger] = "Sorry, You can't execute this action"
-      redirect_to root_path
-      return
-    end
-    if @transaction.status == Transaction::TRANSACTION_STATUS[4][1]
-      flash[:danger] = "Sorry, This transaction got expired, Please select the product again."
-      redirect_to root_path
-      return
-    end
-    #if @transaction.startdate < Time.now.in_time_zone("Kolkata") || @transaction.enddate < Time.now.in_time_zone("Kolkata")
-    #  flash[:danger] = "Invalid date range. Cannot book for past dates."
-    #  redirect_to root_path
-    #  return
-    #end
-    logger.info '*****************'
-    logger.info @transaction.security_signature
-    logger.info '*****************'
     @product = @transaction.product
     @amount=1
     @return_url="https://localhost/transactions/callback"
-    #@notifyUrl="http://www.yourwebsite.com/notifyResponsePage.php"
+    #@notifyUrl=""
     @address = current_user.address || current_user.copy_address!
   end
 
@@ -137,24 +119,14 @@ class TransactionsController < ApplicationController
     logger.info @signature
     logger.info params["signature"]
     logger.info '*****************'
-    #render :text=>@verification_data
-    #require 'json'
     if @signature == params["signature"]
-       #@json_object = @data.to_json
-       # take some actions
        @transaction.paid!(params["transactionId"], params["amount"])
        @address = current_user.address
        @address.update_columns first_name: params["firstName"], last_name: params["lastName"], address1: params["addressStreet1"], address2: params["addressStreet2"], city: params["addressCity"], zip: params["addressZip"], state: params["addressState"], country: params["addressCountry"], mobile: params["mobileNo"], email: params["email"]
        render :thankyou
-
     else
-
-       #@response_data = {"Error" => "Transaction Failed","Reason" => "Signature Verification Failed"}
-       #@json_object=@response_data.to_json
        TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
        redirect_to checkout_transaction_path(@transaction)
-       # take some actions
-
     end
   end
 
@@ -260,6 +232,11 @@ class TransactionsController < ApplicationController
     end
     if @transaction.paid?
       flash[:danger] = "Sorry, You cannot access this page."
+      redirect_to root_path
+      return
+    end
+    if @transaction.past?
+      flash[:danger] = "Invalid date range. Cannot book for past dates."
       redirect_to root_path
       return
     end

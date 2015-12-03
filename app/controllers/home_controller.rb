@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  skip_before_filter :check_user_status, only: [:index]
+
   def index
   end
 
@@ -6,7 +8,6 @@ class HomeController < ApplicationController
     result={city: "", state: ""}
     address = Geokit::Geocoders::GoogleGeocoder.geocode "#{params[:zip]} India"
     if address
-      logger.info '*************************'
       logger.info address.state
       result[:city] = address.city
       result[:state] = address.state_name

@@ -5,15 +5,17 @@ respond_to :js, :html
 
   def create
     resource = User.new(user_params)
+    resource.skip_confirmation!
     if resource.save
       user = User.find resource.id
-      confirmation_token = user.generate_account_confirmation_token
-      user.confirmation_token = confirmation_token
+      token = user.generate_account_confirmation_token
+      user.confirmation_token = token
       user.confirmation_sent_at = DateTime.current
       user.save
-      UserMailer.confirmation_token_with_instructions(user, confirmation_token).deliver_now
+      user.reload
+      UserMailer.account_token_with_instructions(user, token).deliver_now
       sign_in(user, bypass: true)
-      set_flash_message :notice, :signed_up
+      flash[:notice] = "Welcome to Cocociti. Please activate your account by following the instructions in email. If you haven't received instructions, Please <a href='/users/confirmation/new' >Click here</a> to resend instructions".html_safe
     end
 
     @errors = resource.errors.full_messages

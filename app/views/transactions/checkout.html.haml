@@ -1,12 +1,10 @@
-= content_for :extra_js do
-  = javascript_include_tag "//icp.citruspay.com/js/citrus.js"
-  = javascript_include_tag "//icp.citruspay.com/js/jquery.payment.min.js"
 .container-fluid.aboutpad
   .container
     .col-sm-12
       %h3 Question about payments and refunds? Dial: 96 8686 0303
       = hidden_field_tag :id, @product.id
       .col-md-4.pull-right.no-mar-pad
+        .col-md-12.text-center.padding5{style: "border: 1px solid #06B335;border-radius: 2px;"} Your session expires in 10 mins. Hurry up!
         = image_tag @product.image, style: "width: 100%;"
         %h4.text-center= @product.title
         .col-md-12.mtop10.text-center{style: "font-weight: bold"}
@@ -84,7 +82,7 @@
                   .col-md-6
                     %input.form-control#citrusCardHolder{:type => "text", :value => ""}/
                 .col-md-12.mtop10
-                  %label.col-md-4 Expiry date
+                  %label.col-md-4 Expiry
                   .col-md-3
                     %input.form-control#citrusExpiry{:placeholder => "mm/yy", :type => "text", :value => ""}/
                   %label.col-md-2{style: "text-align: right;"} CVV/CVC
@@ -103,6 +101,8 @@
 
 
 = content_for :extra_js do
+  = javascript_include_tag "//icp.citruspay.com/js/citrus.js"
+  = javascript_include_tag "//icp.citruspay.com/js/jquery.payment.min.js"
   :javascript
     CitrusPay.Merchant.Config = {
           // Merchant details
@@ -136,3 +136,6 @@
         alert(errorResponse);
         console.log(errorResponse);
     }
+    $(document).ready(function(){
+      setTimeout(function(){window.location.href = "#{root_url}";}, 1200000);
+      });

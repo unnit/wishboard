@@ -11,6 +11,7 @@ class Transaction < ActiveRecord::Base
   has_one :address, through: :user
 
   TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"], ["Expired", "4"], ["Non Cocociti Booking", "5"], ["Accepted", "6"]]
+  PAYMENT_GATEWAY_STATUS = ["SUCCESS", "FAIL", "CANCEL", "PG_FORWARD_FAIL"]
 
   validates :user_id, :product_id, :startdate, :enddate, presence: true
   validate :date_range_validation

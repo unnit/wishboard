@@ -94,7 +94,7 @@
       .modal-header.pop-bac
         %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
           %i.fa.fa-times
-        %h4.modal-title Sign Up New User"
+        %h4.modal-title Sign Up New User
       .modal-body
         .col-sm-9.col-sm-offset-3
           = link_to user_omniauth_authorize_path(:facebook), style: "border-radius:0;", class: "btn btn-primary btn-block" do
@@ -126,13 +126,8 @@
                   %i.fa.fa-lock
                 = f.password_field :password_confirmation, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
           .form-group.clearfix
-            = label_tag :agreement, "Agreement", :class => 'col-sm-3 control-label'
-            .col-sm-9
-              .input-group
-                = check_box_tag :agreement
-                %span.mleft10 By sign up on Cocociti you agree all Terms and policies of Cocociti
-              %span.agreement-error.text-danger{style: "display: none;"} You must agree to sign up.
-
+            .col-sm-12
+              %span.mleft10 By signing up, you agree to all Terms and Policies of Cocociti
           .form-group.clearfix
             .col-sm-offset-3.col-sm-9
               = f.submit "Sign up", :class => 'btn btn-primary pop-up-but'

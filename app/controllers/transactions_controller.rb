@@ -1,7 +1,7 @@
 class TransactionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:callback]
   before_filter :authenticate_user!
-  before_filter :set_transaction, only: [:accept, :deny, :checkout, :delete_non_coco]
+  before_filter :set_transaction, only: [:accept, :deny, :checkout, :delete_non_coco, :check_status_and_save_address_of_transaction]
   before_filter :check_product_owner, only: [:accept, :deny, :delete_non_coco]
   before_filter :set_product, only: [:new, :create, :non_coco]
   before_filter :check_product_availability, only: [:new, :create]
@@ -88,6 +88,37 @@ class TransactionsController < ApplicationController
     @address = current_user.address || current_user.copy_address!
   end
 
+  def check_status_and_save_address_of_transaction
+    error_messages = []
+    error_messages << "Sorry, you cannot proceed with the operation." unless @transaction.coco_transaction_id == params[:mid]
+    error_messages << "Sorry, you cannot proceed with the operation. The transaction has expired." if @transaction.expired?
+    @address = current_user.address
+    @address.first_name = params[:first_name]
+    @address.last_name = params[:last_name]
+    @address.address1 = params[:address1]
+    @address.address2 = params[:address2]
+    @address.city = params[:city]
+    @address.zip = params[:zip]
+    @address.state = params[:state]
+    @address.mobile = params[:mobile]
+    @address.email = params[:email]
+
+    @address.valid?
+    logger.info @address.errors.full_messages.first
+
+    unless @address.errors.full_messages.blank?
+      error_messages << @address.errors.full_messages.join("</li><li>")
+    end
+    unless error_messages.blank?
+      logger.info '**********************'
+      render json: {errors: error_messages}
+    else
+      @address.save
+      render json: {errors: ""}
+    end
+
+  end
+
   def accept
     @transaction.accept!
     redirect_to message_path(@transaction)
@@ -120,13 +151,19 @@ class TransactionsController < ApplicationController
     logger.info params["signature"]
     logger.info '*****************'
     if @signature == params["signature"]
-       @transaction.paid!(params["transactionId"], params["amount"])
-       @address = current_user.address
-       @address.update_columns first_name: params["firstName"], last_name: params["lastName"], address1: params["addressStreet1"], address2: params["addressStreet2"], city: params["addressCity"], zip: params["addressZip"], state: params["addressState"], country: params["addressCountry"], mobile: params["mobileNo"], email: params["email"]
-       render :thankyou
+      if params["TxStatus"] == Transaction::PAYMENT_GATEWAY_STATUS[0]
+        @transaction.paid!(params["transactionId"], params["amount"])
+        render :thankyou
+      else
+        TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
+        flash[:alert] = params["TxMsg"]
+        redirect_to checkout_transaction_path(@transaction)
+      end
     else
-       TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
-       redirect_to checkout_transaction_path(@transaction)
+      message = "Signaure Verification failed"
+      flash[:alert] = message
+      TransactionMailer.fail(@transaction, message).deliver_now
+      redirect_to checkout_transaction_path(@transaction)
     end
   end
 

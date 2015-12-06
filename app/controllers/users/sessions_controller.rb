@@ -1,6 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
 # before_filter :configure_sign_in_params, only: [:create]
-  skip_before_filter :check_profile
+  skip_before_filter :check_user_status, :check_profile
   # GET /resource/sign_in
   # def new
   #   super

@@ -67,6 +67,7 @@ Rails.application.routes.draw do
     member do
       post :accept
       post :deny
+      post :check_status_and_save_address_of_transaction
       get :checkout
       delete :delete_non_coco
     end

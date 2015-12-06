@@ -3674,7 +3674,8 @@ textarea.form-group-lg .form-control {
 .btn.focus,
 .btn:focus,
 .btn:hover {
-    color: #333;
+    /*color: #333;*/
+    color: #D8D8D8;
     text-decoration: none
 }
 
@@ -3759,9 +3760,11 @@ fieldset[disabled] .btn-default:hover {
 .btn-primary:focus,
 .btn-primary:hover,
 .open>.dropdown-toggle.btn-primary {
-    color: #fff;
+    /*color: #fff;
     background-color: #286090;
-    border-color: #204d74
+    border-color: #204d74*/
+    color: #D8D8D8;
+    background-color: #E84242;
 }
 
 .btn-primary.active,

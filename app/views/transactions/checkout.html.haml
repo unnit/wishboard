@@ -1,7 +1,7 @@
 .container-fluid.aboutpad
   .container
     .col-sm-12
-      %h3 Question about payments and refunds? Dial: 96 8686 0303
+      %h3 Questions about payments and refunds? Dial: 96 8686 0303
       = hidden_field_tag :id, @product.id
       .col-md-4.pull-right.no-mar-pad
         .col-md-12.text-center.padding5{style: "border: 1px solid #06B335;border-radius: 2px;"} Your session expires in 10 mins. Hurry up!
@@ -20,6 +20,13 @@
         =# hidden_field_tag :notify_url, @transaction.notify_url, id: "citrusNotifyUrl"
 
       .col-md-8
+        .col-md-12
+          .errors{style: "display:none;"}
+            .alert.alert-danger.alert-dismissable{:role => "alert"}
+              %button.close{:type => "button"}
+                %span{:aria => {:hidden => "true"} } &times;
+                %span.sr-only Close
+              %ul
         %h3.col-md-12.mtop20 Billing Address
         = fields_for @address do |af|
           .col-md-12.mtop20
@@ -35,10 +42,10 @@
             %label.col-md-3 Mobile
             .col-md-5= af.text_field :mobile, class: "form-control", id: "citrusMobile", required: true
           .col-md-12.mtop10
-            %label.col-md-3 Street 1
+            %label.col-md-3 Address Line 1
             .col-md-5= af.text_field :address1, class: "form-control", id: "citrusStreet1", required: true
           .col-md-12.mtop10
-            %label.col-md-3 Street 2
+            %label.col-md-3 Address Line 2
             .col-md-5= af.text_field :address2, class: "form-control", id: "citrusStreet2", required: true
           .col-md-12.mtop10
             %label.col-md-3 Zipcode
@@ -125,9 +132,6 @@
             }
     }
 
-      $('#citrusNetbankingButton').on("click", function () { makePayment("netbanking") });
-      $("#citrusCardPayButton").on("click", function () { makePayment("card") });
-
     function citrusServerErrorMsg(errorResponse) {
         alert(errorResponse);
         console.log(errorResponse);
@@ -137,5 +141,42 @@
         console.log(errorResponse);
     }
     $(document).ready(function(){
-      setTimeout(function(){window.location.href = "#{root_url}";}, 1200000);
+      $('#citrusNetbankingButton,#citrusCardPayButton').on("click", function () {
+        button_id = $(this).attr("id");
+        $.post("/transactions/#{@transaction.id}/check_status_and_save_address_of_transaction",
+          { first_name: $("#citrusFirstName").val(),
+            last_name: $("#citrusLastName").val(),
+            address1: $("#citrusStreet1").val(),
+            address2: $("#citrusStreet2").val(),
+            city: $("#citrusCity").val(),
+            state: $("#citrusState").val(),
+            zip: $("#citrusZip").val(),
+            email: $("#citrusEmail").val(),
+            mobile: $("#citrusMobile").val(),
+            mid: "#{@transaction.coco_transaction_id}" },
+            function(result){
+              if(result.errors.length){
+                $(".errors").show();
+                $('html, body').animate({
+                    scrollTop: 0
+                    }, 500);
+                $.each(result, function(index, value){
+                  $(".errors ul").append("<li>" + value + "</li>");
+                });
+              }
+              else{
+                if(button_id == "citrusNetbankingButton"){
+                  makePayment("netbanking")
+                }
+                else if(button_id == "citrusCardPayButton"){
+                  makePayment("card")
+                }
+              }
+          });
       });
+      setTimeout(function(){window.location.href = "#{root_url}";}, 1200000);
+      $("button.close").click(function(){
+        $(".errors ul").empty();
+        $(".errors").hide();
+        })
+    });

@@ -5,6 +5,9 @@ class ProfilesController < ApplicationController
 
   def dashboard
     @conversations = current_user.mailbox.inbox
+    @my_products = current_user.products.page(params[:page]).per(10)
+    @my_transactions = current_user.transactions.dashboard_transactions.page(params[:page]).per(10)
+    @non_coco_transactions = current_user.transactions.non_coco.page(params[:page]).per(10)
   end
 
   def update

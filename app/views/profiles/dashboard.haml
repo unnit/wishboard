@@ -80,10 +80,11 @@
         .col-sm-1 Edit
         .col-sm-1 On / Off
       - i = 1
-      - current_user.products.each do |product|
+      - @my_products.each do |product|
         .col-sm-12.closest.ptop5.pbottom5.dashboard-border{id: "product-#{product.id}"}
           = render partial: "product", locals: {product: product, i: i}
         - i+=1
+      = paginate @my_products
     #my_orders.tab-pane.fade
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
         .col-md-1 Sl No
@@ -93,7 +94,7 @@
         .col-md-2 Status
         .col-md-2.text-right
       - i= 1
-      - current_user.transactions.dashboard_transactions.each do |trans|
+      - @my_transactions.each do |trans|
         .col-md-12.ptop5.pbottom5.dashboard-border
           .col-md-1= i
           .col-md-3= trans.product.title
@@ -106,6 +107,7 @@
             - if trans.accepted?
               = link_to "checkout", checkout_transaction_path(trans)
           - i+=1
+      = paginate @my_transactions
     #non_coco_bookings.tab-pane.fade
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
         .col-sm-1 Sl No
@@ -117,7 +119,7 @@
         .col-sm-2 End Date
         .col-sm-1.text-right
       - i = 1
-      - current_user.products.each do |product|
+      - @my_products.each do |product|
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1= i
           .col-sm-1
@@ -140,6 +142,7 @@
               %button.btn.btn-primary{type: "submit", style: ""}
                 Create
             - i+=1
+      = paginate @my_products
 
     #delete_non_coco_bookings.tab-pane.fade
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
@@ -152,7 +155,7 @@
         .col-sm-2 End Date
         .col-sm-1 Delete
       - i = 1
-      - current_user.transactions.non_coco.each do |transaction|
+      - @non_coco_transactions.each do |transaction|
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1= i
           .col-sm-1
@@ -166,3 +169,4 @@
             = link_to delete_non_coco_transaction_path(transaction), method: :delete, data: {confirm: "Are you sure you want to delete the booking?"} do
               %span.glyphicon.glyphicon-remove
         - i+=1
+      = paginate @non_coco_transactions

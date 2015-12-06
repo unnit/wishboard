@@ -29,8 +29,14 @@ class Transaction < ActiveRecord::Base
   end
 
   def duration_days
-    days = (enddate.to_date - startdate.to_date).to_i
-    days = 1 if days == 0
+    ###------Calculation of days for Pricing------------
+    hours = (enddate - startdate)/3600
+    days_not_rounded = hours/24
+    if days_not_rounded > days_not_rounded.to_i
+      days = days_not_rounded.to_i + 1
+    else
+      days = days_not_rounded.to_i
+    end
     days
   end
 
@@ -45,10 +51,14 @@ class Transaction < ActiveRecord::Base
   end
 
   def security_signature
-    @access_key = "HONXN1991PP1DDWG6CF2"#CITRUS_CONFIG[:merchant_access_key]
-    @secret_key  = "0e79d25da17d97df835d2c7a7dd262f8096966f2"#CITRUS_CONFIG[:secret_key]
+    @access_key = CITRUS_CONFIG[:merchant_access_key]
+    @secret_key  = CITRUS_CONFIG[:secret_key]
     @txn_id = self.coco_transaction_id
-    @amount = 1
+    if Rails.env == "development"
+      @amount = 1
+    else
+      @maount = self.amount
+    end
     @data_string="merchantAccessKey=#{@access_key}&transactionId=#{@txn_id}&amount=#{@amount}"
     @securitySignature= hmac_sha1(@data_string,@secret_key) # signature generated
     return @securitySignature

@@ -40,7 +40,6 @@ class ProductsController < ApplicationController
     @product = current_user.products.build(create_product_params)
     @product.listing_type = Product::LISTING_TYPE[1][1]
     if @product.listing_type == Product::LISTING_TYPE[0][1]
-      logger.info '***************Free'
       @product.price = 0
       @product.security_deposit = 0
       @product.tax = 0
@@ -133,7 +132,15 @@ class ProductsController < ApplicationController
       end
     end
     @days = 1
-    @days = (session[:end_date_time].to_date - session[:start_date_time].to_date).to_i unless session[:end_date_time].blank? || session[:start_date_time].blank?
+    unless session[:end_date_time].blank? || session[:start_date_time].blank?
+      hours = (session[:end_date_time].in_time_zone("Kolkata") - session[:start_date_time].in_time_zone("Kolkata"))/3600
+      days_not_rounded = hours/24
+      if days_not_rounded > days_not_rounded.to_i
+        @days = days_not_rounded.to_i + 1
+      else
+        @days = days_not_rounded.to_i
+      end
+    end
   end
 
   def update_available
@@ -213,21 +220,6 @@ class ProductsController < ApplicationController
   end
 
   def search_options
-    # result = {}
-    # result[:listing_type] = params[:listing_type] unless params[:listing_type].blank?
-    # result[:owner_type] = params[:owner_type] unless params[:owner_type].blank?
-    # if !params[:sub_category_id].blank?
-    #   result[:category_id] = params[:sub_category_id]
-    # elsif !params[:category].blank?
-    #   result[:parent_category_id] = params[:category]
-    # end
-
-    # result[:product_condition] = params[:product_condition] unless params[:product_condition].blank?
-    # result[:price] = params[:price] unless params[:price].blank?
-    # result[:weekly_rent] = params[:weekly_rent] unless params[:weekly_rent].blank?
-    # result[:monthly_rent] = params[:monthly_rent] unless params[:monthly_rent].blank?
-    # result[:location] = params[:location] unless params[:location].blank?
-    # result
     page = params[:page] ||= 1
     h = {page: page}
     tags = []

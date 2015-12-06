@@ -8,6 +8,6 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-Rails.application.config.assets.precompile += %w( jquery.payment.js citrus.js checkout.js admin/categories.js bootstrap-select.css bootstrap-select.js main.js )
+Rails.application.config.assets.precompile += %w( main.js )
 
 Rails.application.config.assets.precompile  << %r(.*.(?:eot|svg|ttf|woff|woff2)$)

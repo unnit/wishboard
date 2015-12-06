@@ -82,8 +82,13 @@ class TransactionsController < ApplicationController
 
   def checkout
     @product = @transaction.product
-    @amount=1
-    @return_url="https://localhost/transactions/callback"
+    if Rails.env == "development"
+      @amount=1
+      @return_url=GLOBAL_VARIABLES[:transaction_return_url]
+    else
+      @amount = @transaction.amount
+      @return_url=GLOBAL_VARIABLES[:transaction_return_url]
+    end
     #@notifyUrl=""
     @address = current_user.address || current_user.copy_address!
   end

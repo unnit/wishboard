@@ -33,14 +33,18 @@
       .col-md-6.rat.pbottom10
         %i.product-rated
           = render partial: "rated", locals: {rate: @product.rate}
-      .col-md-6
-        From Date
-        %br/
-        = session[:start_date_time]
-      .col-md-6
-        To Date
-        %br/
-        = session[:end_date_time]
+      - unless session[:end_date_time].blank? || session[:start_date_time].blank?
+        .col-md-6
+          From Date
+          %br/
+          = session[:start_date_time]
+        .col-md-6
+          To Date
+          %br/
+          = session[:end_date_time]
+      - else
+        .col-md-12
+          Please select a Pick up Date and a Drop off Date and click search.
       ~ form_tag product_checkout_path(@product) do
         .col-md-12
           .tabbable-panel-rs

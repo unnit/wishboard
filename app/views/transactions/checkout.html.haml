@@ -10,9 +10,7 @@
         .col-md-12.mtop10.text-center{style: "font-weight: bold"}
           = @transaction.duration
         %hr.col-md-12.col-xs-12.mtop-v-5
-        - days = (@transaction.enddate.to_date - @transaction.startdate.to_date).to_i
-        - days = 1 if days < 1
-        .col-md-12.summary-info= render partial: "price", locals: {product: @product, days: days}
+        .col-md-12.summary-info= render partial: "price", locals: {product: @product, days: @transaction.duration_days}
         = hidden_field_tag :amount, @amount, id: "citrusAmount"
         = hidden_field_tag :coco_transaction_id, @transaction.coco_transaction_id, id: "citrusMerchantTxnId"
         = hidden_field_tag :signature, @transaction.security_signature, id: "citrusSignature"
@@ -95,6 +93,8 @@
                   %label.col-md-2{style: "text-align: right;"} CVV/CVC
                   .col-md-3
                     %input.form-control#citrusCvv{:type => "text", :value => ""}/
+              .col-md-12.text-center
+                By continuing, you agree to the Terms of Service
               .col-md-12.text-center.mtop10.pbottom50
                 %input.btn.btn-info.save-button.mtop20#citrusCardPayButton{:type => "button", :value => "Pay Now"}/
             #net_banking.tab-pane.fade
@@ -103,6 +103,8 @@
                   %label Select Your Bank
                 .col-md-6
                   %select.coco-select-box#citrusAvailableOptions
+              .col-md-12.text-center
+                By continuing, you agree to the Terms of Service
               .col-md-12.text-center.mtop10.pbottom50
                 %input.btn.btn-info.save-button.mtop20#citrusNetbankingButton{:type => "button", :value => "Pay Now"}/
 

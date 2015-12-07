@@ -2,15 +2,19 @@ Dear #{@user.name},
 %p
   Your order request is accepted by the owner
   %br
+  %br
   %strong Product:
-  = link_to @transaction.product.title, "#{@base_url}#{user_product_path(@owner, @product)}"
+  = link_to @transaction.product.title, "#{@base_url}#{user_product_path(@product)}"
+  %br
   %br
   %strong Owner:
   = @owner.name
   %br
+  %br
   %strong Amount to pay:
   = rupee @transaction.amount
   %br
+  %br
   Please click
   = link_to 'here', "#{@base_url}#{checkout_transaction_path(@transaction)}"
-  to pay for the order.
+  to checkout.

@@ -1,6 +1,6 @@
 Thank you #{@user.name},
 %br
-Your booking is confirmed. Booking details are indicated below.
+Your booking is confirmed. Booking details are mentioned below.
 %br
 %br
 %strong
@@ -12,29 +12,29 @@ Your booking is confirmed. Booking details are indicated below.
   #{@transaction.startdate.strftime('%H:%M, %d-%b-%Y, %a')} &nbsp;&nbsp;To&nbsp;&nbsp; #{@transaction.enddate.strftime('%H:%M, %d-%b-%Y, %a')}
 %br
 %br
-%strong Amount
-= rupee @transaction.amount
+%strong
+  Amount Paid:
+  = rupee @transaction.amount
+%br
+%strong
+  Refundable Deposit:
+  = rupee @transaction.product.security_deposit
 %br
 %br
-%strong Owner:
-= @owner.name
-%br
-%br
-
-
-THank you, NAME.
-
-'Tick Mark'. Your rental request is confirmed. Your booking details are indicated below.
-
-
-ORDER DETAILS HERE:
-
-'insert'Product Owner's name ['s] 'insert' Product Name:
-
-                              'Image' from checkout page
-
-Transaction reference ID: IDIDIDIDIDID
-Total Amount Paid: 00000
-Refundable Security Deposit:00000
-Pickup Location:
-Booking Period: from & to date with time
+%strong
+  Pick Up Location:
+  %br
+  = @owner.name
+  %br
+  = @owner.address.address1
+  %br
+  = @owner.address.address2
+  %br
+  = @owner.address.landmark
+  %br
+  = @owner.address.city
+  %br
+  = @owner.address.state
+  %br
+  = @owner.address.zip
+  %br

@@ -15,7 +15,7 @@ class TransactionMailer < ApplicationMailer
     @user = transaction.user
     @owner = @product.user
     @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
-    mail to: @user.email, subject: "Your order request is denied"
+    mail to: @user.email, subject: "Your booking request is denied"
   end
 
   def fail(transaction, message)
@@ -25,7 +25,7 @@ class TransactionMailer < ApplicationMailer
     @owner = @product.user
     @message = message
     @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
-    mail to: @user.email, subject: "Payment was unsuccessful"
+    mail to: @user.email, subject: @message
   end
 
   def paid(transaction)
@@ -34,7 +34,7 @@ class TransactionMailer < ApplicationMailer
     @user = transaction.user
     @owner = @product.user
     @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
-    mail to: @user.email, subject: "Cocociti booking successful for #{@product.title}"
+    mail to: @user.email, subject: "Booking successful on Cocociti for #{@product.title}"
   end
 
   #to owner

@@ -1,5 +1,5 @@
 = @user.name
-has requested product
+has requested your item
 = @product.title
 for dates
 = @transaction.duration
@@ -10,6 +10,6 @@ for an estimated total
 %strong Message from #{@user.name}:
 = simple_format @message
 %br
-Please click 
+Please click
 = link_to "here", "#{@base_url}#{message_path(@transaction)}"
 to accept or deny the request.

@@ -104,7 +104,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def generate_txnid!
-    update_column :coco_transaction_id, "#{id}-#{SecureRandom.hex(7)}"
+    update_column :coco_transaction_id, "#{id}-#{SecureRandom.hex(3).upcase}"
   end
 
   def paid!(transaction_id, tamount)

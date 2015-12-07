@@ -23,6 +23,7 @@ class ProfilesController < ApplicationController
     end
     @address.address1 = params[:address][:address1]
     @address.address2 = params[:address][:address2]
+    @address.landmark = params[:address][:landmark]
     @address.city = params[:address][:city]
     @address.zip = params[:address][:zip]
     @address.state = params[:address][:state]
@@ -32,6 +33,7 @@ class ProfilesController < ApplicationController
       redirect_to settings_path
       return
     end
+
     if @profile.update(profile_params)
       @address.save
       flash[:success] = 'Your profile has been successfully updated.'
@@ -47,6 +49,6 @@ class ProfilesController < ApplicationController
     end
 
     def profile_params
-      params.require(:profile).permit(:user_id, :first_name, :last_name, :image, :open_time, :close_time, :phone, :about, avail_days: [])
+      params.require(:profile).permit(:user_id, :first_name, :last_name, :gender, :date_of_birth, :image, :open_time, :close_time, :phone, :about, avail_days: [])
     end
 end

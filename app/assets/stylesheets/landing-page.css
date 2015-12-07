@@ -1591,9 +1591,9 @@ font-size:48px;
 
 }
 .tag-ul-li{
- font-size: 13px;
-    color: #000000;
-    font-weight: 600;
+  font-size: 13px;
+  color: #000000;
+  font-weight: 500;
 
 
 }
@@ -2412,3 +2412,5 @@ height:50px;
     margin-bottom: 20px !important;
 }
 .bg-white{background-color: white !important;}
+.border-solid{border: 1px solid #000;}
+.border-light{border: 1px solid #E2E2E2;}

@@ -1,16 +1,40 @@
-Dear #{@user.name},
+Thank you #{@user.name},
 %br
-You has successfully paid for the order of #{@product.name}.
+Your booking is confirmed. Booking details are indicated below.
 %br
-
-%strong Owner:
-= @owner.name
 %br
-%strong TransactionID:
-= @transaction.coco_transaction_id
+%strong
+  Booking ID:
+  = @transaction.coco_transaction_id
 %br
-%strong Duration:
-= @transaction.duration
+%br
+%strong
+  #{@transaction.startdate.strftime('%H:%M, %d-%b-%Y, %a')} &nbsp;&nbsp;To&nbsp;&nbsp; #{@transaction.enddate.strftime('%H:%M, %d-%b-%Y, %a')}
+%br
 %br
 %strong Amount
 = rupee @transaction.amount
+%br
+%br
+%strong Owner:
+= @owner.name
+%br
+%br
+
+
+THank you, NAME.
+
+'Tick Mark'. Your rental request is confirmed. Your booking details are indicated below.
+
+
+ORDER DETAILS HERE:
+
+'insert'Product Owner's name ['s] 'insert' Product Name:
+
+                              'Image' from checkout page
+
+Transaction reference ID: IDIDIDIDIDID
+Total Amount Paid: 00000
+Refundable Security Deposit:00000
+Pickup Location:
+Booking Period: from & to date with time

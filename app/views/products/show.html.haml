@@ -43,8 +43,8 @@
           %br/
           = session[:end_date_time]
       - else
-        .col-md-12
-          Please select a Pick up Date and a Drop off Date and click search.
+        .col-md-12.border-light.text-center.no-mar-pad.padding10
+          Please select a 'Pick up Date' and a 'Drop off Date' and click search.
       ~ form_tag product_checkout_path(@product) do
         .col-md-12
           .tabbable-panel-rs

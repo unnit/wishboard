@@ -1,14 +1,16 @@
 #adv-search.input-group.pull-left.serpa
+  #start_date_and_time_for_search_datepicker.hidden{"data-id" => "#{Time.now.in_time_zone("Kolkata") + 30.minutes}"}
+  #end_date_and_time_for_search_datepicker.hidden{"data-id" => "#{Time.now.in_time_zone("Kolkata") + 6.months}"}
   .col-xs-6.no-mar-pad
-    .input-group.mbottom0.input-append.date.from_date_time
+    .input-group.mbottom0.input-append.date.header_from_date_time
       %span#sizing-addon2.input-group-addon.bg-white
         %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-      = text_field_tag :start_date_time_header, params[:start_date_time], placeholder: "Pickup Date & Time", class: "form-control pickup_date bg-white pon", style: "border-radius:0;font-size: 12px;", readonly: true
+      = text_field_tag :start_date_time_header, params[:start_date_time], placeholder: "Pickup Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 12px;", readonly: true
   .col-xs-6.no-mar-pad
-    .input-group.mbottom0.input-append.date.end_date_time
+    .input-group.mbottom0.input-append.date.header_end_date_time
       %span#sizing-addon2.input-group-addon.bg-white{:style => "border-radius:0;"}
         %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-      = text_field_tag :end_date_time_header, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control dropoff_time bg-white pon", style: "border-radius:0;font-size: 12px;", readonly: true
+      = text_field_tag :end_date_time_header, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 12px;", readonly: true
   .input-group-btn
     .btn-group{role: "group"}
       .dropdown.dropdown-lg

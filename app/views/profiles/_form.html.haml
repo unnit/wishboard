@@ -4,26 +4,44 @@
     %span.pull-right.clickable
       %i.glyphicon.glyphicon-chevron-up
   .row.panel-body
+    #end_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{Time.now.in_time_zone("Kolkata") - 18.years}"}
+    #start_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{Time.now.in_time_zone("Kolkata") - 130.years}"}
     .col-md-12
       ~ form_for @profile, html: {class: 'form-horizontal profile_form', role: "form"} do |f|
-        .errors= render partial: "/layouts/errors", locals: {errors: @profile.errors.full_messages}
+        .errors=# render partial: "/layouts/errors", locals: {errors: @profile.errors.full_messages}
         %fieldset
           .form-group
             .col-sm-4
               %h3.mtop10 You
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} First Name
+            %label.col-sm-2.control-label{:for => "textinput"} First Name*
             .col-sm-3
               = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 200, required: true
-            %label.col-sm-2.control-label{:for => "textinput"} Last Name
+            %label.col-sm-2.control-label{:for => "textinput"} Last Name*
             .col-sm-3
               = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200, required: true
+          - if @profile.date_of_birth.blank? || @profile.gender.blank?
+            .form-group
+              %label.col-sm-2.control-label{:for => "textinput"} Date of Birth**
+              .col-sm-3
+                .input-group.mbottom0.input-append.date.date_of_birth
+                  %span#sizing-addon2.input-group-addon.bg-white
+                    %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+                  = f.text_field :date_of_birth, placeholder: "dd/mm/yyyy", class: "form-control bg-white pon", style: "border-radius:0", readonly: true, required: true
+              %label.col-sm-2.control-label{:for => "textinput"} Gender**
+              .col-sm-5{style: "margin-top:8px;"}
+                = f.radio_button :gender, "#{Profile::GENDER[0]}", required: true
+                %label Male&nbsp;&nbsp;
+                = f.radio_button :gender, "#{Profile::GENDER[1]}", required: true
+                %label Female&nbsp;&nbsp;
+                = f.radio_button :gender, "#{Profile::GENDER[2]}", required: true
+                %label Others
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Phone No
+            %label.col-sm-2.control-label{:for => "textinput"} Phone No*
             .col-sm-3
               = f.text_field :phone, :placeholder => "Phone No", class: "form-control", maxlength: 10, required: true
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} About
+            %label.col-sm-2.control-label{:for => "textinput"} About*
             .col-sm-6
               = f.text_area :about, class: "form-control textarea", row: "5", placeholder: "About You", maxlength: 1000, required: true
           .form-group
@@ -39,42 +57,48 @@
                 .fileupload-preview-remove-image
                   %i.icon-remove.icon-fix
                 %input.listing-image-id{:name => "listing_images[][id]", :type => "hidden"}
+            - if @profile.date_of_birth.blank? || @profile.gender.blank?
+              .col-sm-10.col-sm-offset-2.mtop20.text-right
+                Fields marked with '**' can be only submitted once.
           .form-group
             .col-sm-4
               %h3.mtop10 Address
           = fields_for 'address' do |af|
             .form-group
-              %label.col-sm-2.control-label Address Line 1
+              %label.col-sm-2.control-label Address Line 1*
               .col-sm-4= af.text_field :address1, class: "form-control", required: true, placeholder: "Flat/House No, Floor, Building", maxlength: 200
             .form-group
-              %label.col-sm-2.control-label Address Line 2
+              %label.col-sm-2.control-label Address Line 2*
               .col-sm-4= af.text_field :address2, class: "form-control", required: true, placeholder: "Colony/Society, Street, Locality/Area", maxlength: 200
             .form-group
-              %label.col-sm-2.control-label Pincode
+              %label.col-sm-2.control-label Landmark*
+              .col-sm-4= af.text_field :landmark, class: "form-control", required: true, placeholder: "", maxlength: 200
+            .form-group
+              %label.col-sm-2.control-label Pincode*
               .col-sm-4= af.text_field :zip, class: "form-control check_zip", required: true, maxlength: 10
             .form-group
-              %label.col-sm-2.control-label Town/City
+              %label.col-sm-2.control-label Town/City*
               .col-sm-4= af.text_field :city, class: "form-control city", required: true, maxlength: 200
             .form-group
-              %label.col-sm-2.control-label State
+              %label.col-sm-2.control-label State*
               .col-sm-4
                 = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", required: true
           .form-group
             .col-sm-4
               %h3.mtop10 Availability
           .form-group
-            %label.col-sm-2.control-label.mtop5{:for => "textinput"} Days available
+            %label.col-sm-2.control-label.mtop5{:for => "textinput"} Days Available*
             .col-sm-10.mtop10
               - Date::DAYNAMES.each_with_index do |day, i|
                 %span.mleft15
                   = check_box_tag "profile[avail_days][]", i, @profile.avail_days_arr.include?(i.to_s), class: "styled", id: "#{day}"
                   %label{:for => "#{day}"}= day
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Open Time
+            %label.col-sm-2.control-label{:for => "textinput"} Open Time*
             .col-sm-4
               = f.select :open_time, Profile.create_open_close_time, {include_blank: "Select Open Time"}, class: "coco-select-box", required: true
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Close Time
+            %label.col-sm-2.control-label{:for => "textinput"} Close Time*
             .col-sm-4
               = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
           .form-group

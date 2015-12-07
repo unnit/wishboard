@@ -14,10 +14,7 @@
  *= require style
  *= require bxslider/jquery.bxslider
  *= require bootstrap-slider.min
- *= require jquery.fileupload
- *= require jquery.fileupload-ui
  *= require_self
- *= require sweetalert2
  *= require bootstrap-select
  *= require bootstrap-datetimepicker
  *= require jquery.mCustomScrollbar
@@ -126,6 +123,9 @@ body{
 .no-padding-left{
   padding-left: 0px !important;
 }
+.padding10{
+  padding: 10px;
+}
 .padding5{
   padding:5px;
 }
@@ -138,6 +138,9 @@ body{
 .ptop10{
   padding-top: 10px;
 };
+.ptop70{
+  padding-top: 70px;
+}
 .pbottom10{
   padding-bottom: 10px;
 }

@@ -18,7 +18,6 @@
 //= require bootstrap-slider.min
 //= require bootstrap-select
 //= require jquery.remotipart
-//= require sweetalert2.min
 //= require bootstrap-datetimepicker
 //= require jquery.mCustomScrollbar.concat.min
 
@@ -202,19 +201,25 @@ $(document).ready(function(){
   });
 
   //MASTER SEARCH DATE PICKER
-  $(".from_date_time").datetimepicker({
+  search_start_date = $("#start_date_and_time_for_search_datepicker").data('id');
+  search_end_date = $("#end_date_and_time_for_search_datepicker").data('id');
+  dob_end_date = $("#end_date_and_time_for_dob_datepicker").data('id');
+  dob_start_date = $("#start_date_and_time_for_dob_datepicker").data('id');
+  $(".from_date_time,.header_from_date_time").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
     todayBtn: true,
-    startDate: new Date(),
+    startDate: new Date(search_start_date),
+    endDate: new Date(search_end_date),
     minuteStep: 30,
     pickerPosition: "bottom-right"
   });
-  $(".end_date_time").datetimepicker({
+  $(".end_date_time,.header_end_date_time").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
     todayBtn: true,
-    startDate: new Date(),
+    startDate: new Date(search_start_date),
+    endDate: new Date(search_end_date),
     minuteStep: 30,
     pickerPosition: "bottom-right"
   });
@@ -231,6 +236,24 @@ $(document).ready(function(){
     todayBtn: true,
     minuteStep: 30,
     pickerPosition: "bottom-right"
+  });
+  $(".from_date_time").datetimepicker().on('changeDate', function(){
+    $(".end_date_time").datetimepicker('show');
+  });
+  $(".header_from_date_time").datetimepicker().on('changeDate', function(){
+    $(".header_end_date_time").datetimepicker('show');
+  });
+  $(".non_coco_start_date").datetimepicker().on('changeDate', function(){
+    $(".non_coco_end_date").datetimepicker('show');
+  });
+  $(".date_of_birth").datetimepicker({
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    pickerPosition: "bottom-right",
+    startView: 4,
+    minView: 2,
+    endDate: new Date(dob_end_date),
+    startDate: new Date(dob_start_date)
   });
 
   $("#myTab .tab-pane").mCustomScrollbar({

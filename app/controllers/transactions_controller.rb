@@ -109,13 +109,11 @@ class TransactionsController < ApplicationController
     @address.email = params[:email]
 
     @address.valid?
-    logger.info @address.errors.full_messages.first
 
     unless @address.errors.full_messages.blank?
       error_messages << @address.errors.full_messages.join("</li><li>")
     end
     unless error_messages.blank?
-      logger.info '**********************'
       render json: {errors: error_messages}
     else
       @address.save
@@ -137,6 +135,7 @@ class TransactionsController < ApplicationController
   def callback
     id = params["TxId"]
     @transaction = current_user.transactions.find_by_coco_transaction_id id
+    @product = @transaction.product
     @secret_key = CITRUS_CONFIG[:secret_key]
 
     @verification_data = params["TxId"]\

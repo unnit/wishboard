@@ -1,1 +1,13 @@
-%h4 Checkout successful.
+.container-fluid.text-center.mtop50
+  - @transaction = Transaction.find 29
+  - @product = @transaction.product
+  %h2.mtop20 Boom De Yaada!!
+  %h4.mtop20 Thank You for renting with Cocociti.
+  .col-xs-12.col-md-12.mtop20
+    = image_tag @product.image, width: 250
+  .col-xs-12.col-md-4.col-md-offset-4.mtop20.padding5.border-solid
+    %h3.mtop10 Booking ID: #{@transaction.coco_transaction_id}
+  .col-xs-12.col-md-12.mtop20
+    #{@transaction.startdate.strftime('%H:%M, %d-%b-%Y, %a')} &nbsp;&nbsp;To&nbsp;&nbsp; #{@transaction.enddate.strftime('%H:%M, %d-%b-%Y, %a')}
+  .col-xs-12.col-md-12.text-right.mbottom20
+    = link_to "Back to Home", root_path

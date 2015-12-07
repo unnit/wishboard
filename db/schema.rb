@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202214545) do
+ActiveRecord::Schema.define(version: 20151206221338) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20151202214545) do
     t.string   "country",    limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "landmark",   limit: 255
   end
 
   add_index "addresses", ["user_id"], name: "index_addresses_on_user_id", using: :btree
@@ -178,6 +179,8 @@ ActiveRecord::Schema.define(version: 20151202214545) do
     t.string   "avail_days",         limit: 255
     t.string   "open_time",          limit: 255
     t.string   "close_time",         limit: 255
+    t.string   "gender",             limit: 255
+    t.date     "date_of_birth"
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
@@ -237,7 +240,7 @@ ActiveRecord::Schema.define(version: 20151202214545) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role",                   limit: 255, default: "user"
-    t.boolean  "inactive",               limit: 1,   default: false
+    t.boolean  "inactive",               limit: 1,   default: true
     t.string   "unlock_token",           limit: 255
     t.datetime "locked_at"
     t.integer  "failed_attempts",        limit: 4,   default: 0

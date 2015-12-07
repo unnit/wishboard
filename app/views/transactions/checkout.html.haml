@@ -116,7 +116,7 @@
     CitrusPay.Merchant.Config = {
           // Merchant details
           Merchant: {
-              accessKey: 'HONXN1991PP1DDWG6CF2', //Replace with your access key
+              accessKey: "#{CITRUS_CONFIG[:merchant_access_key]}", //Replace with your access key
               vanityUrl: 'cocociti'  //Replace with your vanity URL
           }
       };
@@ -176,7 +176,8 @@
               }
           });
       });
-      setTimeout(function(){window.location.href = "#{root_url}";}, 1200000);
+      var timeout_seconds = "#{GLOBAL_VARIABLES[:time_out]}"*60*3600
+      setTimeout(function(){window.location.href = "#{root_url}";}, timeout_seconds);
       $("button.close").click(function(){
         $(".errors ul").empty();
         $(".errors").hide();

@@ -13,6 +13,8 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def login
+    logger.info resource.class.name
+    logger.info resource
     sign_in(resource.class.name.underscore.to_sym, resource)
     flash[:notice] = "Signed in successfully." if current_user
     render "create.js"

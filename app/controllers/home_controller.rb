@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
-  skip_before_filter :check_user_status, only: [:index]
+  skip_before_filter :check_user_status, only: [:index, :get_state_and_city]
+  skip_before_filter :check_profile, only: [:get_state_and_city]
 
   def index
   end

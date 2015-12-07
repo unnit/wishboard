@@ -39,7 +39,7 @@
                 #sub-categories.col-sm-10
 
               .form-group.none-free
-                %label.col-sm-2.control-label.pro-detail Price
+                %label.col-sm-2.control-label.pro-detail Rent
                 .col-sm-2
                   = f.text_field :price, placeholder: "Perday", class: "form-control", maxlength: 10
                 %label.col-sm-2.control-label.pro-detail Security Deposit
@@ -189,10 +189,6 @@
     });
     var toggleOperator;
     $(function() {
-    if ("#{@error_messages}" != "")
-    {
-        swal({html: "<ul style='text-align:left;'><li>#{raw(@error_messages)}</li></ul>", type: "warning"});
-    }
     $.get("/products/sub_categories", {
       category: "#{@selected_cat}",
       selected: "#{@selected_sub}"

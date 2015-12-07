@@ -1,13 +1,16 @@
 - unless flash.blank?
-  .mtop50
   - flash.each do |name, msg|
     - type = name.to_s
     - type = "danger" if type == 'error' || type=='alert'
     - type = 'success' if type == 'notice'
-    = content_tag :div, :class => "mbottom0 alert alert-#{type} alert-dismissable", :role => "alert" do
+    = content_tag :div, :class => "mbottom0 alert alert-#{type} alert-dismissable mtop50", :role => "alert" do
       %button.close{:type => "button", :data => {:dismiss => "alert"} }
         %span{:aria => {:hidden => "true"} } &times;
         %span.sr-only Close
-      = msg.html_safe
+      - if type == 'error' || type=='alert' || type=="danger"
+        %ul
+          %li= msg.html_safe
+      - else
+        = msg.html_safe
 
   - flash.discard

@@ -2,8 +2,10 @@ development:
   time_out: 7
   root_url: "https://localhost"
   transaction_return_url: "https://localhost/transactions/callback"
+  admin_mail: "hello@cocociti.com"
 
 production:
   time_out: 7
   root_url: "https://www.cocociti.com"
   transaction_return_url: "https://www.cocociti.com/transactions/callback"
+  admin_mail: "hello@cocociti.com"

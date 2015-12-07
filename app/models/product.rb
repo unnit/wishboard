@@ -115,7 +115,8 @@ class Product < ActiveRecord::Base
   scope :featured, -> {where featured: true}
 
   HUMANIZED_ATTRIBUTES = {
-    :owner_type => "Booking Type"
+    owner_type: "Booking Type",
+    price: "Rent"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super

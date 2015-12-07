@@ -11,6 +11,10 @@ class Profile < ActiveRecord::Base
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
+  GENDER = ["male", "female", "other"]
+  MONTHS = [["Jan", 1], ["Feb", 2], ["Mar", 3], ["Apr", 4], ["May", 5], ["Jun", 6], ["Jul", 7],
+   ["Aug", 8], ["Sep", 9], ["Oct", 10], ["Nov", 11], ["Dec", 12]]
+
   serialize :email_notification
   serialize :avail_days
 
@@ -20,7 +24,10 @@ class Profile < ActiveRecord::Base
   acts_as_mappable through: :location
   accepts_nested_attributes_for :location
 
-  validates :first_name, :last_name, :phone, :avail_days, :open_time, :close_time, presence: true, on: :update
+  validates :first_name, :last_name, :phone, :avail_days, :open_time, :close_time, :gender, :date_of_birth, presence: true, on: :update
+  validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_entered?, on: :update
+  validates_date :date_of_birth, :before => lambda { 18.years.ago },
+                               :before_message => ": Must be at least 18 years old", on: :update
   validates :phone, uniqueness: true, on: :update
   validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update
   validates :phone, numericality: true, on: :update
@@ -31,6 +38,10 @@ class Profile < ActiveRecord::Base
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+
+  def gender_entered?
+    gender.blank?
   end
 
   class << self

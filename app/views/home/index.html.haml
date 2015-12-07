@@ -17,12 +17,12 @@
                       .input-group.mbottom0.input-append.date.from_date_time
                         %span#sizing-addon2.input-group-addon.bg-white
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = text_field_tag :start_date_time, params[:start_date_time], placeholder: "Pickup Date & Time", class: "form-control pickup_date bg-white pon", style: "border-radius:0", readonly: true
+                        = text_field_tag :start_date_time, params[:start_date_time], placeholder: "Pickup Date & Time", class: "form-control bg-white pon", style: "border-radius:0", readonly: true
                     .col-md-3.land-src-mar
                       .input-group.mbottom0.input-append.date.end_date_time
                         %span#sizing-addon2.input-group-addon.bg-white{:style => "border-radius:0;"}
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = text_field_tag :end_date_time, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control dropoff_time bg-white pon", style: "border-radius:0", readonly: true
+                        = text_field_tag :end_date_time, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0", readonly: true
                     .col-md-3.land-src-mar
                       .form-group.mbottom0
                         /= text_field_tag :term, "", placeholder: "Search an Item", class: "form-control", style: "border-radius:0"
@@ -171,18 +171,6 @@
             .col-md-3
               %ul.tag-ul
                 %li.tag-ul-h
-                  = link_to products_path(category_id: cat.id) do
-                    %h4.tag-ul-h4= cat.name
+                  %h4.tag-ul-h4= cat.name
                 - cat.subs.each do |sub|
-                  %li.tag-ul-li=link_to sub.name, products_path(sub_category_id: sub.id)
-
-
-
-
-/ %h1{"ng-if" => "name"}
-/   Hello, {{name}}
-
-
-/ %form.form-inline
-/   .form-group
-/     = text_field_tag :name, "", class: "form-control", placeholder: "Enter your name", autofocus: true, "ng-model" => "name"
+                  %li.tag-ul-li= sub.name

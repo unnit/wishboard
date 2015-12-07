@@ -18,7 +18,7 @@
               %ul.pro-view
                 %li.dropdown
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
-                    = current_user.name
+                    = "Hi #{current_user.name}"
                     %span.avatar.pull-right.mleft5{style: "margin-top: -15px; margin-right: 1px;"}= image_tag current_user.avatar, class: 'pull-right', height: "48"
                     / %i.glyphicon.glyphicon-user.pull-right.mleft5
                   %ul.dropdown-menu

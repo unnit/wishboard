@@ -24,4 +24,10 @@ module ApplicationHelper
     html = sign ? "<i class='fa fa-inr'></i> #{amount}" : "#{amount}"
     html.html_safe
   end
+
+  def email_image_tag(image, **options)
+    attachments[image] = File.read(Rails.root.join("app", "assets", "images", "emails", "#{image}"))
+    image_tag attachments[image].url, **options
+  end
+
 end

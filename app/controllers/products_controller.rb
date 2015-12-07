@@ -66,7 +66,7 @@ class ProductsController < ApplicationController
       redirect_to user_product_path(@product)
     else
       set_category if @product.category
-      @error_messages = @product.errors.full_messages.join('</li><li>')
+      flash[:danger] = @product.errors.full_messages.join('<br>')
       render :new
     end
   end
@@ -102,7 +102,7 @@ class ProductsController < ApplicationController
       redirect_to user_product_path(@product)
     else
       set_category if @product.category
-      @error_messages = @product.errors.full_messages.join('</li><li>')
+      flash[:danger] = @product.errors.full_messages.join('<br>')
       render :edit
     end
   end

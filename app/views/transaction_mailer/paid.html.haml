@@ -1,40 +1,57 @@
-Thank you #{@user.name},
-%br
-Your booking is confirmed. Booking details are mentioned below.
-%br
-%br
-%strong
-  Booking ID:
-  = @transaction.coco_transaction_id
-%br
-%br
-%strong
-  #{@transaction.startdate.strftime('%H:%M, %d-%b-%Y, %a')} &nbsp;&nbsp;To&nbsp;&nbsp; #{@transaction.enddate.strftime('%H:%M, %d-%b-%Y, %a')}
-%br
-%br
-%strong
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  Your booking is successful. Thank you #{@user.name}, for using Cocociti.
+
+%span{style: "float:left;margin-bottom:20px;width:100%;font-size:14px;"}
   Amount Paid:
-  = rupee @transaction.amount
-%br
-%strong
+  %strong{style: "font-size:24px;"}
+    &#8377;
+    = rupee @transaction.amount
+
+%span{style: "font-size:14px;float:left;margin-bottom:30px;width:100%;"}
   Refundable Deposit:
-  = rupee @transaction.product.security_deposit
-%br
-%br
-%strong
+  %strong{style: "font-size:16px;"}
+    &#8377
+    = rupee @transaction.product.security_deposit
+
+%span{style: "width: 100%;float:left;margin-bottom:30px;text-align:center;"}
+  %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+    Booking ID:
+    %strong{style:"padding:0px;"}
+      = @transaction.coco_transaction_id
+
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  = image_tag @product.image, width: 250
+
+  Pick up Date:
+  %span{style: "width:100% !important;padding: 5px;background-color: #2D2D2D;color: white;font-weight:bold;"}
+    #{@transaction.startdate.strftime('%H:%M, %d-%b-%Y, %a')}
+  %br
+  %br
+  Drop off Date:
+  %span{style: "width:100% !important;padding: 5px;background-color: #2D2D2D;color: white;font-weight:bold;"}
+    #{@transaction.enddate.strftime('%H:%M, %d-%b-%Y, %a')}
+
+
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
   Pick Up Location:
   %br
-  = @owner.name
-  %br
-  = @owner.address.address1
-  %br
-  = @owner.address.address2
-  %br
-  = @owner.address.landmark
-  %br
-  = @owner.address.city
-  %br
-  = @owner.address.state
-  %br
-  = @owner.address.zip
-  %br
+  %strong
+    = @owner.name
+    %br
+    = @owner.address.address1
+    %br
+    = @owner.address.address2
+    %br
+    = @owner.address.landmark
+    %br
+    = @owner.address.city
+    %br
+    = @owner.address.state
+    %br
+    = @owner.address.zip
+    %br
+
+%span{style: "font-size:16px;float:left;margin-bottom:20px;width:100%;"}
+  We wish you a wonderful renting experience!!!
+%span{style: "font-size:16px;float:left;margin-bottom:20px;width:100%;"}
+  For further assistance with your booking, please email us at hello@cocociti.com or call us at 96 8686 0303.

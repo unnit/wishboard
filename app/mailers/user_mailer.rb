@@ -7,7 +7,6 @@ class UserMailer < ApplicationMailer
 
   def welcome(user)
     @user = user
-    @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
     mail to: @user.email, subject: "Welcome to Cocociti"
   end
 

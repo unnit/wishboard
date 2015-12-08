@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
 
   private
   def notificate
-    UserMailer.welcome(self).deliver_now
+    #UserMailer.welcome(self).deliver_now
     AdminMailer.new_user(self).deliver_now
   end
 end

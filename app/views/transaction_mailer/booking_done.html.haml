@@ -1,13 +1,37 @@
-Dear #{@owner.name},
-%p
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;text-align:left;"}
+  Dear #{@owner.name},
+
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
   = @user.name
   has paid for the order of #{@product.name}.
+
+%span{style: "float:left;margin-bottom:20px;width:100%;font-size:14px;"}
+  Amount Paid:
+  %strong{style: "font-size:24px;"}
+    &#8377;
+    = rupee @transaction.amount
+
+%span{style: "font-size:14px;float:left;margin-bottom:30px;width:100%;"}
+  Refundable Deposit:
+  %strong{style: "font-size:16px;"}
+    &#8377;&nbsp;
+    = rupee @transaction.product.security_deposit
+
+%span{style: "width: 100%;float:left;margin-bottom:30px;text-align:center;"}
+  %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+    Booking ID:
+    %strong{style:"padding:0px;"}
+      = @transaction.coco_transaction_id
+
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  = image_tag @product.image, width: 250
+
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  Pick up Date:
+  %span{style: "width:100% !important;padding: 5px;background-color: #2D2D2D;color: white;font-weight:bold;"}
+    #{@transaction.startdate.strftime('%H:%M, %d-%b-%Y, %a')}
   %br
-  %strong TransactionID:
-  = @transaction.txnid
   %br
-  %strong Duration:
-  = @transaction.duration
-  %br
-  %strong Amount
-  = rupee @transaction.amount
+  Drop off Date:
+  %span{style: "width:100% !important;padding: 5px;background-color: #2D2D2D;color: white;font-weight:bold;"}
+    #{@transaction.enddate.strftime('%H:%M, %d-%b-%Y, %a')}

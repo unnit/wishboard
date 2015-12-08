@@ -17,7 +17,7 @@
     = product.available==true ? "Available" : "Unavailable"
 .col-sm-1= product.transactions.count
 .col-sm-1
-  = link_to edit_product_path(product), class: "btn btn-sm btn-success" do
+  = link_to edit_product_path(product), class: "btn btn-sm btn-success", target: "_blank" do
     %span.glyphicon.glyphicon-pencil
 .col-sm-1.text-right
   = check_box_tag :available, product.available,  product.available, class: "available-switch", data: {id: product.id}

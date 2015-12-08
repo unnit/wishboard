@@ -1,20 +1,27 @@
-Welcome to Cocociti! 
-
+Welcome to Cocociti!
+%br
+%br
 %p
-  Step 1: Click
-  = link_to 'here', "#{@base_url}#{settings_path}"
-  to update profile & start renting.
+  Step 1: Update profile & start renting.
+  = link_to "#{settings_url}" do
+    %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+      Update Profile
   %br
-  Step 2: Click
-  = link_to 'here', "#{@base_url}#{new_product_path}"
-  to create a listing and share your items with others.
   %br
-  Step 3: Click
-  = link_to 'here', "#{@base_url}#{search_products_path}"
-  to browse and save money by taking things on rent.
+  Step 2: Create a listing and share your items with others.
+  = link_to "#{new_product_url}" do
+    %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+      Add Listing
+  %br
+  %br
+  Step 3: Browse and save money by taking things on rent.
+  = link_to "#{search_products_url}" do
+    %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+      Search Items
+  %br
   %br
   Step 4: Like us on
-  = link_to "Facebook", "www.facebook.com/rhythmofnation"
+  = link_to "Facebook", "www.facebook.com/cocociti"
   = "& Follow us on"
   = link_to "Twitter", "www.twitter.com/cocociti"
   to get updates and new offers.

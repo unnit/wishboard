@@ -59,6 +59,7 @@ class TransactionsController < ApplicationController
       redirect_to dashboard_profiles_path
       return
     end
+    logger.info '***************#############'
     @transaction = Transaction.new
     @transaction.user = current_user
     @transaction.startdate = params[:non_coco_start_date]
@@ -68,14 +69,16 @@ class TransactionsController < ApplicationController
     @transaction.amount = 0
     @transaction.status = Transaction::TRANSACTION_STATUS[5][1]
     if @transaction.save
-      redirect_to dashboard_profiles_path
+      flash[:notice] = "Booking done successfully."
+      redirect_to :back
       return
     end
   end
 
   def delete_non_coco
     if @transaction.destroy
-      redirect_to dashboard_profiles_path
+      flash[:notice] = "Booking deleted successfully."
+      redirect_to :back
       return
     end
   end

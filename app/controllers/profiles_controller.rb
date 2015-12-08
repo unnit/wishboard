@@ -4,10 +4,12 @@ class ProfilesController < ApplicationController
   skip_before_filter :check_profile, only: [:update]
 
   def dashboard
-    @conversations = current_user.mailbox.inbox
-    @my_products = current_user.products.page(params[:page]).per(10)
-    @my_transactions = current_user.transactions.dashboard_transactions.page(params[:page]).per(10)
-    @non_coco_transactions = current_user.transactions.non_coco.page(params[:page]).per(10)
+    @conversations = current_user.mailbox.inbox.page(params[:booking_requests_received]).per(20)
+    @my_products = current_user.products.page(params[:my_listings]).per(20)
+    @products_for_non_coco_bookings = current_user.products.page(params[:add_non_coco_bookings]).per(20)
+    @my_transactions = current_user.transactions.dashboard_transactions.page(params[:my_transactions]).per(20)
+    @non_coco_transactions = current_user.transactions.non_coco.page(params[:delete_non_coco_bookings]).per(20)
+    @upcoming_bookings = current_user.transactions.paid.page(params[:upcoming_bookings]).per(20)
   end
 
   def update

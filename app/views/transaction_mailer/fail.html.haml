@@ -1,5 +1,10 @@
 Ayyo!
 %p
-  Your payment of Rs. #{@transaction.amount} for #{@product.title} was unsuccessful. Please click the following link to make payment and book the item successfully.
+  Your payment of Rs. #{@transaction.amount} for #{@product.title} was unsuccessful
   %br
-  = link_to 'checkout', "#{@base_url}#{checkout_transaction_path(@transaction)}"
+  %br
+  %br
+  %br
+  = link_to "#{checkout_transaction_url(@transaction)}", style: "text-decoration: none" do
+    %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+      Try Again

@@ -5,7 +5,6 @@ class TransactionMailer < ApplicationMailer
     @product = transaction.product
     @user = transaction.user
     @owner = @product.user
-    @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
     mail to: @user.email, subject: "Your order request is accepted"
   end
 
@@ -14,7 +13,6 @@ class TransactionMailer < ApplicationMailer
     @product = transaction.product
     @user = transaction.user
     @owner = @product.user
-    @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
     mail to: @user.email, subject: "Your booking request is denied"
   end
 
@@ -24,7 +22,6 @@ class TransactionMailer < ApplicationMailer
     @user = transaction.user
     @owner = @product.user
     @message = message
-    @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
     mail to: @user.email, subject: @message
   end
 
@@ -33,7 +30,6 @@ class TransactionMailer < ApplicationMailer
     @product = transaction.product
     @user = transaction.user
     @owner = @product.user
-    @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
     mail to: @user.email, subject: "Booking successful on Cocociti for #{@product.title}"
   end
 
@@ -44,7 +40,6 @@ class TransactionMailer < ApplicationMailer
     @user = transaction.user
     @owner = @product.user
     @message = message
-    @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
     mail to: @owner.email, subject: "Rent request received for #{@product.title}, accept immediately."
   end
 
@@ -53,8 +48,7 @@ class TransactionMailer < ApplicationMailer
     @product = transaction.product
     @user = transaction.user
     @owner = @product.user
-    @base_url = "#{ActionMailer::Base.default_url_options[:host]}"
-    mail to: @owner.email, subject: "Cocociti booking successful for #{@product.title}"
+    mail to: @owner.email, subject: "Booking successful on Cocociti for #{@product.title}"
   end
 
 end

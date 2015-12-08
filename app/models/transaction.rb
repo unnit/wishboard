@@ -25,7 +25,11 @@ class Transaction < ActiveRecord::Base
   scope :dashboard_transactions, -> {where( "transactions.status = ? or transactions.status = ? or transactions.status = ? or transactions.status = ? or transactions.status = ?", Transaction::TRANSACTION_STATUS[0][1], Transaction::TRANSACTION_STATUS[2][1], Transaction::TRANSACTION_STATUS[3][1], Transaction::TRANSACTION_STATUS[4][1], Transaction::TRANSACTION_STATUS[6][1] )}
 
   def duration
-    "#{startdate.strftime('%d %b, %y  %H:%M')} - #{enddate.strftime('%d %b, %y  %H:%M')}"
+    "#{startdate.strftime('%d %b, %y - %H:%M')} To #{enddate.strftime('%d %b, %y - %H:%M')}"
+  end
+
+  def duration_for_mail
+    "#{startdate.strftime('%H:%M - %d %b, %y')} &nbsp;&nbsp;To&nbsp;&nbsp; #{enddate.strftime('%H:%M - %d %b, %y')}".html_safe
   end
 
   def duration_days
@@ -110,6 +114,7 @@ class Transaction < ActiveRecord::Base
   def paid!(transaction_id, tamount)
     update_columns status: Transaction::TRANSACTION_STATUS[2][1], amount: tamount, txnid: transaction_id
     TransactionMailer.paid(self).deliver_now
+    TransactionMailer.booking_done(self).deliver_now
   end
 
   def transaction_status_name

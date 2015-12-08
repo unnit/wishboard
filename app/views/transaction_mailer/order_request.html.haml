@@ -2,14 +2,17 @@
 has requested your item
 = @product.title
 for dates
-= @transaction.duration
-for an estimated total
+%strong
+  = @transaction.duration_for_mail
+for
+&#8377;
 = rupee @transaction.amount
 %br
 %br
 %strong Message from #{@user.name}:
 = simple_format @message
 %br
-Please click
-= link_to "here", "#{@base_url}#{message_path(@transaction)}"
-to accept or deny the request.
+%br
+= link_to "#{message_url(@transaction)}", style: "text-decoration: none" do
+  %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+    Accept/Deny Request

@@ -27,9 +27,9 @@
                 %small= current_user.products.count == 1 ? "Listing" : "Listings"
             .col-xs-5.round-border.mleft20
               %h2.prof-or-list.mtop10.mbottom0
-                %strong= current_user.transactions.count
+                %strong= current_user.transactions.paid.count
               %p.prof-or-list-test
-                %small= current_user.transactions.count == 1 ? "Order" : "Orders"
+                %small= current_user.transactions.paid.count == 1 ? "Order" : "Orders"
           .col-xs-12.mtop20.text-center
             = link_to "Edit Profile", settings_path, class: "btn btn-success"
   %ul.nav.nav-tabs.mtop20.hidden-xs
@@ -38,7 +38,9 @@
     %li
       %a{"data-toggle" => "tab", :href => "#my_listings"} My Listings
     %li
-      %a{"data-toggle" => "tab", :href => "#my_orders"} Things I Ordered
+      %a{"data-toggle" => "tab", :href => "#my_orders"} My Order Activity
+    %li
+      %a{"data-toggle" => "tab", :href => "#upcoming_bookings"} Upcoming Bookings
     %li
       %a{"data-toggle" => "tab", :href => "#non_coco_bookings"} Add Other Bookings
     %li
@@ -62,10 +64,11 @@
               = link_to message_path(trans) do
                 = conv.subject
             .col-md-2
-              = trans.status.humanize
+              = trans.transaction_status_name
             .col-md-1
               = link_to message_path(conv), class: "btn btn-sm btn-danger", method: :delete, data: {confirm: "Are you sure to delete conversation?"} do
                 %span.glyphicon.glyphicon-trash
+        - paginate @conversations, param_name: "booking_requests_received"
     #my_listings.tab-pane.fade
       .update-error
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
@@ -84,30 +87,49 @@
         .col-sm-12.closest.ptop5.pbottom5.dashboard-border{id: "product-#{product.id}"}
           = render partial: "product", locals: {product: product, i: i}
         - i+=1
-      = paginate @my_products
+      = paginate @my_products, param_name: "my_listings"
     #my_orders.tab-pane.fade
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
         .col-md-1 Sl No
         .col-md-3 Product
-        .col-md-3 Duration
+        .col-md-4 Duration
         .col-md-1.no-mar-pad Amount
-        .col-md-2 Status
+        .col-md-1 Status
         .col-md-2.text-right
       - i= 1
       - @my_transactions.each do |trans|
         .col-md-12.ptop5.pbottom5.dashboard-border
           .col-md-1= i
           .col-md-3= trans.product.title
-          .col-md-3= trans.duration
+          .col-md-4= trans.duration
           .col-md-1.no-mar-pad
             %i.fa.fa-rupee
             = trans.amount || trans.product.calculate_price(trans.duration_days)
-          .col-md-2= trans.transaction_status_name
+          .col-md-1= trans.transaction_status_name
           .col-md-2.text-right
             - if trans.accepted?
               = link_to "checkout", checkout_transaction_path(trans)
           - i+=1
-      = paginate @my_transactions
+      = paginate @my_transactions, param_name: "my_transactions"
+    #upcoming_bookings.tab-pane.fade
+      .col-md-12.alert.alert-info.no-mar-left.dashboard-header
+        .col-sm-1.no-mar-pad No.&nbsp;&nbsp; Image
+        .col-sm-2 Title
+        .col-sm-1 ID
+        .col-sm-2 Category
+        .col-sm-4 Duration
+      - i= 1
+      - @upcoming_bookings.each do |booking|
+        .col-sm-12.ptop5.pbottom5.dashboard-border
+          .col-sm-1
+            %span= i
+            %span.pull-right= image_tag booking.product.image, size: "32x32"
+          .col-sm-2= booking.product.title
+          .col-sm-1= booking.product.id
+          .col-sm-2= booking.product.category_name
+          .col-sm-4= booking.duration
+          - i+=1
+      = paginate @upcoming_bookings, param_name: "upcoming_bookings"
     #non_coco_bookings.tab-pane.fade
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
         .col-sm-1 Sl No
@@ -119,7 +141,7 @@
         .col-sm-2 End Date
         .col-sm-1.text-right
       - i = 1
-      - @my_products.each do |product|
+      - @products_for_non_coco_bookings.each do |product|
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1= i
           .col-sm-1
@@ -142,7 +164,7 @@
               %button.btn.btn-primary{type: "submit", style: ""}
                 Create
             - i+=1
-      = paginate @my_products
+      = paginate @products_for_non_coco_bookings, param_name: "add_non_coco_bookings"
 
     #delete_non_coco_bookings.tab-pane.fade
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
@@ -169,4 +191,4 @@
             = link_to delete_non_coco_transaction_path(transaction), method: :delete, data: {confirm: "Are you sure you want to delete the booking?"} do
               %span.glyphicon.glyphicon-remove
         - i+=1
-      = paginate @non_coco_transactions
+      = paginate @non_coco_transactions, param_name: "delete_non_coco_bookings"

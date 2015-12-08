@@ -1,7 +1,15 @@
 %strong= @user.name
-has invited you to join Cocociti. please click
-= link_to "here", ActionMailer::Base.default_url_options[:host]
-to join
+has invited you to join Cocociti
 %br
-%strong Messages from #{@user.name}:
+%br
+%br
+%br
+= link_to "#{root_url}", style: "text-decoration: none" do
+  %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+    Click to Join
+%br
+%br
+%br
+%br
+%strong Message from #{@user.name}:
 %p= @message

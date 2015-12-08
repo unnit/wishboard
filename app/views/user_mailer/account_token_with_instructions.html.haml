@@ -1,3 +1,27 @@
-%p Welcome #{@user.email}!
+%p{style: "text-align: center;"} Welcome #{@user.email}!
+%br
+%br
 %p You can confirm your account email through the link below:
-%p= link_to 'Confirm my account', user_confirmation_url(id: @user.id, confirmation_token: @token)
+%br
+%br
+= link_to "#{user_confirmation_url(id: @user.id, confirmation_token: @token)}", style: "text-decoration: none" do
+  %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+    Confirm my account
+%br
+%br
+%br
+%br
+%p
+  Step 1: Update profile & start renting.
+  %br
+  %br
+  Step 2: Create a listing and share your items with others.
+  %br
+  Step 3: Browse and save money by taking things on rent.
+  %br
+  %br
+  Step 4: Like us on
+  = link_to "Facebook", "www.facebook.com/cocociti"
+  = "& Follow us on"
+  = link_to "Twitter", "www.twitter.com/cocociti"
+  to get updates and new offers.

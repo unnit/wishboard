@@ -3,18 +3,28 @@ Dear #{@user.name},
   Your order request is accepted by the owner
   %br
   %br
-  %strong Product:
-  = link_to @transaction.product.title, "#{@base_url}#{user_product_path(@product)}"
+  Product:
+  %strong
+    = link_to @transaction.product.title, "#{user_product_url(@product)}"
   %br
   %br
-  %strong Owner:
-  = @owner.name
+  Owner:
+  %strong
+    = @owner.name
   %br
   %br
-  %strong Amount to pay:
-  = rupee @transaction.amount
+  Amount to pay:
+  %strong
+    = rupee @transaction.amount
   %br
   %br
-  Please click
-  = link_to 'here', "#{@base_url}#{checkout_transaction_path(@transaction)}"
-  to checkout.
+  Duration:
+  %strong
+    = @transaction.duration_for_mail
+  %br
+  %br
+  %br
+  %br
+  = link_to "#{checkout_transaction_url(@transaction)}", style: "text-decoration: none" do
+    %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+      Checkout

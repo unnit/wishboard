@@ -5935,8 +5935,9 @@ a.thumbnail:hover {
     background-color: #dff0d8;
     border-color: #d6e9c6*/
     color: #FFFFFF;
-    background-color: #51AB2D;
-    border-color: #FFFFFF;
+    background-color: #61B329;
+    border-top: 1px solid #FFFFFF;
+    font-weight: bold;
 }
 
 .alert-success hr {
@@ -5981,7 +5982,8 @@ a.thumbnail:hover {
     border-color: #ebccd1*/
     color: #FFFFFF;
     background-color: #E84242;
-    border: 1px solid white;
+    border-top: 1px solid #FFFFFF;
+    font-weight: bold;
 }
 
 .alert-danger hr {

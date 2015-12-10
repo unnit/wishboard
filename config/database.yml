@@ -30,10 +30,10 @@ staging:
 
 production:
     adapter: mysql2
-    database: cocodb
+    database: cocodb_prod
     encoding: utf8
-    username: cocodb_user
-    password: cocoadmin123
+    username: cocodb
+    password: DjangoStart1@
     host: localhost
 #    socket: /var/run/mysqld/mysqld.sock
 

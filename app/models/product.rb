@@ -7,7 +7,11 @@ class Product < ActiveRecord::Base
     unless id.blank?
       id = self.id
     else
-      id = Product.maximum(:id).next
+      if Product.maximum(:id).blank?
+        id = 1
+      else
+        id = Product.maximum(:id).next
+      end
     end
     if listing_type == Product::LISTING_TYPE[0][1]
       type_of_listing = "free"
@@ -171,23 +175,27 @@ class Product < ActiveRecord::Base
     image_1_url
   end
 
-  def images
-    arr = []
-    arr << image_1_url unless image_1_url.blank?
-    arr << image_2_url unless image_2_url.blank?
-    arr << image_3_url unless image_3_url.blank?
-    arr << image_4_url unless image_4_url.blank?
-    arr << image_5_url unless image_5_url.blank?
-    arr
+  def image_url
+    image_1_url
   end
 
-  def image_objs
+  def images
     arr = []
     arr << image_1 unless image_1.blank?
     arr << image_2 unless image_2.blank?
     arr << image_3 unless image_3.blank?
     arr << image_4 unless image_4.blank?
     arr << image_5 unless image_5.blank?
+    arr
+  end
+
+  def image_urls
+    arr = []
+    arr << image_1_url unless image_1_url.blank?
+    arr << image_2_url unless image_2_url.blank?
+    arr << image_3_url unless image_3_url.blank?
+    arr << image_4_url unless image_4_url.blank?
+    arr << image_5_url unless image_5_url.blank?
     arr
   end
 

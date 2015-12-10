@@ -84,8 +84,8 @@ Rails.application.configure do
     :authentication => :plain,
     :user_name      => 'cocociti',#"app37675653@heroku.com",
     :password       => 'Cocoadmin123',#"r3pzc9eu1065",
-    :domain         => 'cocociti.com'
+    :domain         => 'www.cocociti.com'
   }
 
-  config.action_mailer.default_url_options = { :host => 'http://cocociti.com' }
+  config.action_mailer.default_url_options = { :host => 'https://www.cocociti.com' }
 end

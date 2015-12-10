@@ -5,7 +5,7 @@
       = hidden_field_tag :id, @product.id
       .col-md-4.pull-right.no-mar-pad
         .col-md-12.text-center.padding5{style: "border: 1px solid #06B335;border-radius: 2px;"} Your session expires in 10 mins. Hurry up!
-        = image_tag @product.image, style: "width: 100%;"
+        = cl_image_tag image.filename, class: "img-responsive img-style-new", width: 253, height: 190, crop: :fill
         %h4.text-center= @product.title
         .col-md-12.mtop10.text-center{style: "font-weight: bold"}
           = @transaction.duration

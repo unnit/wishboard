@@ -30,7 +30,7 @@ gem 'ruby-hmac'
 gem 'sass-rails', '~> 5.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'uglifier', '>= 1.3.0'
-gem "unicorn-rails"
+#gem "unicorn-rails"
 gem "jquery-fileupload-rails"
 gem 'sidekiq', '~> 4.0', '>= 4.0.1'
 gem 'validates_timeliness', '~> 3.0'
@@ -45,7 +45,7 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'capistrano', '~> 3.4.0'
-  gem 'capistrano3-unicorn'
+  #gem 'capistrano3-unicorn'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-passenger'

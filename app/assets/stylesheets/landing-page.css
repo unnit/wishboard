@@ -2289,7 +2289,6 @@ height:50px;
 .img-style-new{
   margin-left: auto;
   margin-right: auto;
-  height: 196px;
 }
 
 .or{
@@ -2359,7 +2358,7 @@ height:50px;
     text-align:center;
     border-radius: 2px;
     border: 1px solid #C1C1C1;
-    padding: 5px;
+    padding: 5px 10px;
 }
 .ht-home-header{height: 60px;}
 .head-mar{
@@ -2407,9 +2406,6 @@ height:50px;
 }
 .post-cat:hover{
   /*background-color: #ff7070;*/
-}
-.bx-wrapper {
-    margin-bottom: 20px !important;
 }
 .bg-white{background-color: white !important;}
 .border-solid{border: 1px solid #000;}

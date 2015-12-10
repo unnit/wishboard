@@ -4,17 +4,17 @@
   .row.mar-des-page
     .col-md-8
       - unless @product.images.blank?
-        %ul.bxslider
+        %ul.bxslider.mbottom10
           - @product.images.each do |image|
-            %li{style: "text-align: center"}= image_tag image, style: "max-height: 650px; margin-left: auto; margin-right: auto;"
-            /%li{style: "text-align: center"}= cl_image_tag image.filename, width: 740, height: 313, crop: :fill
-        #bx-pager
+            /%li{style: "text-align: center"}= image_tag image, style: "max-height: 650px; margin-left: auto; margin-right: auto;"
+            %li{style: "text-align: center"}= cl_image_tag image.filename, width: 740, height: 460, crop: :fill
+        #bx-pager.text-center
           - @product.images.each_with_index do |image, i|
             = link_to "", "data-slide-index" => i do
-              = image_tag image, height: "100"
+              = cl_image_tag image.filename, width: 145, height: 80, crop: :fill
         .col-xs-12.col-md-12.available
           .col-xs-12.col-sm-4
-            = image_tag @product.user.avatar, class: "img-circle", size: "70x70"
+            = cl_image_tag @product.user.avatar, class: "img-circle mtop20", width: 40, height: 40, crop: :fill
             %h6.des-own-det= @product.user.name
           .col-xs-12.col-sm-4
             = image_tag "img/des-assets/time.png", class: "des-assests"
@@ -114,7 +114,7 @@
                 %button#rent-btn.src-but{type: "submit", style: "width: 100%;padding: 0"}= @product.for_free? ? "Get" : "Rent"
               - else
                 %button.src-but{type: "button", style: "width: 100%;padding: 0", data: {toggle: "modal", target: "#login"}}
-                  Login to Rent
+                  Login to Book
   .col-xs-12.col-md-8.mtop20.no-padding-left
     %h4.list-detail-head Description
     %hr.col-md-12.mtop-v-5

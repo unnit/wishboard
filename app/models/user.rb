@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   end
 
   def avatar
-    url = profile.image_url if profile
+    url = profile.image.filename if profile
     url = 'default-user.png' if url.blank?
     url
   end

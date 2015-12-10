@@ -1,19 +1,18 @@
-- height ||= '196px'
 - length ||= 13
 .brdr.bgc-fff.pad-10.box-shad.btm-mrg-20.property-listing
   .media
     = link_to user_product_path(product) do
-      = image_tag product.image, class: "img-responsive img-style-new", style: "height: #{height}"
+      = cl_image_tag image.filename, class: "img-responsive img-style-new", width: 253, height: 190, crop: :fill
     = link_to "javascript:;" do
-      = image_tag product.user.avatar, class: "img-circle profile_pic"
+      = cl_image_tag image.filename, class: "img-circle profile_pic", width: 145, height: 80, crop: :fill
     %h4.media-heading.price-bg
       = link_to "javascript:;", target: "_parent", class: "bd-#{product.listing_type_name.downcase}" do
         - if product.for_free?
           Free
         - else
           %i.fa.fa-rupee= product.price
-    .media-body.fnt-smaller{style: "padding: 15px 10px;"}
-      %ul.list-inline.mrg-0.btm-mrg-10.clr-535353
+    .media-body.fnt-smaller.padding10
+      %ul.list-inline.btm-mrg-10
         %li.name-tag= truncate product.title, length: length
         %li.pull-right.place= truncate product.location_address, length: length
       %div

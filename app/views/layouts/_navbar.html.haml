@@ -18,8 +18,8 @@
               %ul.pro-view
                 %li.dropdown
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
-                    = "Hi #{current_user.name}"
-                    %span.avatar.pull-right.mleft5{style: "margin-top: -15px; margin-right: 1px;"}= image_tag current_user.avatar, class: 'pull-right', height: "48"
+                    %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 5px;"}
+                      == cl_image_tag @product.user.avatar, class: "img-circle pull-right", width: 40, height: 40, crop: :fill
                     / %i.glyphicon.glyphicon-user.pull-right.mleft5
                   %ul.dropdown-menu
                     %li
@@ -41,12 +41,12 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span Sign Out
                         %span.glyphicon.glyphicon-log-out.pull-right
-            %li.pa= link_to "Post Ad", new_product_path, class: "pa", style: "color: #fff"
+            %li.pa= link_to "List your Item", new_product_path, class: "pa", style: "color: #fff"
           - else
 
             %li.active.nav-login= link_to "Login", "#login", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
             %li.active.nav-login= link_to "Register", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
-            %li.pa= link_to "Post Ad", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
+            %li.pa= link_to "List your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
 
 
 
@@ -95,7 +95,7 @@
       .modal-header.pop-bac
         %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
           %i.fa.fa-times
-        %h4.modal-title Sign Up New User
+        %h4.modal-title Sign Up
       .modal-body
         .col-sm-9.col-sm-offset-3
           = link_to user_omniauth_authorize_path(:facebook), style: "border-radius:0;", class: "btn btn-primary btn-block" do

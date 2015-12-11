@@ -87,5 +87,5 @@ Rails.application.configure do
     :domain         => 'www.cocociti.com'
   }
 
-  config.action_mailer.default_url_options = { :host => 'https://www.cocociti.com' }
+  config.action_mailer.default_url_options = { :host => 'https://cocociti.com' }
 end

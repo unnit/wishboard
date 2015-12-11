@@ -19,7 +19,7 @@
                 %li.dropdown
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
                     %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 5px;"}
-                      == cl_image_tag @product.user.avatar, class: "img-circle pull-right", width: 40, height: 40, crop: :fill
+                      = cl_image_tag @product.user.avatar, class: "img-circle pull-right", width: 40, height: 40, crop: :fill
                     / %i.glyphicon.glyphicon-user.pull-right.mleft5
                   %ul.dropdown-menu
                     %li

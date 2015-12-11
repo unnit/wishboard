@@ -8,7 +8,6 @@
     #start_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{Time.now.in_time_zone("Kolkata") - 130.years}"}
     .col-md-12
       ~ form_for @profile, html: {class: 'form-horizontal profile_form', role: "form"} do |f|
-        .errors=# render partial: "/layouts/errors", locals: {errors: @profile.errors.full_messages}
         %fieldset
           .form-group
             .col-sm-4
@@ -47,16 +46,9 @@
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Profile Pic
             .col-sm-10
-              #fileupload.fileinput-button.upload-image-placeholder
-                .fileupload-text-container
-                  .fileupload-centered-text
-                    .fileupload-text Select file
-                    .fileupload-small-text
-                = f.file_field :image, style: "display: inline-block;" , class: "fileupload"
-                %span.avatar-preview= render partial: "/profiles/avatar"
-                .fileupload-preview-remove-image
-                  %i.icon-remove.icon-fix
-                %input.listing-image-id{:name => "listing_images[][id]", :type => "hidden"}
+              Select file
+              = f.file_field :image, class: "fileupload"
+              %span= render partial: "/profiles/avatar"
             - if @profile.date_of_birth.blank? || @profile.gender.blank?
               .col-sm-10.col-sm-offset-2.mtop20.text-right
                 Fields marked with '**' can be only submitted once.

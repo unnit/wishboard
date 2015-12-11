@@ -8,8 +8,8 @@
         %span{:aria => {:hidden => "true"} } &times;
         %span.sr-only Close
       - if type == 'error' || type=='alert' || type=="danger"
-        %ul
-          %li= msg.html_safe
+        /%ul
+        = msg.html_safe
       - else
         = msg.html_safe
 

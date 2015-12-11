@@ -11,7 +11,7 @@
         %tr
           %th Name
           %th Image
-          %th 
+          %th
           %th
           %th
 
@@ -21,7 +21,7 @@
             %td
               %strong= category.name
             %td= category.image
-            %td= link_to "add subcategory", "#add-subcategory", data: {toggle: "modal", dismiss: true, id: category.id}, class: "btn btn-sm btn-success add-sub"
+            %td= link_to "Add Subcategory", "#add-subcategory", data: {toggle: "modal", dismiss: true, id: category.id}, class: "btn btn-sm btn-success add-sub"
             %td
               = link_to "#edit-category", data: {toggle: "modal", dismiss: true, id: category.id, parent_id: category.parent_id, name: category.name, image: category.image}, class: "btn btn-sm btn-success edit-cat" do
                 %span.glyphicon.glyphicon-pencil
@@ -40,7 +40,7 @@
                 = link_to admin_category_path(sub), class: "btn btn-sm btn-danger", :data => { :confirm => 'Are you sure to delete category?' }, method: :delete, remote: true do
                   %span.glyphicon.glyphicon-trash
 
-          
+
 #new-category.modal.fade
   .modal-dialog
     .modal-content
@@ -79,6 +79,7 @@
       });
       $(".edit-cat").click(function(){
         $(".errors").html("");
+        alert($(this).data("id"));
         $(this).closest("form").attr("action", "/admin/categories/" + $(this).data("id"));
         $("#edit-category input[name*=name]").val($(this).data("name"));
         $("#edit-category input[name*=image]").val($(this).data("image"));

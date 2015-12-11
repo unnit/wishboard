@@ -9,7 +9,7 @@ class ProfilesController < ApplicationController
     @products_for_non_coco_bookings = current_user.products.page(params[:add_non_coco_bookings]).per(20)
     @my_transactions = current_user.transactions.dashboard_transactions.page(params[:my_transactions]).per(20)
     @non_coco_transactions = current_user.transactions.non_coco.page(params[:delete_non_coco_bookings]).per(20)
-    @upcoming_bookings = current_user.transactions.paid.page(params[:upcoming_bookings]).per(20)
+    @upcoming_bookings = Transaction.where('product_id in (?)', @my_products.map{|p| p.id}).paid.page(params[:upcoming_bookings]).per(20)
   end
 
   def update
@@ -17,12 +17,12 @@ class ProfilesController < ApplicationController
       @address = current_user.address
     else
       @address = Address.new
-      @address.user = current_user
-      @address.first_name = params[:profile][:first_name]
-      @address.last_name = params[:profile][:last_name]
-      @address.email = current_user.email
-      @address.mobile = params[:profile][:phone]
     end
+    @address.user = current_user
+    @address.first_name = params[:profile][:first_name]
+    @address.last_name = params[:profile][:last_name]
+    @address.email = current_user.email
+    @address.mobile = params[:profile][:phone]
     @address.address1 = params[:address][:address1]
     @address.address2 = params[:address][:address2]
     @address.landmark = params[:address][:landmark]

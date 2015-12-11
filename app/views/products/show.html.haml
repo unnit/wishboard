@@ -4,7 +4,7 @@
   .row.mar-des-page
     .col-md-8
       - unless @product.images.blank?
-        %ul.bxslider.mbottom10
+        %ul.bxslider
           - @product.images.each do |image|
             /%li{style: "text-align: center"}= image_tag image, style: "max-height: 650px; margin-left: auto; margin-right: auto;"
             %li{style: "text-align: center"}= cl_image_tag image.filename, width: 740, height: 460, crop: :fill

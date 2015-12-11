@@ -59,7 +59,6 @@ class TransactionsController < ApplicationController
       redirect_to dashboard_profiles_path
       return
     end
-    logger.info '***************#############'
     @transaction = Transaction.new
     @transaction.user = current_user
     @transaction.startdate = params[:non_coco_start_date]

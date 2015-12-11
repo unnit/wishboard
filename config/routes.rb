@@ -55,6 +55,10 @@ Rails.application.routes.draw do
 
   get :settings, to: "settings#index"
   get :about, to: "home#about"
+  get :terms, to: "home#terms"
+  get :privacy, to: "home#privacy"
+  get :contact, to: "home#contact"
+  get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
 
   resources :messages, only: [:destroy, :index, :show] do

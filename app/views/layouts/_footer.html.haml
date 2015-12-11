@@ -6,11 +6,11 @@
           = link_to "javascript:;" do
             = image_tag "img/log/coc.png"
           .pull-right
-            = link_to "javascript:;" do
+            = link_to "https://fb.com/cocociti" do
               = image_tag "img/landing-pg-vd_assets/landing-pg-vd_assets/FB.png"
-            = link_to "javascript:;" do
+            = link_to "https://google.com/+cocociti" do
               = image_tag "img/landing-pg-vd_assets/landing-pg-vd_assets/Gplus.png"
-            = link_to "javascript:;" do
+            = link_to "https://twitter.com/cocociti" do
               = image_tag "img/landing-pg-vd_assets/landing-pg-vd_assets/Twitter.png"
           %hr{style: "width: 100%"}
         .col-md-3
@@ -20,17 +20,18 @@
             %li.tag-ul-h
               %h4.fot-li COMPANY
             %li= link_to "About", "/about", class: "tag-a"
-            %li= link_to "Terms", "javascript:;", class: "tag-a"
-            %li= link_to "Privacy", "javascript:;", class: "tag-a"
-            %li= link_to "Site Map", "javascript:;", class: "tag-a"
+            %li= link_to "Terms", "/terms", class: "tag-a"
+            %li= link_to "Privacy", "/privacy", class: "tag-a"
+            %li= link_to "Site Map", "/contact", class: "tag-a"
+            %li= link_to "Site Map", "/sitemap", class: "tag-a"
 
         .col-md-3
           %ul.tag-ul.pull-right
             %li.tag-ul-h
               %h4.fot-li COCOCARE
             %li
-              %i= link_to "96 8686 0303", "javascript:;", class: "tag-a"
-            %li= link_to "ayyo@cocociti.com", "javascript:;", class: "tag-a"
+              %i 96 8686 0303
+            %li ayyo@cocociti.com
     = link_to "#" do
       = image_tag "img/landing-pg-vd_assets/landing-pg-vd_assets/up.png", class: "pull-right fot-up-img"
     %p.copyright.text-muted.small.pull-right.fot-res &copy; #{Time.now.in_time_zone("Kolkata").strftime('%Y')} Cocociti

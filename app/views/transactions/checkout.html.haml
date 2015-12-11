@@ -4,7 +4,7 @@
       %h3 Questions about payments and refunds? Dial: 96 8686 0303
       = hidden_field_tag :id, @product.id
       .col-md-4.pull-right.no-mar-pad
-        .col-md-12.text-center.padding5{style: "border: 1px solid #06B335;border-radius: 2px;"} Your session expires in 10 mins. Hurry up!
+        .col-md-12.text-center.padding5{style: "border: 1px solid #06B335;border-radius: 2px;"} Your session expires in #{GLOBAL_VARIABLES[:time_out]} mins. Hurry up!
         = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", width: 253, height: 190, crop: :fill
         %h4.text-center= @product.title
         .col-md-12.mtop10.text-center{style: "font-weight: bold"}

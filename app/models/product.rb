@@ -172,7 +172,7 @@ class Product < ActiveRecord::Base
   end
 
   def image
-    image_1_url
+    image_1
   end
 
   def image_url

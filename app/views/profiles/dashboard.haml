@@ -2,9 +2,9 @@
   .row.mar-des-page
     .col-md-12
       .row
-        .col-md-3
-          = image_tag current_user.avatar, class: "img-responsive img-circle img-width"
-        .col-md-6
+        .col-md-2
+          = cl_image_tag current_user.avatar, class: "img-responsive img-circle", width: 100, height: 100, crop: :fill
+        .col-md-7
           .col-sm-12
             %h3.no-mar-pad.mbottom10= current_user.name
             .prof-para.mbottom10= simple_format @profile.about
@@ -45,7 +45,7 @@
       %a{"data-toggle" => "tab", :href => "#non_coco_bookings"} Add Other Bookings
     %li
       %a{"data-toggle" => "tab", :href => "#delete_non_coco_bookings"} Delete Other Bookings
-  .tab-content.ptop10.pbottom50.hidden-xs{style: "min-height: 500px;"}
+  .tab-content.ptop10.pbottom50.hidden-xs{style: "min-height: 800px;"}
     #booking_requests.tab-pane.fade.in.active
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
         .col-md-2 User
@@ -58,7 +58,7 @@
           - trans = get_transaction(conv)
           .col-md-12.pad-v-10.dashboard-border
             .col-md-2
-              = image_tag user.avatar, size: "32x32", class: "img-circle"
+              = cl_image_tag user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
               = user.name
             .col-md-7
               = link_to message_path(trans) do
@@ -123,7 +123,7 @@
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1
             %span= i
-            %span.pull-right= image_tag booking.product.image, size: "32x32"
+            %span.pull-right= cl_image_tag booking.product.image, width: 32, height: 32, crop: :fill
           .col-sm-2= booking.product.title
           .col-sm-1= booking.product.id
           .col-sm-2= booking.product.category_name
@@ -145,7 +145,7 @@
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1= i
           .col-sm-1
-            %span= image_tag product.image, size: "32x32"
+            %span= cl_image_tag product.image, width: 32, height: 32, crop: :fill
           .col-sm-2= product.title
           .col-sm-1= product.id
           .col-sm-2= product.category_name
@@ -181,7 +181,7 @@
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1= i
           .col-sm-1
-            %span= image_tag transaction.product.image, size: "32x32"
+            %span= cl_image_tag transaction.product.image, width: 32, height: 32, crop: :fill
           .col-sm-2= transaction.product.title
           .col-sm-1= transaction.product.id
           .col-sm-2= transaction.product.category_name

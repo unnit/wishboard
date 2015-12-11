@@ -2,9 +2,9 @@
 .brdr.bgc-fff.pad-10.box-shad.btm-mrg-20.property-listing
   .media
     = link_to user_product_path(product) do
-      = cl_image_tag image.filename, class: "img-responsive img-style-new", width: 253, height: 190, crop: :fill
+      = cl_image_tag product.image.filename, class: "img-responsive img-style-new", width: 253, height: 190, crop: :fill
     = link_to "javascript:;" do
-      = cl_image_tag image.filename, class: "img-circle profile_pic", width: 145, height: 80, crop: :fill
+      = cl_image_tag product.user.avatar, class: "img-circle profile_pic", width: 40, height: 40, crop: :fill
     %h4.media-heading.price-bg
       = link_to "javascript:;", target: "_parent", class: "bd-#{product.listing_type_name.downcase}" do
         - if product.for_free?

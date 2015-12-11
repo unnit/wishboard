@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
 
   def avatar
     url = profile.image.filename if profile
-    url = 'default-user.png' if url.blank?
+    url = GLOBAL_VARIABLES[:default_profile_pic] if url.blank?
     url
   end
 

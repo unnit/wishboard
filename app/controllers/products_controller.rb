@@ -125,7 +125,7 @@ class ProductsController < ApplicationController
         redirect_to root_path
         return
       else
-        unless current_user == @product.user
+        unless current_user == @product.user || current_user.admin?
           redirect_to root_path
           return
         end

@@ -7,10 +7,6 @@
       %button.close{:type => "button", :data => {:dismiss => "alert"} }
         %span{:aria => {:hidden => "true"} } &times;
         %span.sr-only Close
-      - if type == 'error' || type=='alert' || type=="danger"
-        /%ul
-        = msg.html_safe
-      - else
-        = msg.html_safe
+      = msg.html_safe
 
   - flash.discard

@@ -1,7 +1,5 @@
 class Product < ActiveRecord::Base
-  paginates_per 10
   extend FriendlyId
-  #friendly_id :title, use: :slugged
   friendly_id :slug_candidates, use: :slugged
   def seo_slug
     unless id.blank?

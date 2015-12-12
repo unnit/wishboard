@@ -99,7 +99,7 @@ class TransactionsController < ApplicationController
   def check_status_and_save_address_of_transaction
     error_messages = []
     error_messages << "Sorry, you cannot proceed with the operation." unless @transaction.coco_transaction_id == params[:mid]
-    error_messages << "Sorry, you cannot proceed with the operation. The transaction has expired." if @transaction.expired?
+    error_messages << "Sorry, you cannot proceed with the operation. The booking has expired." if @transaction.expired?
     @address = current_user.address
     @address.first_name = params[:first_name]
     @address.last_name = params[:last_name]
@@ -270,7 +270,7 @@ class TransactionsController < ApplicationController
       return
     end
     if @transaction.expired?
-      flash[:danger] = "Sorry, This transaction got expired, Please select the product again."
+      flash[:danger] = "Sorry, This booking got expired, Please select the product again."
       redirect_to root_path
       return
     end

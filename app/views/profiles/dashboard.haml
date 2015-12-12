@@ -9,23 +9,23 @@
             %h3.no-mar-pad.mbottom10= current_user.name
             .prof-para.mbottom10= simple_format @profile.about
           .col-sm-12.mbottom10
-            %span.glyphicon.glyphicon-phone
+            %span.glyphicon.glyphicon-phone{style: "color: #D02121;"}
             &nbsp;
             = @profile.phone
             %small *Not visible to others
           .col-sm-12.mbottom10
-            %span.glyphicon.glyphicon-envelope
+            %span.glyphicon.glyphicon-envelope{style: "color: #D02121;"}
             &nbsp;
             = current_user.email
             %small *Not visible to others
         .col-md-3
           .col-xs-12
-            .col-xs-5.round-border
+            .col-xs-5.round-border{style: "border-radius: 44%;"}
               %h2.prof-or-list.mtop10.mbottom0
                 %strong= current_user.products.count
               %p.prof-or-list-test
                 %small= current_user.products.count == 1 ? "Listing" : "Listings"
-            .col-xs-5.round-border.mleft20
+            .col-xs-5.round-border.mleft20{style: "border-radius: 44%;"}
               %h2.prof-or-list.mtop10.mbottom0
                 %strong= current_user.transactions.paid.count
               %p.prof-or-list-test
@@ -45,7 +45,7 @@
       %a{"data-toggle" => "tab", :href => "#non_coco_bookings"} Add Other Bookings
     %li
       %a{"data-toggle" => "tab", :href => "#delete_non_coco_bookings"} Delete Other Bookings
-  .tab-content.ptop10.pbottom50.hidden-xs{style: "min-height: 800px;"}
+  .tab-content.pbottom50.hidden-xs{style: "min-height: 800px;"}
     #booking_requests.tab-pane.fade.in.active
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
         .col-md-2 User
@@ -136,7 +136,8 @@
         .col-sm-1 Image
         .col-sm-2 Title
         .col-sm-1 ID
-        .col-sm-2 Category
+        .col-sm-1 Category
+        .col-sm-1 Agency
         .col-sm-2 Start Date
         .col-sm-2 End Date
         .col-sm-1.text-right
@@ -148,8 +149,9 @@
             %span= cl_image_tag product.image, width: 32, height: 32, crop: :fill
           .col-sm-2= product.title
           .col-sm-1= product.id
-          .col-sm-2= product.category_name
+          .col-sm-1= product.category_name
           ~ form_tag non_coco_transaction_path(product) do
+            .col-sm-1= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control"
             .col-sm-2
               .input-group.mbottom0.input-append.date.from_date_time
                 %span#sizing-addon2.input-group-addon.bg-white
@@ -172,7 +174,8 @@
         .col-sm-1 Image
         .col-sm-2 Title
         .col-sm-1 ID
-        .col-sm-2 Category
+        .col-sm-1 Category
+        .col-sm-1 Agency
         .col-sm-2 Start Date
         .col-sm-2 End Date
         .col-sm-1 Delete
@@ -184,7 +187,8 @@
             %span= cl_image_tag transaction.product.image, width: 32, height: 32, crop: :fill
           .col-sm-2= transaction.product.title
           .col-sm-1= transaction.product.id
-          .col-sm-2= transaction.product.category_name
+          .col-sm-1= transaction.product.category_name
+          .col-sm-1= transaction.non_coco_operator
           .col-sm-2= transaction.startdate.strftime("%d %b %Y %H:%M")
           .col-sm-2= transaction.enddate.strftime("%d %b %Y %H:%M")
           .col-sm-1.text-center

@@ -61,6 +61,7 @@ class TransactionsController < ApplicationController
     end
     @transaction = Transaction.new
     @transaction.user = current_user
+    @transaction.non_coco_operator = params[:non_coco_operator]
     @transaction.startdate = params[:non_coco_start_date]
     @transaction.enddate = params[:non_coco_end_date]
     @transaction.operator_type = Product::OPERATOR_TYPE[0][1]

@@ -141,8 +141,8 @@
                 .form-group
                   %label.col-sm-2.control-label.pro-detail Uploaded Images
                   .col-sm-10.mbottom20
-                    - @product.image_objs.each do |image|
-                      = cl_image_tag image.filename, width: 100, height: 100, crop: :fill
+                    - @product.images.each do |image|
+                      = cl_image_tag image.filename, width: 145, height: 80, crop: :fill
                       - unless @product.image_objs.length == 1
                         = link_to remove_image_product_path(@product, image: image.filename), method: :post, data: {confirm: "Are you sure you want to delete the image?"} do
                           %span.glyphicon.glyphicon-remove

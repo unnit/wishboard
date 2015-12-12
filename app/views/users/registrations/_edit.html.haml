@@ -22,12 +22,3 @@
                 = f.password_field :password_confirmation, :placeholder => "Repeat password", class: "form-control"
               .col-md-1
                 %button.btn.btn-info.sett-button Save
-            %label.col-sm-2.control-label{:for => "textinput"} Note:
-            .col-sm-10
-              %p
-                If you delete your account, your personal information (name, phone number, address, email, profile picture, etc.) will be deleted permanently and can't be recovered. All the listings you have created will be removed. You won't be able to reactivate your account.
-
-                Information where other members are involved (conversations with other people, transactions you've made, reviews you've given to others, etc) is not removed when you delete your account. However, your name will no longer be displayed next to this information.
-              .pull-right
-                = link_to user_registration_path, method: :delete, data: {confirm: "Are you sure you want to deactivate your account?"} do
-                  %button.btn.btn-info.del-button{:type => "button"} Deactivate My Account

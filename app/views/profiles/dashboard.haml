@@ -151,7 +151,7 @@
           .col-sm-1= product.id
           .col-sm-1= product.category_name
           ~ form_tag non_coco_transaction_path(product) do
-            .col-sm-1= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control"
+            .col-sm-1= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control",  maxlength: 200
             .col-sm-2
               .input-group.mbottom0.input-append.date.from_date_time
                 %span#sizing-addon2.input-group-addon.bg-white

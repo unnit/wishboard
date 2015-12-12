@@ -51,7 +51,7 @@
             .tabbable-line-rs
               %ul.nav.nav-tabs.rent-sale-text
                 %li.active
-                  = link_to @product.listing_type_name, "#tab_default_1_1", "data-toggle" => "tab"
+                  = link_to @product.listing_type_name, "#tab_default_1_1", "data-toggle" => "tab", class: "bg-white"
               .tab-content.table-panel-rs-heoght
                 #tab_default_1_1.tab-pane.active{style: "min-height: 160px;"}
                   - if @product.operator_type != Product::OPERATOR_TYPE[0][1]

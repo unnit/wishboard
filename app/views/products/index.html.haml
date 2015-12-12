@@ -18,7 +18,7 @@
                   %form
                     .col-md-3{style: "text-align:center;"}
                       .input-group.ipg
-                        %b.ipg1 Price INR= "#{@min_price} - #{@max_price}"
+                        %b.ipg1 Price INR= #{@min_price} - #{@max_price}
                         %div
                           - value = params[:price].blank? ? "#{@min_price},#{@max_price}" : params[:price]
                           = text_field_tag :price_range, '', class: 'slider span2 input-md form-control', data: {"slider-min": "#{@min_price}", "slider-max": "#{@max_price}", "slider-step": "500", "slider-value": "[#{value}]", target: '#price'}
@@ -39,13 +39,13 @@
         .tabbable-line-mp
           %ul.nav.nav-tabs.pad-nav
             %li.tabs-mar{class: "#{'active' if params[:tab].blank? || params[:tab] == "1"}"}
-              = link_to "Popular", "javascript:;", data: {tab: '1'}, class: 'product-tab'
+              = link_to "Popular", "javascript:;", data: {tab: '1'}, class: 'product-tab bg-white'
             %li.tabs-mar{class: "#{'active' if params[:tab] == "2"}"}
-              = link_to "Low Price", "javascript:;", data: {tab: '2'}, class: 'product-tab'
+              = link_to "Low Price", "javascript:;", data: {tab: '2'}, class: 'product-tab bg-white'
             %li.tabs-mar{class: "#{'active' if params[:tab] == "3"}"}
-              = link_to "High Price", "javascript:;", data: {tab: '3'}, class: 'product-tab'
+              = link_to "High Price", "javascript:;", data: {tab: '3'}, class: 'product-tab bg-white'
             %li.tabs-mar{class: "#{'active' if params[:tab] == "4"}"}
-              = link_to "New", "javascript:;", data: {tab: '4'}, class: 'product-tab'
+              = link_to "New", "javascript:;", data: {tab: '4'}, class: 'product-tab bg-white'
           .tab-content.tabbable-panel-mp-height{style: "padding-left: 18px;"}
             #tab-1.tab-pane.active
               - if @products.blank?

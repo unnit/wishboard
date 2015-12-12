@@ -365,6 +365,7 @@ class ProductsController < ApplicationController
   end
 
   def set_product
+    params[:id] = params[:id].split('-').last
     @product = Product.friendly.find params[:id]
   end
 

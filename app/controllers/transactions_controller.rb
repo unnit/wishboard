@@ -19,7 +19,7 @@ class TransactionsController < ApplicationController
         @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
         @transaction.save
         @transaction.generate_txnid!
-        #TransactionsResetJob.set(wait: 10.minutes).perform_later
+        TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
         redirect_to checkout_transaction_path(@transaction)
       end
     else

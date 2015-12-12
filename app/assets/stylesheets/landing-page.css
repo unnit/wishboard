@@ -2197,9 +2197,9 @@ font-size: 14px;
 }
 .adv-button{
  background-color:#e84242;
-    border: none;
+ border: 1px solid #e84242;
   border-radius: 0;
-    font-size: 15px;
+  font-size: 15px;
   font-weight: 700;
     color: #fff;
 

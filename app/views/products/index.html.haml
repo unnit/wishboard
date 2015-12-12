@@ -1,10 +1,9 @@
 = content_for :header_extra do
   = render "layouts/search_form"
-  .col-lg-1.no-padding.tb3
+  .col-lg-1{style: "padding-top: 8px;padding-left: 9px;"}
     .hidden-xs
       %a.btn.btn-primary.btn-sm.pull-left.adv-button{href: "#upApp1", data: {toggle: 'collapse', parent: '#accordion'}}
-        Advanced Filters
-        %span.fa.fa-fw.fa-chevron-down
+        %span.glyphicon.glyphicon-filter
 
 .intro-header2{style: "backgound-img:none"}
   #upApp1.panel-collapse.collapse{style: "border-top:1px; border-bottom:1px solid #ccc;"}

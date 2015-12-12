@@ -143,7 +143,7 @@
                   .col-sm-10.mbottom20
                     - @product.images.each do |image|
                       = cl_image_tag image.filename, width: 145, height: 80, crop: :fill
-                      - unless @product.image_objs.length == 1
+                      - unless @product.images.length == 1
                         = link_to remove_image_product_path(@product, image: image.filename), method: :post, data: {confirm: "Are you sure you want to delete the image?"} do
                           %span.glyphicon.glyphicon-remove
               .form-group

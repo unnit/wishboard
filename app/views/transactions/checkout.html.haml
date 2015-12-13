@@ -5,7 +5,7 @@
       = hidden_field_tag :id, @product.id
       .col-md-4.pull-right.no-mar-pad
         .col-md-12.text-center.padding5{style: "border: 1px solid #06B335;border-radius: 2px;"} Your session expires in #{GLOBAL_VARIABLES[:time_out]} mins. Hurry up!
-        = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", width: 253, height: 190, crop: :fill
+        = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", alt: "#{@product.title}-#{@product.category_name}", width: 253, height: 190, crop: :fill
         %h4.text-center= @product.title
         .col-md-12.mtop10.text-center{style: "font-weight: bold"}
           = @transaction.duration
@@ -28,31 +28,31 @@
         %h3.col-md-12.mtop20 Billing Address
         = fields_for @address do |af|
           .col-md-12.mtop20
-            %label.col-md-3 First Name
+            %label.col-md-3 First Name*
             .col-md-5= af.text_field :first_name, class: "form-control", id: "citrusFirstName", required: true
           .col-md-12.mtop10
-            %label.col-md-3 Last Name
+            %label.col-md-3 Last Name*
             .col-md-5= af.text_field :last_name, class: "form-control", id: "citrusLastName", required: true
           .col-md-12.mtop10
-            %label.col-md-3 Email
+            %label.col-md-3 Email*
             .col-md-5= af.text_field :email, class: "form-control", id: "citrusEmail", required: true
           .col-md-12.mtop10
-            %label.col-md-3 Mobile
+            %label.col-md-3 Mobile*
             .col-md-5= af.text_field :mobile, class: "form-control", id: "citrusMobile", required: true
           .col-md-12.mtop10
-            %label.col-md-3 Address Line 1
+            %label.col-md-3 Address Line 1*
             .col-md-5= af.text_field :address1, class: "form-control", id: "citrusStreet1", required: true
           .col-md-12.mtop10
-            %label.col-md-3 Address Line 2
+            %label.col-md-3 Address Line 2*
             .col-md-5= af.text_field :address2, class: "form-control", id: "citrusStreet2", required: true
           .col-md-12.mtop10
-            %label.col-md-3 Zipcode
+            %label.col-md-3 Zipcode*
             .col-md-5= af.text_field :zip, class: "form-control check_zip", id: "citrusZip", required: true
           .col-md-12.mtop10
-            %label.col-md-3 City
+            %label.col-md-3 City*
             .col-md-5= af.text_field :city, class: "form-control city", id: "citrusCity", required: true
           .col-md-12.mtop10
-            %label.col-md-3 State
+            %label.col-md-3 State*
             .col-md-5
               = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", id: "citrusState",  required: true
         .col-md-12
@@ -67,30 +67,30 @@
             #credit_card.tab-pane.fade.in.active
               .col-md-12.mtop10
                 .col-md-12
-                  %label.col-md-4 Card Type
+                  %label.col-md-4 Card Type*
                   .col-md-6
                     %select.coco-select-box#citrusCardType
                       %option{:selected => "selected", :value => "credit"} Credit
                       %option{:value => "debit"} Debit
                 .col-md-12.mtop10
-                  %label.col-md-4 Issuer Type
+                  %label.col-md-4 Issuer Type*
                   .col-md-6
                     %select.coco-select-box#citrusScheme
                       %option{:selected => "selected", :value => "VISA"} VISA
                       %option{:value => "mastercard"} MASTER
                 .col-md-12.mtop10
-                  %label.col-md-4 Card Number
+                  %label.col-md-4 Card Number*
                   .col-md-6
                     %input.form-control#citrusNumber{:type => "text", :value => ""}/
                 .col-md-12.mtop10
-                  %label.col-md-4 Card Holder Name
+                  %label.col-md-4 Card Holder Name*
                   .col-md-6
                     %input.form-control#citrusCardHolder{:type => "text", :value => ""}/
                 .col-md-12.mtop10
-                  %label.col-md-4 Expiry
+                  %label.col-md-4 Expiry*
                   .col-md-3
                     %input.form-control#citrusExpiry{:placeholder => "mm/yy", :type => "text", :value => ""}/
-                  %label.col-md-2{style: "text-align: right;"} CVV/CVC
+                  %label.col-md-2{style: "text-align: right;"} CVV/CVC*
                   .col-md-3
                     %input.form-control#citrusCvv{:type => "text", :value => ""}/
               .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
@@ -100,7 +100,7 @@
             #net_banking.tab-pane.fade
               .col-md-12.mtop10
                 .col-md-6
-                  %label Select Your Bank
+                  %label Select Your Bank*
                 .col-md-6
                   %select.coco-select-box#citrusAvailableOptions
               .col-md-12.text-center.mtop20{style: "font-size: 10px;"}

@@ -11,11 +11,11 @@
           .col-md-12
             %fieldset
               .form-group
-                %label.col-sm-2.control-label.pro-detail Item Name
-                .col-sm-4
-                  = f.text_field :title, class: "form-control", required: true, maxlength: 80
+                %label.col-sm-2.control-label.pro-detail Item Name*
+                .col-sm-8
+                  = f.text_field :title, class: "form-control", placeholder: "Brand/Model Name (ex: Bajaj Pulsar, Book Name, Armani Jeans etc)", required: true, maxlength: 80
               .form-group
-                %label.col-sm-2.control-label.pro-detail Category
+                %label.col-sm-2.control-label.pro-detail Category*
                 .col-sm-10
                   - Category.feature.each do |cat|
                     %span.button-checkbox
@@ -33,51 +33,54 @@
                         - Category.root.other.each do |cat|
                           %li= link_to cat.name, "javascript:;", class: "cat-select cat-other", data: {id: cat.name}
               .form-group
-                %label.col-sm-2.control-label.pro-detail{for: "textinput"} Sub-category
+                %label.col-sm-2.control-label.pro-detail{for: "textinput"} Sub-category*
                 = f.hidden_field :category_id
                 #sub-categories.col-sm-10
 
               .form-group.none-free
-                %label.col-sm-2.control-label.pro-detail Rent
+                %label.col-sm-2.control-label.pro-detail Rent*
                 .col-sm-2
                   = f.text_field :price, placeholder: "Perday", class: "form-control", maxlength: 10
-                %label.col-sm-2.control-label.pro-detail Security Deposit
+                %label.col-sm-2.control-label.pro-detail Security Deposit*
                 .col-sm-2
-                  - @product.security_deposit ||=0
-                  =f.text_field :security_deposit, placeholder: "Security Deposit", class: "form-control", maxlength: 10
-                %label.col-sm-2.control-label.pro-detail Tax in %
+                  =f.text_field :security_deposit, placeholder: "Less is better :)", class: "form-control", maxlength: 10
+                %label.col-sm-2.control-label.pro-detail Tax* in %
                 .col-sm-2
                   = f.text_field :tax, placeholder: "Percent", class: "form-control", maxlength: 10
               .form-group
-                /%label.col-sm-2.control-label.pro-detail Ship Price
+                /%label.col-sm-2.control-label.pro-detail Ship Price*
                 .col-sm-2
                   =# f.select :ship_price, Product::SHIP_PRICES_WITH_WEIGHTS, {}, class: "selectpicker"
               .form-group
-                %label.col-sm-2.control-label.pro-detail Product Condition
+                %label.col-sm-2.control-label.pro-detail Product Condition*
                 .col-sm-2
                   = f.select :product_condition, Product::PRODUCT_CONDITION, { include_blank: "Select" }, class: "selectpicker"
               .form-group.none-free
-                %label.col-sm-2.control-label.pro-detail Booking Type
+                %label.col-sm-2.control-label.pro-detail Booking Type*
                 .col-sm-2
                   = f.select :owner_type, options_for_select(Product::OWNER_TYPE, @product.owner_type), { include_blank: "Select" }, class: "selectpicker"
               .form-group.none-free
-                %label.col-sm-2.control-label.pro-detail Operator Type
+                %label.col-sm-2.control-label.pro-detail Operator Type*
                 .col-sm-2
                   = f.select :operator_type, options_for_select(Product::OPERATOR_TYPE, @product.operator_type), { include_blank: "Select" }, class: "selectpicker"
                 %label.col-sm-2.control-label.oprice.pro-detail{class: "#{'hide' if f.object.operator_type==Product::OPERATOR_TYPE[0][1]}"} Operator Price
                 .col-sm-2.oprice{class: "#{'hide' if f.object.operator_type==Product::OPERATOR_TYPE[0][1] }"}
                   = f.text_field :operator_price, class: "form-control", maxlength: 10
               .form-group
-                %label.col-sm-2.control-label.pro-detail Year of Manufacture
+                %label.col-sm-2.control-label.pro-detail Year of Manufacture*
                 .col-sm-2
                   =f.select :year_of_manufacture, options_for_select(Product::YEAR_OF_MANUFACTURE, @product.year_of_manufacture), {include_blank: "Select"}, class: "selectpicker"
               .form-group
-                %label.col-sm-2.control-label.pro-detail Available
+                %label.col-sm-2.control-label.pro-detail Available*
                 .col-sm-2
                   .checkbox-container.mtop5
                     = f.select :available, options_for_select(Product::AVAILABLE, @product.available), {}, class: "selectpicker"
               .form-group.none-free
-                %label.col-sm-2.control-label.pro-detail Give Discounts
+                %label.col-sm-2.control-label.pro-detail
+                  COCOpricing*
+                  %br
+                  %small
+                    (Bulk Discounts)
                 .col-sm-2
                   %small.col-sm-12 > 3 days
                   %span.col-sm-8= f.text_field :discount_3, class: "form-control", maxlength: 10
@@ -98,20 +101,29 @@
                   %small.col-sm-12 > 90 days
                   %span.col-sm-8= f.text_field :discount_90, class: "form-control", maxlength: 10
                   %small.col-sm-4.no-mar-pad{style: "margin-top: 10px"} %
-              .form-group
-                %label.col-sm-2.control-label.pro-detail Detail Description
+              .form-group.none-free
+                .col-sm-10.col-sm-offset-2.note-font-size
+                  %strong
+                    Aey, Hello!
+                  COCOpricing helps you earn more by giving progressive discounts to users.
+                  You can make it to zero if you do not wish to implement COCOpricing.
+              .form-group.mtop10
+                %label.col-sm-2.control-label.pro-detail Description*
                 .col-sm-10
                   = f.text_area :description, class: "form-control textarea", rows: "4", placeholder: "KISS (Keep it simple and short)", maxlength: 1000, required: true
               .form-group.none-free
-                %label.col-sm-2.control-label.pro-detail Tech Spec/Instructions (If any)
+                %label.col-sm-2.control-label.pro-detail
+                  Tech Spec/Instructions
+                  %small
+                    (If any)
                 .col-sm-10
                   =f.text_area :tech_spec, placeholder: "Tech Specs/Instructions(If any)", class: "form-control textarea", rows: "8", maxlength: 65000
               .form-group
-                %label.col-sm-2.control-label.pro-detail Terms & Conditions
+                %label.col-sm-2.control-label.pro-detail Terms & Conditions*
                 .col-sm-10
-                  =f.text_area :terms_and_conditions, placeholder: "Terms & Conditions", class: "form-control textarea", rows: "8", maxlength: 65000, required: true
+                  =f.text_area :terms_and_conditions, placeholder: "Specify the Terms & Conditions", class: "form-control textarea", rows: "8", maxlength: 65000, required: true
               .form-group
-                %label.col-sm-2.control-label.pro-detail Doc Requirement
+                %label.col-sm-2.control-label.pro-detail Documents Required*
                 .col-sm-4
                   .row.checkbox-group-container
                     .col-sm-12
@@ -149,7 +161,7 @@
                 - if @edit_page
                   %label.col-sm-2.control-label.pro-detail Add/Update Images
                 - else
-                  %label.col-sm-2.control-label.pro-detail Add Images
+                  %label.col-sm-2.control-label.pro-detail Add Images*
                 .col-sm-10
                   %label.control-label Image 1
                   = f.file_field :image_1

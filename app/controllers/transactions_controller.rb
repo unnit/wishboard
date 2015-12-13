@@ -17,6 +17,7 @@ class TransactionsController < ApplicationController
       if @product.owner_type == Product::OWNER_TYPE[0][1]
         @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
         @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
+        @transaction.operator_price = @product.operator_price if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
         @transaction.save
         @transaction.generate_txnid!
         TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
@@ -34,6 +35,7 @@ class TransactionsController < ApplicationController
     @transaction.startdate = session[:start_date_time]
     @transaction.enddate = session[:end_date_time]
     @transaction.operator_type = params[:operator_type]
+    @transaction.operator_price = @product.operator_price if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
     @transaction.product = @product
     @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
@@ -197,7 +199,7 @@ class TransactionsController < ApplicationController
       redirect_to user_product_path(@product)
       return
     end
-    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank?
+    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank? || (params[:operator_type] != Product::OPERATOR_TYPE[1][1])
     params[:operator_type] = Product::OPERATOR_TYPE[1][1] if @product.operator_type == Product::OPERATOR_TYPE[1][1]
   end
 
@@ -219,8 +221,8 @@ class TransactionsController < ApplicationController
       end
     else
       @product.transactions.renting.each do |transaction|
-        transaction_start_date_time =  transaction.startdate - 1.hour
-        transaction_end_date_time =  transaction.enddate + 1.hour
+        transaction_start_date_time =  transaction.startdate - GLOBAL_VARIABLES[:buffer_time_of_transaction].hour
+        transaction_end_date_time =  transaction.enddate + GLOBAL_VARIABLES[:buffer_time_of_transaction].hour
         if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
         else
           flash[:danger] = "Sorry, Item is not available for the selected dates."
@@ -250,8 +252,8 @@ class TransactionsController < ApplicationController
         end
       else
         @product.transactions.renting.each do |transaction|
-          transaction_start_date_time =  transaction.startdate - 1.hour
-          transaction_end_date_time =  transaction.enddate + 1.hour
+          transaction_start_date_time =  transaction.startdate - GLOBAL_VARIABLES[:buffer_time_of_transaction].hour
+          transaction_end_date_time =  transaction.enddate + GLOBAL_VARIABLES[:buffer_time_of_transaction].hour
           if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
           else
             flash[:danger] = "Sorry, Item is not available for the selected dates."

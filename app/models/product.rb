@@ -78,7 +78,7 @@ class Product < ActiveRecord::Base
   OPERATOR_TYPE_VALUES = [0, 1, 2]
   PRODUCT_CONDITION = [["New/Unboxed", "0"], ["Excellent (Well Maintained)", "1"], ["Used", "2"], ["Not Functional", "3"]]
   PRODUCT_CONDITION_VALUES = ["0", "1", "2", "3"]
-  OWNER_TYPE = [["Instant", "0"], ["After Confirmation", "1"]]
+  OWNER_TYPE = [["Instant", "0"], ["Request to Book", "1"]]
   OWNER_TYPE_VALUES = ["0", "1"]
   LISTING_TYPE = [["Free", "0"], ["Rent", "1"]]
   LISTING_TYPE_VALUES = ["0", "1"]

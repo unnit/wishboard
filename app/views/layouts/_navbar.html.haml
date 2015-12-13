@@ -6,10 +6,8 @@
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        %a.navbar-brand.hidden-xs.logoh{href: "/"}
-          = image_tag "coc.png", class: "img-responsive"
-        %a.navbar-brand.visible-xs{href: "/"}
-          = image_tag "coc.png", class: "img-responsive"
+        %a.navbar-brand.logoh{href: "/"}
+          %span.logo-sprite.pull-left
         = yield :header_extra
       .navbar-collapse.collapse.nav-border
         %ul.nav.navbar-nav.navbar-right
@@ -41,12 +39,12 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span Sign Out
                         %span.glyphicon.glyphicon-log-out.pull-right
-            %li.pa= link_to "List your Item", new_product_path, class: "pa", style: "color: #fff"
+            %li.pa= link_to "List Your Item", new_product_path, class: "pa", style: "color: #fff"
           - else
 
             %li.active.nav-login= link_to "Login", "#login", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
             %li.active.nav-login= link_to "Register", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
-            %li.pa= link_to "List your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
+            %li.pa= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
 
 
 

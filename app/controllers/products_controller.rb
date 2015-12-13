@@ -298,7 +298,6 @@ class ProductsController < ApplicationController
     end
     unless params[:price].blank?
       unless params[:listing_type] == Product::LISTING_TYPE[0][1]
-        logger.info '************Free'
         start_price = params[:price].split(",").first.to_i
         end_price = params[:price].split(",").last.to_i
         conditions[0]+=" and price between ? and ?"
@@ -338,13 +337,13 @@ class ProductsController < ApplicationController
         else
           @products = @products.reject{|p| p.id == product.id}
           i+=1
-          logger.info '********** Removed'
+          logger.info '********** Removed111'
           logger.info i
         end
       else
         product.transactions.renting.each do |transaction|
-          transaction_start_date_time =  transaction.startdate - 1.hour
-          transaction_end_date_time =  transaction.enddate + 1.hour
+          transaction_start_date_time =  transaction.startdate - GLOBAL_VARIABLES[:buffer_time_of_transaction].hour
+          transaction_end_date_time =  transaction.enddate + GLOBAL_VARIABLES[:buffer_time_of_transaction].hour
           logger.info '**************************'
           logger.info search_start_date_time
           logger.info '**************************'

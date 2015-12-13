@@ -978,20 +978,11 @@ xcustom form elements
           margin-left: 16px;
 
     }
-    /* .tb3 {
-
-        padding-top: 87px;
-  padding-bottom: 35px;
-  padding-left: 2px;
-
-    }*/
-
 }
 
 .pa{
 
     font-size:18px;
-    font-weight:700;
     background-color: #e84242;
 
 }
@@ -2038,7 +2029,7 @@ border-color: #D6E9C6;
     font-weight: 100;
 }
 .fot-p{
-    font-size: 11px;
+    font-size: 12px;
     color: #fff;
     font-weight: 100;
 }
@@ -2408,3 +2399,39 @@ height:50px;
 .bg-white{background-color: white !important;}
 .border-solid{border: 1px solid #000;}
 .border-light{border: 1px solid #E2E2E2;}
+.footer-sprite-size{
+  width: 40px;
+  height: 40px;
+}
+.fb-sprite{
+  background: url('images/coco-sprite.png') -550px -170px;}
+.gplus-sprite{
+  background: url('images/coco-sprite.png') -550px -210px;
+}
+.twitter-sprite{
+  background: url('images/coco-sprite.png') -550px -253px
+}
+.up-sprite{
+  background: url('images/coco-sprite.png') -538px -289px;
+}
+.logo-sprite{
+  width:154px;
+  height:38px;
+  background: url('images/coco-sprite.png') -15px -169px;
+}
+.why-us-size{
+  width: 145px;
+  height: 145px;
+}
+.why-us-1-sprite{
+  background: url('images/coco-sprite.png') -298px 0;
+}
+.why-us-2-sprite{
+  background: url('images/coco-sprite.png') -438px 0;
+}
+.why-us-3-sprite{
+  background: url('images/coco-sprite.png') 0 0;
+}
+.why-us-4-sprite{
+  background: url('images/coco-sprite.png') -140px 0;
+}

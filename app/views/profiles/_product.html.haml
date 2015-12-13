@@ -1,6 +1,6 @@
 .col-sm-1
   %span= i
-  %span.pull-right= cl_image_tag product.image, width: 32, height: 32, crop: :fill
+  %span.pull-right= cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
 .col-sm-2= product.title
 .col-sm-1= product.id
 .col-sm-2= product.category_name

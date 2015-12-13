@@ -123,7 +123,7 @@
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1
             %span= i
-            %span.pull-right= cl_image_tag booking.product.image, width: 32, height: 32, crop: :fill
+            %span.pull-right= cl_image_tag booking.product.image, alt: "#{booking.product.title}-#{booking.product.category_name}", width: 32, height: 32, crop: :fill
           .col-sm-2= booking.product.title
           .col-sm-1= booking.product.id
           .col-sm-2= booking.product.category_name
@@ -146,7 +146,7 @@
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1= i
           .col-sm-1
-            %span= cl_image_tag product.image, width: 32, height: 32, crop: :fill
+            %span= cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
           .col-sm-2= product.title
           .col-sm-1= product.id
           .col-sm-1= product.category_name
@@ -184,7 +184,7 @@
         .col-sm-12.ptop5.pbottom5.dashboard-border
           .col-sm-1= i
           .col-sm-1
-            %span= cl_image_tag transaction.product.image, width: 32, height: 32, crop: :fill
+            %span= cl_image_tag transaction.product.image, alt: "#{transaction.product.title}-#{transaction.product.category_name}", width: 32, height: 32, crop: :fill
           .col-sm-2= transaction.product.title
           .col-sm-1= transaction.product.id
           .col-sm-1= transaction.product.category_name

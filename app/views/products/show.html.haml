@@ -6,12 +6,11 @@
       - unless @product.images.blank?
         %ul.bxslider
           - @product.images.each do |image|
-            /%li{style: "text-align: center"}= image_tag image, style: "max-height: 650px; margin-left: auto; margin-right: auto;"
-            %li{style: "text-align: center"}= cl_image_tag image.filename, width: 740, height: 460, crop: :fill
+            %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", width: 740, height: 460, crop: :fill
         #bx-pager.text-center
           - @product.images.each_with_index do |image, i|
             = link_to "", "data-slide-index" => i do
-              = cl_image_tag image.filename, width: 145, height: 80, crop: :fill
+              = cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", width: 145, height: 80, crop: :fill
         .col-xs-12.col-md-12.available
           .col-xs-12.col-sm-4
             = cl_image_tag @product.user.avatar, class: "img-circle mtop20", width: 40, height: 40, crop: :fill

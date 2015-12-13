@@ -54,7 +54,9 @@
                 Fields marked with '**' can be only submitted once.
           .form-group
             .col-sm-4
-              %h3.mtop10 Address
+              %h3.mtop10.mbottom0 Address
+            .col-sm-12.note-font-size
+              (Will serve as 'Pick Up' address for your listings and 'Delivery Address' for your bookings.)
           = fields_for 'address' do |af|
             .form-group
               %label.col-sm-2.control-label Address Line 1*

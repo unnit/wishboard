@@ -4,7 +4,7 @@
   %h2.mtop20 Boom De Yaada!!
   %h4.mtop20 Thank You for renting with Cocociti.
   .col-xs-12.col-md-12.mtop20
-    = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", width: 253, height: 190, crop: :fill
+    = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", alt: "#{@product.title}-#{@product.category_name}", width: 253, height: 190, crop: :fill
   .col-xs-12.col-md-4.col-md-offset-4.mtop20.padding5.border-solid
     %h3.mtop10 Booking ID: #{@transaction.coco_transaction_id}
   .col-xs-12.col-md-12.mtop20

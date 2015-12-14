@@ -4,12 +4,12 @@ class ProfilesController < ApplicationController
   skip_before_filter :check_profile, only: [:update]
 
   def dashboard
-    @conversations = current_user.mailbox.inbox.page(params[:booking_requests_received]).per(20)
-    @my_products = current_user.products.page(params[:my_listings]).per(20)
-    @products_for_non_coco_bookings = current_user.products.page(params[:add_non_coco_bookings]).per(20)
-    @my_transactions = current_user.transactions.dashboard_transactions.page(params[:my_transactions]).per(20)
-    @non_coco_transactions = current_user.transactions.non_coco.page(params[:delete_non_coco_bookings]).per(20)
-    @upcoming_bookings = Transaction.where('product_id in (?)', @my_products.map{|p| p.id}).paid.page(params[:upcoming_bookings]).per(20)
+    @conversations = current_user.mailbox.inbox.order(created_at: :desc).page(params[:booking_requests_received]).per(20)
+    @my_products = current_user.products.order(created_at: :desc).page(params[:my_listings]).per(20)
+    @products_for_non_coco_bookings = current_user.products.order(created_at: :desc).page(params[:add_non_coco_bookings]).per(20)
+    @my_transactions = current_user.transactions.dashboard_transactions.order(created_at: :desc).page(params[:my_transactions]).per(20)
+    @non_coco_transactions = current_user.transactions.non_coco.order(created_at: :desc).page(params[:delete_non_coco_bookings]).per(20)
+    @upcoming_bookings = Transaction.where('product_id in (?)', @my_products.map{|p| p.id}).paid.order(created_at: :desc).page(params[:upcoming_bookings]).per(20)
   end
 
   def update

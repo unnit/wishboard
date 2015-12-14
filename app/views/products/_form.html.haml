@@ -71,7 +71,7 @@
                 .col-sm-2
                   =f.select :year_of_manufacture, options_for_select(Product::YEAR_OF_MANUFACTURE, @product.year_of_manufacture), {include_blank: "Select"}, class: "selectpicker"
               .form-group
-                %label.col-sm-2.control-label.pro-detail Available*
+                %label.col-sm-2.control-label.pro-detail Listing Status*
                 .col-sm-2
                   .checkbox-container.mtop5
                     = f.select :available, options_for_select(Product::AVAILABLE, @product.available), {}, class: "selectpicker"

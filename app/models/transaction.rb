@@ -61,7 +61,8 @@ class Transaction < ActiveRecord::Base
     if Rails.env == "development"
       @amount = 1
     else
-      @maount = self.amount
+      #@maount = self.amount
+      @amount=1
     end
     @data_string="merchantAccessKey=#{@access_key}&transactionId=#{@txn_id}&amount=#{@amount}"
     @securitySignature= hmac_sha1(@data_string,@secret_key) # signature generated

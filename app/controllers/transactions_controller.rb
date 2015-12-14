@@ -91,7 +91,8 @@ class TransactionsController < ApplicationController
       @amount=1
       @return_url=GLOBAL_VARIABLES[:transaction_return_url]
     else
-      @amount = @transaction.amount
+      #@amount = @transaction.amount
+      @amount=1
       @return_url=GLOBAL_VARIABLES[:transaction_return_url]
     end
     #@notifyUrl=""

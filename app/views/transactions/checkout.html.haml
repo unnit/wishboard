@@ -176,8 +176,8 @@
               }
           });
       });
-      var timeout_seconds = #{GLOBAL_VARIABLES[:time_out]*60*3600}
-      setTimeout(function(){window.location.href = "#{root_url}";}, timeout_seconds);
+      //var timeout_seconds = #{GLOBAL_VARIABLES[:time_out]*60*1000}
+      //setTimeout(function(){window.location.href = "#{root_url}";}, timeout_seconds);
       $("button.close").click(function(){
         $(".errors ul").empty();
         $(".errors").hide();

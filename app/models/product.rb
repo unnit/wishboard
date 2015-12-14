@@ -82,7 +82,7 @@ class Product < ActiveRecord::Base
   OWNER_TYPE_VALUES = ["0", "1"]
   LISTING_TYPE = [["Free", "0"], ["Rent", "1"]]
   LISTING_TYPE_VALUES = ["0", "1"]
-  AVAILABLE = [["Available", true], ["Not Available", false]]
+  AVAILABLE = [["On", true], ["Off", false]]
   AVAILABLE_VALUES = [true, false]
   YEAR_OF_MANUFACTURE = (1947..Time.now.year).to_a.reverse
 

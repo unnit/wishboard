@@ -167,12 +167,14 @@ class TransactionsController < ApplicationController
       else
         TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
         flash[:alert] = params["TxMsg"]
+        @transaction.generate_txnid!
         redirect_to checkout_transaction_path(@transaction)
       end
     else
-      message = "Signaure Verification failed"
+      message = "Signaure Verification failed. Please try again."
       flash[:alert] = message
       TransactionMailer.fail(@transaction, message).deliver_now
+      @transaction.generate_txnid!
       redirect_to checkout_transaction_path(@transaction)
     end
   end

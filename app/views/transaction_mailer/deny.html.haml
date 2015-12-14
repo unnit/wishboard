@@ -4,7 +4,7 @@ Dear #{@user.name},
   %br
   %br
   %strong Product:
-  = link_to @transaction.product.title, "#{@base_url}#{user_product_path(@product)}"
+  = link_to @transaction.product.title, "#{user_product_url(@product)}"
   %br
   %br
   %strong Owner:

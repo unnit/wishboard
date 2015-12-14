@@ -24,7 +24,7 @@
       = @transaction.coco_transaction_id
 
 %span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
-  = image_tag @product.image, width: 250
+  = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", alt: "#{@product.title}-#{@product.category_name}", width: 253, height: 190, crop: :fill
 
 %span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
   Pick up Date:

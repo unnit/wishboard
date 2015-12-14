@@ -73,30 +73,26 @@
                       %option{:selected => "selected", :value => "credit"} Credit
                       %option{:value => "debit"} Debit
                 .col-md-12.mtop10
-                  %label.col-md-4 Issuer Type*
-                  .col-md-6
-                    %select.coco-select-box#citrusScheme
-                      %option{:selected => "selected", :value => "VISA"} VISA
-                      %option{:value => "mastercard"} MASTER
-                .col-md-12.mtop10
                   %label.col-md-4 Card Number*
                   .col-md-6
-                    %input.form-control#citrusNumber{:type => "text", :value => ""}/
+                    %input.form-control#citrusNumber{type: "text", value: ""}/
+                  .col-md-2
+                    %input.form-control#citrusScheme{readonly: true}
                 .col-md-12.mtop10
                   %label.col-md-4 Card Holder Name*
                   .col-md-6
-                    %input.form-control#citrusCardHolder{:type => "text", :value => ""}/
+                    %input.form-control#citrusCardHolder{type: "text", value: ""}/
                 .col-md-12.mtop10
                   %label.col-md-4 Expiry*
                   .col-md-3
-                    %input.form-control#citrusExpiry{:placeholder => "mm/yy", :type => "text", :value => ""}/
+                    %input.form-control#citrusExpiry{type: "text", value: "", placeholder: "mm/yy"}/
                   %label.col-md-2{style: "text-align: right;"} CVV/CVC*
                   .col-md-3
                     %input.form-control#citrusCvv{:type => "text", :value => ""}/
               .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
                 By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
               .col-md-12.text-center.pbottom50
-                %input.btn.btn-info.save-button.mtop10#citrusCardPayButton{:type => "button", :value => "Pay Now"}/
+                %input.btn.btn-info.save-button.mtop10#citrusCardPayButton{type: "button", value: "Pay Now"}/
             #net_banking.tab-pane.fade
               .col-md-12.mtop10
                 .col-md-6
@@ -106,7 +102,7 @@
               .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
                 By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
               .col-md-12.text-center.pbottom50
-                %input.btn.btn-info.save-button.mtop10#citrusNetbankingButton{:type => "button", :value => "Pay Now"}/
+                %input.btn.btn-info.save-button.mtop10#citrusNetbankingButton{type: "button", value: "Pay Now"}/
 
 
 = content_for :extra_js do
@@ -193,9 +189,9 @@
        console.log(type);
        jQuery("#citrusNumber").css("background-image", "url(images/" + type + ".png)");
        if(type!='amex')
-                jQuery("#citrusCvv").attr("maxlength","3");
-                else
-                jQuery("#citrusCvv").attr("maxlength","4");
+         jQuery("#citrusCvv").attr("maxlength","3");
+       else
+         jQuery("#citrusCvv").attr("maxlength","4");
        jQuery('#citrusNumber').payment('formatCardNumber');
        jQuery("#citrusScheme").val(type);
      });

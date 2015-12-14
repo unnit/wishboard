@@ -77,7 +77,8 @@
                   .col-md-6
                     %input.form-control#citrusNumber{type: "text", value: ""}/
                   .col-md-2
-                    %input.form-control#citrusScheme{readonly: true}
+                    /%input.form-control#checkout_page_card_type{readonly: true}
+                    %input.form-control.hidden#citrusScheme{readonly: true, style: "text-transform: uppercase;"}
                 .col-md-12.mtop10
                   %label.col-md-4 Card Holder Name*
                   .col-md-6
@@ -194,5 +195,6 @@
          jQuery("#citrusCvv").attr("maxlength","4");
        jQuery('#citrusNumber').payment('formatCardNumber');
        jQuery("#citrusScheme").val(type);
+       jQuery("#checkout_page_card_type").val(type);
      });
     });

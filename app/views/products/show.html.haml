@@ -1,3 +1,5 @@
+= content_for :title do
+  -title = "#{@product.title}-#{@product.category_name}-#{@product.location.name.split(/\W+/)[0]}-#{@product.location.name.split(/\W+/)[1]}"
 = content_for :header_extra do
   = render "layouts/search_form"
 .container

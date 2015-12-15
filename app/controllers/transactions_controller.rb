@@ -25,7 +25,7 @@ class TransactionsController < ApplicationController
       end
     else
       flash[:danger] = @transaction.errors.full_messages.first
-      redirect_to user_product_path(@product)
+      redirect_to user_product_path(@product.id)
     end
   end
 
@@ -90,9 +90,9 @@ class TransactionsController < ApplicationController
     if Rails.env.development?
       @amount=1
       @return_url=GLOBAL_VARIABLES[:transaction_return_url]
-    else
-      #@amount = @transaction.amount
-      @amount=1
+    elsif Rails.env.production?
+      @amount = @transaction.amount
+      #@amount=1
       @return_url=GLOBAL_VARIABLES[:transaction_return_url]
     end
     #@notifyUrl=""
@@ -199,7 +199,7 @@ class TransactionsController < ApplicationController
   def check_past_dates_and_operator_type
     if session[:start_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata") || session[:end_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
       flash[:danger] = "Invalid date range. Cannot book for past dates."
-      redirect_to user_product_path(@product)
+      redirect_to user_product_path(@product.id)
       return
     end
     params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank? || (params[:operator_type] != Product::OPERATOR_TYPE[1][1])
@@ -219,7 +219,7 @@ class TransactionsController < ApplicationController
       if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")
       else
         flash[:danger] = "Sorry, Item is not available for the selected dates."
-        redirect_to user_product_path(@product)
+        redirect_to user_product_path(@product.id)
         return
       end
     else
@@ -229,7 +229,7 @@ class TransactionsController < ApplicationController
         if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
         else
           flash[:danger] = "Sorry, Item is not available for the selected dates."
-          redirect_to user_product_path(@product)
+          redirect_to user_product_path(@product.id)
           return
         end
       end
@@ -250,7 +250,7 @@ class TransactionsController < ApplicationController
         if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")
         else
           flash[:danger] = "Sorry, Item is not available for the selected dates."
-          redirect_to user_product_path(@product)
+          redirect_to user_product_path(@product.id)
           return
         end
       else
@@ -260,7 +260,7 @@ class TransactionsController < ApplicationController
           if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
           else
             flash[:danger] = "Sorry, Item is not available for the selected dates."
-            redirect_to user_product_path(@product)
+            redirect_to user_product_path(@product.id)
             return
           end
         end

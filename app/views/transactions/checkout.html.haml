@@ -63,7 +63,7 @@
         .col-md-12.mtop20
           %ul.nav.nav-tabs
             %li.active
-              %a{"data-toggle" => "tab", :href => "#credit_card"} Cards
+              %a{"data-toggle" => "tab", :href => "#credit_card"} Card
             %li
               %a{"data-toggle" => "tab", :href => "#net_banking"} Net Banking
           .tab-content.ptop10
@@ -109,11 +109,16 @@
                 By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
               .col-md-12.text-center.pbottom50
                 %input.btn.btn-info.save-button.mtop10#citrusNetbankingButton{type: "button", value: "Pay Now"}/
-
+- if Rails.env.development?
+  = content_for :extra_js do
+    = javascript_include_tag "//icp.citruspay.com/js/citrus.js"
+    = javascript_include_tag "//icp.citruspay.com/js/jquery.payment.min.js"
+- elsif Rails.env.production?
+  = content_for :extra_js do
+    = javascript_include_tag "//www.citruspay.com/resources/pg/js/webjs/citrus.js"
+    = javascript_include_tag "//www.citruspay.com/resources/pg/js/webjs/jquery.payment.js"
 
 = content_for :extra_js do
-  = javascript_include_tag "//icp.citruspay.com/js/citrus.js"
-  = javascript_include_tag "//icp.citruspay.com/js/jquery.payment.min.js"
   :javascript
     CitrusPay.Merchant.Config = {
           // Merchant details
@@ -178,8 +183,8 @@
               }
           });
       });
-      //var timeout_seconds = #{GLOBAL_VARIABLES[:time_out]*60*1000}
-      //setTimeout(function(){window.location.href = "#{root_url}";}, timeout_seconds);
+      var timeout_seconds = #{GLOBAL_VARIABLES[:time_out]*60*1000}
+      setTimeout(function(){window.location.href = "#{root_url}";}, timeout_seconds);
       $("button.close").click(function(){
         $(".errors ul").empty();
         $(".errors").hide();

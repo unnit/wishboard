@@ -11,12 +11,15 @@ class Profile < ActiveRecord::Base
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
+  att_accessor :weekend_pricing
+
   GENDER = ["male", "female", "other"]
   MONTHS = [["Jan", 1], ["Feb", 2], ["Mar", 3], ["Apr", 4], ["May", 5], ["Jun", 6], ["Jul", 7],
    ["Aug", 8], ["Sep", 9], ["Oct", 10], ["Nov", 11], ["Dec", 12]]
 
   serialize :email_notification
   serialize :avail_days
+  serialize :weekend_days
 
   mount_uploader :image, ImageUploader
   belongs_to :user
@@ -66,6 +69,10 @@ class Profile < ActiveRecord::Base
   def avail_days_arr
     init_availability unless avail_days
     avail_days.to_a
+  end
+
+  def avail_days_arr
+    weekend_days.to_a
   end
 
   def disabled_days

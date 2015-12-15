@@ -63,7 +63,7 @@ class ProductsController < ApplicationController
       @product.update_parent_category!
       @product.location.update_lat_lng
       flash[:success] = "Item saved successfully and is under review process. It will be posted as soon as the review is completed."
-      redirect_to user_product_path(@product)
+      redirect_to user_product_path(@product.id)
     else
       set_category if @product.category
       flash[:danger] = @product.errors.full_messages.join('<br>')
@@ -99,7 +99,7 @@ class ProductsController < ApplicationController
       @product.update_parent_category!
       @product.location.update_lat_lng
       flash[:success] = "Product updated successfully"
-      redirect_to user_product_path(@product)
+      redirect_to user_product_path(@product.id)
     else
       set_category if @product.category
       flash[:danger] = @product.errors.full_messages.join('<br>')
@@ -364,8 +364,9 @@ class ProductsController < ApplicationController
   end
 
   def set_product
-    params[:id] = params[:id].split('-').last
+    #params[:id] = params[:id].split('-').last
     @product = Product.friendly.find params[:id]
+    #@product = Product.find params[:id]
   end
 
   def set_category

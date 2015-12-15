@@ -95,6 +95,7 @@
             %label.col-sm-2.control-label{:for => "textinput"} Close Time*
             .col-sm-4
               = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
+
           .form-group
             .col-sm-offset-2.col-sm-10
               .pull-right

@@ -17,12 +17,12 @@
                       .input-group.mbottom0.input-append.date.from_date_time
                         %span#sizing-addon2.input-group-addon.bg-white
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = text_field_tag :start_date_time, params[:start_date_time], placeholder: "Pickup Date & Time", class: "form-control home_start_date bg-white pon note-font-size", style: "border-radius:0", readonly: true
+                        = text_field_tag :start_date_time, params[:start_date_time], placeholder: "Pickup Date & Time", class: "form-control home_start_date bg-white pon", style: "border-radius:0", readonly: true
                     .col-md-3.land-src-mar
                       .input-group.mbottom0.input-append.date.end_date_time
                         %span#sizing-addon2.input-group-addon.bg-white{:style => "border-radius:0;"}
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = text_field_tag :end_date_time, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control bg-white pon note-font-size", style: "border-radius:0", readonly: true
+                        = text_field_tag :end_date_time, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0", readonly: true
                     .col-md-3.land-src-mar
                       .form-group.mbottom0
                         /= text_field_tag :term, "", placeholder: "Search an Item", class: "form-control", style: "border-radius:0"

@@ -60,9 +60,9 @@ class Transaction < ActiveRecord::Base
     @txn_id = self.coco_transaction_id
     if Rails.env.development?
       @amount = 1
-    else
-      #@maount = self.amount
-      @amount=1
+    elsif Rails.env.production?
+      @amount = self.amount
+      #@amount=1
     end
     @data_string="merchantAccessKey=#{@access_key}&transactionId=#{@txn_id}&amount=#{@amount}"
     @securitySignature= hmac_sha1(@data_string,@secret_key) # signature generated

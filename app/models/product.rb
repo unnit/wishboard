@@ -1,6 +1,6 @@
 class Product < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :slug_candidates#, use: :slugged
+  friendly_id :slug_candidates, use: :slugged
   def seo_slug
     unless id.blank?
       id = self.id

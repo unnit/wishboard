@@ -11,7 +11,7 @@ class Profile < ActiveRecord::Base
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
-  att_accessor :weekend_pricing
+  attr_accessor :weekend_pricing
 
   GENDER = ["male", "female", "other"]
   MONTHS = [["Jan", 1], ["Feb", 2], ["Mar", 3], ["Apr", 4], ["May", 5], ["Jun", 6], ["Jul", 7],

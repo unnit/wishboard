@@ -58,7 +58,7 @@ class Transaction < ActiveRecord::Base
     @access_key = CITRUS_CONFIG[:merchant_access_key]
     @secret_key  = CITRUS_CONFIG[:secret_key]
     @txn_id = self.coco_transaction_id
-    if Rails.env == "development"
+    if Rails.env.development?
       @amount = 1
     else
       #@maount = self.amount

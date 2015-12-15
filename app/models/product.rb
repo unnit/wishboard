@@ -1,6 +1,6 @@
 class Product < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :slug_candidates, use: :slugged
+  friendly_id :slug_candidates#, use: :slugged
   def seo_slug
     unless id.blank?
       id = self.id
@@ -88,6 +88,8 @@ class Product < ActiveRecord::Base
 
   validates :title, :category_id, :listing_type, :description, :terms_and_conditions, :doc_requirement, presence: true
 
+  validates :title, format: { with: /\A[a-zA-Z0-9\-\(\)\|\,\/]*\z/, message: "only allows alphabets, numbers, special chars which includes -,()/|" }
+
   validates :title, length: { maximum: 80 }
   validates :description, length: { maximum: 1000 }
   validates :terms_and_conditions, length: { maximum: 65000 }
@@ -118,7 +120,8 @@ class Product < ActiveRecord::Base
 
   HUMANIZED_ATTRIBUTES = {
     owner_type: "Booking Type",
-    price: "Rent"
+    price: "Rent",
+    title: "Item Name"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super

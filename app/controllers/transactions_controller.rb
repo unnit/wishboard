@@ -87,7 +87,7 @@ class TransactionsController < ApplicationController
 
   def checkout
     @product = @transaction.product
-    if Rails.env == "development"
+    if Rails.env.development?
       @amount=1
       @return_url=GLOBAL_VARIABLES[:transaction_return_url]
     else

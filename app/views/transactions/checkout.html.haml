@@ -1,15 +1,13 @@
 .container-fluid.aboutpad
   .container
     .col-sm-12
-      %h3 Questions about payments and refunds? Dial: 96 8686 0303
       = hidden_field_tag :id, @product.id
       .col-md-4.pull-right.no-mar-pad
         .col-md-12.text-center.padding5{style: "border: 1px solid #06B335;border-radius: 2px;"} Your session expires in #{GLOBAL_VARIABLES[:time_out]} mins. Hurry up!
         = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", alt: "#{@product.title}-#{@product.category_name}", width: 253, height: 190, crop: :fill
         %h4.text-center= @product.title
-        .col-md-12.mtop10.text-center{style: "font-weight: bold"}
+        .col-md-12.mtop10.text-center.mbottom20{style: "font-weight: bold"}
           = @transaction.duration
-        %hr.col-md-12.col-xs-12.mtop-v-5
         .col-md-12.summary-info= render partial: "price", locals: {product: @product, days: @transaction.duration_days}
         = hidden_field_tag :amount, @amount, id: "citrusAmount"
         = hidden_field_tag :coco_transaction_id, @transaction.coco_transaction_id, id: "citrusMerchantTxnId"
@@ -18,6 +16,9 @@
         =# hidden_field_tag :notify_url, @transaction.notify_url, id: "citrusNotifyUrl"
 
       .col-md-8
+        .col-md-12
+          %span.shaktiman-sprite.pull-left
+          %h4.mtop20.pull-left{style: "color: #e84242"} Questions about payments or refunds? Dial: 96 8686 0303
         .col-md-12
           .errors{style: "display:none;"}
             .alert.alert-danger.alert-dismissable{:role => "alert"}
@@ -77,8 +78,8 @@
                   .col-md-6
                     %input.form-control#citrusNumber{type: "text", value: ""}/
                   .col-md-2
-                    /%input.form-control#checkout_page_card_type{readonly: true}
-                    %input.form-control.hidden#citrusScheme{readonly: true, style: "text-transform: uppercase;"}
+                    %input.form-control.padding5.text-center.bg-white#checkout_page_card_type{readonly: true, style: "text-transform: uppercase;font-weight: bold;font-size:9px;"}
+                    %input.form-control.hidden#citrusScheme{readonly: true}
                 .col-md-12.mtop10
                   %label.col-md-4 Card Holder Name*
                   .col-md-6
@@ -92,8 +93,10 @@
                     %input.form-control#citrusCvv{:type => "text", :value => ""}/
               .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
                 By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
-              .col-md-12.text-center.pbottom50
+              .col-md-12.text-center
                 %input.btn.btn-info.save-button.mtop10#citrusCardPayButton{type: "button", value: "Pay Now"}/
+              .col-md-12.pbottom50.mtop20.mleft20.hidden-xs
+                %span.pull-left.cards-sprite
             #net_banking.tab-pane.fade
               .col-md-12.mtop10
                 .col-md-6
@@ -188,7 +191,7 @@
       var cardNum = jQuery('#citrusNumber').val().replace(/\s+/g, '');
        var type = jQuery.payment.cardType(cardNum);
        console.log(type);
-       jQuery("#citrusNumber").css("background-image", "url(images/" + type + ".png)");
+       //jQuery("#citrusNumber").css("background-image", "url(images/" + type + ".png)");
        if(type!='amex')
          jQuery("#citrusCvv").attr("maxlength","3");
        else

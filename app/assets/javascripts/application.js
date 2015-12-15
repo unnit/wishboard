@@ -238,12 +238,19 @@ $(document).ready(function(){
     pickerPosition: "bottom-right"
   });
   $(".from_date_time").datetimepicker().on('changeDate', function(){
+    $('.end_date_time').datetimepicker('setStartDate', $(".home_start_date").val());
     $(".end_date_time").datetimepicker('show');
   });
+  $(".end_date_time").datetimepicker().on('changeDate', function(){
+    //var length = $('#category> option').length;
+    //$('.home_search_box').attr('size',length/2);
+  });
   $(".header_from_date_time").datetimepicker().on('changeDate', function(){
+    $('.header_end_date_time').datetimepicker('setStartDate', $("#start_date_time_header").val());
     $(".header_end_date_time").datetimepicker('show');
   });
   $(".non_coco_start_date").datetimepicker().on('changeDate', function(){
+    $('.non_coco_end_date').datetimepicker('setStartDate', $("#non_coco_start_date").val());
     $(".non_coco_end_date").datetimepicker('show');
   });
   $(".date_of_birth").datetimepicker({

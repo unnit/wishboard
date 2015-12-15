@@ -2435,3 +2435,13 @@ height:50px;
 .why-us-4-sprite{
   background: url('images/coco-sprite.png') -140px 0;
 }
+.cards-sprite{
+  width: 600px;
+  height: 50px;
+  background: url('images/coco-sprite.png') 0 -550px;
+}
+.shaktiman-sprite{
+  width: 54px;
+    height: 50px;
+    background: url('images/coco-sprite.png') -221px -164px;
+}

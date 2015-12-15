@@ -14,13 +14,13 @@
       %span.price
         %i.fa.fa-rupee
         = product.price
-  %hr.col-md-12.col-xs-12.mtop-v-5
+  %hr.col-md-11.col-xs-12.mtop-v-5
   .col-md-12
     .col-md-7.col-xs-7
       %label Days
     .col-md-5.col-xs-5
       %span.price.days= days
-  %hr.col-md-12.col-xs-12.mtop-v-5
+  %hr.col-md-11.col-xs-12.mtop-v-5
   .col-md-12
     .col-md-7.col-xs-7
       %label Total price
@@ -28,7 +28,7 @@
       %span.price
         %i.fa.fa-rupee
         %span.total-price= days * product.price
-  %hr.col-md-12.col-xs-12.mtop-v-5
+  %hr.col-md-11.col-xs-12.mtop-v-5
   .col-md-12
     .col-md-7.col-xs-7
       %label Discounts( #{product.discount_percent(days)}% )
@@ -37,7 +37,7 @@
         %span.min-sign= " - " if product.discount_by_days(days) > 0
         %i.fa.fa-rupee
         %span.discount= product.discount_by_days(days)
-  %hr.col-md-12.col-xs-12.mtop-v-5
+  %hr.col-md-11.col-xs-12.mtop-v-5
   .col-md-12
     .col-md-7.col-xs-7
       %label Tax( #{product.tax}% )
@@ -45,7 +45,7 @@
       %span.price
         %i.fa.fa-rupee
         %span.total-price= product.tax_amount(days, @transaction.operator_type)
-  %hr.col-md-12.col-xs-12.mtop-v-5
+  %hr.col-md-11.col-xs-12.mtop-v-5
   - if @transaction.operator_type != 0
     .col-md-12
       .col-md-7.col-xs-7
@@ -54,7 +54,7 @@
         %span.price
           %i.fa.fa-rupee
           %span.total-price= product.service_charge(@transaction.operator_type)
-    %hr.col-md-12.col-xs-12.mtop-v-5
+    %hr.col-md-11.col-xs-12.mtop-v-5
   .col-md-12
     .col-md-7.col-xs-7
       %label Refunable Security Deposit
@@ -62,10 +62,15 @@
       %span.price
         %i.fa.fa-rupee
         = product.security_deposit
-.col-md-12.col-xs-12.mbottom10.ptop10.pbottom10{style: "background-color:#BFBFBF"}
+.col-md-12.col-xs-12.mbottom10.ptop10.pbottom10{style: "border: 2px solid #388CA7;border-radius: 2px;"}
   .col-md-7.col-xs-7
-    %label Pay
+    %label Amount Payable
   .col-md-5.col-xs-5
     %span.price
       %i.fa.fa-rupee
       %span.total-amount= product.calculate_price(days, @transaction.operator_type)
+.col-md-12.col-xs-12.mbottom10.ptop10.pbottom10{style: "border: 2px solid #388CA7;border-radius: 2px;;color:#E84242;"}
+  .col-md-7.col-xs-7
+    %label Booking ID
+  .col-md-5.col-xs-5.text-right
+    = @transaction.coco_transaction_id

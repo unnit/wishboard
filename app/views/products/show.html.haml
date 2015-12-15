@@ -8,7 +8,8 @@
       - unless @product.images.blank?
         %ul.bxslider
           - @product.images.each do |image|
-            %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", width: 740, height: 460, crop: :fill
+            %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", :transformation => {:width => 740, :height => 460, :crop => :fill}, :overlay => "#{GLOBAL_VARIABLES[:watermark]}",
+            :width => 120, :crop => :scale, :gravity => :south_east, :x => 320, :y => 210
         #bx-pager.text-center
           - @product.images.each_with_index do |image, i|
             = link_to "", "data-slide-index" => i do

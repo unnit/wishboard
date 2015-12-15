@@ -2,16 +2,20 @@
 
 class ImageUploader < CarrierWave::Uploader::Base
 
-  include Cloudinary::CarrierWave if Rails.env.production? || Rails.env.staging? || Rails.env.development?
+  include Cloudinary::CarrierWave
   #include CarrierWave::RMagick if Rails.env.development?
 
-  def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  end
+  #def store_dir
+  #  "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  #end
 
-  if Rails.env.production?
+  if Rails.env.development?
     def public_id
-      return "development/" + title
+      return "development/" + model.title.parameterize("-")
+    end
+  elsif Rails.env.production?
+    def public_id
+      return "pdn/" + model.title.parameterize("-")
     end
   end
 

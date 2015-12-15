@@ -5,6 +5,7 @@ development:
   admin_mail: "hello@cocociti.com"
   buffer_time_of_transaction: 1
   default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
+  watermark: "default_images:watermark"
 
 production:
   time_out: 7
@@ -13,3 +14,4 @@ production:
   admin_mail: "hello@cocociti.com"
   buffer_time_of_transaction: 1
   default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
+  watermark: "default_images:watermark"

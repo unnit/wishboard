@@ -22,6 +22,7 @@
 %span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
   = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", alt: "#{@product.title}-#{@product.category_name}", width: 253, height: 190, crop: :fill
 
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
   Pick up Date:
   %span{style: "width:100% !important;padding: 5px;background-color: #2D2D2D;color: white;font-weight:bold;"}
     #{@transaction.startdate.strftime('%H:%M, %d-%b-%Y, %a')}

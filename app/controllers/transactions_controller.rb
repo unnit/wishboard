@@ -19,7 +19,6 @@ class TransactionsController < ApplicationController
         @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
         @transaction.operator_price = @product.operator_price if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
         @transaction.save
-        @transaction.generate_txnid!
         TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
         redirect_to checkout_transaction_path(@transaction)
       end
@@ -40,7 +39,6 @@ class TransactionsController < ApplicationController
     @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
     if @transaction.save
-      @transaction.generate_txnid!
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
       redirect_to dashboard_profiles_path
@@ -97,6 +95,7 @@ class TransactionsController < ApplicationController
     end
     #@notifyUrl=""
     @address = current_user.address || current_user.copy_address!
+    @transaction.generate_txnid!
   end
 
   def check_status_and_save_address_of_transaction
@@ -167,14 +166,12 @@ class TransactionsController < ApplicationController
       else
         TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
         flash[:alert] = params["TxMsg"]
-        @transaction.generate_txnid!
         redirect_to checkout_transaction_path(@transaction)
       end
     else
       message = "Signaure Verification failed. Please try again."
       flash[:alert] = message
       TransactionMailer.fail(@transaction, message).deliver_now
-      @transaction.generate_txnid!
       redirect_to checkout_transaction_path(@transaction)
     end
   end

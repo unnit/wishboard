@@ -98,7 +98,7 @@ class ProductsController < ApplicationController
       end
       @product.update_parent_category!
       @product.location.update_lat_lng
-      flash[:success] = "Product updated successfully"
+      flash[:success] = "Product updated successfully and is under review process. It will be posted as soon as the review is completed. "
       redirect_to user_product_path(@product.id)
     else
       set_category if @product.category

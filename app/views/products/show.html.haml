@@ -147,9 +147,9 @@
           .col-md-12.no-padding-left
             = @product.documents
         #tech_specification.tab-pane.fade.text-justify
-          = @product.tech_spec
+          = simple_format @product.tech_spec
         #terms_and_policy.tab-pane.fade.text-justify
-          = @product.terms_and_conditions
+          = simple_format @product.terms_and_conditions
         #reviews.tab-pane.fade
           %h4.rev-head= @product.reviews_count
           - @product.reviews.each do |review|

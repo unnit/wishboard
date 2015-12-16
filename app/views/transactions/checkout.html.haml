@@ -150,6 +150,7 @@
         console.log(errorResponse);
     }
     $(document).ready(function(){
+      $("#citrusCvv,#citrusExpiry").val("");
       $('#citrusNetbankingButton,#citrusCardPayButton').on("click", function () {
         button_id = $(this).attr("id");
         $.post("/transactions/#{@transaction.id}/check_status_and_save_address_of_transaction",

@@ -271,13 +271,8 @@ class TransactionsController < ApplicationController
       redirect_to root_path
       return
     end
-    if @transaction.expired?
-      flash[:danger] = "Sorry, This booking got expired, Please select the product again."
-      redirect_to root_path
-      return
-    end
-    if @transaction.paid?
-      flash[:danger] = "Sorry, You cannot access this page."
+    if @transaction.expired? || @transaction.paid? || @transaction.requesting? || @transaction.non_coco_booking? || @transaction.denied?
+      flash[:danger] = "Sorry, You cannot access this page as the booking is invalid."
       redirect_to root_path
       return
     end

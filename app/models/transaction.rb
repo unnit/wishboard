@@ -93,6 +93,14 @@ class Transaction < ActiveRecord::Base
     status == Transaction::TRANSACTION_STATUS[4][1]
   end
 
+  def non_coco_booking?
+    status == Transaction::TRANSACTION_STATUS[5][1]
+  end
+
+  def denied?
+    status == Transaction::TRANSACTION_STATUS[3][1]
+  end
+
   def past?
     self.startdate < Time.now.in_time_zone("Kolkata") || self.enddate < Time.now.in_time_zone("Kolkata")
   end

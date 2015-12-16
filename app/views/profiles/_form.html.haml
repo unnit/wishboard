@@ -95,8 +95,53 @@
             %label.col-sm-2.control-label{:for => "textinput"} Close Time*
             .col-sm-4
               = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
+          .form-group
+            .col-sm-4
+              %h3.mtop10 Weekend/Seasonal Pricing
+          .form-group
+            %label.col-sm-2.control-label{:for => "textinput"} Apply Weekend/Seasonal Pricing
+            .col-sm-4.mtop10
+              - unless @profile.weekend_days_arr.blank?
+                = check_box_tag :weekend_pricing, "yes", true
+              - else
+                = check_box_tag :weekend_pricing, "yes", false
+          .form-group.weekend_pricing_div.hidden
+            %label.col-sm-2.control-label.mtop5{:for => "textinput"} Your Weekend Days
+            .col-sm-10.mtop10
+              - Date::DAYNAMES.each_with_index do |day, i|
+                %span.mleft15
+                  = check_box_tag "profile[weekend_days][]", i, @profile.weekend_days_arr.include?(i.to_s), class: "styled", id: "#{day}_as_weekend"
+                  %label{:for => "#{day}"}= day
+          .form-group.weekend_pricing_div.hidden
+            %label.col-sm-2.control-label.mtop5{:for => "textinput"}
+              Price Increase in %
+            .col-sm-4
+              = f.text_field :increase, :placeholder => "Increase in %", class: "form-control", maxlength: 6
 
           .form-group
             .col-sm-offset-2.col-sm-10
               .pull-right
                 %button.btn.btn-info.save-button Save Information
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+        function weekend_pricing_check(){
+          var checked = $("#weekend_pricing").is(":checked");
+          if(checked == true){
+            $(".weekend_pricing_div").removeClass("hidden");
+            $("#Sunday_as_weekend").prop("checked", true);
+            $("#Saturday_as_weekend").prop("checked", true);
+            $("#profile_increase").attr('required', true)
+          }
+          else{
+            $(".weekend_pricing_div").addClass("hidden");
+            $("#Sunday_as_weekend").prop("checked", false);
+            $("#Saturday_as_weekend").prop("checked", false);
+            $("#profile_increase").removeAttr('required');
+            $("#profile_increase").val(' ')
+          }
+        }
+        weekend_pricing_check();
+        $("#weekend_pricing").on("click", weekend_pricing_check);
+      })

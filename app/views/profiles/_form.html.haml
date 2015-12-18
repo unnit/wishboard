@@ -40,6 +40,10 @@
             .col-sm-3
               = f.text_field :phone, :placeholder => "Phone No", class: "form-control", maxlength: 10, required: true
           .form-group
+            %label.col-sm-2.control-label{:for => "textinput"} Business Type*
+            .col-sm-3
+              = f.select :business_type, Profile::BUSINESS_TYPE, {include_blank: 'Select'}, class: "select_box coco-select-box", required: true
+          .form-group
             %label.col-sm-2.control-label{:for => "textinput"} About*
             .col-sm-6
               = f.text_area :about, class: "form-control textarea", row: "5", placeholder: "About You", maxlength: 1000, required: true

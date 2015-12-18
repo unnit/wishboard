@@ -4,7 +4,7 @@
     %meta{:charset => "utf-8"}
     %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
-    %meta{:content => "Rent Bikes, Adventure Gear, Home Appliances, Cameras, Toys, Musical Instruments, Costumes, Fancy Dress, Fashion, Cars, Tools, Royal Enfield, Camping/Gaming accessories, and Furniture online in Bangalore, India at the lowest prices from quality suppliers.", :name => "description"}
+    %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Rent Bikes, Adventure Gear, Home Appliances, Cameras, Toys, Musical Instruments, Costumes, Fancy Dress, Fashion, Cars, Tools, Royal Enfield, Camping/Gaming accessories, and Furniture online in Bangalore, India at the lowest prices from quality suppliers.'}", :name => "description"}
     %meta{:content => "", :name => "author"}
     %title= content_for?(:title) ? yield(:title) : "Cocociti: All Things Rental! Bikes, Cars, books, dress, tools, musical instruments, cycles, Two wheelers and accessories in Bangalore, India"
 

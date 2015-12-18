@@ -12,6 +12,8 @@ class Profile < ActiveRecord::Base
   end
 
   GENDER = ["male", "female", "other"]
+  BUSINESS_TYPE = [["Individual", 0], ["Business", 1]]
+  BUSINESS_TYPE_VALUES = [0, 1]
   MONTHS = [["Jan", 1], ["Feb", 2], ["Mar", 3], ["Apr", 4], ["May", 5], ["Jun", 6], ["Jul", 7],
    ["Aug", 8], ["Sep", 9], ["Oct", 10], ["Nov", 11], ["Dec", 12]]
 
@@ -33,6 +35,7 @@ class Profile < ActiveRecord::Base
   validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update
   validates :phone, numericality: true, on: :update
   validates :about, length: { maximum: 1000 }, on: :update, unless: :about_entered?
+  validates :business_type, inclusion: { in: Profile::BUSINESS_TYPE_VALUES, message: "should not be blank" }, on: :update
 
   HUMANIZED_ATTRIBUTES = {
     :phone => "Mobile No"
@@ -58,6 +61,11 @@ class Profile < ActiveRecord::Base
        "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30",
        "22:00", "22:30", "23:00", "23:30"]
     end
+  end
+
+  def business_type_name
+    return Profile::BUSINESS_TYPE[0][0] if business_type == Profile::BUSINESS_TYPE[0][1]
+    return Profile::BUSINESS_TYPE[1][0] if business_type == Profile::BUSINESS_TYPE[1][1]
   end
 
   def about_entered?

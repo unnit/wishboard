@@ -26,7 +26,7 @@
                     .col-md-3.land-src-mar
                       .form-group.mbottom0
                         /= text_field_tag :term, "", placeholder: "Search an Item", class: "form-control", style: "border-radius:0"
-                        = select_tag :category, options_from_collection_for_select(Product.select(:parent_category).distinct, :parent_category, :parent_category, params[:category]), prompt: "Category", class: "form-control coco-select-box selectpicker home_search_box"
+                        = select_tag :category, options_from_collection_for_select(Product.distinct_parent_category, :id, :name, params[:category]), prompt: "Select Category", class: "form-control coco-select-box selectpicker home_search_box"
                     .col-md-2.land-src-mar
                       %button.btn.land-src-button{type: "submit"} Search
                 .row

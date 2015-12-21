@@ -2,7 +2,7 @@
   - page = params[:page].blank? ? 1 : params[:page].to_i
   = (i+1) + 20*(page-1)
 %td{style: "width: 60px"}
-  = image_tag product.image, size: "32x32"
+  = cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
 %td= product.title
 %td= product.category_path
 %td= product.created_at.strftime("%d %b, %y")
@@ -15,9 +15,9 @@
   %span.update-msg{style: "color: green;"}
   %span.update-error{style: "color: red;"}
 %td{style: "width: 90px"}
-  = link_to user_product_path(product.id), class: "btn btn-sm btn-success edit-product", target: "_blank" do
+  = link_to user_product_path(product.id), class: "btn btn-sm btn-primary edit-product", target: "_blank" do
     %span.glyphicon.glyphicon-eye-open
-  = link_to edit_product_path(product), class: "btn btn-sm btn-success", target: "_blank" do
+  = link_to edit_product_path(product), class: "btn btn-sm btn-primary", target: "_blank" do
     %span.glyphicon.glyphicon-pencil
 
 = render partial: "/admin/users/profile", locals: {profile: product.user.profile}

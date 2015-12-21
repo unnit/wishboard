@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217115653) do
+ActiveRecord::Schema.define(version: 20151221065018) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 20151217115653) do
     t.integer  "discount_30",          limit: 4,                              default: 40
     t.integer  "discount_90",          limit: 4,                              default: 50
     t.boolean  "available",            limit: 1,                              default: true
-    t.string   "parent_category",      limit: 255
+    t.integer  "parent_category",      limit: 4
     t.decimal  "tax",                                precision: 10, scale: 2, default: 0.0
     t.integer  "operator_type",        limit: 4,                              default: 0
     t.integer  "operator_price",       limit: 4,                              default: 0

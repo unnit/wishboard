@@ -155,6 +155,7 @@
                   %label.col-sm-2.control-label.pro-detail Uploaded Images
                   .col-sm-10.mbottom20
                     - @product.images.each do |image|
+                      
                       = cl_image_tag image.filename, width: 145, height: 80, crop: :fill
                       - unless @product.images.length == 1
                         = link_to remove_image_product_path(@product, image: image.filename), method: :post, data: {confirm: "Are you sure you want to delete the image?"} do
@@ -163,7 +164,7 @@
                 - if @edit_page
                   %label.col-sm-2.control-label.pro-detail Add/Update Images
                 - else
-                  %label.col-sm-2.control-label.pro-detail Add Images*
+                  %label.col-sm-2.control-label.pro-detail Add Images* (atleast one image)
                 .col-sm-10
                   %label.control-label Image 1
                   = f.file_field :image_1

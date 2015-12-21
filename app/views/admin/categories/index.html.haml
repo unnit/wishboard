@@ -79,7 +79,6 @@
       });
       $(".edit-cat").click(function(){
         $(".errors").html("");
-        alert($(this).data("id"));
         $(".edit_category").attr("action", "/admin/categories/" + $(this).data("id"));
         $("#edit-category input[name*=name]").val($(this).data("name"));
         $("#edit-category input[name*=image]").val($(this).data("image"));

@@ -193,7 +193,8 @@ class ProductsController < ApplicationController
       @product.remove_image_5!
     end
     if @product.save
-      redirect_to edit_product_path(@product)
+      flash[:success] = "Image deleted successfully"
+      redirect_to edit_product_path(@product.id)
       return
     else
       set_category

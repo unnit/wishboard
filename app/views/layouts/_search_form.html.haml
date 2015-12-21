@@ -26,7 +26,7 @@
             = hidden_field_tag :tab, params[:tab]
             .form-group
               %label{for: "category"} Category
-              = select_tag :category, options_from_collection_for_select(Product.distinct_parent_category, :name, :name, params[:category]), prompt: "Category", class: "form-control"
+              = select_tag :category, options_from_collection_for_select(Product.distinct_parent_category, :id, :name, params[:category]), prompt: "Select", class: "form-control"
             .form-group
               %label{for: "sub_category"} Subcategory
               %span#filter-sub-cat{data: {selected: params[:sub_category_id]}}

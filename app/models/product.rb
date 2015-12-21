@@ -173,7 +173,14 @@ class Product < ActiveRecord::Base
   end
 
   def image
-    image_1
+    unless image_1.blank?
+      return image_1
+    else
+       return image_2 unless image_2.blank?
+       return image_3 unless image_3.blank?
+       return image_4 unless image_4.blank?
+       return image_5 unless image_5.blank?
+    end
   end
 
   def image_url
@@ -203,7 +210,7 @@ class Product < ActiveRecord::Base
   def self.distinct_parent_category
     distinct_parent_category = []
     Product.select(:parent_category).distinct.each do |c|
-      category = Category.find_by_name c.parent_category
+      category = Category.find_by_id c.parent_category
       distinct_parent_category << category
     end
     return distinct_parent_category
@@ -222,7 +229,7 @@ class Product < ActiveRecord::Base
   end
 
   def parent_cat
-    cat = Category.find_by_name parent_category
+    cat = Category.find_by_id parent_category
     return cat.slug if cat
   end
 
@@ -403,7 +410,7 @@ class Product < ActiveRecord::Base
   end
 
   def update_parent_category!
-    update_column :parent_category, category.parent_name if category
+    update_column :parent_category, category.parent_id if category
   end
   #class methos
   class << self

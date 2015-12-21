@@ -1,8 +1,8 @@
 - if product.admin_approved?
   %span= 'On'
-  = link_to toggle_admin_product_path(product), remote: true, class: "btn btn-sm btn-danger pull-right", title: "Inactivate" do
-    .glyphicon.glyphicon-remove
+  = link_to toggle_admin_product_path(product), remote: true, class: "btn btn-sm btn-success pull-right", title: "Inactivate" do
+    .glyphicon.glyphicon-ok
 - else
   %span= "Off"
-  = link_to toggle_admin_product_path(product), remote: true, class: "btn btn-sm btn-success pull-right", title: "Activate" do
-    .glyphicon.glyphicon-ok
+  = link_to toggle_admin_product_path(product), remote: true, class: "btn btn-sm btn-danger pull-right", title: "Activate" do
+    .glyphicon.glyphicon-remove

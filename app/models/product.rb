@@ -197,6 +197,37 @@ class Product < ActiveRecord::Base
     arr
   end
 
+  def image_thumbnails_for_delete
+    arr = []
+    default_image = GLOBAL_VARIABLES[:default_product_image]
+    unless image_1.blank?
+      arr << image_1
+    else
+      arr << default_image
+    end
+    unless image_2.blank?
+      arr << image_2
+    else
+      arr << default_image
+    end
+    unless image_3.blank?
+      arr << image_3
+    else
+      arr << default_image
+    end
+    unless image_4.blank?
+      arr << image_4
+    else
+      arr << default_image
+    end
+    unless image_5.blank?
+      arr << image_5
+    else
+      arr << default_image
+    end
+    arr
+  end
+
   def image_urls
     arr = []
     arr << image_1_url unless image_1_url.blank?

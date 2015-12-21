@@ -15,7 +15,7 @@
                 .col-sm-8
                   = f.text_field :title, class: "form-control", placeholder: "Brand/Model Name (ex: Bajaj Pulsar, Book Name, Armani Jeans etc)", required: true, maxlength: 80
                 %label.col-sm-2.note-font-size.mtop10.dull-color-italic
-                  allowed chars |)&nbsp;,&nbsp;(-
+                  allowed chars |)&nbsp;,&nbsp;(-/
               .form-group
                 %label.col-sm-2.control-label.pro-detail Category*
                 .col-sm-10
@@ -154,37 +154,45 @@
                 .form-group
                   %label.col-sm-2.control-label.pro-detail Uploaded Images
                   .col-sm-10.mbottom20
-                    - @product.images.each do |image|
-                      
-                      = cl_image_tag image.filename, width: 145, height: 80, crop: :fill
-                      - unless @product.images.length == 1
-                        = link_to remove_image_product_path(@product, image: image.filename), method: :post, data: {confirm: "Are you sure you want to delete the image?"} do
-                          %span.glyphicon.glyphicon-remove
+                    - i=1
+                    - @product.image_thumbnails_for_delete.each do |image|
+                      .col-sm-2.no-mar-pad
+                        %span.pull-left.text-center.full-width
+                          Image #{i}
+                        - i+=1
+                        - unless image == GLOBAL_VARIABLES[:default_product_image]
+                          = cl_image_tag image.filename, width: 145, height: 80, crop: :fill
+                          - unless @product.images.length == 1
+                            = link_to remove_image_product_path(@product.id, image: image.filename), method: :post, data: {confirm: "Are you sure you want to delete this image?"}, class: "pull-left text-center full-width" do
+                              %span.glyphicon.glyphicon-remove
+                        - else
+                          = cl_image_tag image, width: 145, height: 80, crop: :fill
               .form-group
                 - if @edit_page
                   %label.col-sm-2.control-label.pro-detail Add/Update Images
                 - else
                   %label.col-sm-2.control-label.pro-detail Add Images* (atleast one image)
                 .col-sm-10
-                  %label.control-label Image 1
-                  = f.file_field :image_1
-                  = f.hidden_field :image_1_cache
-                  %br/
-                  %label.control-label Image 2
-                  = f.file_field :image_2
-                  = f.hidden_field :image_2_cache
-                  %br/
-                  %label.control-label Image 3
-                  = f.file_field :image_3
-                  = f.hidden_field :image_3_cache
-                  %br/
-                  %label.control-label Image 4
-                  = f.file_field :image_4
-                  = f.hidden_field :image_4_cache
-                  %br/
-                  %label.control-label Image 5
-                  = f.file_field :image_5
-                  = f.hidden_field :image_4_cache
+                  .col-sm-2.no-mar-pad
+                    %label Image 1
+                    = f.file_field :image_1, class: "extra-small-font"
+                    = f.hidden_field :image_1_cache
+                  .col-sm-2.no-mar-pad
+                    %label Image 2
+                    = f.file_field :image_2, class: "extra-small-font"
+                    = f.hidden_field :image_2_cache
+                  .col-sm-2.no-mar-pad
+                    %label Image 3
+                    = f.file_field :image_3, class: "extra-small-font"
+                    = f.hidden_field :image_3_cache
+                  .col-sm-2.no-mar-pad
+                    %label Image 4
+                    = f.file_field :image_4, class: "extra-small-font"
+                    = f.hidden_field :image_4_cache
+                  .col-sm-2.no-mar-pad
+                    %label Image 5
+                    = f.file_field :image_5, class: "extra-small-font"
+                    = f.hidden_field :image_4_cache
 
               .form-group
                 .col-md-2.col-md-offset-5

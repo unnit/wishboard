@@ -108,15 +108,11 @@ class ProductsController < ApplicationController
   end
 
   def get_price
-    unless params[:enddate].blank? || params[:startdate].blank?
-      days = (params[:enddate].to_date - params[:startdate].to_date).to_i
-    end
-    days = 1 if days == 0 || days.blank?
-    pay_amount = @product.calculate_price(days, params[:operator_type])
-    discount = @product.discount_by_days(days)
-    tax = @product.tax_amount(days, params[:operator_type])
+    pay_amount = @product.calculate_price(params[:days].to_i, params[:operator_type])
+    discount = @product.discount_by_days(params[:days].to_i)
+    tax = @product.tax_amount(params[:days].to_i, params[:operator_type])
     sign = discount > 0 ? "-" : ""
-    render json: {days: days,tax: tax, total_price: @product.price*days, pay_amount: pay_amount, discount: discount, sign: sign}
+    render json: {tax: tax, total_price: @product.price*params[:days].to_i, pay_amount: pay_amount, discount: discount, sign: sign}
   end
 
   def show

@@ -11,7 +11,7 @@
         %ul.bxslider
           - @product.images.each do |image|
             %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", :transformation => {:width => 740, :height => 460, :crop => :fill}, :overlay => "#{GLOBAL_VARIABLES[:watermark]}",
-            :crop => :scale, :gravity => :south_east, :x => 15, :y => 20
+            :crop => :fit, :gravity => :south_east, :x => 15, :y => 20
         #bx-pager.text-center
           - @product.images.each_with_index do |image, i|
             = link_to "", "data-slide-index" => i do
@@ -95,7 +95,7 @@
                       %li
                         %i.fa.fa-rupee
                         = @product.price
-                      %li.days= 1
+                      %li.days= @days
                       %li
                         %span.min-sign
                         %i.fa.fa-rupee
@@ -103,13 +103,13 @@
                       %li
                         %i.fa.fa-rupee
                         - type = @product.operator_type== Product::OPERATOR_TYPE[1][1] ? 1 : 0
-                        %span.tax-amount= @product.tax_amount(1, type)
+                        %span.tax-amount= @product.tax_amount(@days, type)
                       %li
                         /%i.fa.fa-rupee
                         =# @product.ship_price
                       %li
                         %i.fa.fa-rupee
-                        %span.total-amount= @product.calculate_price(1, type)
+                        %span.total-amount= @product.calculate_price(@days, type)
         .col-xs-12.col-md-12.from-bar
           - if current_user != @product.user
             .col-md-12.date-error{style: "color: red"}
@@ -183,10 +183,9 @@
        });
      function getPrice(){
        operator_type = $("input[name=operator_type]:checked").val();
-       data = {startdate: "#{session[:start_date_time]}", enddate: "#{session[:end_date_time]}", id: "#{@product.id}", operator_type: operator_type}
+       data = {days: "#{@days}", id: "#{@product.id}", operator_type: operator_type}
         $.get("/products/get_price", data)
          .done(function(result){
-             $(".days").text(result.days);
              $(".tax-amount").text(result.tax);
              $(".total-price").text(result.total_price);
              $(".total-amount").text(result.pay_amount);

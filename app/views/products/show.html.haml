@@ -31,7 +31,7 @@
               %h6.des-own-det= Product::OWNER_TYPE[1][0].upcase
 
     .col-md-4
-      %h2.product-name= @product.title
+      %h2.product-name.mtop0= @product.title
       .col-md-6
         %h6.reviw= @product.reviews_count
       .col-md-6.rat.pbottom10
@@ -80,36 +80,62 @@
                         %i.fa.fa-rupee
                         = @product.ship_price
                   - else
+                    - op_type = @product.operator_type== Product::OPERATOR_TYPE[1][1] ? Product::OPERATOR_TYPE[1][1] : Product::OPERATOR_TYPE[0][1]
                     %ul.sale-details.pull-left
-                      %li Deposit
-                      %li Daily price
-                      %li Days
-                      %li Discount ( #{@product.discount_percent(@days)}% )
-                      %li Tax ( #{@product.tax}% )
-                      /%li Shipping
-                      %li Pay amount
-                    %ul.pull-right.sale-details2.text-right
                       %li
+                        %strong
+                          Daily Rent
+                      %li.font-medium No. of Days
+                      - if @no_of_weekenddays > 0
+                        %li.font-medium Premium Rent**
+                        %li.font-medium No. of Premium Days
+                      %li.font-medium Total Rent
+                      %li.font-medium Discounts* ( #{@product.discount_percent(@days)}% )
+                      %li
+                        %strong
+                          Total Rent after Discount
+                      %li.font-medium Tax ( #{@product.tax}% )
+                      %li.font-medium Refundable Security Deposit
+                      /%li.font-medium Shipping
+                      %li
+                        %strong
+                          Total Amount Payable
+                    %ul.pull-right.sale-details2.text-right.no-mar-pad
+                      %li
+                        %i.fa.fa-rupee
+                        %strong
+                          = @product.price
+                      %li.days.font-medium= @days
+                      - if @no_of_weekenddays > 0
+                        %li.font-medium
+                          %i.fa.fa-rupee
+                          = @product.seasonal_weekend_pricing(@no_of_weekenddays)
+                        %li.font-medium= @no_of_weekenddays
+                      %li.font-medium
+                        %i.fa.fa-rupee
+                        %span.price-without-discount= @product.price_without_discount(@days, op_type, @no_of_weekenddays)
+                      %li.font-medium
+                        /%span.min-sign
+                        %i.fa.fa-rupee
+                        %span.discount= @product.discount_by_days(@days, op_type, @no_of_weekenddays)
+                      %li
+                        %i.fa.fa-rupee
+                        %strong
+                          %span.price-with-discount= @product.price_with_discount(@days, op_type, @no_of_weekenddays)
+                      %li.font-medium
+                        %i.fa.fa-rupee
+                        %span.tax-amount= @product.tax_amount(@days, op_type, @no_of_weekenddays)
+                      %li.font-medium
                         %i.fa.fa-rupee
                         = @product.security_deposit
-                      %li
-                        %i.fa.fa-rupee
-                        = @product.price
-                      %li.days= @days
-                      %li
-                        %span.min-sign
-                        %i.fa.fa-rupee
-                        %span.discount 0
-                      %li
-                        %i.fa.fa-rupee
-                        - type = @product.operator_type== Product::OPERATOR_TYPE[1][1] ? 1 : 0
-                        %span.tax-amount= @product.tax_amount(@days, type)
-                      %li
+                      %li.font-medium
                         /%i.fa.fa-rupee
                         =# @product.ship_price
                       %li
                         %i.fa.fa-rupee
-                        %span.total-amount= @product.calculate_price(@days, type)
+                        %span.total-amount
+                          %strong
+                            = @product.calculate_price(@days, op_type, @no_of_weekenddays)
         .col-xs-12.col-md-12.from-bar
           - if current_user != @product.user
             .col-md-12.date-error{style: "color: red"}
@@ -177,21 +203,21 @@
 = content_for :extra_js do
   :javascript
     $(function(){
-      getPrice();
       $("input[name=operator_type]").click(function(){
          getPrice();
        });
      function getPrice(){
        operator_type = $("input[name=operator_type]:checked").val();
-       data = {days: "#{@days}", id: "#{@product.id}", operator_type: operator_type}
+       data = {days: "#{@days}", id: "#{@product.id}", operator_type: operator_type, no_of_weekenddays: "#{@no_of_weekenddays}"}
         $.get("/products/get_price", data)
          .done(function(result){
-             $(".tax-amount").text(result.tax);
-             $(".total-price").text(result.total_price);
-             $(".total-amount").text(result.pay_amount);
+             $("#operator_type").val(operator_type);
+             $(".price-without-discount").text(result.price_without_discount);
              $(".discount").text(result.discount);
              $(".min-sign").text(result.sign);
-             $("#operator_type").val(operator_type);
+             $(".price-with-discount").text(result.price_with_discount);
+             $(".tax-amount").text(result.tax);
+             $(".total-amount").text(result.pay_amount);
         });
       }
     });

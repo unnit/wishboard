@@ -10,7 +10,7 @@
         %h4.text-center= @product.title
         .col-md-12.mtop10.text-center.mbottom20{style: "font-weight: bold"}
           = @transaction.duration
-        .col-md-12.summary-info= render partial: "price", locals: {product: @product, days: @transaction.duration_days}
+        .col-md-12.summary-info= render partial: "price", locals: {transaction: @transaction, product: @product}
         = hidden_field_tag :amount, @amount, id: "citrusAmount"
         = hidden_field_tag :coco_transaction_id, @transaction.coco_transaction_id, id: "citrusMerchantTxnId"
         = hidden_field_tag :signature, @transaction.security_signature, id: "citrusSignature"

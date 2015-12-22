@@ -108,11 +108,19 @@ class ProductsController < ApplicationController
   end
 
   def get_price
-    pay_amount = @product.calculate_price(params[:days].to_i, params[:operator_type])
-    discount = @product.discount_by_days(params[:days].to_i)
-    tax = @product.tax_amount(params[:days].to_i, params[:operator_type])
+    price_without_discount = @product.price_without_discount(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+
+    discount = @product.discount_by_days(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+
     sign = discount > 0 ? "-" : ""
-    render json: {tax: tax, total_price: @product.price*params[:days].to_i, pay_amount: pay_amount, discount: discount, sign: sign}
+
+    price_with_discount = @product.price_with_discount(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+
+    tax = @product.tax_amount(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+
+    pay_amount = @product.calculate_price(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+
+    render json: {price_without_discount: price_without_discount, discount: discount, sign: sign, price_with_discount: price_with_discount, tax: tax, pay_amount: pay_amount}
   end
 
   def show
@@ -128,15 +136,16 @@ class ProductsController < ApplicationController
       end
     end
     @days = 1
+    @no_of_weekenddays = 0
     unless session[:end_date_time].blank? || session[:start_date_time].blank?
-      hours = (session[:end_date_time].in_time_zone("Kolkata") - session[:start_date_time].in_time_zone("Kolkata"))/3600
-      days_not_rounded = hours/24
-      if days_not_rounded > days_not_rounded.to_i
-        @days = days_not_rounded.to_i + 1
-      else
-        @days = days_not_rounded.to_i
-      end
+      @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
+      total_days = ( session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+      @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
     end
+    logger.info '*************************'
+    logger.info @product.user.profile.weekend_days_arr
+    logger.info total_days
+    logger.info @no_of_weekenddays
   end
 
   def update_available

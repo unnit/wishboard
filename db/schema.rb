@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151221065018) do
+ActiveRecord::Schema.define(version: 20151222100747) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -187,7 +187,7 @@ ActiveRecord::Schema.define(version: 20151221065018) do
     t.string   "gender",             limit: 255
     t.date     "date_of_birth"
     t.string   "weekend_days",       limit: 255
-    t.decimal  "increase",                         precision: 6, scale: 2
+    t.decimal  "increase",                         precision: 6, scale: 2, default: 0.0
     t.integer  "business_type",      limit: 4
   end
 
@@ -216,19 +216,28 @@ ActiveRecord::Schema.define(version: 20151221065018) do
   add_index "reviews", ["user_id"], name: "index_reviews_on_user_id", using: :btree
 
   create_table "transactions", force: :cascade do |t|
-    t.integer  "user_id",             limit: 4
-    t.integer  "product_id",          limit: 4
-    t.string   "status",              limit: 255
-    t.integer  "amount",              limit: 4,   default: 0
+    t.integer  "user_id",                     limit: 4
+    t.integer  "product_id",                  limit: 4
+    t.string   "status",                      limit: 255
+    t.integer  "amount",                      limit: 4,                            default: 0
     t.datetime "startdate"
     t.datetime "enddate"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
-    t.string   "txnid",               limit: 255
-    t.integer  "operator_type",       limit: 4,   default: 0
-    t.integer  "operator_price",      limit: 4,   default: 0
-    t.string   "coco_transaction_id", limit: 255
-    t.string   "non_coco_operator",   limit: 255
+    t.datetime "created_at",                                                                     null: false
+    t.datetime "updated_at",                                                                     null: false
+    t.string   "txnid",                       limit: 255
+    t.integer  "operator_type",               limit: 4,                            default: 0
+    t.integer  "operator_price",              limit: 4,                            default: 0
+    t.string   "coco_transaction_id",         limit: 255
+    t.string   "non_coco_operator",           limit: 255
+    t.integer  "daily_rent",                  limit: 4,                            default: 0
+    t.integer  "days",                        limit: 4,                            default: 0
+    t.integer  "weekend_rent",                limit: 4,                            default: 0
+    t.integer  "weekend_days",                limit: 4,                            default: 0
+    t.integer  "rent_without_discount",       limit: 4,                            default: 0
+    t.decimal  "discounts",                               precision: 10, scale: 2, default: 0.0
+    t.decimal  "rent_with_discount",                      precision: 10, scale: 2, default: 0.0
+    t.decimal  "tax",                                     precision: 10, scale: 2, default: 0.0
+    t.integer  "refundable_security_deposit", limit: 4,                            default: 0
   end
 
   add_index "transactions", ["product_id"], name: "index_transactions_on_product_id", using: :btree

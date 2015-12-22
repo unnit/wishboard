@@ -15,10 +15,23 @@ class TransactionsController < ApplicationController
     if @transaction.valid?
       @address = current_user.address || current_user.copy_address!
       if @product.owner_type == Product::OWNER_TYPE[0][1]
+        ### -----Asigning all values to transaction table
+        total_days = ( session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+        @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
         @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
-        @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
         @transaction.operator_price = @product.operator_price if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
+        @transaction.daily_rent = @product.price
+        @transaction.days = @transaction.duration_days
+        @transaction.weekend_rent = @product.seasonal_weekend_pricing(@no_of_weekenddays)
+        @transaction.weekend_days = @no_of_weekenddays
+        @transaction.rent_without_discount = @product.price_without_discount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+        @transaction.discounts = @product.discount_by_days(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+        @transaction.rent_with_discount = @product.price_with_discount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+        @transaction.tax = @product.tax_amount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+        @transaction.refundable_security_deposit = @product.security_deposit
+        @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
         @transaction.save
+        ###########-----------------------------
         TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
         redirect_to checkout_transaction_path(@transaction)
       end
@@ -36,7 +49,20 @@ class TransactionsController < ApplicationController
     @transaction.operator_type = params[:operator_type]
     @transaction.operator_price = @product.operator_price if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
     @transaction.product = @product
-    @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type])
+    ### -----Asigning all values to transaction table
+    total_days = ( session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+    @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
+    @transaction.daily_rent = @product.price
+    @transaction.days = @transaction.duration_days
+    @transaction.weekend_rent = @product.seasonal_weekend_pricing(@no_of_weekenddays)
+    @transaction.weekend_days = @no_of_weekenddays
+    @transaction.rent_without_discount = @product.price_without_discount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+    @transaction.discounts = @product.discount_by_days(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+    @transaction.rent_with_discount = @product.price_with_discount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+    @transaction.tax = @product.tax_amount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+    @transaction.refundable_security_deposit = @product.security_deposit
+    @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+    ###############
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
     if @transaction.save
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")

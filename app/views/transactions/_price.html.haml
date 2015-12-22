@@ -7,68 +7,91 @@
         %i.fa.fa-rupee
         %span.total-price= product.ship_price
 - else
-  .col-md-12
-    .col-md-7.col-xs-7
-      %label= product.price_label
-    .col-md-5.col-xs-5
-      %span.price
-        %i.fa.fa-rupee
-        = product.price
-  %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
-    .col-md-7.col-xs-7
-      %label Days
-    .col-md-5.col-xs-5
-      %span.price.days= days
-  %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
-    .col-md-7.col-xs-7
-      %label Total price
-    .col-md-5.col-xs-5
-      %span.price
-        %i.fa.fa-rupee
-        %span.total-price= days * product.price
-  %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
-    .col-md-7.col-xs-7
-      %label Discounts( #{product.discount_percent(days)}% )
-    .col-md-5.col-xs-5
-      %span.price
-        %span.min-sign= " - " if product.discount_by_days(days) > 0
-        %i.fa.fa-rupee
-        %span.discount= product.discount_by_days(days)
-  %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
-    .col-md-7.col-xs-7
-      %label Tax( #{product.tax}% )
-    .col-md-5.col-xs-5
-      %span.price
-        %i.fa.fa-rupee
-        %span.total-price= product.tax_amount(days, @transaction.operator_type)
-  %hr.col-md-11.col-xs-12.mtop-v-5
-  - if @transaction.operator_type != 0
+  - if transaction.operator_type == Product::OPERATOR_TYPE[1][1]
     .col-md-12
       .col-md-7.col-xs-7
         %label Operator Charge
       .col-md-5.col-xs-5
         %span.price
           %i.fa.fa-rupee
-          %span.total-price= product.service_charge(@transaction.operator_type)
+          %span.total-price= transaction.operator_price
     %hr.col-md-11.col-xs-12.mtop-v-5
+  .col-md-12
+    .col-md-7.col-xs-7
+      %label= product.price_label
+    .col-md-5.col-xs-5
+      %span.price
+        %i.fa.fa-rupee
+        = transaction.daily_rent
+  %hr.col-md-11.col-xs-12.mtop-v-5
+  .col-md-12
+    .col-md-7.col-xs-7
+      %label Days
+    .col-md-5.col-xs-5
+      %span.price.days= transaction.days
+  %hr.col-md-11.col-xs-12.mtop-v-5
+  - if transaction.weekend_days > 0
+    .col-md-12
+      .col-md-7.col-xs-7
+        %label Premium Rent
+      .col-md-5.col-xs-5
+        %span.price
+          %i.fa.fa-rupee
+          = transaction.weekend_rent
+    %hr.col-md-11.col-xs-12.mtop-v-5
+    .col-md-12
+      .col-md-7.col-xs-7
+        %label No. of Premium Days
+      .col-md-5.col-xs-5
+        %span.price.days= transaction.weekend_days
+    %hr.col-md-11.col-xs-12.mtop-v-5
+  .col-md-12
+    .col-md-7.col-xs-7
+      %label Total Rent
+    .col-md-5.col-xs-5
+      %span.price
+        %i.fa.fa-rupee
+        %span.total-price= transaction.rent_without_discount
+  %hr.col-md-11.col-xs-12.mtop-v-5
+  .col-md-12
+    .col-md-7.col-xs-7
+      %label Discounts
+    .col-md-5.col-xs-5
+      %span.price
+        %span.min-sign= " - " if transaction.discounts > 0
+        %i.fa.fa-rupee
+        %span.discount= transaction.discounts
+  %hr.col-md-11.col-xs-12.mtop-v-5
+  .col-md-12
+    .col-md-7.col-xs-7
+      %label Total Rent after Discount
+    .col-md-5.col-xs-5
+      %span.price
+        %i.fa.fa-rupee
+        %span.total-price= transaction.rent_with_discount
+  %hr.col-md-11.col-xs-12.mtop-v-5
+  .col-md-12
+    .col-md-7.col-xs-7
+      %label Tax
+    .col-md-5.col-xs-5
+      %span.price
+        %i.fa.fa-rupee
+        %span.total-price= transaction.tax
+  %hr.col-md-11.col-xs-12.mtop-v-5
   .col-md-12
     .col-md-7.col-xs-7
       %label Refunable Security Deposit
     .col-md-5.col-xs-5
       %span.price
         %i.fa.fa-rupee
-        = product.security_deposit
+        = transaction.refundable_security_deposit
 .col-md-12.col-xs-12.mbottom10.ptop10.pbottom10{style: "border: 2px solid #388CA7;border-radius: 2px;"}
   .col-md-7.col-xs-7
     %label Amount Payable
   .col-md-5.col-xs-5
     %span.price
       %i.fa.fa-rupee
-      %span.total-amount= product.calculate_price(days, @transaction.operator_type)
+      %span.total-amount= transaction.amount
 .col-md-12.col-xs-12.mbottom10.ptop10.pbottom10{style: "border: 2px solid #388CA7;border-radius: 2px;;color:#E84242;"}
   .col-md-7.col-xs-7
     %label Booking ID

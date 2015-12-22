@@ -347,28 +347,16 @@ class Product < ActiveRecord::Base
     date_str
   end
 
-  #pricing
-  def calculate_price(days, operator_type)
-    return ship_price if for_free?
-    amount = price_without_deposit(days, operator_type) + tax_amount(days, operator_type) + security_deposit
-    amount
-  end
+  #--------PRICING----------------------------------
 
-  def discount_by_days(days)
-    d = 0
-    if days > 90
-      d = discount_90 || 0
-    elsif days > 30
-      d = discount_30 || 0
-    elsif days > 20
-      d = discount_20 || 0
-    elsif days > 10
-      d = discount_10 || 0
-    elsif days > 3
-      d = discount_3 || 0
+  def days_calculation_for_pricing(start_day, end_day)
+    hours = (end_day.in_time_zone("Kolkata") - start_day.in_time_zone("Kolkata"))/3600
+    days_not_rounded = hours/24
+    if days_not_rounded > days_not_rounded.to_i
+      @days = days_not_rounded.to_i + 1
+    else
+      @days = days_not_rounded.to_i
     end
-    discount = d.to_f/100
-    discount * price * days
   end
 
   def discount_percent(days)
@@ -387,15 +375,56 @@ class Product < ActiveRecord::Base
     d
   end
 
-  def price_without_deposit(days, operator_type)
-    amount = price*days + ship_price - discount_by_days(days)
-    amount += operator_price if operator_type.to_i == Product::OPERATOR_TYPE[1][1]
-    amount
+  def no_of_weekenddays(total_days, weekend_days_arr)
+    total_days.select {|d| weekend_days_arr.include?(d.wday) }.size
   end
 
-  def tax_amount(days, operator_type)
+  def seasonal_weekend_pricing(no_of_weekenddays)
+    weekend_pricing = 0
+    weekend_pricing = (((user.profile.increase/100)*price)*no_of_weekenddays) unless user.profile.increase.blank?
+    weekend_pricing.round(1)
+  end
+
+  def price_without_discount(days, op_type, no_of_weekenddays)
+    op_price = 0
+    op_price = operator_price if op_type.to_i == Product::OPERATOR_TYPE[1][1]
+    amount = (price*days) + seasonal_weekend_pricing(no_of_weekenddays) + op_price
+    amount.round(1)
+  end
+
+  def discount_by_days(days, op_type, no_of_weekenddays)
+    d = 0
+    if days > 90
+      d = discount_90 || 0
+    elsif days > 30
+      d = discount_30 || 0
+    elsif days > 20
+      d = discount_20 || 0
+    elsif days > 10
+      d = discount_10 || 0
+    elsif days > 3
+      d = discount_3 || 0
+    end
+    discount = d.to_f/100
+    discounted_amt = (discount * price_without_discount(days, op_type, no_of_weekenddays)) + (GLOBAL_VARIABLES[:extra_discount] * price_without_discount(days, op_type, no_of_weekenddays))
+    discounted_amt.round(1)
+  end
+
+  def price_with_discount(days, op_type, no_of_weekenddays)
+    discounted_price = price_without_discount(days, op_type, no_of_weekenddays) - discount_by_days(days, op_type, no_of_weekenddays)
+    discounted_price.round(1)
+  end
+
+  def tax_amount(days, op_type, no_of_weekenddays)
     return 0 if for_free?
-    price_without_deposit(days, operator_type)*tax/100
+    tax_amount = price_with_discount(days, op_type, no_of_weekenddays)*(tax/100)
+    tax_amount.round(1)
+  end
+
+  def calculate_price(days, op_type, no_of_weekenddays)
+    return ship_price if for_free?
+    amount = price_with_discount(days, op_type, no_of_weekenddays) + tax_amount(days, op_type, no_of_weekenddays) + security_deposit
+    amount.round(0)
   end
   #end pricing
 

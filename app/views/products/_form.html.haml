@@ -21,7 +21,7 @@
                 .col-sm-10
                   - Category.feature.each do |cat|
                     %span.button-checkbox
-                      %button.btn.btn-default.cat-text.cat-select{type: "button", class: "#{'btn-primary' if cat.name==@selected_cat}",data: {color: "primary", id: cat.name}}
+                      %button.btn.btn-default.cat-text.cat-select{type: "button", class: "#{'btn-primary' if cat.name==@selected_cat}",data: {color: "primary", id: cat.id}}
                         = image_tag cat.image
                         = cat.name
                       = check_box_tag :category, "", false, class: "hidden"
@@ -33,7 +33,7 @@
                         %span.caret
                       %ul.dropdown-menu.cat-text{role: "menu"}
                         - Category.root.other.each do |cat|
-                          %li= link_to cat.name, "javascript:;", class: "cat-select cat-other", data: {id: cat.name}
+                          %li= link_to cat.name, "javascript:;", class: "cat-select cat-other", data: {id: cat.id}
               .form-group
                 %label.col-sm-2.control-label.pro-detail{for: "textinput"} Sub-category*
                 = f.hidden_field :category_id

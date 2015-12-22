@@ -177,7 +177,7 @@ class ProductsController < ApplicationController
   def sub_categories
     unless params[:category].blank?
       #category = Category.friendly.find params[:category]
-      category = Category.find_by_name params[:category]
+      category = Category.find_by_id params[:category]
       @subs = category.subs
     end
     @subs ||=[]

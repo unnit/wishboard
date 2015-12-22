@@ -61,7 +61,7 @@ $(document).ready(function(){
       lng = $(this).data('lng');
       if($(this).data('lat') && $(this).data('lng')){
         html = "<h4><i class='fa fa-rupee'>" + $(this).data("price") + "</i></h4>";
-        html = html + "<img style='max-width: 200px;' src='" + $(this).data('image') + "'></img>";
+        html = html + "<img style='max-width: 200px;' src='https://res.cloudinary.com/cocociti/image/upload/c_fill,h_190,w_253/" + $(this).data('image') + "'></img>";
         html = html + "<a href='" + $(this).data("path") + "'><h6 class='mtop10'>" + $(this).data("title") + "</h6></a>"
         values.push({
           latLng: [lat, lng],

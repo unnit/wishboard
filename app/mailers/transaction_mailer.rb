@@ -1,4 +1,5 @@
 class TransactionMailer < ApplicationMailer
+  default bcc: "#{GLOBAL_VARIABLES[:manager_email_id_1]},#{GLOBAL_VARIABLES[:manager_email_id_2]}"
   #to renter
   def accept(transaction)
     @transaction = transaction

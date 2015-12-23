@@ -58,14 +58,13 @@
                   = link_to @product.listing_type_name, "#tab_default_1_1", "data-toggle" => "tab", class: "bg-white"
               .tab-content.table-panel-rs-heoght
                 #tab_default_1_1.tab-pane.active{style: "min-height: 160px;"}
-                  - if @product.operator_type != Product::OPERATOR_TYPE[0][1]
+                  - if @product.operator_type > Product::OPERATOR_TYPE[1][1]
                     %p
-                      - if @product.operator_type != Product::OPERATOR_TYPE[1][1]
-                        = radio_button_tag :operator_type, Product::OPERATOR_TYPE[0][1], true, class: "operator_type"
-                        %label Product Only
-                        %span.pull-right
-                          %i.fa.fa-rupee
-                          0
+                      = radio_button_tag :operator_type, Product::OPERATOR_TYPE[0][1], true, class: "operator_type"
+                      %label Product Only
+                      %span.pull-right
+                        %i.fa.fa-rupee
+                        0
                       %br
                       = radio_button_tag :operator_type, Product::OPERATOR_TYPE[1][1], @product.operator_type == Product::OPERATOR_TYPE[1][1], class: "operator_type"
                       %label With Operator/Driver (Assisted)
@@ -89,8 +88,14 @@
                       - if @no_of_weekenddays > 0
                         %li.font-medium Premium Rent**
                         %li.font-medium No. of Premium Days
+                      - if @product.operator_type== Product::OPERATOR_TYPE[1][1]
+                        %li.font-medium
+                          Operator Price
                       %li.font-medium Total Rent
-                      %li.font-medium Discounts* ( #{@product.discount_percent(@days)}% )
+                      %li.font-medium
+                        Discounts
+                        - if @product.discounts_any?
+                          *
                       %li
                         %strong
                           Total Rent after Discount
@@ -111,6 +116,10 @@
                           %i.fa.fa-rupee
                           = @product.seasonal_weekend_pricing(@no_of_weekenddays)
                         %li.font-medium= @no_of_weekenddays
+                      - if @product.operator_type== Product::OPERATOR_TYPE[1][1]
+                        %li.font-medium
+                          %i.fa.fa-rupee
+                          = @product.operator_price
                       %li.font-medium
                         %i.fa.fa-rupee
                         %span.price-without-discount= @product.price_without_discount(@days, op_type, @no_of_weekenddays)
@@ -138,13 +147,31 @@
                             = @product.calculate_price(@days, op_type, @no_of_weekenddays)
         .col-xs-12.col-md-12.from-bar
           - if current_user != @product.user
-            .col-md-12.date-error{style: "color: red"}
             .col-md-12{style: "padding: 0; margin-left: 15px"}
               - if current_user && @product.available?
                 %button#rent-btn.src-but{type: "submit", style: "width: 100%;padding: 0"}= @product.for_free? ? "Get" : "Rent"
               - else
                 %button.src-but{type: "button", style: "width: 100%;padding: 0", data: {toggle: "modal", target: "#login"}}
                   Login to Book
+        .col-xs-12.col-md-12.from-bar.mtop10.padding10.note-font-size
+          - if @no_of_weekenddays > 0
+            ** Premium Rent is charged by Product Owner and Premium days set by product owner are as follows:
+            %br
+            = @product.weekend_days_display
+            %br
+            %br
+          - if @product.discounts_any?
+            * Discounts given by product owner
+            %br
+            3 + days - #{@product.discount_3}%
+            %br
+            10 + days - #{@product.discount_10}%
+            %br
+            20 + days - #{@product.discount_20}%
+            %br
+            30 + days - #{@product.discount_30}%
+            %br
+            90 + days - #{@product.discount_90}%
   .col-xs-12.col-md-8.mtop20.no-padding-left
     %h4.list-detail-head Description
     %hr.col-md-12.mtop-v-5

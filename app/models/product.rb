@@ -85,6 +85,7 @@ class Product < ActiveRecord::Base
   AVAILABLE = [["On", true], ["Off", false]]
   AVAILABLE_VALUES = [true, false]
   YEAR_OF_MANUFACTURE = (1947..Time.now.year).to_a.reverse
+  DAY_NAMES = [["Sun", 0], ["Mon", 1], ["Tue", 2], ["Wed", 3], ["Thu", 4], ["Fri", 5], ["Sat", 6]]
 
   validates :title, :category_id, :listing_type, :description, :terms_and_conditions, :doc_requirement, presence: true
 
@@ -157,6 +158,10 @@ class Product < ActiveRecord::Base
 
   def individual?
     owner_type==1
+  end
+
+  def discounts_any?
+    return true if discount_3 > 0 || discount_10 > 0 || discount_20 > 0 || discount_30 > 0 || discount_90 > 0
   end
 
   #get infos
@@ -424,9 +429,17 @@ class Product < ActiveRecord::Base
   def calculate_price(days, op_type, no_of_weekenddays)
     return ship_price if for_free?
     amount = price_with_discount(days, op_type, no_of_weekenddays) + tax_amount(days, op_type, no_of_weekenddays) + security_deposit
-    amount.round(0)
+    amount.round(0).to_i
   end
   #end pricing
+
+  def weekend_days_display
+    w_days = []
+    user.profile.weekend_days_arr.map(&:to_i).each do |val|
+      w_days << Product::DAY_NAMES[val][0]
+    end
+    w_days.join(", ")
+  end
 
   def lat
     location ? location.lat : ""

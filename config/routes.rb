@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       get :get_price
     end
     member do
+      post :update_admin_approved
       post :review
       post :rate
       post :remove_image

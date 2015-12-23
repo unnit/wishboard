@@ -268,7 +268,7 @@ body {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 /* --------------------------------
@@ -1921,10 +1921,6 @@ margin-top:15px;
     margin-top: 50px;
     margin-bottom: -4px;
 }
-.des-assests{
-    width: 70px;
-    height: 69px;
-}
 .in-put{
     width: 149px;
 
@@ -2441,6 +2437,30 @@ height:50px;
 }
 .shaktiman-sprite{
   width: 54px;
-    height: 50px;
-    background: url('images/coco-sprite.png') -221px -164px;
+  height: 50px;
+  background: url('images/coco-sprite.png') -221px -164px;
+}
+.open-close-sprite{
+  width: 40px;
+  height: 40px;
+  background: url('images/coco-sprite.png') -364px -172px;
+  margin: 5px 30px 5px 56px
+}
+.booking-type-sprite{
+  width: 40px;
+  height: 40px;
+  background: url('images/coco-sprite.png') -424px -172px;
+  margin: 5px 30px 5px 56px
+}
+.business-type-sprite{
+  width: 40px;
+  height: 40px;
+  background: url('images/coco-sprite.png') -298px -169px;
+  margin: 5px 30px 5px 56px
+}
+.booking-type-confirm-sprite{
+  width: 40px;
+  height: 40px;
+  background: url('images/coco-sprite.png') -473px -172px;
+  margin: 5px 30px 5px 56px;
 }

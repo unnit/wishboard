@@ -238,7 +238,19 @@ $(document).ready(function(){
     pickerPosition: "bottom-right"
   });
   $(".from_date_time").datetimepicker().on('changeDate', function(){
-    $('.end_date_time').datetimepicker('setStartDate', $(".home_start_date").val());
+    var date_arr = $(".home_start_date").val().split(" ");
+    var date_of_arr = date_arr[0].split("-").reverse().join("-")
+    var date = new Date(date_of_arr);
+    var hrs = parseInt(date_arr[1].split(":")) + 2
+    if(parseInt(date_arr[1].split(":")[1]) == 30){
+      var mins = 30
+    }
+    else{
+      var mins = 0
+    }
+    date.setHours(hrs)
+    date.setMinutes(mins)
+    $('.end_date_time').datetimepicker('setStartDate', date);
     $(".end_date_time").datetimepicker('show');
   });
   $(".end_date_time").datetimepicker().on('changeDate', function(){
@@ -246,7 +258,19 @@ $(document).ready(function(){
     //$('.home_search_box').attr('size',length/2);
   });
   $(".header_from_date_time").datetimepicker().on('changeDate', function(){
-    $('.header_end_date_time').datetimepicker('setStartDate', $("#start_date_time_header").val());
+    var date_arr = $("#start_date_time_header").val().split(" ");
+    var date_of_arr = date_arr[0].split("-").reverse().join("-")
+    var date = new Date(date_of_arr);
+    var hrs = parseInt(date_arr[1].split(":")) + 2
+    if(parseInt(date_arr[1].split(":")[1]) == 30){
+      var mins = 30
+    }
+    else{
+      var mins = 0
+    }
+    date.setHours(hrs)
+    date.setMinutes(mins)
+    $('.header_end_date_time').datetimepicker('setStartDate', date);
     $(".header_end_date_time").datetimepicker('show');
   });
   $(".non_coco_start_date").datetimepicker().on('changeDate', function(){

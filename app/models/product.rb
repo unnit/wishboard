@@ -489,7 +489,7 @@ class Product < ActiveRecord::Base
   class << self
 
     def best_deal
-      order(rate: :desc).order(:price)
+      order(:price)
     end
 
     def new_posts

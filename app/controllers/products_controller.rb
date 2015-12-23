@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create, :edit, :destroy, :rate, :review, :update, :remove_image]
-  before_filter :set_product, only: [:show, :edit, :rate, :review, :update, :destroy, :remove_image, :update_available, :get_price]
+  before_filter :set_product, only: [:show, :edit, :rate, :review, :update, :destroy, :remove_image, :update_available, :get_price, :update_admin_approved]
   before_filter :authenticate_owner, only: [:edit, :update, :destroy, :remove_image, :update_available]
   before_filter :check_whether_edit_page, only: [:edit, :update, :remove_image]
 
@@ -62,7 +62,7 @@ class ProductsController < ApplicationController
       #@product.save
       @product.update_parent_category!
       @product.location.update_lat_lng
-      flash[:success] = "Item saved successfully and is under review process. It will be posted as soon as the review is completed."
+      flash[:success] = "Item saved successfully and is under review process. It will be posted as soon as the review is completed.<br>You can edit, change the availability of your product from your <a href='/profiles/dashboard'>Dashboard</a>.".html_safe
       redirect_to user_product_path(@product.id)
     else
       set_category if @product.category
@@ -98,7 +98,7 @@ class ProductsController < ApplicationController
       end
       @product.update_parent_category!
       @product.location.update_lat_lng
-      flash[:success] = "Product updated successfully and is under review process. It will be posted as soon as the review is completed. "
+      flash[:success] = "Product updated successfully and is under review process. It will be posted as soon as the review is completed."
       redirect_to user_product_path(@product.id)
     else
       set_category if @product.category
@@ -142,10 +142,6 @@ class ProductsController < ApplicationController
       total_days = ( session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
       @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
     end
-    logger.info '*************************'
-    logger.info @product.user.profile.weekend_days_arr
-    logger.info total_days
-    logger.info @no_of_weekenddays
   end
 
   def update_available
@@ -156,9 +152,13 @@ class ProductsController < ApplicationController
     end
   end
 
-  def destroy
-    @product.destroy
-    respond_to :js
+  def update_admin_approved
+    if current_user.admin?
+      @product.toggle!
+      flash[:success] = "Aprroved successfully" if @product.admin_approved == true
+      flash[:success] = "Unaprroved successfully" if @product.admin_approved == false
+      redirect_to user_product_path(@product.id)
+    end
   end
 
   def rate

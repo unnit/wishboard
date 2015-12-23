@@ -60,7 +60,7 @@
             = link_to user_omniauth_authorize_path(:facebook), style: "border-radius:0;", class: "btn btn-primary btn-block" do
               %i.icon-facebook
               Login with Facebook
-          .col-sm-9.col-sm-offset-3.or-text
+          .col-sm-9.col-sm-offset-3.or-text.hidden
             %span OR
           = form_for(User.new, :url => new_user_session_path, html: {"data-parsley-validate" => true, remote: true}) do |f|
             .col-sm-12.errors
@@ -99,7 +99,7 @@
             = link_to user_omniauth_authorize_path(:facebook), style: "border-radius:0;", class: "btn btn-primary btn-block" do
               %i.icon-facebook
               Sign Up/Register with Facebook
-          .col-sm-9.col-sm-offset-3.or-text
+          .col-sm-9.col-sm-offset-3.or-text.hidden
             %span OR
           = form_for(User.new, :url => user_registration_path, html: {"data-parsley-validate" => true, remote: true, class: "agreement-require"}) do |f|
             .col-sm-12.errors

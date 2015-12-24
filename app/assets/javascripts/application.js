@@ -309,7 +309,7 @@ $(document).ready(function(){
       }
     });
   });
-
+  // ---Get State and City by entering Zip Code
   $(".check_zip").on("focusout", function() {
     $.get("/home/get_state_and_city", {
       zip: $(this).val()
@@ -318,5 +318,20 @@ $(document).ready(function(){
       $('.state').val(result.state);
     }, "json");
   });
-
+  //-----Show search Bar in header when search in home scrolls up
+  if($(".main-search-bar").length){
+    $("#adv-search").hide();
+  }
+  else{
+    $("#adv-search").fadeIn(100);
+  }
+  var topOfOthDiv = $(".main-search-bar").offset().top;
+    $(window).scroll(function() {
+        if($(window).scrollTop() > topOfOthDiv) { //scrolled past the other div?
+            $("#adv-search").fadeIn(); //reached the desired point -- show div
+        }
+        else{
+          $("#adv-search").fadeOut();
+        }
+    });
 });

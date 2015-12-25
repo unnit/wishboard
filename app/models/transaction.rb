@@ -22,6 +22,8 @@ class Transaction < ActiveRecord::Base
 
   scope :non_coco, -> {where status: Transaction::TRANSACTION_STATUS[5][1]}
 
+  scope :out_for_rent_today, -> {where( "(transactions.startdate < ? and transactions.enddate > ?) and transactions.status = ?", DateTime.current, DateTime.current, Transaction::TRANSACTION_STATUS[2][1])}
+
   scope :dashboard_transactions, -> {where( "transactions.status = ? or transactions.status = ? or transactions.status = ? or transactions.status = ? or transactions.status = ?", Transaction::TRANSACTION_STATUS[0][1], Transaction::TRANSACTION_STATUS[2][1], Transaction::TRANSACTION_STATUS[3][1], Transaction::TRANSACTION_STATUS[4][1], Transaction::TRANSACTION_STATUS[6][1] )}
 
   def duration
@@ -74,7 +76,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def display_status
-    status.humanize
+    transaction_status_name.humanize
   end
 
   def accepted?
@@ -147,6 +149,17 @@ class Transaction < ActiveRecord::Base
 
   def shipping
     product.ship_price
+  end
+
+  class << self
+    def admin_search(term)
+      unless term.blank?
+        results = where("lower(coco_transaction_id) like ?","%#{term.downcase}%")
+      else
+        results = all
+      end
+      results
+    end
   end
 
   private

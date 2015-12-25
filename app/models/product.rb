@@ -31,8 +31,8 @@ class Product < ActiveRecord::Base
 
   attr_accessor :start_date_time, :end_date_time
 
-  include AlgoliaSearch
-
+  #include AlgoliaSearch
+=begin
   algoliasearch do
     attribute :title, :category_path, :description, :price, :created_at, :rate, :available, :admin_approved
     attribute :location_address
@@ -54,6 +54,7 @@ class Product < ActiveRecord::Base
     end
     hitsPerPage 10
   end
+=end
   mount_uploader :image_1, ImageUploader
   mount_uploader :image_2, ImageUploader
   mount_uploader :image_3, ImageUploader
@@ -464,7 +465,7 @@ class Product < ActiveRecord::Base
   end
 
   def rental_status
-    unavailable_dates.include?(Date.current) ? "Out for rental" : "available"
+    transactions.out_for_rent_today.blank? ? "Available" : "Out for Rental"
   end
 
   #actions
@@ -501,6 +502,13 @@ class Product < ActiveRecord::Base
       joins(:location).where("locations.id in(?)", loc_ids)
     end
 
+    def admin_search(term)
+      results = joins(:location).joins(:category)
+      unless term.blank?
+        results = results.where("lower(products.title) like ? or lower(categories.name) like ? or lower(locations.name) like ? or products.id = ?", "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%", term.to_i)
+      end
+      results
+    end
     # def search(term, options={})
     #   if term.blank?
     #     results = all

@@ -1,7 +1,8 @@
 class Admin::ProductsController < AdminController
   def index
     #@products = Product.search(params[:term], {hitsPerPage: 20, page: params[:page], slave: 'admin_search'})
-    @products = Product.all.page(params[:page]).per(30)
+    @products = Product.admin_search(params[:term]).page(params[:page]).per(10)
+    #@products = Product.all.page(params[:page]).per(30)
   end
 
   def set_featured

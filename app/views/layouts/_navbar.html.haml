@@ -16,7 +16,7 @@
               %ul.pro-view
                 %li.dropdown
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
-                    %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 5px;"}
+                    %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
                       = cl_image_tag current_user.avatar, class: "img-circle pull-right", width: 40, height: 40, crop: :fill
                     / %i.glyphicon.glyphicon-user.pull-right.mleft5
                   %ul.dropdown-menu.mtop30
@@ -39,12 +39,12 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span Sign Out
                         %span.glyphicon.glyphicon-log-out.pull-right
-            %li.pa= link_to "List Your Item", new_product_path, class: "pa", style: "color: #fff"
+            %li.mtop5= link_to "List Your Item", new_product_path, class: "pa"
           - else
 
             %li.active.nav-login= link_to "Login", "#login", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
             %li.active.nav-login= link_to "Register", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
-            %li.pa= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
+            %li.mtop5= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
 
 
 - unless current_user

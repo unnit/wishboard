@@ -6,12 +6,13 @@
     .row
       .col-lg-12
         .intro-message
-          %h1 Cocociti
+          /%h1 Cocociti
+          %img{src: "assets/images/home-tree.png"}
           %h3.land-head All Things Rental!
           .row
             .col-md-10.col-md-offset-1.main-search-bar
               .form-section
-                .row{style: "border: 10px solid #7D7D7D;border-radius:6px;"}
+                .row.border-home-search
                   = form_tag search_products_path, method: "get" do |f|
                     .col-md-3.no-mar-pad
                       .input-group.mbottom0.input-append.date.from_date_time
@@ -55,8 +56,20 @@
 .container.pbottom50
   .col-md-4.col-md-offset-4.text-center
     %span.header-text HOW IT WORKS
-  .col-md-12.col-md-offset-1.mtop30
+  .col-md-12.col-md-offset-1.mtop50
     = image_tag "/assets/images/how_it_works.png", class: "img-responsive text-center"
+  .col-md-3
+    %h3.pull-left.land-src-mar-browse
+      BROWSE
+  .col-md-3
+    %h3.pull-left.land-src-mar-book
+      BOOK INSTANTLY
+  .col-md-3
+    %h3.pull-left.land-src-mar-pickup
+      PICKUP
+  .col-md-3
+    %h3.pull-left.land-src-mar-return
+      RETURN
 
 
 #why-us.ht-home-header
@@ -82,7 +95,7 @@
         .col-md-4
           %p.y-u.pad
             %strong
-              Curated listings & Trusted Vendors.
+              Curated listings & Trusted Vendors
             %br
             Every vendor on Cocociti is handpicked for quality products & exceptional service; be it products or our delivery partners. Individual listings are made available by our expert curators.
 
@@ -93,9 +106,9 @@
         .col-md-4
           %p.y-u.pad
             %strong
-              Super Safe payments & Super Fast Refunds
+              Safe payments & Fast Refunds
             %br
-            All transactions are facilitated through our secure system with payment protection enabled. Your money is kept in an escrow till the end of the renting tenure and security deposit will be credited back to your account after confirmation from product owner.
+            All transactions are facilitated through our secure system with payment protection. Your money is kept in an escrow till the end of the renting tenure & security deposit is refunded once product is returned in good condition.
 
       .col-md-6-offset-1
         .col-md-2
@@ -114,8 +127,16 @@
     %span.header-text LIST YOUR ITEM
   .row.lp-mar
     .col-md-12
-      %p.list-p-p Cocociti is a smart way to earn money by renting stuff. All you need to do is to click few pics, upload it to Cocociti, and mention your terms! You set the price for your listings, your availability, and booking requirements. You can message users and approve rentals as per your choice.
+      %p.list-p-p
+        %strong
+          Make Money, Wise
+        Cocociti is a smart way to earn money by renting stuff. All you need to do is to click few pics, upload it to Cocociti, and mention your terms! You set the price for your listings, your availability, and booking requirements. You can message users and approve rentals as per your choice.
       %center
+        %strong
+          %h3
+            LET YOUR THINGS WORK FOR YOU!
+        %br
+        %br
         = link_to new_product_path do
           %button.but-mar List Your Item
 

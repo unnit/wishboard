@@ -20,6 +20,7 @@
 //= require jquery.remotipart
 //= require bootstrap-datetimepicker
 //= require jquery.mCustomScrollbar.concat.min
+//= require jquery.tablesorter
 
 
 $(document).ready(function(){
@@ -205,7 +206,16 @@ $(document).ready(function(){
   search_end_date = $("#end_date_and_time_for_search_datepicker").data('id');
   dob_end_date = $("#end_date_and_time_for_dob_datepicker").data('id');
   dob_start_date = $("#start_date_and_time_for_dob_datepicker").data('id');
-  $(".from_date_time,.header_from_date_time").datetimepicker({
+  $(".from_date_time").datetimepicker({
+    format: 'dd-mm-yyyy hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    startDate: new Date(search_start_date),
+    endDate: new Date(search_end_date),
+    minuteStep: 30,
+    pickerPosition: "top-right"
+  });
+  $(".header_from_date_time").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
     todayBtn: true,
@@ -214,7 +224,16 @@ $(document).ready(function(){
     minuteStep: 30,
     pickerPosition: "bottom-right"
   });
-  $(".end_date_time,.header_end_date_time").datetimepicker({
+  $(".end_date_time").datetimepicker({
+    format: 'dd-mm-yyyy hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    startDate: new Date(search_start_date),
+    endDate: new Date(search_end_date),
+    minuteStep: 30,
+    pickerPosition: "top-right"
+  });
+  $(".header_end_date_time").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
     todayBtn: true,
@@ -321,17 +340,20 @@ $(document).ready(function(){
   //-----Show search Bar in header when search in home scrolls up
   if($(".main-search-bar").length){
     $("#adv-search").hide();
+    var topOfOthDiv = $(".main-search-bar").offset().top;
+      $(window).scroll(function() {
+          if($(window).scrollTop() > topOfOthDiv) { //scrolled past the other div?
+              $("#adv-search").fadeIn(); //reached the desired point -- show div
+          }
+          else{
+            $("#adv-search").fadeOut();
+          }
+      });
   }
   else{
     $("#adv-search").fadeIn(100);
   }
-  var topOfOthDiv = $(".main-search-bar").offset().top;
-    $(window).scroll(function() {
-        if($(window).scrollTop() > topOfOthDiv) { //scrolled past the other div?
-            $("#adv-search").fadeIn(); //reached the desired point -- show div
-        }
-        else{
-          $("#adv-search").fadeOut();
-        }
-    });
+  //-----Table Sorter
+  $("#admin-products").tablesorter();
+  $("#admin-transactions").tablesorter();
 });

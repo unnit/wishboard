@@ -1,27 +1,32 @@
 .container
-  .page-header
-    .col-sm-5
-      %h1 
-        Transactions
-        %small= "#{@transactions.total_count} transactions"
-
+  .col-sm-5
+    %h1
+      Transactions
+      %small= "#{Transaction.all.count} transactions"
+  .col-sm-7.no-mar-pad.mtop25
+    .pull-right
+      ~ form_tag url_for, method: :get do
+        .col-xs-11.no-mar-pad= text_field_tag :term, params[:term], placeholder: "Search", class: "form-control", style: "width: 300px; border-radius: 4px 0px 0px 4px;"
+        .col-xs-1.no-mar-pad
+          %button.btn.btn-danger.pull-right{type: 'submit', style: "border-radius: 0px 4px 4px 0;"}
+            %span.glyphicon.glyphicon-search
   .col-xs-12.no-mar-pad
     = paginate @transactions
     .table-responsive
-      %table.table.table-striped.table-bordered.table-hover
+      %table.table.table-striped.table-bordered.table-hover#admin-transactions
         %thead
           %tr
-            %th &nbsp;
-            %th ID
-            %th Product
-            %th Owner
-            %th Renter
-            %th Order Date
-            %th Duration
-            %th Amount
-            %th Transaction Type
-            %th Status
-            %th Details
+            %th No&nbsp;&nbsp;
+            %th ID&nbsp;&nbsp;
+            %th Product&nbsp;&nbsp;
+            %th Owner&nbsp;&nbsp;
+            %th Renter&nbsp;&nbsp;
+            %th Order Date&nbsp;&nbsp;
+            %th Duration&nbsp;&nbsp;
+            %th Amount&nbsp;&nbsp;
+            %th Transaction Type&nbsp;&nbsp;
+            %th Status&nbsp;&nbsp;
+            %th Details&nbsp;&nbsp;
         %tbody
           - @transactions.each_with_index do |transaction, i|
             %tr

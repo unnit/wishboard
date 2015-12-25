@@ -1,32 +1,32 @@
 .container
-  .page-header
-    .col-sm-5
-      %h1
-        Products
-        %small= "#{Product.all.count} products"
-
-    .col-sm-7.no-mar-pad.mtop25
-      .pull-right
-        ~ form_tag url_for, method: :get do
-          .col-xs-11.no-mar-pad= text_field_tag :term, "", placeholder: "Search", class: "form-control", style: "width: 300px; border-radius: 4px 0px 0px 4px;"
-          .col-xs-1.no-mar-pad
-            %button.btn.btn-danger.pull-right{type: 'submit', style: "border-radius: 0px 4px 4px 0;"}
-              %span.glyphicon.glyphicon-search
+  .col-sm-5
+    %h1
+      Products
+      %small= "#{Product.all.count} products"
+  .col-sm-7.no-mar-pad.mtop25
+    .pull-right
+      ~ form_tag url_for, method: :get do
+        .col-xs-11.no-mar-pad= text_field_tag :term, params[:term], placeholder: "Search", class: "form-control", style: "width: 300px; border-radius: 4px 0px 0px 4px;"
+        .col-xs-1.no-mar-pad
+          %button.btn.btn-danger.pull-right{type: 'submit', style: "border-radius: 0px 4px 4px 0;"}
+            %span.glyphicon.glyphicon-search
   .col-xs-12.no-mar-pad
     = paginate @products
     .table-responsive
-      %table.table.table-striped.table-bordered.table-hover
+      %table.table.table-striped.table-bordered.table-hover#admin-products
         %thead
           %tr
-            %th &nbsp;
-            %th Image
-            %th Title
-            %th Category
-            %td Listing Date
-            %th Owner
-            %th Status
-            %th On/Off
-            %th Featured
+            %th No&nbsp;&nbsp;
+            %th Image&nbsp;&nbsp;
+            %th P-ID&nbsp;&nbsp;
+            %th Title&nbsp;&nbsp;
+            %th Category&nbsp;&nbsp;
+            %th Location&nbsp;&nbsp;
+            %th Listing Date&nbsp;&nbsp;
+            %th Owner&nbsp;&nbsp;
+            %th Status&nbsp;&nbsp;
+            %th On/Off&nbsp;&nbsp;
+            %th Featured&nbsp;&nbsp;
             %th
 
         %tbody

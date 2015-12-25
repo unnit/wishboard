@@ -1,5 +1,5 @@
 class Admin::TransactionsController < AdminController
   def index
-    @transactions = Transaction.page(params[:page])
+    @transactions = Transaction.admin_search(params[:term]).page(params[:page]).per(10)
   end
 end

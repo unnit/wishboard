@@ -2147,7 +2147,7 @@ font-size: 14px;
     font-weight:700;
 }
 .price-bg{
-
+    height: 76px;
     margin-top:-60px;
     position:relative;
 }

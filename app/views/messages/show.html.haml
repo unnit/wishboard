@@ -2,7 +2,7 @@
   .row.mar-des-page
     %h2.mbottom20
       = @conversation.subject
-    
+
     .col-sm-12
       %h3 Transaction details
     .col-sm-6.no-mar-pad.mbottom20
@@ -11,9 +11,9 @@
       .col-sm-4 End Date
       .col-sm-8= @transaction.enddate.strftime("%Y-%m-%d") if @transaction.enddate
       .col-sm-4 Status
-      .col-sm-8= @transaction.status.humanize
+      .col-sm-8= @transaction.transaction_status_name.humanize
       .col-sm-4 Operator Type
-      .col-sm-8= Product::OPERATOR_TYPE[@transaction.operator_type]
+      .col-sm-8= Product::OPERATOR_TYPE[@transaction.operator_type][0]
     .col-sm-6
       - if @transaction.seller == current_user && @transaction.requesting?
         = link_to "Accept", accept_transaction_path(@transaction), method: :post, class: "btn btn-success"
@@ -26,7 +26,7 @@
       .col-sm-12.pad-v-5
         .col-sm-2
           %strong
-            = image_tag message.sender.avatar, size: "32x32", class: "img-circle"
+            = cl_image_tag message.sender.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
             = message.sender.name
           %br
           %small= message.created_at.strftime("%y-%m-%d %H:%M:%S")

@@ -7,7 +7,7 @@
       .col-lg-12
         .intro-message
           /%h1 Cocociti
-          %img{src: "assets/images/home-earth.png"}
+          %img{src: "../assets/images/home-earth.png", class: "img-responsive", style: "margin: 0px auto;"}
           %h3.land-head All Things Rental!
           .row
             .col-md-10.col-md-offset-1.main-search-bar
@@ -26,7 +26,6 @@
                         = text_field_tag :end_date_time, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0", readonly: true
                     .col-md-3.no-mar-pad
                       .form-group.mbottom0
-                        /= text_field_tag :term, "", placeholder: "Search an Item", class: "form-control", style: "border-radius:0"
                         = select_tag :category, options_from_collection_for_select(Product.distinct_parent_category, :id, :name, params[:category]), prompt: "Select Category", class: "form-control coco-select-box selectpicker home_search_box"
                     .col-md-3.no-mar-pad
                       %button.btn.land-src-button{type: "submit"} Search
@@ -58,16 +57,16 @@
     %span.header-text HOW IT WORKS
   .col-md-12.col-md-offset-1.mtop50
     = image_tag "/assets/images/how_it_works.png", class: "img-responsive text-center"
-  .col-md-3
+  .col-md-3.col-xs-12.text-center
     %h3.pull-left.land-src-mar-browse
       BROWSE
-  .col-md-3
+  .col-md-3.col-xs-12.text-center
     %h3.pull-left.land-src-mar-book
       BOOK INSTANTLY
-  .col-md-3
+  .col-md-3.col-xs-12.text-center
     %h3.pull-left.land-src-mar-pickup
       PICKUP
-  .col-md-3
+  .col-md-3.col-xs-12.text-center
     %h3.pull-left.land-src-mar-return
       RETURN
 

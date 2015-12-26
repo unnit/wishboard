@@ -2508,14 +2508,21 @@ th.headerSortDown {
 @media only screen and (max-width: 776px) {
   .land-src-mar-browse{
         margin-left: 0px;
+        float: none !important;
   }
   .land-src-mar-book{
         margin-left: 0px;
+        float: none !important;
   }
   .land-src-mar-pickup{
         margin-left: 0px;
+        float: none !important;
   }
   .land-src-mar-return{
         margin-left: 0px;
+        float: none !important;
+  }
+  .pa{
+    border: none !important;
   }
 }

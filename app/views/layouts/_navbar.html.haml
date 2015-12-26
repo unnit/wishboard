@@ -39,12 +39,12 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span Sign Out
                         %span.glyphicon.glyphicon-log-out.pull-right
-            %li.mtop5= link_to "List Your Item", new_product_path, class: "pa"
+            %li.ptop5.bg-white= link_to "List Your Item", new_product_path, class: "pa"
           - else
 
             %li.active.nav-login= link_to "Login", "#login", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
             %li.active.nav-login= link_to "Register", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
-            %li.mtop5= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
+            %li.ptop5.bg-white= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
 
 
 - unless current_user

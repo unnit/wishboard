@@ -83,7 +83,7 @@ Rails.application.configure do
     :port           => "587",
     :authentication => :plain,
     :user_name      => 'cocociti',#"app37675653@heroku.com",
-    :password       => 'Cocoadmin123',#"r3pzc9eu1065",
+    :password       => 'FighterFire1@',#"r3pzc9eu1065",
     :domain         => 'www.cocociti.com'
   }
 

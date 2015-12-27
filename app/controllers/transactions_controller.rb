@@ -67,6 +67,13 @@ class TransactionsController < ApplicationController
     if @transaction.save
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
+      params = {
+        'src' => "Cocociti",
+        'dst' => "+919037267357",
+        'text' => "Request has been sent to Item owner successfully. Please visit your Dashboard --> Booking Requests for updates. "
+      }
+      @transaction.send_sms(params)
+      flash[:success] = "Request for #{@product.title} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'Booking Requests' tab."
       redirect_to dashboard_profiles_path
     else
       flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
@@ -155,11 +162,13 @@ class TransactionsController < ApplicationController
 
   def accept
     @transaction.accept!
+    flash[:success] = "Request accepted successfully."
     redirect_to message_path(@transaction)
   end
 
   def deny
     @transaction.deny!
+    flash[:success] = "Request denied successfully."
     redirect_to message_path(@transaction)
   end
 
@@ -191,6 +200,13 @@ class TransactionsController < ApplicationController
         render :thankyou
       else
         TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
+        msg = params["TxMsg"]
+        params = {
+          'src' => "Cocociti",
+        	'dst' => "+919037267357",
+        	'text' => "Sorry, Your payment failed. #{msg}"
+        }
+        @transaction.send_sms(params)
         flash[:alert] = params["TxMsg"]
         redirect_to checkout_transaction_path(@transaction)
       end
@@ -198,6 +214,12 @@ class TransactionsController < ApplicationController
       message = "Signaure Verification failed. Please try again."
       flash[:alert] = message
       TransactionMailer.fail(@transaction, message).deliver_now
+      params = {
+        'src' => "Cocociti",
+        'dst' => "+919037267357",
+        'text' => "Sorry, Your payment failed as signaure Verification failed. Please try again."
+      }
+      @transaction.send_sms(params)
       redirect_to checkout_transaction_path(@transaction)
     end
   end
@@ -268,6 +290,8 @@ class TransactionsController < ApplicationController
 
       search_start_date_time = @transaction.startdate
       earch_end_date_time = @transaction.enddate
+
+      @product = @transaction.product
 
       if @product.transactions.renting.blank?
         if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")

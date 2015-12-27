@@ -9,6 +9,43 @@ for
 = rupee @transaction.amount
 %br
 %br
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  %strong
+    Booking Details
+  %br
+  %br
+  Daily Rent:
+  &#8377;
+  = @transaction.daily_rent
+  %br
+  No of Days:
+  = @transaction.days
+  %br
+  - if @transaction.weekend_days > 0
+    Premium Rent:
+    &#8377;
+    = @transaction.weekend_rent
+    %br
+    No. of Premium Days:
+    = @transaction.weekend_days
+    %br
+  Total Rent:
+  &#8377;
+  = @transaction.rent_without_discount
+  %br
+  Discounts:
+  &#8377;
+  = @transaction.discounts
+  %br
+  Total Rent after Discount:
+  &#8377;
+  = @transaction.rent_with_discount
+  %br
+  Tax:
+  &#8377;
+  = @transaction.tax
+%br
+%br
 %strong Message from #{@user.name}:
 = simple_format @message
 %br

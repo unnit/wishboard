@@ -1,0 +1,12 @@
+%p
+  New listing in Cocociti.
+  %br
+  %br
+  Title: #{@product.title}
+  %br
+  %br
+  %br
+  %br
+  = link_to "#{user_product_url(@product.id)}", style: "text-decoration: none" do
+    %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+      View Item

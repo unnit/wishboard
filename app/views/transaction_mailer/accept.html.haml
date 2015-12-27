@@ -3,11 +3,6 @@ Dear #{@user.name},
   Your order request is accepted by the owner
   %br
   %br
-  Product:
-  %strong
-    = link_to @transaction.product.title, "#{user_product_url(@product)}"
-  %br
-  %br
   Owner:
   %strong
     = @owner.name
@@ -24,39 +19,40 @@ Dear #{@user.name},
   %br
   %br
   %span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
-    Booking Details
-    %br
     %strong
-      Daily Rent:
+      Booking Details
+    %br
+    %br
+    Daily Rent:
+    &#8377;
+    = @transaction.daily_rent
+    %br
+    No of Days:
+    = @transaction.days
+    %br
+    - if @transaction.weekend_days > 0
+      Premium Rent:
       &#8377;
-      = @transaction.daily_rent
+      = @transaction.weekend_rent
       %br
-      No of Days:
-      = @transaction.days
+      No. of Premium Days:
+      = @transaction.weekend_days
       %br
-      - if @transaction.weekend_days > 0
-        Premium Rent:
-        &#8377;
-        = @transaction.weekend_rent
-        %br
-        No. of Premium Days:
-        = @transaction.weekend_days
-        %br
-      Total Rent:
-      &#8377;
-      = @transaction.rent_without_discount
-      %br
-      Discounts:
-      &#8377;
-      = @transaction.discounts
-      %br
-      Total Rent after Discount:
-      &#8377;
-      = @transaction.rent_with_discount
-      %br
-      Tax:
-      &#8377;
-      = @transaction.tax
+    Total Rent:
+    &#8377;
+    = @transaction.rent_without_discount
+    %br
+    Discounts:
+    &#8377;
+    = @transaction.discounts
+    %br
+    Total Rent after Discount:
+    &#8377;
+    = @transaction.rent_with_discount
+    %br
+    Tax:
+    &#8377;
+    = @transaction.tax
   %br
   %br
   %br
@@ -64,3 +60,12 @@ Dear #{@user.name},
   = link_to "#{checkout_transaction_url(@transaction)}", style: "text-decoration: none" do
     %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
       Checkout
+  %br
+  %br
+  %br
+  %br
+  Product:
+  %strong
+    = link_to @transaction.product.title, "#{user_product_url(@product.id)}"
+  %br
+  %br

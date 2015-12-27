@@ -9,7 +9,7 @@
         .col-md-7
           .col-sm-12
             %h3.no-mar-pad.mbottom10= current_user.name
-            .prof-para.mbottom10= simple_format @profile.about
+            .prof-para.mbottom10=simple_format truncate @profile.about, length: 200
           .col-sm-12.mbottom10
             %span.glyphicon.glyphicon-phone{style: "color: #D02121;"}
             &nbsp;
@@ -35,25 +35,26 @@
           .col-xs-12.mtop20.text-center
             = link_to "Edit Profile", settings_path, class: "btn btn-success"
   %ul.nav.nav-tabs.mtop20.hidden-xs
-    %li.active
-      %a{"data-toggle" => "tab", :href => "#booking_requests"} Booking Requests(Received)
-    %li
+    %li.booking_requests.active
+      %a{"data-toggle" => "tab", :href => "#booking_requests"} Booking Requests(Sent/Received)
+    %li.my_listings
       %a{"data-toggle" => "tab", :href => "#my_listings"} My Listings
-    %li
+    %li.my_orders
       %a{"data-toggle" => "tab", :href => "#my_orders"} My Order Activity
-    %li
+    %li.upcoming_bookings
       %a{"data-toggle" => "tab", :href => "#upcoming_bookings"} Upcoming Bookings
-    %li
+    %li.non_coco_bookings
       %a{"data-toggle" => "tab", :href => "#non_coco_bookings"} Add Other Bookings
-    %li
+    %li.delete_non_coco_bookings
       %a{"data-toggle" => "tab", :href => "#delete_non_coco_bookings"} Delete Other Bookings
   .tab-content.pbottom50.hidden-xs{style: "min-height: 800px;"}
     #booking_requests.tab-pane.fade.in.active
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
         .col-md-2 User
-        .col-md-7 Subject
-        .col-md-2 Transaction Status
-        .col-md-1
+        .col-md-5 Subject
+        .col-md-2 Sent/Received
+        .col-md-2 Booking Status
+        .col-md-1 Action
       - @conversations.each do |conv|
         - user = receiver(conv)
         - if user
@@ -62,9 +63,14 @@
             .col-md-2
               = cl_image_tag user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
               = user.name
-            .col-md-7
+            .col-md-5.mtop5
               = link_to message_path(trans) do
                 = conv.subject
+            .col-md-2
+              - if trans.seller == current_user
+                Received
+              - elsif trans.user == current_user
+                Sent
             .col-md-2
               = trans.transaction_status_name
             .col-md-1
@@ -198,3 +204,23 @@
               %span.glyphicon.glyphicon-remove
         - i+=1
       = paginate @non_coco_transactions, param_name: "delete_non_coco_bookings"
+= content_for :extra_js do
+  :javascript
+    if("#{flash[:notice]}" == "Booking done successfully.")
+      {
+        $(".booking_requests").removeClass("active");
+        $("#booking_requests").removeClass("in");
+        $("#booking_requests").removeClass("active");
+        $(".non_coco_bookings").addClass("active");
+        $("#non_coco_bookings").addClass("in");
+        $("#non_coco_bookings").addClass("active");
+      }
+    else if("#{flash[:notice]}" == "Booking deleted successfully.")
+      {
+        $(".booking_requests").removeClass("active");
+        $("#booking_requests").removeClass("in");
+        $("#booking_requests").removeClass("active");
+        $(".delete_non_coco_bookings").addClass("active");
+        $("#delete_non_coco_bookings").addClass("in");
+        $("#delete_non_coco_bookings").addClass("active");
+      }

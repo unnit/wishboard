@@ -17,7 +17,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       if user
         user.credentials.create(:provider => omniauth['provider'], :uid => omniauth['uid'])
       else
-        user = User.create(email: email, password: SecureRandom.hex(4))
+        user = User.new(email: email, password: SecureRandom.hex(4))
+        user.skip_confirmation!
+        user.inactive = false
+        user.save
         first_name = omniauth["extra"]["raw_info"]["first_name"]
         last_name = omniauth["extra"]["raw_info"]["last_name"]
         Profile.create(first_name: first_name, last_name: last_name, user_id: user.id)

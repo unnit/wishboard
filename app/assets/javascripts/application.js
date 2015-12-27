@@ -292,10 +292,10 @@ $(document).ready(function(){
     $('.header_end_date_time').datetimepicker('setStartDate', date);
     $(".header_end_date_time").datetimepicker('show');
   });
-  $(".non_coco_start_date").datetimepicker().on('changeDate', function(){
-    $('.non_coco_end_date').datetimepicker('setStartDate', $("#non_coco_start_date").val());
-    $(".non_coco_end_date").datetimepicker('show');
-  });
+  //$(".non_coco_start_date").datetimepicker().on('changeDate', function(){
+    //$('.non_coco_end_date').datetimepicker('setStartDate', $("#non_coco_start_date").val());
+    //$(".non_coco_end_date").datetimepicker('show');
+  //});
   $(".date_of_birth").datetimepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,

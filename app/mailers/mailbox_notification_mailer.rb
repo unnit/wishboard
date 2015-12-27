@@ -1,0 +1,3 @@
+class MailboxNotificationMailer < ApplicationMailer
+
+end

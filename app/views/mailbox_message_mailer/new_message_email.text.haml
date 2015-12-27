@@ -1,0 +1,8 @@
+You have a new message: #{@subject}
+%br
+You have received a new message:
+%br
+#{@message.body.html_safe? ? @message.body : strip_tags(@message.body)}
+%br
+%br
+Visit #{root_url} and go to your Dashboard --> Booking Requests for more info.

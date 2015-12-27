@@ -542,4 +542,15 @@ class Product < ActiveRecord::Base
     # end
   end
 
+  after_create :notification_for_new
+  after_update :notification_for_update
+
+  private
+  def notification_for_new
+    AdminMailer.new_product(self).deliver_now
+  end
+  def notification_for_update
+    AdminMailer.update_product(self).deliver_now
+  end
+
 end

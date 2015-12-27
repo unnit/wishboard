@@ -153,21 +153,21 @@
                           %strong
                             = @product.calculate_price(@days, op_type, @no_of_weekenddays)
         .col-xs-12.col-md-12.from-bar
-          - if current_user != @product.user && !current_user.admin?
+          - if current_user
             .col-md-12{style: "padding: 0; margin-left: 15px"}
-              - if current_user && @product.available?
+              - if current_user != @product.user && !current_user.admin? && @product.available?
                 %button#rent-btn.src-but.full-width.padding0{type: "submit"}= @product.for_free? ? "Get" : "Rent"
-              - else
-                %button.src-but.full-width.padding0{type: "button", data: {toggle: "modal", target: "#login"}}
-                  Login to Book
+              - if current_user == @product.user || current_user.admin?
+                .col-md-12{style: "padding: 0; margin-left: 15px"}
+                  = link_to edit_product_path(@product.id)  do
+                    %button#rent-btn.src-but.full-width.padding0{type: "button"} Edit This Item
+              - if current_user.admin?
+                .col-md-12{style: "padding: 0; margin-left: 15px"}
+                  = link_to update_admin_approved_product_path(@product.id), method: :post do
+                    %button#rent-btn.src-but.full-width.padding0.mtop0{type: "button"}= @product.admin_approved == true ? "Unapprove" : "Approve"
           - else
-            .col-md-12{style: "padding: 0; margin-left: 15px"}
-              = link_to edit_product_path(@product.id)  do
-                %button#rent-btn.src-but.full-width.padding0{type: "button"} Edit This Item
-          - if current_user.admin?
-            .col-md-12{style: "padding: 0; margin-left: 15px"}
-              = link_to update_admin_approved_product_path(@product.id), method: :post do
-                %button#rent-btn.src-but.full-width.padding0.mtop0{type: "button"}= @product.admin_approved == true ? "Unapprove" : "Approve"
+            %button.src-but.full-width.padding0{type: "button", data: {toggle: "modal", target: "#login"}}
+              Login to Book
         - if @no_of_weekenddays > 0 || @product.discounts_any?
           .col-xs-12.col-md-12.from-bar.mtop10.padding10.note-font-size
             - if @no_of_weekenddays > 0

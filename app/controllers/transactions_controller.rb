@@ -5,7 +5,7 @@ class TransactionsController < ApplicationController
   before_filter :check_product_owner, only: [:accept, :deny, :delete_non_coco]
   before_filter :set_product, only: [:new, :create, :non_coco]
   before_filter :check_product_availability, only: [:new, :create]
-  before_filter :check_past_dates_and_operator_type, only: [:new, :create]
+  before_filter :check_session_value_and_past_dates_and_operator_type, only: [:new, :create]
   before_filter :product_availability_for_accepted, only: [:checkout]
   before_filter :basic_checks_before_checkout, only: [:checkout]
 
@@ -241,7 +241,12 @@ class TransactionsController < ApplicationController
     end
   end
 
-  def check_past_dates_and_operator_type
+  def check_session_value_and_past_dates_and_operator_type
+    if session[:start_date_time].blank? || session[:end_date_time].blank?
+      flash[:danger] = "Please select Pick up Date and Drop off Date in search bar in header to know the availability."
+      redirect_to user_product_path(@product.id)
+      return
+    end
     if session[:start_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata") || session[:end_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
       flash[:danger] = "Invalid date range. Cannot book for past dates."
       redirect_to user_product_path(@product.id)

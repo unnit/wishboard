@@ -23,6 +23,12 @@
     %strong{style:"padding:0px;"}
       = @transaction.coco_transaction_id
 
+%span{style: "font-size:14px;float:left;margin-bottom:30px;width:100%;"}
+  Product ID:
+  %strong{style: "font-size:16px;"}
+    &#8377;&nbsp;
+    = @transaction.product.id
+
 %span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
   = cl_image_tag @product.image.filename, class: "img-responsive img-style-new", alt: "#{@product.title}-#{@product.category_name}", width: 253, height: 190, crop: :fill
 

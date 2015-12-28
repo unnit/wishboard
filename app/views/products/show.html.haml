@@ -154,7 +154,7 @@
                             = @product.calculate_price(@days, op_type, @no_of_weekenddays)
         .col-xs-12.col-md-12.from-bar
           - if current_user
-            .col-md-12{style: "padding: 0; margin-left: 15px"}
+            .col-md-12.padding0.mleft15
               - if current_user != @product.user && @product.available?
                 %button#rent-btn.src-but.full-width.padding0{type: "submit"}= @product.for_free? ? "Get" : "Rent"
               - if current_user == @product.user || current_user.admin?
@@ -164,8 +164,8 @@
                 = link_to update_admin_approved_product_path(@product.id), method: :post do
                   %button#rent-btn.src-but.full-width.padding0.mtop0{type: "button"}= @product.admin_approved == true ? "Unapprove" : "Approve"
           - else
-            .col-md-12{style: "padding: 0; margin-left: 15px"}
-              %button.src-but.full-width.padding0.mleft0{type: "button", data: {toggle: "modal", target: "#login"}}
+            .col-md-12.padding0.mleft15
+              %button.src-but.full-width.padding0{type: "button", data: {toggle: "modal", target: "#login"}}
                 Login to Book
         - if @no_of_weekenddays > 0 || @product.discounts_any?
           .col-xs-12.col-md-12.from-bar.mtop10.padding10.note-font-size

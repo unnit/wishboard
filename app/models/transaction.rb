@@ -159,7 +159,7 @@ class Transaction < ActiveRecord::Base
     params_owner = {
       'src' => "Cocociti",
     	'dst' => "+919037267357",
-    	'text' => "Your Item - #{truncate self.product.title, length: 50} has been successfully booked by #{truncate self.user.name, length: 50} for Rs #{self.amount}"
+    	'text' => "Your Item - #{truncate self.product.title, length: 50} has been successfully booked by #{truncate self.user.name, length: 50} for Rs #{self.amount}. Product ID - #{self.product.id}"
     }
     self.send_sms(params_customer)
     self.send_sms(params_owner)

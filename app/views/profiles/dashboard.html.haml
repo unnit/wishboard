@@ -134,7 +134,7 @@
             %span.pull-right= cl_image_tag booking.product.image, alt: "#{booking.product.title}-#{booking.product.category_name}", width: 32, height: 32, crop: :fill
           .col-sm-2= booking.product.title
           .col-sm-1= booking.product.id
-          .col-sm-2= booking.product.category_name
+          .col-sm-2{title: "#{booking.product.category_name}"}= truncate booking.product.category_name,length: 15
           .col-sm-4= booking.duration
           - i+=1
       = paginate @upcoming_bookings, param_name: "upcoming_bookings"
@@ -157,7 +157,7 @@
             %span= cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
           .col-sm-2= product.title
           .col-sm-1= product.id
-          .col-sm-1= product.category_name
+          .col-sm-1{title: "#{product.category_name}"}= truncate product.category_name, length:15
           ~ form_tag non_coco_transaction_path(product) do
             .col-sm-1= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control",  maxlength: 200
             .col-sm-2
@@ -195,7 +195,7 @@
             %span= cl_image_tag transaction.product.image, alt: "#{transaction.product.title}-#{transaction.product.category_name}", width: 32, height: 32, crop: :fill
           .col-sm-2= transaction.product.title
           .col-sm-1= transaction.product.id
-          .col-sm-1= transaction.product.category_name
+          .col-sm-1{title: "#{transaction.product.category_name}"}=truncate transaction.product.category_name, length: 15
           .col-sm-1= transaction.non_coco_operator
           .col-sm-2= transaction.startdate.strftime("%d %b %Y %H:%M")
           .col-sm-2= transaction.enddate.strftime("%d %b %Y %H:%M")

@@ -3,7 +3,7 @@
   %span.pull-right= cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
 .col-sm-2= product.title
 .col-sm-1= product.id
-.col-sm-2= product.category_name
+.col-sm-2{title: "#{product.category_name}"}=truncate product.category_name, length: 15
 .col-sm-1.no-mar-pad
   .col-sm-12.no-mar-pad
     %i.fa.fa-rupee

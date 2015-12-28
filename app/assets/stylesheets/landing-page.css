@@ -2529,3 +2529,6 @@ th.headerSortDown {
 .website-color{
   color: #E84242;
 }
+.glyphicon-star, .glyphicon-star-empty {
+    color: #ffb400;
+}

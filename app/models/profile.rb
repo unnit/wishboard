@@ -105,6 +105,11 @@ class Profile < ActiveRecord::Base
     location.name if location
   end
 
+  def title
+    fullname = "#{first_name}-#{last_name}"
+    fullname
+  end
+
   def name
     "#{first_name} #{last_name}"
   end

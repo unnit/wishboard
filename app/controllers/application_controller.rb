@@ -13,8 +13,7 @@ class ApplicationController < ActionController::Base
   def check_user_status
     if current_user
       if current_user.inactive
-        flash[:notice] = "Welcome to Cocociti. Please activate your account by following the instructions in email. If you haven't received instructions, Please <a href='/users/confirmation/new' >Click here</a> to resend instructions".html_safe
-        redirect_to root_path
+        redirect_to user_signup_confirmation_path
         return
       end
     end

@@ -11,7 +11,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
         current_user.confirmation_sent_at = DateTime.current
         current_user.save
         UserMailer.account_token_with_instructions(current_user, confirmation_token).deliver_now
-        flash[:notice] = "A mail has been resent to your mail now. If you haven't received instructions, Please <a href='/users/confirmation/new' >Click here</a> to resend instructions".html_safe
+        flash[:notice] = "Thank you, A mail has been resent to your mail now. Please check the same."
         redirect_to root_path
       else
         flash[:notice] = "We have already verified your account. Enjoy Cocociti. Go Coco!!"

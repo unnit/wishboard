@@ -62,7 +62,7 @@ Rails.application.routes.draw do
   get "goodness-and-open-source", to: "home#goodness-and-open-source"
   get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
-  get "user-confirmation", to: "home#user_confirmation"
+  get "user_signup_confirmation", to: "home#user_signup_confirmation"
 
   resources :messages, only: [:destroy, :index, :show] do
     member do

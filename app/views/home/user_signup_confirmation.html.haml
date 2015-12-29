@@ -1,0 +1,33 @@
+.container.container-pad.mod-postlist-con.mtop50
+  .container.mob-postlist-con
+    .row
+      %br
+      %br
+      .col-md-12.mtop20.mbottom20.pad-v-20.text-center{style: "background-color: #E84242; color:white; border-radius:3px;"}
+        %h3.text-center.mbottom20
+          Welcome to Cocociti. Boom De Yada!
+          %br
+          %br
+          Just one more step!
+          %br
+          Please check your email and click on Activate button.&nbsp;
+        %h5
+          If you have not received any email, Please
+          %a.padding5{:href => "/users/confirmation/new", style: "border-radius:15px; border: 1px solid white;"}
+            &nbsp;click
+          &nbsp;&nbsp;here to resend.Please check your spam folders too.
+      .col-md-12
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".pro-view, .pa").hide();
+    });

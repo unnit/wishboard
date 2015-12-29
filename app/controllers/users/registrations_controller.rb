@@ -16,9 +16,7 @@ skip_before_filter :check_user_status, :check_profile
       user.reload
       UserMailer.account_token_with_instructions(user, token).deliver_now
       sign_in(user, bypass: true)
-      flash[:notice] = "Welcome to Cocociti. Please activate your account by following the instructions in email. If you haven't received instructions, Please <a href='/users/confirmation/new' >Click here</a> to resend instructions".html_safe
     end
-
     @errors = resource.errors.full_messages
     respond_to :js
   end

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  skip_before_filter :check_user_status, only: [:index, :get_state_and_city]
+  skip_before_filter :check_user_status, only: [:user_signup_confirmation]
   skip_before_filter :check_profile, only: [:get_state_and_city]
 
   def index
@@ -14,5 +14,8 @@ class HomeController < ApplicationController
       result[:state] = address.state_name
     end
     render json: result
+  end
+
+  def user_signup_confirmation
   end
 end

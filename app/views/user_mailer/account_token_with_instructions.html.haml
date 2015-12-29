@@ -1,9 +1,9 @@
 %p{style: "text-align: center;"} Welcome #{@user.email}!
-%p Please confirm your account email using the link below:
+%p Please activate your account email using the button below:
 %br
 = link_to "#{user_confirmation_url(id: @user.id, confirmation_token: @token)}", style: "text-decoration: none" do
   %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
-    Confirm my account
+    Activate
 %br
 %br
 %p

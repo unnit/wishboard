@@ -57,7 +57,7 @@
                   .col-sm-12.no-mar-pad
                     - products.each do |product|
                       .col-sm-6.mob-map-view-con
-                        = render partial: "product", locals: {product: product, height: 264, length: 25}
+                        = render partial: "product", locals: {product: product, length: 22}
                 .col-md-12
                   %center= paginate @products
 

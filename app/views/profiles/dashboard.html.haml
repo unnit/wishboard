@@ -49,53 +49,66 @@
       %a{"data-toggle" => "tab", :href => "#delete_non_coco_bookings"} Delete Other Bookings
   .tab-content.pbottom50.hidden-xs{style: "min-height: 800px;"}
     #booking_requests.tab-pane.fade.in.active
-      .col-md-12.alert.alert-info.no-mar-left.dashboard-header
-        .col-md-2 User
-        .col-md-5 Subject
-        .col-md-2 Sent/Received
-        .col-md-2 Booking Status
-        .col-md-1 Action
-      - @conversations.each do |conv|
-        - user = receiver(conv)
-        - if user
-          - trans = get_transaction(conv)
-          .col-md-12.pad-v-10.dashboard-border
-            .col-md-2
-              = cl_image_tag user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
-              = user.name
-            .col-md-5.mtop5
-              = link_to message_path(trans) do
-                = conv.subject
-            .col-md-2
-              - if trans.seller == current_user
-                Received
-              - elsif trans.user == current_user
-                Sent
-            .col-md-2
-              = trans.transaction_status_name
-            .col-md-1
-              = link_to message_path(conv), class: "btn btn-sm btn-danger", method: :delete, data: {confirm: "Are you sure to delete conversation?"} do
-                %span.glyphicon.glyphicon-trash
-        - paginate @conversations, param_name: "booking_requests_received"
+      .col-md-12.no-mar-pad
+        = paginate @conversations, param_name: "booking_requests_received"
+        .table-responsive
+          %table.table.table-striped.table-bordered.table-hover#booking_requests_table
+            %thead
+              %tr
+                %th User&nbsp;&nbsp;
+                %th Subject&nbsp;&nbsp;
+                %th Sent/Received&nbsp;&nbsp;
+                %th Booking Status&nbsp;&nbsp;
+                %th Action&nbsp;&nbsp;
+            %tbody
+            - @conversations.each do |conv|
+              - user = receiver(conv)
+              - if user
+                - trans = get_transaction(conv)
+                %tr
+                  %td
+                    = cl_image_tag user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
+                    = user.name
+                  %td
+                    = link_to message_path(trans) do
+                      = conv.subject
+                  %td
+                    - if trans.seller == current_user
+                      Received
+                    - elsif trans.user == current_user
+                      Sent
+                  %td
+                    = trans.transaction_status_name
+                  %td
+                    = link_to message_path(conv), class: "btn btn-sm btn-danger", method: :delete, data: {confirm: "Are you sure to delete conversation?"} do
+                      %span.glyphicon.glyphicon-trash
+        = paginate @conversations, param_name: "booking_requests_received"
     #my_listings.tab-pane.fade
-      .update-error
-      .col-md-12.alert.alert-info.no-mar-left.dashboard-header
-        .col-sm-1.no-mar-pad No.&nbsp;&nbsp; Image
-        .col-sm-2 Title
-        .col-sm-1 ID
-        .col-sm-2 Category
-        .col-sm-1.no-mar-pad Price
-        .col-sm-1.no-mar-pad Shipping
-        .col-sm-1 Status
-        .col-sm-1 Orders
-        .col-sm-1 Edit
-        .col-sm-1 On / Off
-      - i = 1
-      - @my_products.each do |product|
-        .col-sm-12.closest.ptop5.pbottom5.dashboard-border{id: "product-#{product.id}"}
-          = render partial: "product", locals: {product: product, i: i}
-        - i+=1
-      = paginate @my_products, param_name: "my_listings"
+      .update-error.text-right
+      .col-md-12.no-mar-pad
+        = paginate @my_products, param_name: "my_listings"
+        .table-responsive
+          %table.table.table-striped.table-bordered.table-hover#booking_requests_table
+            %thead
+              %tr
+                %th No&nbsp;&nbsp;
+                %th Image&nbsp;&nbsp;
+                %th Title&nbsp;&nbsp;
+                %th ID&nbsp;&nbsp;
+                %th Category&nbsp;&nbsp;
+                %th Price&nbsp;&nbsp;
+                /%th Shipping&nbsp;&nbsp;
+                %th Status&nbsp;&nbsp;
+                %th Orders&nbsp;&nbsp;
+                %th Edit&nbsp;&nbsp;
+                %th On / Off&nbsp;&nbsp;
+            %tbody
+              - i = 1
+              - @my_products.each do |product|
+                %tr.closest{id: "product-#{product.id}"}
+                  = render partial: "product", locals: {product: product, i: i}
+                  - i+=1
+        = paginate @my_products, param_name: "my_listings"
     #my_orders.tab-pane.fade
       .col-md-12.alert.alert-info.no-mar-left.dashboard-header
         .col-md-1 Sl No

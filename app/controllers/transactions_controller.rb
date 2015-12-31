@@ -135,6 +135,7 @@ class TransactionsController < ApplicationController
     error_messages = []
     error_messages << "Sorry, you cannot proceed with the operation." unless @transaction.coco_transaction_id == params[:mid]
     error_messages << "Sorry, you cannot proceed with the operation. The booking has expired." if @transaction.expired?
+    #@address = current_user.addresses.delivery.first
     @address = current_user.address
     @address.first_name = params[:first_name]
     @address.last_name = params[:last_name]
@@ -145,7 +146,7 @@ class TransactionsController < ApplicationController
     @address.state = params[:state]
     @address.mobile = params[:mobile]
     @address.email = params[:email]
-
+    #@address.address_mandatory = "yes"
     @address.valid?
 
     unless @address.errors.full_messages.blank?
@@ -207,12 +208,14 @@ class TransactionsController < ApplicationController
         	'text' => "Sorry, Your payment failed. #{msg}"
         }
         @transaction.send_sms(params)
-        flash[:alert] = params["TxMsg"]
+        logger.info '****************'
+        logger.info params["TxMsg"]
+        flash[:alert] = "#{msg}"
         redirect_to checkout_transaction_path(@transaction)
       end
     else
       message = "Signaure Verification failed. Please try again."
-      flash[:alert] = message
+      flash[:alert] = "Signaure Verification failed. Please try again."
       TransactionMailer.fail(@transaction, message).deliver_now
       params = {
         'src' => "Cocociti",

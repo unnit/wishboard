@@ -17,17 +17,22 @@
                 %li.dropdown
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
                     %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
-                      = cl_image_tag current_user.avatar, class: "img-circle pull-right", width: 40, height: 40, crop: :fill
-                    / %i.glyphicon.glyphicon-user.pull-right.mleft5
-                  %ul.dropdown-menu.mtop30
+                      = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 40, height: 40, crop: :fill
+                      %span.mtop10.pull-right Hi #{current_user.name}
+                  %ul.dropdown-menu.mtop30{style: "width:180px;"}
                     %li
-                      = link_to dashboard_profiles_path, style: "white-space: normal;" do
+                      = link_to dashboard_path, style: "white-space: normal;" do
                         %span Dashboard
                         %span.glyphicon.glyphicon-user.pull-right
                     %li.divider{style: "overflow: visible"}
                     %li
                       = link_to settings_path, style: "white-space: normal;" do
                         %span Settings
+                        %span.glyphicon.glyphicon-cog.pull-right
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to settings_business_path, style: "white-space: normal;" do
+                        %span Business Settings
                         %span.glyphicon.glyphicon-cog.pull-right
                     %li.divider{style: "overflow: visible"}
                     %li

@@ -13,7 +13,6 @@ class TransactionsController < ApplicationController
     @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
     @transaction.user = current_user
     if @transaction.valid?
-      @address = current_user.address || current_user.copy_address!
       if @product.owner_type == Product::OWNER_TYPE[0][1]
         ### -----Asigning all values to transaction table
         total_days = ( session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
@@ -74,7 +73,7 @@ class TransactionsController < ApplicationController
       }
       @transaction.send_sms(params)
       flash[:success] = "Request for #{@product.title} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'Booking Requests' tab."
-      redirect_to dashboard_profiles_path
+      redirect_to dashboard_path
     else
       flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
       render :new
@@ -89,7 +88,12 @@ class TransactionsController < ApplicationController
     end
     if params[:non_coco_start_date].blank? || params[:non_coco_end_date].blank?
       flash[:danger] = "Please select a date"
-      redirect_to dashboard_profiles_path
+      redirect_to dashboard_path
+      return
+    end
+    if params[:non_coco_end_date].to_date < params[:non_coco_start_date].to_date
+      flash[:danger] = "Pick up date cannot be greater than Drop off date"
+      redirect_to dashboard_path
       return
     end
     @transaction = Transaction.new
@@ -123,11 +127,10 @@ class TransactionsController < ApplicationController
       @return_url=GLOBAL_VARIABLES[:transaction_return_url]
     elsif Rails.env.production?
       @amount = @transaction.amount
-      #@amount=1
       @return_url=GLOBAL_VARIABLES[:transaction_return_url]
     end
     #@notifyUrl=""
-    @address = current_user.address || current_user.copy_address!
+      @address = current_user.addresses.delivery.first
     @transaction.generate_txnid!
   end
 
@@ -135,8 +138,7 @@ class TransactionsController < ApplicationController
     error_messages = []
     error_messages << "Sorry, you cannot proceed with the operation." unless @transaction.coco_transaction_id == params[:mid]
     error_messages << "Sorry, you cannot proceed with the operation. The booking has expired." if @transaction.expired?
-    #@address = current_user.addresses.delivery.first
-    @address = current_user.address
+    @address = current_user.addresses.delivery.first
     @address.first_name = params[:first_name]
     @address.last_name = params[:last_name]
     @address.address1 = params[:address1]
@@ -146,7 +148,7 @@ class TransactionsController < ApplicationController
     @address.state = params[:state]
     @address.mobile = params[:mobile]
     @address.email = params[:email]
-    #@address.address_mandatory = "yes"
+    @address.address_mandatory = "yes"
     @address.valid?
 
     unless @address.errors.full_messages.blank?
@@ -208,8 +210,6 @@ class TransactionsController < ApplicationController
         	'text' => "Sorry, Your payment failed. #{msg}"
         }
         @transaction.send_sms(params)
-        logger.info '****************'
-        logger.info params["TxMsg"]
         flash[:alert] = "#{msg}"
         redirect_to checkout_transaction_path(@transaction)
       end

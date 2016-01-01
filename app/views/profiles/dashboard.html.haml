@@ -88,7 +88,7 @@
       .col-md-12.no-mar-pad
         = paginate @my_products, param_name: "my_listings"
         .table-responsive
-          %table.table.table-striped.table-bordered.table-hover#booking_requests_table
+          %table.table.table-striped.table-bordered.table-hover#my_listings_table
             %thead
               %tr
                 %th No&nbsp;&nbsp;
@@ -110,116 +110,137 @@
                   - i+=1
         = paginate @my_products, param_name: "my_listings"
     #my_orders.tab-pane.fade
-      .col-md-12.alert.alert-info.no-mar-left.dashboard-header
-        .col-md-1 Sl No
-        .col-md-3 Product
-        .col-md-4 Duration
-        .col-md-1.no-mar-pad Amount
-        .col-md-1 Status
-        .col-md-2.text-right
-      - i= 1
-      - @my_transactions.each do |trans|
-        .col-md-12.ptop5.pbottom5.dashboard-border
-          .col-md-1= i
-          .col-md-3= trans.product.title
-          .col-md-4= trans.duration
-          .col-md-1.no-mar-pad
-            %i.fa.fa-rupee
-            = trans.amount || trans.product.calculate_price(trans.duration_days)
-          .col-md-1= trans.transaction_status_name
-          .col-md-2.text-right
-            - if trans.accepted?
-              = link_to "checkout", checkout_transaction_path(trans)
-          - i+=1
-      = paginate @my_transactions, param_name: "my_transactions"
+      .col-md-12.no-mar-pad
+        = paginate @my_transactions, param_name: "my_transactions"
+        .table-responsive
+          %table.table.table-striped.table-bordered.table-hover#my_orders_table
+            %thead
+              %tr
+                %th No&nbsp;&nbsp;
+                %th Item Title&nbsp;&nbsp;
+                %th Duration&nbsp;&nbsp;
+                %th Amount&nbsp;&nbsp;
+                %th Status&nbsp;&nbsp;
+                %th Action&nbsp;&nbsp;
+            %tbody
+              - i= 1
+              - @my_transactions.each do |trans|
+                %tr
+                  %td= i
+                  %td= trans.product.title
+                  %td= trans.duration
+                  %td
+                    %i.fa.fa-rupee
+                    = trans.amount
+                  %td= trans.transaction_status_name
+                  %td
+                    - if trans.accepted?
+                      = link_to "checkout", checkout_transaction_path(trans)
+                - i+=1
+        = paginate @my_transactions, param_name: "my_transactions"
     #upcoming_bookings.tab-pane.fade
-      .col-md-12.alert.alert-info.no-mar-left.dashboard-header
-        .col-sm-1.no-mar-pad No.&nbsp;&nbsp; Image
-        .col-sm-2 Title
-        .col-sm-1 ID
-        .col-sm-2 Category
-        .col-sm-4 Duration
-      - i= 1
-      - @upcoming_bookings.each do |booking|
-        .col-sm-12.ptop5.pbottom5.dashboard-border
-          .col-sm-1
-            %span= i
-            %span.pull-right= cl_image_tag booking.product.image, alt: "#{booking.product.title}-#{booking.product.category_name}", width: 32, height: 32, crop: :fill
-          .col-sm-2= booking.product.title
-          .col-sm-1= booking.product.id
-          .col-sm-2{title: "#{booking.product.category_name}"}= truncate booking.product.category_name,length: 15
-          .col-sm-4= booking.duration
-          - i+=1
-      = paginate @upcoming_bookings, param_name: "upcoming_bookings"
+      .col-md-12.no-mar-pad
+        = paginate @upcoming_bookings, param_name: "upcoming_bookings"
+        .table-responsive
+          %table.table.table-striped.table-bordered.table-hover#upcoming_bookings_table
+            %thead
+              %tr
+                %th No&nbsp;&nbsp;
+                %th Image&nbsp;&nbsp;
+                %th Title&nbsp;&nbsp;
+                %th ID&nbsp;&nbsp;
+                %th Category&nbsp;&nbsp;
+                %th Duration&nbsp;&nbsp;
+            %tbody
+              - i= 1
+              - @upcoming_bookings.each do |booking|
+                %tr
+                  %td= i
+                  %td= cl_image_tag booking.product.image, alt: "#{booking.product.title}-#{booking.product.category_name}", width: 32, height: 32, crop: :fill
+                  %td= booking.product.title
+                  %td= booking.product.id
+                  %td{title: "#{booking.product.category_name}"}= truncate booking.product.category_name,length: 15
+                  %td= booking.duration
+                - i+= 1
+        = paginate @upcoming_bookings, param_name: "upcoming_bookings"
     #non_coco_bookings.tab-pane.fade
-      .col-md-12.alert.alert-info.no-mar-left.dashboard-header
-        .col-sm-1 Sl No
-        .col-sm-1 Image
-        .col-sm-2 Title
-        .col-sm-1 ID
-        .col-sm-1 Category
-        .col-sm-1 Agency
-        .col-sm-2 Start Date
-        .col-sm-2 End Date
-        .col-sm-1.text-right
-      - i = 1
-      - @products_for_non_coco_bookings.each do |product|
-        .col-sm-12.ptop5.pbottom5.dashboard-border
-          .col-sm-1= i
-          .col-sm-1
-            %span= cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
-          .col-sm-2= product.title
-          .col-sm-1= product.id
-          .col-sm-1{title: "#{product.category_name}"}= truncate product.category_name, length:15
-          ~ form_tag non_coco_transaction_path(product) do
-            .col-sm-1= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control",  maxlength: 200
-            .col-sm-2
-              .input-group.mbottom0.input-append.date.non_coco_start_date
-                %span#sizing-addon2.input-group-addon.bg-white
-                  %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                = text_field_tag :non_coco_start_date, params[:non_coco_start_date], placeholder: "Pickup Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 10px;", readonly: true
-            .col-sm-2
-              .input-group.mbottom0.input-append.date.non_coco_end_date
-                %span#sizing-addon2.input-group-addon.bg-white
-                  %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                = text_field_tag :non_coco_end_date, params[:non_coco_end_date], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 10px;", readonly: true
-            .col-sm-1
-              %button.btn.btn-primary{type: "submit", style: ""}
-                Create
-            - i+=1
-      = paginate @products_for_non_coco_bookings, param_name: "add_non_coco_bookings"
-
+      .col-md-12.no-mar-pad
+        = paginate @products_for_non_coco_bookings, param_name: "add_non_coco_bookings"
+        .table-responsive
+          %table.table.table-striped.table-bordered.table-hover#non_coco_bookings_table
+            %thead
+              %tr
+                %th No&nbsp;&nbsp;
+                %th Image&nbsp;&nbsp;
+                %th Title&nbsp;&nbsp;
+                %th ID&nbsp;&nbsp;
+                %th Category&nbsp;&nbsp;
+                %th Agency&nbsp;&nbsp;
+                %th Start Date&nbsp;&nbsp;
+                %th End Date&nbsp;&nbsp;
+                %th Action&nbsp;&nbsp;
+            %tbody
+              - i = 1
+              - @products_for_non_coco_bookings.each do |product|
+                %tr
+                  %td= i
+                  %td= cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
+                  %td= product.title
+                  %td= product.id
+                  %td{title: "#{product.category_name}"}= truncate product.category_name, length:15
+                  ~ form_tag non_coco_transaction_path(product) do
+                    %td= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control",  maxlength: 200
+                    %td
+                      .input-group.mbottom0.input-append.date.non_coco_start_date
+                        %span#sizing-addon2.input-group-addon.bg-white
+                          %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+                        = text_field_tag :non_coco_start_date, params[:non_coco_start_date], placeholder: "Pickup Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 10px;", readonly: true
+                    %td
+                      .input-group.mbottom0.input-append.date.non_coco_end_date
+                        %span#sizing-addon2.input-group-addon.bg-white
+                          %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+                        = text_field_tag :non_coco_end_date, params[:non_coco_end_date], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 10px;", readonly: true
+                    %td
+                      %button.btn.btn-primary{type: "submit", style: ""}
+                        Create
+                - i+=1
+        = paginate @products_for_non_coco_bookings, param_name: "add_non_coco_bookings"
     #delete_non_coco_bookings.tab-pane.fade
-      .col-md-12.alert.alert-info.no-mar-left.dashboard-header
-        .col-sm-1 Sl No
-        .col-sm-1 Image
-        .col-sm-2 Title
-        .col-sm-1 ID
-        .col-sm-1 Category
-        .col-sm-1 Agency
-        .col-sm-2 Start Date
-        .col-sm-2 End Date
-        .col-sm-1 Delete
-      - i = 1
-      - @non_coco_transactions.each do |transaction|
-        .col-sm-12.ptop5.pbottom5.dashboard-border
-          .col-sm-1= i
-          .col-sm-1
-            %span= cl_image_tag transaction.product.image, alt: "#{transaction.product.title}-#{transaction.product.category_name}", width: 32, height: 32, crop: :fill
-          .col-sm-2= transaction.product.title
-          .col-sm-1= transaction.product.id
-          .col-sm-1{title: "#{transaction.product.category_name}"}=truncate transaction.product.category_name, length: 15
-          .col-sm-1= transaction.non_coco_operator
-          .col-sm-2= transaction.startdate.strftime("%d %b %Y %H:%M")
-          .col-sm-2= transaction.enddate.strftime("%d %b %Y %H:%M")
-          .col-sm-1.text-center
-            = link_to delete_non_coco_transaction_path(transaction), method: :delete, data: {confirm: "Are you sure you want to delete the booking?"} do
-              %span.glyphicon.glyphicon-remove
-        - i+=1
-      = paginate @non_coco_transactions, param_name: "delete_non_coco_bookings"
+      .col-md-12.no-mar-pad
+        = paginate @non_coco_transactions, param_name: "delete_non_coco_bookings"
+        .table-responsive
+          %table.table.table-striped.table-bordered.table-hover#delete_non_coco_bookings_table
+            %thead
+              %tr
+                %th No&nbsp;&nbsp;
+                %th Image&nbsp;&nbsp;
+                %th Title&nbsp;&nbsp;
+                %th ID&nbsp;&nbsp;
+                %th Category&nbsp;&nbsp;
+                %th Agency&nbsp;&nbsp;
+                %th Start Date&nbsp;&nbsp;
+                %th End Date&nbsp;&nbsp;
+                %th Delete&nbsp;&nbsp;
+            %tbody
+              - i = 1
+              - @non_coco_transactions.each do |transaction|
+                %tr
+                  %td= i
+                  %td= cl_image_tag transaction.product.image, alt: "#{transaction.product.title}-#{transaction.product.category_name}", width: 32, height: 32, crop: :fill
+                  %td= transaction.product.title
+                  %td= transaction.product.id
+                  %td{title: "#{transaction.product.category_name}"}=truncate transaction.product.category_name, length: 15
+                  %td= transaction.non_coco_operator
+                  %td= transaction.startdate.strftime("%d %b %Y %H:%M")
+                  %td= transaction.enddate.strftime("%d %b %Y %H:%M")
+                  %td
+                    = link_to delete_non_coco_transaction_path(transaction), method: :delete, data: {confirm: "Are you sure you want to delete the booking?"} do
+                      %span.glyphicon.glyphicon-remove
+                - i+=1
+        = paginate @non_coco_transactions, param_name: "delete_non_coco_bookings"
 = content_for :extra_js do
   :javascript
-    if("#{flash[:notice]}" == "Booking done successfully.")
+    if(("#{flash[:notice]}" == "Booking done successfully.") || ("#{flash[:danger]}" == "Pick up date cannot be greater than Drop off date") || ("#{flash[:danger]}" == "Please select a date"))
       {
         $(".booking_requests").removeClass("active");
         $("#booking_requests").removeClass("in");

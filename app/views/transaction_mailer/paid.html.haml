@@ -38,17 +38,17 @@
   %strong
     = @owner.name
     %br
-    = @owner.address.address1
+    = @owner.addresses.pickup.first.address1
     %br
-    = @owner.address.address2
+    = @owner.addresses.pickup.first.address2
     %br
-    = @owner.address.landmark
+    = @owner.addresses.pickup.first.landmark
     %br
-    = @owner.address.city
+    = @owner.addresses.pickup.first.city
     %br
-    = @owner.address.state
+    = @owner.addresses.pickup.first.state
     %br
-    = @owner.address.zip
+    = @owner.addresses.pickup.first.zip
     %br
 
 %span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}

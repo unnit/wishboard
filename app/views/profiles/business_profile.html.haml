@@ -1,0 +1,148 @@
+= content_for :title do
+  -title = "Business Settings"
+.container.container-pad.mob-postlist-con.ptop70
+  .container.mob-postlist-con
+    .row
+      .col-md-12
+        .panel.panel-primary.collbod
+          .collbocol.panel-heading{:style => "background-color:#e84242; border: none;"}
+            %h3.panel-title.about-text Business Info
+            %span.pull-right.clickable
+              %i.glyphicon.glyphicon-chevron-up
+          .row.panel-body
+            .col-md-12
+              ~ form_for :profile, url: update_business_profiles_path, html: {class: 'form-horizontal profile_form', role: "form"} do |f|
+                %fieldset
+                  .form-group
+                    .col-sm-12.note-font-size.website-color
+                      * marked fields are mandatory
+                    .col-sm-12
+                      %h3.mtop10 Your Business
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      Business Type
+                      %span.website-color *
+                    .col-sm-3
+                      = f.select :business_type, Profile::BUSINESS_TYPE, {include_blank: 'Select'}, class: "select_box coco-select-box", required: true
+                  .form-group
+                    .col-sm-4
+                      %h3.mtop10.mbottom0 Pickup Address
+                    - if current_user.has_delivery_address? && current_user.no_pickup_address?
+                      .col-sm-12
+                        %label.control-label Copy your Delivery Address&nbsp;&nbsp;
+                        = check_box_tag :copy_address, 1, false, class: "mtop10 copy_address"
+                  = fields_for 'address' do |af|
+                    .form-group
+                      %label.col-sm-2.control-label
+                        Address Line 1
+                        %span.website-color *
+                      .col-sm-4= af.text_field :address1, class: "form-control pkp_address", required: true, placeholder: "Flat/House No, Floor, Building", maxlength: 200
+                    .form-group
+                      %label.col-sm-2.control-label
+                        Address Line 2
+                        %span.website-color *
+                      .col-sm-4= af.text_field :address2, class: "form-control pkp_address", required: true, placeholder: "Colony/Society, Street, Locality/Area", maxlength: 200
+                    .form-group
+                      %label.col-sm-2.control-label
+                        Landmark
+                        %span.website-color *
+                      .col-sm-4= af.text_field :landmark, class: "form-control pkp_address", required: true, placeholder: "", maxlength: 200
+                    .form-group
+                      %label.col-sm-2.control-label
+                        Pincode
+                        %span.website-color *
+                      .col-sm-4= af.text_field :zip, class: "form-control check_zip pkp_address", required: true, maxlength: 6
+                    .form-group
+                      %label.col-sm-2.control-label
+                        Town/City
+                        %span.website-color *
+                      .col-sm-4= af.text_field :city, class: "form-control city pkp_address", required: true, maxlength: 200
+                    .form-group
+                      %label.col-sm-2.control-label
+                        State
+                        %span.website-color *
+                      .col-sm-4
+                        = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box pkp_address", required: true
+                  .form-group
+                    %label.col-sm-2.control-label.mtop5{:for => "textinput"}
+                      Days Available
+                      %span.website-color *
+                    .col-sm-10.mtop10
+                      - Date::DAYNAMES.each_with_index do |day, i|
+                        %span.mleft15
+                          = check_box_tag "profile[avail_days][]", i, @profile.avail_days_arr.include?(i.to_s), class: "styled", id: "#{day}"
+                          %label{:for => "#{day}"}= day
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      Open Time
+                      %span.website-color *
+                    .col-sm-4
+                      = f.select :open_time, Profile.create_open_close_time, {include_blank: "Select Open Time"}, class: "coco-select-box", required: true
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      Close Time
+                      %span.website-color *
+                    .col-sm-4
+                      = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
+                  .form-group
+                    .col-sm-4
+                      %h3.mtop10 Weekend/Seasonal Pricing
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"} Apply Weekend/Seasonal Pricing
+                    .col-sm-4.mtop10
+                      - unless @profile.weekend_days_arr.blank?
+                        = check_box_tag :weekend_pricing, "yes", true
+                      - else
+                        = check_box_tag :weekend_pricing, "yes", false
+                  .form-group.weekend_pricing_div.hidden
+                    %label.col-sm-2.control-label.mtop5{:for => "textinput"} Your Weekend Days
+                    .col-sm-10.mtop10
+                      - Date::DAYNAMES.each_with_index do |day, i|
+                        %span.mleft15
+                          = check_box_tag "profile[weekend_days][]", i, @profile.weekend_days_arr.include?(i.to_s), class: "styled", id: "#{day}_as_weekend"
+                          %label{:for => "#{day}"}= day
+                  .form-group.weekend_pricing_div.hidden
+                    %label.col-sm-2.control-label.mtop5{:for => "textinput"}
+                      Price Increase in %
+                    .col-sm-4
+                      = f.text_field :increase, :placeholder => "Increase in %", class: "form-control", maxlength: 6
+                  .form-group
+                    .col-sm-offset-2.col-sm-10
+                      .pull-right
+                        %button.btn.btn-info.save-button Save
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+        function weekend_pricing_check(){
+          var checked = $("#weekend_pricing").is(":checked");
+          if(checked == true){
+            $(".weekend_pricing_div").removeClass("hidden");
+            $("#Sunday_as_weekend").prop("checked", true);
+            $("#Saturday_as_weekend").prop("checked", true);
+            $("#profile_increase").attr('required', true)
+          }
+          else{
+            $(".weekend_pricing_div").addClass("hidden");
+            $("#Sunday_as_weekend").prop("checked", false);
+            $("#Saturday_as_weekend").prop("checked", false);
+            $("#profile_increase").removeAttr('required');
+            $("#profile_increase").val("")
+          }
+        }
+        weekend_pricing_check();
+        $("#weekend_pricing").on("click", weekend_pricing_check);
+        $(".copy_address").click(function(){
+          if($(".copy_address").is(":checked")){
+            $("#address_address1").val("#{current_user.addresses.delivery.first.address1}");
+            $("#address_address2").val("#{current_user.addresses.delivery.first.address2}");
+            $("#address_zip").val("#{current_user.addresses.delivery.first.zip}");
+            $("#address_city").val("#{current_user.addresses.delivery.first.city}");
+            $("#address_state").val("#{current_user.addresses.delivery.first.state}");
+            $("#address_landmark").val("#{current_user.addresses.delivery.first.landmark}");
+          }
+        else
+          $(".pkp_address").val("");
+        })
+
+      })

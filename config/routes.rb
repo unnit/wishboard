@@ -47,7 +47,7 @@ Rails.application.routes.draw do
 
   resources :profiles, only: [:create, :update] do
     collection do
-      get "dashboard"
+      post "update_business"
     end
   end
 
@@ -63,6 +63,8 @@ Rails.application.routes.draw do
   get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
   get "user_signup_confirmation", to: "home#user_signup_confirmation"
+  get "settings/business", to: "profiles#business_profile"
+  get "dashboard", to: "profiles#dashboard"
 
   resources :messages, only: [:destroy, :index, :show] do
     member do

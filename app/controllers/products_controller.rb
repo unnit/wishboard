@@ -32,6 +32,10 @@ class ProductsController < ApplicationController
   end
 
   def new
+    if current_user.not_eligible_to_list?
+      flash[:notice] = "Please fill the details before you list an item."
+      redirect_to settings_business_path
+    end
     @product = Product.new
     @product.build_location
   end
@@ -62,7 +66,7 @@ class ProductsController < ApplicationController
       #@product.save
       @product.update_parent_category!
       @product.location.update_lat_lng
-      flash[:success] = "Item saved successfully and is under review process. It will be posted as soon as the review is completed.<br>You can edit, change the availability of your product from your <a href='/profiles/dashboard'>Dashboard</a>.".html_safe
+      flash[:success] = "Item saved successfully and is under review process. It will be posted as soon as the review is completed.<br>You can edit, change the availability of your product from your <a href='/dashboard'>Dashboard</a>.".html_safe
       redirect_to user_product_path(@product.id)
     else
       set_category if @product.category

@@ -11,11 +11,17 @@ class Profile < ActiveRecord::Base
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
+  attr_accessor :business_fields_mandatory
+
   GENDER = ["male", "female", "other"]
   BUSINESS_TYPE = [["Individual", 0], ["Business", 1]]
   BUSINESS_TYPE_VALUES = [0, 1]
   MONTHS = [["Jan", 1], ["Feb", 2], ["Mar", 3], ["Apr", 4], ["May", 5], ["Jun", 6], ["Jul", 7],
    ["Aug", 8], ["Sep", 9], ["Oct", 10], ["Nov", 11], ["Dec", 12]]
+  TIME_OPTIONS = ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30",
+   "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "14:30",
+   "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30",
+   "22:00", "22:30", "23:00", "23:30"]
 
   serialize :email_notification
   serialize :avail_days
@@ -27,15 +33,21 @@ class Profile < ActiveRecord::Base
   acts_as_mappable through: :location
   accepts_nested_attributes_for :location
 
-  validates :first_name, :last_name, :phone, :avail_days, :open_time, :close_time, :gender, :date_of_birth, presence: true, on: :update
-  validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_entered?, on: :update
+  validates :first_name, :last_name, :phone, :gender, :date_of_birth, presence: true, on: :update
+  validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_blank?, on: :update
   validates_date :date_of_birth, :before => lambda { 18.years.ago },
                                :before_message => ": Must be at least 18 years old", on: :update
   validates :phone, uniqueness: true, on: :update
   validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update
   validates :phone, numericality: true, on: :update
-  validates :about, length: { maximum: 1000 }, on: :update, unless: :about_entered?
-  validates :business_type, inclusion: { in: Profile::BUSINESS_TYPE_VALUES, message: "should not be blank" }, on: :update
+  validates :about, length: { maximum: 1000 }, on: :update, unless: :about_blank?
+
+  validates :avail_days, presence: true, unless: :business_fields_mandatory_blank?
+  validates :business_type, inclusion: { in: Profile::BUSINESS_TYPE_VALUES, message: "should not be blank" }, unless: :business_fields_mandatory_blank?
+  validates :open_time, inclusion: { in: Profile::TIME_OPTIONS, message: "should not be blank" }, unless: :business_fields_mandatory_blank?
+  validates :close_time, inclusion: { in: Profile::TIME_OPTIONS, message: "should not be blank" }, unless: :business_fields_mandatory_blank?
+  validates :increase, length: { maximum: 6, message: "should not be greater than 6 digits." }, unless: :increase_blank?
+  validates :increase, numericality: true, unless: :increase_blank?
 
   HUMANIZED_ATTRIBUTES = {
     :phone => "Mobile No"
@@ -44,8 +56,20 @@ class Profile < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
 
-  def gender_entered?
+  def gender_blank?
     gender.blank?
+  end
+
+  def about_blank?
+    about.blank?
+  end
+
+  def business_fields_mandatory_blank?
+    business_fields_mandatory.blank?
+  end
+
+  def increase_blank?
+    increase == 0.00 || increase.blank?
   end
 
   class << self
@@ -66,10 +90,6 @@ class Profile < ActiveRecord::Base
   def business_type_name
     return Profile::BUSINESS_TYPE[0][0] if business_type == Profile::BUSINESS_TYPE[0][1]
     return Profile::BUSINESS_TYPE[1][0] if business_type == Profile::BUSINESS_TYPE[1][1]
-  end
-
-  def about_entered?
-    about.blank?
   end
 
   def avail_days_arr

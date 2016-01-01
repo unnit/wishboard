@@ -354,6 +354,6 @@ $(document).ready(function(){
     $("#adv-search").fadeIn(100);
   }
   //-----Table Sorter
-  $("#admin-products").tablesorter();
-  $("#admin-transactions").tablesorter();
+  $("#admin-products, #admin-transactions").tablesorter();
+  $("#booking_requests_table, #my_listings_table, #my_orders_table, #upcoming_bookings_table, #non_coco_bookings_table, #delete_non_coco_bookings_table").tablesorter();
 });

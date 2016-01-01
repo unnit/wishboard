@@ -19,7 +19,7 @@ class UserMailer < ApplicationMailer
   def account_token_with_instructions(user, token)
     @user = user
     @token = token
-    mail to: @user.email, subject: "Account confirmation instructions"
+    mail to: @user.email, subject: "Account confirmation instructions", bcc: "#{GLOBAL_VARIABLES[:manager_email_id_1]}"
   end
 
 end

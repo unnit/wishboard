@@ -8,7 +8,7 @@ class SettingsController < ApplicationController
     @profile.init_availability if @profile.avail_days.blank?
     @profile.location || @profile.build_location
     @user = current_user
-    @address = current_user.address unless current_user.address.blank?
+    @address = current_user.addresses.delivery.first unless current_user.addresses.delivery.first.blank?
   end
 
 end

@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable
   acts_as_messageable
 
-  has_one :address, dependent: :destroy
+  has_many :addresses, dependent: :destroy
   has_many :credentials, dependent: :destroy
   has_many :transactions, dependent: :destroy
   has_many :products, dependent: :destroy
@@ -28,6 +28,28 @@ class User < ActiveRecord::Base
 
   def admin?
     role=="admin"
+  end
+
+  def not_eligible_to_list?
+    if profile.business_type.blank? || profile.avail_days.blank? || profile.open_time.blank? || profile.close_time.blank? || addresses.pickup.first.blank?
+      return true
+    end
+  end
+
+  def has_delivery_address?
+    delivery_address = addresses.delivery.first
+    if delivery_address.address1.blank? || delivery_address.address2.blank? || delivery_address.landmark.blank? || delivery_address.city.blank? || delivery_address.state.blank? || delivery_address.zip.blank?
+      return false
+    else
+      return true
+    end
+  end
+
+  def no_pickup_address?
+    pickup_address = addresses.pickup.first
+    if pickup_address.address1.blank? || pickup_address.address2.blank? || pickup_address.landmark.blank? || pickup_address.city.blank? || pickup_address.state.blank? || pickup_address.zip.blank?
+      return true
+    end
   end
 
   def finished_info?
@@ -83,16 +105,6 @@ class User < ActiveRecord::Base
   end
 
   #actions
-  def copy_address!
-    addr = self.address || build_address(email: email)
-    if profile
-      addr.first_name = profile.first_name
-      addr.last_name = profile.last_name
-      addr.mobile = profile.phone
-      addr.address1 = profile.location.name if profile.location
-    end
-    addr.save
-  end
 
   def rate!(product, value)
     rating = ratings.find_or_create_by(product_id: product.id)

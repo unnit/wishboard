@@ -10,24 +10,34 @@
       ~ form_for @profile, html: {class: 'form-horizontal profile_form', role: "form"} do |f|
         %fieldset
           .form-group
+            .col-sm-12.note-font-size.website-color
+              *, # marked fields are mandatory
             .col-sm-4
               %h3.mtop10 You
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} First Name*
+            %label.col-sm-2.control-label{:for => "textinput"}
+              First Name
+              %span.website-color *
             .col-sm-3
               = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 200, required: true
-            %label.col-sm-2.control-label{:for => "textinput"} Last Name*
+            %label.col-sm-2.control-label{:for => "textinput"}
+              Last Name
+              %span.website-color *
             .col-sm-3
               = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200, required: true
           - if @profile.date_of_birth.blank? || @profile.gender.blank?
             .form-group
-              %label.col-sm-2.control-label{:for => "textinput"} Date of Birth**
+              %label.col-sm-2.control-label{:for => "textinput"}
+                Date of Birth
+                %span.website-color #
               .col-sm-3
                 .input-group.mbottom0.input-append.date.date_of_birth
                   %span#sizing-addon2.input-group-addon.bg-white
                     %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                  = f.text_field :date_of_birth, placeholder: "dd/mm/yyyy", class: "form-control bg-white pon", style: "border-radius:0", readonly: true, required: true
-              %label.col-sm-2.control-label{:for => "textinput"} Gender**
+                  = f.text_field :date_of_birth, placeholder: "dd/mm/yyyy", class: "form-control bg-white pon", style: "border-radius:0", required: true, readonly: true
+              %label.col-sm-2.control-label{:for => "textinput"}
+                Gender
+                %span.website-color #
               .col-sm-5{style: "margin-top:8px;"}
                 = f.radio_button :gender, "#{Profile::GENDER[0]}", required: true
                 %label Male&nbsp;&nbsp;
@@ -36,17 +46,15 @@
                 = f.radio_button :gender, "#{Profile::GENDER[2]}", required: true
                 %label Others
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Phone No*
+            %label.col-sm-2.control-label{:for => "textinput"}
+              Phone No
+              %span.website-color *
             .col-sm-3
               = f.text_field :phone, :placeholder => "Phone No", class: "form-control", maxlength: 10, required: true
           .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Business Type*
-            .col-sm-3
-              = f.select :business_type, Profile::BUSINESS_TYPE, {include_blank: 'Select'}, class: "select_box coco-select-box", required: true
-          .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} About*
+            %label.col-sm-2.control-label{:for => "textinput"} About
             .col-sm-6
-              = f.text_area :about, class: "form-control textarea", row: "5", placeholder: "About You", maxlength: 1000, required: true
+              = f.text_area :about, class: "form-control textarea", row: "5", placeholder: "About You", maxlength: 1000
           .form-group
             %label.col-sm-2.control-label{:for => "textinput"} Profile Pic
             .col-sm-10
@@ -55,97 +63,44 @@
               %span= render partial: "/profiles/avatar"
             - if @profile.date_of_birth.blank? || @profile.gender.blank?
               .col-sm-10.col-sm-offset-2.mtop20.text-right
-                Fields marked with '**' can be only submitted once.
+                Fields marked with
+                %span.website-color #
+                cannot be changed later.
           .form-group
             .col-sm-4
-              %h3.mtop10.mbottom0 Address
+              %h3.mtop10.mbottom0 Delivery Address
             .col-sm-12.note-font-size
-              (Will serve as 'Pick Up' address for your listings and 'Delivery Address' for your bookings.)
+              (Can be filled now or during payment process.)
           = fields_for 'address' do |af|
             .form-group
-              %label.col-sm-2.control-label Address Line 1*
-              .col-sm-4= af.text_field :address1, class: "form-control", required: true, placeholder: "Flat/House No, Floor, Building", maxlength: 200
+              %label.col-sm-2.control-label Address Line 1
+              .col-sm-4= af.text_field :address1, class: "form-control", placeholder: "Flat/House No, Floor, Building", maxlength: 200
             .form-group
-              %label.col-sm-2.control-label Address Line 2*
-              .col-sm-4= af.text_field :address2, class: "form-control", required: true, placeholder: "Colony/Society, Street, Locality/Area", maxlength: 200
+              %label.col-sm-2.control-label Address Line 2
+              .col-sm-4= af.text_field :address2, class: "form-control", placeholder: "Colony/Society, Street, Locality/Area", maxlength: 200
             .form-group
-              %label.col-sm-2.control-label Landmark*
-              .col-sm-4= af.text_field :landmark, class: "form-control", required: true, placeholder: "", maxlength: 200
+              %label.col-sm-2.control-label Landmark
+              .col-sm-4= af.text_field :landmark, class: "form-control", placeholder: "", maxlength: 200
             .form-group
-              %label.col-sm-2.control-label Pincode*
-              .col-sm-4= af.text_field :zip, class: "form-control check_zip", required: true, maxlength: 10
+              %label.col-sm-2.control-label Pincode
+              .col-sm-4= af.text_field :zip, class: "form-control check_zip", maxlength: 60
             .form-group
-              %label.col-sm-2.control-label Town/City*
-              .col-sm-4= af.text_field :city, class: "form-control city", required: true, maxlength: 200
+              %label.col-sm-2.control-label Town/City
+              .col-sm-4= af.text_field :city, class: "form-control city", maxlength: 200
             .form-group
-              %label.col-sm-2.control-label State*
+              %label.col-sm-2.control-label State
               .col-sm-4
-                = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", required: true
-          .form-group
-            .col-sm-4
-              %h3.mtop10 Availability
-          .form-group
-            %label.col-sm-2.control-label.mtop5{:for => "textinput"} Days Available*
-            .col-sm-10.mtop10
-              - Date::DAYNAMES.each_with_index do |day, i|
-                %span.mleft15
-                  = check_box_tag "profile[avail_days][]", i, @profile.avail_days_arr.include?(i.to_s), class: "styled", id: "#{day}"
-                  %label{:for => "#{day}"}= day
-          .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Open Time*
-            .col-sm-4
-              = f.select :open_time, Profile.create_open_close_time, {include_blank: "Select Open Time"}, class: "coco-select-box", required: true
-          .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Close Time*
-            .col-sm-4
-              = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
-          .form-group
-            .col-sm-4
-              %h3.mtop10 Weekend/Seasonal Pricing
-          .form-group
-            %label.col-sm-2.control-label{:for => "textinput"} Apply Weekend/Seasonal Pricing
-            .col-sm-4.mtop10
-              - unless @profile.weekend_days_arr.blank?
-                = check_box_tag :weekend_pricing, "yes", true
-              - else
-                = check_box_tag :weekend_pricing, "yes", false
-          .form-group.weekend_pricing_div.hidden
-            %label.col-sm-2.control-label.mtop5{:for => "textinput"} Your Weekend Days
-            .col-sm-10.mtop10
-              - Date::DAYNAMES.each_with_index do |day, i|
-                %span.mleft15
-                  = check_box_tag "profile[weekend_days][]", i, @profile.weekend_days_arr.include?(i.to_s), class: "styled", id: "#{day}_as_weekend"
-                  %label{:for => "#{day}"}= day
-          .form-group.weekend_pricing_div.hidden
-            %label.col-sm-2.control-label.mtop5{:for => "textinput"}
-              Price Increase in %
-            .col-sm-4
-              = f.text_field :increase, :placeholder => "Increase in %", class: "form-control", maxlength: 6
-
-          .form-group
-            .col-sm-offset-2.col-sm-10
-              .pull-right
-                %button.btn.btn-info.save-button Save Information
+                = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box"
+            .form-group
+              .col-sm-offset-2.col-sm-10
+                .pull-right
+                  %button.btn.btn-info.save-button Save
 
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
-        function weekend_pricing_check(){
-          var checked = $("#weekend_pricing").is(":checked");
-          if(checked == true){
-            $(".weekend_pricing_div").removeClass("hidden");
-            $("#Sunday_as_weekend").prop("checked", true);
-            $("#Saturday_as_weekend").prop("checked", true);
-            $("#profile_increase").attr('required', true)
-          }
-          else{
-            $(".weekend_pricing_div").addClass("hidden");
-            $("#Sunday_as_weekend").prop("checked", false);
-            $("#Saturday_as_weekend").prop("checked", false);
-            $("#profile_increase").removeAttr('required');
-            $("#profile_increase").val("")
-          }
-        }
-        weekend_pricing_check();
-        $("#weekend_pricing").on("click", weekend_pricing_check);
+      $(".save-button").click(function(){
+          $("#profile_date_of_birth").removeAttr("readonly");
+          setTimeout(function(){$("#profile_date_of_birth").attr("readonly", true);}, 1000);
       })
+    });

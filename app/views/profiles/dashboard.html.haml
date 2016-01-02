@@ -8,7 +8,7 @@
           = cl_image_tag current_user.avatar, class: "img-responsive img-circle", width: 100, height: 100, crop: :fill
         .col-md-7
           .col-sm-12
-            %h3.no-mar-pad.mbottom10= current_user.name
+            %h3.no-mar-pad.mbottom10{title: "#{current_user.name}"}= truncate current_user.name, length: 30
             .prof-para.mbottom10=simple_format truncate @profile.about, length: 200
           .col-sm-12.mbottom10
             %span.glyphicon.glyphicon-phone{style: "color: #D02121;"}

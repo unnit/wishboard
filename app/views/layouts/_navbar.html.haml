@@ -12,14 +12,17 @@
       .navbar-collapse.collapse.nav-border
         %ul.nav.navbar-nav.navbar-right
           - if current_user
+            %li.ptop5.bg-white= link_to "List Your Item", new_product_path, class: "pa"
             %li.hidden-xs
-              %ul.pro-view
-                %li.dropdown
+              %ul.pro-view.pleft-10
+                %li.dropdown.pull-left
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
                     %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
                       = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 40, height: 40, crop: :fill
-                      %span.mtop10.pull-right Hi #{current_user.name}
-                  %ul.dropdown-menu.mtop30{style: "width:180px;"}
+                      %span.mtop10.pull-right{title: "#{current_user.name}"}
+                        Hi #{truncate current_user.name, length: 20}
+                        %span.caret
+                  %ul.dropdown-menu.pull-left.mtop0{style: "width:180px;"}
                     %li
                       = link_to dashboard_path, style: "white-space: normal;" do
                         %span Dashboard
@@ -44,11 +47,10 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span Sign Out
                         %span.glyphicon.glyphicon-log-out.pull-right
-            %li.ptop5.bg-white= link_to "List Your Item", new_product_path, class: "pa"
           - else
 
             %li.active.nav-login= link_to "Login", "#login", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
-            %li.active.nav-login= link_to "Register", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
+            %li.active.nav-login= link_to "Sign Up", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
             %li.ptop5.bg-white= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
 
 
@@ -103,7 +105,7 @@
           .col-sm-9.col-sm-offset-3.hidden
             = link_to user_omniauth_authorize_path(:facebook), style: "border-radius:0;", class: "btn btn-primary btn-block" do
               %i.icon-facebook
-              Sign Up/Register with Facebook
+              Sign Up with Facebook
           .col-sm-9.col-sm-offset-3.or-text.hidden
             %span OR
           = form_for(User.new, :url => user_registration_path, html: {"data-parsley-validate" => true, remote: true, class: "agreement-require"}) do |f|
@@ -137,12 +139,3 @@
               .col-sm-offset-3.col-sm-9
                 = f.submit "Sign up", :class => 'btn btn-primary pop-up-but'
         .clearfix
-
-    = content_for :extra_js do
-      :javascript
-        $(document).ready(function(){
-          $(".login-button").click(function(){
-            $(".login-button").show();
-            $("#login-loader").hide();
-            })
-        });

@@ -32,6 +32,13 @@ $(document).ready(function(){
           }, 500);
       return false;
   });
+  // Menu Drop Down on hover
+  $('.dropdown').hover(function() {
+      $(this).addClass('open');
+  },
+  function() {
+      $(this).removeClass('open');
+  });
 
   //Slider in product page
   var slider = $('.bxslider').bxSlider({

@@ -11,14 +11,14 @@
     - if user
       - trans = get_transaction(conv)
       .col-md-12.pad-v-10
-        .col-md-2        
-          = image_tag user.avatar, size: "32x32", class: "img-circle"
+        .col-md-2
+          = cl_image_tag user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
           = user.name
         .col-md-7
           = link_to message_path(trans) do
             = conv.subject
         .col-md-2
-          = trans.status.humanize
+          = trans.transaction_status_name
         .col-md-1
           = link_to message_path(conv), class: "btn btn-sm btn-danger", method: :delete, data: {confirm: "Are you sure to delete conversation?"} do
             %span.glyphicon.glyphicon-trash

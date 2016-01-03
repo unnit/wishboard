@@ -20,7 +20,8 @@
                     %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
                       = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 40, height: 40, crop: :fill
                       %span.mtop10.pull-right{title: "#{current_user.name}"}
-                        Hi #{truncate current_user.name, length: 20}
+                        Hi
+                        = (truncate current_user.profile.first_name, length: 20) ||  (truncate current_user.name, length: 20)
                         %span.caret
                   %ul.dropdown-menu.pull-left.mtop0{style: "width:180px;"}
                     %li

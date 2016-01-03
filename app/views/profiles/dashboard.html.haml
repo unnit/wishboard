@@ -55,33 +55,35 @@
           %table.table.table-striped.table-bordered.table-hover#booking_requests_table
             %thead
               %tr
+                %th Sl No&nbsp;&nbsp;
                 %th User&nbsp;&nbsp;
                 %th Subject&nbsp;&nbsp;
                 %th Sent/Received&nbsp;&nbsp;
                 %th Booking Status&nbsp;&nbsp;
-                %th Action&nbsp;&nbsp;
             %tbody
-            - @conversations.each do |conv|
-              - user = receiver(conv)
-              - if user
-                - trans = get_transaction(conv)
-                %tr
-                  %td
-                    = cl_image_tag user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
-                    = user.name
-                  %td
-                    = link_to message_path(trans) do
-                      = conv.subject
-                  %td
-                    - if trans.seller == current_user
-                      Received
-                    - elsif trans.user == current_user
-                      Sent
-                  %td
-                    = trans.transaction_status_name
-                  %td
-                    = link_to message_path(conv), class: "btn btn-sm btn-danger", method: :delete, data: {confirm: "Are you sure to delete conversation?"} do
-                      %span.glyphicon.glyphicon-trash
+              - i = 1
+              - @conversations.each do |conv|
+                - user = receiver(conv)
+                - if user
+                  - trans = get_transaction(conv)
+                  %tr
+                    %td
+                      - page =  params[:booking_requests_received].blank? ? 1 : params[:booking_requests_received].to_i
+                      = i + (20*(page - 1))
+                    %td
+                      = cl_image_tag user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
+                      = user.name
+                    %td
+                      = link_to message_path(trans) do
+                        = conv.subject
+                    %td
+                      - if trans.seller == current_user
+                        Received
+                      - elsif trans.user == current_user
+                        Sent
+                    %td
+                      = trans.transaction_status_name
+                  - i+=1
         = paginate @conversations, param_name: "booking_requests_received"
     #my_listings.tab-pane.fade
       .update-error.text-right
@@ -126,7 +128,9 @@
               - i= 1
               - @my_transactions.each do |trans|
                 %tr
-                  %td= i
+                  %td
+                    - page =  params[:my_transactions].blank? ? 1 : params[:my_transactions].to_i
+                    = i + (20*(page - 1))
                   %td= trans.product.title
                   %td= trans.duration
                   %td
@@ -134,8 +138,12 @@
                     = trans.amount
                   %td= trans.transaction_status_name
                   %td
-                    - if trans.accepted?
-                      = link_to "checkout", checkout_transaction_path(trans)
+                    - if trans.accepted? && !trans.past?
+                      = link_to "Checkout", checkout_transaction_path(trans), class: "btn btn-primary text-center"
+                    - elsif (trans.accepted? || trans.requesting? || trans.timed_out? || trans.denied?) && trans.past?
+                      Expired
+                    - elsif trans.paid? && trans.rental_completed?
+                      Rental Completed
                 - i+=1
         = paginate @my_transactions, param_name: "my_transactions"
     #upcoming_bookings.tab-pane.fade
@@ -150,16 +158,22 @@
                 %th Title&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;
+                %th Name of Customer&nbsp;&nbsp;
+                %th Phone&nbsp;&nbsp;
                 %th Duration&nbsp;&nbsp;
             %tbody
               - i= 1
               - @upcoming_bookings.each do |booking|
                 %tr
-                  %td= i
+                  %td
+                    - page =  params[:upcoming_bookings].blank? ? 1 : params[:upcoming_bookings].to_i
+                    = i + (20*(page - 1))
                   %td= cl_image_tag booking.product.image, alt: "#{booking.product.title}-#{booking.product.category_name}", width: 32, height: 32, crop: :fill
                   %td= booking.product.title
                   %td= booking.product.id
                   %td{title: "#{booking.product.category_name}"}= truncate booking.product.category_name,length: 15
+                  %td{title: "#{booking.user.name}"}= truncate booking.user.name, length: 20
+                  %td= booking.user.phone
                   %td= booking.duration
                 - i+= 1
         = paginate @upcoming_bookings, param_name: "upcoming_bookings"
@@ -183,7 +197,9 @@
               - i = 1
               - @products_for_non_coco_bookings.each do |product|
                 %tr
-                  %td= i
+                  %td
+                    - page =  params[:add_non_coco_bookings].blank? ? 1 : params[:add_non_coco_bookings].to_i
+                    = i + (20*(page - 1))
                   %td= cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
                   %td= product.title
                   %td= product.id
@@ -201,7 +217,7 @@
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
                         = text_field_tag :non_coco_end_date, params[:non_coco_end_date], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 10px;", readonly: true
                     %td
-                      %button.btn.btn-primary{type: "submit", style: ""}
+                      %button.btn.btn-primary{type: "submit"}
                         Create
                 - i+=1
         = paginate @products_for_non_coco_bookings, param_name: "add_non_coco_bookings"
@@ -225,7 +241,9 @@
               - i = 1
               - @non_coco_transactions.each do |transaction|
                 %tr
-                  %td= i
+                  %td
+                    - page =  params[:delete_non_coco_bookings].blank? ? 1 : params[:delete_non_coco_bookings].to_i
+                    = i + (20*(page - 1))
                   %td= cl_image_tag transaction.product.image, alt: "#{transaction.product.title}-#{transaction.product.category_name}", width: 32, height: 32, crop: :fill
                   %td= transaction.product.title
                   %td= transaction.product.id
@@ -233,7 +251,7 @@
                   %td= transaction.non_coco_operator
                   %td= transaction.startdate.strftime("%d %b %Y %H:%M")
                   %td= transaction.enddate.strftime("%d %b %Y %H:%M")
-                  %td
+                  %td.text-center
                     = link_to delete_non_coco_transaction_path(transaction), method: :delete, data: {confirm: "Are you sure you want to delete the booking?"} do
                       %span.glyphicon.glyphicon-remove
                 - i+=1

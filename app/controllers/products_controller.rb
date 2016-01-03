@@ -380,8 +380,13 @@ class ProductsController < ApplicationController
   end
 
   def set_category
-    @selected_cat = @product.category.parent_name
-    @selected_sub = @product.category.name
+    unless @product.category.blank?
+      @selected_cat = @product.category.parent
+      @selected_sub = @product.category.name
+      @selected_cat_name = @selected_cat.name
+      @selected_cat_id = @selected_cat.id
+      @selected_cat_not_featured = @selected_cat.not_featured?
+    end
     @product.location || @product.build_location
   end
 

@@ -19,6 +19,10 @@ class Category < ActiveRecord::Base
     "#{parent.name + ' / ' if parent}#{name}"
   end
 
+  def not_featured?
+    feature_pos == 0
+  end
+
   def subs
     Category.where parent_id: self.id
   end

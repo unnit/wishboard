@@ -21,15 +21,15 @@
                 .col-sm-10
                   - Category.feature.each do |cat|
                     %span.button-checkbox
-                      %button.btn.btn-default.cat-text.cat-select{type: "button", class: "#{'btn-primary' if cat.name==@selected_cat}",data: {color: "primary", id: cat.id}}
+                      %button.btn.btn-default.cat-text.cat-select{type: "button", class: "#{'btn-primary' if cat.name==@selected_cat_name}", data: {color: "primary", id: cat.id}}
                         = image_tag cat.image
                         = cat.name
                       = check_box_tag :category, "", false, class: "hidden"
                   %span.button-checkbox
                     .btn-group
-                      %button.btn.btn-default.dropdown-toggle.other-btn{type: "button", data: {color: "primary", toggle: "dropdown"}}
+                      %button.btn.btn-default.dropdown-toggle.other-btn.cat-text{type: "button", class: "#{'btn-primary' if @selected_cat_not_featured}", data: {color: "primary", toggle: "dropdown"}}
                         = image_tag "icons/others.png"
-                        %span.selection.cat-text.img-text-pad More
+                        %span.selection.img-text-pad= @selected_cat_not_featured ? "#{@selected_cat_name}" : "More"
                         %span.caret
                       %ul.dropdown-menu.cat-text{role: "menu"}
                         - Category.root.other.each do |cat|
@@ -213,60 +213,61 @@
         });
     });
     var toggleOperator;
+    //When page loads
     $(function() {
-    $.get("/products/sub_categories", {
-      category: "#{@selected_cat}",
-      selected: "#{@selected_sub}"
-    });
-    $(document).on("click", '.cat-select', function() {
-      if ($(this).hasClass("cat-other")) {
-        $(this).closest(".form-group").find(".cat-text").removeClass("btn-primary");
-        $(this).closest(".form-group").find(".other-btn").addClass("btn-primary");
-      }
-      return $.get("/products/sub_categories", {
-        category: $(this).data("id"),
-        selected: ""
+      $.get("/products/sub_categories", {
+        category: "#{@selected_cat_id}",
+        selected: "#{@selected_sub}"
       });
-    });
-    $(".cat-text").click(function() {
-      var type;
-      $(this).closest(".form-group").find(".cat-text").removeClass("btn-primary");
-      $(this).closest(".form-group").find(".other-btn").removeClass("btn-primary");
-      $(this).addClass("btn-primary");
-      if ($(this).hasClass("type-select")) {
-        type = $(this).data('type');
-        $("#product_listing_type").val(type);
-        if (type == "#{Product::LISTING_TYPE[0][1]}") {
-          $("#product_price,#product_security_deposit,#product_tax,#product_tech_spec").val("");
-          $("#product_operator_price").val("0");
-          $("#product_discount_3,#product_discount_10,#product_discount_20,#product_discount_30,#product_discount_90").val("");
-          return $('.none-free').hide();
-        } else {
-          $("#product_discount_3").val("10");
-          $("#product_discount_10").val("20");
-          $("#product_discount_20").val("30");
-          $("#product_discount_30").val("40");
-          $("#product_discount_90").val("50");
-          $("#product_security_deposit,#product_tax").val("0");
-          $("#product_owner_type").val("");
-          return $('.none-free').show();
+      $(".cat-text").click(function() {
+        var type;
+        $(this).closest(".form-group").find(".cat-text").removeClass("btn-primary");
+        $(this).closest(".form-group").find(".other-btn").removeClass("btn-primary");
+        $(this).addClass("btn-primary");
+        if ($(this).hasClass("type-select")) {
+          type = $(this).data('type');
+          $("#product_listing_type").val(type);
+          if (type == "#{Product::LISTING_TYPE[0][1]}") {
+            $("#product_price,#product_security_deposit,#product_tax,#product_tech_spec").val("");
+            $("#product_operator_price").val("0");
+            $("#product_discount_3,#product_discount_10,#product_discount_20,#product_discount_30,#product_discount_90").val("");
+            return $('.none-free').hide();
+          } else {
+            $("#product_discount_3").val("10");
+            $("#product_discount_10").val("20");
+            $("#product_discount_20").val("30");
+            $("#product_discount_30").val("40");
+            $("#product_discount_90").val("50");
+            $("#product_security_deposit,#product_tax").val("0");
+            $("#product_owner_type").val("");
+            return $('.none-free').show();
+          }
         }
+      });
+      $(document).on("click", '.cat-select', function() {
+        if ($(this).hasClass("cat-other")) {
+          $(this).closest(".form-group").find(".cat-text").removeClass("btn-primary");
+          $(this).closest(".form-group").find(".other-btn").addClass("btn-primary");
+        }
+        return $.get("/products/sub_categories", {
+          category: $(this).data("id"),
+          selected: ""
+        });
+      });
+      $(document).on("click", '.cat-sub', function() {
+        $("#product_category_id").val($(this).data("id"));
+        return $(this).closest(".btn-group").find("span.selection").html($(this).data("name"));
+      });
+      toggleOperator();
+      if ("#{@product.listing_type}" == "#{Product::LISTING_TYPE[0][1]}") {
+        $("#product_price,#product_security_deposit,#product_tax,#product_tech_spec").val("");
+        $("#product_operator_price").val("0");
+        $("#product_discount_3,#product_discount_10,#product_discount_20,#product_discount_30,#product_discount_90").val("");
+        $('.none-free').hide();
       }
-    });
-    $(document).on("click", '.cat-sub', function() {
-      $("#product_category_id").val($(this).data("id"));
-      return $(this).closest(".btn-group").find("span.selection").html($(this).data("name"));
-    });
-    toggleOperator();
-    if ("#{@product.listing_type}" == "#{Product::LISTING_TYPE[0][1]}") {
-      $("#product_price,#product_security_deposit,#product_tax,#product_tech_spec").val("");
-      $("#product_operator_price").val("0");
-      $("#product_discount_3,#product_discount_10,#product_discount_20,#product_discount_30,#product_discount_90").val("");
-      $('.none-free').hide();
-    }
-    return $("#product_operator_type").change(function() {
-      return toggleOperator();
-    });
+      return $("#product_operator_type").change(function() {
+        return toggleOperator();
+      });
     });
 
     toggleOperator = (function(_this) {

@@ -12,7 +12,7 @@ class MessagesController < ApplicationController
   def destroy
     c = Mailboxer::Conversation.find params[:id]
     current_user.mark_as_deleted c
-    redirect_to messages_path
+    redirect_to dashboard_path
   end
 
   def reply
@@ -25,7 +25,7 @@ class MessagesController < ApplicationController
     @transaction = Transaction.find params[:id]
     @conversation = @transaction.mailbox.inbox.first
     unless @transaction.user == current_user || @transaction.seller == current_user
-      redirect_to messages_path
+      redirect_to root_path
     end
   end
 end

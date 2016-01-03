@@ -1,5 +1,6 @@
 %td
-  = i
+  - page =  params[:my_listings].blank? ? 1 : params[:my_listings].to_i
+  = i + (20*(page - 1))
 %td
   = cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
 %td= product.title

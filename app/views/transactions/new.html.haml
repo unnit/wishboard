@@ -6,8 +6,8 @@
       .col-md-12.mtop10
         %h4 Request for #{@product.title}
       .col-md-12.mtop10
-        %label.col-md-2.control-label Message
-        .col-md-10= text_area_tag :message, "",rows: "3", placeholder: "Message", class: "form-control"
+        %label.col-md-2.control-label Message*
+        .col-md-10= text_area_tag :message, "",rows: "3", placeholder: "Please type your message to Item Owner", class: "form-control", required: true
       .col-md-12.mtop10
         .pull-right{style: "margin-bottom: 50px;"}
           = f.submit "Send Message", class: "btn btn-info save-button"

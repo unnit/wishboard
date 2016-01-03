@@ -64,15 +64,16 @@ class TransactionsController < ApplicationController
     ###############
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
     if @transaction.save
+      params[:message] = "Request for #{@product.title}" if params[:message].blank?
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
       params = {
         'src' => "Cocociti",
         'dst' => "+919037267357",
-        'text' => "Request has been sent to Item owner successfully. Please visit your Dashboard --> Booking Requests for updates. "
+        'text' => "Request has been sent to Item owner successfully. Please visit your Dashboard --> My Order Activity for updates. "
       }
       @transaction.send_sms(params)
-      flash[:success] = "Request for #{@product.title} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'Booking Requests' tab."
+      flash[:success] = "Request for #{@product.title} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'My Order Activity' tab."
       redirect_to dashboard_path
     else
       flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
@@ -137,7 +138,7 @@ class TransactionsController < ApplicationController
   def check_status_and_save_address_of_transaction
     error_messages = []
     error_messages << "Sorry, you cannot proceed with the operation." unless @transaction.coco_transaction_id == params[:mid]
-    error_messages << "Sorry, you cannot proceed with the operation. The booking has expired." if @transaction.expired?
+    error_messages << "Sorry, you cannot proceed with the operation. The booking has timed out." if @transaction.timed_out?
     @address = current_user.addresses.delivery.first
     @address.first_name = params[:first_name]
     @address.last_name = params[:last_name]
@@ -329,7 +330,7 @@ class TransactionsController < ApplicationController
       redirect_to root_path
       return
     end
-    if @transaction.expired? || @transaction.paid? || @transaction.requesting? || @transaction.non_coco_booking? || @transaction.denied?
+    if @transaction.timed_out? || @transaction.paid? || @transaction.requesting? || @transaction.non_coco_booking? || @transaction.denied?
       flash[:danger] = "Sorry, You cannot access this page as the booking is invalid."
       redirect_to root_path
       return

@@ -18,7 +18,7 @@ class Transaction < ActiveRecord::Base
 
   has_one :address, through: :user
 
-  TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"], ["Expired", "4"], ["Non Cocociti Booking", "5"], ["Accepted", "6"]]
+  TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"], ["Timed Out", "4"], ["Non Cocociti Booking", "5"], ["Accepted", "6"]]
   PAYMENT_GATEWAY_STATUS = ["SUCCESS", "FAIL", "CANCEL", "PG_FORWARD_FAIL"]
 
   validates :user_id, :product_id, :startdate, :enddate, presence: true
@@ -99,7 +99,7 @@ class Transaction < ActiveRecord::Base
     status == Transaction::TRANSACTION_STATUS[0][1]
   end
 
-  def expired?
+  def timed_out?
     status == Transaction::TRANSACTION_STATUS[4][1]
   end
 
@@ -113,6 +113,10 @@ class Transaction < ActiveRecord::Base
 
   def past?
     self.startdate < Time.now.in_time_zone("Kolkata") || self.enddate < Time.now.in_time_zone("Kolkata")
+  end
+
+  def rental_completed?
+    self.enddate < Time.now.in_time_zone("Kolkata")
   end
 
   #actions

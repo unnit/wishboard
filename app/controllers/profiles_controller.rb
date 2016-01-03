@@ -4,7 +4,7 @@ class ProfilesController < ApplicationController
   skip_before_filter :check_profile, only: [:update]
 
   def dashboard
-    @conversations = current_user.mailbox.inbox.order(created_at: :desc).page(params[:booking_requests_received]).per(20)
+    @conversations = current_user.mailbox.conversations.order(created_at: :desc).page(params[:booking_requests_received]).per(20)
     @my_products = current_user.products.order(created_at: :desc).page(params[:my_listings]).per(20)
     @products_for_non_coco_bookings = current_user.products.order(created_at: :desc).page(params[:add_non_coco_bookings]).per(20)
     @my_transactions = current_user.transactions.dashboard_transactions.order(created_at: :desc).page(params[:my_transactions]).per(20)

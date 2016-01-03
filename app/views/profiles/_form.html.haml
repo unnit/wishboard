@@ -11,7 +11,10 @@
         %fieldset
           .form-group
             .col-sm-12.note-font-size.website-color
-              *, # marked fields are mandatory
+              - if @profile.date_of_birth.blank? || @profile.gender.blank?
+                *, # marked fields are mandatory
+              - else
+                * marked fields are mandatory
             .col-sm-4
               %h3.mtop10 You
           .form-group
@@ -63,9 +66,10 @@
               %span= render partial: "/profiles/avatar"
             - if @profile.date_of_birth.blank? || @profile.gender.blank?
               .col-sm-10.col-sm-offset-2.mtop20.text-right
-                Fields marked with
-                %span.website-color #
-                cannot be changed later.
+                - if @profile.date_of_birth.blank? || @profile.gender.blank?
+                  Fields marked with
+                  %span.website-color #
+                  cannot be changed later.
           .form-group
             .col-sm-4
               %h3.mtop10.mbottom0 Delivery Address
@@ -83,7 +87,7 @@
               .col-sm-4= af.text_field :landmark, class: "form-control", placeholder: "", maxlength: 200
             .form-group
               %label.col-sm-2.control-label Pincode
-              .col-sm-4= af.text_field :zip, class: "form-control check_zip", maxlength: 60
+              .col-sm-4= af.text_field :zip, class: "form-control check_zip", maxlength: 6
             .form-group
               %label.col-sm-2.control-label Town/City
               .col-sm-4= af.text_field :city, class: "form-control city", maxlength: 200

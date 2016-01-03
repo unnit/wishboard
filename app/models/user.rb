@@ -46,8 +46,8 @@ class User < ActiveRecord::Base
   end
 
   def no_pickup_address?
-    pickup_address = addresses.pickup.first
-    if pickup_address.address1.blank? || pickup_address.address2.blank? || pickup_address.landmark.blank? || pickup_address.city.blank? || pickup_address.state.blank? || pickup_address.zip.blank?
+    pickup_address = addresses.pickup.first  
+    unless pickup_address
       return true
     end
   end

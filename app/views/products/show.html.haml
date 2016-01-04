@@ -17,25 +17,29 @@
             = link_to "", "data-slide-index" => i do
               = cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", width: 145, height: 80, crop: :fill
         .col-xs-12.col-md-12.available
-          .col-xs-12.col-sm-3
+          .col-xs-12.col-sm-3.bord-right-prd-show
             %h6.des-own-det Owner
-            = cl_image_tag @product.user.avatar, class: "img-circle mtop-v-5", width: 40, height: 40, crop: :fill
+            = cl_image_tag @product.user.avatar, class: "img-circle mbottom5", width: 40, height: 40, crop: :fill
             %h6.des-own-det= @product.user.name
-          .col-xs-12.col-sm-3
+          .col-xs-12.col-sm-3.bord-right-prd-show
             %h6.des-own-det Open - Close Time
-            .open-close-sprite.pull-left
+            %center
+              .open-close-sprite
             %h6.des-own-det.pull-left.full-width= "#{@product.user.profile.open_time} - #{@product.user.profile.close_time}"
-          .col-xs-12.col-sm-3
+          .col-xs-12.col-sm-3.bord-right-prd-show
             %h6.des-own-det Booking Type
             - if @product.owner_type == Product::OWNER_TYPE[0][1]
-              .booking-type-sprite.pull-left
+              %center
+                .booking-type-sprite
               %h6.des-own-det.pull-left.full-width= Product::OWNER_TYPE[0][0].humanize
             - elsif @product.owner_type == Product::OWNER_TYPE[1][1]
-              .booking-type-confirm-sprite.pull-left
+              %center
+                .booking-type-confirm-sprite
               %h6.des-own-det.pull-left.full-width= Product::OWNER_TYPE[1][0].humanize
           .col-xs-12.col-sm-3
             %h6.des-own-det Business Type
-            .business-type-sprite.pull-left
+            %center
+              .business-type-sprite
             %h6.des-own-det.pull-left.full-width= @product.user.profile.business_type_name
     .col-md-4
       %h2.product-name.mtop0= @product.title
@@ -156,7 +160,10 @@
           - if current_user
             .col-md-12.padding0.mleft15
               - if current_user != @product.user && @product.available?
-                %button#rent-btn.src-but.full-width.padding0{type: "submit"}= @product.for_free? ? "Get" : "Rent"
+                - unless session[:end_date_time].blank? || session[:start_date_time].blank?
+                  %button#rent-btn.src-but.full-width.padding0{type: "submit"}= @product.for_free? ? "Get" : "Rent"
+                - else
+                  %button.src-but.full-width.padding0.search-in-show{type: "button"} Search
               - if current_user == @product.user || current_user.admin?
                 = link_to edit_product_path(@product.id)  do
                   %button#rent-btn.src-but.full-width.padding0{type: "button"} Edit This Item

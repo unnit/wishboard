@@ -157,8 +157,12 @@ class Product < ActiveRecord::Base
     listing_type==3
   end
 
-  def individual?
-    owner_type==1
+  def instant?
+    owner_type==Product::OWNER_TYPE[0][1]
+  end
+
+  def request_to_book?
+    owner_type==Product::OWNER_TYPE[1][1]
   end
 
   def discounts_any?

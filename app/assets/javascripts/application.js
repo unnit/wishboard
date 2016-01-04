@@ -32,6 +32,36 @@ $(document).ready(function(){
           }, 500);
       return false;
   });
+  //Featured list toggle
+  $(".featured-button-1").click(function(){
+    $(".featured-button").removeClass("featured-active");
+    $(this).find('.featured-button').addClass("featured-active");
+    $(".featured-list-2,.featured-list-3,.featured-list-4").hide();
+    $(".featured-list-1").fadeIn(300);
+  })
+  $(".featured-button-2").click(function(){
+    $(".featured-button").removeClass("featured-active");
+    $(this).find('.featured-button').addClass("featured-active");
+    $(".featured-list-1,.featured-list-3,.featured-list-4").hide();
+    $(".featured-list-2").fadeIn(300);
+  })
+  $(".featured-button-3").click(function(){
+    $(".featured-button").removeClass("featured-active");
+    $(this).find('.featured-button').addClass("featured-active");
+    $(".featured-list-1,.featured-list-2,.featured-list-4").hide();
+    $(".featured-list-3").fadeIn(300);
+  })
+  $(".featured-button-4").click(function(){
+    $(".featured-button").removeClass("featured-active");
+    $(this).find('.featured-button').addClass("featured-active");
+    $(".featured-list-1,.featured-list-2,.featured-list-3").hide();
+    $(".featured-list-4").fadeIn(300);
+  })
+  //Focus Search fields in dhow page
+  $(".search-in-show").click(function(){
+    $("#start_date_time_header").focus();
+  })
+
   // Menu Drop Down on hover
   $('.dropdown').hover(function() {
       $(this).addClass('open');
@@ -216,7 +246,6 @@ $(document).ready(function(){
   $(".from_date_time").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
-    todayBtn: true,
     startDate: new Date(search_start_date),
     endDate: new Date(search_end_date),
     minuteStep: 30,
@@ -225,7 +254,6 @@ $(document).ready(function(){
   $(".header_from_date_time").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
-    todayBtn: true,
     startDate: new Date(search_start_date),
     endDate: new Date(search_end_date),
     minuteStep: 30,
@@ -234,7 +262,6 @@ $(document).ready(function(){
   $(".end_date_time").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
-    todayBtn: true,
     startDate: new Date(search_start_date),
     endDate: new Date(search_end_date),
     minuteStep: 30,
@@ -243,7 +270,6 @@ $(document).ready(function(){
   $(".header_end_date_time").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
-    todayBtn: true,
     startDate: new Date(search_start_date),
     endDate: new Date(search_end_date),
     minuteStep: 30,
@@ -252,14 +278,12 @@ $(document).ready(function(){
   $(".non_coco_start_date").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
-    todayBtn: true,
     minuteStep: 30,
     pickerPosition: "bottom-right"
   });
   $(".non_coco_end_date").datetimepicker({
     format: 'dd-mm-yyyy hh:ii',
     autoclose: true,
-    todayBtn: true,
     minuteStep: 30,
     pickerPosition: "bottom-right"
   });
@@ -280,8 +304,8 @@ $(document).ready(function(){
     $(".end_date_time").datetimepicker('show');
   });
   $(".end_date_time").datetimepicker().on('changeDate', function(){
-    //var length = $('#category> option').length;
-    //$('.home_search_box').attr('size',length/2);
+    $('.home_search_box').addClass("dropup");
+    $('.home_search_box').addClass("open");
   });
   $(".header_from_date_time").datetimepicker().on('changeDate', function(){
     var date_arr = $("#start_date_time_header").val().split(" ");

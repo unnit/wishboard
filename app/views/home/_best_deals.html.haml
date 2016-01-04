@@ -1,19 +1,23 @@
 - length ||= 13
 .brdr.bgc-fff.pad-10.box-shad.btm-mrg-20.property-listing
   .media
-    = cl_image_tag product.image.filename, class: "img-responsive img-style-new", alt: "#{product.title}-#{product.category_name}", width: 253, height: 190, crop: :fill
+    = link_to user_product_path(product.id) do
+      = cl_image_tag product.image.filename, class: "img-responsive img-style-new", alt: "#{product.title}-#{product.category_name}", width: 253, height: 190, crop: :fill
     = cl_image_tag product.user.avatar, class: "img-circle profile_pic", width: 40, height: 40, crop: :fill
     %h4.media-heading.price-bg
       = link_to "javascript:;", target: "_parent", class: "bd-#{product.listing_type_name.downcase}" do
         - if product.for_free?
           Free
         - else
-          %i.fa.fa-rupee= product.price
+          %i.fa.fa-rupee= " #{product.price}"
+          - if product.instant?
+            %i.instant-sprite{title: "Book Instantly, No confirmation needed"}
     .media-body.fnt-smaller.padding10
       %ul.list-inline.btm-mrg-10
         %li.name-tag{title: "#{product.title}"}= truncate product.title, length: length
         %li.pull-right.place{title: "#{product.location_address}"}= truncate product.location_address, length: length
-      %div
-        %h6.month-week &nbsp;
-        %i.pull-right.star-mar
+      %div.pull-left.full-width
+        /%h6.month-week &nbsp;
+        %span.pull-left.note-font-size{title: "#{product.category.name}"}= truncate product.category.name, length: 20
+        %i.pull-right
           = render partial: "products/rated", locals: {rate: product.rate}

@@ -1400,13 +1400,17 @@ padding-top: 24px;
     margin-bottom: 70px;
 }
 .bd-rent, .bd-requesting{
-    background-color: #faa61a;
-    color:#ffffff;
+    /*background-color: #faa61a;
+    color:#ffffff;*/
+    background-color: rgb(0,0,0);
+    background-color: rgba(0, 0, 0, 0.76);
+    color: #FFCC00 !important;
+    font-weight: bold;
     padding-top:1px;
     padding-bottom:1px;
     padding: 10px;
     font-size: 16px;
-    font-weight: 700;
+    position: absolute;
 
 }
 .bd-sale{
@@ -1772,7 +1776,7 @@ margin-top:15px;
     text-align:center;
     padding-top:5px;
     padding-bottom: 10px;
-
+    background-color: #E84242;
 }
 
 /* description*/
@@ -2069,7 +2073,7 @@ border-color: #D6E9C6;
 }
 .des-own-det{
 font-size: 14px;
-    color: #333333;
+    color: #fff;
     font-weight:700;
 }
 
@@ -2326,19 +2330,16 @@ height:50px;
   text-decoration: none;
   color: #E84242;
   background-color: #fff;
-  /*border: 1px solid rgb(189, 0, 0)*/
 }
 .help-links a:focus{
   text-decoration: none;
   color: #E84242;
   background-color: #fff;
-  /*border: 1px solid rgb(189, 0, 0)*/
 }
 .help-links a:active{
   text-decoration: none;
   color: #E84242;
   background-color: #fff;
-  /*border: 1px solid rgb(189, 0, 0)*/
 }
 .help-links a{
   border:1px solid rgb(255,255,255);
@@ -2386,7 +2387,7 @@ height:50px;
     border-radius: 1px;
 }
 .land-src-mar-help-links{
-      margin-left: -48px;
+      margin-left: -68px;
 }
 @media only screen and (max-width: 776px) {
   .land-src-mar-help-links{
@@ -2455,25 +2456,31 @@ height:50px;
   width: 40px;
   height: 40px;
   background: url('images/coco-sprite.png') -364px -172px;
-  margin: 5px 30px 5px 56px
+  display: inline-block;
 }
 .booking-type-sprite{
   width: 40px;
   height: 40px;
   background: url('images/coco-sprite.png') -424px -172px;
-  margin: 5px 30px 5px 56px
+  display: inline-block;
 }
 .business-type-sprite{
   width: 40px;
   height: 40px;
   background: url('images/coco-sprite.png') -298px -169px;
-  margin: 5px 30px 5px 56px
+  display: inline-block;
 }
 .booking-type-confirm-sprite{
   width: 40px;
   height: 40px;
   background: url('images/coco-sprite.png') -473px -172px;
-  margin: 5px 30px 5px 56px;
+  display: inline-block;
+}
+.instant-sprite{
+  width: 18px;
+  height: 16px;
+  background: url('images/coco-sprite.png') -23px -228px;
+  display: inline-block;
 }
 th.header {
     background-image: url('images/bg.gif');
@@ -2531,4 +2538,25 @@ th.headerSortDown {
 }
 .glyphicon-star, .glyphicon-star-empty {
     color: #ffb400;
+}
+.bord-right-prd-show{
+  border-right: 1px solid #D03A3A;
+}
+.featured-button{
+  border: 1px solid #E84242;
+  border-radius: 30px;
+  padding: 10px !important;
+  color: #E84242 ;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+.featured-button:hover{
+  color: #fff;
+  background-color: #E84242;
+}
+.featured-active{
+  color: #fff;
+  background-color: #E84242;
 }

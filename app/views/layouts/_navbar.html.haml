@@ -12,7 +12,7 @@
       .navbar-collapse.collapse.nav-border
         %ul.nav.navbar-nav.navbar-right
           - if current_user
-            %li.ptop5.bg-white= link_to "List Your Item", new_product_path, class: "pa"
+            %li.hidden-xs.ptop5= link_to "List Your Item", new_product_path, class: "pa"
             %li.hidden-xs
               %ul.pro-view.pleft-10
                 %li.dropdown.pull-left
@@ -48,12 +48,28 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span Sign Out
                         %span.glyphicon.glyphicon-log-out.pull-right
+            %li.visible-xs.bg-white= link_to "List Your Item", new_product_path
+            %li.visible-xs.bg-white
+              = link_to dashboard_path, style: "white-space: normal;" do
+                %span Dashboard
+            %li.visible-xs.bg-white
+              = link_to settings_path, style: "white-space: normal;" do
+                %span Settings
+            %li.visible-xs.bg-white
+              = link_to settings_business_path, style: "white-space: normal;" do
+                %span Business Settings
+            %li.visible-xs.bg-white
+              = link_to invitations_path, style: "white-space: normal;" do
+                %span Invite friends
+            %li.visible-xs.bg-white
+              = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
+                %span Sign Out
           - else
 
             %li.active.nav-login= link_to "Login", "#login", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
             %li.active.nav-login= link_to "Sign Up", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
-            %li.ptop5.bg-white= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
-
+            %li.ptop5.hidden-xs= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
+            %li.visible-xs.bg-white.nav-login= link_to "List Your Item", "#login", data: {toggle: "modal", dismiss: "modal"}
 
 - unless current_user
   #login.modal.fade

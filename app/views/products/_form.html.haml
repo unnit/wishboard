@@ -49,6 +49,19 @@
                 %label.col-sm-2.control-label.pro-detail Tax* in %
                 .col-sm-2
                   = f.text_field :tax, placeholder: "Percent", class: "form-control", maxlength: 10
+              /
+                .form-group.none-free
+                  %label.col-sm-2.control-label.pro-detail Billing Type*
+                  .col-sm-1.control-label
+                    %label.pull-left.pright5 Daily
+                    = f.radio_button :billing_type, Product::BILLING_TYPE[0][1], class: "pull-left", required: true
+                  .col-sm-2.control-label
+                    %label.pull-left.pright5 Hourly
+                    = f.radio_button :billing_type, Product::BILLING_TYPE[1][1], class: "pull-left", required: true
+              .form-group.none-free
+                %label.col-sm-2.control-label.pro-detail Internal ID
+                .col-sm-6
+                  = f.text_field :internal_id, placeholder: "Ex: Vehicle Registration No, Item Sl No etc for your refernce", class: "form-control", maxlength: 200
               .form-group
                 /%label.col-sm-2.control-label.pro-detail Ship Price*
                 .col-sm-2

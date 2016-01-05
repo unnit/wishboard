@@ -13,12 +13,18 @@ class ProductsController < ApplicationController
   def search
     #product_paginate
     error_messages = []
-    error_messages << "Please select Pickup Date" if params[:start_date_time].blank?
+    error_messages << "Please select Pick up Date" if params[:start_date_time].blank?
     error_messages << "Please select Drop off Date" if params[:end_date_time].blank?
 
     unless params[:start_date_time].blank? || params[:end_date_time].blank?
       if params[:start_date_time].in_time_zone("Kolkata") > params[:end_date_time].in_time_zone("Kolkata")
-        error_messages << "Pickup Date cannot be greater than Drop off Date"
+        error_messages << "Pick up Date cannot be greater than Drop off Date"
+      end
+      if params[:start_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
+        error_messages << "Pick up Date cannot be a past date."
+      end
+      if params[:end_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
+        error_messages << "Drop off Date cannot be a past date."
       end
     end
     unless error_messages.blank?
@@ -217,14 +223,14 @@ class ProductsController < ApplicationController
   private
   def create_product_params
     params.require(:product).permit(:user_id, :title, :category_id, :price, :tax, :security_deposit, :operator_type, :operator_price, :discount_3, :discount_10, :discount_20,
-                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec,
+                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id,
                                     :terms_and_conditions, :year_of_manufacture, :image_1, :image_2, :image_3, :image_4, :image_5,
                                     :slug, {doc_requirement: []}, location_attributes: [:name])
   end
 
   def update_product_params
     params.require(:product).permit(:user_id, :title, :category_id, :price, :tax, :security_deposit, :operator_type, :operator_price, :discount_3, :discount_10, :discount_20,
-                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec,
+                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id,
                                     :terms_and_conditions, :year_of_manufacture, :image_1, :image_2, :image_3, :image_4, :image_5,
                                     :slug, {doc_requirement: []})
   end

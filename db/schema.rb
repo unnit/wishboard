@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151230193958) do
+ActiveRecord::Schema.define(version: 20160105115220) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",      limit: 4
@@ -159,6 +159,8 @@ ActiveRecord::Schema.define(version: 20151230193958) do
     t.string   "image_4",              limit: 255
     t.string   "image_5",              limit: 255
     t.boolean  "admin_approved",       limit: 1,                              default: false
+    t.integer  "billing_type",         limit: 4
+    t.string   "internal_id",          limit: 255
   end
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree

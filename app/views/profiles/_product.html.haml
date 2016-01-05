@@ -14,6 +14,8 @@
   = product.available==true ? "Available" : "Unavailable"
 %td= product.transactions.count
 %td
+  = link_to user_product_path(product.id), class: "btn btn-sm btn-primary edit-product", target: "_blank" do
+    %span.glyphicon.glyphicon-eye-open
   = link_to edit_product_path(product.id), class: "btn btn-sm btn-success", target: "_blank" do
     %span.glyphicon.glyphicon-pencil
 %td

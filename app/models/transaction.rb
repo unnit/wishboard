@@ -197,7 +197,7 @@ class Transaction < ActiveRecord::Base
       unless term.blank?
         results = where("lower(coco_transaction_id) like ?","%#{term.downcase}%")
       else
-        results = all
+        results = all.order("transactions.created_at desc")
       end
       results
     end

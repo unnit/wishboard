@@ -4,8 +4,8 @@
     %span.pull-right.clickable
       %i.glyphicon.glyphicon-chevron-up
   .row.panel-body
-    #end_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{Time.now.in_time_zone("Kolkata") - 18.years}"}
-    #start_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{Time.now.in_time_zone("Kolkata") - 130.years}"}
+    #end_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{DateTime.current - 18.years}"}
+    #start_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{DateTime.current - 130.years}"}
     .col-md-12
       ~ form_for @profile, html: {class: 'form-horizontal profile_form', role: "form"} do |f|
         %fieldset

@@ -87,6 +87,8 @@ class Product < ActiveRecord::Base
   AVAILABLE_VALUES = [true, false]
   YEAR_OF_MANUFACTURE = (1947..Time.now.year).to_a.reverse
   DAY_NAMES = [["Sun", 0], ["Mon", 1], ["Tue", 2], ["Wed", 3], ["Thu", 4], ["Fri", 5], ["Sat", 6]]
+  BILLING_TYPE = [["Daily", 0], ["Hourly", 1]]
+  BILLING_TYPE_VALUES = [0, 1]
 
   validates :title, :category_id, :listing_type, :description, :terms_and_conditions, :doc_requirement, presence: true
 
@@ -97,6 +99,7 @@ class Product < ActiveRecord::Base
   validates :terms_and_conditions, length: { maximum: 65000 }
   validates :tech_spec, length: { maximum: 65000 }
   validates :price, :security_deposit, :tax, length: { maximum: 10 }
+  validates :internal_id, length: { maximum: 200 }
 
   #validates :ship_price, inclusion: { in: Product::SHIP_PRICES_VALUES, message: "should not be blank" }
   validates :product_condition, inclusion: { in: Product::PRODUCT_CONDITION_VALUES, message: "should not be blank" }
@@ -104,6 +107,7 @@ class Product < ActiveRecord::Base
   validates :operator_type, inclusion: { in: Product::OPERATOR_TYPE_VALUES, message: "should not be blank" }, unless: :for_free?
   validates :year_of_manufacture, inclusion: { in: Product::YEAR_OF_MANUFACTURE, message: "should not be blank" }
   validates :available, inclusion: { in: Product::AVAILABLE_VALUES, message: "should not be blank" }
+  #validates :billing_type, inclusion: { in: Product::BILLING_TYPE_VALUES, message: "should not be blank" }
 
   validates :price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
   validates :security_deposit, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
@@ -123,7 +127,8 @@ class Product < ActiveRecord::Base
   HUMANIZED_ATTRIBUTES = {
     owner_type: "Booking Type",
     price: "Rent",
-    title: "Item Name"
+    title: "Item Name",
+    internal_id: "Internal ID"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
@@ -167,6 +172,14 @@ class Product < ActiveRecord::Base
 
   def discounts_any?
     return true if discount_3 > 0 || discount_10 > 0 || discount_20 > 0 || discount_30 > 0 || discount_90 > 0
+  end
+
+  def daily_type?
+    billing_type == Product::BILLING_TYPE_VALUES[0]
+  end
+
+  def hourly_type?
+    billing_type == Product::BILLING_TYPE_VALUES[1]
   end
 
   #get infos
@@ -507,7 +520,7 @@ class Product < ActiveRecord::Base
     end
 
     def admin_search(term)
-      results = joins(:location).joins(:category)
+      results = joins(:location).joins(:category).order("products.created_at desc")
       unless term.blank?
         results = results.where("lower(products.title) like ? or lower(categories.name) like ? or lower(locations.name) like ? or products.id = ?", "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%", term.to_i)
       end

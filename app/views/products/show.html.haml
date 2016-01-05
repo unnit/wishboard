@@ -177,7 +177,7 @@
         - if @no_of_weekenddays > 0 || @product.discounts_any?
           .col-xs-12.col-md-12.from-bar.mtop10.padding10.note-font-size
             - if @no_of_weekenddays > 0
-              ** Premium Rent is charged by Product Owner and Premium days set by product owner are as follows:
+              ** Premium Rent is charged by Item owner is #{@product.seasonal_weekend_pricing(1)}/day and Premium days set by Item owner are as follows:
               %br
               = @product.weekend_days_display
               %br

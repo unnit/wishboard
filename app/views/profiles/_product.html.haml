@@ -5,6 +5,7 @@
   = cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
 %td= product.title
 %td= product.id
+%td= product.internal_id
 %td{title: "#{product.category_name}"}=truncate product.category_name, length: 15
 %td
   %i.fa.fa-rupee

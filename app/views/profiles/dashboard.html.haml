@@ -97,6 +97,7 @@
                 %th Image&nbsp;&nbsp;
                 %th Title&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
+                %th Internal ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;
                 %th Price&nbsp;&nbsp;
                 /%th Shipping&nbsp;&nbsp;
@@ -157,6 +158,7 @@
                 %th Image&nbsp;&nbsp;
                 %th Title&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
+                %th Internal ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;
                 %th Name of Customer&nbsp;&nbsp;
                 %th Phone&nbsp;&nbsp;
@@ -171,6 +173,7 @@
                   %td= cl_image_tag booking.product.image, alt: "#{booking.product.title}-#{booking.product.category_name}", width: 32, height: 32, crop: :fill
                   %td= booking.product.title
                   %td= booking.product.id
+                  %td= booking.product.internal_id
                   %td{title: "#{booking.product.category_name}"}= truncate booking.product.category_name,length: 15
                   %td{title: "#{booking.user.name}"}= truncate booking.user.name, length: 20
                   %td= booking.user.phone
@@ -188,6 +191,7 @@
                 %th Image&nbsp;&nbsp;
                 %th Title&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
+                %th Internal ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;
                 %th Agency&nbsp;&nbsp;
                 %th Start Date&nbsp;&nbsp;
@@ -203,19 +207,20 @@
                   %td= cl_image_tag product.image, alt: "#{product.title}-#{product.category_name}", width: 32, height: 32, crop: :fill
                   %td= product.title
                   %td= product.id
+                  %td= product.internal_id
                   %td{title: "#{product.category_name}"}= truncate product.category_name, length:15
                   ~ form_tag non_coco_transaction_path(product) do
-                    %td= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control",  maxlength: 200
+                    %td= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control",  maxlength: 200, style: "width: 100px;"
                     %td
-                      .input-group.mbottom0.input-append.date.non_coco_start_date
+                      .input-group.mbottom0.input-append.date.non_coco_start_date{style: "width:200px"}
                         %span#sizing-addon2.input-group-addon.bg-white
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = text_field_tag :non_coco_start_date, params[:non_coco_start_date], placeholder: "Pick up Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 10px;", readonly: true
+                        = text_field_tag :non_coco_start_date, params[:non_coco_start_date], placeholder: "Pick up Date & Time", class: "form-control bg-white pon note-font-size", style: "border-radius:0;", readonly: true
                     %td
-                      .input-group.mbottom0.input-append.date.non_coco_end_date
+                      .input-group.mbottom0.input-append.date.non_coco_end_date{style: "width:200px"}
                         %span#sizing-addon2.input-group-addon.bg-white
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = text_field_tag :non_coco_end_date, params[:non_coco_end_date], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0;font-size: 10px;", readonly: true
+                        = text_field_tag :non_coco_end_date, params[:non_coco_end_date], placeholder: "Drop off Date & Time", class: "form-control bg-white pon note-font-size", style: "border-radius:0;", readonly: true
                     %td
                       %button.btn.btn-primary{type: "submit"}
                         Create
@@ -232,6 +237,7 @@
                 %th Image&nbsp;&nbsp;
                 %th Title&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
+                %th Internal ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;
                 %th Agency&nbsp;&nbsp;
                 %th Start Date&nbsp;&nbsp;
@@ -247,6 +253,7 @@
                   %td= cl_image_tag transaction.product.image, alt: "#{transaction.product.title}-#{transaction.product.category_name}", width: 32, height: 32, crop: :fill
                   %td= transaction.product.title
                   %td= transaction.product.id
+                  %td= transaction.product.internal_id
                   %td{title: "#{transaction.product.category_name}"}=truncate transaction.product.category_name, length: 15
                   %td= transaction.non_coco_operator
                   %td= transaction.startdate.strftime("%d %b %Y %H:%M")

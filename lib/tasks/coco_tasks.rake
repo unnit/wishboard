@@ -1,8 +1,8 @@
 namespace :coco_tasks do
   task update_products_internal_id_via_backend: :environment do
     require 'csv'
-    filename = "#{Rails.root}/lib/madiwala-upload.csv"
-    #filename = "#{Rails.root}/lib/rentnzip-upload.csv"
+    #filename = "#{Rails.root}/lib/madiwala-upload.csv"
+    filename = "#{Rails.root}/lib/rentnzip-upload.csv"
     CSV.foreach(filename, headers: true) do |row|
       product = Product.find_by_id row[0]
       product.update_column :internal_id, row[2]

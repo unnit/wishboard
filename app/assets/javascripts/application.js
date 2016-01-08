@@ -15,6 +15,7 @@
 //= require bootstrap-sass-official/assets/javascripts/bootstrap.min
 //= require gmap3
 //= require bxslider/jquery.bxslider.min
+//= require html-table-search
 //= require bootstrap-slider.min
 //= require bootstrap-select
 //= require jquery.remotipart
@@ -387,4 +388,7 @@ $(document).ready(function(){
   //-----Table Sorter
   $("#admin-products, #admin-transactions").tablesorter();
   $("#booking_requests_table, #my_listings_table, #my_orders_table, #upcoming_bookings_table, #non_coco_bookings_table, #delete_non_coco_bookings_table").tablesorter();
+  $("table#booking_requests_table, table#my_listings_table, table#my_orders_table, table#upcoming_bookings_table, table#non_coco_bookings_table, table#delete_non_coco_bookings_table").tableSearch({
+		searchPlaceHolder:'Please search here...',
+	});
 });

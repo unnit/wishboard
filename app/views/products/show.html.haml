@@ -1,7 +1,7 @@
 = content_for :meta_content do
   -meta_content = "#{truncate @product.description, length: 200}"
 = content_for :title do
-  -title = "#{@product.title}-#{@product.category_name}-#{@product.location.name.split(/\W+/)[0]}-#{@product.location.name.split(/\W+/)[1]}"
+  -title = "#{@product.title}-#{@product.category_name}-for-rent-in-Bangalore-#{@product.location.name.split(/\W+/)[0]}-#{@product.location.name.split(/\W+/)[1]} - Cocociti"
 = content_for :header_extra do
   = render "layouts/search_form"
 .container

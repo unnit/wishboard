@@ -5,11 +5,11 @@ class ProfilesController < ApplicationController
 
   def dashboard
     @conversations = current_user.mailbox.conversations.order(created_at: :desc).page(params[:booking_requests_received]).per(20)
-    @my_products = current_user.products.order(created_at: :desc).page(params[:my_listings]).per(40)
-    @products_for_non_coco_bookings = current_user.products.order(created_at: :desc).page(params[:add_non_coco_bookings]).per(40)
+    @my_products = current_user.products.order(created_at: :desc).page(params[:my_listings]).per(50)
+    @products_for_non_coco_bookings = current_user.products.order(created_at: :desc).page(params[:add_non_coco_bookings]).per(50)
     @my_transactions = current_user.transactions.dashboard_transactions.order(created_at: :desc).page(params[:my_transactions]).per(40)
-    @non_coco_transactions = current_user.transactions.non_coco.order(created_at: :desc).page(params[:delete_non_coco_bookings]).per(40)
-    @upcoming_bookings = Transaction.where('product_id in (?)', @my_products.map{|p| p.id}).paid.order(created_at: :desc).page(params[:upcoming_bookings]).per(40)
+    @non_coco_transactions = current_user.transactions.non_coco.order(created_at: :desc).page(params[:delete_non_coco_bookings]).per(50)
+    @upcoming_bookings = Transaction.where('product_id in (?)', @my_products.map{|p| p.id}).paid.order(created_at: :desc).page(params[:upcoming_bookings]).per(50)
   end
 
   def update

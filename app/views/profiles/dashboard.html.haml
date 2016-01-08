@@ -1,5 +1,5 @@
 = content_for :title do
-  -title = "Dashboard"
+  -title = "Dashboard - Cocociti"
 .container
   .row.mar-des-page
     .col-md-12
@@ -50,8 +50,8 @@
   .tab-content.pbottom50{style: "min-height: 800px;"}
     #booking_requests.tab-pane.fade.in.active
       .col-md-12.no-mar-pad
-        = paginate @conversations, param_name: "booking_requests_received"
         .table-responsive
+          = paginate @conversations, param_name: "booking_requests_received"
           %table.table.table-striped.table-bordered.table-hover#booking_requests_table
             %thead
               %tr
@@ -114,8 +114,8 @@
         = paginate @my_products, param_name: "my_listings"
     #my_orders.tab-pane.fade
       .col-md-12.no-mar-pad
-        = paginate @my_transactions, param_name: "my_transactions"
         .table-responsive
+          = paginate @my_transactions, param_name: "my_transactions"
           %table.table.table-striped.table-bordered.table-hover#my_orders_table
             %thead
               %tr
@@ -149,8 +149,8 @@
         = paginate @my_transactions, param_name: "my_transactions"
     #upcoming_bookings.tab-pane.fade
       .col-md-12.no-mar-pad
-        = paginate @upcoming_bookings, param_name: "upcoming_bookings"
         .table-responsive
+          = paginate @upcoming_bookings, param_name: "upcoming_bookings"
           %table.table.table-striped.table-bordered.table-hover#upcoming_bookings_table
             %thead
               %tr
@@ -182,8 +182,8 @@
         = paginate @upcoming_bookings, param_name: "upcoming_bookings"
     #non_coco_bookings.tab-pane.fade
       .col-md-12.no-mar-pad
-        = paginate @products_for_non_coco_bookings, param_name: "add_non_coco_bookings"
         .table-responsive
+          = paginate @products_for_non_coco_bookings, param_name: "add_non_coco_bookings"
           %table.table.table-striped.table-bordered.table-hover#non_coco_bookings_table
             %thead
               %tr
@@ -228,8 +228,8 @@
         = paginate @products_for_non_coco_bookings, param_name: "add_non_coco_bookings"
     #delete_non_coco_bookings.tab-pane.fade
       .col-md-12.no-mar-pad
-        = paginate @non_coco_transactions, param_name: "delete_non_coco_bookings"
         .table-responsive
+          = paginate @non_coco_transactions, param_name: "delete_non_coco_bookings"
           %table.table.table-striped.table-bordered.table-hover#delete_non_coco_bookings_table
             %thead
               %tr
@@ -265,21 +265,23 @@
         = paginate @non_coco_transactions, param_name: "delete_non_coco_bookings"
 = content_for :extra_js do
   :javascript
-    if(("#{flash[:notice]}" == "Booking done successfully.") || ("#{flash[:danger]}" == "Pick up date cannot be greater than Drop off date") || ("#{flash[:danger]}" == "Please select a date"))
-      {
-        $(".booking_requests").removeClass("active");
-        $("#booking_requests").removeClass("in");
-        $("#booking_requests").removeClass("active");
-        $(".non_coco_bookings").addClass("active");
-        $("#non_coco_bookings").addClass("in");
-        $("#non_coco_bookings").addClass("active");
-      }
-    else if("#{flash[:notice]}" == "Booking deleted successfully.")
-      {
-        $(".booking_requests").removeClass("active");
-        $("#booking_requests").removeClass("in");
-        $("#booking_requests").removeClass("active");
-        $(".delete_non_coco_bookings").addClass("active");
-        $("#delete_non_coco_bookings").addClass("in");
-        $("#delete_non_coco_bookings").addClass("active");
-      }
+    $(document).ready(function(){
+      if(("#{flash[:notice]}" == "Booking done successfully.") || ("#{flash[:danger]}" == "Pick up date cannot be greater than Drop off date") || ("#{flash[:danger]}" == "Please select a date"))
+        {
+          $(".booking_requests").removeClass("active");
+          $("#booking_requests").removeClass("in");
+          $("#booking_requests").removeClass("active");
+          $(".non_coco_bookings").addClass("active");
+          $("#non_coco_bookings").addClass("in");
+          $("#non_coco_bookings").addClass("active");
+        }
+      else if("#{flash[:notice]}" == "Booking deleted successfully.")
+        {
+          $(".booking_requests").removeClass("active");
+          $("#booking_requests").removeClass("in");
+          $("#booking_requests").removeClass("active");
+          $(".delete_non_coco_bookings").addClass("active");
+          $("#delete_non_coco_bookings").addClass("in");
+          $("#delete_non_coco_bookings").addClass("active");
+        }
+    })

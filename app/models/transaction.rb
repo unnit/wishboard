@@ -130,7 +130,7 @@ class Transaction < ActiveRecord::Base
     TransactionMailer.accept(self).deliver
     params = {
   	'src' => "Cocociti",
-  	'dst' => "+919037267357",
+  	'dst' => "+91#{self.user.profile.phone}",
   	'text' => "Your request has been accepted by the Item owner. Please click #{ActionMailer::Base.default_url_options[:host]}/transactions/#{self.id}/checkout to book the item.",
     }
     self.send_sms(params)
@@ -141,7 +141,7 @@ class Transaction < ActiveRecord::Base
     TransactionMailer.deny(self).deliver_now
     params = {
   	'src' => "Cocociti",
-  	'dst' => "+919037267357",
+  	'dst' => "+91#{self.user.profile.phone}",
   	'text' => "Sorry, Your request is not accepted by the Item owner. Please try with other items in same category.",
     }
     self.send_sms(params)
@@ -157,12 +157,12 @@ class Transaction < ActiveRecord::Base
     TransactionMailer.booking_done(self).deliver_now
     params_customer = {
   	'src' => "Cocociti",
-  	'dst' => "+919037267357",
+  	'dst' => "+91#{self.user.profile.phone}",
   	'text' => "Boom de Yaada!!!. You have successfully made a payment of #{self.amount} with Cocociti.",
     }
     params_owner = {
       'src' => "Cocociti",
-    	'dst' => "+919037267357",
+    	'dst' => "+91#{self.product.user.profile.phone}",
     	'text' => "Your Item - #{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
     }
     self.send_sms(params_customer)

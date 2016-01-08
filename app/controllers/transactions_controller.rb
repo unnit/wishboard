@@ -67,12 +67,18 @@ class TransactionsController < ApplicationController
       params[:message] = "Request for #{@product.title}" if params[:message].blank?
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
-      params = {
+      params_customer = {
         'src' => "Cocociti",
-        'dst' => "+919037267357",
+        'dst' => "+91#{@transaction.user.profile.phone}",
         'text' => "Request has been sent to Item owner successfully. Please visit your Dashboard --> My Order Activity for updates. "
       }
-      @transaction.send_sms(params)
+      params_owner = {
+        'src' => "Cocociti",
+        'dst' => "+91#{@transaction.product.user.profile.phone}",
+        'text' => "You have received a request for your product #{@transaction.product.title}. Please log in and use this URL to #{message_url(@transaction)} to approve the request."
+      }
+      @transaction.send_sms(params_customer)
+      @transaction.send_sms(params_owner)
       flash[:success] = "Request for #{@product.title} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'My Order Activity' tab."
       redirect_to dashboard_path
     else
@@ -207,7 +213,7 @@ class TransactionsController < ApplicationController
         msg = params["TxMsg"]
         params = {
           'src' => "Cocociti",
-        	'dst' => "+919037267357",
+        	'dst' => "+91#{@transaction.user.profile.phone}",
         	'text' => "Sorry, Your payment failed. #{msg}"
         }
         @transaction.send_sms(params)
@@ -220,7 +226,7 @@ class TransactionsController < ApplicationController
       TransactionMailer.fail(@transaction, message).deliver_now
       params = {
         'src' => "Cocociti",
-        'dst' => "+919037267357",
+        'dst' => "+91#{@transaction.user.profile.phone}",
         'text' => "Sorry, Your payment failed as signaure Verification failed. Please try again."
       }
       @transaction.send_sms(params)

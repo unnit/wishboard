@@ -76,6 +76,9 @@ class ProfilesController < ApplicationController
       return
     end
     @profile.business_fields_mandatory = "yes"
+    @profile.weekend_pricing = params[:weekend_pricing]
+    @profile.hourly_pricing = params[:hourly_pricing]
+    @profile.weekend_days = ""
     if @profile.update(business_params)
       @address.save
       flash[:success] = 'Thank you, Your profile has been successfully updated. Please list your item and make money.'
@@ -101,7 +104,7 @@ class ProfilesController < ApplicationController
     end
 
     def business_params
-      params.require(:profile).permit(:business_type, :open_time, :close_time, :increase, avail_days: [], weekend_days: [])
+      params.require(:profile).permit(:business_type, :open_time, :close_time, :increase, :increase_hourly, avail_days: [], weekend_days: [])
     end
 
 end

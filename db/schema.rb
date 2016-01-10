@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160105115220) do
+ActiveRecord::Schema.define(version: 20160110205032) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",      limit: 4
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 20160105115220) do
     t.boolean  "admin_approved",       limit: 1,                              default: false
     t.integer  "billing_type",         limit: 4
     t.string   "internal_id",          limit: 255
+    t.integer  "hourly_price",         limit: 4,                              default: 0
   end
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
@@ -192,6 +193,7 @@ ActiveRecord::Schema.define(version: 20160105115220) do
     t.string   "weekend_days",       limit: 255
     t.decimal  "increase",                         precision: 6, scale: 2, default: 0.0
     t.integer  "business_type",      limit: 4
+    t.decimal  "increase_hourly",                  precision: 6, scale: 2, default: 0.0
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
@@ -241,6 +243,8 @@ ActiveRecord::Schema.define(version: 20160105115220) do
     t.decimal  "rent_with_discount",                      precision: 10, scale: 2, default: 0.0
     t.decimal  "tax",                                     precision: 10, scale: 2, default: 0.0
     t.integer  "refundable_security_deposit", limit: 4,                            default: 0
+    t.integer  "hours",                       limit: 4,                            default: 0
+    t.integer  "hourly_rent",                 limit: 4,                            default: 0
   end
 
   add_index "transactions", ["product_id"], name: "index_transactions_on_product_id", using: :btree

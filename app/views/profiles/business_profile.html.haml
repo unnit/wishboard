@@ -1,5 +1,26 @@
 = content_for :title do
   -title = "Business Settings"
+#learn-more-hourly.modal.fade
+  .modal-dialog
+    .modal-content.pop-up-mar
+      .modal-header.pop-bac
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
+          %i.fa.fa-times
+        %h4.modal-title Hourly Rent
+      .modal-body
+        .col-sm-12
+          Hourly Rent can be implemented in two different ways when the customer rents a product for more than 1 day.
+          %br
+          %br
+          1. Charge for every hour used based on the hourly rent provided. ( 36 hours * hourly rent)
+          %br
+          %br
+          2. Charge with daily rent for days and rest hours with hourly rent.( (1 day * daily rent) + (12 hours * hourly rent) ).
+          %br
+          Where daily rent can be less than (24 hours * hourly rent).
+          %br
+          %br
+      .clearfix
 .container.container-pad.mob-postlist-con.ptop70
   .container.mob-postlist-con
     .row
@@ -19,7 +40,7 @@
                     .col-sm-12
                       %h3.mtop10 Your Business
                   .form-group
-                    %label.col-sm-2.control-label{:for => "textinput"}
+                    %label.col-sm-2.control-label
                       Business Type
                       %span.website-color *
                     .col-sm-3
@@ -64,7 +85,7 @@
                       .col-sm-4
                         = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box pkp_address", required: true
                   .form-group
-                    %label.col-sm-2.control-label.mtop5{:for => "textinput"}
+                    %label.col-sm-2.control-label.mtop5
                       Days Available
                       %span.website-color *
                     .col-sm-10.mtop10
@@ -73,39 +94,57 @@
                           = check_box_tag "profile[avail_days][]", i, @profile.avail_days_arr.include?(i.to_s), class: "styled", id: "#{day}"
                           %label{:for => "#{day}"}= day
                   .form-group
-                    %label.col-sm-2.control-label{:for => "textinput"}
+                    %label.col-sm-2.control-label
                       Open Time
                       %span.website-color *
                     .col-sm-4
                       = f.select :open_time, Profile.create_open_close_time, {include_blank: "Select Open Time"}, class: "coco-select-box", required: true
                   .form-group
-                    %label.col-sm-2.control-label{:for => "textinput"}
+                    %label.col-sm-2.control-label
                       Close Time
                       %span.website-color *
                     .col-sm-4
                       = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
                   .form-group
                     .col-sm-4
-                      %h3.mtop10 Weekend/Seasonal Pricing
+                      %h3.mtop10 Weekend/Seasonal Renting
                   .form-group
-                    %label.col-sm-2.control-label{:for => "textinput"} Apply Weekend/Seasonal Pricing
+                    %label.col-sm-2.control-label Apply Weekend/Seasonal Renting
                     .col-sm-4.mtop10
-                      - unless @profile.weekend_days_arr.blank?
+                      - if !@profile.weekend_days_arr.blank? || @profile.increase
                         = check_box_tag :weekend_pricing, "yes", true
                       - else
                         = check_box_tag :weekend_pricing, "yes", false
                   .form-group.weekend_pricing_div.hidden
-                    %label.col-sm-2.control-label.mtop5{:for => "textinput"} Your Weekend Days
+                    %label.col-sm-2.control-label.mtop5 Your Weekend Days
                     .col-sm-10.mtop10
                       - Date::DAYNAMES.each_with_index do |day, i|
                         %span.mleft15
                           = check_box_tag "profile[weekend_days][]", i, @profile.weekend_days_arr.include?(i.to_s), class: "styled", id: "#{day}_as_weekend"
                           %label{:for => "#{day}"}= day
                   .form-group.weekend_pricing_div.hidden
-                    %label.col-sm-2.control-label.mtop5{:for => "textinput"}
-                      Price Increase in %
+                    %label.col-sm-2.control-label.mtop5
+                      Rent Increase in %
                     .col-sm-4
-                      = f.text_field :increase, :placeholder => "Increase in %", class: "form-control", maxlength: 6
+                      = f.text_field :increase, :placeholder => "Increase in %. Ex: 10% not 110%", class: "form-control", maxlength: 6
+                  .form-group
+                    .col-sm-4
+                      %h3.mtop10 Hourly Renting
+                  .form-group
+                    %label.col-sm-2.control-label Apply Hourly Renting
+                    .col-sm-4.mtop10
+                      - if @profile.increase_hourly
+                        = check_box_tag :hourly_pricing, "yes", true
+                      - else
+                        = check_box_tag :hourly_pricing, "yes", false
+                  .form-group.hourly_pricing_div.hidden
+                    %label.col-sm-2.control-label.mtop5
+                      Rent Increase in %
+                    .col-sm-4
+                      = f.text_field :increase_hourly, :placeholder => "Hourly rent increase in %", class: "form-control", maxlength: 6
+                    .col-sm-2
+                      %small.pon.learn-more-hourly{style: "text-decoration: underline;"}
+                        Learn more
                   .form-group
                     .col-sm-offset-2.col-sm-10
                       .pull-right
@@ -114,24 +153,40 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+        var checked = $("#weekend_pricing").is(":checked");
+        if(checked == true){
+          $(".weekend_pricing_div").removeClass("hidden");
+          $("#profile_increase").attr('required', true);
+        }
         function weekend_pricing_check(){
           var checked = $("#weekend_pricing").is(":checked");
           if(checked == true){
             $(".weekend_pricing_div").removeClass("hidden");
-            $("#Sunday_as_weekend").prop("checked", true);
-            $("#Saturday_as_weekend").prop("checked", true);
-            $("#profile_increase").attr('required', true)
+            $("#Sunday_as_weekend,#Saturday_as_weekend").prop("checked", true);
+            $("#profile_increase").attr('required', true);
           }
           else{
             $(".weekend_pricing_div").addClass("hidden");
-            $("#Sunday_as_weekend").prop("checked", false);
-            $("#Saturday_as_weekend").prop("checked", false);
+            $("#Sunday_as_weekend,#Monday_as_weekend,#Tuesday_as_weekend,#Wednesday_as_weekend,#Thursday_as_weekend,#Friday_as_weekend,#Saturday_as_weekend").prop("checked", false);
             $("#profile_increase").removeAttr('required');
-            $("#profile_increase").val("")
+            $("#profile_increase").val("");
           }
         }
-        weekend_pricing_check();
         $("#weekend_pricing").on("click", weekend_pricing_check);
+        function hourly_pricing_check(){
+          var checked = $("#hourly_pricing").is(":checked");
+          if(checked == true){
+            $(".hourly_pricing_div").removeClass("hidden");
+            $("#profile_increase_hourly").attr('required', true)
+          }
+          else{
+            $(".hourly_pricing_div").addClass("hidden");
+            $("#profile_increase_hourly").removeAttr('required');
+            $("#profile_increase_hourly").val("");
+          }
+        }
+        hourly_pricing_check();
+        $("#hourly_pricing").on("click", hourly_pricing_check);
         $(".copy_address").click(function(){
           if($(".copy_address").is(":checked")){
             $("#address_address1").val("#{current_user.addresses.delivery.first.address1}");
@@ -144,5 +199,13 @@
         else
           $(".pkp_address").val("");
         })
-
+        $(".learn-more-hourly").click(function(){
+            $("#learn-more-hourly").modal("show");
+        })
+        $("#hourly_pricing").click(function(){
+          var checked = $("#hourly_pricing").is(":checked");
+          if(checked == true){
+            $("#learn-more-hourly").modal("show");
+          }
+        })
       })

@@ -58,7 +58,11 @@
                 %th Sl No&nbsp;&nbsp;
                 %th User&nbsp;&nbsp;
                 %th Subject&nbsp;&nbsp;
+                %th ID&nbsp;&nbsp;
+                %th Item Name&nbsp;&nbsp;
+                %th Rent&nbsp;&nbsp;
                 %th Sent/Received&nbsp;&nbsp;
+                %th Sent/Received Date&nbsp;&nbsp;
                 %th Booking Status&nbsp;&nbsp;
             %tbody
               - i = 1
@@ -77,10 +81,19 @@
                       = link_to message_path(trans) do
                         = conv.subject
                     %td
+                      = trans.product.id
+                    %td{title: "#{trans.product.title}"}
+                      = truncate trans.product.title, length: 20
+                    %td
+                      %i.fa.fa-rupee
+                      = trans.amount
+                    %td
                       - if trans.seller == current_user
                         Received
                       - elsif trans.user == current_user
                         Sent
+                    %td
+                      = trans.created_at.strftime("%d %b %Y %H:%M")
                     %td
                       = trans.transaction_status_name
                   - i+=1
@@ -95,11 +108,11 @@
               %tr
                 %th No&nbsp;&nbsp;
                 %th Image&nbsp;&nbsp;
-                %th Title&nbsp;&nbsp;
+                %th Item Name&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
                 %th Internal ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;
-                %th Price&nbsp;&nbsp;
+                %th Rent&nbsp;&nbsp;
                 /%th Shipping&nbsp;&nbsp;
                 %th Status&nbsp;&nbsp;
                 %th Orders&nbsp;&nbsp;
@@ -120,9 +133,9 @@
             %thead
               %tr
                 %th No&nbsp;&nbsp;
-                %th Item Title&nbsp;&nbsp;
+                %th Item Name&nbsp;&nbsp;
                 %th Duration&nbsp;&nbsp;
-                %th Amount&nbsp;&nbsp;
+                %th Rent&nbsp;&nbsp;
                 %th Status&nbsp;&nbsp;
                 %th Action&nbsp;&nbsp;
             %tbody
@@ -156,10 +169,11 @@
               %tr
                 %th No&nbsp;&nbsp;
                 %th Image&nbsp;&nbsp;
-                %th Title&nbsp;&nbsp;
+                %th Item Name&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
                 %th Internal ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;
+                %th Rent&nbsp;&nbsp;
                 %th Name of Customer&nbsp;&nbsp;
                 %th Phone&nbsp;&nbsp;
                 %th Duration&nbsp;&nbsp;
@@ -175,6 +189,9 @@
                   %td= booking.product.id
                   %td= booking.product.internal_id
                   %td{title: "#{booking.product.category_name}"}= truncate booking.product.category_name,length: 15
+                  %td
+                    %i.fa.fa-rupee
+                    = booking.amount
                   %td{title: "#{booking.user.name}"}= truncate booking.user.name, length: 20
                   %td= booking.user.phone
                   %td= booking.duration
@@ -189,7 +206,7 @@
               %tr
                 %th No&nbsp;&nbsp;
                 %th Image&nbsp;&nbsp;
-                %th Title&nbsp;&nbsp;
+                %th Item Name&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
                 %th Internal ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;
@@ -235,7 +252,7 @@
               %tr
                 %th No&nbsp;&nbsp;
                 %th Image&nbsp;&nbsp;
-                %th Title&nbsp;&nbsp;
+                %th Item Name&nbsp;&nbsp;
                 %th ID&nbsp;&nbsp;
                 %th Internal ID&nbsp;&nbsp;
                 %th Category&nbsp;&nbsp;

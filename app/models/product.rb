@@ -98,7 +98,7 @@ class Product < ActiveRecord::Base
   validates :description, length: { maximum: 1000 }
   validates :terms_and_conditions, length: { maximum: 65000 }
   validates :tech_spec, length: { maximum: 65000 }
-  validates :price, :security_deposit, :tax, length: { maximum: 10 }
+  validates :price, :security_deposit, :tax, :operator_price, :discount_3, :discount_10, :discount_20, :discount_30, :discount_90, :hourly_price, length: { maximum: 10 }
   validates :internal_id, length: { maximum: 200 }
 
   #validates :ship_price, inclusion: { in: Product::SHIP_PRICES_VALUES, message: "should not be blank" }
@@ -107,17 +107,11 @@ class Product < ActiveRecord::Base
   validates :operator_type, inclusion: { in: Product::OPERATOR_TYPE_VALUES, message: "should not be blank" }, unless: :for_free?
   validates :year_of_manufacture, inclusion: { in: Product::YEAR_OF_MANUFACTURE, message: "should not be blank" }
   validates :available, inclusion: { in: Product::AVAILABLE_VALUES, message: "should not be blank" }
-  #validates :billing_type, inclusion: { in: Product::BILLING_TYPE_VALUES, message: "should not be blank" }
+  validates :billing_type, inclusion: { in: Product::BILLING_TYPE_VALUES, message: "should not be blank" }
 
-  validates :price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
-  validates :security_deposit, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
-  validates :tax, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
-  validates :operator_price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
-  validates :discount_3, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
-  validates :discount_10, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
-  validates :discount_20, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
-  validates :discount_30, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
-  validates :discount_90, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
+  validates :hourly_price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, if: :hourly_type?
+  validates :price, :tax, :security_deposit, :operator_price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
+  validates :discount_3, :discount_10, :discount_20, :discount_30, :discount_90, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
 
   validate :image_presence
 
@@ -126,7 +120,7 @@ class Product < ActiveRecord::Base
 
   HUMANIZED_ATTRIBUTES = {
     owner_type: "Booking Type",
-    price: "Rent",
+    price: "Daily Rent",
     title: "Item Name",
     internal_id: "Internal ID"
   }
@@ -375,15 +369,33 @@ class Product < ActiveRecord::Base
   def days_calculation_for_pricing(start_day, end_day)
     hours = (end_day.in_time_zone("Kolkata") - start_day.in_time_zone("Kolkata"))/3600
     days_not_rounded = hours/24
-    if days_not_rounded > days_not_rounded.to_i
-      @days = days_not_rounded.to_i + 1
+    if daily_type?
+      if days_not_rounded > days_not_rounded.to_i
+        days = days_not_rounded.to_i + 1
+      else
+        days = days_not_rounded.to_i
+      end
     else
-      @days = days_not_rounded.to_i
+      days = days_not_rounded.to_i
     end
+    days
   end
 
-  def discount_percent(days)
+  def hours_calculation_for_pricing(start_day, end_day)
+    total_hours = (end_day.in_time_zone("Kolkata") - start_day.in_time_zone("Kolkata"))/3600
+    days_not_rounded = total_hours/24
+    hours = 0
+    if hourly_type?
+      if days_not_rounded > days_not_rounded.to_i
+        hours = (total_hours%24).round(0)
+      end
+    end
+    hours
+  end
+
+  def discount_percent(days, hours)
     d = 0
+    days= days + 1 if hours > 0
     if days > 90
       d = discount_90 || 0
     elsif days > 30
@@ -402,21 +414,32 @@ class Product < ActiveRecord::Base
     total_days.select {|d| weekend_days_arr.include?(d.wday) }.size
   end
 
-  def seasonal_weekend_pricing(no_of_weekenddays)
+  def seasonal_weekend_pricing(no_of_weekenddays, hours, end_day_weekend)
     weekend_pricing = 0
-    weekend_pricing = (((user.profile.increase/100)*price)*no_of_weekenddays) unless user.profile.increase.blank?
+    if hours > 0 && end_day_weekend > 0
+      weekend_pricing = (((user.profile.increase/100)*price)*(no_of_weekenddays)) + (((user.profile.increase/100)*hourly_price)*hours) unless user.profile.increase.blank?
+    else
+      weekend_pricing = (((user.profile.increase/100)*price)*no_of_weekenddays) unless user.profile.increase.blank?
+    end
     weekend_pricing.round(1)
   end
 
-  def price_without_discount(days, op_type, no_of_weekenddays)
+  def price_without_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend)
     op_price = 0
-    op_price = operator_price if op_type.to_i == Product::OPERATOR_TYPE[1][1]
-    amount = (price*days) + seasonal_weekend_pricing(no_of_weekenddays) + op_price
+    if op_type.to_i == Product::OPERATOR_TYPE[1][1]
+      if hours > 0
+        op_price = operator_price * (days + 1)
+      else
+        op_price = operator_price * days
+      end
+    end
+    amount = (price*days) + (hourly_price*hours) + seasonal_weekend_pricing(no_of_weekenddays, hours, end_day_weekend) + op_price
     amount.round(1)
   end
 
-  def discount_by_days(days, op_type, no_of_weekenddays)
+  def discount_by_days(days, hours, op_type, no_of_weekenddays, end_day_weekend)
     d = 0
+    days= days + 1 if hours > 0
     if days > 90
       d = discount_90 || 0
     elsif days > 30
@@ -429,24 +452,24 @@ class Product < ActiveRecord::Base
       d = discount_3 || 0
     end
     discount = d.to_f/100
-    discounted_amt = (discount * price_without_discount(days, op_type, no_of_weekenddays)) + (GLOBAL_VARIABLES[:extra_discount] * price_without_discount(days, op_type, no_of_weekenddays))
+    discounted_amt = ((discount + GLOBAL_VARIABLES[:extra_discount]) * price_without_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend))
     discounted_amt.round(1)
   end
 
-  def price_with_discount(days, op_type, no_of_weekenddays)
-    discounted_price = price_without_discount(days, op_type, no_of_weekenddays) - discount_by_days(days, op_type, no_of_weekenddays)
+  def price_with_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend)
+    discounted_price = price_without_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend) - discount_by_days(days, hours, op_type, no_of_weekenddays, end_day_weekend)
     discounted_price.round(1)
   end
 
-  def tax_amount(days, op_type, no_of_weekenddays)
+  def tax_amount(days, hours, op_type, no_of_weekenddays, end_day_weekend)
     return 0 if for_free?
-    tax_amount = price_with_discount(days, op_type, no_of_weekenddays)*(tax/100)
+    tax_amount = price_with_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend)*(tax/100)
     tax_amount.round(1)
   end
 
-  def calculate_price(days, op_type, no_of_weekenddays)
+  def calculate_price(days, hours, op_type, no_of_weekenddays, end_day_weekend)
     return ship_price if for_free?
-    amount = price_with_discount(days, op_type, no_of_weekenddays) + tax_amount(days, op_type, no_of_weekenddays) + security_deposit
+    amount = price_with_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend) + tax_amount(days, hours, op_type, no_of_weekenddays, end_day_weekend) + security_deposit
     amount.round(0).to_i
   end
   #end pricing

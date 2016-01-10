@@ -292,7 +292,7 @@ $(document).ready(function(){
     var date_arr = $(".home_start_date").val().split(" ");
     var date_of_arr = date_arr[0].split("-").reverse().join("-")
     var date = new Date(date_of_arr);
-    var hrs = parseInt(date_arr[1].split(":")) + 2
+    var hrs = parseInt(date_arr[1].split(":")) + 4
     if(parseInt(date_arr[1].split(":")[1]) == 30){
       var mins = 30
     }

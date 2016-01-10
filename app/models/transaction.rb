@@ -42,18 +42,6 @@ class Transaction < ActiveRecord::Base
     "#{startdate.strftime('%H:%M - %d %b, %y')} &nbsp;&nbsp;To&nbsp;&nbsp; #{enddate.strftime('%H:%M - %d %b, %y')}".html_safe
   end
 
-  def duration_days
-    ###------Calculation of days for Pricing------------
-    hours = (enddate - startdate)/3600
-    days_not_rounded = hours/24
-    if days_not_rounded > days_not_rounded.to_i
-      days = days_not_rounded.to_i + 1
-    else
-      days = days_not_rounded.to_i
-    end
-    days
-  end
-
   def hmac_sha1(data, secret)
     hmac = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret.encode("ASCII"), data.encode("ASCII"))
     return hmac
@@ -120,7 +108,7 @@ class Transaction < ActiveRecord::Base
   end
 
   #actions
-  def send_sms(params)
+  def send_sms(no, msg)
     p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
     response = p.send_message(params)
   end
@@ -165,8 +153,20 @@ class Transaction < ActiveRecord::Base
     	'dst' => "+91#{self.product.user.profile.phone}",
     	'text' => "Your Item - #{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
     }
+    params_coco_manager_1 = {
+      'src' => "Cocociti",
+    	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}",
+    	'text' => "#{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
+    }
+    params_coco_manager_2 = {
+      'src' => "Cocociti",
+    	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}",
+    	'text' => "#{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
+    }
     self.send_sms(params_customer)
     self.send_sms(params_owner)
+    self.send_sms(params_coco_manager_1)
+    self.send_sms(params_coco_manager_2)
   end
 
   def transaction_status_name

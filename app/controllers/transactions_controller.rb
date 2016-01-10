@@ -15,20 +15,34 @@ class TransactionsController < ApplicationController
     if @transaction.valid?
       if @product.owner_type == Product::OWNER_TYPE[0][1]
         ### -----Asigning all values to transaction table
-        total_days = ( session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+        @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
+        @hours = @product.hours_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
+        end_day = (session[:end_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+        @end_day_weekend = @product.no_of_weekenddays(end_day, @product.user.profile.weekend_days_arr.map(&:to_i))
+        total_days = (session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
         @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
+        @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
+
         @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
-        @transaction.operator_price = @product.operator_price if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
+        if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
+          if @hours > 0
+            @transaction.operator_price = @product.operator_price * (@days + 1)
+          else
+            @transaction.operator_price = @product.operator_price * (@days)
+          end
+        end
         @transaction.daily_rent = @product.price
-        @transaction.days = @transaction.duration_days
-        @transaction.weekend_rent = @product.seasonal_weekend_pricing(@no_of_weekenddays)
+        @transaction.days = @days
+        @transaction.hourly_rent = @product.hourly_price
+        @transaction.hours = @hours
+        @transaction.weekend_rent = @product.seasonal_weekend_pricing(@no_of_weekenddays, @hours, @end_day_weekend)
         @transaction.weekend_days = @no_of_weekenddays
-        @transaction.rent_without_discount = @product.price_without_discount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
-        @transaction.discounts = @product.discount_by_days(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
-        @transaction.rent_with_discount = @product.price_with_discount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
-        @transaction.tax = @product.tax_amount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+        @transaction.rent_without_discount = @product.price_without_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+        @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+        @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+        @transaction.tax = @product.tax_amount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
         @transaction.refundable_security_deposit = @product.security_deposit
-        @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
+        @transaction.amount = @product.calculate_price(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
         @transaction.save
         ###########-----------------------------
         TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
@@ -46,23 +60,40 @@ class TransactionsController < ApplicationController
     @transaction.startdate = session[:start_date_time]
     @transaction.enddate = session[:end_date_time]
     @transaction.operator_type = params[:operator_type]
-    @transaction.operator_price = @product.operator_price if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
     @transaction.product = @product
     ### -----Asigning all values to transaction table
-    total_days = ( session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+
+
+    @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
+    @hours = @product.hours_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
+    end_day = (session[:end_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+    @end_day_weekend = @product.no_of_weekenddays(end_day, @product.user.profile.weekend_days_arr.map(&:to_i))
+    total_days = (session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
     @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
-    @transaction.daily_rent = @product.price
-    @transaction.days = @transaction.duration_days
-    @transaction.weekend_rent = @product.seasonal_weekend_pricing(@no_of_weekenddays)
-    @transaction.weekend_days = @no_of_weekenddays
-    @transaction.rent_without_discount = @product.price_without_discount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
-    @transaction.discounts = @product.discount_by_days(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
-    @transaction.rent_with_discount = @product.price_with_discount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
-    @transaction.tax = @product.tax_amount(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
-    @transaction.refundable_security_deposit = @product.security_deposit
-    @transaction.amount = @product.calculate_price(@transaction.duration_days, params[:operator_type].to_i, @no_of_weekenddays)
-    ###############
+    @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
+
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
+    if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
+      if @hours > 0
+        @transaction.operator_price = @product.operator_price * (@days + 1)
+      else
+        @transaction.operator_price = @product.operator_price * (@days)
+      end
+    end
+    @transaction.daily_rent = @product.price
+    @transaction.days = @days
+    @transaction.hourly_rent = @product.hourly_price
+    @transaction.hours = @hours
+    @transaction.weekend_rent = @product.seasonal_weekend_pricing(@no_of_weekenddays, @hours, @end_day_weekend)
+    @transaction.weekend_days = @no_of_weekenddays
+    @transaction.rent_without_discount = @product.price_without_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+    @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+    @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+    @transaction.tax = @product.tax_amount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+    @transaction.refundable_security_deposit = @product.security_deposit
+    @transaction.amount = @product.calculate_price(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+
+    ###############
     if @transaction.save
       params[:message] = "Request for #{@product.title}" if params[:message].blank?
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
@@ -216,7 +247,19 @@ class TransactionsController < ApplicationController
         	'dst' => "+91#{@transaction.user.profile.phone}",
         	'text' => "Sorry, Your payment failed. #{msg}"
         }
+        params_coco_manager_1 = {
+          'src' => "Cocociti",
+        	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}",
+        	'text' => "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name}"
+        }
+        params_coco_manager_2 = {
+          'src' => "Cocociti",
+        	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}",
+        	'text' => "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name}"
+        }
         @transaction.send_sms(params)
+        @transaction.send_sms(params_coco_manager_1)
+        @transaction.send_sms(params_coco_manager_2)
         flash[:alert] = "#{msg}"
         redirect_to checkout_transaction_path(@transaction)
       end
@@ -227,9 +270,21 @@ class TransactionsController < ApplicationController
       params = {
         'src' => "Cocociti",
         'dst' => "+91#{@transaction.user.profile.phone}",
-        'text' => "Sorry, Your payment failed as signaure Verification failed. Please try again."
+        'text' => "Sorry, Your payment failed as signaure verification failed. Please try again."
+      }
+      params_coco_manager_1 = {
+        'src' => "Cocociti",
+      	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}",
+      	'text' => "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name}"
+      }
+      params_coco_manager_2 = {
+        'src' => "Cocociti",
+      	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}",
+      	'text' => "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name}"
       }
       @transaction.send_sms(params)
+      @transaction.send_sms(params_coco_manager_1)
+      @transaction.send_sms(params_coco_manager_2)
       redirect_to checkout_transaction_path(@transaction)
     end
   end

@@ -11,7 +11,7 @@ class Profile < ActiveRecord::Base
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
-  attr_accessor :business_fields_mandatory
+  attr_accessor :business_fields_mandatory, :weekend_pricing, :hourly_pricing
 
   GENDER = ["male", "female", "other"]
   BUSINESS_TYPE = [["Individual", 0], ["Business", 1]]
@@ -43,14 +43,21 @@ class Profile < ActiveRecord::Base
   validates :about, length: { maximum: 1000 }, on: :update, unless: :about_blank?
 
   validates :avail_days, presence: true, unless: :business_fields_mandatory_blank?
+  validates :weekend_days, presence: true, unless: :weekend_pricing_blank?
+
   validates :business_type, inclusion: { in: Profile::BUSINESS_TYPE_VALUES, message: "should not be blank" }, unless: :business_fields_mandatory_blank?
   validates :open_time, inclusion: { in: Profile::TIME_OPTIONS, message: "should not be blank" }, unless: :business_fields_mandatory_blank?
   validates :close_time, inclusion: { in: Profile::TIME_OPTIONS, message: "should not be blank" }, unless: :business_fields_mandatory_blank?
   validates :increase, length: { maximum: 6, message: "should not be greater than 6 digits." }, unless: :increase_blank?
-  validates :increase, numericality: true, unless: :increase_blank?
+  validates :increase_hourly, length: { maximum: 6, message: "should not be greater than 6 digits." }, unless: :increase_hourly_blank?
+
+  validates :increase, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :weekend_pricing_blank?
+  validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :hourly_pricing_blank?
 
   HUMANIZED_ATTRIBUTES = {
-    :phone => "Mobile No"
+    :phone => "Mobile No",
+    :increase => "Rent Increase in % - Weekend/Seasonal,",
+    :increase_hourly => "Rent Increase in % - Hourly,"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
@@ -70,6 +77,18 @@ class Profile < ActiveRecord::Base
 
   def increase_blank?
     increase == 0.00 || increase.blank?
+  end
+
+  def increase_hourly_blank?
+    increase_hourly == 0.00 || increase_hourly.blank?
+  end
+
+  def weekend_pricing_blank?
+    weekend_pricing.blank?
+  end
+
+  def hourly_pricing_blank?
+    hourly_pricing.blank?
   end
 
   class << self
@@ -98,7 +117,7 @@ class Profile < ActiveRecord::Base
   end
 
   def weekend_days_arr
-    weekend_days.to_a
+    weekend_days.blank? ? [] : weekend_days.to_a
   end
 
   def disabled_days

@@ -118,17 +118,17 @@ class ProductsController < ApplicationController
   end
 
   def get_price
-    price_without_discount = @product.price_without_discount(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+    price_without_discount = @product.price_without_discount(params[:days].to_i, params[:hours].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i, params[:end_day_weekend].to_i)
 
-    discount = @product.discount_by_days(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+    discount = @product.discount_by_days(params[:days].to_i, params[:hours].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i, params[:end_day_weekend].to_i)
 
     sign = discount > 0 ? "-" : ""
 
-    price_with_discount = @product.price_with_discount(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+    price_with_discount = @product.price_with_discount(params[:days].to_i, params[:hours].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i, params[:end_day_weekend].to_i)
 
-    tax = @product.tax_amount(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+    tax = @product.tax_amount(params[:days].to_i, params[:hours].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i, params[:end_day_weekend].to_i)
 
-    pay_amount = @product.calculate_price(params[:days].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i)
+    pay_amount = @product.calculate_price(params[:days].to_i, params[:hours].to_i, params[:operator_type].to_i, params[:no_of_weekenddays].to_i, params[:end_day_weekend].to_i)
 
     render json: {price_without_discount: price_without_discount, discount: discount, sign: sign, price_with_discount: price_with_discount, tax: tax, pay_amount: pay_amount}
   end
@@ -145,12 +145,20 @@ class ProductsController < ApplicationController
         end
       end
     end
-    @days = 1
+    @days = @product.daily_type? ? 1 : 0
+    @hours = @product.hourly_type? ? 4 : 0
     @no_of_weekenddays = 0
+    @end_day_weekend = 0
     unless session[:end_date_time].blank? || session[:start_date_time].blank?
       @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
-      total_days = ( session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+      @hours = @product.hours_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
+      end_day = (session[:end_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+      @end_day_weekend = @product.no_of_weekenddays(end_day, @product.user.profile.weekend_days_arr.map(&:to_i))
+      total_days = (session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
       @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
+      logger.info '*****************'
+      logger.info @hours
+      @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
     end
   end
 
@@ -223,14 +231,14 @@ class ProductsController < ApplicationController
   private
   def create_product_params
     params.require(:product).permit(:user_id, :title, :category_id, :price, :tax, :security_deposit, :operator_type, :operator_price, :discount_3, :discount_10, :discount_20,
-                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id,
+                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id, :billing_type, :hourly_price,
                                     :terms_and_conditions, :year_of_manufacture, :image_1, :image_2, :image_3, :image_4, :image_5,
                                     :slug, {doc_requirement: []}, location_attributes: [:name])
   end
 
   def update_product_params
     params.require(:product).permit(:user_id, :title, :category_id, :price, :tax, :security_deposit, :operator_type, :operator_price, :discount_3, :discount_10, :discount_20,
-                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id,
+                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id, :billing_type, :hourly_price,
                                     :terms_and_conditions, :year_of_manufacture, :image_1, :image_2, :image_3, :image_4, :image_5,
                                     :slug, {doc_requirement: []})
   end

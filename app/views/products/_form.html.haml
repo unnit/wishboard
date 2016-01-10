@@ -1,3 +1,24 @@
+#price-pop-up.modal.fade
+  .modal-dialog
+    .modal-content.pop-up-mar
+      .modal-header.pop-bac
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
+          %i.fa.fa-times
+        %h4.modal-title Hourly Rent
+      .modal-body
+        .col-sm-12
+          Hourly Rent can be implemented in two different ways when the customer rents a product for more than 1 day.
+          %br
+          %br
+          1. Charge for every hour used based on the hourly rent provided. ( 36 hours * hourly rent)
+          %br
+          %br
+          2. Charge with daily rent for days and rest hours with hourly rent.( (1 day * daily rent) + (12 hours * hourly rent) ).
+          %br
+          Where daily rent can be less than (24 hours * hourly rent).
+          %br
+          %br
+      .clearfix
 ~ form_for @product, html: {class: "form-horizontal", multipart: true} do |f|
   .col-md-12.head-mar
     .panel.panel-primary.collbod
@@ -38,30 +59,28 @@
                 %label.col-sm-2.control-label.pro-detail{for: "textinput"} Sub-category*
                 = f.hidden_field :category_id
                 #sub-categories.col-sm-10
-
               .form-group.none-free
-                %label.col-sm-2.control-label.pro-detail Rent*
+                %label.col-sm-2.control-label.pro-detail Billing Type*
+                .col-sm-1.control-label
+                  %label.pull-left.pright5 Daily
+                  = f.radio_button :billing_type, Product::BILLING_TYPE[0][1], class: "pull-left product_billing_type", required: true
+                .col-sm-2.control-label
+                  %label.pull-left.pright5 Hourly
+                  = f.radio_button :billing_type, Product::BILLING_TYPE[1][1], class: "pull-left product_billing_type", required: true
+              .form-group.none-free
+                %label.col-sm-2.control-label.pro-detail Daily Rent*
                 .col-sm-2
-                  = f.text_field :price, placeholder: "Perday", class: "form-control", maxlength: 10
+                  = f.text_field :price, placeholder: "Per day", class: "form-control", maxlength: 10
+                %label.col-sm-2.control-label.pro-detail.hourly-rent{style: "display: none"} Hourly Rent*
+                .col-sm-2.hourly-rent{style: "display: none"}
+                  = f.text_field :hourly_price, placeholder: "Per hour", class: "form-control", maxlength: 10
+              .form-group.none-free
                 %label.col-sm-2.control-label.pro-detail Security Deposit*
                 .col-sm-2
                   =f.text_field :security_deposit, placeholder: "Less is better :)", class: "form-control", maxlength: 10
                 %label.col-sm-2.control-label.pro-detail Tax* in %
                 .col-sm-2
                   = f.text_field :tax, placeholder: "Percent", class: "form-control", maxlength: 10
-              /
-                .form-group.none-free
-                  %label.col-sm-2.control-label.pro-detail Billing Type*
-                  .col-sm-1.control-label
-                    %label.pull-left.pright5 Daily
-                    = f.radio_button :billing_type, Product::BILLING_TYPE[0][1], class: "pull-left", required: true
-                  .col-sm-2.control-label
-                    %label.pull-left.pright5 Hourly
-                    = f.radio_button :billing_type, Product::BILLING_TYPE[1][1], class: "pull-left", required: true
-              .form-group.none-free
-                %label.col-sm-2.control-label.pro-detail Internal ID
-                .col-sm-6
-                  = f.text_field :internal_id, placeholder: "Ex: Vehicle Registration No, Item Sl No etc for your refernce", class: "form-control", maxlength: 200
               .form-group
                 /%label.col-sm-2.control-label.pro-detail Ship Price*
                 .col-sm-2
@@ -78,7 +97,7 @@
                 %label.col-sm-2.control-label.pro-detail Operator Type*
                 .col-sm-2
                   = f.select :operator_type, options_for_select(Product::OPERATOR_TYPE, @product.operator_type), { include_blank: "Select" }, class: "selectpicker"
-                %label.col-sm-2.control-label.oprice.pro-detail{class: "#{'hide' if f.object.operator_type==Product::OPERATOR_TYPE[0][1]}"} Operator Price
+                %label.col-sm-2.control-label.oprice.pro-detail{class: "#{'hide' if f.object.operator_type==Product::OPERATOR_TYPE[0][1]}"} Operator Price*
                 .col-sm-2.oprice{class: "#{'hide' if f.object.operator_type==Product::OPERATOR_TYPE[0][1] }"}
                   = f.text_field :operator_price, class: "form-control", maxlength: 10
               .form-group
@@ -137,6 +156,10 @@
                 %label.col-sm-2.control-label.pro-detail Terms & Conditions*
                 .col-sm-10
                   =f.text_area :terms_and_conditions, placeholder: "Specify the Terms & Conditions", class: "form-control textarea", rows: "8", maxlength: 65000, required: true
+              .form-group.none-free
+                %label.col-sm-2.control-label.pro-detail Internal ID
+                .col-sm-6
+                  = f.text_field :internal_id, placeholder: "Ex: Vehicle Registration No, Item Sl No etc for your refernce", class: "form-control", maxlength: 200
               .form-group
                 %label.col-sm-2.control-label.pro-detail Documents Required*
                 .col-sm-4
@@ -228,6 +251,27 @@
     var toggleOperator;
     //When page loads
     $(function() {
+      $("#product_price").on("keyup", function(){
+          var daily_price = $("#product_price").val();
+          var increase = "#{current_user.profile.increase_hourly.blank? ? 0 : current_user.profile.increase_hourly}";
+          var hourly_price = (daily_price/24) + ((daily_price/24)*(increase/100));
+          $("#product_hourly_price").val(Math.round(hourly_price));
+      })
+      function toggleHourlyPricing(){
+        var checked = $("input[name='product[billing_type]']:checked").val();
+        if(checked == #{Product::BILLING_TYPE[1][1]}){
+          $(".hourly-rent").show();
+        }
+        else{
+          $("#product_hourly_price").val("");
+          $(".hourly-rent").hide();
+        }
+      }
+      toggleHourlyPricing();
+      $(".product_billing_type").on("click", toggleHourlyPricing);
+      $("#product_billing_type_1").click(function(){
+          $("#price-pop-up").modal('show');
+      })
       $.get("/products/sub_categories", {
         category: "#{@selected_cat_id}",
         selected: "#{@selected_sub}"

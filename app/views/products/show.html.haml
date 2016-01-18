@@ -10,7 +10,7 @@
       - unless @product.images.blank?
         %ul.bxslider
           - @product.images.each do |image|
-            %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", :transformation => {:width => 740, :height => 460, :crop => :fill}, :overlay => "#{GLOBAL_VARIABLES[:watermark]}",
+            %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", :transformation => {:width => 740, :height => 460, :crop => :fit}, :overlay => "#{GLOBAL_VARIABLES[:watermark]}",
             :crop => :fit, :gravity => :south_east, :x => 15, :y => 20
         #bx-pager.text-center
           - @product.images.each_with_index do |image, i|

@@ -2,7 +2,7 @@
 .brdr.bgc-fff.pad-10.box-shad.btm-mrg-20.property-listing
   .media
     = link_to user_product_path(product.id) do
-      = cl_image_tag product.image.filename, class: "img-responsive img-style-new", alt: "#{product.title}-#{product.category_name}", width: 253, height: 190, crop: :fit
+      = cl_image_tag product.image.filename, class: "img-responsive img-style-new", alt: "#{product.title}-#{product.category_name}", width: 253, height: 190, crop: :fill
     = link_to "javascript:;" do
       = cl_image_tag product.user.avatar, class: "img-circle profile_pic", width: 40, height: 40, crop: :fill
     %h4.media-heading.price-bg

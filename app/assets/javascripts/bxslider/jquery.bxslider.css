@@ -23,7 +23,8 @@
 
 .bx-wrapper img {
 	max-width: 100%;
-	display: block;
+	/*display: block;*/
+	display: inline;
 }
 
 /** THEME
@@ -34,7 +35,7 @@
 	-webkit-box-shadow: 0 0 5px #ccc;
 	box-shadow: 0 0 5px #ccc;
 	border:  5px solid #fff;
-	left: -5px;
+	/*left: -5px;*/
 	background: #fff;
 
 	/*fix other elements on the page moving (on Chrome)*/

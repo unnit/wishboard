@@ -10,8 +10,6 @@ class Transaction < ActiveRecord::Base
   AUTH_ID = PLIVO_CONFIG[:auth_id]
   AUTH_TOKEN = PLIVO_CONFIG[:auth_token]
 
-
-
   acts_as_messageable
   belongs_to :user
   belongs_to :product
@@ -110,29 +108,28 @@ class Transaction < ActiveRecord::Base
   #actions
   def send_sms(no, msg)
     p = RestAPI.new(AUTH_ID, AUTH_TOKEN)
+    params = {
+  	'src' => "Cocociti",
+  	'dst' => no,
+  	'text' => msg
+    }
     response = p.send_message(params)
   end
 
   def accept!
     update_column :status, Transaction::TRANSACTION_STATUS[6][1]
     TransactionMailer.accept(self).deliver
-    params = {
-  	'src' => "Cocociti",
-  	'dst' => "+91#{self.user.profile.phone}",
-  	'text' => "Your request has been accepted by the Item owner. Please click #{ActionMailer::Base.default_url_options[:host]}/transactions/#{self.id}/checkout to book the item.",
-    }
-    self.send_sms(params)
+    no = "+91#{self.user.profile.phone}"
+    msg = "Your request has been accepted by the Item owner. Please click #{ActionMailer::Base.default_url_options[:host]}/transactions/#{self.id}/checkout to book the item."
+    self.send_sms(no, msg)
   end
 
   def deny!
     update_column :status, Transaction::TRANSACTION_STATUS[3][1]
     TransactionMailer.deny(self).deliver_now
-    params = {
-  	'src' => "Cocociti",
-  	'dst' => "+91#{self.user.profile.phone}",
-  	'text' => "Sorry, Your request is not accepted by the Item owner. Please try with other items in same category.",
-    }
-    self.send_sms(params)
+    no = "+91#{self.user.profile.phone}"
+    msg = "Sorry, Your request is not accepted by the Item owner. Please try with other items in same category."
+    self.send_sms(no, msg)
   end
 
   def generate_txnid!
@@ -143,30 +140,22 @@ class Transaction < ActiveRecord::Base
     update_columns status: Transaction::TRANSACTION_STATUS[2][1], amount: tamount, txnid: transaction_id
     TransactionMailer.paid(self).deliver_now
     TransactionMailer.booking_done(self).deliver_now
-    params_customer = {
-  	'src' => "Cocociti",
-  	'dst' => "+91#{self.user.profile.phone}",
-  	'text' => "Boom de Yaada!!!. You have successfully made a payment of #{self.amount} with Cocociti.",
-    }
-    params_owner = {
-      'src' => "Cocociti",
-    	'dst' => "+91#{self.product.user.profile.phone}",
-    	'text' => "Your Item - #{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
-    }
-    params_coco_manager_1 = {
-      'src' => "Cocociti",
-    	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}",
-    	'text' => "#{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
-    }
-    params_coco_manager_2 = {
-      'src' => "Cocociti",
-    	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}",
-    	'text' => "#{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
-    }
-    self.send_sms(params_customer)
-    self.send_sms(params_owner)
-    self.send_sms(params_coco_manager_1)
-    self.send_sms(params_coco_manager_2)
+
+    no_customer = "+91#{self.user.profile.phone}"
+    msg_customer = "Boom de Yaada!!!. You have successfully made a payment of #{self.amount} with Cocociti."
+    self.send_sms(no_customer, msg_customer)
+
+    no_owner = "+91#{self.product.user.profile.phone}"
+    msg_owner = "Your Item - #{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
+    self.send_sms(no_owner, msg_owner)
+
+    no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
+    msg_coco_manager_1 = "#{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
+    self.send_sms(no_coco_manager_1, msg_coco_manager_1)
+
+    no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
+    msg_coco_manager_2 = "#{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
+    self.send_sms(no_coco_manager_2, msg_coco_manager_2)
   end
 
   def transaction_status_name
@@ -207,7 +196,7 @@ class Transaction < ActiveRecord::Base
   def date_range_validation
     unless self.startdate.blank? || self.enddate.blank?
       if self.enddate < self.startdate
-        errors.add(:base, "Invalid date range. To Date should be greater than From Date.")
+        errors.add(:base, "Invalid date range. Drop off Date should be greater than Pick up Date.")
       end
     end
   end

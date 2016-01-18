@@ -1,0 +1,6 @@
+.col-md-12.col-sm-12.no-mar-pad.featured-list-2.ptop70
+  - @products.each_slice(4) do |slide|
+    .col-md-12.col-sm-12
+      - slide.each do |product|
+        .col-md-3.col-sm-4
+          = render partial: "product", locals: {product: product}

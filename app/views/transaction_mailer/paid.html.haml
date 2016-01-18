@@ -56,20 +56,41 @@
     Booking Details
   %br
   %br
-  Daily Rent:
-  &#8377;
-  = @transaction.daily_rent
-  %br
-  No of Days:
-  = @transaction.days
-  %br
-  - if @transaction.weekend_days > 0
-    Premium Rent:
+  - if @transaction.days > 0
+    Daily Rent:
     &#8377;
-    = @transaction.weekend_rent
+    = @transaction.daily_rent
+    %br
+    No of Days:
+    = @transaction.days
+    %br
+  -if @transaction.hours > 0
+    Hourly Rent:
+    &#8377;
+    = @transaction.hourly_rent
+    %br
+    No of Hours:
+    = @transaction.hours
+    %br
+  - if @transaction.weekend_days > 0
+    Premium Rent (Daily):
+    &#8377;
+    = @transaction.weekend_daily_rent
     %br
     No. of Premium Days:
     = @transaction.weekend_days
+    %br
+  - if @transaction.weekend_hours > 0
+    Premium Rent (Hourly):
+    &#8377;
+    = @transaction.weekend_hourly_rent
+    %br
+    No. of Premium Hours:
+    = @transaction.weekend_hours
+    %br
+  - if @transaction.operator_price > 0
+    Operator/Driver Charge:
+    = @transaction.operator_price
     %br
   Total Rent:
   &#8377;

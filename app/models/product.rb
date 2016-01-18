@@ -387,7 +387,7 @@ class Product < ActiveRecord::Base
     hours = 0
     if hourly_type?
       if days_not_rounded > days_not_rounded.to_i
-        hours = (total_hours%24).round(0)
+        hours = (total_hours%24).round(1)
       end
     end
     hours
@@ -435,20 +435,22 @@ class Product < ActiveRecord::Base
     end
     amount = (price*days) + (hourly_price*hours) + seasonal_weekend_pricing(no_of_weekenddays, hours, end_day_weekend) + op_price
     amount.round(1)
+
   end
 
   def discount_by_days(days, hours, op_type, no_of_weekenddays, end_day_weekend)
     d = 0
-    days= days + 1 if hours > 0
-    if days > 90
+    days_for_discount = days
+    days_for_discount = days + 1 if hours > 0
+    if days_for_discount > 90
       d = discount_90 || 0
-    elsif days > 30
+    elsif days_for_discount > 30
       d = discount_30 || 0
-    elsif days > 20
+    elsif days_for_discount > 20
       d = discount_20 || 0
-    elsif days > 10
+    elsif days_for_discount > 10
       d = discount_10 || 0
-    elsif days > 3
+    elsif days_for_discount > 3
       d = discount_3 || 0
     end
     discount = d.to_f/100
@@ -499,7 +501,7 @@ class Product < ActiveRecord::Base
   end
 
   def reviews_count
-    return "( no ) Reviews" if reviews.blank?
+    return "( 0 ) Reviews" if reviews.blank?
     return "( 1 ) Review" if reviews.count == 1
     "( #{reviews.count} ) Reviews"
   end

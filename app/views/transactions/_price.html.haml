@@ -7,43 +7,46 @@
         %i.fa.fa-rupee
         %span.total-price= product.ship_price
 - else
-  - if transaction.operator_type == Product::OPERATOR_TYPE[1][1]
+  - if transaction.days > 0
     .col-md-12
       .col-md-7.col-xs-7
-        %label Operator Charge
+        %label Rent for #{transaction.days} day(s)
+      .col-md-5.col-xs-5
+        %span.price
+          %i.fa.fa-rupee
+          = transaction.daily_rent * transaction.days
+    %hr.col-md-11.col-xs-12.mtop-v-5
+  - if transaction.hours > 0
+    .col-md-12
+      .col-md-7.col-xs-7
+        %label Rent for #{transaction.hours} hour(s)
+      .col-md-5.col-xs-5
+        %span.price.days= transaction.hourly_rent * transaction.hours
+    %hr.col-md-11.col-xs-12.mtop-v-5
+  - if transaction.weekend_days > 0
+    .col-md-12
+      .col-md-7.col-xs-7
+        %label Rent for #{transaction.weekend_days} premium day(s)
+      .col-md-5.col-xs-5
+        %span.price
+          %i.fa.fa-rupee
+          = transaction.weekend_daily_rent * transaction.weekend_days
+    %hr.col-md-11.col-xs-12.mtop-v-5
+    - if transaction.weekend_hours > 0
+      .col-md-12
+        .col-md-7.col-xs-7
+          %label Rent for #{transaction.weekend_hours} premium hour(s)
+        .col-md-5.col-xs-5
+          %span.price.days= transaction.weekend_hourly_rent * transaction.weekend_hours
+      %hr.col-md-11.col-xs-12.mtop-v-5
+  - if transaction.operator_price > 0
+    .col-md-12
+      .col-md-7.col-xs-7
+        %label Operator/Driver Charge
       .col-md-5.col-xs-5
         %span.price
           %i.fa.fa-rupee
           %span.total-price= transaction.operator_price
-    %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
-    .col-md-7.col-xs-7
-      %label= product.price_label
-    .col-md-5.col-xs-5
-      %span.price
-        %i.fa.fa-rupee
-        = transaction.daily_rent
-  %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
-    .col-md-7.col-xs-7
-      %label Days
-    .col-md-5.col-xs-5
-      %span.price.days= transaction.days
-  %hr.col-md-11.col-xs-12.mtop-v-5
-  - if transaction.weekend_days > 0
-    .col-md-12
-      .col-md-7.col-xs-7
-        %label Premium Rent
-      .col-md-5.col-xs-5
-        %span.price
-          %i.fa.fa-rupee
-          = transaction.weekend_rent
-    %hr.col-md-11.col-xs-12.mtop-v-5
-    .col-md-12
-      .col-md-7.col-xs-7
-        %label No. of Premium Days
-      .col-md-5.col-xs-5
-        %span.price.days= transaction.weekend_days
     %hr.col-md-11.col-xs-12.mtop-v-5
   .col-md-12
     .col-md-7.col-xs-7

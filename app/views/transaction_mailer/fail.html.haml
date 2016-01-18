@@ -3,6 +3,7 @@ Ayyo!
   Your payment of Rs. #{@transaction.amount} for #{@product.title} was unsuccessful
   %br
   %br
+  Transaction ID: "#{@transaction.coco_transaction_id}"
   %br
   %br
   = link_to "#{checkout_transaction_url(@transaction)}", style: "text-decoration: none" do

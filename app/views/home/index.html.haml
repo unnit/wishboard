@@ -7,12 +7,12 @@
       .col-lg-12
         .intro-message
           /%h1 Cocociti
-          %img{src: "../assets/images/home-globe.png", class: "img-responsive", style: "margin: 0px auto;"}
+          %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/home-globe.png", class: "img-responsive", style: "margin: 0px auto;"}
           %h3.land-head All Things Rental!
           .row
             .col-md-10.col-md-offset-1.main-search-bar
               .form-section
-                .row.border-home-search
+                .row.border-home-search.mbottom10
                   = form_tag search_products_path, method: "get" do |f|
                     .col-md-3.no-mar-pad
                       .input-group.mbottom0.input-append.date.from_date_time
@@ -29,23 +29,14 @@
                         = select_tag :category, options_from_collection_for_select(Product.distinct_parent_category, :id, :name, params[:category]), prompt: "Select Category", class: "form-control coco-select-box selectpicker home_search_box"
                     .col-md-3.no-mar-pad
                       %button.btn.land-src-button{type: "submit"} Search
-                .row
-                  .col-md-4.col-md-offset-3.help-links.mtop20
-                    %a{:href => "#best-deals"} Featured Listings
-                    %a{:href => "#how-it-works"} How it Works
-                  .col-md-3.help-links.mtop20.land-src-mar-help-links
-                    %a{:href => "#why-us"} Why us
-                    %a{:href => "#list-product"} List your Item
-                .row
-                  .col-md-10.col-md-offset-1
-                    .col-md-2
-                    .col-md-2
-                    .col-md-2
-                    .col-md-2
-                    .col-md-2
+                .row.help-links
+                  %a.inline-block.mtop10{:href => "#best-deals"} Featured Listings
+                  %a.inline-block.mtop10.hidden{:href => "#browse"} Browse
+                  %a.inline-block.mtop10{:href => "#how-it-works"} How it Works
+                  %a.inline-block.mtop10{:href => "#why-us"} Why us
+                  %a.inline-block.mtop10{:href => "#list-product"} List your Item
 
-
-#best-deals.ht-home-header
+#best-deals.ht-home-header.col-md-12
 
 .container-fluid.mob-fluid-con
   .col-md-4.col-md-offset-4.text-center
@@ -78,7 +69,27 @@
               .col-md-3.col-sm-4
                 = render partial: "best_deals", locals: {product: product}
 
-#how-it-works.ht-home-header
+.col-md-12.strip-bg.text-center.padding20
+  %h1.mbottom20.white-fg Could not find what you were looking for. Call us on 96 8686 0303
+
+#browse.ht-home-header.col-md-12.hidden
+
+.col-md-12.text-center.padding20.white-fg.browse-home.hidden{style: "font-size:25px;font-weight: bold;"}
+  = link_to category_path("bikes-two-wheelers") do
+    .col-md-3.col-md-offset-1.padding10.mtop20.border-category.strip-bg Bikes & Two Wheelers
+  = link_to category_path("fashion-rent-a-dress") do
+    .col-md-2.col-md-offset-1.padding10.mtop20.border-category.strip-bg Clothing
+  = link_to category_path("bikes-two-wheelers") do
+    .col-md-3.col-md-offset-1.padding10.mtop20.border-category.strip-bg Houseboats
+  .clearfix.hidden-xs-block
+  = link_to category_path("bikes-two-wheelers") do
+    .col-md-3.col-md-offset-1.padding10.mtop20.mbottom20.border-category.strip-bg Cameras & Accessories
+  = link_to category_path("bikes-two-wheelers") do
+    .col-md-2.col-md-offset-1.padding10.mtop20.mbottom20.border-category.strip-bg Books
+  = link_to category_path("bikes-two-wheelers") do
+    .col-md-3.col-md-offset-1.padding10.mtop20.mbottom20.border-category.strip-bg Adventure | Travel Gear
+
+#how-it-works.ht-home-header.col-md-12
 
 .container.pbottom50
   .col-md-4.col-md-offset-4.text-center
@@ -98,11 +109,38 @@
     %h3.pull-left.land-src-mar-return.website-color
       RETURN
 
+.col-md-12.strip-bg.padding20.text-center
+  .text-center.white-fg.mbottom10{style: "font-size: 30px;display: block;font-weight: bold;"} COCOPRICING DISCOUNTS
+  .text-center.discount-sprite.white-fg
+    %center.discount-text
+      3+ days
+      %br
+      10%
+  .text-center.discount-sprite.white-fg
+    %center.discount-text
+      10+ days
+      %br
+      20%
+  .text-center.discount-sprite.white-fg
+    %center.discount-text
+      20+ days
+      %br
+      30%
+  .text-center.discount-sprite.white-fg
+    %center.discount-text
+      30+ days
+      %br
+      40%
+  .text-center.discount-sprite.white-fg
+    %center.discount-text
+      90+ days
+      %br
+      50%
 
-#why-us.ht-home-header
+#why-us.ht-home-header.col-md-12
 
 .container
-  .col-md-4.col-md-offset-4.text-center
+  .col-md-4.col-md-offset-4.text-center.mbottom40
     %span.header-text WHY US
   .row.yu-mar
     .col-md-12
@@ -147,28 +185,26 @@
             %br
             Your email & number is not shared until a booking is confirmed. Say yes to peace of mind & no to annoying calls & spam mails.
 
-#list-product.ht-home-header
+#list-product.ht-home-header.col-md-12
 
 .container
-  .col-md-4.col-md-offset-4.text-center
+  .col-md-4.col-md-offset-4.text-center.mbottom40
     %span.header-text MAKE MONEY, WISE
-  .row.lp-mar
-    .col-md-12
-      %p.list-p-p
-        Cocociti is a smart way to earn money by renting stuff. All you need to do is to click few pics, upload it to Cocociti, and mention your terms! You set the price for your listings, your availability, and booking requirements. You can message users and approve rentals as per your choice.
-      %center
-        %strong
-          %h3.website-color
-            LET YOUR THINGS WORK FOR YOU!
-        %br
-        %br
-        = link_to new_product_path, class: "pa" do
-          List Your Item
+  .col-md-12.pbottom20
+    %p.list-p-p
+      Cocociti is a smart way to earn money by renting stuff. All you need to do is to click few pics, upload it to Cocociti, and mention your terms! You set the price for your listings, your availability, and booking requirements. You can message users and approve rentals as per your choice.
+    %center
+      %strong
+        %h3.website-color
+          LET YOUR THINGS WORK FOR YOU!
+      %br
+      %br
+      = link_to new_product_path, class: "pa" do
+        List Your Item
 
-.tag-bg.tag-container
+.tag-bg.col-md-12
   .container.hidden-xs
     .row.tag-mar
-
       - Category.root.each_slice(4) do |slice|
         .col-md-12
           - slice.each do |cat|

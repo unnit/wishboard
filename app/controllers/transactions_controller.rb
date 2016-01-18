@@ -15,6 +15,7 @@ class TransactionsController < ApplicationController
     if @transaction.valid?
       if @product.owner_type == Product::OWNER_TYPE[0][1]
         ### -----Asigning all values to transaction table
+
         @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
         @hours = @product.hours_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
         end_day = (session[:end_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
@@ -24,7 +25,7 @@ class TransactionsController < ApplicationController
         @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
 
         @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
-        if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
+        if params[:operator_type].to_i == Product::OPERATOR_TYPE[1][1]
           if @hours > 0
             @transaction.operator_price = @product.operator_price * (@days + 1)
           else
@@ -35,8 +36,10 @@ class TransactionsController < ApplicationController
         @transaction.days = @days
         @transaction.hourly_rent = @product.hourly_price
         @transaction.hours = @hours
-        @transaction.weekend_rent = @product.seasonal_weekend_pricing(@no_of_weekenddays, @hours, @end_day_weekend)
-        @transaction.weekend_days = @no_of_weekenddays
+        @transaction.weekend_daily_rent = @product.seasonal_weekend_pricing(1, 0, 0) if @no_of_weekenddays > 0
+        @transaction.weekend_days = @no_of_weekenddays if @no_of_weekenddays > 0
+        @transaction.weekend_hourly_rent = @product.seasonal_weekend_pricing(0, 1, 1) if @hours > 0 && @end_day_weekend > 0
+        @transaction.weekend_hours = @hours if @hours > 0 && @end_day_weekend > 0
         @transaction.rent_without_discount = @product.price_without_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
         @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
         @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
@@ -44,6 +47,7 @@ class TransactionsController < ApplicationController
         @transaction.refundable_security_deposit = @product.security_deposit
         @transaction.amount = @product.calculate_price(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
         @transaction.save
+
         ###########-----------------------------
         TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
         redirect_to checkout_transaction_path(@transaction)
@@ -63,7 +67,6 @@ class TransactionsController < ApplicationController
     @transaction.product = @product
     ### -----Asigning all values to transaction table
 
-
     @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
     @hours = @product.hours_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
     end_day = (session[:end_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
@@ -73,7 +76,7 @@ class TransactionsController < ApplicationController
     @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
 
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
-    if params[:operator_type] == Product::OPERATOR_TYPE[1][1]
+    if params[:operator_type].to_i == Product::OPERATOR_TYPE[1][1]
       if @hours > 0
         @transaction.operator_price = @product.operator_price * (@days + 1)
       else
@@ -84,8 +87,10 @@ class TransactionsController < ApplicationController
     @transaction.days = @days
     @transaction.hourly_rent = @product.hourly_price
     @transaction.hours = @hours
-    @transaction.weekend_rent = @product.seasonal_weekend_pricing(@no_of_weekenddays, @hours, @end_day_weekend)
-    @transaction.weekend_days = @no_of_weekenddays
+    @transaction.weekend_daily_rent = @product.seasonal_weekend_pricing(1, 0, 0) if @no_of_weekenddays > 0
+    @transaction.weekend_days = @no_of_weekenddays if @no_of_weekenddays > 0
+    @transaction.weekend_hourly_rent = @product.seasonal_weekend_pricing(0, 1, 1) if @hours > 0 && @end_day_weekend > 0
+    @transaction.weekend_hours = @hours if @hours > 0 && @end_day_weekend > 0
     @transaction.rent_without_discount = @product.price_without_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
     @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
     @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
@@ -98,18 +103,15 @@ class TransactionsController < ApplicationController
       params[:message] = "Request for #{@product.title}" if params[:message].blank?
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
-      params_customer = {
-        'src' => "Cocociti",
-        'dst' => "+91#{@transaction.user.profile.phone}",
-        'text' => "Request has been sent to Item owner successfully. Please visit your Dashboard --> My Order Activity for updates. "
-      }
-      params_owner = {
-        'src' => "Cocociti",
-        'dst' => "+91#{@transaction.product.user.profile.phone}",
-        'text' => "You have received a request for your product #{@transaction.product.title}. Please log in and use this URL to #{message_url(@transaction)} to approve the request."
-      }
-      @transaction.send_sms(params_customer)
-      @transaction.send_sms(params_owner)
+
+      no_customer = "+91#{@transaction.user.profile.phone}"
+      msg_customer =
+      @transaction.send_sms(no_customer, msg_customer)
+
+      no_owner = "+91#{@transaction.product.user.profile.phone}"
+      msg_owner = "Request has been sent to Item owner successfully. Please visit your Dashboard --> My Order Activity for updates."
+      @transaction.send_sms(no_owner, msg_owner)
+
       flash[:success] = "Request for #{@product.title} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'My Order Activity' tab."
       redirect_to dashboard_path
     else
@@ -242,24 +244,16 @@ class TransactionsController < ApplicationController
       else
         TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
         msg = params["TxMsg"]
-        params = {
-          'src' => "Cocociti",
-        	'dst' => "+91#{@transaction.user.profile.phone}",
-        	'text' => "Sorry, Your payment failed. #{msg}"
-        }
-        params_coco_manager_1 = {
-          'src' => "Cocociti",
-        	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}",
-        	'text' => "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name}"
-        }
-        params_coco_manager_2 = {
-          'src' => "Cocociti",
-        	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}",
-        	'text' => "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name}"
-        }
-        @transaction.send_sms(params)
-        @transaction.send_sms(params_coco_manager_1)
-        @transaction.send_sms(params_coco_manager_2)
+
+        no = "+91#{@transaction.user.profile.phone}"
+        msg = "Sorry, Your payment failed. #{msg}. ID: #{@transaction.coco_transaction_id}"
+        @transaction.send_sms(no, msg)
+        no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
+        msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
+        @transaction.send_sms(no_coco_manager_1, msg_coco_manager_1)
+        no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
+        msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
+
         flash[:alert] = "#{msg}"
         redirect_to checkout_transaction_path(@transaction)
       end
@@ -267,24 +261,17 @@ class TransactionsController < ApplicationController
       message = "Signaure Verification failed. Please try again."
       flash[:alert] = "Signaure Verification failed. Please try again."
       TransactionMailer.fail(@transaction, message).deliver_now
-      params = {
-        'src' => "Cocociti",
-        'dst' => "+91#{@transaction.user.profile.phone}",
-        'text' => "Sorry, Your payment failed as signaure verification failed. Please try again."
-      }
-      params_coco_manager_1 = {
-        'src' => "Cocociti",
-      	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}",
-      	'text' => "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name}"
-      }
-      params_coco_manager_2 = {
-        'src' => "Cocociti",
-      	'dst' => "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}",
-      	'text' => "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name}"
-      }
-      @transaction.send_sms(params)
-      @transaction.send_sms(params_coco_manager_1)
-      @transaction.send_sms(params_coco_manager_2)
+
+      no = "+91#{@transaction.user.profile.phone}"
+      msg = "Sorry, Your payment failed as signaure verification failed. Please try again. ID: #{@transaction.coco_transaction_id}"
+      @transaction.send_sms(no, msg)
+      no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
+      msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
+      @transaction.send_sms(no_coco_manager_1, msg_coco_manager_1)
+      no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
+      msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
+      @transaction.send_sms(no_coco_manager_2, msg_coco_manager_2)
+
       redirect_to checkout_transaction_path(@transaction)
     end
   end
@@ -317,11 +304,16 @@ class TransactionsController < ApplicationController
       redirect_to user_product_path(@product.id)
       return
     end
-    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank? || (params[:operator_type] != Product::OPERATOR_TYPE[1][1])
+    params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank? || (params[:operator_type].to_i != Product::OPERATOR_TYPE[1][1])
     params[:operator_type] = Product::OPERATOR_TYPE[1][1] if @product.operator_type == Product::OPERATOR_TYPE[1][1]
   end
 
   def check_product_availability
+    unless @product.available?
+      flash[:danger] = "Sorry, Item is not available for the selected dates."
+      redirect_to user_product_path(@product.id)
+      return
+    end
     search_start_day = session[:start_date_time].to_date.wday unless session[:start_date_time].blank?
     search_start_time = session[:start_date_time].split(" ").last unless session[:start_date_time].blank?
     search_end_day = session[:end_date_time].to_date.wday unless session[:end_date_time].blank?
@@ -362,7 +354,11 @@ class TransactionsController < ApplicationController
       earch_end_date_time = @transaction.enddate
 
       @product = @transaction.product
-
+      unless @product.available?
+        flash[:danger] = "Sorry, Item is not available for the selected dates."
+        redirect_to user_product_path(@product.id)
+        return
+      end
       if @product.transactions.renting.blank?
         if @product.enabled_days.include?("#{search_start_day}") && @product.enabled_days.include?("#{search_end_day}") && @product.enabled_hours.include?("#{search_start_time}") && @product.enabled_hours.include?("#{search_end_time}")
         else

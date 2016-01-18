@@ -111,7 +111,7 @@
                   .form-group
                     %label.col-sm-2.control-label Apply Weekend/Seasonal Renting
                     .col-sm-4.mtop10
-                      - if !@profile.weekend_days_arr.blank? || @profile.increase
+                      - if !@profile.weekend_days_arr.blank? || (@profile.increase && @profile.increase != 0.00)
                         = check_box_tag :weekend_pricing, "yes", true
                       - else
                         = check_box_tag :weekend_pricing, "yes", false
@@ -133,7 +133,7 @@
                   .form-group
                     %label.col-sm-2.control-label Apply Hourly Renting
                     .col-sm-4.mtop10
-                      - if @profile.increase_hourly
+                      - if (@profile.increase_hourly && @profile.increase_hourly != 0.00)
                         = check_box_tag :hourly_pricing, "yes", true
                       - else
                         = check_box_tag :hourly_pricing, "yes", false
@@ -153,59 +153,60 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      var checked = $("#weekend_pricing").is(":checked");
+      if(checked == true){
+        $(".weekend_pricing_div").removeClass("hidden");
+        $("#profile_increase").attr('required', true);
+      }
+      function weekend_pricing_check(){
         var checked = $("#weekend_pricing").is(":checked");
         if(checked == true){
           $(".weekend_pricing_div").removeClass("hidden");
+          $("#Sunday_as_weekend,#Saturday_as_weekend").prop("checked", true);
           $("#profile_increase").attr('required', true);
         }
-        function weekend_pricing_check(){
-          var checked = $("#weekend_pricing").is(":checked");
-          if(checked == true){
-            $(".weekend_pricing_div").removeClass("hidden");
-            $("#Sunday_as_weekend,#Saturday_as_weekend").prop("checked", true);
-            $("#profile_increase").attr('required', true);
-          }
-          else{
-            $(".weekend_pricing_div").addClass("hidden");
-            $("#Sunday_as_weekend,#Monday_as_weekend,#Tuesday_as_weekend,#Wednesday_as_weekend,#Thursday_as_weekend,#Friday_as_weekend,#Saturday_as_weekend").prop("checked", false);
-            $("#profile_increase").removeAttr('required');
-            $("#profile_increase").val("");
-          }
+        else{
+          $(".weekend_pricing_div").addClass("hidden");
+          $("#Sunday_as_weekend,#Monday_as_weekend,#Tuesday_as_weekend,#Wednesday_as_weekend,#Thursday_as_weekend,#Friday_as_weekend,#Saturday_as_weekend").prop("checked", false);
+          $("#profile_increase").removeAttr('required');
+          $("#profile_increase").val("");
         }
-        $("#weekend_pricing").on("click", weekend_pricing_check);
-        function hourly_pricing_check(){
-          var checked = $("#hourly_pricing").is(":checked");
-          if(checked == true){
-            $(".hourly_pricing_div").removeClass("hidden");
-            $("#profile_increase_hourly").attr('required', true)
-          }
-          else{
-            $(".hourly_pricing_div").addClass("hidden");
-            $("#profile_increase_hourly").removeAttr('required');
-            $("#profile_increase_hourly").val("");
-          }
+      }
+      $("#weekend_pricing").on("click", weekend_pricing_check);
+      function hourly_pricing_check(){
+        var checked = $("#hourly_pricing").is(":checked");
+        if(checked == true){
+          $(".hourly_pricing_div").removeClass("hidden");
+          $("#profile_increase_hourly").attr('required', true)
         }
-        hourly_pricing_check();
-        $("#hourly_pricing").on("click", hourly_pricing_check);
-        $(".copy_address").click(function(){
-          if($(".copy_address").is(":checked")){
-            $("#address_address1").val("#{current_user.addresses.delivery.first.address1}");
-            $("#address_address2").val("#{current_user.addresses.delivery.first.address2}");
-            $("#address_zip").val("#{current_user.addresses.delivery.first.zip}");
-            $("#address_city").val("#{current_user.addresses.delivery.first.city}");
-            $("#address_state").val("#{current_user.addresses.delivery.first.state}");
-            $("#address_landmark").val("#{current_user.addresses.delivery.first.landmark}");
-          }
-        else
+        else{
+          $(".hourly_pricing_div").addClass("hidden");
+          $("#profile_increase_hourly").removeAttr('required');
+          $("#profile_increase_hourly").val("");
+        }
+      }
+      hourly_pricing_check();
+      $("#hourly_pricing").on("click", hourly_pricing_check);
+      $(".copy_address").click(function(){
+        if($(".copy_address").is(":checked")){
+          $("#address_address1").val("#{current_user.addresses.delivery.first.address1}");
+          $("#address_address2").val("#{current_user.addresses.delivery.first.address2}");
+          $("#address_zip").val("#{current_user.addresses.delivery.first.zip}");
+          $("#address_city").val("#{current_user.addresses.delivery.first.city}");
+          $("#address_state").val("#{current_user.addresses.delivery.first.state}");
+          $("#address_landmark").val("#{current_user.addresses.delivery.first.landmark}");
+        }
+        else{
           $(".pkp_address").val("");
-        })
-        $(".learn-more-hourly").click(function(){
-            $("#learn-more-hourly").modal("show");
-        })
-        $("#hourly_pricing").click(function(){
-          var checked = $("#hourly_pricing").is(":checked");
-          if(checked == true){
-            $("#learn-more-hourly").modal("show");
-          }
-        })
+        }
       })
+      $(".learn-more-hourly").click(function(){
+          $("#learn-more-hourly").modal("show");
+      })
+      $("#hourly_pricing").click(function(){
+        var checked = $("#hourly_pricing").is(":checked");
+        if(checked == true){
+          $("#learn-more-hourly").modal("show");
+        }
+      })
+    })

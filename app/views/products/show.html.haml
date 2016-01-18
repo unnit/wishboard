@@ -15,7 +15,7 @@
         #bx-pager.text-center
           - @product.images.each_with_index do |image, i|
             = link_to "", "data-slide-index" => i do
-              = cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", width: 145, height: 80, crop: :fill
+              = cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", width: 145, height: 80, crop: :fit
         .col-xs-12.col-md-12.available
           .col-xs-12.col-sm-3.bord-right-prd-show
             %h6.des-own-det Owner
@@ -42,144 +42,173 @@
               .business-type-sprite
             %h6.des-own-det.pull-left.full-width= @product.user.profile.business_type_name
     .col-md-4
-      %h2.product-name.mtop0= @product.title
+      %h2.product-name.no-mar-pad.mbottom5= @product.title
       .col-md-6
-        %h6.reviw= @product.reviews_count
-      .col-md-6.rat.pbottom10
+        %h4.no-mar-pad= @product.reviews_count
+      .col-md-6.text-right.mbottom10
         %i.product-rated
           = render partial: "rated", locals: {rate: @product.rate}
       - unless session[:end_date_time].blank? || session[:start_date_time].blank?
-        .col-md-6
+        .col-md-6.mbottom10
           From Date
           %br/
-          = session[:start_date_time]
-        .col-md-6
+          %strong= session[:start_date_time]
+        .col-md-6.text-right
           To Date
           %br/
-          = session[:end_date_time]
+          %strong= session[:end_date_time]
       - else
-        .col-md-12.border-light.text-center.no-mar-pad.padding10
+        .col-md-12.border-light.text-center.no-mar-pad.padding10.mbottom10
           Please select a 'Pick up Date' and a 'Drop off Date' and click search.
       ~ form_tag product_checkout_path(@product) do
-        .col-md-12
-          .tabbable-panel-rs
-            .tabbable-line-rs
-              %ul.nav.nav-tabs.rent-sale-text
-                %li.active
-                  = link_to @product.listing_type_name, "#tab_default_1_1", "data-toggle" => "tab", class: "bg-white"
-              .tab-content.table-panel-rs-heoght
-                #tab_default_1_1.tab-pane.active{style: "min-height: 160px;"}
-                  - if @product.operator_type > Product::OPERATOR_TYPE[1][1]
-                    %p
-                      = radio_button_tag :operator_type, Product::OPERATOR_TYPE[0][1], true, class: "operator_type"
-                      %label Product Only
-                      %span.pull-right
-                        %i.fa.fa-rupee
-                        0
-                      %br
-                      = radio_button_tag :operator_type, Product::OPERATOR_TYPE[1][1], @product.operator_type == Product::OPERATOR_TYPE[1][1], class: "operator_type"
-                      %label With Operator/Driver (Assisted)
-                      %span.pull-right
-                        %i.fa.fa-rupee
-                        - if @hours > 0
-                          = @product.operator_price * (@days + 1)
-                        - else
-                          = @product.operator_price * (@days)
-                  - if @product.for_free?
-                    %ul.sale-details.pull-left
-                      %li Shipping
-                    %ul.pull-right.sale-details2.text-right
-                      %li
-                        %i.fa.fa-rupee
-                        = @product.ship_price
-                  - else
-                    - op_type = @product.operator_type== Product::OPERATOR_TYPE[1][1] ? Product::OPERATOR_TYPE[1][1] : Product::OPERATOR_TYPE[0][1]
-                    %ul.sale-details.pull-left
-                      - if @days > 0
-                        %li
-                          %strong Daily Rent
-                        %li.font-medium No. of Days
-                      - if @hours > 0
-                        %li
-                          %strong Hourly Rent
-                        %li.font-medium No. of Hours
-                      - if @no_of_weekenddays > 0
-                        %li.font-medium Daily Premium Rent**
-                        %li.font-medium No. of Premium Days
-                      - if @hours > 0 && @end_day_weekend > 0
-                        %li.font-medium Hourly Premium Rent**
-                        %li.font-medium No. of Premium Hours
-                      - if @product.operator_type== Product::OPERATOR_TYPE[1][1]
-                        %li.font-medium
-                          - if @hours > 0
-                            Operator Price * (#{@days + 1})
-                          - else
-                            Operator Price * (#{@days})
-                      %li.font-medium Total Rent
-                      %li.font-medium
-                        Discounts
-                        - if @product.discounts_any?
-                          *
-                      %li
-                        %strong Total Rent after Discount
-                      %li.font-medium Tax ( #{@product.tax}% )
-                      %li.font-medium Refundable Security Deposit
-                      /%li.font-medium Shipping
-                      %li
-                        %strong Total Amount Payable
-                    %ul.pull-right.sale-details2.text-right.no-mar-pad
-                      - if @days > 0
-                        %li
-                          %i.fa.fa-rupee
-                          %strong= @product.price
-                        %li.days.font-medium= @days
-                      - if @hours > 0
-                        %li
-                          %i.fa.fa-rupee
-                          %strong= @product.hourly_price
-                        %li.days.font-medium= @hours
-                      - if @no_of_weekenddays > 0
-                        %li.font-medium
-                          %i.fa.fa-rupee
-                          = @product.seasonal_weekend_pricing(@no_of_weekenddays, 0, @end_day_weekend)
-                        %li.font-medium= @no_of_weekenddays
-                      - if @hours > 0 && @end_day_weekend > 0
-                        %li.font-medium
-                          %i.fa.fa-rupee
-                          = @product.seasonal_weekend_pricing(0, @hours, @end_day_weekend)
-                        %li.font-medium= @hours
-                      - if @product.operator_type== Product::OPERATOR_TYPE[1][1]
-                        %li.font-medium
-                          %i.fa.fa-rupee
-                          - if @hours > 0
-                            = @product.operator_price * (@days + 1)
-                          - else
-                            = @product.operator_price * (@days)
-                      %li.font-medium
-                        %i.fa.fa-rupee
-                        %span.price-without-discount= @product.price_without_discount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
-                      %li.font-medium
-                        /%span.min-sign
-                        %i.fa.fa-rupee
-                        %span.discount= @product.discount_by_days(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
-                      %li
-                        %i.fa.fa-rupee
-                        %strong
-                          %span.price-with-discount= @product.price_with_discount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
-                      %li.font-medium
-                        %i.fa.fa-rupee
-                        %span.tax-amount= @product.tax_amount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
-                      %li.font-medium
-                        %i.fa.fa-rupee
-                        = @product.security_deposit
-                      %li.font-medium
-                        /%i.fa.fa-rupee
-                        =# @product.ship_price
-                      %li
-                        %i.fa.fa-rupee
-                        %span.total-amount
-                          %strong
-                            = @product.calculate_price(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
+        .col-md-12.no-mar-pad
+          - if @product.operator_type == Product::OPERATOR_TYPE[2][1]
+            %p
+              = radio_button_tag :operator_type, Product::OPERATOR_TYPE[0][1], true, class: "operator_type"
+              %label Product Only
+              %span.pull-right
+                %i.fa.fa-rupee
+                0
+              %br
+              = radio_button_tag :operator_type, Product::OPERATOR_TYPE[1][1], @product.operator_type == Product::OPERATOR_TYPE[1][1], class: "operator_type"
+              %label With Operator/Driver (Assisted)
+              %span.pull-right
+                %i.fa.fa-rupee
+                - if @hours > 0
+                  = @product.operator_price * (@days + 1)
+                - else
+                  = @product.operator_price * (@days)
+          - if @product.for_free?
+            %ul.sale-details.pull-left
+              %li Shipping
+            %ul.pull-right.sale-details2.text-right
+              %li
+                %i.fa.fa-rupee
+                = @product.ship_price
+          - else
+            - op_type = @product.operator_type== Product::OPERATOR_TYPE[1][1] ? Product::OPERATOR_TYPE[1][1] : Product::OPERATOR_TYPE[0][1]
+          .table-responsive
+            %table.table.table-bordered.table-striped.table-hover.mbottom5#rent-details-table
+              - if @days > 0
+                %tr.breakup-columns
+                  %td Daily Rent
+                  %td.text-right
+                    = @product.price
+                %tr.breakup-columns
+                  %td.font-medium No. of Days
+                  %td.font-medium.text-right
+                    x&nbsp;&nbsp;
+                    = @days
+                %tr
+                  %td
+                    %span.non-breakup-columns Rent for #{@days} day(s)
+                  %td.font-medium.text-right
+                    %span.breakup-columns =&nbsp;&nbsp;
+                    = @product.price * @days
+              - if @hours > 0
+                %tr.breakup-columns
+                  %td Hourly Rent
+                  %td.text-right
+                    = @product.hourly_price
+                %tr.breakup-columns
+                  %td.font-medium No. of Hours
+                  %td.font-medium.text-right
+                    x&nbsp;&nbsp;
+                    = @hours
+                %tr
+                  %td
+                    %span.non-breakup-columns Rent for #{@hours} hour(s)
+                  %td.font-medium.text-right
+                    %span.breakup-columns =&nbsp;&nbsp;
+                    = @product.hourly_price * @hours
+              - if @no_of_weekenddays > 0
+                %tr.breakup-columns
+                  %td.font-medium
+                    Daily Premium Rent**
+                  %td.font-medium.text-right
+                    = @product.seasonal_weekend_pricing(1, 0, 0)
+                %tr.breakup-columns
+                  %td.font-medium No. of Premium Days
+                  %td.font-medium.text-right
+                    x&nbsp;&nbsp;
+                    = @no_of_weekenddays
+                %tr
+                  %td
+                    %span.non-breakup-columns Rent for #{@no_of_weekenddays} premium day(s)**
+                  %td.font-medium.text-right
+                    %span.breakup-columns =&nbsp;&nbsp;
+                    = @product.seasonal_weekend_pricing(1, 0, 0) * @no_of_weekenddays
+              - if @hours > 0 && @end_day_weekend > 0
+                %tr.breakup-columns
+                  %td.font-medium
+                    Hourly Premium Rent**
+                  %td.font-medium.text-right
+                    = @product.seasonal_weekend_pricing(0, 1, 1)
+                %tr.breakup-columns
+                  %td.font-medium No. of Premium Hours
+                  %td.font-medium.text-right
+                    x&nbsp;&nbsp;
+                    = @hours
+                %tr
+                  %td
+                    %span.non-breakup-columns Rent for #{@hours} premium hour(s)**
+                  %td.font-medium.text-right
+                    %span.breakup-columns =&nbsp;&nbsp;
+                    = @product.seasonal_weekend_pricing(0, 1, 1) * @hours
+              - if @product.operator_type== Product::OPERATOR_TYPE[1][1]
+                %tr
+                  %td.font-medium
+                    - if @hours > 0
+                      Operator Price x #{@days + 1} day(s)
+                    - else
+                      Operator Price x #{@days} day(s)
+                  %td.font-medium.text-right
+                    - if @hours > 0
+                      = @product.operator_price * (@days + 1)
+                    - else
+                      = @product.operator_price * (@days)
+              %tr
+                %td.font-medium Total Rent
+                %td.font-medium.text-right
+                  %span.price-without-discount= @product.price_without_discount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
+              %tr
+                %td.font-medium
+                  Discounts
+                  - if @product.discounts_any?
+                    *
+                %td.font-medium.text-right
+                  %span.discount= @product.discount_by_days(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
+              %tr
+                %td
+                  %strong Total Rent after Discount
+                %td.text-right
+                  %strong
+                    %span.price-with-discount= @product.price_with_discount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
+              %tr
+                %td.font-medium Tax ( #{@product.tax}% )
+                %td.font-medium.text-right
+                  %span.tax-amount= @product.tax_amount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
+              %tr
+                %td.font-medium Refundable Security Deposit
+                %td.font-medium.text-right
+                  = @product.security_deposit
+              /
+                %tr
+                  %td.font-medium Shipping
+                  %td.font-medium.text-right
+              %tr
+                %td
+                  %h4.no-mar-pad
+                    %strong Total Amount Payable
+                %td.text-right
+                  %h4.no-mar-pad
+                    %i.fa.fa-rupee
+                    %span.total-amount
+                      %strong= @product.calculate_price(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
+          .col-md-12.no-mar-pad.mbottom10.text-right
+            .note-font-size.detailed-breakup.pon
+              Click here for detailed break up&nbsp;
+              %i.glyphicon.glyphicon-menu-down.clickable
         .col-xs-12.col-md-12.from-bar
           - if current_user
             .col-md-12.padding0.mleft15
@@ -205,12 +234,12 @@
               %br
               %i.fa.fa-rupee
               = @product.seasonal_weekend_pricing(1, 0, 0)
-              /day
+              \/day
               %br
               - if @hours > 0 && @end_day_weekend > 0
                 %i.fa.fa-rupee
                 = @product.seasonal_weekend_pricing(0, 1, 1)
-                /hr
+                \/hr
               %br
               Premium days set by Item owner are as follows:
               %br
@@ -287,12 +316,22 @@
 = content_for :extra_js do
   :javascript
     $(function(){
+      $(".detailed-breakup").click(function(){
+          $(".breakup-columns,.non-breakup-columns").fadeToggle(100);
+          if($(this).find("i").hasClass("glyphicon-menu-up"))
+          {
+            $(this).find("i").removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down")
+          }
+          else{
+            $(this).find("i").removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up")
+          }
+      })
       $("input[name=operator_type]").click(function(){
          getPrice();
-       });
-     function getPrice(){
-       operator_type = $("input[name=operator_type]:checked").val();
-       data = {days: "#{@days}", id: "#{@product.id}", hours: "#{@hours}", operator_type: operator_type, no_of_weekenddays: "#{@no_of_weekenddays}", end_day_weekend: "#{@end_day_weekend}"}
+      });
+      function getPrice(){
+        operator_type = $("input[name=operator_type]:checked").val();
+        data = {days: "#{@days}", id: "#{@product.id}", hours: "#{@hours}", operator_type: operator_type, no_of_weekenddays: "#{@no_of_weekenddays}", end_day_weekend: "#{@end_day_weekend}"}
         $.get("/products/get_price", data)
          .done(function(result){
              $("#operator_type").val(operator_type);

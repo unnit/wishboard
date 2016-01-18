@@ -88,7 +88,7 @@ Rails.application.routes.draw do
 
   post "product/:id/checkout", to: "transactions#new", as: :product_checkout
   post "product/:id/non_coco", to: "transactions#non_coco", as: :non_coco_transaction
-  #get "/products/:category", to: "products#index", as: :category
+  get "/categories/:id", to: "products#category", as: :category
   get "/listings/:id", to: "products#show", as: :user_product
 
   root 'home#index'

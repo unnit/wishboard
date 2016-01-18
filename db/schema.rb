@@ -236,15 +236,17 @@ ActiveRecord::Schema.define(version: 20160110205032) do
     t.string   "non_coco_operator",           limit: 255
     t.integer  "daily_rent",                  limit: 4,                            default: 0
     t.integer  "days",                        limit: 4,                            default: 0
-    t.integer  "weekend_rent",                limit: 4,                            default: 0
+    t.decimal  "weekend_daily_rent",                      precision: 10, scale: 2, default: 0.0
     t.integer  "weekend_days",                limit: 4,                            default: 0
-    t.integer  "rent_without_discount",       limit: 4,                            default: 0
+    t.decimal  "rent_without_discount",                   precision: 10, scale: 2, default: 0.0
     t.decimal  "discounts",                               precision: 10, scale: 2, default: 0.0
     t.decimal  "rent_with_discount",                      precision: 10, scale: 2, default: 0.0
     t.decimal  "tax",                                     precision: 10, scale: 2, default: 0.0
     t.integer  "refundable_security_deposit", limit: 4,                            default: 0
-    t.integer  "hours",                       limit: 4,                            default: 0
+    t.decimal  "hours",                                   precision: 10, scale: 2, default: 0.0
     t.integer  "hourly_rent",                 limit: 4,                            default: 0
+    t.decimal  "weekend_hourly_rent",                     precision: 10, scale: 2, default: 0.0
+    t.decimal  "weekend_hours",                           precision: 10, scale: 2, default: 0.0
   end
 
   add_index "transactions", ["product_id"], name: "index_transactions_on_product_id", using: :btree

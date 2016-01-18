@@ -1012,6 +1012,7 @@ padding-bottom: 4px;
 .logoh {
 
       padding-top: 8px;
+      padding-bottom: 8px;
 }
 
 .nav-back
@@ -1565,10 +1566,6 @@ font-size:48px;
 .fot{
     background-color: #333;
 }
-.fot-mar{
-
-    color: #fff;
-}
 .fot-social{
     width: 20px;
     height: 20px;
@@ -1717,17 +1714,6 @@ border-bottom:5px solid #e84242;
     text-align: center;
     font-size: 26px;
     color: #333333;
-}
-.reviw{
-    text-align: left;
-    font-size: 20px;
-    font-weight: 100;
-
-}
-.rat{
-  font-size: 20px;
-    text-align: right;
-    padding-top: 12px;
 }
 .sale-details{
     padding: 0;
@@ -2097,11 +2083,6 @@ font-size: 14px;
 .list-map{
     margin-bottom: 25px;
 }
-
-.mar-fot{
-    margin-left: -20px;
-    margin-right: -20px;
-}
 .fot-up-img{
     margin-left:13px;
 }
@@ -2386,14 +2367,6 @@ height:50px;
     border: 1px solid #E84242;
     border-radius: 1px;
 }
-.land-src-mar-help-links{
-      margin-left: -68px;
-}
-@media only screen and (max-width: 776px) {
-  .land-src-mar-help-links{
-      margin-left: 0px;
-  }
-}
 .post-cat{
     font-size: 24px;
     font-weight: 300;
@@ -2422,9 +2395,9 @@ height:50px;
   background: url('images/coco-sprite.png') -538px -289px;
 }
 .logo-sprite{
-  width:154px;
-  height:38px;
-  background: url('images/coco-sprite.png') -15px -169px;
+  width:157px;
+  height:35px;
+  background: url('images/coco-sprite.png') -9px -172px;
 }
 .why-us-size{
   width: 145px;
@@ -2536,6 +2509,16 @@ th.headerSortDown {
 .website-color{
   color: #E84242;
 }
+.website-color-bg{
+  background-color: #E84242;
+}
+.strip-bg{
+  background: url('images/section-bg.jpg');
+  background-size: cover;
+}
+.white-fg{
+  color: white;
+}
 .glyphicon-star, .glyphicon-star-empty {
     color: #ffb400;
 }
@@ -2559,4 +2542,35 @@ th.headerSortDown {
 .featured-active{
   color: #fff;
   background-color: #E84242;
+}
+#rent-details-table td{
+  padding: 6px !important;
+}
+.breakup-columns{
+  display: none;
+}
+.discount-sprite{
+  width: 100px;
+  height: 100px;
+  background: url('images/coco-sprite.png') -493px -336px;
+  display: inline-block;
+  margin-right: 40px;
+}
+.discount-text{
+  height: 68px;
+  font-size: 14px;
+  margin-top: 32px;
+  display: table;
+  width: 104px;
+  font-weight: bold;
+}
+.inline-block{
+  display: inline-block;
+}
+.border-category{
+  border: 1px solid white;
+  border-radius: 2px;
+}
+.browse-home a{
+  color: white !important;
 }

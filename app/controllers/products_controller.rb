@@ -1,8 +1,9 @@
 class ProductsController < ApplicationController
-  before_filter :authenticate_user!, only: [:new, :create, :edit, :destroy, :rate, :review, :update, :remove_image]
+  before_filter :authenticate_user!, only: [:new, :create, :edit, :destroy, :rate, :review, :update, :remove_image, :update_available, :update_admin_approved]
   before_filter :set_product, only: [:show, :edit, :rate, :review, :update, :destroy, :remove_image, :update_available, :get_price, :update_admin_approved]
   before_filter :authenticate_owner, only: [:edit, :update, :destroy, :remove_image, :update_available]
   before_filter :check_whether_edit_page, only: [:edit, :update, :remove_image]
+  before_filter :date_check_before_search, only: [:index, :search]
 
   def index
     #product_paginate
@@ -12,26 +13,6 @@ class ProductsController < ApplicationController
 
   def search
     #product_paginate
-    error_messages = []
-    error_messages << "Please select Pick up Date" if params[:start_date_time].blank?
-    error_messages << "Please select Drop off Date" if params[:end_date_time].blank?
-
-    unless params[:start_date_time].blank? || params[:end_date_time].blank?
-      if params[:start_date_time].in_time_zone("Kolkata") > params[:end_date_time].in_time_zone("Kolkata")
-        error_messages << "Pick up Date cannot be greater than Drop off Date"
-      end
-      if params[:start_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
-        error_messages << "Pick up Date cannot be a past date."
-      end
-      if params[:end_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
-        error_messages << "Drop off Date cannot be a past date."
-      end
-    end
-    unless error_messages.blank?
-      flash[:alert] = error_messages.join(", ")
-      redirect_to root_path
-      return
-    end
     product_search
     render :index
     return
@@ -156,8 +137,6 @@ class ProductsController < ApplicationController
       @end_day_weekend = @product.no_of_weekenddays(end_day, @product.user.profile.weekend_days_arr.map(&:to_i))
       total_days = (session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
       @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
-      logger.info '*****************'
-      logger.info @hours
       @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
     end
   end
@@ -226,6 +205,11 @@ class ProductsController < ApplicationController
       render :edit
       return
     end
+  end
+
+  def category
+    category = Category.friendly.find params[:id]
+    @products = Product.where("available = true and admin_approved = true and parent_category = ?", category.id)
   end
 
   private
@@ -338,21 +322,21 @@ class ProductsController < ApplicationController
     else
       @products = Product.where(conditions).order(rate: :desc)
     end
-    session[:start_date_time] = params[:start_date_time] unless params[:start_date_time].blank?
-    session[:end_date_time] = params[:end_date_time] unless params[:end_date_time].blank?
-
     logger.info '*************************'
     logger.info @products.count
     logger.info '*************************'
-
-    search_start_day = params[:start_date_time].to_date.wday unless params[:start_date_time].blank?
-    search_start_time = params[:start_date_time].split(" ").last unless params[:start_date_time].blank?
-    search_end_day = params[:end_date_time].to_date.wday unless params[:end_date_time].blank?
-    search_end_time = params[:end_date_time].split(" ").last unless params[:end_date_time].blank?
-
-    search_start_date_time = params[:start_date_time].in_time_zone("Kolkata")
-    search_end_date_time = params[:end_date_time].in_time_zone("Kolkata")
-
+    unless params[:start_date_time].blank?
+      session[:start_date_time] = params[:start_date_time]
+      search_start_day = params[:start_date_time].to_date.wday
+      search_start_time = params[:start_date_time].split(" ").last
+      search_start_date_time = params[:start_date_time].in_time_zone("Kolkata")
+    end
+    unless params[:end_date_time].blank?
+      session[:end_date_time] = params[:end_date_time]
+      search_end_day = params[:end_date_time].to_date.wday
+      search_end_time = params[:end_date_time].split(" ").last
+      search_end_date_time = params[:end_date_time].in_time_zone("Kolkata")
+    end
     i = 0
     @products.each do |product|
 
@@ -384,7 +368,7 @@ class ProductsController < ApplicationController
         end
       end
     end
-    @products = Kaminari.paginate_array(@products).page(params[:page]).per(10)
+    @products = Kaminari.paginate_array(@products).page(params[:page]).per(20)
   end
 
   def set_product
@@ -411,4 +395,28 @@ class ProductsController < ApplicationController
   def authenticate_owner
     redirect_to root_path unless(@product.user == current_user || current_user.admin?)
   end
+
+  def date_check_before_search
+    error_messages = []
+    error_messages << "Please select Pick up Date" if params[:start_date_time].blank?
+    error_messages << "Please select Drop off Date" if params[:end_date_time].blank?
+
+    unless params[:start_date_time].blank? || params[:end_date_time].blank?
+      if params[:start_date_time].in_time_zone("Kolkata") > params[:end_date_time].in_time_zone("Kolkata")
+        error_messages << "Pick up Date cannot be greater than Drop off Date"
+      end
+      if params[:start_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
+        error_messages << "Pick up Date cannot be a past date."
+      end
+      if params[:end_date_time].in_time_zone("Kolkata") < Time.now.in_time_zone("Kolkata")
+        error_messages << "Drop off Date cannot be a past date."
+      end
+    end
+    unless error_messages.blank?
+      flash[:alert] = error_messages.join(", ")
+      redirect_to root_path
+      return
+    end
+  end
+
 end

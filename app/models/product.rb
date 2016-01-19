@@ -435,7 +435,6 @@ class Product < ActiveRecord::Base
     end
     amount = (price*days) + (hourly_price*hours) + seasonal_weekend_pricing(no_of_weekenddays, hours, end_day_weekend) + op_price
     amount.round(1)
-
   end
 
   def discount_by_days(days, hours, op_type, no_of_weekenddays, end_day_weekend)

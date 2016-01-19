@@ -107,9 +107,9 @@
                       = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
                   .form-group
                     .col-sm-4
-                      %h3.mtop10 Weekend/Seasonal Renting
+                      %h3.mtop10 Weekend/Seasonal Rental Pricing
                   .form-group
-                    %label.col-sm-2.control-label Apply Weekend/Seasonal Renting
+                    %label.col-sm-2.control-label Apply Weekend/Seasonal Rental Pricing
                     .col-sm-4.mtop10
                       - if !@profile.weekend_days_arr.blank? || (@profile.increase && @profile.increase != 0.00)
                         = check_box_tag :weekend_pricing, "yes", true
@@ -129,9 +129,9 @@
                       = f.text_field :increase, :placeholder => "Increase in %. Ex: 10% not 110%", class: "form-control", maxlength: 6
                   .form-group
                     .col-sm-4
-                      %h3.mtop10 Hourly Renting
+                      %h3.mtop10 Hourly Rental Pricing
                   .form-group
-                    %label.col-sm-2.control-label Apply Hourly Renting
+                    %label.col-sm-2.control-label Apply Hourly Rental Pricing
                     .col-sm-4.mtop10
                       - if (@profile.increase_hourly && @profile.increase_hourly != 0.00)
                         = check_box_tag :hourly_pricing, "yes", true

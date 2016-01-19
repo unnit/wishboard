@@ -29,28 +29,12 @@ class ProductsController < ApplicationController
 
   def create
     @product = current_user.products.build(create_product_params)
+    @product.hourly_price = 0 if @product.daily_type? || @product.hourly_price.blank?
     @product.listing_type = Product::LISTING_TYPE[1][1]
-    if @product.listing_type == Product::LISTING_TYPE[0][1]
-      @product.price = 0
-      @product.security_deposit = 0
-      @product.tax = 0
-      @product.owner_type = 1
-      @product.operator_type = 0
-      @product.operator_price = 0
-      @product.discount_3 = 0
-      @product.discount_10 = 0
-      @product.discount_20 = 0
-      @product.discount_30 = 0
-      @product.discount_90 = 0
-      @product.tech_spec = ""
-    end
+    sanitize_free_product if @product.for_free?
+    logger.info '******************'
+    logger.info @product.hourly_price
     if @product.save
-      #@product.reload
-      #logger.info '*****************'
-      #logger.info @product.slug
-      #logger.info '******************'
-      #@product.slug = "#{@product.slug}" + "-#{@product.id}"
-      #@product.save
       @product.update_parent_category!
       @product.location.update_lat_lng
       flash[:success] = "Item saved successfully and is under review process. It will be posted as soon as the review is completed.<br>You can edit, change the availability of your product from your <a href='/dashboard'>Dashboard</a>.".html_safe
@@ -67,24 +51,18 @@ class ProductsController < ApplicationController
   end
 
   def update
-    #Adding location manually as it is creating new row each time
+    @product.billing_type = params[:product][:billing_type]
+    @product.hourly_price = params[:product][:hourly_price]
+    @product.hourly_price = 0 if @product.daily_type? || @product.hourly_price.blank?
+    logger.info '******************'
+    logger.info @product.hourly_price
     @product.admin_approved = false
+    #Adding location manually as it is creating new row each time
     @product.location.name = params[:product][:location_attributes][:name]
     if @product.update(update_product_params)
-      if @product.listing_type == Product::LISTING_TYPE[0][1]
-        @product.reload
-        @product.price = 0
-        @product.security_deposit = 0
-        @product.tax = 0
-        @product.owner_type = 1
-        @product.operator_type = 0
-        @product.operator_price = 0
-        @product.discount_3 = 0
-        @product.discount_10 = 0
-        @product.discount_20 = 0
-        @product.discount_30 = 0
-        @product.discount_90 = 0
-        @product.tech_spec = ""
+      @product.reload
+      if @product.for_free?
+        sanitize_free_product
         @product.save
       end
       @product.update_parent_category!
@@ -222,7 +200,7 @@ class ProductsController < ApplicationController
 
   def update_product_params
     params.require(:product).permit(:user_id, :title, :category_id, :price, :tax, :security_deposit, :operator_type, :operator_price, :discount_3, :discount_10, :discount_20,
-                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id, :billing_type, :hourly_price,
+                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id,
                                     :terms_and_conditions, :year_of_manufacture, :image_1, :image_2, :image_3, :image_4, :image_5,
                                     :slug, {doc_requirement: []})
   end
@@ -417,6 +395,21 @@ class ProductsController < ApplicationController
       redirect_to root_path
       return
     end
+  end
+
+  def sanitize_free_product
+    @product.price = 0
+    @product.security_deposit = 0
+    @product.tax = 0
+    @product.owner_type = 1
+    @product.operator_type = 0
+    @product.operator_price = 0
+    @product.discount_3 = 0
+    @product.discount_10 = 0
+    @product.discount_20 = 0
+    @product.discount_30 = 0
+    @product.discount_90 = 0
+    @product.tech_spec = ""
   end
 
 end

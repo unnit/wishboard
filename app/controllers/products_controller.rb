@@ -32,8 +32,6 @@ class ProductsController < ApplicationController
     @product.hourly_price = 0 if @product.daily_type? || @product.hourly_price.blank?
     @product.listing_type = Product::LISTING_TYPE[1][1]
     sanitize_free_product if @product.for_free?
-    logger.info '******************'
-    logger.info @product.hourly_price
     if @product.save
       @product.update_parent_category!
       @product.location.update_lat_lng
@@ -54,8 +52,6 @@ class ProductsController < ApplicationController
     @product.billing_type = params[:product][:billing_type]
     @product.hourly_price = params[:product][:hourly_price]
     @product.hourly_price = 0 if @product.daily_type? || @product.hourly_price.blank?
-    logger.info '******************'
-    logger.info @product.hourly_price
     @product.admin_approved = false
     #Adding location manually as it is creating new row each time
     @product.location.name = params[:product][:location_attributes][:name]

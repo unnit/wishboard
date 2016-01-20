@@ -2,7 +2,7 @@
   -title = "Checkout"
 .container-fluid.aboutpad
   .container
-    .col-sm-12
+    .col-sm-12.no-mar-pad
       = hidden_field_tag :id, @product.id
       .col-md-4.pull-right.no-mar-pad
         .col-md-12.text-center.padding5{style: "border: 1px solid #06B335;border-radius: 2px;"} Your session expires in #{GLOBAL_VARIABLES[:time_out]} mins. Hurry up!
@@ -10,14 +10,14 @@
         %h4.text-center= @product.title
         .col-md-12.mtop10.text-center.mbottom20{style: "font-weight: bold"}
           = @transaction.duration
-        .col-md-12.summary-info= render partial: "price", locals: {transaction: @transaction, product: @product}
+        .col-md-12.no-mar-pad.summary-info= render partial: "price", locals: {transaction: @transaction, product: @product}
         = hidden_field_tag :amount, @amount, id: "citrusAmount"
         = hidden_field_tag :coco_transaction_id, @transaction.coco_transaction_id, id: "citrusMerchantTxnId"
         = hidden_field_tag :signature, @transaction.security_signature, id: "citrusSignature"
         = hidden_field_tag :return_url, @return_url, id: "citrusReturnUrl"
         =# hidden_field_tag :notify_url, @transaction.notify_url, id: "citrusNotifyUrl"
 
-      .col-md-8
+      .col-md-8.no-mar-pad
         .col-md-12
           %span.shaktiman-sprite.pull-left
           %h4.mtop20.pull-left{style: "color: #e84242"} Questions about payments or refunds? Dial: 96 8686 0303
@@ -30,37 +30,37 @@
               %ul
         %h3.col-md-12.mtop20 Billing Address
         = fields_for @address do |af|
-          .col-md-12.mtop20
+          .col-md-12.mtop20.no-mar-pad
             %label.col-md-3 First Name*
             .col-md-5= af.text_field :first_name, class: "form-control", id: "citrusFirstName", required: true
-          .col-md-12.mtop10
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Last Name*
             .col-md-5= af.text_field :last_name, class: "form-control", id: "citrusLastName", required: true
-          .col-md-12.mtop10
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Email*
             .col-md-5= af.text_field :email, class: "form-control", id: "citrusEmail", required: true
-          .col-md-12.mtop10
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Mobile*
             .col-md-5= af.text_field :mobile, class: "form-control", id: "citrusMobile", required: true
-          .col-md-12.mtop10
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Address Line 1*
             .col-md-5= af.text_field :address1, class: "form-control", id: "citrusStreet1", required: true
-          .col-md-12.mtop10
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Address Line 2*
             .col-md-5= af.text_field :address2, class: "form-control", id: "citrusStreet2", required: true
-          .col-md-12.mtop10
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Zipcode*
             .col-md-5= af.text_field :zip, class: "form-control check_zip", id: "citrusZip", required: true
-          .col-md-12.mtop10
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 City*
             .col-md-5= af.text_field :city, class: "form-control city", id: "citrusCity", required: true
-          .col-md-12.mtop10
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 State*
             .col-md-5
               = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", id: "citrusState",  required: true
         .col-md-12
           #error.col-md-12.text-danger{style: "font-weight: bold; margin-left: 5px;"}
-        .col-md-12.mtop20
+        .col-md-12.mtop20.no-mar-pad.mbottom20
           %ul.nav.nav-tabs
             %li.active
               %a{"data-toggle" => "tab", :href => "#credit_card"} Card
@@ -70,31 +70,30 @@
             #credit_card.tab-pane.fade.in.active
               %input{style: "display:none"}/
               %input{style: "display:none", type: "password"}/
-              .col-md-12.mtop10
-                .col-md-12
-                  %label.col-md-4 Card Type*
-                  .col-md-6
-                    %select.coco-select-box#citrusCardType
-                      %option{:selected => "selected", :value => "credit"} Credit
-                      %option{:value => "debit"} Debit
-                .col-md-12.mtop10
-                  %label.col-md-4 Card Number*
-                  .col-md-6
-                    %input.form-control#citrusNumber{type: "text", value: "", autocomplete: "false"}/
-                  .col-md-2
-                    %input.form-control.padding5.text-center.bg-white#checkout_page_card_type{readonly: true, style: "text-transform: uppercase;font-weight: bold;font-size:9px;"}
-                    %input.form-control.hidden#citrusScheme{readonly: true}
-                .col-md-12.mtop10
-                  %label.col-md-4 Card Holder Name*
-                  .col-md-6
-                    %input.form-control#citrusCardHolder{type: "text", value: "", autocomplete: "false"}/
-                .col-md-12.mtop10
-                  %label.col-md-4 Expiry*
-                  .col-md-3
-                    %input.form-control#citrusExpiry{type: "text", value: "", placeholder: "mm/yyyy", autocomplete: "false"}/
-                  %label.col-md-2{style: "text-align: right;"} CVV/CVC*
-                  .col-md-3
-                    %input.form-control#citrusCvv{type: "password", value: "", autocomplete: "false", placeholder: "CVV/CVC"}/
+              .col-md-12.mtop10.no-mar-pad
+                %label.col-md-3 Card Type*
+                .col-md-4
+                  %select.coco-select-box#citrusCardType
+                    %option{:selected => "selected", :value => "credit"} Credit
+                    %option{:value => "debit"} Debit
+              .col-md-12.mtop10.no-mar-pad
+                %label.col-md-3 Card Number*
+                .col-md-6
+                  %input.form-control#citrusNumber{type: "text", value: "", autocomplete: "false"}/
+                .col-md-2.col-xs-6
+                  %input.form-control.padding5.text-center.bg-white#checkout_page_card_type{readonly: true, style: "text-transform: uppercase;font-weight: bold;font-size:9px;"}
+                  %input.form-control.hidden#citrusScheme{readonly: true}
+              .col-md-12.mtop10.no-mar-pad
+                %label.col-md-3 Card Holder Name*
+                .col-md-6
+                  %input.form-control#citrusCardHolder{type: "text", value: "", autocomplete: "false"}/
+              .col-md-12.mtop10.no-mar-pad
+                %label.col-md-3 Expiry*
+                .col-md-3
+                  %input.form-control#citrusExpiry{type: "text", value: "", placeholder: "mm/yyyy", autocomplete: "false"}/
+                %label.col-md-2{style: "text-align: right;"} CVV/CVC*
+                .col-md-3
+                  %input.form-control#citrusCvv{type: "password", value: "", autocomplete: "false", placeholder: "CVV/CVC"}/
               .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
                 By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
               .col-md-12.text-center
@@ -102,8 +101,8 @@
               .col-md-12.pbottom50.mtop20.mleft20.hidden-xs
                 %span.pull-left.cards-sprite
             #net_banking.tab-pane.fade
-              .col-md-12.mtop10
-                .col-md-6
+              .col-md-12.mtop10.no-mar-pad
+                .col-md-3
                   %label Select Your Bank*
                 .col-md-6
                   %select.coco-select-box#citrusAvailableOptions

@@ -1,5 +1,5 @@
 - if product.for_free?
-  .col-md-12
+  .col-md-12.no-mar-pad
     .col-md-7
       %label Shipping
     .col-md-5
@@ -8,7 +8,7 @@
         %span.total-price= product.ship_price
 - else
   - if transaction.days > 0
-    .col-md-12
+    .col-md-12.no-mar-pad
       .col-md-7.col-xs-7
         %label Rent for #{transaction.days} day(s)
       .col-md-5.col-xs-5
@@ -17,14 +17,14 @@
           = transaction.daily_rent * transaction.days
     %hr.col-md-11.col-xs-12.mtop-v-5
   - if transaction.hours > 0
-    .col-md-12
+    .col-md-12.no-mar-pad
       .col-md-7.col-xs-7
         %label Rent for #{transaction.hours} hour(s)
       .col-md-5.col-xs-5
         %span.price.days= transaction.hourly_rent * transaction.hours
     %hr.col-md-11.col-xs-12.mtop-v-5
   - if transaction.weekend_days > 0
-    .col-md-12
+    .col-md-12.no-mar-pad
       .col-md-7.col-xs-7
         %label Rent for #{transaction.weekend_days} premium day(s)
       .col-md-5.col-xs-5
@@ -33,14 +33,14 @@
           = transaction.weekend_daily_rent * transaction.weekend_days
     %hr.col-md-11.col-xs-12.mtop-v-5
     - if transaction.weekend_hours > 0
-      .col-md-12
+      .col-md-12.no-mar-pad
         .col-md-7.col-xs-7
           %label Rent for #{transaction.weekend_hours} premium hour(s)
         .col-md-5.col-xs-5
           %span.price.days= transaction.weekend_hourly_rent * transaction.weekend_hours
       %hr.col-md-11.col-xs-12.mtop-v-5
   - if transaction.operator_price > 0
-    .col-md-12
+    .col-md-12.no-mar-pad
       .col-md-7.col-xs-7
         %label Operator/Driver Charge
       .col-md-5.col-xs-5
@@ -48,7 +48,7 @@
           %i.fa.fa-rupee
           %span.total-price= transaction.operator_price
     %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
+  .col-md-12.no-mar-pad
     .col-md-7.col-xs-7
       %label Total Rent
     .col-md-5.col-xs-5
@@ -56,7 +56,7 @@
         %i.fa.fa-rupee
         %span.total-price= transaction.rent_without_discount
   %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
+  .col-md-12.no-mar-pad
     .col-md-7.col-xs-7
       %label Discounts
     .col-md-5.col-xs-5
@@ -65,7 +65,7 @@
         %i.fa.fa-rupee
         %span.discount= transaction.discounts
   %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
+  .col-md-12.no-mar-pad
     .col-md-7.col-xs-7
       %label Total Rent after Discount
     .col-md-5.col-xs-5
@@ -73,7 +73,7 @@
         %i.fa.fa-rupee
         %span.total-price= transaction.rent_with_discount
   %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
+  .col-md-12.no-mar-pad
     .col-md-7.col-xs-7
       %label Tax
     .col-md-5.col-xs-5
@@ -81,7 +81,7 @@
         %i.fa.fa-rupee
         %span.total-price= transaction.tax
   %hr.col-md-11.col-xs-12.mtop-v-5
-  .col-md-12
+  .col-md-12.no-mar-pad
     .col-md-7.col-xs-7
       %label Refunable Security Deposit
     .col-md-5.col-xs-5

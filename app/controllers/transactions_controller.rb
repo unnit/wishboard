@@ -248,12 +248,15 @@ class TransactionsController < ApplicationController
         no = "+91#{@transaction.user.profile.phone}"
         msg = "Sorry, Your payment failed. #{msg}. ID: #{@transaction.coco_transaction_id}"
         @transaction.send_sms(no, msg)
+
         no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
-        msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
+        msg_coco_manager_1 = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
         @transaction.send_sms(no_coco_manager_1, msg_coco_manager_1)
+
         no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
         msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
-
+        @transaction.send_sms(no_coco_manager_2, msg_coco_manager_2)
+        
         flash[:alert] = "#{msg}"
         redirect_to checkout_transaction_path(@transaction)
       end
@@ -265,9 +268,11 @@ class TransactionsController < ApplicationController
       no = "+91#{@transaction.user.profile.phone}"
       msg = "Sorry, Your payment failed as signaure verification failed. Please try again. ID: #{@transaction.coco_transaction_id}"
       @transaction.send_sms(no, msg)
+
       no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
-      msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
+      msg_coco_manager_1 = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
       @transaction.send_sms(no_coco_manager_1, msg_coco_manager_1)
+
       no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
       msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
       @transaction.send_sms(no_coco_manager_2, msg_coco_manager_2)

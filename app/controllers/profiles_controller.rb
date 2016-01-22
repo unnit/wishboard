@@ -104,7 +104,7 @@ class ProfilesController < ApplicationController
     end
 
     def business_params
-      params.require(:profile).permit(:business_type, :open_time, :close_time, :increase, :increase_hourly, avail_days: [], weekend_days: [])
+      params.require(:profile).permit(:business_type, :collect_security_deposit, :open_time, :close_time, :increase, :increase_hourly, avail_days: [], weekend_days: [])
     end
 
 end

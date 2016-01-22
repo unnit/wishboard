@@ -189,7 +189,10 @@
                 %td.font-medium.text-right
                   %span.tax-amount= @product.tax_amount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
               %tr
-                %td.font-medium Refundable Security Deposit
+                %td.font-medium
+                  Refundable Security Deposit
+                  - unless @product.collect_security_deposit?
+                    ^
                 %td.font-medium.text-right
                   = @product.security_deposit
               /
@@ -229,6 +232,10 @@
                 Login to Book
         - if @no_of_weekenddays > 0 || @product.discounts_any?
           .col-xs-12.col-md-12.from-bar.mtop10.padding10.note-font-size
+            - unless @product.collect_security_deposit?
+              ^ Refundable Security Deposit will be collected while you pick up the item.
+              %br
+              %br
             - if @no_of_weekenddays > 0
               ** Premium Rent is charged by Item owner
               %br

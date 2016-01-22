@@ -12,7 +12,7 @@ development:
   default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
   watermark: "default_images:watermark"
   default_product_image: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/default_product.png"
-  extra_discount: 0.005
+  extra_discount: 0
 
 production:
   time_out: 7
@@ -28,4 +28,4 @@ production:
   default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
   watermark: "default_images:watermark"
   default_product_image: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/default_product.png"
-  extra_discount: 0.005
+  extra_discount: 0

@@ -2,10 +2,10 @@
 %td= link_to transaction.product.title, user_product_path(transaction.product.id), target: "_blank"
 %td= link_to transaction.product.user.name, "#profile-#{transaction.product.user.profile_id}", data: {toggle: "modal" }
 %td= link_to transaction.user.name, "#profile-#{transaction.user.profile_id}", data: {toggle: "modal" }
-%td= transaction.created_at.strftime("%d %a, %Y")
+%td= transaction.created_at.strftime("%d %a, %Y %H:%M")
 %td= transaction.duration
 %td= rupee transaction.amount
-%td= transaction.product.listing_type_name
+/%td= transaction.product.listing_type_name
 %td= transaction.display_status
 %td
   = link_to "#trans-#{transaction.id}", class: "btn btn-sm btn-success", data: {toggle: "modal"} do
@@ -31,7 +31,7 @@
             = transaction.product.user.name
             %br
             %label Transaction Type:
-            = transaction.product.listing_type
+            = transaction.product.listing_type_name
 
         .col-sm-12.no-mar-pad.mtop10
           %label.col-sm-4 Status
@@ -46,7 +46,7 @@
           .col-sm-8= transaction.user.name
         .col-sm-12.no-mar-pad
           %label.col-sm-4 Order Date
-          .col-sm-8= transaction.created_at.strftime("%d %a, %Y")
+          .col-sm-8= transaction.created_at.strftime("%d %a, %Y %H:%M")
         .col-sm-12.no-mar-pad
           %label.col-sm-4 Duration
           .col-sm-8= transaction.duration

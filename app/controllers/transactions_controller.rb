@@ -44,7 +44,7 @@ class TransactionsController < ApplicationController
         @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
         @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
         @transaction.tax = @product.tax_amount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-        @transaction.refundable_security_deposit = @product.security_deposit
+        @transaction.refundable_security_deposit = @product.collect_security_deposit? ? @product.security_deposit : 0
         @transaction.amount = @product.calculate_price(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
         @transaction.save
 
@@ -95,7 +95,7 @@ class TransactionsController < ApplicationController
     @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
     @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
     @transaction.tax = @product.tax_amount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-    @transaction.refundable_security_deposit = @product.security_deposit
+    @transaction.refundable_security_deposit = @product.collect_security_deposit? ? @product.security_deposit : 0
     @transaction.amount = @product.calculate_price(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
 
     ###############
@@ -256,7 +256,7 @@ class TransactionsController < ApplicationController
         no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
         msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
         @transaction.send_sms(no_coco_manager_2, msg_coco_manager_2)
-        
+
         flash[:alert] = "#{msg}"
         redirect_to checkout_transaction_path(@transaction)
       end

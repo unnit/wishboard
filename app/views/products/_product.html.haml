@@ -1,7 +1,7 @@
 - length ||= 13
 .brdr.bgc-fff.pad-10.box-shad.btm-mrg-20.property-listing
   .media
-    = link_to user_product_path(product.id) do
+    = link_to user_product_path(product.id), target: "_blank" do
       = cl_image_tag product.image.filename, class: "img-responsive img-style-new", alt: "#{product.title}-#{product.category_name}", width: 253, height: 190, crop: :fill
     = link_to "javascript:;" do
       = cl_image_tag product.user.avatar, class: "img-circle profile_pic", width: 40, height: 40, crop: :fill
@@ -11,7 +11,7 @@
           Free
         - else
           - if product.daily_type?
-            %i.fa.fa-rupee= " #{product.price}"
+            %i.fa.fa-rupee= "#{product.price}"
             %span.note-font-size /day
           -elsif product.hourly_type?
             %i.fa.fa-rupee= " #{product.hourly_price}"

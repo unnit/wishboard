@@ -46,6 +46,12 @@
                     .col-sm-3
                       = f.select :business_type, Profile::BUSINESS_TYPE, {include_blank: 'Select'}, class: "select_box coco-select-box", required: true
                   .form-group
+                    %label.col-sm-2.control-label
+                      Collect Security Deposit through Cocociti
+                      %span.website-color *
+                    .col-sm-4.mtop10
+                      = f.check_box :collect_security_deposit
+                  .form-group
                     .col-sm-4
                       %h3.mtop10.mbottom0 Pickup Address
                     - if current_user.has_delivery_address? && current_user.no_pickup_address?

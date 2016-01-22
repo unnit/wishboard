@@ -12,14 +12,16 @@
   %span{title: "#{product.location.name}"}
     = truncate product.location.name, length: 10
 %td= product.created_at.strftime("%d %b, %y")
-%td= link_to product.user.email, "#profile-#{product.user.profile_id}", data: {toggle: 'modal'}
+%td= link_to "#{truncate product.user.email, length: 10}", "#profile-#{product.user.profile_id}", data: {toggle: 'modal'}
+%td= product.price
+%td= product.hourly_price
 %td= product.rental_status
 %td.avail{style: "width: 80px"}= render partial: "avail_toggle", locals: {product: product}
-
 %td.closest.text-center
-  = check_box_tag :available, product.featured,  product.featured?, class: "featured-toggle", data: {id: product.id}
+  = check_box_tag :available, product.featured, product.featured?, class: "featured-toggle", data: {id: product.id}
   %span.update-msg{style: "color: green;"}
   %span.update-error{style: "color: red;"}
+%td= product.owner_available_status
 %td{style: "width: 90px"}
   = link_to user_product_path(product.id), class: "btn btn-sm btn-primary edit-product", target: "_blank" do
     %span.glyphicon.glyphicon-eye-open

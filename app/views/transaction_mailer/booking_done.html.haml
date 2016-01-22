@@ -12,10 +12,18 @@
     = @transaction.amount
 
 %span{style: "font-size:14px;float:left;margin-bottom:30px;width:100%;"}
-  Refundable Deposit:
-  %strong{style: "font-size:16px;"}
-    &#8377;&nbsp;
-    = @transaction.refundable_security_deposit
+  Refundable Security Deposit:
+  - if @transaction.product.collect_security_deposit?
+    %strong{style: "font-size:16px;"}
+      &#8377;&nbsp;
+      = @transaction.refundable_security_deposit
+  -else
+    %strong{style: "font-size:16px;"}
+      &#8377;&nbsp;
+      = @transaction.product.security_deposit
+    %br
+    Note: Refundable Security Deposit will be collected while customer accepts your item.
+    %br
 
 %span{style: "width: 100%;float:left;margin-bottom:30px;text-align:center;"}
   %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}

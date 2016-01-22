@@ -9,8 +9,19 @@ Dear #{@user.name},
   %br
   %br
   Amount to pay:
+  &#8377;
   %strong
     = @transaction.amount
+  %br
+  %br
+  Refundable Security Deposit:
+  &#8377;
+  - if @transaction.product.collect_security_deposit?
+    %strong= @transaction.refundable_security_deposit
+  -else
+    %strong= @transaction.product.security_deposit
+    %br
+    Note: Refundable Security Deposit will be collected while you pick up the item.
   %br
   %br
   Duration:

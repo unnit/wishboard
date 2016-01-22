@@ -9,6 +9,16 @@ for
 = @transaction.amount
 %br
 %br
+Refundable Security Deposit:
+&#8377;
+- if @transaction.product.collect_security_deposit?
+  %strong= @transaction.refundable_security_deposit
+-else
+  %strong= @transaction.product.security_deposit
+  %br
+  Note: Refundable Security Deposit will be collected while customer accepts your item.
+%br
+%br
 %span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
   %strong
     Booking Details

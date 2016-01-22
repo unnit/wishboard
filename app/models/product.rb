@@ -176,7 +176,19 @@ class Product < ActiveRecord::Base
     billing_type == Product::BILLING_TYPE_VALUES[1]
   end
 
+  def collect_security_deposit?
+    user.profile.collect_security_deposit
+  end
+
   #get infos
+  def owner_available_status
+    if available == true
+      return "On"
+    else
+      return "Off"
+    end
+  end
+
   def listing_type_name
     return Product::LISTING_TYPE[0][0] if for_free?
     return Product::LISTING_TYPE[1][0] if for_rent?
@@ -470,7 +482,8 @@ class Product < ActiveRecord::Base
 
   def calculate_price(days, hours, op_type, no_of_weekenddays, end_day_weekend)
     return ship_price if for_free?
-    amount = price_with_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend) + tax_amount(days, hours, op_type, no_of_weekenddays, end_day_weekend) + security_deposit
+    deposit = collect_security_deposit? ? security_deposit : 0
+    amount = price_with_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend) + tax_amount(days, hours, op_type, no_of_weekenddays, end_day_weekend) + deposit
     amount.round(0).to_i
   end
   #end pricing
@@ -506,7 +519,7 @@ class Product < ActiveRecord::Base
   end
 
   def rental_status
-    transactions.out_for_rent_today.blank? ? "Available" : "Out for Rental"
+    transactions.out_for_rent_today.blank? ? "No" : "Yes"
   end
 
   #actions

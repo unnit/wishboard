@@ -30,6 +30,14 @@ class User < ActiveRecord::Base
     role=="admin"
   end
 
+  def user_status
+    if inactive == true
+      return "NO"
+    else
+      return "CNF"
+    end
+  end
+
   def not_eligible_to_list?
     if profile.business_type.blank? || profile.avail_days.blank? || profile.open_time.blank? || profile.close_time.blank? || addresses.pickup.first.blank?
       return true
@@ -46,7 +54,7 @@ class User < ActiveRecord::Base
   end
 
   def no_pickup_address?
-    pickup_address = addresses.pickup.first  
+    pickup_address = addresses.pickup.first
     unless pickup_address
       return true
     end

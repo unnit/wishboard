@@ -188,6 +188,7 @@ class TransactionsController < ApplicationController
     @address.state = params[:state]
     @address.mobile = params[:mobile]
     @address.email = params[:email]
+    @address.landmark = params[:landmark]
     @address.address_mandatory = "yes"
     @address.valid?
 

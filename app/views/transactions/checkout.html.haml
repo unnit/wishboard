@@ -49,6 +49,9 @@
             %label.col-md-3 Address Line 2*
             .col-md-5= af.text_field :address2, class: "form-control", id: "citrusStreet2", required: true
           .col-md-12.mtop10.no-mar-pad
+            %label.col-md-3 Landmark*
+            .col-md-5= af.text_field :landmark, class: "form-control", id: "checkoutLandmark", required: true
+          .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Zipcode*
             .col-md-5= af.text_field :zip, class: "form-control check_zip", id: "citrusZip", required: true
           .col-md-12.mtop10.no-mar-pad
@@ -159,6 +162,7 @@
             last_name: $("#citrusLastName").val(),
             address1: $("#citrusStreet1").val(),
             address2: $("#citrusStreet2").val(),
+            landmark: $("#checkoutLandmark").val(),
             city: $("#citrusCity").val(),
             state: $("#citrusState").val(),
             zip: $("#citrusZip").val(),

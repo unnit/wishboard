@@ -2,45 +2,47 @@
   -meta_content = "#{truncate @product.description, length: 200}"
 = content_for :title do
   -title = "#{@product.title}-#{@product.category_name}-for-rent-in-Bangalore-#{@product.location.name.split(/\W+/)[0]}-#{@product.location.name.split(/\W+/)[1]} - Cocociti"
-= content_for :header_extra do
-  = render "layouts/search_form"
 .container
   .row.mar-des-page
     .col-md-8
-      - unless @product.images.blank?
-        %ul.bxslider
-          - @product.images.each do |image|
-            %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", :transformation => {:width => 740, :height => 460, :crop => :fit}, :overlay => "#{GLOBAL_VARIABLES[:watermark]}",
-            :crop => :fit, :gravity => :south_east, :x => 15, :y => 20
-        #bx-pager.text-center
-          - @product.images.each_with_index do |image, i|
-            = link_to "", "data-slide-index" => i do
-              = cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", width: 145, height: 80, crop: :fit
-        .col-xs-12.col-md-12.available
-          .col-xs-12.col-sm-3.bord-right-prd-show
-            %h6.des-own-det Owner
-            = cl_image_tag @product.user.avatar, class: "img-circle mbottom5", width: 40, height: 40, crop: :fill
-            %h6.des-own-det= @product.user.name
-          .col-xs-12.col-sm-3.bord-right-prd-show
-            %h6.des-own-det Open - Close Time
-            %center
-              .open-close-sprite
-            %h6.des-own-det.pull-left.full-width= "#{@product.user.profile.open_time} - #{@product.user.profile.close_time}"
-          .col-xs-12.col-sm-3.bord-right-prd-show
-            %h6.des-own-det Booking Type
-            - if @product.owner_type == Product::OWNER_TYPE[0][1]
+      .col-md-12.no-mar-pad
+        .ol.breadcrumb.mbottom0.note-font-size
+          = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
+      .col-md-12.no-mar-pad
+        - unless @product.images.blank?
+          %ul.bxslider
+            - @product.images.each do |image|
+              %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", :transformation => {:width => 740, :height => 460, :crop => :fit}, :overlay => "#{GLOBAL_VARIABLES[:watermark]}",
+              :crop => :fit, :gravity => :south_east, :x => 15, :y => 20
+          #bx-pager.text-center
+            - @product.images.each_with_index do |image, i|
+              = link_to "", "data-slide-index" => i do
+                = cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", width: 145, height: 80, crop: :fit
+          .col-xs-12.col-md-12.available
+            .col-xs-6.col-sm-3.bord-right-prd-show
+              %h6.des-own-det Owner
+              = cl_image_tag @product.user.avatar, class: "img-circle mbottom5", width: 40, height: 40, crop: :fill
+              %h6.des-own-det= @product.user.name
+            .col-xs-6.col-sm-3.bord-right-prd-show
+              %h6.des-own-det Open - Close Time
               %center
-                .booking-type-sprite
-              %h6.des-own-det.pull-left.full-width= Product::OWNER_TYPE[0][0].humanize
-            - elsif @product.owner_type == Product::OWNER_TYPE[1][1]
+                .open-close-sprite
+              %h6.des-own-det.pull-left.full-width= "#{@product.user.profile.open_time} - #{@product.user.profile.close_time}"
+            .col-xs-6.col-sm-3.bord-right-prd-show
+              %h6.des-own-det Booking Type
+              - if @product.owner_type == Product::OWNER_TYPE[0][1]
+                %center
+                  .booking-type-sprite
+                %h6.des-own-det.pull-left.full-width= Product::OWNER_TYPE[0][0].humanize
+              - elsif @product.owner_type == Product::OWNER_TYPE[1][1]
+                %center
+                  .booking-type-confirm-sprite
+                %h6.des-own-det.pull-left.full-width= Product::OWNER_TYPE[1][0].humanize
+            .col-xs-6.col-sm-3
+              %h6.des-own-det Owner Type
               %center
-                .booking-type-confirm-sprite
-              %h6.des-own-det.pull-left.full-width= Product::OWNER_TYPE[1][0].humanize
-          .col-xs-12.col-sm-3
-            %h6.des-own-det Business Type
-            %center
-              .business-type-sprite
-            %h6.des-own-det.pull-left.full-width= @product.user.profile.business_type_name
+                .business-type-sprite
+              %h6.des-own-det.pull-left.full-width= @product.user.profile.business_type_name
     .col-md-4
       %h2.product-name.no-mar-pad.mbottom5= @product.title
       .col-md-6
@@ -268,7 +270,7 @@
   .col-xs-12.col-md-8.mtop20.no-padding-left
     %h4.list-detail-head Description
     %hr.col-md-12.mtop-v-5
-    %p.list-detail-desc.text-justify= @product.description
+    %p.list-detail-desc.text-justify= simple_format @product.description
   .col-xs-12.col-md-8.mtop20.no-padding-left
     #myTab
       %ul.nav.nav-tabs

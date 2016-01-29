@@ -23,7 +23,7 @@
             %td= category.image
             %td= link_to "Add Subcategory", "#add-subcategory", data: {toggle: "modal", dismiss: true, id: category.id}, class: "btn btn-sm btn-success add-sub"
             %td
-              = link_to "#edit-category", data: {toggle: "modal", dismiss: true, id: category.id, name: category.name, image: category.image}, class: "btn btn-sm btn-success edit-cat" do
+              = link_to "#edit-category", data: {toggle: "modal", dismiss: true, id: category.id, name: category.name, image: category.image, slug: category.slug}, class: "btn btn-sm btn-success edit-cat" do
                 %span.glyphicon.glyphicon-pencil
             %td
               = link_to admin_category_path(category), class: "btn btn-sm btn-danger", :data => { :confirm => "Delete category will delete all it's sub-category. Are you sure?" }, method: :delete do
@@ -34,7 +34,7 @@
               %td= sub.image
               %td
               %td
-                = link_to "#edit-category", data: {toggle: "modal", dismiss: true, id: sub.id, parentid: sub.parent_id, name: sub.name, image: sub.image}, class: "btn btn-sm btn-success edit-cat" do
+                = link_to "#edit-category", data: {toggle: "modal", dismiss: true, id: sub.id, parentid: sub.parent_id, name: sub.name, image: sub.image, slug: sub.slug}, class: "btn btn-sm btn-success edit-cat" do
                   %span.glyphicon.glyphicon-pencil
               %td
                 = link_to admin_category_path(sub.id), method: :delete, data: {confirm: "Are you sure you want to delete the category?"}, class: "btn btn-sm btn-danger" do
@@ -82,6 +82,7 @@
         $(".edit_category").attr("action", "/admin/categories/" + $(this).data("id"));
         $("#edit-category input[name*=name]").val($(this).data("name"));
         $("#edit-category input[name*=image]").val($(this).data("image"));
+        $("#edit-category input[name*=slug]").val($(this).data("slug"));
         $("#edit-category").find("#category_parent_id").val($(this).data("parentid"));
       });
 

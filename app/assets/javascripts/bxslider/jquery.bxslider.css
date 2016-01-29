@@ -32,8 +32,8 @@
 
 .bx-wrapper .bx-viewport {
 	-moz-box-shadow: 0 0 5px #ccc;
-	-webkit-box-shadow: 0 0 5px #ccc;
-	box-shadow: 0 0 5px #ccc;
+	/*-webkit-box-shadow: 0 0 5px #ccc;
+	box-shadow: 0 0 5px #ccc;*/
 	border:  5px solid #fff;
 	/*left: -5px;*/
 	background: #fff;
@@ -131,6 +131,7 @@
 	height: 32px;
 	text-indent: -9999px;
 	z-index: 10;
+	display: none;
 }
 
 .bx-wrapper .bx-controls-direction a.disabled {

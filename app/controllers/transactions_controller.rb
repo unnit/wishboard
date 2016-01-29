@@ -238,6 +238,9 @@ class TransactionsController < ApplicationController
     logger.info @signature
     logger.info params["signature"]
     logger.info '*****************'
+    no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
+    no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
+    no = "+91#{@transaction.user.profile.phone}"
     if @signature == params["signature"]
       if params["TxStatus"] == Transaction::PAYMENT_GATEWAY_STATUS[0]
         @transaction.paid!(params["transactionId"], params["amount"])
@@ -245,18 +248,11 @@ class TransactionsController < ApplicationController
       else
         TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
         msg = params["TxMsg"]
-
-        no = "+91#{@transaction.user.profile.phone}"
         msg = "Sorry, Your payment failed. #{msg}. ID: #{@transaction.coco_transaction_id}"
+        msg_coco_manager = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id} Mobile: #{@transaction.user.profile.phone}"
         @transaction.send_sms(no, msg)
-
-        no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
-        msg_coco_manager_1 = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
-        @transaction.send_sms(no_coco_manager_1, msg_coco_manager_1)
-
-        no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
-        msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
-        @transaction.send_sms(no_coco_manager_2, msg_coco_manager_2)
+        @transaction.send_sms(no_coco_manager_1, msg_coco_manager)
+        @transaction.send_sms(no_coco_manager_2, msg_coco_manager)
 
         flash[:alert] = "#{msg}"
         redirect_to checkout_transaction_path(@transaction)
@@ -265,18 +261,11 @@ class TransactionsController < ApplicationController
       message = "Signaure Verification failed. Please try again."
       flash[:alert] = "Signaure Verification failed. Please try again."
       TransactionMailer.fail(@transaction, message).deliver_now
-
-      no = "+91#{@transaction.user.profile.phone}"
       msg = "Sorry, Your payment failed as signaure verification failed. Please try again. ID: #{@transaction.coco_transaction_id}"
+      msg_coco_manager = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}. Mobile: #{@transaction.user.profile.phone}"
       @transaction.send_sms(no, msg)
-
-      no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
-      msg_coco_manager_1 = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
-      @transaction.send_sms(no_coco_manager_1, msg_coco_manager_1)
-
-      no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
-      msg_coco_manager_2 = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}"
-      @transaction.send_sms(no_coco_manager_2, msg_coco_manager_2)
+      @transaction.send_sms(no_coco_manager_1, msg_coco_manager)
+      @transaction.send_sms(no_coco_manager_2, msg_coco_manager)
 
       redirect_to checkout_transaction_path(@transaction)
     end

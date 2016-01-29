@@ -13,6 +13,8 @@ class ProductsController < ApplicationController
 
   def search
     #product_paginate
+    add_breadcrumb "Home", root_path
+    add_breadcrumb "Search Results", search_products_path
     product_search
     render :index
     return
@@ -89,6 +91,10 @@ class ProductsController < ApplicationController
   end
 
   def show
+    add_breadcrumb "Home", root_path
+    add_breadcrumb "#{@product.category.parent_name.downcase.titleize}", category_path("#{@product.category.parent.slug}")
+    add_breadcrumb "#{@product.category_name.downcase.titleize}", category_path("#{@product.category.slug}")
+    add_breadcrumb "#{@product.title.downcase.titleize}", user_product_path(@product.id)
     unless @product.available?
       unless current_user
         redirect_to root_path
@@ -126,8 +132,7 @@ class ProductsController < ApplicationController
   def update_admin_approved
     if current_user.admin?
       @product.toggle!
-      flash[:success] = "Aprroved successfully" if @product.admin_approved == true
-      flash[:success] = "Unaprroved successfully" if @product.admin_approved == false
+      flash[:success] = @product.admin_approved == true ? "Aprroved successfully" : "Unaprroved successfully"
       redirect_to user_product_path(@product.id)
     end
   end
@@ -183,7 +188,18 @@ class ProductsController < ApplicationController
 
   def category
     category = Category.friendly.find params[:id]
-    @products = Product.where("available = true and admin_approved = true and parent_category = ?", category.id)
+    parent_id = category.parent_id
+    conditions = ["available = true and admin_approved = true"]
+    if parent_id.blank?
+      conditions[0]+=" and parent_category = ?"
+    else
+      conditions[0]+=" and category_id = ?"
+    end
+    conditions.push category.id
+    @products = Product.where(conditions)
+    add_breadcrumb "Home", root_path
+    add_breadcrumb "#{@products.first.category.parent_name.downcase.titleize}", category_path("#{@products.first.category.parent.slug}")
+    add_breadcrumb "#{@products.first.category_name.downcase.titleize}", category_path("#{@products.first.category.slug}") unless parent_id.blank?
   end
 
   private
@@ -296,53 +312,85 @@ class ProductsController < ApplicationController
     else
       @products = Product.where(conditions).order(rate: :desc)
     end
-    logger.info '*************************'
-    logger.info @products.count
-    logger.info '*************************'
+    result_count = @products.count
     unless params[:start_date_time].blank?
       session[:start_date_time] = params[:start_date_time]
-      search_start_day = params[:start_date_time].to_date.wday
-      search_start_time = params[:start_date_time].split(" ").last
-      search_start_date_time = params[:start_date_time].in_time_zone("Kolkata")
+      @start_day = params[:start_date_time].to_date.wday
+      @start_time = params[:start_date_time].split(" ").last
+      @start_date_time = params[:start_date_time].in_time_zone("Kolkata")
     end
     unless params[:end_date_time].blank?
       session[:end_date_time] = params[:end_date_time]
-      search_end_day = params[:end_date_time].to_date.wday
-      search_end_time = params[:end_date_time].split(" ").last
-      search_end_date_time = params[:end_date_time].in_time_zone("Kolkata")
+      @end_day = params[:end_date_time].to_date.wday
+      @end_time = params[:end_date_time].split(" ").last
+      @end_date_time = params[:end_date_time].in_time_zone("Kolkata")
     end
     i = 0
     @products.each do |product|
-
       if product.transactions.renting.blank?
-        if product.enabled_days.include?("#{search_start_day}") && product.enabled_days.include?("#{search_end_day}") && product.enabled_hours.include?("#{search_start_time}") && product.enabled_hours.include?("#{search_end_time}")
+        if product.enabled_days.include?("#{@start_day}") && product.enabled_days.include?("#{@end_day}") && product.enabled_hours.include?("#{@start_time}") && product.enabled_hours.include?("#{@end_time}")
         else
           @products = @products.reject{|p| p.id == product.id}
           i+=1
-          logger.info '********** Removed111'
-          logger.info i
         end
       else
         product.transactions.renting.each do |transaction|
           transaction_start_date_time =  transaction.startdate - GLOBAL_VARIABLES[:buffer_time_of_transaction].hour
           transaction_end_date_time =  transaction.enddate + GLOBAL_VARIABLES[:buffer_time_of_transaction].hour
-          logger.info '**************************'
-          logger.info search_start_date_time
-          logger.info '**************************'
-          logger.info '**************************'
-          logger.info transaction_end_date_time
-          logger.info '**************************'
-          if product.enabled_days.include?("#{search_start_day}") && product.enabled_days.include?("#{search_end_day}") && product.enabled_hours.include?("#{search_start_time}") && product.enabled_hours.include?("#{search_end_time}") && ( ((search_start_date_time > transaction_end_date_time) && (search_end_date_time > transaction_end_date_time)) || ((search_start_date_time < transaction_start_date_time) && (search_end_date_time < transaction_start_date_time)) )
+          if product.enabled_days.include?("#{@start_day}") && product.enabled_days.include?("#{@end_day}") && product.enabled_hours.include?("#{@start_time}") && product.enabled_hours.include?("#{@end_time}") &&
+            ( ((@start_date_time > transaction_end_date_time) && (@end_date_time > transaction_end_date_time)) || ((@start_date_time < transaction_start_date_time) && (@end_date_time < transaction_start_date_time)) )
           else
             @products = @products.reject{|p| p.id == product.id}
             i+=1
-            logger.info '********** Removed'
-            logger.info i
           end
         end
       end
     end
+    filtered_count = @products.count
+    suggest_availability if filtered_count == 0 && result_count > 0
     @products = Kaminari.paginate_array(@products).page(params[:page]).per(20)
+  end
+
+  def suggest_availability
+    @suggest_start_date = @start_date_time
+    @suggest_end_date = @end_date_time
+    if @start_day == GLOBAL_VARIABLES[:sunday]
+      @suggest_start_date = @start_date_time + 1.day
+      @suggest_end_date = @end_date_time + 1.day
+    end
+    if @end_day == GLOBAL_VARIABLES[:sunday]
+      @suggest_end_date = @end_date_time + 1.day
+    end
+    if GLOBAL_VARIABLES[:bike_two_wheelers] == params[:category].to_i
+      if @end_time.in_time_zone("Kolkata") < GLOBAL_VARIABLES[:bike_start_time].in_time_zone("Kolkata")
+        @suggest_end_date = @suggest_end_date.change({ hour: GLOBAL_VARIABLES[:bike_start_hour], min: GLOBAL_VARIABLES[:bike_start_minute] })
+      elsif @end_time.in_time_zone("Kolkata") > GLOBAL_VARIABLES[:bike_end_time].in_time_zone("Kolkata")
+        @suggest_end_date = (@suggest_end_date + 1.day).change({ hour: GLOBAL_VARIABLES[:bike_start_hour], min: GLOBAL_VARIABLES[:bike_start_minute] })
+      end
+      if @start_time.in_time_zone("Kolkata") < GLOBAL_VARIABLES[:bike_start_time].in_time_zone("Kolkata")
+        @suggest_start_date = @suggest_start_date.change({ hour: GLOBAL_VARIABLES[:bike_start_hour], min: GLOBAL_VARIABLES[:bike_start_minute] })
+      elsif @start_time.in_time_zone("Kolkata") > GLOBAL_VARIABLES[:bike_end_time].in_time_zone("Kolkata")
+        @suggest_start_date = (@suggest_start_date + 1.day).change({ hour: GLOBAL_VARIABLES[:bike_start_hour], min: GLOBAL_VARIABLES[:bike_start_minute] })
+      end
+    elsif GLOBAL_VARIABLES[:fashion_and_dress] == params[:category].to_i
+      if @end_time.in_time_zone("Kolkata") < GLOBAL_VARIABLES[:dress_start_time].in_time_zone("Kolkata")
+        @suggest_end_date = @suggest_end_date.change({ hour: GLOBAL_VARIABLES[:dress_start_hour], min: GLOBAL_VARIABLES[:dress_start_minute] })
+      elsif @end_time.in_time_zone("Kolkata") > GLOBAL_VARIABLES[:dress_end_time].in_time_zone("Kolkata")
+        @suggest_end_date = (@suggest_end_date + 1.day).change({ hour: GLOBAL_VARIABLES[:dress_start_hour], min: GLOBAL_VARIABLES[:dress_start_minute] })
+      end
+      if @start_time.in_time_zone("Kolkata") < GLOBAL_VARIABLES[:dress_start_time].in_time_zone("Kolkata")
+        @suggest_start_date = @suggest_start_date.change({ hour: GLOBAL_VARIABLES[:dress_start_hour], min: GLOBAL_VARIABLES[:dress_start_minute] })
+      elsif @start_time.in_time_zone("Kolkata") > GLOBAL_VARIABLES[:dress_end_time].in_time_zone("Kolkata")
+        @suggest_start_date = (@suggest_start_date + 1.day).change({ hour: GLOBAL_VARIABLES[:dress_start_hour], min: GLOBAL_VARIABLES[:dress_start_minute] })
+      end
+    end
+    if @suggest_start_date != @start_date_time || @suggest_end_date != @end_date_time
+      @suggest_end_date = @suggest_end_date + 1.day if @suggest_start_date == @suggest_end_date
+      @suggest_end_date = @suggest_start_date + 4.hours if ((@suggest_start_date + 4.hours) > @suggest_end_date)
+      @suggest_start_date = @suggest_start_date.strftime("%d-%m-%Y %H:%M")
+      @suggest_end_date = @suggest_end_date.strftime("%d-%m-%Y %H:%M")
+      @msg = "Sorry, No products are available during the selected time frame.<br><br>Shall we edit your dates to a nearest value to check availability.".html_safe
+    end
   end
 
   def set_product

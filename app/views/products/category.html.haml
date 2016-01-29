@@ -1,4 +1,7 @@
-.col-md-12.col-sm-12.no-mar-pad.featured-list-2.ptop70
+.col-md-12.col-sm-12.no-mar-pad.featured-list-2.mar-des-page
+  .col-md-12
+    .ol.breadcrumb.mbottom0.note-font-size
+      = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
   - @products.each_slice(4) do |slide|
     .col-md-12.col-sm-12
       - slide.each do |product|

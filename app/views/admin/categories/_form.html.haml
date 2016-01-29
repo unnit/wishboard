@@ -1,4 +1,4 @@
-= form_for [:admin, category], hrml: {"data-parsley-validate" => true}, remote: true do |f|   
+= form_for [:admin, category], hrml: {"data-parsley-validate" => true}, remote: true do |f|
   .errors
   .form-group
     = f.label :name
@@ -6,6 +6,9 @@
   .form-group
     = f.label :image
     = f.text_field :image, :class => 'form-control'
+  .form-group
+    = f.label :slug, "Slug/URL"
+    = f.text_field :slug, :class => 'form-control'
   .form-group
     = f.hidden_field :parent_id
     = f.submit 'Save', class: "btn btn-primary"

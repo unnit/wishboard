@@ -239,7 +239,7 @@ $(document).ready(function(){
     });
   });
 
-  //MASTER SEARCH DATE PICKER
+  //MASTER SEARCH DATE PICKER, HEADER DATE PICKER, DATE OF BIRTH
   search_start_date = $("#start_date_and_time_for_search_datepicker").data('id');
   search_end_date = $("#end_date_and_time_for_search_datepicker").data('id');
   dob_end_date = $("#end_date_and_time_for_dob_datepicker").data('id');
@@ -312,7 +312,7 @@ $(document).ready(function(){
     var date_arr = $("#start_date_time_header").val().split(" ");
     var date_of_arr = date_arr[0].split("-").reverse().join("-")
     var date = new Date(date_of_arr);
-    var hrs = parseInt(date_arr[1].split(":")) + 2
+    var hrs = parseInt(date_arr[1].split(":")) + 4
     if(parseInt(date_arr[1].split(":")[1]) == 30){
       var mins = 30
     }
@@ -324,10 +324,9 @@ $(document).ready(function(){
     $('.header_end_date_time').datetimepicker('setStartDate', date);
     $(".header_end_date_time").datetimepicker('show');
   });
-  //$(".non_coco_start_date").datetimepicker().on('changeDate', function(){
-    //$('.non_coco_end_date').datetimepicker('setStartDate', $("#non_coco_start_date").val());
-    //$(".non_coco_end_date").datetimepicker('show');
-  //});
+  $(".header_end_date_time").datetimepicker().on('changeDate', function(){
+    $(".dropdown-lg").addClass("open");
+  });
   $(".date_of_birth").datetimepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
@@ -336,6 +335,13 @@ $(document).ready(function(){
     minView: 2,
     endDate: new Date(dob_end_date),
     startDate: new Date(dob_start_date)
+  });
+
+  $(".land-src-button").click(function(){
+      $(".home_start_date").removeAttr("readonly");
+      $(".home_end_date").removeAttr("readonly");
+      setTimeout(function(){$(".home_start_date").attr("readonly", true);}, 1000);
+      setTimeout(function(){$(".home_end_date").attr("readonly", true);}, 1000);
   });
 
   $("#myTab .tab-pane").mCustomScrollbar({

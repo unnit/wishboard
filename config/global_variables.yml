@@ -13,6 +13,23 @@ development:
   watermark: "default_images:watermark"
   default_product_image: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/default_product.png"
   extra_discount: 0
+  #-----For Date Suggesstion in search page -------
+  bike_two_wheelers: 1
+  fashion_and_dress: 39
+  bike_start_time: "08:30"
+  bike_end_time: "19:00"
+  fashion_start_time: "11:00"
+  fashion_end_time: "18:00"
+  sunday: 0
+  bike_start_hour: 8
+  bike_start_minute: 30
+  bike_end_hour: 19
+  bike_end_minute: 00
+  dress_start_hour: 11
+  dress_start_minute: 00
+  dress_end_hour: 18
+  dress_end_minute: 00
+  #----------------------
 
 production:
   time_out: 7
@@ -29,3 +46,20 @@ production:
   watermark: "default_images:watermark"
   default_product_image: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/default_product.png"
   extra_discount: 0
+  #-----For Date Suggesstion in search page -------
+  bike_two_wheelers: 1
+  fashion_and_dress: 39
+  bike_start_time: "08:30"
+  bike_end_time: "19:00"
+  dress_start_time: "11:00"
+  dress_end_time: "18:00"
+  sunday: 0
+  bike_start_hour: 8
+  bike_start_minute: 30
+  bike_end_hour: 19
+  bike_end_minute: 00
+  dress_start_hour: 11
+  dress_start_minute: 00
+  dress_end_hour: 18
+  dress_end_minute: 00
+  #----------------------

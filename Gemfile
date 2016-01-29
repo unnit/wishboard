@@ -35,6 +35,7 @@ gem "jquery-fileupload-rails"
 gem 'sidekiq', '~> 4.0', '>= 4.0.1'
 gem 'validates_timeliness', '~> 3.0'
 gem 'plivo'
+gem "breadcrumbs_on_rails"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1238,14 +1238,14 @@ padding-bottom: 4px;
 
 }
 @media only screen and (max-width: 640px) {
-    .tabbable-panel-mp {
-  padding: 10px;
-    }
+  .tabbable-panel-mp {
+    padding: 10px;
+  }
 }
 
 /* Default mode */
 .tabbable-line-mp > .nav-tabs {
-padding-top: 24px;
+padding-top: 10px;
   border: none;
   margin: 0px;
 }
@@ -1307,21 +1307,13 @@ padding-top: 24px;
      margin-top: 0px;
     margin-left: 65px;
 }
-@media only screen and (max-width: 776px) {
-    .tabs-mar{
-        text-align:center;
-       width: 105px;
-        font-size: 12px;
-    margin-left: 0px;
-}
-}
 @media only screen and (max-width: 446px) {
-    .tabs-mar{
+  .tabs-mar{
     text-align:center;
-       width: 70px;
-        font-size: 12px;
+    width: 70px;
+    font-size: 12px;
     margin-left: 0px;
-}
+  }
 }
 
 /**** MODULE ****/
@@ -1440,14 +1432,12 @@ background-color: #72bf44;
 }
 
 @media only screen and (max-width: 992px) {
-    .month-week{
-        margin-left:0;}
-    .profile_pic{
-     margin-left: 70%;
-    }
-    }
-
-
+  .month-week{
+      margin-left:0;}
+  .profile_pic{
+    margin-left: 70%;
+  }
+}
 .st-coursol{
     border-color: #eb2424;
 }
@@ -1697,16 +1687,15 @@ border-bottom:5px solid #e84242;
 
 }
 @media only screen and (max-width: 992px) {
-
-   .mar-pd{
-    margin-left: 0;
-}
-.mar-cp{
-    margin-left: 0;
-}
-.mar-pt{
-    margin-left: 0;
-}
+  .mar-pd{
+  margin-left: 0;
+  }
+  .mar-cp{
+  margin-left: 0;
+  }
+  .mar-pt{
+  margin-left: 0;
+  }
 }
 
 /* sales and rent */
@@ -1786,11 +1775,6 @@ margin-top:15px;
 .product_tech_spec{
   height: 300px;
 };
-@media only screen and (max-width: 776px) {
-    .des-mar{
-    margin-left: 30px;
-}
-    }
 /* poduct details*/
 
 .tabbable-panel-pd {
@@ -1853,11 +1837,6 @@ margin-top:15px;
     margin-left:-16px;
     border:1px solid rgba(51, 51, 51, 0.18);
 }
-@media only screen and (max-width: 776px) {
-    .pr-bor{
-    margin-left:8px;
-    }
-}
 .tab-height{
     height:340px;
 
@@ -1880,17 +1859,6 @@ margin-top:15px;
     cursor: pointer;
 }
 
-@media only screen and (max-width: 776px) {
-.temp-font{
-    font-size: 12px;
-}
-.pr-details-tab{
-    font-size: 10px;
-     padding-left: 0px;
-    padding-right: 0px;
-}
-
-}
 /* review*/
 .rev-head{
     margin-bottom: 20px;
@@ -1928,16 +1896,6 @@ margin-top:15px;
     padding-left: 11px;
 
 }
-@media only screen and (max-width: 776px) {
-    .in-put-to {
-        padding-left: 0;
-    }
-
-    .from-bar{
-        margin-top: 20px;
-    }
-
-}
 .carousel-indicators > li,
 .carousel-indicators > li.active{
 
@@ -1955,11 +1913,6 @@ margin-top:15px;
     border-bottom: 2px solid black;
     color:black;
 }
-
-
-.mar-des-page{
-    margin-top: 70px;
-}
 .fot-mar-lp {
     margin-left: -20px;
     margin-right: -20px;
@@ -1971,26 +1924,13 @@ border: 4px solid #fff;
 width:66px;
 height:66px;
 }
-@media only screen and (max-width: 776px) {
-
-   .profile_pic2{
-
-    margin-left:75%;
-   }
-
-}
 
 .collbod {
-
-border-color: #D6E9C6;
-
+  border-color: #D6E9C6;
 }
 
-
 .collatitle {
-
-      color: #FFFFFF;
-
+  color: #FFFFFF;
 }
 
 .collbocol {
@@ -2103,13 +2043,6 @@ font-size: 14px;
     color:#333;
     font-weight:300;
     background-color: #fff;
-}
-@media only screen and (max-width: 776px) {
-
- .nav-login{
-     margin-right:0;
- }
-
 }
 .nav-border{
     border:none;
@@ -2254,13 +2187,6 @@ height:50px;
            width: 414px;
            height: 276px;
        }
-@media only screen and (max-width: 776px) {
-.img-w-h{
-    width: 100%;
-    height: 276px;
-
-       }
-}
 
 .img-style-new{
   margin-left: auto;
@@ -2298,12 +2224,6 @@ height:50px;
 }
 .pad-mob{
     padding-left: 5px;
-}
-
-@media only screen and (max-width: 776px) {
-.pad-mob{
-    padding-left: 18px;
-}
 }
 
 /**********Extra CSS ******/
@@ -2485,26 +2405,8 @@ th.headerSortDown {
 .land-src-mar-return{
       margin-left: 60px;
 }
-@media only screen and (max-width: 776px) {
-  .land-src-mar-browse{
-        margin-left: 0px;
-        float: none !important;
-  }
-  .land-src-mar-book{
-        margin-left: 0px;
-        float: none !important;
-  }
-  .land-src-mar-pickup{
-        margin-left: 0px;
-        float: none !important;
-  }
-  .land-src-mar-return{
-        margin-left: 0px;
-        float: none !important;
-  }
-  .pa{
-    border: none !important;
-  }
+.mar-des-page{
+    margin-top: 60px !important;
 }
 .website-color{
   color: #E84242;
@@ -2573,4 +2475,72 @@ th.headerSortDown {
 }
 .browse-home a{
   color: white !important;
+}
+/********************** For Mobile Specific *************/
+@media only screen and (max-width: 776px) {
+  .land-src-mar-browse{
+        margin-left: 0px;
+        float: none !important;
+  }
+  .land-src-mar-book{
+        margin-left: 0px;
+        float: none !important;
+  }
+  .land-src-mar-pickup{
+        margin-left: 0px;
+        float: none !important;
+  }
+  .land-src-mar-return{
+        margin-left: 0px;
+        float: none !important;
+  }
+  .pa{
+    border: none !important;
+  }
+  .mar-des-page{
+      margin-top: 85px !important;
+  }
+  .search-bread-crumbs{
+    margin-top: 45px;
+  }
+  .tabs-mar{
+    text-align:center;
+    width: 105px;
+    font-size: 12px;
+    margin-left: 0px;
+  }
+  .des-mar{
+    margin-left: 30px;
+  }
+  .pr-bor{
+    margin-left:8px;
+  }
+  .temp-font{
+      font-size: 12px;
+  }
+  .pr-details-tab{
+    font-size: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .in-put-to {
+      padding-left: 0;
+  }
+
+  .from-bar{
+      margin-top: 20px;
+  }
+  .profile_pic2{
+    margin-left:75%;
+  }
+  .nav-login{
+      margin-right:0;
+  }
+  .img-w-h{
+    width: 100%;
+    height: 276px;
+  }
+  .pad-mob{
+    padding-left: 18px;
+  }
 }

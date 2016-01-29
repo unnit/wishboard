@@ -1,12 +1,8 @@
-= content_for :header_extra do
-  = render "layouts/search_form"
-
 .intro-header
   .container
     .row
       .col-lg-12
         .intro-message
-          /%h1 Cocociti
           %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/home-globe.png", class: "img-responsive", style: "margin: 0px auto;"}
           %h3.land-head All Things Rental!
           .row
@@ -18,12 +14,12 @@
                       .input-group.mbottom0.input-append.date.from_date_time
                         %span#sizing-addon2.input-group-addon.bg-white
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = text_field_tag :start_date_time, params[:start_date_time], placeholder: "Pick up Date & Time", class: "form-control home_start_date bg-white pon", style: "border-radius:0", readonly: true
+                        = text_field_tag :start_date_time, params[:start_date_time], placeholder: "Pick up Date & Time", class: "form-control home_start_date bg-white pon", style: "border-radius:0", required: true, readonly: true
                     .col-md-3.no-mar-pad
                       .input-group.mbottom0.input-append.date.end_date_time
                         %span#sizing-addon2.input-group-addon.bg-white{:style => "border-radius:0;"}
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = text_field_tag :end_date_time, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control bg-white pon", style: "border-radius:0", readonly: true
+                        = text_field_tag :end_date_time, params[:end_date_time], placeholder: "Drop off Date & Time", class: "form-control home_end_date bg-white pon", style: "border-radius:0", required: true, readonly: true
                     .col-md-3.no-mar-pad
                       .form-group.mbottom0
                         = select_tag :category, options_from_collection_for_select(Product.distinct_parent_category, :id, :name, params[:category]), prompt: "Select Category", class: "form-control coco-select-box selectpicker home_search_box"

@@ -1,12 +1,95 @@
 .intro-header
-  .container
+  .container-fluid
     .row
-      .col-lg-12
-        .intro-message
-          %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/home-globe.png", class: "img-responsive", style: "margin: 0px auto;"}
-          %h3.land-head All Things Rental!
-          .row
-            .col-md-10.col-md-offset-1.main-search-bar
+      #rent-lend-wrapper
+        #rent-lend-plate
+          .home-lend-page.home-side-bar.hidden-xs
+            .home-lend-icon.btn.btn-lg.home-icon
+              %span.lend-hover LEND
+              %i.glyphicon.glyphicon-menu-left.arrow-lend.lend-hover#arrow-rent-lend
+            .rent-lend-content.col-md-7.col-md-offset-1
+              .col-md-12.no-mar-pad
+                %h4.mtop0.mbottom20.em-font LET YOUR THINGS WORK FOR YOU!
+                .col-md-3.no-mar-pad.height100
+                  .home-click-lend-sprite.shadow.inline-block
+                .col-md-9.no-mar-pad.height100
+                  Time to make use of your awesome photography skills. Ensure that you click high quality pics of the product with good lighting & covering different angles.
+                .col-md-9.no-mar-pad.height100
+                  Well, now it's for the writer in you. Click on the 'List Your Item' button on Cocociti, add product details, set rent, mention your terms & upload pics.
+                .col-md-3.no-mar-pad.height100
+                  .home-upload-lend-sprite.shadow.inline-block
+                .col-md-3.no-mar-pad.height100
+                  .home-relax-lend-sprite.shadow.inline-block
+                .col-md-9.no-mar-pad.height100
+                  Voila! Sit back and relax. Let others find your product & book it on Cocociti. Our expert operations team will handle the rental to guard your peace of mind.
+                .col-md-9.no-mar-pad.height85
+                  We will transfer the money to your a/c once the rental is successful. Meanwhile, you may make the item ready for next rental.
+                .col-md-3.no-mar-pad.height85
+                  .home-money-lend-sprite.shadow.inline-block
+                .col-md-12.no-mar-pad.text-center
+                  = link_to new_product_path do
+                    .btn.website-color-bg.hvr-icon-forward.white-fg List Your Item&nbsp;&nbsp;
+          .home-rent-page.home-side-bar.hidden-xs
+            .home-rent-icon.btn.btn-lg.home-icon
+              %span.rent-hover{style: "left:-10px"} RENT
+              %i.glyphicon.glyphicon-menu-right.arrow-rent.rent-hover#arrow-rent-lend
+            .rent-lend-content.col-md-7.col-md-offset-4
+              .col-md-12.no-mar-pad
+                %h4.mtop0.mbottom20.em-font LET OUR THINGS WORK FOR YOU!
+                .col-md-3.no-mar-pad.height100
+                  .home-browse-rent-sprite.shadow.inline-block
+                .col-md-9.no-mar-pad.height100
+                  Browse through our handpicked list of items across various categories & shortlist the product. Our Cococpricing team will ensure that you get the best price.
+                .col-md-9.no-mar-pad.height100
+                  Select the product & click on the rent button to make the payment using our secure payment system. Security deposit you pay while booking is fully refundable.
+                .col-md-3.no-mar-pad.height100
+                  .home-pay-rent-sprite.shadow.inline-block
+                .col-md-3.no-mar-pad.height100
+                  .home-collect-rent-sprite.shadow.inline-block
+                .col-md-9.no-mar-pad.height100
+                  To make rentals hassle free; we have partnered with the best to provide pickup from multiple locations all over Bangalore. Collect/get the item home delivered.
+                .col-md-9.no-mar-pad.height85
+                  Return the product to the same location. Relax and browse for your next rental while we process your security deposit refund and any additional discounts.
+                .col-md-3.no-mar-pad.height85
+                  .home-return-rent-sprite.shadow.inline-block
+                .col-md-12.no-mar-pad.text-center
+                  = link_to all_products_path do
+                    .btn.website-color-bg.hvr-icon-forward.white-fg Browse All&nbsp;&nbsp;
+          .col-lg-12.intro-message
+            /%img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/home-globe.png", class: "img-responsive", style: "margin: 0px auto;"}
+            .col-md-11.col-md-offset-1.hidden-xs.mtop20
+              = link_to category_path("bikes-two-wheelers") do
+                .home-bike-sprite.inline-block.mright80.hvr-wobble-top.shadow
+              = link_to category_path("cars-self-drive-chauffeur") do
+                .home-car-sprite.inline-block.mright80.hvr-wobble-top.shadow
+              = link_to category_path("fashion-rent-a-dress") do
+                .home-dress-sprite.inline-block.mright80.hvr-wobble-top.shadow
+              = link_to category_path("adventure-sports-travel-gear") do
+                .home-adventure-sprite.inline-block.mright80.hvr-wobble-top.shadow
+            .col-xs-12.no-mar-pad.visible-xs
+              #myCarousel.carousel.slide{data: {ride: "carousel"}}
+                .carousel-inner{role: "listbox"}
+                  .item.active
+                    .col-md-12.col-xs-12
+                      = link_to category_path("bikes-two-wheelers") do
+                        .home-bike-sprite.inline-block.hvr-wobble-top.shadow
+                  .item
+                    .col-md-12.col-xs-12
+                      = link_to category_path("cars-self-drive-chauffeur") do
+                        .home-car-sprite.inline-block.hvr-wobble-top.shadow
+                  .item
+                    .col-md-12.col-xs-12
+                      = link_to category_path("fashion-rent-a-dress") do
+                        .home-dress-sprite.inline-block.hvr-wobble-top.shadow
+                  .item
+                    .col-md-12.col-xs-12
+                      = link_to category_path("adventure-sports-travel-gear") do
+                        .home-adventure-sprite.inline-block.hvr-wobble-top.shadow
+            .col-md-12.mbottom20
+              %h3.mbottom5
+                All Things Rental!
+              %small.white-fg in Bangalore
+            .col-md-10.col-md-offset-1.main-search-bar{style: "z-index: 1001;"}
               .form-section
                 .row.border-home-search.mbottom10
                   = form_tag search_products_path, method: "get" do |f|
@@ -27,19 +110,18 @@
                       %button.btn.land-src-button{type: "submit"} Search
                 .row.help-links
                   %a.inline-block.mtop10{:href => "#best-deals"} Featured Listings
-                  %a.inline-block.mtop10.hidden{:href => "#browse"} Browse
-                  %a.inline-block.mtop10{:href => "#how-it-works"} How it Works
-                  %a.inline-block.mtop10{:href => "#why-us"} Why us
-                  %a.inline-block.mtop10{:href => "#list-product"} List your Item
+                  %a.inline-block.mtop10{:href => "#coco-discounts"} Cocopricing
+                  %a.inline-block.mtop10{:href => "#why-us"} Why Us
+                  %a.inline-block.mtop10{:href => "#need-help"} Need Help?
 
-#best-deals.ht-home-header.col-md-12
+#best-deals.ht-home-header.grey-bg.col-md-12
 
-.container-fluid.mob-fluid-con
-  .col-md-4.col-md-offset-4.text-center
+.container-fluid.mob-fluid-con.grey-bg
+  .col-md-4.col-md-offset-4.text-center.mbottom40
     %span.header-text FEATURED LISTINGS
-  .container.container-pad.head-mar.mob-con
+  .container.container-pad.mob-con.pbottom50
     .row
-      .col-md-12.text-center.mtop20.mbottom20
+      .col-md-12.text-center.mtop20.pbottom20.hidden
         .col-md-1.col-md-offset-2.hidden-xs.featured-button-1.pon
           .featured-button.featured-active ALL
         .col-md-3.hidden-xs.featured-button-2.pon
@@ -65,126 +147,91 @@
               .col-md-3.col-sm-4
                 = render partial: "best_deals", locals: {product: product}
 
-.col-md-12.strip-bg.text-center.padding20
-  %h1.mbottom20.white-fg
-    Couldn't find what you were looking for. Call us on 96 8686 0303
-
-#browse.ht-home-header.col-md-12.hidden
-
-.col-md-12.text-center.padding20.white-fg.browse-home.hidden{style: "font-size:25px;font-weight: bold;"}
-  = link_to category_path("bikes-two-wheelers") do
-    .col-md-3.col-md-offset-1.padding10.mtop20.border-category.strip-bg Bikes & Two Wheelers
-  = link_to category_path("fashion-rent-a-dress") do
-    .col-md-2.col-md-offset-1.padding10.mtop20.border-category.strip-bg Clothing
-  = link_to category_path("bikes-two-wheelers") do
-    .col-md-3.col-md-offset-1.padding10.mtop20.border-category.strip-bg Houseboats
-  .clearfix.hidden-xs-block
-  = link_to category_path("bikes-two-wheelers") do
-    .col-md-3.col-md-offset-1.padding10.mtop20.mbottom20.border-category.strip-bg Cameras & Accessories
-  = link_to category_path("bikes-two-wheelers") do
-    .col-md-2.col-md-offset-1.padding10.mtop20.mbottom20.border-category.strip-bg Books
-  = link_to category_path("bikes-two-wheelers") do
-    .col-md-3.col-md-offset-1.padding10.mtop20.mbottom20.border-category.strip-bg Adventure | Travel Gear
-
-#how-it-works.ht-home-header.col-md-12
-
-.container.pbottom50
+#coco-discounts.ht-home-header.col-md-12
+.container-fluid.mob-fluid-con
   .col-md-4.col-md-offset-4.text-center
-    %span.header-text HOW IT WORKS
-  .col-md-12.col-md-offset-1.mtop50
-    = image_tag "/assets/images/how_it_works.png", class: "img-responsive text-center"
-  .col-md-3.col-xs-12.text-center
-    %h3.pull-left.land-src-mar-browse.website-color
-      BROWSE
-  .col-md-3.col-xs-12.text-center
-    %h3.pull-left.land-src-mar-book.website-color
-      BOOK INSTANTLY
-  .col-md-3.col-xs-12.text-center
-    %h3.pull-left.land-src-mar-pickup.website-color
-      PICK UP
-  .col-md-3.col-xs-12.text-center
-    %h3.pull-left.land-src-mar-return.website-color
-      RETURN
-
-.col-md-12.strip-bg.padding20.text-center
-  .text-center.white-fg.mbottom10{style: "font-size: 30px;display: block;font-weight: bold;"} COCOPRICING DISCOUNTS
-  .text-center.discount-sprite.white-fg
-    %center.discount-text
-      3+ days
+    %span.header-text COCOPRICING DISCOUNTS
+.col-md-12.padding20.text-center{style: "padding-top: 10px !important;"}
+  .col-md-12.text-center.padding10
+    .text-center.inline-block
+      .discount-circle.hvr-grow{style: "background-color: #e84242;"}
+        %span.discount-text
+          10%
       %br
-      10%
-  .text-center.discount-sprite.white-fg
-    %center.discount-text
-      10+ days
+      %span.discount-text-days
+        3+ days
+    .text-center.inline-block
+      .discount-circle.hvr-grow{style: "background-color: #E28A2B;"}
+        %span.discount-text
+          20%
       %br
-      20%
-  .text-center.discount-sprite.white-fg
-    %center.discount-text
-      20+ days
+      %span.discount-text-days
+        10+ days
+    .text-center.inline-block
+      .discount-circle.hvr-grow
+        %span.discount-text
+          30%
       %br
-      30%
-  .text-center.discount-sprite.white-fg
-    %center.discount-text
-      30+ days
+      %span.discount-text-days
+        20+ days
+    .text-center.inline-block
+      .discount-circle.hvr-grow{style: "background-color: #663399;"}
+        %span.discount-text
+          40%
       %br
-      40%
-  .text-center.discount-sprite.white-fg
-    %center.discount-text
-      90+ days
+      %span.discount-text-days
+        30+ days
+    .text-center.inline-block
+      .discount-circle.hvr-grow{style: "background-color: #008000;"}
+        %span.discount-text
+          50%
       %br
-      50%
+      %span.discount-text-days
+        90+ days
 
 #why-us.ht-home-header.col-md-12
+.col-md-12.why-us.rotate30.ptop70.pbottom100
+  .col-md-4.col-md-offset-4.text-center.mbottom40.rotate-30
+    %span.header-text.white-fg WHY US
+  .container.yu-mar.rotate-30
+    .col-md-12.no-mar-pad
+      .col-md-2
+        %span.img-responsive.pad.pull-right.why-us-size.why-us-1-sprite
+      .col-md-4
+        %p.y-u.pad
+          %strong
+            12/7 Support
+          %br
+          When something goes wrong, just let us know and we’ll make make it right. It’s as simple as that. Cocociti Experience Managers are just a call away; 9 am to 9 pm.
+      .col-md-2
+        %span.img-responsive.pad.pull-right.why-us-size.why-us-2-sprite
+      .col-md-4
+        %p.y-u.pad
+          %strong
+            Curated listings & Trusted Vendors
+          %br
+          Every vendor on Cocociti is handpicked for quality products & exceptional service; be it products or our delivery partners. Individual listings are made available by our expert curators.
 
-.container
-  .col-md-4.col-md-offset-4.text-center.mbottom40
-    %span.header-text WHY US
-  .row.yu-mar
-    .col-md-12
-      .col-md-6-offset-1
-        .col-md-2
-          %span.img-responsive.pad.pull-right.why-us-size.why-us-1-sprite
-        .col-md-4
-          %p.y-u.pad
-            %strong
-              12/7 Support
-            %br
-            When something goes wrong, just let us know and we’ll make make it right. It’s as simple as that. Cocociti Experience Managers are just a call away; 9 am to 9 pm.
+    .col-md-12.no-mar-pad
+      .col-md-2
+        %span.img-responsive.pad.pull-right.why-us-size.why-us-3-sprite
+      .col-md-4
+        %p.y-u.pad
+          %strong
+            Safe payments & Fast Refunds
+          %br
+          All transactions are facilitated through our secure system with payment protection. Your money is kept in an escrow till the end of the renting tenure & security deposit is refunded once product is returned in good condition.
+      .col-md-2
+        %span.img-responsive.pad.pull-right.why-us-size.why-us-4-sprite
+      .col-md-4
+        %p.y-u.pad
+          %strong
+            Live Better
+          %br
+          Your email & number is not shared until a booking is confirmed. Say yes to peace of mind & no to annoying calls & spam mails.
 
-      .col-md-6-offset-1
-        .col-md-2
-          %span.img-responsive.pad.pull-right.why-us-size.why-us-2-sprite
-        .col-md-4
-          %p.y-u.pad
-            %strong
-              Curated listings & Trusted Vendors
-            %br
-            Every vendor on Cocociti is handpicked for quality products & exceptional service; be it products or our delivery partners. Individual listings are made available by our expert curators.
-
-    .col-md-12
-      .col-md-6-offset-1
-        .col-md-2
-          %span.img-responsive.pad.pull-right.why-us-size.why-us-3-sprite
-        .col-md-4
-          %p.y-u.pad
-            %strong
-              Safe payments & Fast Refunds
-            %br
-            All transactions are facilitated through our secure system with payment protection. Your money is kept in an escrow till the end of the renting tenure & security deposit is refunded once product is returned in good condition.
-
-      .col-md-6-offset-1
-        .col-md-2
-          %span.img-responsive.pad.pull-right.why-us-size.why-us-4-sprite
-        .col-md-4
-          %p.y-u.pad
-            %strong
-              Live Better
-            %br
-            Your email & number is not shared until a booking is confirmed. Say yes to peace of mind & no to annoying calls & spam mails.
-
-#list-product.ht-home-header.col-md-12
-
-.container
+#list-product.ht-home-header.col-md-12.hidden
+.container.hidden
   .col-md-4.col-md-offset-4.text-center.mbottom40
     %span.header-text MAKE MONEY, WISE
   .col-md-12.pbottom20
@@ -203,11 +250,20 @@
   .container.hidden-xs
     .row.tag-mar
       - Category.root.each_slice(4) do |slice|
-        .col-md-12
+        .col-md-12.no-mar-pad
           - slice.each do |cat|
-            .col-md-3
-              %ul.tag-ul
-                %li.tag-ul-h
-                  %h4.tag-ul-h4= cat.name
+            .col-md-12.no-mar-pad
+              %ul.tag-ul.no-mar-pad.mtop5
+                %li.inline-display
+                  %h4.tag-ul-h4.no-mar-pad.inline-display
+                    = cat.name
+                    \-
                 - cat.subs.each do |sub|
-                  %li.tag-ul-li= sub.name
+                  %li.tag-ul-li.inline-display
+                    = sub.name
+                    for rent
+                  |
+#need-help.ht-home-header.col-md-12
+.col-md-12.text-center.padding10{style: "background-color: beige;"}
+  %h1.mbottom40
+    Couldn't find what you were looking for? Call us on 96 8686 0303

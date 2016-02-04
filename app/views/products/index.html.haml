@@ -64,17 +64,17 @@
               = link_to "High Price", "javascript:;", data: {tab: '3'}, class: 'product-tab bg-white'
             %li.tabs-mar{class: "#{'active' if params[:tab] == "4"}"}
               = link_to "New", "javascript:;", data: {tab: '4'}, class: 'product-tab bg-white'
-          .tab-content.tabbable-panel-mp-height{style: "padding-left: 18px;"}
+          .tab-content.tabbable-panel-mp-height.grey-bg
             #tab-1.tab-pane.active
               - if @products.blank?
                 .col-sm-12.no-mar-pad
-                  %h3.text-center Sorry, Items are not available for the selected time frame.
+                  %h3.text-center Ayyo, Items are not available for the selected time frame.
               - else
-                - @products.each_slice(2) do |products|
+                - @products.each_slice(3) do |products|
                   .col-sm-12.no-mar-pad
                     - products.each do |product|
-                      .col-sm-6.mob-map-view-con
-                        = render partial: "product", locals: {product: product, length: 25}
+                      .col-sm-4.mob-map-view-con
+                        = render partial: "product", locals: {product: product}
                 .col-md-12
                   %center= paginate @products
 

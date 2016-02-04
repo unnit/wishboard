@@ -20,7 +20,7 @@
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
                     %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
                       = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 40, height: 40, crop: :fill
-                      %span.mtop10.pull-right{title: "#{current_user.name}"}
+                      %span.mtop10.pull-right{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "bottom"}
                         Hi
                         = (truncate current_user.profile.first_name, length: 20) ||  (truncate current_user.name, length: 20)
                         %span.caret

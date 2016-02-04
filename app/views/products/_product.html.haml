@@ -17,13 +17,13 @@
             %i.fa.fa-rupee= " #{product.hourly_price}"
             %span.note-font-size /hr
           - if product.instant?
-            %i.instant-sprite{title: "Book Instantly, No confirmation needed"}
+            %i.instant-sprite{title: "Book Instantly, No confirmation needed", "data-toggle" => "tooltip"}
     .media-body.fnt-smaller.padding10
       %ul.list-inline.btm-mrg-10
-        %li.name-tag{title: "#{product.title}"}= truncate product.title, length: length
-        %li.pull-right.place{title: "#{product.location_address}"}= truncate product.location_address, length: length
+        %li.name-tag{title: "#{product.title}", "data-toggle" => "tooltip"}= truncate product.title, length: length
+        %li.pull-right.place{title: "#{product.location_address}", "data-toggle" => "tooltip"}= truncate product.location_address, length: length
       %div.pull-left.full-width
         /%h6.month-week &nbsp;
-        %span.pull-left.note-font-size{title: "#{product.category.name}"}= truncate product.category.name, length: length
+        %span.pull-left.note-font-size{title: "#{product.category.name}", "data-toggle" => "tooltip"}= truncate product.category.name, length: length
         %i.pull-right
           = render partial: "products/rated", locals: {rate: product.rate}

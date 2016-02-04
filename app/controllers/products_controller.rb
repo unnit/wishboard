@@ -202,6 +202,11 @@ class ProductsController < ApplicationController
     add_breadcrumb "#{@products.first.category_name.downcase.titleize}", category_path("#{@products.first.category.slug}") unless parent_id.blank?
   end
 
+  def all
+    @products = Product.where("available = true and admin_approved = true")
+    render :category
+  end
+
   private
   def create_product_params
     params.require(:product).permit(:user_id, :title, :category_id, :price, :tax, :security_deposit, :operator_type, :operator_price, :discount_3, :discount_10, :discount_20,

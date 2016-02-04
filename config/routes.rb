@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       get :search
       post :update_available
       get :get_price
+      get :all
     end
     member do
       post :update_admin_approved

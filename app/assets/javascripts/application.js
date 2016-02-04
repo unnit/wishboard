@@ -23,8 +23,35 @@
 //= require jquery.mCustomScrollbar.concat.min
 //= require jquery.tablesorter
 
-
 $(document).ready(function(){
+  //Home page - Rent, Lend pages
+  n=!0,t=!0;
+  $(".rent-hover").hover(function(){
+    n&&(n=!1,setTimeout(function(){n=!0},800),
+    $("#rent-lend-wrapper").toggleClass("show-rent"));
+    $("#rent-lend-wrapper").hasClass("show-rent")?($(".arrow-rent").addClass("clockwise180"),$(".home-rent-icon span").addClass("opacity"),setTimeout(function(){$(".rent-lend-content").addClass("mtop60")}, 400)):($(".arrow-rent").removeClass("clockwise180"),$(".home-rent-icon span").removeClass("opacity"),$(".rent-lend-content").removeClass("mtop60"))
+  });
+  $(".lend-hover").hover(function(){
+    t&&(t=!1,setTimeout(function(){t=!0},800),
+    $("#rent-lend-wrapper").toggleClass("show-lend"));
+    $("#rent-lend-wrapper").hasClass("show-lend")?($(".arrow-lend").addClass("clockwise180"),$(".home-lend-icon span").addClass("opacity"),setTimeout(function(){$(".rent-lend-content").addClass("mtop55")}, 400)):($(".arrow-lend").removeClass("clockwise180"),$(".home-lend-icon span").removeClass("opacity"),$(".rent-lend-content").removeClass("mtop55"))
+  });
+  $(".intro-message").click(function(){
+    if($("#rent-lend-wrapper").hasClass("show-rent"))
+    {
+      $("#rent-lend-wrapper").toggleClass("show-rent");
+      $(".arrow-rent").removeClass("clockwise180");
+      $(".home-rent-icon span").removeClass("opacity");
+      $(".rent-lend-content").removeClass("mtop55");
+    }
+    if($("#rent-lend-wrapper").hasClass("show-lend"))
+    {
+      $("#rent-lend-wrapper").toggleClass("show-lend");
+      $(".arrow-lend").removeClass("clockwise180");
+      $(".home-lend-icon span").removeClass("opacity");
+      $(".rent-lend-content").removeClass("mtop55");
+    }
+  })
   //Help links in home page
   var root = $('html, body');
   $('.help-links a').click(function() {
@@ -33,6 +60,8 @@ $(document).ready(function(){
           }, 500);
       return false;
   });
+  //Tooltip
+  $('[data-toggle="tooltip"]').tooltip();
   //Featured list toggle
   $(".featured-button-1").click(function(){
     $(".featured-button").removeClass("featured-active");

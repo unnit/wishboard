@@ -8,7 +8,7 @@
           = cl_image_tag current_user.avatar, class: "img-responsive img-circle", width: 100, height: 100, crop: :fill
         .col-md-7
           .col-sm-12
-            %h3.no-mar-pad.mbottom10{title: "#{current_user.name}"}= truncate current_user.name, length: 30
+            %h3.no-mar-pad.mbottom10{title: "#{current_user.name}", "data-toggle" => "tooltip"}= truncate current_user.name, length: 30
             .prof-para.mbottom10=simple_format truncate @profile.about, length: 200
           .col-sm-12.mbottom10
             %span.glyphicon.glyphicon-phone{style: "color: #D02121;"}
@@ -82,7 +82,7 @@
                         = conv.subject
                     %td
                       = trans.product.id
-                    %td{title: "#{trans.product.title}"}
+                    %td{title: "#{trans.product.title}", "data-toggle" => "tooltip"}
                       = truncate trans.product.title, length: 20
                     %td
                       %i.fa.fa-rupee
@@ -188,11 +188,11 @@
                   %td= booking.product.title
                   %td= booking.product.id
                   %td= booking.product.internal_id
-                  %td{title: "#{booking.product.category_name}"}= truncate booking.product.category_name,length: 15
+                  %td{title: "#{booking.product.category_name}", "data-toggle" => "tooltip"}= truncate booking.product.category_name,length: 15
                   %td
                     %i.fa.fa-rupee
                     = booking.amount
-                  %td{title: "#{booking.user.name}"}= truncate booking.user.name, length: 20
+                  %td{title: "#{booking.user.name}", "data-toggle" => "tooltip"}= truncate booking.user.name, length: 20
                   %td= booking.user.phone
                   %td= booking.duration
                 - i+= 1
@@ -225,7 +225,7 @@
                   %td= product.title
                   %td= product.id
                   %td= product.internal_id
-                  %td{title: "#{product.category_name}"}= truncate product.category_name, length:15
+                  %td{title: "#{product.category_name}", "data-toggle" => "tooltip"}= truncate product.category_name, length:15
                   ~ form_tag non_coco_transaction_path(product) do
                     %td= text_field_tag :non_coco_operator, params[:non_coco_operator], class: "form-control",  maxlength: 200, style: "width: 100px;"
                     %td
@@ -271,7 +271,7 @@
                   %td= transaction.product.title
                   %td= transaction.product.id
                   %td= transaction.product.internal_id
-                  %td{title: "#{transaction.product.category_name}"}=truncate transaction.product.category_name, length: 15
+                  %td{title: "#{transaction.product.category_name}", "data-toggle" => "tooltip"}=truncate transaction.product.category_name, length: 15
                   %td= transaction.non_coco_operator
                   %td= transaction.startdate.strftime("%d %b %Y %H:%M")
                   %td= transaction.enddate.strftime("%d %b %Y %H:%M")

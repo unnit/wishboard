@@ -1,45 +1,46 @@
-%footer.col-md-12.fot.white-fg{style: "display: #{@footer_visible || 'block'}"}
+%footer.col-md-12.white-fg{style: "display: #{@footer_visible || 'block'}"}
   .container
     .row
-      .col-lg-12
-        .col-md-4.mbottom20
-          %p.fot-p.text-justify
-            %strong
-              Cocociti
-            is your trusted human2human online rental marketplace. Product owners make money by renting out products to people in need and users save money by avoiding costly purchases, indeed. Access things as and when you need it or help others by listing your available on Cocociti. All at the convenience of making life easier for both sides. Let your possessions work for you, and the world.
-            %br
-            %strong
-              Boom De Yada!
-        .col-md-4.mbottom20
-          %ul
-            %li= link_to "About", "/about", class: "tag-a"
-            %li= link_to "Terms", "/terms", class: "tag-a", rel: "no-follow"
-            %li= link_to "Privacy", "/privacy", class: "tag-a", rel: "no-follow"
-            %li= link_to "Contact", "/contact", class: "tag-a"
-            %li= link_to "Goodness &<br> Open Source".html_safe, "/goodness-and-open-source", class: "tag-a"
-            /%li= link_to "Site Map", "/sitemap", class: "tag-a"
-
-        .col-md-4.mbottom20
-          %ul.tag-ul
-            %li.tag-ul-h
-              %h4.fot-li.mtop0 COCOCARE
-            %li.mbottom10
-              %span.glyphicon.glyphicon-phone{style: "color: #D02121;"}
-              %i 96 8686 0303
-              %br
-            %li.mbottom10
-              %span.glyphicon.glyphicon-envelope{style: "color: #D02121;"}
-              ayyo@cocociti.com
-              %br
-            %li
-              = link_to "https://fb.com/cocociti" do
-                %span.fb-sprite.footer-sprite-size.pull-left
-              = link_to "https://google.com/+cocociti" do
-                %span.gplus-sprite.footer-sprite-size.pull-left
-              = link_to "https://twitter.com/cocociti" do
-                %span.twitter-sprite.footer-sprite-size.pull-left
-    .col-md-8.hidden-xs
-      %span.pull-left.cards-sprite
-    = link_to "#" do
-      %span.pull-right.fot-up-img.up-sprite.footer-sprite-size
-    %p.copyright.text-muted.small.pull-right.fot-res &copy; #{Time.now.in_time_zone("Kolkata").strftime('%Y')} Cocociti
+      .col-md-12.no-mar-pad
+        %ul.text-center.pleft0.mbottom5
+          %li.mright20.hvr-underline-from-center= link_to "About", "/about", class: "tag-a"
+          %li.mright20.hvr-underline-from-center= link_to "Contact", "/contact", class: "tag-a"
+          %li.mright20.hvr-underline-from-center= link_to "Goodness & Open Source".html_safe, "/goodness-and-open-source", class: "tag-a"
+          /%li= link_to "Site Map", "/sitemap", class: "tag-a"
+      .col-md-12.no-mar-pad
+        %ul.text-center.mbottom0.pleft0
+          %li.hvr-float-shadow
+            = link_to "https://fb.com/cocociti" do
+              %span.fb-sprite.footer-sprite-size.pull-left
+          %li.hvr-float-shadow
+            = link_to "https://twitter.com/cocociti" do
+              %span.twitter-sprite.footer-sprite-size.pull-left
+          %li.hvr-float-shadow
+            = link_to "https://google.com/+cocociti" do
+              %span.gplus-sprite.footer-sprite-size.pull-left
+          %li.hvr-float-shadow
+            = link_to "https://www.linkedin.com/company/cocociti" do
+              %span.linkedin-sprite.footer-sprite-size.pull-left
+          %li.hvr-float-shadow
+            = link_to "https://www.instagram.com/cocociti/" do
+              %span.instagram-sprite.footer-sprite-size.pull-left
+      .col-md-12.no-mar-pad
+        %ul.tag-ul.mbottom0.text-center.coco-care.pleft0
+          %li.inline-block.mright20
+            %span.glyphicon.glyphicon-phone.pull-left{style: "color: #fff;margin-top: 2px;margin-right: 5px;"}
+            96 8686 0303
+          %li.inline-block.mright20
+            %span.glyphicon.glyphicon-envelope.pull-left{style: "color: #fff;margin-top: 3px;margin-right: 5px;"}
+            ayyo@cocociti.com
+      .col-md-12.mtop10.no-mar-pad
+        %ul.text-center.mbottom0.mtop5.pleft0
+          %li.inline-block.mright20
+            %span.pull-left.cards-footer-sprite
+      .col-md-12.text-center.mtop5
+        %ul.text-center.mbottom0.pleft0
+          %li.inline-block
+            %span.text-muted.small.fot-res Copyright &copy; #{Time.now.in_time_zone("Kolkata").strftime('%Y')} Cocociti Online Solutions Pvt Ltd. All items &copy; their respective owners.
+          %li.inline-block= link_to "Terms", "/terms", class: "small fot-res text-muted hvr-underline-from-center", rel: "no-follow"
+          %li.inline-block= link_to "Privacy", "/privacy", class: "small fot-res text-muted hvr-underline-from-center", rel: "no-follow"
+  = link_to "#" do
+    %span.fot-up-img.up-sprite.pull-right

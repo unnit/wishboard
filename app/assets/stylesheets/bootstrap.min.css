@@ -3675,7 +3675,7 @@ textarea.form-group-lg .form-control {
 .btn:focus,
 .btn:hover {
     /*color: #333;*/
-    color: #D8D8D8;
+    color: #fff;
     text-decoration: none
 }
 
@@ -4598,7 +4598,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .input-group-addon.input-lg {
     padding: 10px 16px;
     font-size: 18px;
-    border-radius: 6px
+    border-radius: 6px;
 }
 
 .input-group-addon input[type=checkbox],
@@ -4680,7 +4680,9 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .nav>li>a {
     position: relative;
     display: block;
-    padding: 10px 15px
+    padding: 10px 15px;
+    font-size: 14px;
+    letter-spacing: 1px;
 }
 
 .nav>li>a:focus,

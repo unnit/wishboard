@@ -18,6 +18,7 @@
  *= require bootstrap-select
  *= require bootstrap-datetimepicker
  *= require jquery.mCustomScrollbar
+ *= require hover
  */
 
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
@@ -63,7 +64,6 @@ body{
 .mbottom10{
   margin-bottom: 10px;
 }
-
 .mbottom20{
   margin-bottom: 20px;
 }
@@ -82,49 +82,44 @@ body{
 .mleft5{
   margin-left: 5px;
 }
-
 .mleft10{
   margin-left: 10px;
 }
-
 .mleft15{
   margin-left: 15px;
 }
-
 .mleft20{
   margin-left: 20px;
 }
-
 .mleft30{
   margin-left: 30px;
 }
-
 .mtop5{
   margin-top: 5px;
 }
-
 .mtop10{
   margin-top: 10px;
 }
-
 .mtop20{
   margin-top: 20px;
 }
-
 .mtop25{
   margin-top: 25px;
 }
-
 .mtop30{
   margin-top: 30px;
 }
-
 .mtop40{
   margin-top: 40px;
 }
-
 .mtop50{
   margin-top: 50px;
+}
+.mtop55{
+  margin-top: 55px;
+}
+.mtop60{
+  margin-top: 60px;
 }
 .mtop70{
   margin-top: 70px;
@@ -132,6 +127,15 @@ body{
 .mtop-v-5
 {
   margin: 5px 0;
+}
+.mright20{
+  margin-right: 20px;
+}
+.mright30{
+  margin-right: 30px;
+}
+.mright80{
+  margin-right: 80px;
 }
 .no-padding-left{
   padding-left: 0px !important;
@@ -151,6 +155,12 @@ body{
 .ptop10{
   padding-top: 10px;
 };
+.ptop30{
+  padding-top: 30px;
+}
+.ptop40{
+  padding-top: 40px;
+}
 .ptop70{
   padding-top: 70px;
 }
@@ -163,11 +173,20 @@ body{
 .pbottom50{
   padding-bottom: 50px;
 }
+.pbottom70{
+  padding-bottom: 70px;
+}
+.pbottom100{
+  padding-bottom: 100px;
+}
 .pleft-10{
   padding-left: 10px;
 }
 .pright-10{
   padding-right: 10px;
+}
+.pleft0{
+  padding-left: 0px;
 }
 .pleft5{
   padding-left: 5px;
@@ -200,6 +219,12 @@ body{
 }
 .padding20{
   padding: 20px;
+}
+.height100{
+  height: 100px;
+}
+.height85{
+  height: 85px;
 }
 .parent-row td{
   background: #DDF7B5;
@@ -267,6 +292,7 @@ small{
 
 .box-shad{
   border: 1px solid #ddd;
+  box-shadow: 0 17px 50px 0 rgba(0,0,0,.19),0 12px 15px 0 rgba(0,0,0,.24);
 }
 
 .product{
@@ -348,4 +374,7 @@ small{
 }
 .font-medium{
   font-size: 14px;
+}
+.font-bit-large{
+  font-size: 18px;
 }

@@ -35,8 +35,11 @@
                 .col-md-3.no-mar-pad.height85
                   .home-money-lend-sprite.shadow.inline-block
                 .col-md-12.no-mar-pad.text-center
-                  = link_to new_product_path do
-                    .btn.website-color-bg.hvr-icon-forward.white-fg List Your Item&nbsp;&nbsp;
+                  - if current_user
+                    = link_to new_product_path do
+                      .btn.website-color-bg.hvr-icon-forward.white-fg List Your Item&nbsp;&nbsp;
+                  - else
+                    .btn.website-color-bg.hvr-icon-forward.white-fg{data: {toggle: "modal", target: "#login"}} List Your Item&nbsp;&nbsp;
           .home-rent-page.home-side-bar.hidden-xs
             .home-rent-icon.btn.btn-lg.home-icon
               %span.rent-hover{style: "left:-10px"} RENT

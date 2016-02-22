@@ -18,7 +18,18 @@ skip_before_filter :check_user_status, :check_profile
       sign_in(user, bypass: true)
     end
     @errors = resource.errors.full_messages
-    respond_to :js
+    respond_to do |format|
+      format.html {
+        unless @errors.blank?
+          flash[:alert] = @errors.join(", ")
+          redirect_to signup_path
+          return
+        else
+          redirect_to user_signup_confirmation_path
+        end
+      }
+      format.js { respond_to :js }
+    end
   end
 
   def destroy

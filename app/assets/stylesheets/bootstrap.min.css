@@ -3667,8 +3667,8 @@ textarea.form-group-lg .form-control {
 .btn:active:focus,
 .btn:focus {
     outline: thin dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px
+    /*outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px*/
 }
 
 .btn.focus,
@@ -3751,7 +3751,6 @@ fieldset[disabled] .btn-default:hover {
 .btn-primary {
     color: #fff !important;
     background-color: #337ab7;
-    border-color: #2e6da4
 }
 
 .btn-primary.active,
@@ -3762,9 +3761,9 @@ fieldset[disabled] .btn-default:hover {
 .open>.dropdown-toggle.btn-primary {
     /*color: #fff;
     background-color: #E84242;
-    border-color: #204d74*/
-    color: #D8D8D8;
+    border-color: #204d74;
     background-color: #286090;
+    color: #D8D8D8;*/
 }
 
 .btn-primary.active,

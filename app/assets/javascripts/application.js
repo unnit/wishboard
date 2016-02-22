@@ -24,6 +24,15 @@
 //= require jquery.tablesorter
 
 $(document).ready(function(){
+  //Bulk Bookings
+  $("#bulk-bookings").click(function(){
+    $("#bulk-bookings-pop-up").modal("show");
+  });
+  //Loader Icon
+  $("form").submit(function(){
+    $(".loader-button").hide();
+    $(".loader-effect").show();
+  })
   //Home page - Rent, Lend pages
   n=!0,t=!0;
   $(".rent-hover").hover(function(){
@@ -406,7 +415,6 @@ $(document).ready(function(){
   });
   //-----Show search Bar in header when search in home scrolls up
   if($(".main-search-bar").length){
-    $("#adv-search").hide();
     var topOfOthDiv = $(".main-search-bar").offset().top;
       $(window).scroll(function() {
           if($(window).scrollTop() > topOfOthDiv) { //scrolled past the other div?
@@ -416,9 +424,6 @@ $(document).ready(function(){
             $("#adv-search").fadeOut();
           }
       });
-  }
-  else{
-    $("#adv-search").fadeIn(100);
   }
   //-----Table Sorter
   $("#admin-products, #admin-transactions").tablesorter();

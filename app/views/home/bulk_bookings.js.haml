@@ -1,0 +1,6 @@
+- unless @errors
+  location.reload();
+- else
+  $(".bulk-booking-errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: @errors})}");
+  $(".loader-effect").hide();
+  $(".loader-button").show();

@@ -1,6 +1,37 @@
 .intro-header
   .container-fluid
     .row
+      #bulk-bookings-pop-up.modal.fade
+        .modal-dialog.modal-width
+          .modal-content.pop-up-mar
+            .modal-header.pop-bac
+              %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
+                %i.fa.fa-times
+              %h4.modal-title BULK BOOKINGS
+            .modal-body
+              .col-md-12.col-xs-12.no-mar-pad
+                .col-md-12.bulk-booking-errors
+                .col-md-6.hidden-xs.text-left
+                  %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/bulk-booking.png", style: "height: 300px;"}
+                .col-md-6.col-xs-12.text-left.mbottom40
+                  = form_for(BulkBooking.new, url: bulk_bookings_path, html: { "data-parsley-validate" => true, remote: true }) do |f|
+                    .col-md-12.col-xs-12.no-mar-pad
+                      %label.black-fg Mobile No
+                      = f.text_field :mobile, placeholder: "Your Mobile No", class: "form-control", required: true, maxlength: 10
+                    .col-md-12.col-xs-12.mtop30.no-mar-pad
+                      %label.black-fg Email ID
+                      = f.text_field :email, placeholder: "Your Email ID", class: "form-control", required: true, maxlength: 220
+                    .col-md-12.col-xs-12.mtop30.no-mar-pad
+                      %label.black-fg Message
+                      = f.text_area :message, rows: 4, placeholder: "Items required, No. of days, Pick up and Drop off date etc.", class: "form-control", required: true, maxlength: 1000
+                    .col-md-12.col-xs-12.text-center.mtop30.no-mar-pad
+                      .btn.website-color-bg.white-fg.no-mar-pad{style: "width: 135px;height: 36px;"}
+                        = f.submit "Submit", class: "loader-button btn website-color-bg", style: "width: 133px;height: 34px;border: 0px;"
+                        .loader-effect.btn.website-color-bg{style: "display:none;"}
+                          .pull-left Please Wait...
+                          .ball-clip-rotate.pull-left{style: "height:22px;"}
+                            %div
+            .clearfix
       #rent-lend-wrapper
         #rent-lend-plate
           .home-lend-page.home-side-bar.hidden-xs
@@ -128,6 +159,7 @@
                     .col-md-3.no-mar-pad
                       %button.btn.land-src-button{type: "submit"} Search
                 .row.help-links
+                  %span.pon.inline-block.mtop10#bulk-bookings Bulk Bookings
                   %a.inline-block.mtop10{:href => "#best-deals"} Featured Listings
                   %a.inline-block.mtop10{:href => "#coco-discounts"} Cocopricing
                   %a.inline-block.mtop10{:href => "#why-us"} Why Us

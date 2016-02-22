@@ -273,63 +273,71 @@ body{
     overflow-x: hidden;
 }
 /*************Loader Effects********************/
-.pulse-loader:not(:required) {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  -moz-animation: pulse-loader 0.7s linear infinite alternate;
-  -webkit-animation: pulse-loader 0.7s linear infinite alternate;
-  animation: pulse-loader 0.7s linear infinite alternate;
-  border: 2px solid #E84242;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  overflow: hidden;
-  text-indent: 50px;
-}
+@keyframes spin-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  50% {
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    transform: rotate(180deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg); } }
 
-@-moz-keyframes pulse-loader {
+.semi-circle-spin {
+  position: relative;
+  width: 35px;
+  height: 35px;
+  overflow: hidden; }
+.semi-circle-spin > div {
+  position: absolute;
+  border-width: 0px;
+  border-radius: 100%;
+  -webkit-animation: spin-rotate 0.6s 0s infinite linear;
+  -moz-animation: spin-rotate 0.6s 0s infinite linear;
+  -o-animation: spin-rotate 0.6s 0s infinite linear;
+  animation: spin-rotate 0.6s 0s infinite linear;
+  background-image: -webkit-linear-gradient(transparent 0%, transparent 70%, #fff 30%, #fff 100%);
+  background-image: linear-gradient(transparent 0%, transparent 70%, #fff 30%, #fff 100%);
+  width: 100%;
+  height: 100%; }
+
+@keyframes rotate {
   0% {
-    -moz-box-shadow: #E84242 0 0 0px 10px;
-    box-shadow: #E84242 0 0 0px 10px;
-  }
-  40% {
-    -moz-box-shadow: none;
-    box-shadow: none;
-  }
+    -webkit-transform: rotate(0deg) scale(1);
+    -ms-transform: rotate(0deg) scale(1);
+    -moz-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1); }
+  50% {
+    -webkit-transform: rotate(180deg) scale(0.6);
+    -ms-transform: rotate(180deg) scale(0.6);
+    -moz-transform: rotate(180deg) scale(0.6);
+    transform: rotate(180deg) scale(0.6); }
   100% {
-    -moz-box-shadow: #E84242 0 0 0px 15px inset;
-    box-shadow: #E84242 0 0 0px 15px inset;
+    -webkit-transform: rotate(360deg) scale(1);
+    -ms-transform: rotate(360deg) scale(1);
+    -moz-transform: rotate(360deg) scale(1);
+    transform: rotate(360deg) scale(1); }
   }
-}
-@-webkit-keyframes pulse-loader {
-  0% {
-    -webkit-box-shadow: #E84242 0 0 0px 10px;
-    box-shadow: #E84242 0 0 0px 10px;
-  }
-  40% {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-  100% {
-    -webkit-box-shadow: #E84242 0 0 0px 15px inset;
-    box-shadow: #E84242 0 0 0px 15px inset;
-  }
-}
-@keyframes pulse-loader {
-  0% {
-    -moz-box-shadow: #E84242 0 0 0px 10px;
-    -webkit-box-shadow: #E84242 0 0 0px 10px;
-    box-shadow: #E84242 0 0 0px 10px;
-  }
-  40% {
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-  100% {
-    -moz-box-shadow: #E84242 0 0 0px 15px inset;
-    -webkit-box-shadow: #E84242 0 0 0px 15px inset;
-    box-shadow: #E84242 0 0 0px 15px inset;
-  }
+.ball-clip-rotate > div {
+    background-color: #fff;
+    border-radius: 100%;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    border: 2px solid #fff;
+    border-bottom-color: transparent;
+    height: 20px;
+    width: 20px;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: rotate 0.6s 0s linear infinite;
+    -moz-animation: rotate 0.6s 0s linear infinite;
+    -o-animation: rotate 0.6s 0s linear infinite;
+    animation: rotate 0.6s 0s linear infinite;
 }

@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
 
-  get "users/sign_in" => "home#index"
-
   namespace :admin do
     root 'users#index'
     resources :users, only: [:index, :update] do
+      collection do
+        get :messages
+        post :send_message
+      end
       member do
         post :lock
         post :unlock
@@ -66,6 +68,10 @@ Rails.application.routes.draw do
   get "user_signup_confirmation", to: "home#user_signup_confirmation"
   get "settings/business", to: "profiles#business_profile"
   get "dashboard", to: "profiles#dashboard"
+  get "signup", to: "home#sign_up"
+  get "login", to: "home#login"
+  post :bulk_bookings, to: "home#bulk_bookings"
+  get "offers", to: "home#offers"
 
   resources :messages, only: [:destroy, :index, :show] do
     member do

@@ -22,4 +22,9 @@ class UserMailer < ApplicationMailer
     mail to: @user.email, subject: "Account confirmation instructions", bcc: "#{GLOBAL_VARIABLES[:manager_email_id_1]}"
   end
 
+  def bulk_booking_details(message)
+    @message = message
+    mail to: "#{GLOBAL_VARIABLES[:manager_email_id_1]},#{GLOBAL_VARIABLES[:manager_email_id_2]}", subject: "Bulk Bookings - Regarding"
+  end
+
 end

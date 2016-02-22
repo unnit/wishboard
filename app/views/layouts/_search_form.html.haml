@@ -1,4 +1,4 @@
-#adv-search.input-group.pull-left.serpa{style: "display:none;"}
+#adv-search.input-group.pull-left.serpa{style: "display: #{@adv_search || 'inline-table'}"}
   #start_date_and_time_for_search_datepicker.hidden{"data-id" => "#{DateTime.current + 30.minutes}"}
   #end_date_and_time_for_search_datepicker.hidden{"data-id" => "#{DateTime.current + 6.months}"}
   .col-xs-6.no-mar-pad

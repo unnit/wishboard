@@ -2,22 +2,34 @@ class Users::SessionsController < Devise::SessionsController
 # before_filter :configure_sign_in_params, only: [:create]
   skip_before_filter :check_user_status, :check_profile
   # GET /resource/sign_in
-  # def new
-  #   super
-  # end
+  def new
+    redirect_to login_path
+  end
 
   # POST /resource/sign_in
   def create
     self.resource = warden.authenticate!(:scope => resource_name, :recall => "users/sessions#login")
-    respond_to :js
+    flash[:notice] = "Signed in successfully." if current_user
+    if session["user_return_to"]
+      respond_with resource, location: after_sign_in_path_for(resource)
+    else
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.js { respond_to :js }
+      end
+    end
   end
 
   def login
-    logger.info resource.class.name
-    logger.info resource
     sign_in(resource.class.name.underscore.to_sym, resource)
     flash[:notice] = "Signed in successfully." if current_user
-    render "create.js"
+    respond_to do |format|
+      format.html {
+        flash[:alert] = "Email or password is wrong!"
+        redirect_to login_path
+      }
+      format.js { render "create.js" }
+    end
   end
 
   # DELETE /resource/sign_out

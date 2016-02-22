@@ -992,10 +992,10 @@ xcustom form elements
   height: 40px;
   padding: 9px 20px !important;
   color: #E84242 !important;
-  -webkit-transition: all 0.3s ease-in;
-  -moz-transition: all 0.3s ease-in;
-  -o-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
 }
 .pa:hover{
   background-color: #E84242 !important;
@@ -2207,6 +2207,7 @@ height:50px;
 .pop-bac{
     background-color:rgb(232, 66, 66);
     color:#fff;
+    background-color: #0AA7A7;
 }
 .pop-up-mar{
     border-radius: 0;
@@ -2219,6 +2220,7 @@ height:50px;
     width: 100%;
     height: 50px;
     background-color: #e84242;
+    background-color: #1C8888;
     border: none;
     border-radius: 0;
     font-size: 18px;
@@ -2230,32 +2232,32 @@ height:50px;
 }
 
 /**********Extra CSS ******/
-.help-links a:hover{
+.help-links a:hover, .help-links span:hover{
   text-decoration: none;
   color: #E84242;
   background-color: #fff;
 }
-.help-links a:focus{
+.help-links a:focus, .help-links span:focus{
   text-decoration: none;
   color: #E84242;
   background-color: #fff;
 }
-.help-links a:active{
+.help-links a:active, .help-links span:active{
   text-decoration: none;
   color: #E84242;
   background-color: #fff;
 }
-.help-links a{
+.help-links a, .help-links span{
   border:1px solid rgb(255,255,255);
   border-radius:2px;
   padding:7px;
   margin-right:5px;
   font-size:14px;
   color:white;
-  -webkit-transition: all 0.3s ease-in;
-  -moz-transition: all 0.3s ease-in;
-  -o-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
 }
 .header-text{
     font-size: 1.4em;
@@ -2523,6 +2525,9 @@ th.headerSortDown {
 .white-fg{
   color: white;
 }
+.black-fg{
+  color: black;
+}
 .glyphicon-star, .glyphicon-star-empty {
     color: #ffb400;
 }
@@ -2719,9 +2724,6 @@ th.headerSortDown {
  -moz-box-shadow: 0px 0px 5px rgba(255,255,255,0.8);
  box-shadow: 0px 0px 5px rgba(255,255,255,0.8);*/
 }
-.intro-header img{
-  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.4, transparent), to(rgba(0,0,0,0.2)));
-}
 .shadow{
   -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.4, transparent), to(rgba(0,0,0,0.2)));
 }
@@ -2730,7 +2732,13 @@ th.headerSortDown {
   font-size: 1.4em;
 }
 /********************** For Mobile Specific *************/
+.modal-width{
+  width: 900px;
+}
 @media only screen and (max-width: 776px) {
+  .modal-width{
+    width: auto;
+  }
   .pa{
     border: none !important;
   }

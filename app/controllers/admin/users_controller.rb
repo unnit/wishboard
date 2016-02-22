@@ -20,6 +20,13 @@ class Admin::UsersController < AdminController
     render "lock.js"
   end
 
+  def messages
+  end
+
+  def send_message
+
+  end
+
   private
     def set_user
       @user = User.find(params[:id])

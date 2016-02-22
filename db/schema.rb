@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160120203610) do
+ActiveRecord::Schema.define(version: 20160209053616) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",      limit: 4
@@ -32,6 +32,14 @@ ActiveRecord::Schema.define(version: 20160120203610) do
   end
 
   add_index "addresses", ["user_id"], name: "index_addresses_on_user_id", using: :btree
+
+  create_table "bulk_bookings", force: :cascade do |t|
+    t.string   "email",      limit: 255
+    t.string   "mobile",     limit: 255
+    t.text     "message",    limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",        limit: 255

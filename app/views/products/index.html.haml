@@ -86,7 +86,6 @@
           = hidden_field_tag :map_location, product.location_address, class: "marker", data: {title: product.title, image: product.image.filename, price: product.price, path: user_product_path(product.id), lat: product.lat, lng: product.lng}
 
         #gmap.col-sm-12.no-mar-pad{style: "height: 600px; position: fixed !important; width: 100%; overflow: hidden;", data: {drag: "false"}}
-  - @footer_visible = 'none'
 
 = content_for :extra_js do
   :javascript

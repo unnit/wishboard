@@ -25,4 +25,16 @@ class ApplicationController < ActionController::Base
       return
     end
   end
+
+  private
+
+  def authenticate_user!
+    session["user_return_to"] = request.fullpath unless current_user
+    super
+  end
+
+  def after_sign_in_path_for(resource)
+    session.delete("user_return_to") || root_path
+  end
+
 end

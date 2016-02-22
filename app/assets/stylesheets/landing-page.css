@@ -2731,6 +2731,15 @@ th.headerSortDown {
   font-weight: bold;
   font-size: 1.4em;
 }
+.loader-out-button{
+  width: 135px;
+  height: 36px;
+}
+.loader-in-button{
+  width: 133px;
+  height: 34px;
+  border: 0px;
+}
 /********************** For Mobile Specific *************/
 .modal-width{
   width: 900px;

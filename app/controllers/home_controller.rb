@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-  include PlivoSms
   skip_before_filter :check_user_status, only: [:user_signup_confirmation]
   skip_before_filter :check_profile, only: [:get_state_and_city]
   before_filter :back_to_home, only: [:login, :sign_up]

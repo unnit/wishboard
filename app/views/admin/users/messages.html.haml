@@ -1,5 +1,17 @@
 .container.mar-des-page
   .row
-    .col-md-12.mtop60
-      = form_for [:admin, user], url: send_message_admin_users_path do |f|
-        
+    .col-md-12
+      = form_tag send_message_admin_users_path do |f|
+        .col-md-12.col-xs-12.no-mar-pad
+          %label.black-fg Mobile No
+          = text_field_tag :mobile, params[:mobile], placeholder: "Mobile no comma separated. eg: 9999999999,9595959595", class: "form-control", required: true
+        .col-md-12.col-xs-12.mtop30.no-mar-pad
+          %label.black-fg Message
+          = text_area_tag :message, params[:message], rows: 4, placeholder: "Desired message", class: "form-control", required: true, maxlength: 1000
+        .col-md-12.col-xs-12.text-center.mtop30.no-mar-pad
+          .btn.website-color-bg.white-fg.no-mar-pad.loader-out-button
+            = submit_tag "Submit", class: "loader-button btn website-color-bg loader-in-button"
+            .loader-effect.btn.website-color-bg.loader-in-button{style: "display:none;"}
+              .pull-left Please Wait...
+              .ball-clip-rotate.pull-left{style: "height:22px;"}
+                %div

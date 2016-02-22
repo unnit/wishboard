@@ -24,7 +24,14 @@ class Admin::UsersController < AdminController
   end
 
   def send_message
-
+    nos = []
+    params[:mobile].split(",").each do |no|
+      nos << no
+    end
+    nos.each do |no|
+      send_mobile_sms("+91#{no}", params[:message])
+    end
+    redirect_to messages_admin_users_path
   end
 
   private

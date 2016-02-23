@@ -1,7 +1,4 @@
 .tabbable-panel-about {
-
-
-
 }
 
 /* Default mode */
@@ -177,49 +174,6 @@
     font-weight: 300;
     color:#333;
 }
-.sett-button{
-
-  background-color: #e84242;
-  border: none;
-  border-radius: 0;
-  width: 62px;
-  height: 35px;
-  font-size: 14px;
-  font-weight: 700;
-}
-.del-button{
-  margin-top: 50px;
-  background-color: #e84242;
-  border: none;
-  border-radius: 0;
-  width: 208px;
-  height: 48px;
-  font-size: 17px;
-  font-weight: 700;
-}
-.sett-button:hover{
-    background-color: #ff7070;
-    border-color: none;
-}
-.sett-button:active{
-    background-color: #d20000;
-    border-color: none;
-}
-.del-button:hover{
-    background-color: #ff7070;
-}
-.del-button:active{
-    background-color:  #d20000;
-}
-.save-button:hover{
-    background-color: #ff7070;
-    border-color: none;
-}
-.save-button:active{
-    background-color: #d20000;
-    border-color: none;
-}
-
 
 @media only screen and (max-width: 776px) {
  .mob-con{

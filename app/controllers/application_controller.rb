@@ -28,9 +28,9 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def authenticate_user!
+  def authenticate_user!(options={})
     session["user_return_to"] = request.fullpath unless current_user
-    super
+    super(options)
   end
 
   def after_sign_in_path_for(resource)

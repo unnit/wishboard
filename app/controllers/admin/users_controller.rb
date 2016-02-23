@@ -26,11 +26,17 @@ class Admin::UsersController < AdminController
   def send_message
     nos = []
     params[:mobile].split(",").each do |no|
+      if no.length < 10
+        flash[:alert] = "Please check the mobile numbers."
+        render :messages
+        return
+      end
       nos << no
     end
     nos.each do |no|
       send_mobile_sms("+91#{no}", params[:message])
     end
+    flash[:notice] = "Message sent successfully"
     redirect_to messages_admin_users_path
   end
 

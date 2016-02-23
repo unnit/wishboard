@@ -1,22 +1,66 @@
-.col-md-12.mar-des-page
-  .col-md-4.col-md-offset-4.text-center.mbottom40
-    %span.header-text OFFERS
-  .col-md-8.col-xs-12.mbottom40
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  .col-md-4.col-xs-12.mbottom40
-    = render partial: "best_deals", locals: {product: @product}
-  .clearfix
-  .col-md-4.col-xs-12.mbottom40
-    = render partial: "best_deals", locals: {product: @product}
-  .col-md-8.col-xs-12.mbottom40
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  .clearfix
-  .col-md-8.col-xs-12.mbottom40
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  .col-md-4.col-xs-12.mbottom40
-    = render partial: "best_deals", locals: {product: @product}
-  .clearfix
-  .col-md-4.col-xs-12.mbottom40
-    = render partial: "best_deals", locals: {product: @product}
-  .col-md-8.col-xs-12.mbottom40
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+.col-md-12.no-mar-pad.grey-bg
+  .container.mar-des-page
+    .col-md-4.col-md-offset-4.text-center.mbottom40
+      %span.header-text OFFERS
+    .col-md-8.col-xs-12.mbottom40.font-medium
+      %span.header-text.font21 Harley Davidson Street 750
+      %br
+      %br
+      A machine built to shred traffic. Rent and ride the urban rebel and feel the power of blacked out engine with Cocociti. Feel the suspension built for rough pavement and fire up your mind along with the unstoppable.
+      %br
+      %br
+      %h3 Give us a missed call on 96 8686 0303 to know more about attractive offers.
+      %a{href: "/listings/#{@product.id}"}
+        .btn.btn-lg.btn-shadow.website-color-bg.hvr-grow.white-fg Book Now
+    .col-md-4.col-xs-12.mbottom40
+      = render partial: "best_deals", locals: {product: @product}
+    .clearfix
+    .col-md-4.col-xs-12.mbottom40
+      %a{href: "/categories/cars-self-drive-chauffeur"}
+        %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/cars-collage.jpg", class: "box-shad img-responsive"}
+    .col-md-8.col-xs-12.mbottom40.font-medium
+      %span.header-text.font21 Cars
+      %br
+      %br
+      Self Drive Cars on demand. Choose from an exclusive fleet HatchBacks to high-end premium luxury self-drive cars on rent in Bangalore.
+      %br
+      %br
+      We understand hiring a car can be confusing with hidden costs, different fuel policies and so many companies to choose from. To help you avoid added fuel fees, we have implemented a full-to-full fuel policy for all our self drive car rentals. Take a car with full tank petrol & fill it up while you return, simple!
+      %br
+      %h3 Flat 5% off on all cars.
+      %a{href: "/categories/cars-self-drive-chauffeur"}
+        .btn.btn-lg.btn-shadow.website-color-bg.hvr-grow.white-fg Book Now
+    .clearfix
+    .col-md-8.col-xs-12.mbottom40.font-medium
+      %span.header-text.font21 Bikes
+      %br
+      %br
+      We want you to fall in love with places you go, the easy way–on two wheels!
+      %br
+      %br
+      Thinking about touring Bangalore city for a day or Nandi hills or someplace farby for a weekend or more? We are here to help make your trip more memorable by offering all types of two wheelers including bicycles, gearless scooters, Bullets, KTMs, Harley-Davidsons, Triumphs & a wide variety of Superbikes to select from. Starting from ₹250/day.
+      %br
+      %h3 Flat Rs 50/- off on all bikes.
+      %a{href: "/categories/bikes-two-wheelers"}
+        .btn.btn-lg.btn-shadow.website-color-bg.hvr-grow.white-fg Book Now
+    .col-md-4.col-xs-12.mbottom40
+      %a{href: "/categories/bikes-two-wheelers"}
+        %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/bike-collage.jpg", class: "box-shad img-responsive"}
+    .clearfix
+    .col-md-4.col-xs-12.mbottom40
+      %a{href: "/categories/fashion-rent-a-dress"}
+        %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/dress-collage.jpg", class: "box-shad img-responsive"}
+    .col-md-8.col-xs-12.mbottom40.font-medium
+      %span.header-text.font21 Fashion and Costumes
+      %br
+      %br
+      Rent, rather than paying thousands for a wedding wear or a special event costume you will wear just once. Our clothing experts make sure that apparels fit you well to help you look stunning.
+      %br
+      %br
+      All you have to do is choose the dress, wear it, and return in within the allotted time period. Choose from our wide variety of trendy, quality & hygienic costumes on rent in Bangalore.
+      %br
+      %h3 Flat 10% off on all clothing.
+      %a{href: "/categories/fashion-rent-a-dress"}
+        .btn.btn-lg.btn-shadow.website-color-bg.hvr-grow.white-fg Book Now
+    %h3.col-md-12.mbottom40.text-center
+      Looking for more offers? Call us on 96 8686 0303

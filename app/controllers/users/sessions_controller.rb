@@ -25,7 +25,7 @@ class Users::SessionsController < Devise::SessionsController
     flash[:notice] = "Signed in successfully." if current_user
     respond_to do |format|
       format.html {
-        flash[:alert] = "Email or password is wrong!"
+        flash[:alert] = "Please enter a valid email and password."
         redirect_to login_path
       }
       format.js { render "create.js" }

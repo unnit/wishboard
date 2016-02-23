@@ -24,7 +24,7 @@ class UserMailer < ApplicationMailer
 
   def bulk_booking_details(message)
     @message = message
-    mail to: "#{GLOBAL_VARIABLES[:manager_email_id_1]},#{GLOBAL_VARIABLES[:manager_email_id_2]}", subject: "Bulk Bookings - Regarding"
+    mail to: "#{GLOBAL_VARIABLES[:manager_email_id_1]},#{GLOBAL_VARIABLES[:manager_email_id_2]}", subject: "Bulk Bookings"
   end
 
 end

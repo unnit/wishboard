@@ -7,17 +7,23 @@
     .row
       .col-md-12
         ~ form_for(@user, as: :user, url: registration_path(:user), remote: true, html: {class: 'form-horizontal user_form', role: "form", method: :put}) do |f|
-          .errors= render partial: "/layouts/errors", locals: {errors: @user.errors.full_messages}
+          .errors.mbottom20= render partial: "/layouts/errors", locals: {errors: @user.errors.full_messages}
           %fieldset
             .form-group
               %label.col-sm-2.control-label{:for => "textinput"} Current password
               .col-sm-3
                 = f.password_field :current_password, :placeholder => "password", class: "form-control"
-              .col-md-2{:style => "text-align:center;"}
+              .col-md-1{:style => "text-align:center;"}
                 %i.fa.fa-plus.fa-2x{style: "color:#e84242"}
               .col-md-2
                 = f.password_field :password, :placeholder => "New password", class: "form-control"
               .col-md-2
                 = f.password_field :password_confirmation, :placeholder => "Repeat password", class: "form-control"
-              .col-md-1
-                %button.btn.btn-info.sett-button Save
+              .col-md-2
+                /%button.btn.website-color-bg.white-fg Update
+                .btn.website-color-bg.white-fg.no-mar-pad.loader-out-button
+                  = f.submit "Update", class: "loader-button btn website-color-bg loader-in-button"
+                  .loader-effect.btn.website-color-bg.loader-in-button{style: "display:none;"}
+                    .pull-left Updating...
+                    .ball-clip-rotate.pull-left{style: "height:22px;"}
+                      %div

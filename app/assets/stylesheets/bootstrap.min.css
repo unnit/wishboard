@@ -3657,7 +3657,7 @@ textarea.form-group-lg .form-control {
     user-select: none;
     background-image: none;
     border: 1px solid transparent;
-    border-radius: 4px
+    border-radius: 3px
 }
 
 .btn.active.focus,
@@ -4042,7 +4042,7 @@ fieldset[disabled] .btn-link:hover {
     padding: 10px 16px;
     font-size: 18px;
     line-height: 1.3333333;
-    border-radius: 6px
+    border-radius: 2px
 }
 
 .btn-group-sm>.btn,
@@ -4050,7 +4050,7 @@ fieldset[disabled] .btn-link:hover {
     padding: 5px 10px;
     font-size: 12px;
     line-height: 1.5;
-    border-radius: 3px
+    border-radius: 2px
 }
 
 .btn-group-xs>.btn,
@@ -4058,7 +4058,7 @@ fieldset[disabled] .btn-link:hover {
     padding: 1px 5px;
     font-size: 12px;
     line-height: 1.5;
-    border-radius: 3px
+    border-radius: 2px
 }
 
 .btn-block {

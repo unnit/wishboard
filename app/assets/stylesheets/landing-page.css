@@ -2740,6 +2740,50 @@ th.headerSortDown {
   height: 34px;
   border: 0px;
 }
+.btn-shadow{
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12) !important;
+}
+.errors>.alert-success{
+  margin-top: 0px !important
+}
+.coco-offer{
+  width: 125px;
+  background: #f2f2f2;
+  font-size: 12px;
+  position: fixed;
+  right: 10px;
+  top: 49px;
+  z-index: 100;
+}
+.coco-ribbon{
+  margin: 9px -3px 10px -3px;
+  padding: 6px 0;
+  position: relative;
+  border-bottom: 0;
+  background: #fdd922;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #B5B5B5;
+}
+.offer-text{
+  line-height: 13px;
+  display: inline-block;
+  padding: 2px 0 0 0;
+  word-spacing: 50px;
+}
+.coco-ribbon:before,.coco-ribbon:after {
+    content: "";
+    border-top: 3px solid #fdd922;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    position: absolute;
+    bottom: -3px;
+}
+.coco-ribbon:before{
+    left: 0;
+}
+.coco-ribbon:after{
+  right: 0;
+}
 /********************** For Mobile Specific *************/
 .modal-width{
   width: 900px;

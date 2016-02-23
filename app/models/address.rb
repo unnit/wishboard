@@ -10,9 +10,14 @@ class Address < ActiveRecord::Base
   validates :first_name, :last_name, :address1, :address2, :city, :zip, :state, :mobile, :email, :landmark, presence: true, unless: :address_mandatory_blank?
   validates :address1, :address2, :city, :state, :landmark, length: { maximum: 200 }
   validates :zip, length: { maximum: 6 }
+  validates :zip, numericality: true, unless: :zip_blank?
 
   def address_mandatory_blank?
     address_mandatory.blank?
+  end
+
+  def zip_blank?
+    zip.blank?
   end
 
 end

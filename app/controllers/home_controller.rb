@@ -49,6 +49,7 @@ class HomeController < ApplicationController
 
   def offers
     @product = Product.find_by_id GLOBAL_VARIABLES[:offer_product]
+    @offers_visible = "none"
   end
 
   private

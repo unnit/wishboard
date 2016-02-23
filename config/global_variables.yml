@@ -64,4 +64,4 @@ production:
   dress_end_hour: 18
   dress_end_minute: 00
   #----------------------
-  offer_product: 41
+  offer_product: 141

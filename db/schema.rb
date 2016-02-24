@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160209053616) do
+ActiveRecord::Schema.define(version: 20160224080414) do
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id",      limit: 4
@@ -128,48 +128,50 @@ ActiveRecord::Schema.define(version: 20160209053616) do
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
 
   create_table "products", force: :cascade do |t|
-    t.integer  "user_id",              limit: 4
-    t.integer  "category_id",          limit: 4
-    t.string   "listing_type",         limit: 255
-    t.string   "title",                limit: 255
-    t.integer  "price",                limit: 4
-    t.text     "description",          limit: 65535
-    t.string   "owner_type",           limit: 255
-    t.string   "product_condition",    limit: 255
-    t.text     "tech_spec",            limit: 65535
-    t.integer  "weekly_rent",          limit: 4
-    t.integer  "monthly_rent",         limit: 4
-    t.integer  "security_deposit",     limit: 4
-    t.text     "terms_and_conditions", limit: 65535
-    t.integer  "year_of_manufacture",  limit: 4
-    t.string   "doc_requirement",      limit: 255
-    t.decimal  "replacement_cost",                   precision: 10
-    t.string   "image_1",              limit: 255
-    t.string   "image_2",              limit: 255
-    t.string   "image_3",              limit: 255
-    t.string   "slug",                 limit: 255
-    t.datetime "created_at",                                                                  null: false
-    t.datetime "updated_at",                                                                  null: false
-    t.integer  "rate",                 limit: 4,                              default: 0
-    t.integer  "ship_price",           limit: 4,                              default: 0
+    t.integer  "user_id",                limit: 4
+    t.integer  "category_id",            limit: 4
+    t.string   "listing_type",           limit: 255
+    t.string   "title",                  limit: 255
+    t.integer  "price",                  limit: 4
+    t.text     "description",            limit: 65535
+    t.string   "owner_type",             limit: 255
+    t.string   "product_condition",      limit: 255
+    t.text     "tech_spec",              limit: 65535
+    t.integer  "weekly_rent",            limit: 4
+    t.integer  "monthly_rent",           limit: 4
+    t.integer  "security_deposit",       limit: 4
+    t.text     "terms_and_conditions",   limit: 65535
+    t.integer  "year_of_manufacture",    limit: 4
+    t.string   "doc_requirement",        limit: 255
+    t.decimal  "replacement_cost",                     precision: 10
+    t.string   "image_1",                limit: 255
+    t.string   "image_2",                limit: 255
+    t.string   "image_3",                limit: 255
+    t.string   "slug",                   limit: 255
+    t.datetime "created_at",                                                                    null: false
+    t.datetime "updated_at",                                                                    null: false
+    t.integer  "rate",                   limit: 4,                              default: 0
+    t.integer  "ship_price",             limit: 4,                              default: 0
     t.datetime "available_date"
-    t.integer  "discount_3",           limit: 4,                              default: 10
-    t.integer  "discount_10",          limit: 4,                              default: 20
-    t.integer  "discount_20",          limit: 4,                              default: 30
-    t.integer  "discount_30",          limit: 4,                              default: 40
-    t.integer  "discount_90",          limit: 4,                              default: 50
-    t.boolean  "available",            limit: 1,                              default: true
-    t.integer  "parent_category",      limit: 4
-    t.decimal  "tax",                                precision: 10, scale: 2, default: 0.0
-    t.integer  "operator_type",        limit: 4,                              default: 0
-    t.integer  "operator_price",       limit: 4,                              default: 0
-    t.boolean  "featured",             limit: 1,                              default: false
-    t.string   "image_4",              limit: 255
-    t.string   "image_5",              limit: 255
-    t.boolean  "admin_approved",       limit: 1,                              default: false
-    t.integer  "billing_type",         limit: 4
-    t.string   "internal_id",          limit: 255
-    t.integer  "hourly_price",         limit: 4,                              default: 0
+    t.integer  "discount_3",             limit: 4,                              default: 10
+    t.integer  "discount_10",            limit: 4,                              default: 20
+    t.integer  "discount_20",            limit: 4,                              default: 30
+    t.integer  "discount_30",            limit: 4,                              default: 40
+    t.integer  "discount_90",            limit: 4,                              default: 50
+    t.boolean  "available",              limit: 1,                              default: true
+    t.integer  "parent_category",        limit: 4
+    t.decimal  "tax",                                  precision: 10, scale: 2, default: 0.0
+    t.integer  "operator_type",          limit: 4,                              default: 0
+    t.integer  "operator_price",         limit: 4,                              default: 0
+    t.boolean  "featured",               limit: 1,                              default: false
+    t.string   "image_4",                limit: 255
+    t.string   "image_5",                limit: 255
+    t.boolean  "admin_approved",         limit: 1,                              default: false
+    t.integer  "billing_type",           limit: 4
+    t.string   "internal_id",            limit: 255
+    t.integer  "hourly_price",           limit: 4,                              default: 0
+    t.decimal  "admin_discount_percent",               precision: 6,  scale: 2, default: 0.0
+    t.integer  "admin_discount_amount",  limit: 4,                              default: 0
   end
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree

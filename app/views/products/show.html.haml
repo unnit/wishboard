@@ -182,10 +182,12 @@
                   %span.discount= @product.discount_by_days(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
               %tr
                 %td
-                  %strong Total Rent after Discount
+                  %h4.no-mar-pad
+                    %strong Total Rent after Discount
                 %td.text-right
-                  %strong
-                    %span.price-with-discount= @product.price_with_discount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
+                  %h4.no-mar-pad
+                    %strong
+                      %span.price-with-discount= @product.price_with_discount(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
               %tr
                 %td.font-medium Tax ( #{@product.tax}% )
                 %td.font-medium.text-right
@@ -203,13 +205,11 @@
                   %td.font-medium.text-right
               %tr
                 %td
-                  %h4.no-mar-pad
-                    %strong Total Amount Payable
+                  %strong Total Amount Payable
                 %td.text-right
-                  %h4.no-mar-pad
-                    %i.fa.fa-rupee
-                    %span.total-amount
-                      %strong= @product.calculate_price(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
+                  %i.fa.fa-rupee
+                  %span.total-amount
+                    %strong= @product.calculate_price(@days, @hours, op_type, @no_of_weekenddays, @end_day_weekend)
           .col-md-12.no-mar-pad.mbottom10.text-right
             .note-font-size.detailed-breakup.pon
               Click here for detailed break up&nbsp;

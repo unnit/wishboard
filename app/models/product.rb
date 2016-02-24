@@ -451,6 +451,7 @@ class Product < ActiveRecord::Base
 
   def discount_by_days(days, hours, op_type, no_of_weekenddays, end_day_weekend)
     d = 0
+    ad = admin_discount_percent || 0
     days_for_discount = days
     days_for_discount = days + 1 if hours > 0
     if days_for_discount > 90
@@ -464,8 +465,7 @@ class Product < ActiveRecord::Base
     elsif days_for_discount > 3
       d = discount_3 || 0
     end
-    discount = d.to_f/100
-    discounted_amt = ((discount + GLOBAL_VARIABLES[:extra_discount]) * price_without_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend))
+    discounted_amt = (((d + GLOBAL_VARIABLES[:extra_discount] + ad)/100) * price_without_discount(days, hours, op_type, no_of_weekenddays, end_day_weekend)) + admin_discount_amount
     discounted_amt.round(1)
   end
 

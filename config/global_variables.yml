@@ -12,7 +12,7 @@ development:
   default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
   watermark: "default_images:watermark"
   default_product_image: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/default_product.png"
-  extra_discount: 0
+  extra_discount: 10
   #-----For Date Suggesstion in search page -------
   bike_two_wheelers: 1
   fashion_and_dress: 39

@@ -13,97 +13,100 @@
 
 ActiveRecord::Schema.define(version: 20160224080414) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "addresses", force: :cascade do |t|
-    t.integer  "user_id",      limit: 4
-    t.string   "first_name",   limit: 255
-    t.string   "last_name",    limit: 255
-    t.string   "email",        limit: 255
-    t.string   "mobile",       limit: 255
-    t.string   "address1",     limit: 255
-    t.string   "address2",     limit: 255
-    t.string   "city",         limit: 255
-    t.string   "zip",          limit: 255
-    t.string   "state",        limit: 255
-    t.string   "country",      limit: 255
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "landmark",     limit: 255
-    t.integer  "address_type", limit: 4
+    t.integer  "user_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "mobile"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "zip"
+    t.string   "state"
+    t.string   "country"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "landmark"
+    t.integer  "address_type"
   end
 
   add_index "addresses", ["user_id"], name: "index_addresses_on_user_id", using: :btree
 
   create_table "bulk_bookings", force: :cascade do |t|
-    t.string   "email",      limit: 255
-    t.string   "mobile",     limit: 255
-    t.text     "message",    limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.string   "email"
+    t.string   "mobile"
+    t.text     "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.string   "image",       limit: 255
-    t.integer  "parent_id",   limit: 4
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.integer  "feature_pos", limit: 4,   default: 0
-    t.string   "slug",        limit: 255
+    t.string   "name"
+    t.string   "image"
+    t.integer  "parent_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "feature_pos", default: 0
+    t.string   "slug"
   end
 
   create_table "credentials", force: :cascade do |t|
-    t.string   "provider",   limit: 255
-    t.string   "uid",        limit: 255
-    t.integer  "user_id",    limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "provider"
+    t.string   "uid"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
-    t.string   "name",           limit: 255
-    t.decimal  "distance",                   precision: 10
-    t.integer  "locatable_id",   limit: 4
-    t.string   "locatable_type", limit: 255
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
-    t.decimal  "lat",                        precision: 17, scale: 14
-    t.decimal  "lng",                        precision: 17, scale: 14
+    t.string   "name"
+    t.decimal  "distance"
+    t.integer  "locatable_id"
+    t.string   "locatable_type"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.decimal  "lat",            precision: 17, scale: 14
+    t.decimal  "lng",            precision: 17, scale: 14
   end
 
   add_index "locations", ["locatable_type", "locatable_id"], name: "index_locations_on_locatable_type_and_locatable_id", using: :btree
 
   create_table "mailboxer_conversation_opt_outs", force: :cascade do |t|
-    t.integer "unsubscriber_id",   limit: 4
-    t.string  "unsubscriber_type", limit: 255
-    t.integer "conversation_id",   limit: 4
+    t.integer "unsubscriber_id"
+    t.string  "unsubscriber_type"
+    t.integer "conversation_id"
   end
 
   add_index "mailboxer_conversation_opt_outs", ["conversation_id"], name: "index_mailboxer_conversation_opt_outs_on_conversation_id", using: :btree
   add_index "mailboxer_conversation_opt_outs", ["unsubscriber_id", "unsubscriber_type"], name: "index_mailboxer_conversation_opt_outs_on_unsubscriber_id_type", using: :btree
 
   create_table "mailboxer_conversations", force: :cascade do |t|
-    t.string   "subject",    limit: 255, default: ""
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.string   "subject",    default: ""
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "mailboxer_notifications", force: :cascade do |t|
-    t.string   "type",                 limit: 255
-    t.text     "body",                 limit: 65535
-    t.string   "subject",              limit: 255,   default: ""
-    t.integer  "sender_id",            limit: 4
-    t.string   "sender_type",          limit: 255
-    t.integer  "conversation_id",      limit: 4
-    t.boolean  "draft",                limit: 1,     default: false
-    t.string   "notification_code",    limit: 255
-    t.integer  "notified_object_id",   limit: 4
-    t.string   "notified_object_type", limit: 255
-    t.string   "attachment",           limit: 255
-    t.datetime "updated_at",                                         null: false
-    t.datetime "created_at",                                         null: false
-    t.boolean  "global",               limit: 1,     default: false
+    t.string   "type"
+    t.text     "body"
+    t.string   "subject",              default: ""
+    t.integer  "sender_id"
+    t.string   "sender_type"
+    t.integer  "conversation_id"
+    t.boolean  "draft",                default: false
+    t.string   "notification_code"
+    t.integer  "notified_object_id"
+    t.string   "notified_object_type"
+    t.string   "attachment"
+    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                           null: false
+    t.boolean  "global",               default: false
     t.datetime "expires"
   end
 
@@ -113,65 +116,65 @@ ActiveRecord::Schema.define(version: 20160224080414) do
   add_index "mailboxer_notifications", ["type"], name: "index_mailboxer_notifications_on_type", using: :btree
 
   create_table "mailboxer_receipts", force: :cascade do |t|
-    t.integer  "receiver_id",     limit: 4
-    t.string   "receiver_type",   limit: 255
-    t.integer  "notification_id", limit: 4,                   null: false
-    t.boolean  "is_read",         limit: 1,   default: false
-    t.boolean  "trashed",         limit: 1,   default: false
-    t.boolean  "deleted",         limit: 1,   default: false
+    t.integer  "receiver_id"
+    t.string   "receiver_type"
+    t.integer  "notification_id",                            null: false
+    t.boolean  "is_read",                    default: false
+    t.boolean  "trashed",                    default: false
+    t.boolean  "deleted",                    default: false
     t.string   "mailbox_type",    limit: 25
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id", using: :btree
   add_index "mailboxer_receipts", ["receiver_id", "receiver_type"], name: "index_mailboxer_receipts_on_receiver_id_and_receiver_type", using: :btree
 
   create_table "products", force: :cascade do |t|
-    t.integer  "user_id",                limit: 4
-    t.integer  "category_id",            limit: 4
-    t.string   "listing_type",           limit: 255
-    t.string   "title",                  limit: 255
-    t.integer  "price",                  limit: 4
-    t.text     "description",            limit: 65535
-    t.string   "owner_type",             limit: 255
-    t.string   "product_condition",      limit: 255
-    t.text     "tech_spec",              limit: 65535
-    t.integer  "weekly_rent",            limit: 4
-    t.integer  "monthly_rent",           limit: 4
-    t.integer  "security_deposit",       limit: 4
-    t.text     "terms_and_conditions",   limit: 65535
-    t.integer  "year_of_manufacture",    limit: 4
-    t.string   "doc_requirement",        limit: 255
-    t.decimal  "replacement_cost",                     precision: 10
-    t.string   "image_1",                limit: 255
-    t.string   "image_2",                limit: 255
-    t.string   "image_3",                limit: 255
-    t.string   "slug",                   limit: 255
-    t.datetime "created_at",                                                                    null: false
-    t.datetime "updated_at",                                                                    null: false
-    t.integer  "rate",                   limit: 4,                              default: 0
-    t.integer  "ship_price",             limit: 4,                              default: 0
+    t.integer  "user_id"
+    t.integer  "category_id"
+    t.string   "listing_type"
+    t.string   "title"
+    t.integer  "price"
+    t.text     "description"
+    t.string   "owner_type"
+    t.string   "product_condition"
+    t.text     "tech_spec"
+    t.integer  "weekly_rent"
+    t.integer  "monthly_rent"
+    t.integer  "security_deposit"
+    t.text     "terms_and_conditions"
+    t.integer  "year_of_manufacture"
+    t.string   "doc_requirement"
+    t.decimal  "replacement_cost"
+    t.string   "image_1"
+    t.string   "image_2"
+    t.string   "image_3"
+    t.string   "slug"
+    t.datetime "created_at",                                                      null: false
+    t.datetime "updated_at",                                                      null: false
+    t.integer  "rate",                                            default: 0
+    t.integer  "ship_price",                                      default: 0
     t.datetime "available_date"
-    t.integer  "discount_3",             limit: 4,                              default: 10
-    t.integer  "discount_10",            limit: 4,                              default: 20
-    t.integer  "discount_20",            limit: 4,                              default: 30
-    t.integer  "discount_30",            limit: 4,                              default: 40
-    t.integer  "discount_90",            limit: 4,                              default: 50
-    t.boolean  "available",              limit: 1,                              default: true
-    t.integer  "parent_category",        limit: 4
-    t.decimal  "tax",                                  precision: 10, scale: 2, default: 0.0
-    t.integer  "operator_type",          limit: 4,                              default: 0
-    t.integer  "operator_price",         limit: 4,                              default: 0
-    t.boolean  "featured",               limit: 1,                              default: false
-    t.string   "image_4",                limit: 255
-    t.string   "image_5",                limit: 255
-    t.boolean  "admin_approved",         limit: 1,                              default: false
-    t.integer  "billing_type",           limit: 4
-    t.string   "internal_id",            limit: 255
-    t.integer  "hourly_price",           limit: 4,                              default: 0
-    t.decimal  "admin_discount_percent",               precision: 6,  scale: 2, default: 0.0
-    t.integer  "admin_discount_amount",  limit: 4,                              default: 0
+    t.integer  "discount_3",                                      default: 10
+    t.integer  "discount_10",                                     default: 20
+    t.integer  "discount_20",                                     default: 30
+    t.integer  "discount_30",                                     default: 40
+    t.integer  "discount_90",                                     default: 50
+    t.boolean  "available",                                       default: true
+    t.integer  "parent_category"
+    t.decimal  "tax",                    precision: 10, scale: 2, default: 0.0
+    t.integer  "operator_type",                                   default: 0
+    t.integer  "operator_price",                                  default: 0
+    t.boolean  "featured",                                        default: false
+    t.string   "image_4"
+    t.string   "image_5"
+    t.boolean  "admin_approved",                                  default: false
+    t.integer  "billing_type"
+    t.string   "internal_id"
+    t.integer  "hourly_price",                                    default: 0
+    t.decimal  "admin_discount_percent", precision: 6,  scale: 2, default: 0.0
+    t.integer  "admin_discount_amount",                           default: 0
   end
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
@@ -183,83 +186,83 @@ ActiveRecord::Schema.define(version: 20160224080414) do
   add_index "products", ["user_id"], name: "index_products_on_user_id", using: :btree
 
   create_table "profiles", force: :cascade do |t|
-    t.integer  "user_id",                  limit: 4
-    t.string   "first_name",               limit: 255
-    t.string   "last_name",                limit: 255
-    t.string   "image",                    limit: 255
-    t.string   "phone",                    limit: 255
-    t.text     "about",                    limit: 65535
-    t.datetime "created_at",                                                                     null: false
-    t.datetime "updated_at",                                                                     null: false
-    t.integer  "update_emails",            limit: 4,                             default: 1
-    t.boolean  "newsletters",              limit: 1,                             default: false
-    t.text     "email_notification",       limit: 65535
-    t.string   "slug",                     limit: 255
-    t.string   "avail_days",               limit: 255
-    t.string   "open_time",                limit: 255
-    t.string   "close_time",               limit: 255
-    t.string   "gender",                   limit: 255
+    t.integer  "user_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "image"
+    t.string   "phone"
+    t.text     "about"
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
+    t.integer  "update_emails",                                    default: 1
+    t.boolean  "newsletters",                                      default: false
+    t.text     "email_notification"
+    t.string   "slug"
+    t.string   "avail_days"
+    t.string   "open_time"
+    t.string   "close_time"
+    t.string   "gender"
     t.date     "date_of_birth"
-    t.string   "weekend_days",             limit: 255
-    t.decimal  "increase",                               precision: 6, scale: 2, default: 0.0
-    t.integer  "business_type",            limit: 4
-    t.decimal  "increase_hourly",                        precision: 6, scale: 2, default: 0.0
-    t.decimal  "flat_discount_percent",                  precision: 6, scale: 2, default: 0.0
-    t.integer  "flat_discount_amount",     limit: 4,                             default: 0
-    t.boolean  "collect_security_deposit", limit: 1,                             default: true
+    t.string   "weekend_days"
+    t.decimal  "increase",                 precision: 6, scale: 2, default: 0.0
+    t.integer  "business_type"
+    t.decimal  "increase_hourly",          precision: 6, scale: 2, default: 0.0
+    t.decimal  "flat_discount_percent",    precision: 6, scale: 2, default: 0.0
+    t.integer  "flat_discount_amount",                             default: 0
+    t.boolean  "collect_security_deposit",                         default: true
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
   create_table "ratings", force: :cascade do |t|
-    t.integer  "user_id",    limit: 4
-    t.integer  "product_id", limit: 4
-    t.integer  "value",      limit: 4, default: 0
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.integer  "user_id"
+    t.integer  "product_id"
+    t.integer  "value",      default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "ratings", ["product_id"], name: "index_ratings_on_product_id", using: :btree
   add_index "ratings", ["user_id"], name: "index_ratings_on_user_id", using: :btree
 
   create_table "reviews", force: :cascade do |t|
-    t.integer  "user_id",    limit: 4
-    t.integer  "product_id", limit: 4
-    t.text     "comment",    limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "user_id"
+    t.integer  "product_id"
+    t.text     "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "reviews", ["product_id"], name: "index_reviews_on_product_id", using: :btree
   add_index "reviews", ["user_id"], name: "index_reviews_on_user_id", using: :btree
 
   create_table "transactions", force: :cascade do |t|
-    t.integer  "user_id",                     limit: 4
-    t.integer  "product_id",                  limit: 4
-    t.string   "status",                      limit: 255
-    t.integer  "amount",                      limit: 4,                            default: 0
+    t.integer  "user_id"
+    t.integer  "product_id"
+    t.string   "status"
+    t.integer  "amount",                                               default: 0
     t.datetime "startdate"
     t.datetime "enddate"
-    t.datetime "created_at",                                                                     null: false
-    t.datetime "updated_at",                                                                     null: false
-    t.string   "txnid",                       limit: 255
-    t.integer  "operator_type",               limit: 4,                            default: 0
-    t.integer  "operator_price",              limit: 4,                            default: 0
-    t.string   "coco_transaction_id",         limit: 255
-    t.string   "non_coco_operator",           limit: 255
-    t.integer  "daily_rent",                  limit: 4,                            default: 0
-    t.integer  "days",                        limit: 4,                            default: 0
-    t.decimal  "weekend_daily_rent",                      precision: 10, scale: 2, default: 0.0
-    t.integer  "weekend_days",                limit: 4,                            default: 0
-    t.decimal  "rent_without_discount",                   precision: 10, scale: 2, default: 0.0
-    t.decimal  "discounts",                               precision: 10, scale: 2, default: 0.0
-    t.decimal  "rent_with_discount",                      precision: 10, scale: 2, default: 0.0
-    t.decimal  "tax",                                     precision: 10, scale: 2, default: 0.0
-    t.integer  "refundable_security_deposit", limit: 4,                            default: 0
-    t.decimal  "hours",                                   precision: 10, scale: 2, default: 0.0
-    t.integer  "hourly_rent",                 limit: 4,                            default: 0
-    t.decimal  "weekend_hourly_rent",                     precision: 10, scale: 2, default: 0.0
-    t.decimal  "weekend_hours",                           precision: 10, scale: 2, default: 0.0
+    t.datetime "created_at",                                                         null: false
+    t.datetime "updated_at",                                                         null: false
+    t.string   "txnid"
+    t.integer  "operator_type",                                        default: 0
+    t.integer  "operator_price",                                       default: 0
+    t.string   "coco_transaction_id"
+    t.string   "non_coco_operator"
+    t.integer  "daily_rent",                                           default: 0
+    t.integer  "days",                                                 default: 0
+    t.decimal  "weekend_daily_rent",          precision: 10, scale: 2, default: 0.0
+    t.integer  "weekend_days",                                         default: 0
+    t.decimal  "rent_without_discount",       precision: 10, scale: 2, default: 0.0
+    t.decimal  "discounts",                   precision: 10, scale: 2, default: 0.0
+    t.decimal  "rent_with_discount",          precision: 10, scale: 2, default: 0.0
+    t.decimal  "tax",                         precision: 10, scale: 2, default: 0.0
+    t.integer  "refundable_security_deposit",                          default: 0
+    t.decimal  "hours",                       precision: 10, scale: 2, default: 0.0
+    t.integer  "hourly_rent",                                          default: 0
+    t.decimal  "weekend_hourly_rent",         precision: 10, scale: 2, default: 0.0
+    t.decimal  "weekend_hours",               precision: 10, scale: 2, default: 0.0
   end
 
   add_index "transactions", ["product_id"], name: "index_transactions_on_product_id", using: :btree
@@ -267,24 +270,24 @@ ActiveRecord::Schema.define(version: 20160224080414) do
   add_index "transactions", ["user_id"], name: "index_transactions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "",     null: false
-    t.string   "encrypted_password",     limit: 255, default: "",     null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                  default: "",     null: false
+    t.string   "encrypted_password",     default: "",     null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,   default: 0,      null: false
+    t.integer  "sign_in_count",          default: 0,      null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                   limit: 255, default: "user"
-    t.boolean  "inactive",               limit: 1,   default: true
-    t.string   "unlock_token",           limit: 255
+    t.string   "role",                   default: "user"
+    t.boolean  "inactive",               default: true
+    t.string   "unlock_token"
     t.datetime "locked_at"
-    t.integer  "failed_attempts",        limit: 4,   default: 0
-    t.string   "confirmation_token",     limit: 255
+    t.integer  "failed_attempts",        default: 0
+    t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
   end

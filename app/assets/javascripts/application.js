@@ -29,10 +29,14 @@ $(document).ready(function(){
     $("#bulk-bookings-pop-up").modal("show");
   });
   //Loader Icon
-  $("form").submit(function(){
+  $("form.bulk-bookings-form, form.user_form").submit(function(){
     $(".loader-button").hide();
     $(".loader-effect").show();
   })
+  //Hide success/failure messages after 30 secs.
+  if($(".alert-message-div").length){
+    $(".alert-message-div").delay(30000).fadeOut();
+  }
   //Home page - Rent, Lend pages
   n=!0,t=!0;
   $(".rent-hover").hover(function(){

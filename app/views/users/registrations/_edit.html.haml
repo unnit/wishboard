@@ -7,7 +7,7 @@
     .row
       .col-md-12
         ~ form_for(@user, as: :user, url: registration_path(:user), remote: true, html: {class: 'form-horizontal user_form', role: "form", method: :put}) do |f|
-          .errors.mbottom20= render partial: "/layouts/errors", locals: {errors: @user.errors.full_messages}
+          .errors.mbottom20
           %fieldset
             .form-group
               %label.col-sm-2.control-label{:for => "textinput"} Current password

@@ -1,3 +1,8 @@
-$('form.user_form').closest('#user_form').replaceWith("#{j(render 'users/registrations/edit')}")
+//$('form.user_form').closest('#user_form').replaceWith("#{j(render 'users/registrations/edit')}")
+$(".loader-button").show();
+$(".loader-effect").hide();
+$("#user_current_password, #user_password, #user_password_confirmation").val("");
 - if @user.errors.blank?
   $("form.user_form .errors").html("#{j(render 'layouts/messages')}")
+- else
+  $("form.user_form .errors").html("#{j(render partial: "layouts/errors", locals: {errors: @user.errors.full_messages})}")

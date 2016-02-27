@@ -3,7 +3,7 @@
     - type = name.to_s
     - type = "danger" if type == 'error' || type=='alert'
     - type = 'success' if type == 'notice'
-    = content_tag :div, :class => "mbottom0 alert alert-#{type} alert-dismissable mtop50", :role => "alert" do
+    = content_tag :div, :class => "mbottom0 alert alert-#{type} alert-dismissable mtop50 alert-message-div", :role => "alert" do
       %button.close{:type => "button", :data => {:dismiss => "alert"} }
         %span{:aria => {:hidden => "true"} } &times;
         %span.sr-only Close

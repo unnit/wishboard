@@ -3,14 +3,11 @@
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
-
 body,
 html {
     width: 100%;
     height: 100%;
 }
-
-
 
 .topnav {
     font-size: 14px;
@@ -2753,7 +2750,7 @@ th.headerSortDown {
   position: fixed;
   right: 10px;
   top: 49px;
-  z-index: 100;
+  z-index: 1001;
 }
 .coco-ribbon{
   margin: 9px -3px 10px -3px;
@@ -2789,6 +2786,9 @@ th.headerSortDown {
   width: 900px;
 }
 @media only screen and (max-width: 776px) {
+  .coco-offer{
+    top: 84px;
+  }
   .modal-width{
     width: auto;
   }

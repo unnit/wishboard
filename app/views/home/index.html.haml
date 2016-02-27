@@ -14,7 +14,7 @@
                 .col-md-6.hidden-xs.text-left
                   %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/bulk-booking.png", style: "height: 300px;"}
                 .col-md-6.col-xs-12.text-left.mbottom40
-                  = form_for(BulkBooking.new, url: bulk_bookings_path, html: { "data-parsley-validate" => true, remote: true }) do |f|
+                  = form_for(BulkBooking.new, url: bulk_bookings_path, html: { "data-parsley-validate" => true, remote: true, class: "bulk-bookings-form" }) do |f|
                     .col-md-12.col-xs-12.no-mar-pad
                       %label.black-fg Mobile No
                       = f.text_field :mobile, placeholder: "Your Mobile No", class: "form-control", required: true, maxlength: 10

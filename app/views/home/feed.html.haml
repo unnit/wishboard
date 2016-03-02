@@ -1,0 +1,72 @@
+.container-fluid.mtop50{style: "background-color: #fafafa"}
+  .col-sm-3.hidden-xs.ptop10{style: "height: 1000px;"}
+    .col-sm-12.no-mar-pad{style: "height: 200px;background-color: #7FDBB6 !important;"}
+      .col-sm-12{style: "height:100px;"}
+      .col-sm-12{style: "height:100px;"}
+        %span.mtop5.pull-left.white-fg.font-bit-large.weight-bold{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "bottom", style: "margin-left: 95px;height: 40px;"}
+          = (truncate current_user.profile.first_name, length: 20) || (truncate current_user.name, length: 20)
+        .col-sm-12.white-fg.no-mar-pad
+          .col-sm-4.no-mar-pad
+            %h6.no-mar-pad SHOWCASES
+            %h4= current_user.showcases.count
+          .col-sm-4.no-mar-pad
+            %h6.no-mar-pad FOLLOWING
+            %h4= current_user.following.count
+          .col-sm-4.no-mar-pad
+            %h6.no-mar-pad FOLLOWERS
+            %h4= current_user.followers.count
+      .col-sm-12{style: "margin-top: -140px;"}
+        = cl_image_tag current_user.avatar, class: "img-circle pull-left", style: "border: 2px solid #fff;z-index: 1;position: relative;", width: 80, height: 80, crop: :fill
+        %hr.pull-left.white-fg.full-width.no-mar-pad{style: "margin-top: -40px;"}
+  .col-xs-12.col-sm-6.bg-white.border-rt-side.border-lt-side.ptop10
+    .col-xs-12.col-sm-12.mbottom10.bg-white.border-bt-side.no-mar-pad{style: "height: 360px;"}
+      .col-xs-1.col-sm-1.no-mar-pad.full-height
+        = cl_image_tag current_user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
+      = form_for @showcase, url: showcases_path do |f|
+        .col-xs-11.col-sm-11.bg-white
+          .col-xs-6.col-sm-6.pbottom20
+            .preview
+            .glyphicon.glyphicon-remove.preview-delete.bg-white{style: "display: none;position: absolute;z-index: 1;"}
+            .glyphicon.glyphicon-camera.file-input-button{style: "font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dotted;"}
+              = cl_image_upload_tag(:image)
+            .progress.progress-striped{style: "display: none;height: 10px;width:107px;"}
+              .progress-bar{style: "width: 0%;"}
+          .col-xs-6.col-sm-6
+        .col-xs-11.col-sm-11.bg-white
+          .col-xs-8.col-sm-8.text-center.ptop10
+            = f.text_field :title, placeholder: "Title", class: "no-border coco-input-field form-control"
+            = f.text_area :description, placeholder: "Description", class: "no-border coco-input-field form-control"
+          .col-xs-4.col-sm-4.ptop10
+            = f.text_field :year, placeholder: "Year", class: "no-border coco-input-field form-control"
+            = f.fields_for :location do |lf|
+              = lf.text_field :name, placeholder: "Location", class: "no-border coco-input-field form-control"
+        .col-xs-11.col-sm-11.mtop10.text-center
+          = f.submit "Showcase", class: "btn website-color-bg white-fg"
+    .col-xs-12.col-sm-12.padding10.mbottom20.bg-white{style: "height: 500px;"}
+      .col-xs-12.col-sm-12.padding10{style: "height: 360px;"}
+        .col-xs-1.col-sm-1.no-mar-pad
+          = cl_image_tag current_user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
+      .col-xs-12.col-sm-12.padding10.bg-white{style: "height: 120px;"}
+  .col-sm-3.hidden-xs.ptop10{style: "height: 1000px;"}
+= content_for :extra_js do
+  :javascript
+    $('.cloudinary-fileupload').bind('fileuploadprogress', function(e, data) {
+      $('.progress').show();
+      $('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+    });
+    $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
+      $(".file-input-button, .progress").hide();
+      $(".preview").show();
+      $('.preview').html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', width: 150, height: 100 })
+      );
+      $('.progress-bar').css('width', '0%');
+      $(".preview-delete").show();
+      return true;
+    });
+    $(".preview-delete").click(function(){
+      $(".preview-delete, .preview").hide();
+      $(".file-input-button").show();
+    })

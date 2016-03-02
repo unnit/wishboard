@@ -22,6 +22,7 @@
 //= require bootstrap-datetimepicker
 //= require jquery.mCustomScrollbar.concat.min
 //= require jquery.tablesorter
+//= require cloudinary
 
 $(document).ready(function(){
   //Bulk Bookings

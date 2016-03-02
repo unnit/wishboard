@@ -7,6 +7,13 @@ class HomeController < ApplicationController
     @adv_search = "none"
   end
 
+  def feed
+    @showcase = Showcase.new
+    @showcase.build_location
+    @adv_search = "none"
+    @offers_visible = "none"
+  end
+
   def get_state_and_city
     result={city: "", state: ""}
     address = Geokit::Geocoders::GoogleGeocoder.geocode "#{params[:zip]} India"

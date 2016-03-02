@@ -2690,16 +2690,6 @@ th.headerSortDown {
   -ms-transform: translateX(-60%);
   transform: translateX(-60%);
 }
-.border-two{
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-}
-.border-rt-side{
-  border-right: 1px solid #fff;
-}
-.border-bt-side{
-  border-bottom: 1px solid #fff;
-}
 .rent-lend-content{
   height: 495px;
   padding: 20px;
@@ -2780,6 +2770,20 @@ th.headerSortDown {
 }
 .coco-ribbon:after{
   right: 0;
+}
+.file-input-button{
+  overflow: hidden;
+}
+.file-input-button input{
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px !important;
+  direction: ltr;
+  cursor: pointer;
 }
 /********************** For Mobile Specific *************/
 .modal-width{

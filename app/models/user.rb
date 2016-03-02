@@ -11,7 +11,11 @@ class User < ActiveRecord::Base
   has_many :products, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :reviews, dependent: :destroy
-
+  has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id"
+  has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id"
+  has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
+  has_many :showcases
 
   has_one :profile, dependent: :destroy
 
@@ -118,6 +122,18 @@ class User < ActiveRecord::Base
     rating = ratings.find_or_create_by(product_id: product.id)
     rating.value = value
     rating.save
+  end
+
+  def follow(other_user)
+    active_relationships.create(followed_id: other_user.id)
+  end
+
+  def unfollow(other_user)
+    active_relationships.find_by(followed_id: other_user.id).destroy
+  end
+
+  def following?(other_user)
+    following.include?(other_user)
   end
 
   # create methods like [somebody_sends_me_a_message?, I_receive_a_new_payment?, ...]

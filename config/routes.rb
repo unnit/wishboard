@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   get "login", to: "home#login"
   post :bulk_bookings, to: "home#bulk_bookings"
   get "offers", to: "home#offers"
+  get "feed", to: "home#feed"
 
   resources :messages, only: [:destroy, :index, :show] do
     member do
@@ -91,6 +92,10 @@ Rails.application.routes.draw do
       get :thankyou
       post :callback
     end
+  end
+
+  resources :showcases, only: [:new, :create, :update, :destroy] do
+    
   end
 
   post "product/:id/checkout", to: "transactions#new", as: :product_checkout

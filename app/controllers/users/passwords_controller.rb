@@ -45,7 +45,7 @@ class Users::PasswordsController < Devise::PasswordsController
     unless @user.blank?
       if @user.reset_password_token == params[:user][:reset_password_token] && DateTime.current < (@user.reset_password_sent_at + 6.hours)
         if @user.update_attributes(password_params)
-          @user.update_column :reset_password_token, ""
+          @user.update_column :reset_password_token, nil
           flash[:notice] = "Congratulations, You have successfully updated your password"
           redirect_to root_path
           return

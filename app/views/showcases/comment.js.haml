@@ -1,0 +1,11 @@
+- if @showcase.wows_comments_any?
+  $(".wow-comment-count-#{@showcase.id}").show();
+- else
+  $(".wow-comment-count-#{@showcase.id}").hide();
+- if @showcase.comments_any?
+  $(".comment-count-#{@showcase.id}").show();
+- else
+  $(".comment-count-#{@showcase.id}").hide();
+$("#comment-description-#{@showcase.id}").val("");
+$(".comment-count-#{@showcase.id}").text("#{@showcase.comments.count}#{@showcase.comments_many? ? ' Comments' : ' Comment'}")
+$(".user-comments-#{@showcase.id}").append("#{j render partial: "comment", locals: {comment: @comment}}");

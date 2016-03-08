@@ -73,6 +73,8 @@ Rails.application.routes.draw do
   post :bulk_bookings, to: "home#bulk_bookings"
   get "offers", to: "home#offers"
   get "feed", to: "home#feed"
+  post "toggle_follow/:id", to: "home#toggle_follow", as: :user_toggle_follow
+  get ":id", to: "home#myprofile", as: :myprofile
 
   resources :messages, only: [:destroy, :index, :show] do
     member do
@@ -95,7 +97,10 @@ Rails.application.routes.draw do
   end
 
   resources :showcases, only: [:new, :create, :update, :destroy] do
-    
+    member do
+      post :wow
+      post :comment
+    end
   end
 
   post "product/:id/checkout", to: "transactions#new", as: :product_checkout

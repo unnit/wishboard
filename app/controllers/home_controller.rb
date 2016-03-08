@@ -8,10 +8,34 @@ class HomeController < ApplicationController
   end
 
   def feed
-    @showcase = Showcase.new
-    @showcase.build_location
     @adv_search = "none"
     @offers_visible = "none"
+    @showcase = Showcase.new
+    @showcase.build_location
+    @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
+    @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
+    @showcases = Showcase.all.order("RANDOM()")
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
+    @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
+    @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def toggle_follow
+    @user = User.find_by_id params[:id]
+    current_user.toggle_follow!(@user)
+    @user.reload
+    respond_to :js
+  end
+
+  def myprofile
+    @profile = Profile.friendly.find params[:id]
+    @user = @profile.user
+    @showcases = @user.showcases
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(3)
   end
 
   def get_state_and_city

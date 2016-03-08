@@ -1,5 +1,6 @@
 class ShowcasesController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create, :update, :destroy]
+  before_filter :get_showcase, only: [:wow, :comment]
 
   def new
     @showcase = Showcase.new
@@ -21,10 +22,25 @@ class ShowcasesController < ApplicationController
     end
   end
 
+  def wow
+    @showcase.toggle_wow!(current_user)
+    @showcase.reload
+    respond_to :js
+  end
+
+  def comment
+    @comment = @showcase.comments.create(description: params[:comment][:description], user_id: current_user.id)
+    respond_to :js
+  end
+
   private
 
   def showcase_params
     params.require(:showcase).permit(:title, :description, :year, location_attributes: [:name])
+  end
+
+  def get_showcase
+    @showcase = Showcase.find_by_id params[:id]
   end
 
 end

@@ -34,6 +34,15 @@ $(document).ready(function(){
     $(".loader-button").hide();
     $(".loader-effect").show();
   })
+  //Follow button loader effect
+  $(document).on("click", ".loader-button", function(){
+    $(this).hide();
+    $(this).next(".loader-effect").show();
+  });
+  //Focus on comments
+  $(document).on("click", ".comment-link", function(){
+    $(this).next().next(".new-comment").find(".comment-description").focus();
+  });
   //Hide success/failure messages after 30 secs.
   if($(".alert-message-div").length){
     $(".alert-message-div").delay(30000).fadeOut();

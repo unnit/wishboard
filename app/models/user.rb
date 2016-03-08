@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :showcases
+  has_many :likes
+  has_many :comments
 
   has_one :profile, dependent: :destroy
 
@@ -134,6 +136,14 @@ class User < ActiveRecord::Base
 
   def following?(other_user)
     following.include?(other_user)
+  end
+
+  def toggle_follow!(other_user)
+    if following?(other_user)
+      unfollow(other_user)
+    else
+      follow(other_user)
+    end
   end
 
   # create methods like [somebody_sends_me_a_message?, I_receive_a_new_payment?, ...]

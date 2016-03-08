@@ -411,18 +411,49 @@ small{
   box-shadow: none;
 }
 .border-two{
-  border-top: 1px solid #F1F1F1 !important;
-  border-bottom: 1px solid #F1F1F1 !important;
+  border-top: 1px solid #DCDCDC !important;
+  border-bottom: 1px solid #DCDCDC !important;
 }
 .border-rt-side{
-  border-right: 1px solid #F1F1F1 !important;
+  border-right: 1px solid #DCDCDC !important;
 }
 .border-lt-side{
-  border-left: 1px solid #F1F1F1 !important;
+  border-left: 1px solid #DCDCDC !important;
 }
 .border-bt-side{
-  border-bottom: 1px solid #F1F1F1 !important;
+  border-bottom: 1px solid #DCDCDC !important
+}
+.border-tp-side{
+  border-top: 1px solid #DCDCDC !important
+}
+.border-medium{
+  border: 1px solid #DCDCDC !important;
 }
 .light-border{
   border: 1px solid #F1F1F1 !important;
+}
+.border-left-band-showcase{
+  border-left: 2px solid !important;
+  border-left-color: #03a9f4 !important;
+}
+.border-left-band-action{
+  border-left: 2px solid !important;
+  border-left-color: #ff1654 !important;
+}
+.border-left-band-profile{
+  border-left: 2px solid !important;
+  border-left-color: #bce784 !important;
+}
+.border-left-band-follow{
+  border-left: 2px solid !important;
+  border-left-color: #50514F !important;
+}
+.bg-shad{
+      box-shadow: 0 2px 5px rgba(0,0,0,0.26)
+}
+.bg-light-grey{
+  background-color: #F1F1F1;
+}
+.grey-fg{
+  color: grey;
 }

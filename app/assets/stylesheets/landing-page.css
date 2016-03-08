@@ -2771,6 +2771,7 @@ th.headerSortDown {
 .coco-ribbon:after{
   right: 0;
 }
+/******************** Feed Page CSS ********************/
 .file-input-button{
   overflow: hidden;
 }
@@ -2844,5 +2845,8 @@ th.headerSortDown {
   }
   .pad-mob{
     padding-left: 18px;
+  }
+  .text-center-mob{
+    text-align: center;
   }
 }

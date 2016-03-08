@@ -70,4 +70,26 @@ namespace :coco_tasks do
     end
   end
 
+  task listing_to_showcase: :environment do
+    @products = Product.all
+    i = 0
+    @products.each do |product|
+      @showcase = Showcase.new
+      @showcase.user = product.user
+      @showcase.description = product.description
+      @showcase.title = product.title
+      @showcase.year = product.year_of_manufacture
+      @showcase.image = product.image.filename
+      location = Location.new
+      location.name = product.location.name
+      if @showcase.save
+        location.locatable_id = @showcase.id
+        location.locatable_type = 'Showcase'
+        location.save
+        i+=1
+      end
+      puts i
+    end
+  end
+
 end

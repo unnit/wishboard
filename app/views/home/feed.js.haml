@@ -1,0 +1,16 @@
+- if @user_updated
+  $(".follow-strip").append("#{j render partial: "follow", locals: {users: @users}}");
+  $("#prev_user").val("#{@users.current_page}")
+- if @showcase_updated
+  $(".showcase-strip").append("#{j render partial: "showcases", locals: {showcases: @showcases}}")
+  $("#prev_showcase").val("#{@showcases.current_page}")
+- if @users.next_page
+  $('#infinite-scrolling-follow .pagination').replaceWith("#{j paginate @users, param_name: 'users'}");
+- else
+  $(".follow-wrapper").off('scroll');
+  $('#infinite-scrolling-follow .pagination').remove();
+-if @showcases.next_page
+  $('#infinite-scrolling-posts .pagination').replaceWith("#{j paginate @showcases, param_name: 'showcases'}");
+- else
+  $(window).off('scroll');
+  $('#infinite-scrolling-posts .pagination').remove();

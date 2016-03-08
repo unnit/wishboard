@@ -1,0 +1,13 @@
+- if @showcase.wows_comments_any?
+  $(".wow-comment-count-#{@showcase.id}").show();
+- else
+  $(".wow-comment-count-#{@showcase.id}").hide();
+- if @showcase.wows_any?
+  $(".wow-count-#{@showcase.id}").show();
+- else
+  $(".wow-count-#{@showcase.id}").hide();
+$(".wow-count-#{@showcase.id}").text("#{@showcase.wows.count}#{@showcase.wows_many? ? ' Wows' : ' Wow'}")
+- if @showcase.wowed?(current_user)
+  $(".wow-link").text("Unwow");
+-else
+  $(".wow-link").text("Wow");

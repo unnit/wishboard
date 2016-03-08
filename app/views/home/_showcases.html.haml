@@ -4,7 +4,7 @@
       = link_to myprofile_path(showcase.user.profile.slug) do
         = cl_image_tag showcase.user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
       %strong{style: "color: #28B473;"}= showcase.user.name
-    .col-xs-12.col-sm-12.padding10.text-center{style: "height: 480px;overflow: hidden;"}
+    .col-xs-12.col-sm-12.padding10.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
     .col-xs-12.col-sm-12.padding10
       %h4.no-mar-pad= showcase.title

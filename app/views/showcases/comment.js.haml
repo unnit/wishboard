@@ -1,11 +1,7 @@
-- if @showcase.wows_comments_any?
-  $(".wow-comment-count-#{@showcase.id}").show();
-- else
-  $(".wow-comment-count-#{@showcase.id}").hide();
 - if @showcase.comments_any?
-  $(".comment-count-#{@showcase.id}").show();
+  $(".comment-link-#{@showcase.id}").next(".badge").show();
 - else
-  $(".comment-count-#{@showcase.id}").hide();
-$("#comment-description-#{@showcase.id}").val("");
-$(".comment-count-#{@showcase.id}").text("#{@showcase.comments.count}#{@showcase.comments_many? ? ' Comments' : ' Comment'}")
+  $(".comment-link-#{@showcase.id}").next(".badge").hide();
+$(".comment-link-#{@showcase.id}").next(".badge").text("#{@showcase.comments.count}")
 $(".user-comments-#{@showcase.id}").append("#{j render partial: "comment", locals: {comment: @comment}}");
+$("#comment-description-#{@showcase.id}").val("");

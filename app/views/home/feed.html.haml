@@ -1,4 +1,4 @@
-.container-fluid.mtop50{style: "max-width: 1361px;"}
+.container-fluid.mtop50{style: "background-color:#fafafa;max-width: 1361px;"}
   .col-sm-3.hidden-xs.ptop15{style: "height: 1000px;"}
     .col-sm-12.no-mar-pad.border-left-band-profile.bg-shad.bg-white{style: "height: 215px;"}
       .col-sm-12{style: "height:108px;background-color:#ffe066;"}
@@ -6,22 +6,21 @@
         %span.mtop5.pull-left.font-bit-large.weight500{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "top", style: "margin-left: 95px;height: 40px;"}
           = (truncate current_user.profile.first_name, length: 20) || (truncate current_user.name, length: 20)
         .col-sm-12.no-mar-pad.text-center
-          .col-sm-3.no-mar-pad
+          .col-sm-6.col-md-3.no-mar-pad
             %span.extra-small-font SHOWPIECES
             %h4= current_user.showcases.showpieces.count
-          .col-sm-3.no-mar-pad
+          .col-sm-6.col-md-3.no-mar-pad
             %span.extra-small-font WISHES
             %h4= current_user.showcases.wishes.count
-          .col-sm-3.no-mar-pad
+          .col-sm-6.col-md-3.no-mar-pad
             %span.extra-small-font FOLLOWING
             %h4.following-count= current_user.following.count
-          .col-sm-3.no-mar-pad
+          .col-sm-6.col-md-3.no-mar-pad
             %span.extra-small-font FOLLOWERS
             %h4.followers-count= current_user.followers.count
       .col-sm-12{style: "margin-top: -148px;"}
         = link_to myprofile_path(current_user.profile.slug) do
-          = cl_image_tag current_user.avatar, class: "img-circle pull-left", style: "border: 2px solid #fff;z-index: 1;position: relative;", width: 80, height: 80, crop: :fill
-        %hr.pull-left.full-width.no-mar-pad{style: "margin-top: -40px;"}
+          = cl_image_tag current_user.avatar, class: "img-circle pull-left", style: "border: 1px solid #fff;z-index: 1;position: relative;", width: 80, height: 80, crop: :fill
   .col-xs-12.col-sm-6.no-mar-pad.ptop15{style: "border-top: 0px;"}
     .col-xs-12.col-sm-12.bg-white.padding10.mbottom10.border-left-band-action.bg-shad
       .col-xs-2.col-sm-1.no-mar-pad.full-height
@@ -31,20 +30,20 @@
         .col-xs-12.col-sm-2.no-mar-pad.text-center-mob{style: "overflow: hidden;height: 152px;"}
           .preview
           .glyphicon.glyphicon-remove.preview-delete.bg-white{style: "display: none;position: absolute;z-index: 1;"}
-          .glyphicon.glyphicon-camera.file-input-button{style: "font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dotted;"}
+          .glyphicon.glyphicon-camera.file-input-button{style: "font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dashed;"}
             = cl_image_upload_tag(:image)
           .progress.progress-striped{style: "display: none;height: 10px;width:107px;"}
             .progress-bar{style: "width: 0%;"}
         .col-xs-12.col-sm-9.text-center
-          = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field", required: true
+          = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left", required: true
         .col-xs-12.col-sm-9.text-center.ptop10
-          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field", required: true
+          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left", required: true
         .col-xs-4.col-sm-3.ptop10
-          = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field", required: true
+          = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left", required: true
         .col-xs-8.col-sm-4.ptop10
           = f.fields_for :location do |lf|
-            = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field", required: true
-        .col-xs-12.col-sm-2.no-mar-pad.mtop10
+            = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left", required: true
+        .col-xs-12.col-sm-2.no-mar-pad.mtop10{style: "color: #9A9A9A;"}
           %span.no-mar-pad.pull-left
             = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true
             %label.mbottom0 Showpiece

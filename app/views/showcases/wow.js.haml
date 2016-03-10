@@ -1,13 +1,11 @@
-- if @showcase.wows_comments_any?
-  $(".wow-comment-count-#{@showcase.id}").show();
-- else
-  $(".wow-comment-count-#{@showcase.id}").hide();
 - if @showcase.wows_any?
-  $(".wow-count-#{@showcase.id}").show();
+  $(".wow-link-#{@showcase.id}").next(".badge").show();
 - else
-  $(".wow-count-#{@showcase.id}").hide();
-$(".wow-count-#{@showcase.id}").text("#{@showcase.wows.count}#{@showcase.wows_many? ? ' Wows' : ' Wow'}")
+  $(".wow-link-#{@showcase.id}").next(".badge").hide();
+$(".wow-link-#{@showcase.id}").next(".badge").text("#{@showcase.wows.count}")
 - if @showcase.wowed?(current_user)
-  $(".wow-link").text("Unwow");
+  $(".wow-link-#{@showcase.id} i").addClass("heart-red-fg");
+  $(".wow-link-#{@showcase.id} i").removeClass("fa-heart-o").addClass("fa-heart");
 -else
-  $(".wow-link").text("Wow");
+  $(".wow-link-#{@showcase.id} i").removeClass("heart-red-fg");
+  $(".wow-link-#{@showcase.id} i").removeClass("fa-heart").addClass("fa-heart-o");

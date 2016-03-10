@@ -265,7 +265,7 @@ html * {
 body {
   font-size: 1.5rem;
   /*font-family: "Open Sans", sans-serif;*/
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', 'Open Sans', sans-serif;
   color: #331d35;
   background-color: #ffffff;
 }
@@ -1012,11 +1012,10 @@ padding-bottom: 4px;
 }
 
 .logoh {
-      background-color: #ECECEC;
-      padding-top: 11px;
+      padding-top: 8px;
       padding-bottom: 8px;
 }
-.logoh:before{
+/*.logoh:before{
   content: "";
   border-top: 8px solid #BFBFBF;
   border-left: 8px solid transparent;
@@ -1024,7 +1023,7 @@ padding-bottom: 4px;
   position: relative;
   top: 48px;
   right: 165px;
-}
+}*/
 
 .nav-back
 {

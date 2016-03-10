@@ -5,32 +5,31 @@
         = cl_image_tag showcase.user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
       %span.weight500{style: "color: #28B473;"}= showcase.user.name
       = showcase.wishlist? ? " added to wishlist" : " added to showcase"
-    .col-xs-12.col-sm-12.padding10.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
+    .col-xs-12.col-sm-12.padding10.ptop0.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
     .col-xs-12.col-sm-12.padding10
       %h4.no-mar-pad= showcase.title
     .col-xs-12.col-sm-12.padding10
       %span.small.grey-fg= showcase.description
-    .col-xs-12.col-sm-12.no-mar-pad.padding10.border-tp-side.bg-light-grey{style: "display: #{ showcase.wows_comments_any? ? 'block' : 'none'}", class: "wow-comment-count-#{showcase.id}"}
-      .col-xs-3.col-sm-3.no-mar-pad{class: "wow-count-#{showcase.id}", style: "display: #{showcase.wows_any? ? 'block' : 'none'}"}
-        = showcase.wows.count
-        = showcase.wows_many? ? " Wows" : " Wow"
-      .col-xs-5.col-sm-5.no-mar-pad{class: "comment-count-#{showcase.id}", style: "display: #{showcase.comments_any? ? 'block' : 'none'}"}
-        = showcase.comments.count
-        = showcase.comments_many? ? " Comments" : " Comment"
     .col-xs-4.col-sm-2.border-two.padding10.bg-light-grey
-      = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link black-fg" do
-        - showcase.wowed?(current_user) ? "Unwow" : "Wow"
+      = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
+        - if showcase.wowed?(current_user)
+          %i.fa.fa-heart.heart-red-fg
+        - else
+          %i.fa.fa-heart-o
+      .badge{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}"}
+        = showcase.wows.count
     .col-xs-8.col-sm-10.pon.comment-link.border-two.padding10.bg-light-grey
-      Comment
+      %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
+      .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
+        = showcase.comments.count
     .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey{class: "user-comments-#{showcase.id}"}
       - showcase.comments.order(:created_at).limit(4).each do |comment|
         = render partial: "showcases/comment", locals: {comment: comment}
-    .col-xs-12.col-sm-12.new-comment.padding10.pbottom20.bg-light-grey
+    .media.new-comment.padding10.pbottom20.bg-light-grey
       = form_for :comment, url: comment_showcase_path(showcase), remote: true do |f|
-        .col-xs-2.col-sm-1.no-mar-pad
-          = cl_image_tag current_user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
-        .col-xs-10.col-sm-11
+        .media-left
+          = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 40, height: 40, crop: :fill
+        .media-body
           = f.text_area :description, rows: 3, class: "form-control comment-description", id: "comment-description-#{showcase.id}"
-        .col-xs-12.col-sm-12.text-right
           = f.submit "Comment", class: "btn btn-primary btn-social mtop10 btn-shadow"

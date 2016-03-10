@@ -1,0 +1,6 @@
+$(".user-wrapper").append("#{j render partial: "user_card", locals: {users: @followers}}")
+-if @followers.next_page
+  $('#infinite-scrolling-followers .pagination').replaceWith("#{j paginate @followers, param_name: 'followers'}");
+- else
+  $(window).off('scroll');
+  $('#infinite-scrolling-followers .pagination').remove();

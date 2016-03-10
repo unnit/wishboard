@@ -75,6 +75,10 @@ Rails.application.routes.draw do
   get "feed", to: "home#feed"
   post "toggle_follow/:id", to: "home#toggle_follow", as: :user_toggle_follow
   get ":id", to: "home#myprofile", as: :myprofile
+  get ":id/showpieces", to: "home#myshowpieces", as: :myshowpieces
+  get ":id/wishes", to: "home#mywishes", as: :mywishes
+  get ":id/following", to: "home#following", as: :following
+  get ":id/followers", to: "home#followers", as: :followers
 
   resources :messages, only: [:destroy, :index, :show] do
     member do

@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, only: [:user_signup_confirmation]
   skip_before_filter :check_profile, only: [:get_state_and_city]
   before_filter :back_to_home, only: [:login, :sign_up]
+  before_filter :set_profile, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
 
   def index
     @adv_search = "none"
@@ -15,7 +16,7 @@ class HomeController < ApplicationController
     @showcase.build_location
     @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
     @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-    @showcases = Showcase.all.order("RANDOM()")
+    @showcases = Showcase.where("id between 60 and 100")
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
     @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
     @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
@@ -27,7 +28,7 @@ class HomeController < ApplicationController
 
   def toggle_follow
     @user = User.find_by_id params[:id]
-    current_user.toggle_follow!(@user)
+    current_user.toggle_follow!(@user) unless @user == current_user
     @user.reload
     respond_to :js
   end
@@ -36,10 +37,60 @@ class HomeController < ApplicationController
     @list_item_display = "none"
     @offers_visible = "none"
     @adv_search = "none"
-    @profile = Profile.friendly.find params[:id]
-    @user = @profile.user
     @showcases = @user.showcases.order(created_at: :desc)
-    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(3)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def myshowpieces
+    @list_item_display = "none"
+    @offers_visible = "none"
+    @adv_search = "none"
+    @showcases = @user.showcases.showpieces.order(created_at: :desc)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
+    respond_to do |format|
+      format.html
+      format.js { render :myprofile }
+    end
+  end
+
+  def mywishes
+    @list_item_display = "none"
+    @offers_visible = "none"
+    @adv_search = "none"
+    @showcases = @user.showcases.wishes.order(created_at: :desc)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
+    respond_to do |format|
+      format.html
+      format.js { render :myprofile }
+    end
+  end
+
+  def following
+    @list_item_display = "none"
+    @offers_visible = "none"
+    @adv_search = "none"
+    @following = @user.following.order(created_at: :desc)
+    @following = Kaminari.paginate_array(@following).page(params[:following]).per(12)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def followers
+    @list_item_display = "none"
+    @offers_visible = "none"
+    @adv_search = "none"
+    @followers = @user.followers.order(created_at: :desc)
+    @followers = Kaminari.paginate_array(@followers).page(params[:followers]).per(12)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def get_state_and_city
@@ -95,5 +146,10 @@ class HomeController < ApplicationController
 
   def back_to_home
     redirect_to root_path if current_user
+  end
+
+  def set_profile
+    @profile = Profile.friendly.find params[:id]
+    @user = @profile.user
   end
 end

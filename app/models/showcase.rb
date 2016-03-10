@@ -5,7 +5,13 @@ class Showcase < ActiveRecord::Base
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
 
-  validates :title, :description, :year, :image, presence: true
+  SHOWCASE_TYPE = [["showpiece", 0], ["wish", 1]]
+  SHOWCASE_VALUES = [0, 1]
+
+  validates :title, :description, :year, :image, :title, presence: true
+
+  scope :wishes, -> {where showcase_type: Showcase::SHOWCASE_VALUES[1]}
+  scope :showpieces, -> {where showcase_type: Showcase::SHOWCASE_VALUES[0]}
 
   def wow(user)
     wows.create(user_id: user.id)
@@ -25,6 +31,14 @@ class Showcase < ActiveRecord::Base
     else
       wow(user)
     end
+  end
+
+  def wishlist?
+    showcase_type == Showcase::SHOWCASE_VALUES[1]
+  end
+
+  def showpiece?
+    showcase_type == Showcase::SHOWCASE_VALUES[0]
   end
 
   def wows_many?

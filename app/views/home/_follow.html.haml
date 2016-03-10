@@ -3,13 +3,12 @@
     .col-sm-2.no-mar-pad
       = cl_image_tag user.avatar, class: "img-circle mtop10", width: 40, height: 40, crop: :fill
     .col-sm-10
-      %span.mtop5.pull-left{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "bottom"}
-        = (truncate user.profile.first_name, length: 20) || (truncate user.name, length: 20)
+      %span.mtop5.pull-left{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "top"}
+        = (truncate user.name, length: 40)
     .col-sm-10
       = link_to user_toggle_follow_path(user), remote: true, method: :post do
-        .btn.btn-primary.no-mar-pad.loader-out-button.follow-button.btn-shadow
-          = submit_tag "Follow", class: "loader-button btn loader-in-button btn-primary"
-          .loader-effect.btn-primary.btn.loader-in-button{style: "display:none;"}
-            .pull-left Please wait...
-            .ball-clip-rotate.pull-left{style: "height:22px;"}
-              %div
+        .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey
+          = submit_tag "Follow", class: "loader-button btn loader-in-follow-button padding0 grey-fg"
+          .loader-effect.btn.loader-in-follow-button.grey-fg{style: "display:none;"}
+            .ball-clip-rotate{style: "height:22px;"}
+              %div ...

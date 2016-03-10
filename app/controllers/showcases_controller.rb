@@ -36,7 +36,7 @@ class ShowcasesController < ApplicationController
   private
 
   def showcase_params
-    params.require(:showcase).permit(:title, :description, :year, location_attributes: [:name])
+    params.require(:showcase).permit(:title, :description, :year, :showcase_type, location_attributes: [:name])
   end
 
   def get_showcase

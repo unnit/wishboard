@@ -42,8 +42,9 @@
 }
 
 body{
-  /*font-family: 'museo_sans_rounded100';*/
-  font-family: 'Open Sans', sans-serif;
+  /*font-family: 'museo_sans_rounded100';
+  font-family: 'Open Sans', sans-serif;*/
+  font-family: 'Roboto', sans-serif;
 }
 
 #gmap{
@@ -143,6 +144,9 @@ body{
 .padding10{
   padding: 10px;
 }
+.padding15{
+  padding: 15px;
+}
 .padding5{
   padding:5px;
 }
@@ -151,6 +155,9 @@ body{
 };
 .ptop0{
   padding-top: 0px;
+}
+.ptop15{
+  padding-top: 15px;
 }
 .pbottom0{
   padding-bottom: 0px;
@@ -387,6 +394,9 @@ small{
 .font-bit-large{
   font-size: 18px;
 }
+.font12{
+  font-size: 12px;
+}
 .font13{
   font-size: 13px;
   letter-spacing: 0px;
@@ -404,11 +414,14 @@ small{
   border: none !important;
 }
 .coco-input-field{
+  border: 0px;
   box-shadow: none;
+  border-bottom: 1px solid #CCCCCC;
+  border-radius: 0px;
 }
 .coco-input-field:hover, .coco-input-field:focus, .coco-input-field:active{
-  border: none !important;
   box-shadow: none;
+  border-color: #CCCCCC;
 }
 .border-two{
   border-top: 1px solid #DCDCDC !important;
@@ -442,18 +455,51 @@ small{
 }
 .border-left-band-profile{
   border-left: 2px solid !important;
-  border-left-color: #bce784 !important;
+  border-left-color: #247BA0 !important;
 }
 .border-left-band-follow{
   border-left: 2px solid !important;
-  border-left-color: #50514F !important;
+  border-left-color: #bce784 !important;
 }
 .bg-shad{
-      box-shadow: 0 2px 5px rgba(0,0,0,0.26)
+    box-shadow: 0 2px 5px rgba(0,0,0,0.26)
 }
 .bg-light-grey{
   background-color: #F1F1F1;
 }
 .grey-fg{
-  color: grey;
+  color: grey !important;
+}
+.grey-fg:hover, .grey-fg:active, .grey-fg:focus{
+  color: #484747 !important
+}
+.btn-social{
+  background-color: #f25f5c;
+}
+.btn-grey{
+  background-color: rgb(191, 191, 191);
+}
+.btn-shadow{
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12) !important;
+}
+.shadow{
+  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.4, transparent), to(rgba(0,0,0,0.2)));
+}
+.white-fg{
+  color: white;
+}
+.black-fg{
+  color: black;
+}
+.logo-fg{
+  color: #ADADAD;
+}
+.grey-bg{
+  background-color: #eee !important;
+}
+.inline-block{
+  display: inline-block;
+}
+.inline-display{
+  display: inline;
 }

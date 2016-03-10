@@ -8,6 +8,7 @@ class HomeController < ApplicationController
   end
 
   def feed
+    @list_item_display = "none"
     @adv_search = "none"
     @offers_visible = "none"
     @showcase = Showcase.new
@@ -32,9 +33,12 @@ class HomeController < ApplicationController
   end
 
   def myprofile
+    @list_item_display = "none"
+    @offers_visible = "none"
+    @adv_search = "none"
     @profile = Profile.friendly.find params[:id]
     @user = @profile.user
-    @showcases = @user.showcases
+    @showcases = @user.showcases.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(3)
   end
 

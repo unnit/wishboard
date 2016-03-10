@@ -47,6 +47,24 @@ $(document).ready(function(){
   if($(".alert-message-div").length){
     $(".alert-message-div").delay(30000).fadeOut();
   }
+  //Wish/Showpiece radio event
+  function showcaseBtn(){
+    var x = $("input[name='showcase[showcase_type]']:checked").val();
+    if(x == 0){
+      $(".showcase-submit").val("Showcase");
+    }
+    else {
+      $(".showcase-submit").val("Wishlist");
+    }
+    $(".showcase-submit").show();
+    $(".showcase-btn-wrapper").css("padding-top", "0px");
+  }
+  if($("input[name='showcase[showcase_type]']").is(':checked')){
+    showcaseBtn();
+  }
+  $("input[name='showcase[showcase_type]']").click(function(){
+    showcaseBtn();
+  })
   //Home page - Rent, Lend pages
   n=!0,t=!0;
   $(".rent-hover").hover(function(){

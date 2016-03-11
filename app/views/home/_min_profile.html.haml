@@ -1,11 +1,11 @@
-.col-xs-12.col-sm-3.no-mar-pad.white-fg{style: "background-color: #81A9CC;height: 1000px;background: linear-gradient(#81A9CC 78%, #F7F7F7);"}
+.col-xs-12.col-sm-3.no-mar-pad.white-fg.mob-height
   .col-xs-12.col-sm-12.text-center
     = cl_image_tag user.avatar, class: "img-circle mtop20", style: "z-index: 1;", width: 160, height: 160, crop: :fill
     %h4= (truncate user.name, length: 20)
     %h5= (truncate user.profile.about, length: 200)
   - unless current_user == user
-    .col-sm-12.no-mar-pad{class: "follow-set-#{user.id}"}
-      = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "mleft95 pull-left" do
+    .col-sm-12.no-mar-pad.text-center{class: "follow-set-#{user.id}"}
+      = link_to user_toggle_follow_path(user), remote: true, method: :post do
         .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey.btn-profile-blue
           = submit_tag "#{ current_user.following?(user) ? 'Following' : "Follow" }", class: "loader-button btn loader-in-follow-button padding0 btn-profile-blue white-fg font12"
           .loader-effect.btn.loader-in-follow-button{style: "display:none;"}
@@ -24,7 +24,7 @@
           = cl_image_tag follower.avatar, class: "img-circle pull-left mright5 mbottom5", width: 40, height: 40, crop: :fill
 .col-xs-12.col-sm-9.padding40
   = link_to myprofile_path(user.profile.slug) do
-    .col-xs-6.col-sm-2.padding10.pon.pattern-bg.showcase-profile.text-center
+    .col-xs-12.col-sm-2.padding10.pon.pattern-bg.showcase-profile.text-center
       %h5.weight-bold.lt-grey-fg SHOWCASE
       %h4= user.showcases.count
   = link_to myshowpieces_path(user.profile.slug) do

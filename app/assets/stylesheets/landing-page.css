@@ -2783,6 +2783,11 @@ th.headerSortDown {
   direction: ltr;
   cursor: pointer;
 }
+.mob-height{
+  height: 1000px;
+  background-color: #81A9CC;
+  background: linear-gradient(#81A9CC 78%, #F7F7F7);
+}
 /********************** For Mobile Specific *************/
 .modal-width{
   width: 900px;
@@ -2790,6 +2795,11 @@ th.headerSortDown {
 @media only screen and (max-width: 776px) {
   .coco-offer{
     top: 84px;
+  }
+  .mob-height{
+    height: 290px;
+    background: white;
+    background-color: #81A9CC;
   }
   .modal-width{
     width: auto;

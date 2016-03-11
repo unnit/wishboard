@@ -72,6 +72,13 @@ Rails.application.routes.draw do
   get "login", to: "home#login"
   post :bulk_bookings, to: "home#bulk_bookings"
   get "offers", to: "home#offers"
+  get "feed", to: "home#feed"
+  post "toggle_follow/:id", to: "home#toggle_follow", as: :user_toggle_follow
+  get ":id", to: "home#myprofile", as: :myprofile
+  get ":id/showpieces", to: "home#myshowpieces", as: :myshowpieces
+  get ":id/wishes", to: "home#mywishes", as: :mywishes
+  get ":id/following", to: "home#following", as: :following
+  get ":id/followers", to: "home#followers", as: :followers
 
   resources :messages, only: [:destroy, :index, :show] do
     member do
@@ -90,6 +97,13 @@ Rails.application.routes.draw do
     collection do
       get :thankyou
       post :callback
+    end
+  end
+
+  resources :showcases, only: [:new, :create, :update, :destroy] do
+    member do
+      post :wow
+      post :comment
     end
   end
 

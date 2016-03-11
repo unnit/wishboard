@@ -1,0 +1,11 @@
+.media.padding10.pbottom0.mtop0
+  .media-left
+    = link_to myprofile_path(comment.user.profile.slug) do
+      = cl_image_tag comment.user.avatar, class: "img-circle media-object", width: 40, height: 40, crop: :fill
+  .media-body
+    = link_to myprofile_path(comment.user.profile.slug) do
+      %strong{style: "color: #28B473;"}= comment.user.name
+    = simple_format comment.description
+    - if current_user == comment.user
+      .col-xs-1.col-sm-1.edit-delete-comment{style: "display: none;"}
+        .glyphicon.glyphicon-edit

@@ -15,6 +15,7 @@
       = javascript_include_tag "//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js", "//oss.maxcdn.com/respond/1.4.2/respond.min.js"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans:400,600"
+    /= stylesheet_link_tag "//fonts.googleapis.com/css?family=Roboto:400,500"
     = csrf_meta_tags
     = render partial: "/layouts/head"
   %body
@@ -27,3 +28,4 @@
     = javascript_include_tag "//maps.googleapis.com/maps/api/js?sensor=false&libraries=places"
     = javascript_include_tag 'application'
     = yield :extra_js
+    = cloudinary_js_config

@@ -1,0 +1,4 @@
+= render partial: "profile", locals: {user: @user, showcases: @showcases}
+= content_for :extra_js do
+  :javascript
+    $(".showpieces-profile").addClass("active-link");

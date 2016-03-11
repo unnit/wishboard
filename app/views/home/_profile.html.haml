@@ -1,0 +1,65 @@
+.container.mtop60.bg-shad.padding0.mbottom40{style: "background-color: #F7F7F7;"}
+  .col-xs-12.col-sm-3.no-mar-pad.white-fg{style: "background-color: #81A9CC;height: 1000px;background: linear-gradient(#81A9CC 78%, #F7F7F7);"}
+    .col-xs-12.col-sm-12.text-center
+      = cl_image_tag user.avatar, class: "img-circle mtop20", style: "z-index: 1;", width: 160, height: 160, crop: :fill
+      %h4= (truncate user.name, length: 20)
+      %h5= (truncate user.profile.about, length: 200)
+    - unless current_user == user
+      .col-sm-12.no-mar-pad{class: "follow-set-#{user.id}"}
+        = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "mleft95 pull-left" do
+          .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-profile-blue
+            = submit_tag "#{ current_user.following?(user) ? 'Following' : "Follow" }", class: "loader-button btn loader-in-follow-button padding0 btn-profile-blue font12 white-fg"
+            .loader-effect.btn.loader-in-follow-button{style: "display:none;"}
+              .ball-clip-rotate{style: "height:22px;"}
+                %div ...
+    .col-sm-12.hidden-xs.mtop20
+      .col-sm-12.no-mar-pad
+        %h4.white-fg Following
+        - user.following.limit(10).each do |following|
+          = link_to myprofile_path(following.profile.slug) do
+            = cl_image_tag following.avatar, class: "img-circle pull-left mright5 mbottom5", width: 40, height: 40, crop: :fill
+      .col-sm-12.no-mar-pad.mtop20
+        %h4.white-fg Followers
+        - user.followers.limit(10).each do |follower|
+          = link_to myprofile_path(follower.profile.slug) do
+            = cl_image_tag follower.avatar, class: "img-circle pull-left mright5 mbottom5", width: 40, height: 40, crop: :fill
+  .col-xs-12.col-sm-9.padding40
+    = link_to myprofile_path(user.profile.slug) do
+      .col-xs-6.col-sm-2.padding10.pon.pattern-bg.showcase-profile.text-center
+        %h5.weight-bold.lt-grey-fg SHOWCASE
+        %h4= user.showcases.count
+    = link_to myshowpieces_path(user.profile.slug) do
+      .col-xs-6.col-sm-2.padding10.pon.pattern-bg.showpieces-profile.text-center
+        %h5.weight-bold.lt-grey-fg SHOWPIECES
+        %h4= user.showcases.showpieces.count
+    = link_to mywishes_path(user.profile.slug) do
+      .col-xs-6.col-sm-2.pon.padding10.pattern-bg.wishes-profile.text-center
+        %h5.weight-bold.lt-grey-fg WISHES
+        %h4= user.showcases.wishes.count
+    = link_to following_path(user.profile.slug) do
+      .col-xs-6.col-sm-3.pon.padding10.pattern-bg.following-profile.text-center
+        %h5.weight-bold.lt-grey-fg FOLLOWING
+        %h4= user.following.count
+    = link_to followers_path(user.profile.slug) do
+      .col-xs-6.col-sm-3.pon.padding10.pattern-bg.followers-profile.text-center
+        %h5.weight-bold.lt-grey-fg FOLLOWERS
+        %h4= user.followers.count
+    .col-xs-12.col-sm-12.no-mar-pad.ptop40
+      .col-xs-12.col-sm-12.no-mar-pad.showcase-strip
+        = render partial: "showcases", locals: {showcases: showcases}
+      #infinite-scrolling-posts.hidden
+        = paginate showcases, param_name: "showcases"
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      if ($('#infinite-scrolling-posts').length) {
+        $(window).on('scroll', function() {
+          var more_posts_url = $('#infinite-scrolling-posts .pagination .next a').attr('href');
+          if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 60) {
+            $('#infinite-scrolling-posts .pagination').html('<img src="/assets/images/bx_loader-6d46e2cf165a5a0584afba7bc9663da292ee08c97cfc7613de6013ed05be892a.gif" alt="Loading..." title="Loading..." />');
+            $.getScript(more_posts_url);
+          }
+        });
+      }
+    });

@@ -1,0 +1,8 @@
+$(".follow-set-#{@user.id} .loader-effect").hide();
+$(".follow-set-#{@user.id} .loader-button").show();
+$(".user-wrapper-#{current_user.id} .followers-count").text("#{current_user.following.count}")
+$(".user-wrapper-#{@user.id} .followers-count").text("#{@user.followers.count}")
+- if current_user.following?(@user)
+  $(".follow-set-#{@user.id} .loader-button").val("Following");
+- else
+  $(".follow-set-#{@user.id} .loader-button").val("Follow");

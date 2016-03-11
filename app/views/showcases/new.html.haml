@@ -1,0 +1,21 @@
+.container-fluid.mtop50{style: "background-color: #fafafa"}
+  ~ form_for @showcase do |f|
+    .col-xs-11.col-sm-11.bg-white
+      .col-xs-6.col-sm-6.pbottom20
+        .preview
+        .glyphicon.glyphicon-remove.preview-delete.bg-white{style: "display: none;position: absolute;z-index: 1;"}
+        .glyphicon.glyphicon-camera.file-input-button{style: "font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dotted;"}
+          = cl_image_upload_tag(:image)
+        .progress.progress-striped{style: "display: none;height: 10px;width:107px;"}
+          .progress-bar{style: "width: 0%;"}
+      .col-xs-6.col-sm-6
+    .col-xs-11.col-sm-11.bg-white
+      .col-xs-8.col-sm-8.text-center.ptop10
+        = f.text_field :title, placeholder: "Title", class: "no-border coco-input-field form-control"
+        = f.text_area :description, placeholder: "Description", class: "no-border coco-input-field form-control"
+      .col-xs-4.col-sm-4.ptop10
+        = f.text_field :year, placeholder: "Year", class: "no-border coco-input-field form-control"
+        = f.fields_for :location do |lf|
+          = lf.text_field :name, placeholder: "Location", class: "no-border coco-input-field form-control"
+    .col-xs-11.col-sm-11.mtop10.text-center
+      = f.submit "Showcase", class: "btn website-color-bg white-fg"

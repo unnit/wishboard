@@ -1,0 +1,7 @@
+- if @showcase.comments_any?
+  $(".comment-link-#{@showcase.id}").next(".badge").show();
+- else
+  $(".comment-link-#{@showcase.id}").next(".badge").hide();
+$(".comment-link-#{@showcase.id}").next(".badge").text("#{@showcase.comments.count}")
+$(".user-comments-#{@showcase.id}").append("#{j render partial: "comment", locals: {comment: @comment}}");
+$("#comment-description-#{@showcase.id}").val("");

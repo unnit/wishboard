@@ -35,14 +35,14 @@
           .progress.progress-striped{style: "display: none;height: 10px;width:107px;"}
             .progress-bar{style: "width: 0%;"}
         .col-xs-12.col-sm-9.text-center
-          = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left", required: true
+          = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 100
         .col-xs-12.col-sm-9.text-center.ptop10
-          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left", required: true
+          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 1000
         .col-xs-4.col-sm-3.ptop10
-          = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left", required: true
+          = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 4
         .col-xs-8.col-sm-4.ptop10
           = f.fields_for :location do |lf|
-            = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left", required: true
+            = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 100
         .col-xs-12.col-sm-2.no-mar-pad.mtop10{style: "color: #9A9A9A;"}
           %span.no-mar-pad.pull-left
             = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true

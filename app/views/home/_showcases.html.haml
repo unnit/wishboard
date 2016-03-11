@@ -3,7 +3,7 @@
     .col-xs-12.col-sm-12.padding10
       = link_to myprofile_path(showcase.user.profile.slug) do
         = cl_image_tag showcase.user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
-      %span.weight500{style: "color: #28B473;"}= showcase.user.name
+        %span.weight500{style: "color: #28B473;"}= showcase.user.name
       = showcase.wishlist? ? " added to wishlist" : " added to showcase"
     .col-xs-12.col-sm-12.padding10.ptop0.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
@@ -29,7 +29,8 @@
     .media.new-comment.padding10.pbottom20.bg-light-grey
       = form_for :comment, url: comment_showcase_path(showcase), remote: true do |f|
         .media-left
-          = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 40, height: 40, crop: :fill
+          = link_to myprofile_path(current_user.profile.slug) do
+            = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 40, height: 40, crop: :fill
         .media-body
           = f.text_area :description, rows: 3, class: "form-control comment-description", id: "comment-description-#{showcase.id}"
           = f.submit "Comment", class: "btn btn-primary btn-social mtop10 btn-shadow"

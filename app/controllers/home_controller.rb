@@ -3,15 +3,13 @@ class HomeController < ApplicationController
   skip_before_filter :check_profile, only: [:get_state_and_city]
   before_filter :back_to_home, only: [:login, :sign_up]
   before_filter :set_profile, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
+  before_filter :set_social_layout, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers]
 
   def index
     @adv_search = "none"
   end
 
   def feed
-    @list_item_display = "none"
-    @adv_search = "none"
-    @offers_visible = "none"
     @showcase = Showcase.new
     @showcase.build_location
     @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
@@ -34,9 +32,6 @@ class HomeController < ApplicationController
   end
 
   def myprofile
-    @list_item_display = "none"
-    @offers_visible = "none"
-    @adv_search = "none"
     @showcases = @user.showcases.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
     respond_to do |format|
@@ -46,9 +41,6 @@ class HomeController < ApplicationController
   end
 
   def myshowpieces
-    @list_item_display = "none"
-    @offers_visible = "none"
-    @adv_search = "none"
     @showcases = @user.showcases.showpieces.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
     respond_to do |format|
@@ -58,9 +50,6 @@ class HomeController < ApplicationController
   end
 
   def mywishes
-    @list_item_display = "none"
-    @offers_visible = "none"
-    @adv_search = "none"
     @showcases = @user.showcases.wishes.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
     respond_to do |format|
@@ -70,9 +59,6 @@ class HomeController < ApplicationController
   end
 
   def following
-    @list_item_display = "none"
-    @offers_visible = "none"
-    @adv_search = "none"
     @following = @user.following.order(created_at: :desc)
     @following = Kaminari.paginate_array(@following).page(params[:following]).per(12)
     respond_to do |format|
@@ -82,9 +68,6 @@ class HomeController < ApplicationController
   end
 
   def followers
-    @list_item_display = "none"
-    @offers_visible = "none"
-    @adv_search = "none"
     @followers = @user.followers.order(created_at: :desc)
     @followers = Kaminari.paginate_array(@followers).page(params[:followers]).per(12)
     respond_to do |format|
@@ -151,5 +134,14 @@ class HomeController < ApplicationController
   def set_profile
     @profile = Profile.friendly.find params[:id]
     @user = @profile.user
+  end
+
+  def set_social_layout
+    @list_item_display = "none"
+    @adv_search = "none"
+    @offers_visible = "none"
+    @nav_color = "#50514F"
+    @brand_name = "yes"
+    @sal_color = "white-fg"
   end
 end

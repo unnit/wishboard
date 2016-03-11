@@ -2,7 +2,7 @@
   .col-sm-12.border-bt-side.no-mar-pad{style: "height: 80px;", class: "follow-set-#{user.id}"}
     .col-sm-2.no-mar-pad
       = cl_image_tag user.avatar, class: "img-circle mtop10", width: 40, height: 40, crop: :fill
-    .col-sm-8
+    .col-sm-10
       %span.mtop5.pull-left{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "top"}
         = (truncate user.name, length: 40)
     .col-sm-10

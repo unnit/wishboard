@@ -1,6 +1,6 @@
 $(".showcase-strip").append("#{j render partial: "showcases", locals: {showcases: @showcases}}")
 -if @showcases.next_page
-  $('#infinite-scrolling-posts .pagination').replaceWith("#{j paginate @showcases, param_name: 'showcases'}");
+  $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @showcases, param_name: 'showcases'}");
 - else
   $(window).off('scroll');
-  $('#infinite-scrolling-posts .pagination').remove();
+  $('#infinite-scrolling-content .pagination').remove();

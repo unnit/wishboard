@@ -264,8 +264,8 @@ html * {
 
 body {
   font-size: 1.5rem;
-  font-family: "Open Sans", sans-serif;
-  /*font-family: 'Roboto', 'Open Sans', sans-serif;*/
+  /*font-family: "Open Sans", sans-serif;*/
+  font-family: 'Roboto', 'Open Sans', sans-serif;
   color: #331d35;
   background-color: #ffffff;
 }
@@ -2788,6 +2788,20 @@ th.headerSortDown {
   background-color: #81A9CC;
   background: linear-gradient(#81A9CC 78%, #F7F7F7);
 }
+.option-showcase{
+  z-index: 1;
+  display:none;
+  position: absolute;
+  right: 30px;
+  margin-top: 5px;
+}
+.form-comment-showcase{
+  display: none;
+}
+.option-showcase>a:hover, .option-showcase>span:hover{
+  color: white !important;
+  background-color: #50514F;
+}
 /********************** For Mobile Specific *************/
 .modal-width{
   width: 900px;
@@ -2795,6 +2809,10 @@ th.headerSortDown {
 @media only screen and (max-width: 776px) {
   .coco-offer{
     top: 84px;
+  }
+  .mob-pad{
+    padding-left: 15px !important;
+    padding-right: 15px !important;
   }
   .mob-height{
     height: 290px;

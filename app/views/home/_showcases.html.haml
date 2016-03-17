@@ -1,10 +1,23 @@
 - showcases.each do |showcase|
   .col-xs-12.col-sm-12.no-mar-pad.mbottom10.bg-white.border-left-band-showcase.bg-shad.border-medium
     .col-xs-12.col-sm-12.padding10
+      - if showcase.owner?(current_user)
+        %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.pull-right.mtop5.pon
+        .col-xs-4.col-sm-2.option-showcase.padding0.light-border.bg-shad.bg-white.pull-right.text-center
+          = link_to edit_showcase_path(showcase), class: "border-bt-side full-width grey-fg pull-left small padding5" do
+            Edit&nbsp;
+            .glyphicon.glyphicon-edit.grey-fg
+          = link_to showcase_path(showcase), method: :delete, class: "full-width grey-fg pull-left small padding5" do
+            Delete&nbsp;
+            .glyphicon.glyphicon-minus-sign.grey-fg
       = link_to myprofile_path(showcase.user.profile.slug) do
         = cl_image_tag showcase.user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
-        %span.weight500{style: "color: #28B473;"}= showcase.user.name
-      = showcase.wishlist? ? " added to wishlist" : " added to showcase"
+        %span.weight500{style: "color: #28B473;"}= truncate showcase.user.name, length: 50
+      %span.small.grey-fg added
+      = link_to showcase_path(showcase) do
+        %span.weight500{style: "color: #28B473;"}= truncate showcase.title, length: 50
+      %span.small.grey-fg to
+      %span.small.grey-fg= showcase.wishlist? ? " wishlist" : " showcase"
     .col-xs-12.col-sm-12.padding10.ptop0.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
     .col-xs-12.col-sm-12.padding10
@@ -24,7 +37,7 @@
       .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
         = showcase.comments.count
     .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey{class: "user-comments-#{showcase.id}"}
-      - showcase.comments.order(:created_at).limit(4).each do |comment|
+      - showcase.comments.order(created_at: :desc).limit(4).each do |comment|
         = render partial: "showcases/comment", locals: {comment: comment}
     .media.new-comment.padding10.pbottom20.bg-light-grey
       = form_for :comment, url: comment_showcase_path(showcase), remote: true do |f|

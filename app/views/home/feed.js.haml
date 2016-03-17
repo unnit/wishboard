@@ -1,3 +1,4 @@
+$('.feed-loader').hide();
 - if @user_updated
   $(".follow-strip").append("#{j render partial: "follow", locals: {users: @users}}");
   $("#prev_user").val("#{@users.current_page}")

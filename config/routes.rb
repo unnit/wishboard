@@ -100,10 +100,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :showcases, only: [:new, :create, :update, :destroy] do
+  resources :showcases, only: [:edit, :create, :update, :destroy, :show] do
     member do
       post :wow
       post :comment
+      post :edit_comment
+      delete :delete_comment
     end
   end
 

@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, only: [:user_signup_confirmation]
   skip_before_filter :check_profile, only: [:get_state_and_city]
   before_filter :back_to_home, only: [:login, :sign_up]
+  before_filter :authenticate_user!, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers]
   before_filter :set_profile, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
   before_filter :set_social_layout, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers]
 

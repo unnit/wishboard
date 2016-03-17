@@ -1,21 +1,15 @@
-.container.mtop60.bg-shad.padding0.mbottom40{style: "background-color: #F7F7F7;"}
-  = render partial: "min_profile", locals: {user: @user}
+.container.mtop60.bg-shad.mbottom40padding0{style: "background-color: #F7F7F7;"}
+  = render partial: "profile", locals: {user: @user}
   .col-xs-12.col-sm-9.padding10.ptop0.user-wrapper
     = render partial: "user_card", locals: {users: @following}
-  #infinite-scrolling-following.hidden
+  #infinite-scrolling-content.hidden
     = paginate @following, param_name: "following"
+  .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
+    %i.fa.fa-circle-o-notch.fa-spin.font21
+    Please wait...
 
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
-      if ($('#infinite-scrolling-following').length) {
-        $(window).on('scroll', function() {
-          var more_posts_url = $('#infinite-scrolling-following .pagination .next a').attr('href');
-          if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 60) {
-            $('#infinite-scrolling-following .pagination').html('<img src="/assets/images/bx_loader-6d46e2cf165a5a0584afba7bc9663da292ee08c97cfc7613de6013ed05be892a.gif" alt="Loading..." title="Loading..." />');
-            $.getScript(more_posts_url);
-          }
-        });
-      }
       $(".following-profile").addClass("active-link");
     });

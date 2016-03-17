@@ -43,6 +43,20 @@ $(document).ready(function(){
   $(document).on("click", ".comment-link", function(){
     $(this).next().next(".new-comment").find(".comment-description").focus();
   });
+  //Showcase Edit Delete option
+  $(document).on("click", ".action-showcase", function(){
+    $(".option-showcase").not($(this).next(".option-showcase")).each(function(){
+      $(this).hide();
+    });
+    $(this).next(".option-showcase").fadeToggle(100);
+  })
+  //Edit comment of showcase
+  $(document).on("click", ".edit-comment-showcase", function(){
+    $(this).closest(".option-showcase").hide(100);
+    $(this).closest(".media-body").find(".view-comment-showcase").hide();
+    $(this).closest(".media-body").find(".form-comment-showcase").fadeIn();
+    $(this).closest(".media-body").find(".comment-description").delay(1000).focus();
+  })
   //Hide success/failure messages after 30 secs.
   if($(".alert-message-div").length){
     $(".alert-message-div").delay(30000).fadeOut();
@@ -64,6 +78,37 @@ $(document).ready(function(){
   }
   $("input[name='showcase[showcase_type]']").click(function(){
     showcaseBtn();
+  })
+  //Infinite Scroll
+  if ($('#infinite-scrolling-content').length) {
+    $(window).on('scroll', function() {
+      var more_posts_url = $('#infinite-scrolling-content .pagination .next a').attr('href');
+      if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 60) {
+        $('.feed-loader').show();
+        $.getScript(more_posts_url);
+      }
+    });
+  }
+  //Image loading bar effect
+  $('.cloudinary-fileupload').bind('fileuploadprogress', function(e, data) {
+    $('.progress').show();
+    $('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+  });
+  $('.cloudinary-fileupload').bind('cloudinarydone', function(e, data) {
+    $(".file-input-button, .progress").hide();
+    $(".preview").show();
+    $('.preview').html(
+      $.cloudinary.image(data.result.public_id,
+        { format: data.result.format, version: data.result.version,
+          crop: 'fill', width: 150, height: 100 })
+    );
+    $('.progress-bar').css('width', '0%');
+    $(".preview-delete").show();
+    return true;
+  });
+  $(".preview-delete").click(function(){
+    $(".preview-delete, .preview").hide();
+    $(".file-input-button").show();
   })
   //Home page - Rent, Lend pages
   n=!0,t=!0;

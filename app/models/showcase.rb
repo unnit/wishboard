@@ -61,4 +61,8 @@ class Showcase < ActiveRecord::Base
     wows_any? || comments_any?
   end
 
+  def owner?(user)
+    self.user == user
+  end
+
 end

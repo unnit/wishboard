@@ -42,9 +42,9 @@
 }*/
 
 body{
-  /*font-family: 'museo_sans_rounded100';*/
-  font-family: 'Open Sans', sans-serif;
-  /*font-family: 'Roboto', 'Open Sans', sans-serif;*/
+  /*font-family: 'museo_sans_rounded100';
+  font-family: 'Open Sans', sans-serif;*/
+  font-family: 'Roboto', 'Open Sans', sans-serif;
 }
 
 #gmap{
@@ -147,6 +147,9 @@ body{
 .no-padding-left{
   padding-left: 0px !important;
 }
+.padding0{
+  padding: 0px;
+}
 .padding10{
   padding: 10px;
 }
@@ -222,13 +225,9 @@ body{
 .ptop20{
   padding-top: 20px;
 }
-.padding0{
-  padding: 0px;
-}
 .pad-v-5{
   padding: 5px 0;
 }
-
 .pad-v-10{
   padding: 10px 0;
 }

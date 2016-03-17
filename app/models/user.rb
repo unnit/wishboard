@@ -16,8 +16,9 @@ class User < ActiveRecord::Base
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :showcases
-  has_many :likes
+  has_many :wows
   has_many :comments
+  has_many :appreciations, through: :showcases, source: :wows
 
   has_one :profile, dependent: :destroy
 
@@ -69,6 +70,10 @@ class User < ActiveRecord::Base
   def finished_info?
     create_profile unless profile
     profile.valid?
+  end
+
+  def same_user?(user)
+    self == user
   end
 
   def can_review?(product)

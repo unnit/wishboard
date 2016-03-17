@@ -4,7 +4,7 @@
       .col-sm-12{style: "height:108px;background-color:#ffe066;"}
       .col-sm-12{style: "height:108px;"}
         %span.mtop5.pull-left.font-bit-large.weight500{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "top", style: "margin-left: 95px;height: 40px;"}
-          = (truncate current_user.profile.first_name, length: 20) || (truncate current_user.name, length: 20)
+          = (truncate current_user.name.titleize, length: 30)
         .col-sm-12.no-mar-pad.text-center
           .col-sm-6.col-md-3.no-mar-pad
             %span.extra-small-font SHOWPIECES

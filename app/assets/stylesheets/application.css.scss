@@ -42,9 +42,9 @@
 }*/
 
 body{
-  /*font-family: 'museo_sans_rounded100';
-  font-family: 'Open Sans', sans-serif;*/
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /*font-family: 'museo_sans_rounded100';*/
+  font-family: 'Open Sans', sans-serif;
+  /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
 }
 
 #gmap{
@@ -423,6 +423,9 @@ small{
 }
 .weight-bold{
   font-weight: bold;
+}
+.neg-letter-spacing{
+  letter-spacing: -1px;
 }
 .no-border{
   border: none !important;

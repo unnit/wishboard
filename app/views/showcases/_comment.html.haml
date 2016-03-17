@@ -11,7 +11,7 @@
         = link_to delete_comment_showcase_path(comment), method: :delete, remote: true, class: "full-width grey-fg pull-left small padding5" do
           Delete...
     = link_to myprofile_path(comment.user.profile.slug) do
-      %strong{style: "color: #28B473;"}= comment.user.name
+      %strong= comment.user.name.titleize
     .view-comment-showcase{class: "view-comment-#{comment.id}"}= simple_format comment.description
     - if comment.owner?(current_user)
       = form_for comment, url: edit_comment_showcase_path(comment), remote: true, method: :post, html: {class: "form-comment-showcase form-comment-#{comment.id}"} do |f|

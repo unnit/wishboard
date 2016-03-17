@@ -76,6 +76,14 @@ class User < ActiveRecord::Base
     self == user
   end
 
+  def nil_following?
+    following.count == 0
+  end
+
+  def nil_followers?
+    followers.count == 0
+  end
+
   def can_review?(product)
     transactions.paid.where(product_id: product.id).count > 0
   end

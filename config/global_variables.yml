@@ -9,7 +9,8 @@ development:
   manager_mobile_1: "9037267357"
   manager_mobile_2: "9008888522"
   buffer_time_of_transaction: 1
-  default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
+  #default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
+  default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1458216157/default_images/profile-pic.png"
   watermark: "default_images:watermark"
   default_product_image: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/default_product.png"
   extra_discount: 10
@@ -31,6 +32,7 @@ development:
   dress_end_minute: 00
   #----------------------
   offer_product: 7
+  feed_users: [1, 2, 19, 7, 10, 11, 17, 89, 95, 91, 100]
 
 production:
   time_out: 7
@@ -43,7 +45,7 @@ production:
   manager_mobile_1: "9037267357"
   manager_mobile_2: "9008888522"
   buffer_time_of_transaction: 1
-  default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
+  default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1458216157/default_images/profile-pic.png"
   watermark: "default_images:watermark"
   default_product_image: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/default_product.png"
   extra_discount: 0
@@ -65,3 +67,4 @@ production:
   dress_end_minute: 00
   #----------------------
   offer_product: 141
+  feed_users: [1, 2, 19, 7, 10, 11, 17, 89, 95, 91, 100]

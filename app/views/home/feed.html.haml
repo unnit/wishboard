@@ -20,12 +20,12 @@
             %h4.followers-count= current_user.followers.count
       .col-sm-12{style: "margin-top: -148px;"}
         = link_to myprofile_path(current_user.profile.slug) do
-          = cl_image_tag current_user.avatar, class: "img-circle pull-left", style: "border: 1px solid #fff;z-index: 1;position: relative;", width: 80, height: 80, crop: :fill
+          = cl_image_tag current_user.avatar, class: "img-circle pull-left", style: "border: 1px solid #fff;z-index: 1;position: relative;", width: 80, height: 80, crop: :fill, gravity: :face
   .col-xs-12.col-sm-6.no-mar-pad.ptop15{style: "border-top: 0px;"}
     .col-xs-12.col-sm-12.bg-white.padding10.mbottom10.border-left-band-action.bg-shad
       .col-xs-2.col-sm-1.no-mar-pad.full-height
         = link_to myprofile_path(current_user.profile.slug) do
-          = cl_image_tag current_user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
+          = cl_image_tag current_user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill, gravity: :face
       = form_for @showcase, url: showcases_path do |f|
         .col-xs-12.col-sm-2.no-mar-pad.text-center-mob{style: "overflow: hidden;height: 152px;"}
           .preview

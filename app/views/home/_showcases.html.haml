@@ -11,13 +11,13 @@
             Delete&nbsp;
             .glyphicon.glyphicon-minus-sign.grey-fg
       = link_to myprofile_path(showcase.user.profile.slug) do
-        = cl_image_tag showcase.user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
-        %span.weight500{style: "color: #28B473;"}= truncate showcase.user.name, length: 50
+        = cl_image_tag showcase.user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill, gravity: :face
+        %span{style: "color: #28B473;"}= truncate showcase.user.name, length: 50
       %span.small.grey-fg added
       = link_to showcase_path(showcase) do
-        %span.weight500{style: "color: #28B473;"}= truncate showcase.title, length: 50
+        %span{style: "color: #28B473;"}= truncate showcase.title, length: 50
       %span.small.grey-fg to
-      %span.small.grey-fg= showcase.wishlist? ? " wishlist" : " showcase"
+      %span= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
     .col-xs-12.col-sm-12.padding10.ptop0.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
     .col-xs-12.col-sm-12.padding10
@@ -43,7 +43,7 @@
       = form_for :comment, url: comment_showcase_path(showcase), remote: true do |f|
         .media-left
           = link_to myprofile_path(current_user.profile.slug) do
-            = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 40, height: 40, crop: :fill
+            = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
           = f.text_area :description, rows: 3, class: "form-control comment-description", id: "comment-description-#{showcase.id}"
           = f.submit "Comment", class: "btn btn-primary btn-social mtop10 btn-shadow"

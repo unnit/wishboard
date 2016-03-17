@@ -1,6 +1,6 @@
 .col-xs-12.col-sm-3.no-mar-pad.white-fg.mob-height
   .col-xs-12.col-sm-12.text-center
-    = cl_image_tag user.avatar, class: "img-circle mtop20", style: "z-index: 1;", width: 160, height: 160, crop: :fill
+    = cl_image_tag user.avatar, class: "img-circle mtop20", style: "z-index: 1;", width: 160, height: 160, crop: :fill, gravity: :face
     %h4= (truncate user.name, length: 20)
     %h5= (truncate user.profile.about, length: 200)
   - unless current_user == user
@@ -25,11 +25,17 @@
       - user.following.limit(10).each do |following|
         = link_to myprofile_path(following.profile.slug) do
           = cl_image_tag following.avatar, class: "img-circle pull-left mright5 mbottom5", width: 40, height: 40, crop: :fill
+      - if user.nil_following?
+        .col-sm-12.padding20.btn-profile-blue
+          Not Following anyone? Start following people to build your product network.
     .col-sm-12.no-mar-pad.mtop20
       %h4.white-fg Followers
       - user.followers.limit(10).each do |follower|
         = link_to myprofile_path(follower.profile.slug) do
           = cl_image_tag follower.avatar, class: "img-circle pull-left mright5 mbottom5", width: 40, height: 40, crop: :fill
+      - if user.nil_following?
+        .col-sm-12.padding20.btn-profile-blue
+          No Followers yet.
 .col-xs-12.col-sm-9.padding40
   = link_to myprofile_path(user.profile.slug) do
     .col-xs-12.col-sm-2.col-sm-offset-1.padding10.pon.pattern-bg.showcase-profile.text-center

@@ -1,8 +1,8 @@
 .media.padding10.pbottom0.mtop0{class: "media-comment-#{comment.id}"}
   .media-left
     = link_to myprofile_path(comment.user.profile.slug) do
-      = cl_image_tag comment.user.avatar, class: "img-circle media-object", width: 40, height: 40, crop: :fill
-  .media-body
+      = cl_image_tag comment.user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
+  .media-body.font-medium
     - if comment.owner?(current_user)
       %i.glyphicon.glyphicon-edit.grey-fg.action-showcase.grey-fg.pull-right.mtop5.pon
       .col-xs-4.col-sm-2.option-showcase.padding0.light-border.bg-shad.bg-white.pull-right.text-center

@@ -166,7 +166,13 @@
                   %a.inline-block.mtop10{:href => "#need-help"} Need Help?
                 .col-md-12.no-mar-pad.text-center
                   = link_to all_products_path do
-                    .btn.btn-md.mtop20.hvr-icon-forward.white-fg.shadow{style: "background-color: #1C8888;"} Browse All&nbsp;&nbsp;
+                    .btn.btn-md.mtop20.mright5.hvr-icon-forward.white-fg.shadow{style: "background-color: #1C8888;"} Browse All&nbsp;&nbsp;
+                  - if current_user
+                    - if GLOBAL_VARIABLES[:feed_users].include?(current_user.id)
+                      = link_to feed_path do
+                        .btn.btn-md.mtop20.white-fg.shadow{style: "background-color: #1C8888;"}
+                          .glyphicon.glyphicon-play.hvr-push{style: "margin-top: -5px;"}
+                          &nbsp;Your Feed
 
 #best-deals.ht-home-header.grey-bg.col-md-12
 

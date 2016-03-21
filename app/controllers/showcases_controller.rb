@@ -4,6 +4,7 @@ class ShowcasesController < ApplicationController
   before_filter :authenticate_owner, only: [:edit, :update, :destroy]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
   before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
+  before_filter :set_social_layout
 
   def create
     @showcase = current_user.showcases.build(showcase_params)

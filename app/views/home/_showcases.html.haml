@@ -23,7 +23,10 @@
     .col-xs-12.col-sm-12.padding10
       %h4.no-mar-pad= showcase.title
     .col-xs-12.col-sm-12.padding10
-      %span.small.grey-fg= showcase.description
+      %span.small.grey-fg.excerpt-desc= truncate showcase.description, length: 150
+      - if showcase.description.length > 150
+        %span.small.grey-fg.full-desc{style: "display: none;"}= showcase.description
+        %a.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
     .col-xs-4.col-sm-2.border-two.padding10.bg-light-grey
       = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
         - if showcase.wowed?(current_user)

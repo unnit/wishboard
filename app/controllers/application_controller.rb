@@ -28,6 +28,15 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def set_social_layout
+    @list_item_display = "none"
+    @adv_search = "none"
+    @offers_visible = "none"
+    @nav_color = "#50514F"
+    @brand_name = "yes"
+    @sal_color = "white-fg"
+  end
+
   def authenticate_user!(options={})
     session["user_return_to"] = request.fullpath unless current_user
     super(options)

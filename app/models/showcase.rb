@@ -1,5 +1,6 @@
 class Showcase < ActiveRecord::Base
   belongs_to :user
+  belongs_to :product
   has_many :wows
   has_many :comments
   has_one :location, as: :locatable, dependent: :destroy

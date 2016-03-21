@@ -15,7 +15,8 @@ class HomeController < ApplicationController
     @showcase.build_location
     @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
     @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-    @showcases = Showcase.order("RANDOM()")
+    #@showcases = Showcase.order("RANDOM()")
+    @showcases = Showcase.all.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
     @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
     @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
@@ -137,12 +138,4 @@ class HomeController < ApplicationController
     @user = @profile.user
   end
 
-  def set_social_layout
-    @list_item_display = "none"
-    @adv_search = "none"
-    @offers_visible = "none"
-    @nav_color = "#50514F"
-    @brand_name = "yes"
-    @sal_color = "white-fg"
-  end
 end

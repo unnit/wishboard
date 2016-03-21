@@ -37,6 +37,8 @@ class ProductsController < ApplicationController
     if @product.save
       @product.update_parent_category!
       @product.location.update_lat_lng
+      @product.reload
+      create_showcase
       flash[:success] = "Item saved successfully and is under review process. It will be posted as soon as the review is completed.<br>You can edit, change the availability of your product from your <a href='/dashboard'>Dashboard</a>.".html_safe
       redirect_to user_product_path(@product.id)
     else
@@ -65,6 +67,7 @@ class ProductsController < ApplicationController
       end
       @product.update_parent_category!
       @product.location.update_lat_lng
+      update_showcase
       flash[:success] = "Product updated successfully and is under review process. It will be posted as soon as the review is completed."
       redirect_to user_product_path(@product.id)
     else
@@ -459,6 +462,34 @@ class ProductsController < ApplicationController
     @product.discount_30 = 0
     @product.discount_90 = 0
     @product.tech_spec = ""
+  end
+
+  def create_showcase
+    showcase = Showcase.new
+    showcase.user = @product.user
+    showcase.product = @product
+    showcase.description = @product.description
+    showcase.title = @product.title
+    showcase.year = @product.year_of_manufacture
+    showcase.image = @product.image.filename
+    showcase.showcase_type = Showcase::SHOWCASE_VALUES[0]
+    location = Location.new
+    location.name = @product.location.name
+    if showcase.save
+      location.locatable_id = showcase.id
+      location.locatable_type = 'Showcase'
+      location.save
+    end
+  end
+
+  def update_showcase
+    showcase = @product.showcase
+    showcase.description = @product.description
+    showcase.title = @product.title
+    showcase.year = @product.year_of_manufacture
+    showcase.image = @product.image.filename
+    showcase.location.name = @product.location.name
+    showcase.save
   end
 
 end

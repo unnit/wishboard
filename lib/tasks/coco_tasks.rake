@@ -76,10 +76,12 @@ namespace :coco_tasks do
     @products.each do |product|
       @showcase = Showcase.new
       @showcase.user = product.user
+      @showcase.product = product
       @showcase.description = product.description
       @showcase.title = product.title
       @showcase.year = product.year_of_manufacture
       @showcase.image = product.image.filename
+      @showcase.showcase_type = Showcase::SHOWCASE_VALUES[0]
       location = Location.new
       location.name = product.location.name
       if @showcase.save

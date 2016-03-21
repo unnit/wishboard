@@ -57,6 +57,19 @@ $(document).ready(function(){
     $(this).closest(".media-body").find(".form-comment-showcase").fadeIn();
     $(this).closest(".media-body").find(".comment-description").delay(1000).focus();
   })
+  //See more in showcase description
+  $(document).on("click", ".see-more", function(){
+    $(this).siblings(".excerpt-desc").hide();
+    $(this).siblings(".full-desc").show();
+    $(this).text("See Less")
+    $(this).removeClass("see-more").addClass("see-less")
+  });
+  $(document).on("click", ".see-less", function(){
+    $(this).siblings(".full-desc").hide();
+    $(this).siblings(".excerpt-desc").show();
+    $(this).text("See More")
+    $(this).removeClass("see-less").addClass("see-more")
+  });
   //Hide success/failure messages after 30 secs.
   if($(".alert-message-div").length){
     $(".alert-message-div").delay(30000).fadeOut();

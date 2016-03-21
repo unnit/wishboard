@@ -68,6 +68,7 @@ class Product < ActiveRecord::Base
   has_many :transactions, dependent: :destroy
 
   has_one :location, as: :locatable, dependent: :destroy
+  has_one :showcase
   accepts_nested_attributes_for :location
 
   serialize :doc_requirement

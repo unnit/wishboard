@@ -71,7 +71,7 @@ namespace :coco_tasks do
   end
 
   task listing_to_showcase: :environment do
-    @products = Product.all
+    @products = Product.all.order(:created_at)
     i = 0
     @products.each do |product|
       @showcase = Showcase.new

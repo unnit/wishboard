@@ -22,6 +22,7 @@
   %span.update-msg{style: "color: green;"}
   %span.update-error{style: "color: red;"}
 %td= product.owner_available_status
+%td.currently-avail{style: "width: 80px"}= render partial: "currently_avail_toggle", locals: {product: product}
 %td{style: "width: 90px"}
   = link_to user_product_path(product.id), class: "btn btn-sm btn-primary edit-product", target: "_blank" do
     %span.glyphicon.glyphicon-eye-open

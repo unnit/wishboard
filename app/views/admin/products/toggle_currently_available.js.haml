@@ -1,0 +1,1 @@
+$("#product-row-#{@product.id} .currently-avail").html("#{escape_javascript(render partial: 'currently_avail_toggle', locals: {product: @product})}");

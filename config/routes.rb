@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     resources :products, only: [:index] do
       member do
         get :toggle
+        get :toggle_currently_available
         post :set_featured
       end
     end
@@ -79,6 +80,7 @@ Rails.application.routes.draw do
   get ":id/wishes", to: "home#mywishes", as: :mywishes
   get ":id/following", to: "home#following", as: :following
   get ":id/followers", to: "home#followers", as: :followers
+  get "user_card/:id", to: "home#user_card", as: :get_user_card
 
   resources :messages, only: [:destroy, :index, :show] do
     member do

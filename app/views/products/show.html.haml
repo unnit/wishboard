@@ -216,10 +216,13 @@
               %i.glyphicon.glyphicon-menu-down.clickable
         .col-xs-12.col-md-12.from-bar
           - if current_user
-            .col-md-12.padding0.mleft15
+            .col-md-12.padding0
               - if current_user != @product.user && @product.available?
                 - unless session[:end_date_time].blank? || session[:start_date_time].blank?
-                  %button#rent-btn.src-but.full-width.padding0{type: "submit"}= @product.for_free? ? "Get" : "Rent"
+                  - if @product.currently_available?
+                    %button#rent-btn.src-but.full-width.padding0{type: "submit"}= @product.for_free? ? "Get" : "Rent"
+                  - else
+                    .pad-v-5.grey-fg.text-center.font20.grey-bg.mtop15 Out For Rent
                 - else
                   %button.src-but.full-width.padding0.search-in-show{type: "button"} Search
               - if current_user == @product.user || current_user.admin?
@@ -229,7 +232,7 @@
                 = link_to update_admin_approved_product_path(@product.id), method: :post do
                   %button#rent-btn.src-but.full-width.padding0.mtop0{type: "button"}= @product.admin_approved == true ? "Unapprove" : "Approve"
           - else
-            .col-md-12.padding0.mleft15
+            .col-md-12.padding0
               %button.src-but.full-width.padding0{type: "button", data: {toggle: "modal", target: "#login"}}
                 Login to Book
         - if @no_of_weekenddays > 0 || @product.discounts_any?

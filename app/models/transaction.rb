@@ -19,9 +19,6 @@ class Transaction < ActiveRecord::Base
   TRANSACTION_STATUS = [["Requested", "0"], ["Waiting Payment", "1"], ["Paid", "2"], ["Denied", "3"], ["Timed Out", "4"], ["Non Cocociti Booking", "5"], ["Accepted", "6"]]
   PAYMENT_GATEWAY_STATUS = ["SUCCESS", "FAIL", "CANCEL", "PG_FORWARD_FAIL"]
 
-  validates :user_id, :product_id, :startdate, :enddate, presence: true
-  validate :date_range_validation
-
   scope :renting, -> {where( "transactions.enddate > ? and (transactions.status = ? or transactions.status = ? or transactions.status = ?)", DateTime.current, Transaction::TRANSACTION_STATUS[1][1], Transaction::TRANSACTION_STATUS[2][1], Transaction::TRANSACTION_STATUS[5][1] )}
 
   scope :paid, -> {where status: Transaction::TRANSACTION_STATUS[2][1]}
@@ -187,15 +184,6 @@ class Transaction < ActiveRecord::Base
         results = all.order("transactions.created_at desc")
       end
       results
-    end
-  end
-
-  private
-  def date_range_validation
-    unless self.startdate.blank? || self.enddate.blank?
-      if self.enddate < self.startdate
-        errors.add(:base, "Invalid date range. Drop off Date should be greater than Pick up Date.")
-      end
     end
   end
 

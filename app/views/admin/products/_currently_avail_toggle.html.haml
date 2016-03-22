@@ -1,0 +1,8 @@
+- if product.currently_available?
+  %span= 'On'
+  = link_to toggle_currently_available_admin_product_path(product), remote: true, class: "btn btn-sm btn-success pull-right", title: "Inactivate" do
+    .glyphicon.glyphicon-ok
+- else
+  %span= "Off"
+  = link_to toggle_currently_available_admin_product_path(product), remote: true, class: "btn btn-sm btn-danger pull-right", title: "Activate" do
+    .glyphicon.glyphicon-remove

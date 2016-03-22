@@ -15,8 +15,8 @@ class HomeController < ApplicationController
     @showcase.build_location
     @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
     @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-    #@showcases = Showcase.order("RANDOM()")
-    @showcases = Showcase.all.order(created_at: :desc)
+    @showcases = Showcase.order("RANDOM()")
+    #@showcases = Showcase.all.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
     @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
     @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
@@ -35,7 +35,7 @@ class HomeController < ApplicationController
 
   def myprofile
     @showcases = @user.showcases.order(created_at: :desc)
-    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
     respond_to do |format|
       format.html
       format.js
@@ -76,6 +76,11 @@ class HomeController < ApplicationController
       format.html
       format.js
     end
+  end
+
+  def user_card
+    user = User.find_by_id params[:id]
+    render json: {user: (render_to_string '_user_card', layout: false, locals: {users: Array(user), card_padding: '0px'})}
   end
 
   def get_state_and_city

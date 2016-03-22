@@ -10,107 +10,33 @@ class TransactionsController < ApplicationController
   before_filter :basic_checks_before_checkout, only: [:checkout]
 
   def new
-    @transaction = @product.transactions.build(startdate: session[:start_date_time], enddate: session[:end_date_time], operator_type: params[:operator_type])
-    @transaction.user = current_user
-    if @transaction.valid?
-      if @product.owner_type == Product::OWNER_TYPE[0][1]
-        ### -----Asigning all values to transaction table
-
-        @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
-        @hours = @product.hours_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
-        end_day = (session[:end_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
-        @end_day_weekend = @product.no_of_weekenddays(end_day, @product.user.profile.weekend_days_arr.map(&:to_i))
-        total_days = (session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
-        @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
-        @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
-
-        @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
-        if params[:operator_type].to_i == Product::OPERATOR_TYPE[1][1]
-          if @hours > 0
-            @transaction.operator_price = @product.operator_price * (@days + 1)
-          else
-            @transaction.operator_price = @product.operator_price * (@days)
-          end
-        end
-        @transaction.daily_rent = @product.price
-        @transaction.days = @days
-        @transaction.hourly_rent = @product.hourly_price
-        @transaction.hours = @hours
-        @transaction.weekend_daily_rent = @product.seasonal_weekend_pricing(1, 0, 0) if @no_of_weekenddays > 0
-        @transaction.weekend_days = @no_of_weekenddays if @no_of_weekenddays > 0
-        @transaction.weekend_hourly_rent = @product.seasonal_weekend_pricing(0, 1, 1) if @hours > 0 && @end_day_weekend > 0
-        @transaction.weekend_hours = @hours if @hours > 0 && @end_day_weekend > 0
-        @transaction.rent_without_discount = @product.price_without_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-        @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-        @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-        @transaction.tax = @product.tax_amount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-        @transaction.refundable_security_deposit = @product.collect_security_deposit? ? @product.security_deposit : 0
-        @transaction.amount = @product.calculate_price(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-        @transaction.save
-
-        ###########-----------------------------
-        TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
+    if @product.owner_type == Product::OWNER_TYPE[0][1]
+      new_transaction
+      @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
+      if @transaction.save
+        #TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
         redirect_to checkout_transaction_path(@transaction)
+      else
+        flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
+        redirect_to user_product_path(@product.id)
       end
-    else
-      flash[:danger] = @transaction.errors.full_messages.first
-      redirect_to user_product_path(@product.id)
     end
   end
 
   def create
-    @transaction = Transaction.new
-    @transaction.user = current_user
-    @transaction.startdate = session[:start_date_time]
-    @transaction.enddate = session[:end_date_time]
-    @transaction.operator_type = params[:operator_type]
-    @transaction.product = @product
-    ### -----Asigning all values to transaction table
-
-    @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
-    @hours = @product.hours_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
-    end_day = (session[:end_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
-    @end_day_weekend = @product.no_of_weekenddays(end_day, @product.user.profile.weekend_days_arr.map(&:to_i))
-    total_days = (session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
-    @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
-    @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
-
+    new_transaction
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
-    if params[:operator_type].to_i == Product::OPERATOR_TYPE[1][1]
-      if @hours > 0
-        @transaction.operator_price = @product.operator_price * (@days + 1)
-      else
-        @transaction.operator_price = @product.operator_price * (@days)
-      end
-    end
-    @transaction.daily_rent = @product.price
-    @transaction.days = @days
-    @transaction.hourly_rent = @product.hourly_price
-    @transaction.hours = @hours
-    @transaction.weekend_daily_rent = @product.seasonal_weekend_pricing(1, 0, 0) if @no_of_weekenddays > 0
-    @transaction.weekend_days = @no_of_weekenddays if @no_of_weekenddays > 0
-    @transaction.weekend_hourly_rent = @product.seasonal_weekend_pricing(0, 1, 1) if @hours > 0 && @end_day_weekend > 0
-    @transaction.weekend_hours = @hours if @hours > 0 && @end_day_weekend > 0
-    @transaction.rent_without_discount = @product.price_without_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-    @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-    @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-    @transaction.tax = @product.tax_amount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-    @transaction.refundable_security_deposit = @product.collect_security_deposit? ? @product.security_deposit : 0
-    @transaction.amount = @product.calculate_price(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
-
-    ###############
     if @transaction.save
       params[:message] = "Request for #{@product.title}" if params[:message].blank?
       current_user.send_message([@transaction, @product.user], params[:message], "Request for #{@product.title}")
       TransactionMailer.order_request(@transaction, params[:message]).deliver_now
 
       no_customer = "+91#{@transaction.user.profile.phone}"
-      msg_customer =
+      msg_customer = "Request has been sent to Item owner successfully. Please visit your Dashboard --> My Order Activity for updates."
       @transaction.send_sms(no_customer, msg_customer)
 
       no_owner = "+91#{@transaction.product.user.profile.phone}"
-      msg_owner = "Request has been sent to Item owner successfully. Please visit your Dashboard --> My Order Activity for updates."
-      @transaction.send_sms(no_owner, msg_owner)
+      @transaction.send_sms(no_owner, params[:message])
 
       flash[:success] = "Request for #{@product.title} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'My Order Activity' tab."
       redirect_to dashboard_path
@@ -299,12 +225,17 @@ class TransactionsController < ApplicationController
       redirect_to user_product_path(@product.id)
       return
     end
+    if session[:start_date_time].in_time_zone("Kolkata") > session[:end_date_time].in_time_zone("Kolkata")
+      flash[:danger] = "Invalid date range. Drop off Date should be greater than Pick up Date."
+      redirect_to user_product_path(@product.id)
+      return
+    end
     params[:operator_type] = Product::OPERATOR_TYPE[0][1] if params[:operator_type].blank? || (params[:operator_type].to_i != Product::OPERATOR_TYPE[1][1])
     params[:operator_type] = Product::OPERATOR_TYPE[1][1] if @product.operator_type == Product::OPERATOR_TYPE[1][1]
   end
 
   def check_product_availability
-    unless @product.available?
+    unless @product.completely_available?
       flash[:danger] = "Sorry, Item is not available for the selected dates."
       redirect_to user_product_path(@product.id)
       return
@@ -349,7 +280,7 @@ class TransactionsController < ApplicationController
       earch_end_date_time = @transaction.enddate
 
       @product = @transaction.product
-      unless @product.available?
+      unless @product.completely_available?
         flash[:danger] = "Sorry, Item is not available for the selected dates."
         redirect_to user_product_path(@product.id)
         return
@@ -392,6 +323,43 @@ class TransactionsController < ApplicationController
       redirect_to root_path
       return
     end
+  end
+
+  def new_transaction
+    @transaction = Transaction.new
+    @transaction.startdate = session[:start_date_time]
+    @transaction.enddate = session[:end_date_time]
+    @transaction.operator_type = params[:operator_type]
+    @transaction.product = @product
+    @transaction.user = current_user
+    @days = @product.days_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
+    @hours = @product.hours_calculation_for_pricing(session[:start_date_time], session[:end_date_time])
+    end_day = (session[:end_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+    @end_day_weekend = @product.no_of_weekenddays(end_day, @product.user.profile.weekend_days_arr.map(&:to_i))
+    total_days = (session[:start_date_time].in_time_zone("Kolkata").to_date..session[:end_date_time].in_time_zone("Kolkata").to_date)
+    @no_of_weekenddays = @product.no_of_weekenddays(total_days, @product.user.profile.weekend_days_arr.map(&:to_i))
+    @no_of_weekenddays = @no_of_weekenddays - 1 if @hours > 0 && @end_day_weekend > 0
+    if params[:operator_type].to_i == Product::OPERATOR_TYPE[1][1]
+      if @hours > 0
+        @transaction.operator_price = @product.operator_price * (@days + 1)
+      else
+        @transaction.operator_price = @product.operator_price * (@days)
+      end
+    end
+    @transaction.daily_rent = @product.price
+    @transaction.days = @days
+    @transaction.hourly_rent = @product.hourly_price
+    @transaction.hours = @hours
+    @transaction.weekend_daily_rent = @product.seasonal_weekend_pricing(1, 0, 0) if @no_of_weekenddays > 0
+    @transaction.weekend_days = @no_of_weekenddays if @no_of_weekenddays > 0
+    @transaction.weekend_hourly_rent = @product.seasonal_weekend_pricing(0, 1, 1) if @hours > 0 && @end_day_weekend > 0
+    @transaction.weekend_hours = @hours if @hours > 0 && @end_day_weekend > 0
+    @transaction.rent_without_discount = @product.price_without_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+    @transaction.discounts = @product.discount_by_days(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+    @transaction.rent_with_discount = @product.price_with_discount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+    @transaction.tax = @product.tax_amount(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
+    @transaction.refundable_security_deposit = @product.collect_security_deposit? ? @product.security_deposit : 0
+    @transaction.amount = @product.calculate_price(@days, @hours, params[:operator_type].to_i, @no_of_weekenddays, @end_day_weekend)
   end
 
 end

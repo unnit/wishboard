@@ -141,6 +141,10 @@ class Product < ActiveRecord::Base
     available==true && admin_approved==true
   end
 
+  def completely_available?
+    available==true && admin_approved==true && currently_available==true
+  end
+
   def for_free?
     listing_type==Product::LISTING_TYPE[0][1]
   end
@@ -531,6 +535,11 @@ class Product < ActiveRecord::Base
   def toggle!
     avail = !admin_approved
     update_column :admin_approved, avail
+  end
+
+  def toggle_currently_available!
+    currently_avail = !currently_available
+    update_column :currently_available, currently_avail
   end
 
   def toggle_featured!

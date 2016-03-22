@@ -25,7 +25,10 @@
     = render partial: "layouts/messages"
     = yield
     = render partial: "layouts/footer"
-    = javascript_include_tag "//maps.googleapis.com/maps/api/js?sensor=false&libraries=places"
+    - if Rails.env.production?
+      = javascript_include_tag "//maps.googleapis.com/maps/api/js?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&libraries=places"
+    - else
+      = javascript_include_tag "//maps.googleapis.com/maps/api/js?sensor=false&libraries=places"
     = javascript_include_tag 'application'
     = yield :extra_js
     = cloudinary_js_config

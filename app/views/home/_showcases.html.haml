@@ -11,8 +11,8 @@
             Delete&nbsp;
             .glyphicon.glyphicon-minus-sign.grey-fg
       = link_to myprofile_path(showcase.user.profile.slug) do
-        = cl_image_tag showcase.user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill, gravity: :face
-        %span.weight600= truncate showcase.user.name.titleize, length: 50
+        = cl_image_tag showcase.user.avatar, class: "img-circle hovercard", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face
+        %span.weight600.hovercard{"data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
       %span.small.grey-fg added
       = link_to showcase_path(showcase) do
         %span.weight600= truncate showcase.title.titleize, length: 50
@@ -50,3 +50,34 @@
         .media-body
           = f.text_area :description, rows: 3, class: "form-control comment-description", id: "comment-description-#{showcase.id}"
           = f.submit "Comment", class: "btn btn-primary btn-social mtop10 btn-shadow"
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      function hoverCard(){
+        $(".hovercard").tooltipster({
+          interactive: true,
+          content: 'Loading...',
+          contentCloning: false,
+          contentAsHTML: true,
+          maxWidth: 286,
+          animation: 'fade',
+          functionBefore: function(origin, continueTooltip) {
+              // we'll make this function asynchronous and allow the tooltip to go ahead and show the loading notification while fetching our data.
+              continueTooltip();
+              if (origin.data('ajax') !== 'cached') {
+              $.ajax({
+                  type: 'GET',
+                  url: "/user_card/"+($(this).data('id')),
+                  success: function(data) {
+                      // update our tooltip content with our returned data and cache it
+                      origin.tooltipster('content', data.user).data('ajax', 'cached');
+                  }
+              });
+            }
+          }
+        });
+      }
+      hoverCard();
+      $(document).on("mouseover", ".hovercard", hoverCard);
+    });

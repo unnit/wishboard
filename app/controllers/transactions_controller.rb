@@ -10,11 +10,15 @@ class TransactionsController < ApplicationController
   before_filter :basic_checks_before_checkout, only: [:checkout]
 
   def new
+    @transaction = Transaction.new
     if @product.owner_type == Product::OWNER_TYPE[0][1]
       new_transaction
       @transaction.status = Transaction::TRANSACTION_STATUS[1][1]
       if @transaction.save
         #TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
+        GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
+          @transaction.send_sms(number, "Hey, Someone is trying to book a product.")
+        end
         redirect_to checkout_transaction_path(@transaction)
       else
         flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
@@ -24,6 +28,7 @@ class TransactionsController < ApplicationController
   end
 
   def create
+    @transaction = Transaction.new
     new_transaction
     @transaction.status = Transaction::TRANSACTION_STATUS[0][1]
     if @transaction.save
@@ -36,9 +41,15 @@ class TransactionsController < ApplicationController
       @transaction.send_sms(no_customer, msg_customer)
 
       no_owner = "+91#{@transaction.product.user.profile.phone}"
-      @transaction.send_sms(no_owner, params[:message])
+      msg_owner = "#{@transaction.user.name} wants to rent your #{@product.title.truncate(20)}. Login immediately to accept/reject the booking request by clicking #{GLOBAL_VARIABLES[:root_url]}/dashboard."
+      @transaction.send_sms(no_owner, msg_owner)
 
-      flash[:success] = "Request for #{@product.title} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'My Order Activity' tab."
+      msg_coco_manager = "Request for #{@product.title.truncate(20)}, Owner No:+91#{@transaction.product.user.profile.phone}, Customer:+91#{@transaction.user.profile.phone}"
+      GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
+        @transaction.send_sms(number, msg_coco_manager)
+      end
+
+      flash[:success] = "Request for #{@product.title.truncate(20)} has been successfully sent to Item owner. You will receive a mail upon approval from Item Owner. You can also check the status in 'My Order Activity' tab."
       redirect_to dashboard_path
     else
       flash[:danger] = @transaction.errors.full_messages.join("<br/>").html_safe
@@ -164,8 +175,6 @@ class TransactionsController < ApplicationController
     logger.info @signature
     logger.info params["signature"]
     logger.info '*****************'
-    no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
-    no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
     no = "+91#{@transaction.user.profile.phone}"
     if @signature == params["signature"]
       if params["TxStatus"] == Transaction::PAYMENT_GATEWAY_STATUS[0]
@@ -174,12 +183,12 @@ class TransactionsController < ApplicationController
       else
         TransactionMailer.fail(@transaction, params["TxMsg"]).deliver_now
         msg = params["TxMsg"]
-        msg = "Sorry, Your payment failed. #{msg}. ID: #{@transaction.coco_transaction_id}"
+        msg_customer = "Sorry, Your payment failed. #{msg}. ID: #{@transaction.coco_transaction_id}"
         msg_coco_manager = "#{@transaction.product.title}- Payment failed #{msg}. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id} Mobile: #{@transaction.user.profile.phone}"
-        @transaction.send_sms(no, msg)
-        @transaction.send_sms(no_coco_manager_1, msg_coco_manager)
-        @transaction.send_sms(no_coco_manager_2, msg_coco_manager)
-
+        @transaction.send_sms(no, msg_customer)
+        GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
+          @transaction.send_sms(number, msg_coco_manager)
+        end
         flash[:alert] = "#{msg}"
         redirect_to checkout_transaction_path(@transaction)
       end
@@ -190,9 +199,9 @@ class TransactionsController < ApplicationController
       msg = "Sorry, Your payment failed as signaure verification failed. Please try again. ID: #{@transaction.coco_transaction_id}"
       msg_coco_manager = "#{@transaction.product.title}- Payment failed as signature verification failed. Name: #{@transaction.user.name} ID: #{@transaction.coco_transaction_id}. Mobile: #{@transaction.user.profile.phone}"
       @transaction.send_sms(no, msg)
-      @transaction.send_sms(no_coco_manager_1, msg_coco_manager)
-      @transaction.send_sms(no_coco_manager_2, msg_coco_manager)
-
+      GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
+        @transaction.send_sms(number, msg_coco_manager)
+      end
       redirect_to checkout_transaction_path(@transaction)
     end
   end
@@ -326,7 +335,6 @@ class TransactionsController < ApplicationController
   end
 
   def new_transaction
-    @transaction = Transaction.new
     @transaction.startdate = session[:start_date_time]
     @transaction.enddate = session[:end_date_time]
     @transaction.operator_type = params[:operator_type]

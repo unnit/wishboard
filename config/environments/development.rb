@@ -49,8 +49,8 @@ Rails.application.configure do
     :address        => "smtp.sendgrid.net",
     :port           => "587",
     :authentication => :plain,
-    :user_name      =>"app37675653@heroku.com",
-    :password       => "r3pzc9eu1065",
+    :user_name      => 'cocociti',#"app37675653@heroku.com",
+    :password       => 'FighterFire1@',#"r3pzc9eu1065",
     :domain         => 'localhost'
   }
 

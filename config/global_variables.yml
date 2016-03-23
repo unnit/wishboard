@@ -33,6 +33,7 @@ development:
   #----------------------
   offer_product: 7
   feed_users: [1, 2, 19, 7, 10, 11, 17, 89, 95, 91, 100]
+  manager_mobile_nos: ["+919037267357", "+919008888522", "+919037334459"]
 
 production:
   time_out: 7
@@ -68,3 +69,4 @@ production:
   #----------------------
   offer_product: 141
   feed_users: [1, 2, 19, 7, 10, 11, 17, 89, 95, 91, 100]
+  manager_mobile_nos: ["9037267357", "9008888522", "9037334459"]

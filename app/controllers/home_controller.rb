@@ -97,10 +97,9 @@ class HomeController < ApplicationController
   def bulk_bookings
     @bulk_booking = BulkBooking.new(bulk_params)
     if @bulk_booking.save
-      no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
-      no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
-      send_mobile_sms(no_coco_manager_1, "Mobile: #{@bulk_booking.mobile}, Email: #{@bulk_booking.email}")
-      send_mobile_sms(no_coco_manager_2, "Mobile: #{@bulk_booking.mobile}, Email: #{@bulk_booking.email}")
+      GLOBAL_VARIABLES[:manager_mobile_nos].each do |no|
+        send_mobile_sms(no, "Mobile: #{@bulk_booking.mobile}, Email: #{@bulk_booking.email}")
+      end
       message = "Mobile: #{@bulk_booking.mobile}<br>Email: #{@bulk_booking.email}<br><br>#{@bulk_booking.message}"
       UserMailer.bulk_booking_details(message).deliver_now
       flash[:notice] = "Thank you, We will get back to you within few minutes for your booking."

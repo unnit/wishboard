@@ -146,11 +146,10 @@ class Transaction < ActiveRecord::Base
     msg_owner = "Your Item - #{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}"
     self.send_sms(no_owner, msg_owner)
 
-    no_coco_manager_1 = "+91#{GLOBAL_VARIABLES[:manager_mobile_1]}"
-    no_coco_manager_2 = "+91#{GLOBAL_VARIABLES[:manager_mobile_2]}"
     msg_coco_manager = "#{self.product.title} has been successfully booked by #{self.user.name} for Rs #{self.amount}. Product ID - #{self.product.id}. Mobile No: #{self.user.profile.phone}"
-    self.send_sms(no_coco_manager_1, msg_coco_manager)
-    self.send_sms(no_coco_manager_2, msg_coco_manager)
+    GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
+      self.send_sms(number, msg_coco_manager)
+    end
   end
 
   def transaction_status_name

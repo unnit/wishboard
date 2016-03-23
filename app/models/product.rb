@@ -317,7 +317,7 @@ class Product < ActiveRecord::Base
   def disabled_days
     user.profile.disabled_days
   end
-=begin
+
   def self.create_hours(parameters)
     start_time = parameters[:start_time] ? parameters[:start_time] : 0
     end_time = parameters[:end_time] ? parameters[:end_time] : 24.hours
@@ -327,7 +327,6 @@ class Product < ActiveRecord::Base
       (Time.now.midnight + (i*30.minutes) + start_time).strftime("%H:%M")
     end
   end
-=end
 
   def enabled_hours
     start_time_hour = min_h

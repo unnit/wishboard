@@ -154,6 +154,6 @@ class Profile < ActiveRecord::Base
   end
 
   def init_availability
-    update_columns avail_days: ["1","2","3","4","5"], open_time: "08:00 AM", close_time: "5:00 PM"
+    update_columns avail_days: ["1","2","3","4","5"], open_time: "08:00", close_time: "17:00"
   end
 end

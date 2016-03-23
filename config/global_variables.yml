@@ -6,8 +6,6 @@ development:
   notification_mail: "cocogeeks@gmail.com"
   manager_email_id_1: "t@cocociti.com"
   manager_email_id_2: "j@cocociti.com"
-  manager_mobile_1: "9037267357"
-  manager_mobile_2: "9008888522"
   buffer_time_of_transaction: 1
   #default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
   default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1458216157/default_images/profile-pic.png"
@@ -43,8 +41,6 @@ production:
   notification_mail: "cocogeeks@gmail.com"
   manager_email_id_1: "t@cocociti.com"
   manager_email_id_2: "j@cocociti.com"
-  manager_mobile_1: "9037267357"
-  manager_mobile_2: "9008888522"
   buffer_time_of_transaction: 1
   default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1458216157/default_images/profile-pic.png"
   watermark: "default_images:watermark"
@@ -69,4 +65,4 @@ production:
   #----------------------
   offer_product: 141
   feed_users: [1, 2, 19, 7, 10, 11, 17, 89, 95, 91, 100]
-  manager_mobile_nos: ["9037267357", "9008888522", "9037334459"]
+  manager_mobile_nos: ["+919037267357", "+919008888522", "+919037334459"]

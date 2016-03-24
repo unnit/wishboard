@@ -17,7 +17,7 @@ class TransactionsController < ApplicationController
       if @transaction.save
         #TransactionsResetJob.set(wait: GLOBAL_VARIABLES[:time_out].minutes).perform_later
         GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
-          @transaction.send_sms(number, "Hey, Someone is trying to book a product.")
+          @transaction.send_sms(number, "Someone is trying to book a product in Cocociti.")
         end
         redirect_to checkout_transaction_path(@transaction)
       else

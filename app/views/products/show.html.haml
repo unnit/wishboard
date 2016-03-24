@@ -1,7 +1,7 @@
 = content_for :meta_content do
   -meta_content = "#{truncate @product.description, length: 200}"
 = content_for :title do
-  -title = "#{@product.title}-#{@product.category_name}-for-rent-in-Bangalore-#{@product.location.name.split(/\W+/)[0]}-#{@product.location.name.split(/\W+/)[1]} - Cocociti"
+  -title = "#{@product.title} #{@product.category_name} for rent in Bangalore #{@product.location.name.split(/\W+/)[0]} #{@product.location.name.split(/\W+/)[1]} | Cocociti"
 .container
   .row.mar-des-page
     .col-md-8
@@ -12,7 +12,7 @@
         - unless @product.images.blank?
           %ul.bxslider
             - @product.images.each do |image|
-              %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title}-#{@product.category_name}", :transformation => {:width => 740, :height => 460, :crop => :fit}, :overlay => "#{GLOBAL_VARIABLES[:watermark]}",
+              %li{style: "text-align: center"}= cl_image_tag image.filename, alt: "#{@product.title} | #{@product.category_name} on rent in #{@product.location.name.split(/\W+/)[0]} #{@product.location.name.split(/\W+/)[1]}", :transformation => {:width => 740, :height => 460, :crop => :fit}, :overlay => "#{GLOBAL_VARIABLES[:watermark]}",
               :crop => :fit, :gravity => :south_east, :x => 15, :y => 20
           #bx-pager.text-center
             - @product.images.each_with_index do |image, i|

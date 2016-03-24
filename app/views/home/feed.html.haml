@@ -1,6 +1,6 @@
 .container-fluid.mtop50{style: "background-color:#fafafa;max-width: 1361px;"}
   .col-sm-3.hidden-xs.ptop15{style: "height: 1000px;"}
-    .col-sm-12.no-mar-pad.border-left-band-profile.bg-shad.bg-white{style: "height: 215px;", class: "user-wrapper-#{current_user.id}"}
+    .col-sm-12.no-mar-pad.bg-shad.bg-white{style: "height: 215px;", class: "user-wrapper-#{current_user.id}"}
       .col-sm-12{style: "height:108px;background-color:#ffe066;"}
       .col-sm-12{style: "height:108px;"}
         %span.mtop5.pull-left.font-bit-large.weight500{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "top", style: "margin-left: 95px;height: 40px;"}
@@ -22,7 +22,7 @@
         = link_to myprofile_path(current_user.profile.slug) do
           = cl_image_tag current_user.avatar, class: "img-circle pull-left", style: "border: 1px solid #fff;z-index: 1;position: relative;", width: 80, height: 80, crop: :fill, gravity: :face
   .col-xs-12.col-sm-6.no-mar-pad.ptop15{style: "border-top: 0px;"}
-    .col-xs-12.col-sm-12.bg-white.padding10.mbottom10.border-left-band-action.bg-shad
+    .col-xs-12.col-sm-12.bg-white.padding10.mbottom10.bg-shad
       .col-xs-2.col-sm-1.no-mar-pad.full-height
         = link_to myprofile_path(current_user.profile.slug) do
           = cl_image_tag current_user.avatar, class: "img-circle", width: 40, height: 40, crop: :fill, gravity: :face
@@ -31,7 +31,7 @@
           .preview
           .glyphicon.glyphicon-remove.preview-delete.bg-white{style: "display: none;position: absolute;z-index: 1;"}
           .glyphicon.glyphicon-camera.file-input-button{style: "font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dashed;"}
-            = cl_image_upload_tag(:image)
+            = cl_image_upload_tag(:image, html: {capture: "camera"})
           .progress.progress-striped{style: "display: none;height: 10px;width:107px;"}
             .progress-bar{style: "width: 0%;"}
         .col-xs-12.col-sm-9.text-center
@@ -62,7 +62,7 @@
       = hidden_field_tag :prev_showcase, @showcases.current_page - 1
   .col-sm-3.hidden-xs.ptop15{style: "height: 1000px;"}
     %h4.no-mar-pad.padding15.white-fg{style: "background-color: #50514F;border-top-left-radius:4px;border-top-right-radius:4px;"} People to follow
-    .col-sm-12.padding10.follow-wrapper.border-left-band-follow.bg-shad.bg-white{style: "height: 300px;overflow:hidden;"}
+    .col-sm-12.padding10.follow-wrapper.bg-shad.bg-white{style: "height: 300px;overflow:hidden;"}
       .col-sm-12.no-mar-pad.follow-strip
         = render partial: "follow", locals: {users: @users}
       .col-xs-12.col-sm-12.text-center.feed-loader.padding20{style: "display:none;"}

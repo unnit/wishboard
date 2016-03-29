@@ -2,7 +2,7 @@
 %td= link_to transaction.product.title, user_product_path(transaction.product.id), target: "_blank"
 %td= link_to transaction.product.user.name, "#profile-#{transaction.product.user.profile_id}", data: {toggle: "modal" }
 %td= link_to transaction.user.name, "#profile-#{transaction.user.profile_id}", data: {toggle: "modal" }
-%td= transaction.created_at.strftime("%d %a, %Y %H:%M")
+%td= transaction.created_at.strftime("%d %a %b, %Y %H:%M")
 %td= transaction.duration
 %td= rupee transaction.amount
 /%td= transaction.product.listing_type_name

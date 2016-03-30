@@ -4,10 +4,5 @@ class CreateTags < ActiveRecord::Migration
       t.string :name, index: true
       t.timestamps null: false
     end
-
-    create_table :showcases_tags, id: false do |t|
-      t.integer :showcase_id, index: true
-      t.integer :tag_id, index: true
-    end
   end
 end

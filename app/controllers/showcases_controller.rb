@@ -7,7 +7,15 @@ class ShowcasesController < ApplicationController
   before_filter :set_social_layout
 
   def create
-    @showcase = current_user.showcases.build(showcase_params)
+    if params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[0]
+      @showcase = current_user.showcases.build(showpiece_params)
+    elsif params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[1]
+      @showcase = current_user.showcases.build(wish_params)
+    else
+      flash[:alert] = "Hey, Are you going to Showcase or Wishlist?"
+      redirect_to feed_path
+      return
+    end
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -25,11 +33,20 @@ class ShowcasesController < ApplicationController
   end
 
   def update
+    if params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[0]
+      @showcase.assign_attributes(showpiece_params)
+    elsif params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[1]
+      @showcase.assign_attributes(wish_params)
+    else
+      flash[:alert] = "Hey, Are you going to Showcase or Wishlist?"
+      redirect_to edit_showcase_path(@showcase)
+      return
+    end
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
-    if @showcase.update(showcase_params)
+    if @showcase.save
       flash[:notice] = "Your product has been showcased successfully."
       redirect_to edit_showcase_path(@showcase)
     else
@@ -68,10 +85,19 @@ class ShowcasesController < ApplicationController
     respond_to :js
   end
 
+  def gettags
+    @tags = Tag.all
+    render json: @tags.map{|tag| tag.name}
+  end
+
   private
 
-  def showcase_params
-    params.require(:showcase).permit(:title, :description, :year, :showcase_type, location_attributes: [:id, :name])
+  def showpiece_params
+    params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, location_attributes: [:id, :name])
+  end
+
+  def wish_params
+    params.require(:showcase).permit(:title, :description, :showcase_type, :all_tags)
   end
 
   def get_showcase

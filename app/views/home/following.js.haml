@@ -1,5 +1,5 @@
 $('.feed-loader').hide();
-$(".user-wrapper").append("#{j render partial: "user_card", locals: {users: @following}}")
+$(".user-wrapper").append("#{j render partial: "user_card", locals: {users: @following, min_width: "282px"}}")
 -if @following.next_page
   $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @following, param_name: 'following'}");
 - else

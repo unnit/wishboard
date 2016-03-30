@@ -2807,6 +2807,63 @@ th.headerSortDown {
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.5);
 }
+.header-showcase{
+  width: 104%;
+  left: -2%;
+}
+.header-showcase:before, .header-showcase:after{
+  content: "";
+  border-top: 6px solid #9A9A9A;
+  border-left: 11px solid transparent;
+  position: absolute;
+  bottom: -6px;
+  left: 0px;
+}
+.header-showcase:after{
+  right: 0px;
+  border-right: 11px solid transparent;
+}
+.arrow{
+  content: "";
+  border-bottom: 10px solid #ECECEC;
+  border-left: 8px solid transparent;
+  position: absolute;
+  bottom: 0px;
+  left: 87px;
+  border-right: 8px solid transparent;
+}
+.p-s-arrow{
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  border: 2px solid #e76f62;
+  border-radius: 50%;
+  top: 73px;
+  z-index: 1;
+}
+.arrow-right{
+  right: 5px;
+  background: url(images/arrow-front.png) center center no-repeat;
+}
+.arrow-left{
+  left: 5px;
+  background: url(images/arrow-back.png) center center no-repeat;
+}
+.error-ps-radio{
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+/******************Other CSS for header and future use *******/
+.header-with-grad{
+  background-color: #50514F;
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.26);
+  background: -webkit-linear-gradient(left, red , yellow);
+  background: -o-linear-gradient(right, red, yellow);
+  background: -moz-linear-gradient(right, red, yellow);
+  background: linear-gradient(to right, #21152C, #391D2E , #5B2631);
+}
+
 /********************** For Mobile Specific *************/
 .modal-width{
   width: 900px;

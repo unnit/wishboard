@@ -1,5 +1,5 @@
 - users.each do |user|
-  .col-xs-12.col-sm-4{class: "user-wrapper-#{user.id}", style: "min-width: 285px;padding: #{card_padding ||= '0px 10px 20px 10px'}"}
+  .col-xs-12.col-sm-4{class: "user-wrapper-#{user.id}", style: "min-width: #{min_width ||= '292px'};padding: #{card_padding ||= '0px 5px 10px 5px'}"}
     .col-xs-12.col-sm-12.bg-shad.bg-white.no-mar-pad
       .col-xs-12.col-sm-12{style: "height:88px;background-color:#ffe066;"}
       .col-xs-12.col-sm-12.padding5.ptop0
@@ -30,4 +30,4 @@
             %h4.followers-count= user.followers.count
       .col-xs-12.col-sm-12{style: "margin-top: -168px;"}
         = link_to myprofile_path(user.profile.slug) do
-          = cl_image_tag user.avatar, class: "img-circle pull-left", style: "border: 1px solid #fff;z-index: 1;position: relative;", width: 80, height: 80, crop: :fill
+          = cl_image_tag user.avatar, class: "img-circle pull-left", style: "z-index: 1;position: relative;", width: 80, height: 80, crop: :fill

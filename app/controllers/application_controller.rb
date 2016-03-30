@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
     @list_item_display = "none"
     @adv_search = "none"
     @offers_visible = "none"
-    @nav_color = "#50514F"
+    @nav_color = "#50514F;border:none !important"
     @brand_name = "yes"
     @sal_color = "white-fg"
   end

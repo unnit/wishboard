@@ -1,9 +1,9 @@
 - showcases.each do |showcase|
-  .col-xs-12.col-sm-12.no-mar-pad.mbottom10.bg-white.bg-shad.border-medium
-    .col-xs-12.col-sm-12.padding10
+  .col-xs-12.col-sm-12.no-mar-pad.mbottom10.bg-white.bg-shad
+    .col-xs-12.col-sm-12.padding10.bg-light-grey
       - if showcase.owner?(current_user)
         %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.pull-right.mtop5.pon
-        .col-xs-4.col-sm-2.option-showcase.padding0.light-border.bg-shad.bg-white.pull-right.text-center
+        .col-xs-4.col-sm-2.option-showcase.padding0.light-border.bg-shad.bg-white.pull-right.text-center.bg-white
           = link_to edit_showcase_path(showcase), class: "border-bt-side full-width grey-fg pull-left small padding5" do
             Edit&nbsp;
             .glyphicon.glyphicon-edit.grey-fg
@@ -11,14 +11,14 @@
             Delete&nbsp;
             .glyphicon.glyphicon-minus-sign.grey-fg
       = link_to myprofile_path(showcase.user.profile.slug) do
-        = cl_image_tag showcase.user.avatar, class: "img-circle hovercard", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face
+        = cl_image_tag showcase.user.avatar, class: "img-circle hovercard pull-left", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face
         %span.weight600.hovercard{"data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
       %span.small.grey-fg added
       = link_to showcase_path(showcase) do
         %span.weight600= truncate showcase.title.titleize, length: 50
       %span.small.grey-fg to
       %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
-    .col-xs-12.col-sm-12.padding10.ptop0.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
+    .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
     .col-xs-12.col-sm-12.padding10
       %h4.no-mar-pad= showcase.title
@@ -50,34 +50,3 @@
         .media-body
           = f.text_area :description, rows: 3, class: "form-control comment-description", id: "comment-description-#{showcase.id}"
           = f.submit "Comment", class: "btn btn-primary btn-social mtop10 btn-shadow"
-
-= content_for :extra_js do
-  :javascript
-    $(document).ready(function(){
-      function hoverCard(){
-        $(".hovercard").tooltipster({
-          interactive: true,
-          content: 'Loading...',
-          contentCloning: false,
-          contentAsHTML: true,
-          maxWidth: 286,
-          animation: 'fade',
-          functionBefore: function(origin, continueTooltip) {
-              // we'll make this function asynchronous and allow the tooltip to go ahead and show the loading notification while fetching our data.
-              continueTooltip();
-              if (origin.data('ajax') !== 'cached') {
-              $.ajax({
-                  type: 'GET',
-                  url: "/user_card/"+($(this).data('id')),
-                  success: function(data) {
-                      // update our tooltip content with our returned data and cache it
-                      origin.tooltipster('content', data.user).data('ajax', 'cached');
-                  }
-              });
-            }
-          }
-        });
-      }
-      hoverCard();
-      $(document).on("mouseover", ".hovercard", hoverCard);
-    });

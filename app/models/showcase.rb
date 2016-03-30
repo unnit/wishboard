@@ -3,16 +3,30 @@ class Showcase < ActiveRecord::Base
   belongs_to :product
   has_many :wows
   has_many :comments
+  has_many :taggings
+  has_many :tags, through: :taggings
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
 
   SHOWCASE_TYPE = [["showpiece", 0], ["wish", 1]]
   SHOWCASE_VALUES = [0, 1]
 
-  validates :title, :description, :year, :image, :title, presence: true
+  validates :title, :description, :image, presence: true
+  validates :year, presence: true, if: :showpiece?
+  validates :year, numericality: { only_integer: true, greater_than_or_equal_to: 1700, less_than_or_equal_to: DateTime.current.year, message: "should be between 1700 and #{DateTime.current.year}"}, if: :showpiece?
 
   scope :wishes, -> {where showcase_type: Showcase::SHOWCASE_VALUES[1]}
   scope :showpieces, -> {where showcase_type: Showcase::SHOWCASE_VALUES[0]}
+
+  def all_tags=(names)
+    self.tags = names.split(",").map do |name|
+      Tag.where(name: name.strip).first_or_create!
+    end
+  end
+
+  def all_tags
+    self.tags.map(&:name).join(", ")
+  end
 
   def wow(user)
     wows.create(user_id: user.id)

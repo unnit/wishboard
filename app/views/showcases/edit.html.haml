@@ -9,21 +9,25 @@
           = cl_image_upload_tag(:image)
         .progress.progress-striped{style: "display: none;height: 10px;width:107px;"}
           .progress-bar{style: "width: 0%;"}
-      .col-xs-12.col-sm-12.text-center
+      .col-xs-12.col-sm-12
+        %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
+        %br
+        = f.text_field :all_tags, placeholder: "Tags separated with enter, comma, or tab", class: "tags-input form-control tm-input-inverse tm-input-typeahead"
+      .col-xs-12.col-sm-12.text-center.ptop10
         = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 100
       .col-xs-12.col-sm-12.text-center.ptop10
         = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 1000
       .col-xs-4.col-sm-3.ptop10
-        = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 4
+        = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 4, style: "display: #{@showcase.wishlist? ? 'none' : 'block'}"
       .col-xs-8.col-sm-6.ptop10
         = f.fields_for :location do |lf|
-          = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 100
+          = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input", required: true, maxlength: 100, style: "display: #{@showcase.wishlist? ? 'none' : 'block'}"
       .col-xs-12.col-sm-3.no-mar-pad.mtop10{style: "color: #9A9A9A;"}
         %span.no-mar-pad.pull-left
-          = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true
+          = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true, class: "ps-showpiece"
           %label.mbottom0 Showpiece
         %span.no-mar-pad.pull-left
-          = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[1]}", required: true
+          = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[1]}", required: true, class: "ps-wish"
           %label.mbottom0 Wish
-      .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper{style: "padding-top: 34px;"}
-        = f.submit "Showcase", class: "btn btn-primary btn-shadow btn-social weight-bold showcase-submit", style: "display: none;"
+      .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
+        = f.submit "#{@showcase.wishlist? ? 'Wishlist' : 'Showcase'}", class: "btn btn-primary btn-shadow btn-social weight-bold showcase-submit"

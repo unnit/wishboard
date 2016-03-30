@@ -109,6 +109,9 @@ Rails.application.routes.draw do
       post :edit_comment
       delete :delete_comment
     end
+    collection do
+      get :gettags
+    end
   end
 
   post "product/:id/checkout", to: "transactions#new", as: :product_checkout

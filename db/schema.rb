@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160322123035) do
+ActiveRecord::Schema.define(version: 20160330092630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -270,13 +270,16 @@ ActiveRecord::Schema.define(version: 20160322123035) do
 
   add_index "showcases", ["user_id"], name: "index_showcases_on_user_id", using: :btree
 
-  create_table "showcases_tags", id: false, force: :cascade do |t|
-    t.integer "showcase_id"
-    t.integer "tag_id"
+  create_table "taggings", force: :cascade do |t|
+    t.integer  "showcase_id"
+    t.integer  "tag_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
-  add_index "showcases_tags", ["showcase_id"], name: "index_showcases_tags_on_showcase_id", using: :btree
-  add_index "showcases_tags", ["tag_id"], name: "index_showcases_tags_on_tag_id", using: :btree
+  add_index "taggings", ["showcase_id", "tag_id"], name: "index_taggings_on_showcase_id_and_tag_id", unique: true, using: :btree
+  add_index "taggings", ["showcase_id"], name: "index_taggings_on_showcase_id", using: :btree
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"

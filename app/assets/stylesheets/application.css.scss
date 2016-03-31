@@ -21,7 +21,6 @@
  *= require hover
  *= require tooltipster
  *= require tagmanager
- *= require easy-autocomplete
  */
 
 //@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
@@ -427,6 +426,9 @@ small{
   font-size: 13px;
   letter-spacing: 0px;
 }
+.font17{
+  font-size: 17px;
+}
 .font20{
   font-size: 20px;
 }
@@ -447,9 +449,6 @@ small{
 }
 .neg-letter-spacing{
   letter-spacing: -1px;
-}
-.no-border{
-  border: none !important;
 }
 .coco-input-field{
   border: 0px;
@@ -498,6 +497,11 @@ small{
 .border-left-band-follow{
   border-left: 2px solid !important;
   border-left-color: #bce784 !important;
+}
+.border-solid{border: 1px solid #000;}
+.border-light{border: 1px solid #E2E2E2;}
+.no-border{
+  border: none !important;
 }
 .bg-shad{
     box-shadow: 0 2px 5px rgba(0,0,0,0.26)
@@ -551,6 +555,7 @@ small{
 .lt-grey-fg{
   color: #BDBDBD !important;
 }
+.bg-white{background-color: white !important;}
 .inline-block{
   display: inline-block;
 }
@@ -560,4 +565,7 @@ small{
 .active-link{
   border-bottom: 4px solid #81A9CC;
   padding-bottom: 6px;
+}
+.helvetica-font{
+  font-family: helvetica;
 }

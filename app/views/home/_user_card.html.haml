@@ -1,9 +1,9 @@
 - users.each do |user|
   .col-xs-12.col-sm-4{class: "user-wrapper-#{user.id}", style: "min-width: #{min_width ||= '292px'};padding: #{card_padding ||= '0px 5px 10px 5px'}"}
     .col-xs-12.col-sm-12.bg-shad.bg-white.no-mar-pad
-      .col-xs-12.col-sm-12{style: "height:88px;background-color:#ffe066;"}
+      .col-xs-12.col-sm-12.header-with-grad{style: "height:88px;background-color:#ffe066;"}
       .col-xs-12.col-sm-12.padding5.ptop0
-        %span.mtop5.mbottom5.pull-left.font12.weight500.mleft95{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "top"}
+        %span.mtop5.mbottom5.pull-left.weight500.mleft95{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "top", style: "font-size: #{name_size ||= '12px'}"}
           = (truncate user.name, length: 20)
         - unless current_user == user
           .col-xs-12.col-sm-12.no-mar-pad{class: "follow-set-#{user.id}"}
@@ -14,20 +14,20 @@
                   .ball-clip-rotate{style: "height:22px;"}
                     %div ...
         - else
-          .col-xs-12.col-sm-12{style: "height: 27px;"}
+          .col-xs-12.col-sm-12{style: "height: 27px;display: #{xtra_col ||= 'block'}"}
         .col-xs-12.col-sm-12.no-mar-pad.text-center
           .col-xs-3.col-sm-3.no-mar-pad
-            %span.extra-small-font SHOWPIECES
+            %span.font13.grey-fg Showpieces
             %h4= user.showcases.showpieces.count
           .col-xs-3.col-sm-3.no-mar-pad
-            %span.extra-small-font WISHES
+            %span.font13.grey-fg Wishes
             %h4= user.showcases.wishes.count
           .col-xs-3.col-sm-3.no-mar-pad
-            %span.extra-small-font FOLLOWING
+            %span.font13.grey-fg Following
             %h4.following-count= user.following.count
           .col-xs-3.col-sm-3.no-mar-pad
-            %span.extra-small-font FOLLOWERS
+            %span.font13.grey-fg Followers
             %h4.followers-count= user.followers.count
-      .col-xs-12.col-sm-12{style: "margin-top: -168px;"}
+      .col-xs-12.col-sm-12{style: "margin-top: #{neg_mtop ||= '-168px;'}"}
         = link_to myprofile_path(user.profile.slug) do
           = cl_image_tag user.avatar, class: "img-circle pull-left", style: "z-index: 1;position: relative;", width: 80, height: 80, crop: :fill

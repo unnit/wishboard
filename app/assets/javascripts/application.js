@@ -26,8 +26,6 @@
 //= require jquery.tooltipster
 //= require tagmanager
 //= require typeahead.bundle
-//= require typeahead.jquery
-//= require bloodhound
 
 $(document).ready(function(){
   //Bulk Bookings
@@ -110,33 +108,57 @@ $(document).ready(function(){
     var prefilled_tags = [];
   }
   var tags = new Bloodhound({
-      datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-      queryTokenizer: Bloodhound.tokenizers.whitespace,
-      limit: 10,
-      prefetch: {
-        url: '/showcases/gettags',
-        filter: function (list) {
-          return $.map(list, function (tag) {
-            return { name: tag };
-          });
-        }
+    datumTokenizer: function(datum) {
+      return Bloodhound.tokenizers.whitespace(datum.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+      wildcard: '%QUERY',
+      url: '/showcases/gettags?q=%QUERY',
+      transform: function(response) {
+        // Map the remote source JSON array to a JavaScript object array
+        return $.map(response, function(tags) {
+          return {
+            value: tags
+          };
+        });
       }
-    });
+    }
+  });
+  var tagApi = $(".tm-input").tagsManager({
+    hiddenTagListName: "showcase[all_tags]",
+    maxTags: 15,
+    prefilled: prefilled_tags
+  });
+  $(".tm-input").typeahead(null, {
+    display: 'value',
+    source: tags
+  }).on('typeahead:selected', function (e, d) {
+      tagApi.tagsManager("pushTag", d.value);
+  });
 
-    tags.initialize();
+  //var tags = new Bloodhound({
+  //    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+  //    queryTokenizer: Bloodhound.tokenizers.whitespace,
+  //    limit: 10,
+  //    prefetch: {
+  //      url: '/showcases/gettags',
+  //      filter: function (list) {
+  //        return $.map(list, function (tag) {
+  //          return { name: tag };
+  //        });
+  //      }
+  //    }
+  //  });
+  //  tags.initialize();
+  //$(".tm-input.tm-input-typeahead").typeahead(null, {
+  //  name: 'tags',
+  //  displayKey: 'name',
+  //  source: tags.ttAdapter()
+  //}).on('typeahead:selected', function (e, d) {
+  //    tagApi.tagsManager("pushTag", d.name);
+  //});
 
-    var tagApi = $(".tags-input.tm-input-typeahead").tagsManager({
-      hiddenTagListName: "showcase[all_tags]",
-      maxTags: 15,
-      prefilled: prefilled_tags
-    });
-    $(".tags-input.tm-input-typeahead").typeahead(null, {
-      name: 'tags',
-      displayKey: 'name',
-      source: tags.ttAdapter()
-    }).on('typeahead:selected', function (e, d) {
-        tagApi.tagsManager("pushTag", d.name);
-    });
   //var options = {
   //  url: "/showcases/gettags",
   //  getValue: "name",
@@ -196,16 +218,16 @@ $(document).ready(function(){
   });
   //Select showpiece/wish in post showcase
   $(".ps-showpiece").click(function(){
-    $(".ps-wish").css("background-color", "white");
-    $(this).css("background-color", "#E7766A");
+    $(".ps-wish").removeClass("header-with-grad white-fg");
+    $(this).addClass("header-with-grad white-fg");
     $("#showcase_showcase_type_0").prop("checked", "checked");
     $("#showcase_year, #showcase_location_attributes_name").show();
     $("#showcase_year, #showcase_location_attributes_name").attr("required", true);
     $(".showcase-submit").val("Showcase");
   });
   $(".ps-wish").click(function(){
-    $(".ps-showpiece").css("background-color", "white");
-    $(this).css("background-color", "#E7766A");
+    $(".ps-showpiece").removeClass("header-with-grad white-fg");
+    $(this).addClass("header-with-grad white-fg");
     $("#showcase_showcase_type_1").prop("checked", "checked");
     $("#showcase_year, #showcase_location_attributes_name").hide();
     $("#showcase_year, #showcase_location_attributes_name").removeAttr("required");

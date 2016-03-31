@@ -86,7 +86,8 @@ class ShowcasesController < ApplicationController
   end
 
   def gettags
-    @tags = Tag.all
+    q = params[:q].downcase
+    @tags = Tag.where("lower(name) like ?", "%#{q}%")
     render json: @tags.map{|tag| tag.name}
   end
 

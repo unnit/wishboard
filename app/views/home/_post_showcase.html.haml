@@ -7,7 +7,7 @@
     Submit
 .col-xs-12.col-sm-12.no-mar-pad{style: "height: 12px;"}
   .arrow
-.col-xs-12.col-sm-12.grey-bg.no-mar-pad.mbottom10.bg-shad{style: "overflow-x: hidden;min-height:210px;"}
+.col-xs-12.col-sm-12.no-mar-pad.mbottom10.bg-shad.mbottom40{style: "overflow-x: hidden;min-height:210px;"}
   .p-s-arrow.arrow-right.pon
   .p-s-arrow.arrow-left.pon{style: "display: none;"}
   = form_for showcase, url: showcases_path do |f|
@@ -39,7 +39,7 @@
         .col-xs-8.col-sm-8
           %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
           %br
-          = f.text_field :all_tags, placeholder: "Tags separated with enter, comma, or tab", class: "tags-input form-control tm-input-inverse tm-input-typeahead"
+          = f.text_field :all_tags, placeholder: "", class: "tm-input form-control tm-input-inverse tm-input-typeahead"
       .set-3-ps.ptop10{style: "width: 555px;min-height:210px;position:absolute;left:1110px;padding-left: 30px;padding-right: 30px;"}
         .col-xs-12.col-sm-12
           = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 100

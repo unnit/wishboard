@@ -17,6 +17,8 @@
       .navbar-collapse.collapse.nav-border
         %ul.nav.navbar-nav.navbar-right{style: "display: #{@pro_view_visible || 'block'}"}
           - if current_user
+            %li
+              .glyphicon.glyphicon-bell.white-fg.font20.pon{style: "margin-top: 15px;"}
             %li.hidden-xs.ptop5{style: "display: #{@list_item_display || 'block'}"}= link_to "List Your Item", new_product_path, class: "pa"
             %li.hidden-xs
               %ul.pro-view.pleft-10

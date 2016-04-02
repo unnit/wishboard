@@ -1,15 +1,15 @@
 - showcases.each do |showcase|
-  .col-xs-12.col-sm-12.no-mar-pad.mbottom40.bg-white.bg-shad
+  .col-xs-12.col-sm-12.no-mar-pad.mbottom30.bg-white.bg-shad{class: "showcase-ps-#{showcase.id}"}
     .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey
       - if showcase.owner?(current_user)
         %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop10.pon{style: "position: absolute;right:0px;"}
-        .col-xs-4.col-sm-2.option-showcase.padding0.light-border.bg-shad.bg-white.text-center.bg-white
-          = link_to edit_showcase_path(showcase), class: "border-bt-side full-width grey-fg pull-left small padding5" do
-            Edit&nbsp;
-            .glyphicon.glyphicon-edit.grey-fg
+        .col-xs-4.col-sm-2.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
+          = link_to edit_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5" do
+            /.glyphicon.glyphicon-edit
+            Edit...
           = link_to showcase_path(showcase), method: :delete, class: "full-width grey-fg pull-left small padding5" do
-            Delete&nbsp;
-            .glyphicon.glyphicon-minus-sign.grey-fg
+            /.glyphicon.glyphicon-minus-sign
+            Delete...
       = link_to myprofile_path(showcase.user.profile.slug), class: "pull-left full-width text-center", style: "margin-top: -20px;" do
         = cl_image_tag showcase.user.avatar, class: "img-circle hovercard", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face
       %span.full-width.pull-left.text-center.font-medium.padding10.ptop0

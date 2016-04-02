@@ -5,8 +5,8 @@
   .media-body.font-medium
     - if comment.owner?(current_user)
       %i.glyphicon.glyphicon-edit.grey-fg.action-showcase.grey-fg.pull-right.mtop5.pon
-      .col-xs-4.col-sm-2.option-showcase.padding0.light-border.bg-shad.bg-white.pull-right.text-center
-        %span.border-bt-side.full-width.grey-fg.pull-left.small.padding5.edit-comment-showcase.pon
+      .col-xs-4.col-sm-2.option-showcase.bg-shad.bg-white.pull-right.text-center
+        %span.full-width.grey-fg.pull-left.small.padding5.edit-comment-showcase.pon
           Edit...
         = link_to delete_comment_showcase_path(comment), method: :delete, remote: true, class: "full-width grey-fg pull-left small padding5" do
           Delete...

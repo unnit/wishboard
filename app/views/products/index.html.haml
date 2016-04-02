@@ -49,8 +49,8 @@
                       = link_to "Run Filter", "javascript:;", class: "btn btn-primary", id: "filter", style: "background-color: #e84242;border:none; border-radius: 0; margin-top: 10px;"
 %div
   .row.clearfix
-    .col-md-8.mob-map-view-con.pad-0
-      .col-md-12.search-bread-crumbs
+    .col-xs-12.col-md-8.mob-map-view-con.pad-0
+      .col-xs-12.col-md-12.search-bread-crumbs
         .ol.breadcrumb.mbottom0.note-font-size
           = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
       .tabbale-panel-mp
@@ -67,15 +67,15 @@
           .tab-content.tabbable-panel-mp-height.grey-bg
             #tab-1.tab-pane.active
               - if @products.blank?
-                .col-sm-12.no-mar-pad
+                .col-xs-12.col-sm-12.no-mar-pad
                   %h3.text-center Ayyo, Items are not available for the selected time frame.
               - else
                 - @products.each_slice(3) do |products|
-                  .col-sm-12.no-mar-pad
+                  .col-xs-12.col-sm-12.no-mar-pad
                     - products.each do |product|
-                      .col-sm-4.mob-map-view-con
+                      .col-xs-12.col-sm-4.mob-map-view-con
                         = render partial: "product", locals: {product: product}
-                .col-md-12
+                .col-xs-12.col-md-12
                   %center= paginate @products
 
     .col-md-4.hidden-xs.hide-tablet{style: "padding-left:0;"}

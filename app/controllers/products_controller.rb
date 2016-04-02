@@ -207,6 +207,7 @@ class ProductsController < ApplicationController
 
   def all
     @products = Product.where("available = true and admin_approved = true")
+    @from_all_page = true
     render :category
   end
 

@@ -1,12 +1,13 @@
 = content_for :title do
-  -title = "#{@products.first.category_path} for rent in Bangalore"
+  - unless @from_all_page
+    -title = "#{@products.first.category_path} for rent in Bangalore"
 .container-fluid.mar-des-page.grey-bg
   .col-xs-12.col-md-12
     .ol.breadcrumb.mbottom0.note-font-size
       = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
   .col-xs-12.col-md-12.no-mar-pad.col-sm-12.ptop10.mbottom40
     - @products.each_slice(4) do |slide|
-      .col-md-12.col-sm-12
+      .col-xs-12.col-sm-12
         - slide.each do |product|
-          .col-md-3.col-sm-4
+          .col-xs-12.col-sm-3
             = render partial: "product", locals: {product: product}

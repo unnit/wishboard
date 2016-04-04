@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, only: [:user_signup_confirmation]
   skip_before_filter :check_profile, only: [:get_state_and_city]
   before_filter :back_to_home, only: [:login, :sign_up]
-  before_filter :authenticate_user!, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers]
+  before_filter :authenticate_user!, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers, :notifications]
   before_filter :set_profile, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
   before_filter :set_social_layout, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers]
 
@@ -15,14 +15,63 @@ class HomeController < ApplicationController
     @showcase.build_location
     @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
     @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-    @showcases = Showcase.order("RANDOM()")
-    #@showcases = Showcase.all.order(created_at: :desc)
+    #@showcases = Showcase.order("RANDOM()").page(params[:showcases]).per(2)
+    @showcases = Showcase.all.limit(2).order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
     @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
     @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
     respond_to do |format|
       format.html
       format.js
+    end
+  end
+
+  def notifications
+    @unchecked_wows = current_user.unchecked_wows
+    @unchecked_comments = current_user.unchecked_comments
+    @unchecked_followers = current_user.unchecked_followers
+    @unchecked_showcase_notifications = current_user.unchecked_showcase_notifications
+    respond_to :js
+  end
+
+  def update_wow_checked
+    wow = Wow.find_by_id params[:id]
+    unless wow.blank?
+      wow.update_column :checked, true if wow.showcase.user == current_user
+      redirect_to showcase_path(wow.showcase)
+    else
+      redirect_to root_path
+    end
+  end
+
+  def update_comment_checked
+    comment = Comment.find_by_id params[:id]
+    unless comment.blank?
+      comment.update_column :checked, true if comment.showcase.user == current_user
+      redirect_to showcase_path(comment.showcase, q: "#{comment.id}")
+    else
+      redirect_to root_path
+    end
+  end
+
+  def update_follower_checked
+    user = User.find_by_id params[:id]
+    unless user.blank?
+      relationship = current_user.passive_relationships.find_by(follower_id: user.id)
+      relationship.update_column :checked, true unless relationship.blank?
+      redirect_to myprofile_path(user.profile.slug)
+    else
+      redirect_to root_path
+    end
+  end
+
+  def update_showcase_checked
+    showcase_notification = ShowcaseNotification.find_by_id params[:id]
+    unless showcase_notification.blank?
+      showcase_notification.update_column :checked, true if showcase_notification.user == current_user
+      redirect_to showcase_path(showcase_notification.showcase)
+    else
+      redirect_to root_path
     end
   end
 

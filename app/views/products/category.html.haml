@@ -1,13 +1,17 @@
-= content_for :title do
-  - unless @from_all_page
-    -title = "#{@products.first.category_path} for rent in Bangalore"
-.container-fluid.mar-des-page.grey-bg
-  .col-xs-12.col-md-12
-    .ol.breadcrumb.mbottom0.note-font-size
-      = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
-  .col-xs-12.col-md-12.no-mar-pad.col-sm-12.ptop10.mbottom40
-    - @products.each_slice(4) do |slide|
-      .col-xs-12.col-sm-12
-        - slide.each do |product|
-          .col-xs-12.col-sm-3
-            = render partial: "product", locals: {product: product}
+- if @products.blank?
+  .col-xs-12.col-sm-12.no-mar-pad
+    %h3.text-center Ayyo, Items are not available for the selected time frame.
+- else
+  = content_for :title do
+    - unless @from_all_page
+      -title = "#{@products.first.category_path} for rent in Bangalore"
+  .container-fluid.mar-des-page.grey-bg
+    .col-xs-12.col-md-12
+      .ol.breadcrumb.mbottom0.note-font-size
+        = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
+    .col-xs-12.col-md-12.no-mar-pad.col-sm-12.ptop10.mbottom40
+      - @products.each_slice(4) do |slide|
+        .col-xs-12.col-sm-12
+          - slide.each do |product|
+            .col-xs-12.col-sm-3
+              = render partial: "product", locals: {product: product}

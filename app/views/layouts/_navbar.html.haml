@@ -17,8 +17,16 @@
       .navbar-collapse.collapse.nav-border
         %ul.nav.navbar-nav.navbar-right{style: "display: #{@pro_view_visible || 'block'}"}
           - if current_user
-            %li
+            %li.notif-icon.hidden-xs{style: "display: #{@notifications || 'none'}"}
               .glyphicon.glyphicon-bell.white-fg.font20.pon{style: "margin-top: 15px;"}
+              .badge.notif-badge.pon= current_user.unchecked_wows.count + current_user.unchecked_comments.count + current_user.unchecked_followers.count + current_user.unchecked_showcase_notifications.count
+              .sq-rot.notif-toggle
+              .notif-arrow.notif-toggle
+              .notif-wrap.bx-shad.notif-toggle.helvetica-font
+                .col-xs-12.col-sm-12.text-center.notif-loader.padding10
+                  %i.fa.fa-circle-o-notch.fa-spin.font21
+                  Please wait...
+                .col-xs-12.col-sm-12.notif-content.no-mar-pad
             %li.hidden-xs.ptop5{style: "display: #{@list_item_display || 'block'}"}= link_to "List Your Item", new_product_path, class: "pa"
             %li.hidden-xs
               %ul.pro-view.pleft-10

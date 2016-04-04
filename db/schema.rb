@@ -11,10 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330092630) do
+ActiveRecord::Schema.define(version: 20160403181328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.integer  "showcase_id"
+    t.integer  "comment_id"
+    t.integer  "follower_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "activities", ["comment_id"], name: "index_activities_on_comment_id", using: :btree
+  add_index "activities", ["follower_id"], name: "index_activities_on_follower_id", using: :btree
+  add_index "activities", ["name"], name: "index_activities_on_name", using: :btree
+  add_index "activities", ["showcase_id"], name: "index_activities_on_showcase_id", using: :btree
+  add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
+
+  create_table "activity_impressions", force: :cascade do |t|
+    t.integer  "activity_id"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "activity_impressions", ["activity_id", "user_id"], name: "index_activity_impressions_on_activity_id_and_user_id", unique: true, using: :btree
+  add_index "activity_impressions", ["activity_id"], name: "index_activity_impressions_on_activity_id", using: :btree
+  add_index "activity_impressions", ["user_id"], name: "index_activity_impressions_on_user_id", using: :btree
 
   create_table "addresses", force: :cascade do |t|
     t.integer  "user_id"
@@ -58,8 +85,9 @@ ActiveRecord::Schema.define(version: 20160330092630) do
     t.string   "description"
     t.integer  "user_id"
     t.integer  "showcase_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "checked",     default: false
   end
 
   create_table "credentials", force: :cascade do |t|
@@ -237,8 +265,9 @@ ActiveRecord::Schema.define(version: 20160330092630) do
   create_table "relationships", force: :cascade do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "checked",     default: false
   end
 
   add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
@@ -255,6 +284,14 @@ ActiveRecord::Schema.define(version: 20160330092630) do
 
   add_index "reviews", ["product_id"], name: "index_reviews_on_product_id", using: :btree
   add_index "reviews", ["user_id"], name: "index_reviews_on_user_id", using: :btree
+
+  create_table "showcase_notifications", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "showcase_id"
+    t.boolean  "checked",     default: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "showcases", force: :cascade do |t|
     t.string   "title"
@@ -351,8 +388,9 @@ ActiveRecord::Schema.define(version: 20160330092630) do
   create_table "wows", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "showcase_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "checked",     default: false
   end
 
   add_index "wows", ["showcase_id"], name: "index_wows_on_showcase_id", using: :btree

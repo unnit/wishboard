@@ -215,6 +215,9 @@ body{
 .pleft-10{
   padding-left: 10px;
 }
+.pright0{
+  padding-right: 0px;
+}
 .pright-10{
   padding-right: 10px;
 }
@@ -507,6 +510,9 @@ small{
     /*box-shadow: 0 2px 5px rgba(0,0,0,0.26)*/
     border: 1px solid #E6E6E6;
 }
+.bx-shad{
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.13);
+}
 .bg-light-grey{
   background-color: #F1F1F1;
 }
@@ -517,7 +523,8 @@ small{
   color: grey !important
 }
 .btn-social{
-  background-color: #f25f5c;
+  /*background-color: #f25f5c;*/
+  background-color: #00A896;
 }
 .btn-grey{
   background-color: rgb(191, 191, 191);

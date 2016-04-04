@@ -1,4 +1,4 @@
-.media.padding10.pbottom0.mtop0{class: "media-comment-#{comment.id}"}
+.media.padding10.pbottom0.mtop0.comment-wrap{id: "media-comment-#{comment.id}"}
   .media-left
     = link_to myprofile_path(comment.user.profile.slug) do
       = cl_image_tag comment.user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face

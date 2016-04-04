@@ -1,3 +1,19 @@
 .container.mtop50.ptop20.pattern-bg.helvetica-font
   .col-xs-12.col-sm-8.col-sm-offset-2
-    = render partial: "home/showcases", locals: {showcases: Array(@showcase)}
+    = render partial: "home/showcases", locals: {showcases: Array(@showcase), feed: "no"}
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      if(#{params[:q]}){
+        $('html, body').animate({
+            scrollTop: $("#media-comment-#{params[:q]}").offset().top - 55
+            }, 500);
+        var x = 0;
+        var intervalID = setInterval(function () {
+          $("#media-comment-#{params[:q]}").toggleClass("btn-social white-fg");
+          if (++x === 6) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000);
+      }
+    })

@@ -1,0 +1,2 @@
+$(".notif-loader").hide();
+$(".notif-content").append("#{j render partial: "home/notifications", locals: {unchecked_wows: @unchecked_wows, unchecked_comments: @unchecked_comments, unchecked_followers: @unchecked_followers, unchecked_showcase_notifications: @unchecked_showcase_notifications}}")

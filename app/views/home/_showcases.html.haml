@@ -1,3 +1,4 @@
+- feed ||= "yes"
 - showcases.each do |showcase|
   .col-xs-12.col-sm-12.no-mar-pad.mbottom30.bg-white.bg-shad{class: "showcase-ps-#{showcase.id}"}
     .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey
@@ -42,8 +43,12 @@
       .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
         = showcase.comments.count
     .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey{class: "user-comments-#{showcase.id}"}
-      - showcase.comments.order(created_at: :desc).limit(4).each do |comment|
-        = render partial: "showcases/comment", locals: {comment: comment}
+      - if feed == "yes"
+        - showcase.comments.order(created_at: :desc).limit(4).each do |comment|
+          = render partial: "showcases/comment", locals: {comment: comment}
+      - else
+        - showcase.comments.order(created_at: :desc).each do |comment|
+          = render partial: "showcases/comment", locals: {comment: comment}
     .media.new-comment.padding10.pbottom20.bg-light-grey
       = form_for :comment, url: comment_showcase_path(showcase), remote: true do |f|
         .media-left

@@ -2833,6 +2833,16 @@ th.headerSortDown {
   left: 87px;
   border-right: 8px solid transparent;
 }
+.arrow-z{
+  content: "";
+  position: absolute;
+  border-bottom: 9px solid #FFFFFF;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  bottom: -1px;
+  z-index: 1;
+  left: 88px;
+}
 .p-s-arrow{
   position: absolute;
   width: 35px;
@@ -2855,14 +2865,68 @@ th.headerSortDown {
   -moz-transition: all 0.3s;
   transition: all 0.3s;
 }
+.notif-badge{
+  margin-left: -13px;
+  z-index: 1;
+  position: relative;
+  float: right;
+  margin-top: 9px;
+  background-color: #E93540;
+}
+.notif-wrap{
+  position: absolute;
+  z-index: 1000;
+  width: 430px;
+  background-color: white;
+  right: -15px;
+  margin-top: 11px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.notif-toggle{
+  display: none;
+}
+.sq-rot{
+  background: white;
+  border: solid 1px #edeeee;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.13);
+  content: ' ';
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  right: 11px;
+  margin-top: 4px;
+  z-index: 999;
+}
+.notif-arrow{
+  border-color: transparent transparent white transparent;
+  border-style: solid;
+  border-width: 0px 10px 8px 8px;
+  content: ' ';
+  height: 0;
+  position: absolute;
+  width: 0;
+  z-index: 1001;
+  right: 8px;
+  margin-top: 3px;
+}
+.comment-wrap{
+  -webkit-transition: all 0.6s ease-in-out;
+  -moz-transition: all 0.6s ease-in-out;
+  -ms-transition:  all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
+}
 /******************Other CSS for header and future use *******/
 .header-with-grad{
-  background-color: #50514F !important;
+  background-color: #00A896 !important;
   box-shadow: 0 0px 1px rgba(0, 0, 0, 0.26);
+  /*background-color: #50514F !important;
   background: -webkit-linear-gradient(to right, #21152C, #391D2E , #5B2631);
   background: -o-linear-gradient(to right, #21152C, #391D2E , #5B2631);
   background: -moz-linear-gradient(to right, #21152C, #391D2E , #5B2631);
-  background: linear-gradient(to right, #21152C, #391D2E , #5B2631);
+  background: linear-gradient(to right, #21152C, #391D2E , #5B2631);*/
 }
 
 /********************** For Mobile Specific *************/

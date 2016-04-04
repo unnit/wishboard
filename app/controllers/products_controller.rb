@@ -200,9 +200,11 @@ class ProductsController < ApplicationController
     end
     conditions.push category.id
     @products = Product.where(conditions)
-    add_breadcrumb "Home", root_path
-    add_breadcrumb "#{@products.first.category.parent_name.downcase.titleize}", category_path("#{@products.first.category.parent.slug}")
-    add_breadcrumb "#{@products.first.category_name.downcase.titleize}", category_path("#{@products.first.category.slug}") unless parent_id.blank?
+    unless @products.blank?
+      add_breadcrumb "Home", root_path
+      add_breadcrumb "#{@products.first.category.parent_name.downcase.titleize}", category_path("#{@products.first.category.parent.slug}")
+      add_breadcrumb "#{@products.first.category_name.downcase.titleize}", category_path("#{@products.first.category.slug}") unless parent_id.blank?
+    end
   end
 
   def all

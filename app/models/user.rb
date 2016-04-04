@@ -18,7 +18,9 @@ class User < ActiveRecord::Base
   has_many :showcases
   has_many :wows
   has_many :comments
-  has_many :appreciations, through: :showcases, source: :wows
+  has_many :appreciations, -> (id) {where( "wows.user_id != ?", id)}, through: :showcases, source: :wows
+  has_many :received_comments, -> (id) {where( "comments.user_id != ?", id )}, through: :showcases, source: :comments
+  has_many :showcase_notifications
 
   has_one :profile, dependent: :destroy
 
@@ -109,7 +111,7 @@ class User < ActiveRecord::Base
   def name
     fullname = "#{profile.first_name} #{profile.last_name}" if profile
     fullname = email.split("@").first if fullname.blank?
-    fullname
+    fullname.titleize
   end
 
   def phone
@@ -129,6 +131,22 @@ class User < ActiveRecord::Base
   def review_comment(product)
     review = reviews.find_by_product_id product.id
     return review ? review.comment : ""
+  end
+
+  def unchecked_wows
+    appreciations.where("wows.checked = ?", false)
+  end
+
+  def unchecked_comments
+    received_comments.where("comments.checked = ?", false)
+  end
+
+  def unchecked_followers
+    followers.where("relationships.checked = ?", false)
+  end
+
+  def unchecked_showcase_notifications
+    showcase_notifications.where(checked: false)
   end
 
   #actions

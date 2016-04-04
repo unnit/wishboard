@@ -5,10 +5,11 @@ class Showcase < ActiveRecord::Base
   has_many :comments
   has_many :taggings
   has_many :tags, through: :taggings
+  has_many :showcase_notifications
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
 
-  SHOWCASE_TYPE = [["showpiece", 0], ["wish", 1]]
+  SHOWCASE_TYPE = [["Showpiece", 0], ["Wish", 1]]
   SHOWCASE_VALUES = [0, 1]
 
   validates :title, :description, :image, presence: true
@@ -56,6 +57,11 @@ class Showcase < ActiveRecord::Base
     showcase_type == Showcase::SHOWCASE_VALUES[0]
   end
 
+  def showcase_type_name
+    return Showcase::SHOWCASE_TYPE[0][0] if showpiece?
+    return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
+  end
+
   def wows_many?
     wows.count > 1
   end
@@ -78,6 +84,15 @@ class Showcase < ActiveRecord::Base
 
   def owner?(user)
     self.user == user
+  end
+
+  after_create :create_showcase_notification
+
+  private
+  def create_showcase_notification
+    user.followers.each do |follower|
+      self.showcase_notifications.create(user_id: follower.id)
+    end
   end
 
 end

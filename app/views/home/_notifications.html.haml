@@ -1,0 +1,29 @@
+- unchecked_wows.each do |wow|
+  = link_to update_wow_checked_path(wow), class: "pull-left full-width padding10 border-bt-side" do
+    %span= cl_image_tag wow.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+    %span.weight600.grey-fg= truncate wow.user.name, length: 35
+    %span.font13.grey-fg
+      liked your
+      = wow.showcase.showcase_type_name
+- unchecked_comments.each do |comment|
+  = link_to update_comment_checked_path(comment), class: "pull-left full-width padding10 border-bt-side" do
+    %span.grey-fg= cl_image_tag comment.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+    %span.weight600.grey-fg= truncate comment.user.name, length: 35
+    %span.font13.grey-fg
+      commented on your
+      = comment.showcase.showcase_type_name
+- unchecked_followers.each do |follower|
+  = link_to update_follower_checked_path(follower), class: "pull-left full-width padding10 border-bt-side" do
+    %span= cl_image_tag follower.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+    %span.weight600.grey-fg= truncate follower.name, length: 35
+    %span.font13.grey-fg
+      started following you
+- unchecked_showcase_notifications.each do |showcase_notification|
+  = link_to update_showcase_checked_path(showcase_notification), class: "pull-left full-width padding10 border-bt-side" do
+    %span= cl_image_tag showcase_notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+    %span.weight600.grey-fg= truncate showcase_notification.showcase.user.name, length: 35
+    %span.font13.grey-fg
+      showcased a
+      = showcase_notification.showcase.showcase_type_name
+- if unchecked_wows.blank? && unchecked_comments.blank? && unchecked_followers.blank? && unchecked_showcase_notifications.blank?
+  .pull-left.full-width.padding10 No new notifications found.

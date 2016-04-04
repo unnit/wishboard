@@ -28,6 +28,12 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
+  $(document).on("click", ".notif-icon", function(){
+    $(".notif-toggle").toggle();
+    if($(".notif-content").is(":empty")){
+      $.get("/notifications")
+    }
+  })
   //Bulk Bookings
   $("#bulk-bookings").click(function(){
     $("#bulk-bookings-pop-up").modal("show");
@@ -181,6 +187,7 @@ $(document).ready(function(){
         $(".set-3-ps").addClass("active");
         $(".arrow-right").fadeOut();
         $(".arrow").animate({left: "438px"}, {queue: false});
+        $(".arrow-z").animate({left: "439px"}, {queue: false});
       //}
       //else{
         //$(".error-ps-photo").css("display", "inline-block");
@@ -194,6 +201,7 @@ $(document).ready(function(){
         $(".set-2-ps").addClass("active");
         $(".arrow-left").fadeIn();
         $(".arrow").animate({left: "261px"}, {queue: false});
+        $(".arrow-z").animate({left: "262px"}, {queue: false});
       }
       else{
         $(".error-ps-radio").css("display", "inline-block");
@@ -207,6 +215,7 @@ $(document).ready(function(){
       $(".set-1-ps").addClass("active");
       $(".arrow-left").fadeOut();
       $(".arrow").animate({left: "87px"}, {queue: false});
+      $(".arrow-z").animate({left: "88px"}, {queue: false});
     }
     if($(".set-3-ps").hasClass("active")){
       $(".ps-wrapper").animate({left: "-555px"}, {queue: false})
@@ -214,6 +223,7 @@ $(document).ready(function(){
       $(".set-2-ps").addClass("active");
       $(".arrow-right").fadeIn();
       $(".arrow").animate({left: "261px"}, {queue: false});
+      $(".arrow-z").animate({left: "262px"}, {queue: false});
     }
   });
   //Select showpiece/wish in post showcase

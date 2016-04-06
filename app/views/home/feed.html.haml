@@ -1,6 +1,10 @@
 .container.mtop50.padding0.helvetica-font
   .col-sm-3.hidden-xs.no-mar-pad.ptop15{style: "height: 1000px;"}
     = render partial: "user_card", locals: {users: Array(current_user), card_padding: "0px", neg_mtop: "-146px", name_size: "17px;margin-bottom:10px;", xtra_col: "none;"}
+    .col-xs-12.col-sm-4.bg-shad.padding10.mtop20{style: "min-width: 292px;"}
+      %h4 Tag Cloud
+      - tag_cloud Tag.counts, %w{font11 font13 font17 font20} do |tag, css_class|
+        = link_to tag.name.strip, tag_path(tag.name), class: css_class
   .col-xs-12.col-sm-6.ptop15
     = render partial: "post_showcase", locals: {showcase: @showcase}
     .col-sm-12.no-mar-pad.showcase-strip

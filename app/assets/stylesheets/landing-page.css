@@ -2922,6 +2922,9 @@ th.headerSortDown {
   -ms-transition:  all 0.6s ease-in-out;
   transition: all 0.6s ease-in-out;
 }
+.mCS_no_scrollbar {
+  height: auto !important;
+}
 /******************Other CSS for header and future use *******/
 .header-with-grad{
   background-color: #00A896 !important;

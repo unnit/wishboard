@@ -2882,9 +2882,6 @@ th.headerSortDown {
 .notif-inner-strip{
   overflow: hidden;
 }
-.notif-toggle{
-  display: none;
-}
 .notif-single:hover{
   background-color: #DCDCDC;
 }
@@ -2924,6 +2921,9 @@ th.headerSortDown {
 }
 .mCS_no_scrollbar {
   height: auto !important;
+}
+.opacity0{
+  opacity: 0;
 }
 /******************Other CSS for header and future use *******/
 .header-with-grad{

@@ -29,7 +29,7 @@
 
 $(document).ready(function(){
   $(document).on("click", ".notif-icon", function(){
-    $(".notif-toggle").toggle();
+    $(".notif-toggle").toggleClass("opacity0");
     if($(".notif-content").is(":empty")){
       $.get("/unchecked_notifications")
     }

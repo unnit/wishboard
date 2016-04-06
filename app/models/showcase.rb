@@ -29,6 +29,11 @@ class Showcase < ActiveRecord::Base
     self.tags.map(&:name).join(", ")
   end
 
+  def self.tagged_with(name)
+    tag = Tag.find_by_name(name)
+    tag.showcases unless tag.blank?
+  end
+
   def wow(user)
     wows.create(user_id: user.id)
   end

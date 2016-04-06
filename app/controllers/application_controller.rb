@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
     @list_item_display = "none"
     @adv_search = "none"
     @offers_visible = "none"
-    @notifications = "block"
+    @notification_div = "block"
     @nav_color = "header-with-grad no-border"
     @brand_name = "yes"
     @sal_color = "white-fg"

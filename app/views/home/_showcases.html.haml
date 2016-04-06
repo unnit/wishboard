@@ -23,6 +23,8 @@
         %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
     .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;min-height: 380px;max-height: 480px;overflow: hidden;"}
       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
+    .col-xs-12.col-sm-12.padding10.showcase-tags
+      = raw tag_links(showcase.all_tags)
     .col-xs-12.col-sm-12.padding10
       %h4.no-mar-pad= showcase.title
     .col-xs-12.col-sm-12.padding10

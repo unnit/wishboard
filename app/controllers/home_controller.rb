@@ -4,7 +4,7 @@ class HomeController < ApplicationController
   before_filter :back_to_home, only: [:login, :sign_up]
   before_filter :authenticate_user!, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers, :notifications]
   before_filter :set_profile, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
-  before_filter :set_social_layout, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers]
+  before_filter :set_social_layout, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers, :notifications]
 
   def index
     @adv_search = "none"
@@ -26,11 +26,34 @@ class HomeController < ApplicationController
     end
   end
 
+  def unchecked_notifications
+    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications).sort_by{|e| e.created_at}.reverse
+    respond_to :js
+  end
+
   def notifications
-    @unchecked_wows = current_user.unchecked_wows
-    @unchecked_comments = current_user.unchecked_comments
-    @unchecked_followers = current_user.unchecked_followers
-    @unchecked_showcase_notifications = current_user.unchecked_showcase_notifications
+    @notifications = (current_user.appreciations + current_user.received_comments + current_user.passive_relationships + current_user.showcase_notifications).sort_by{|e| e.created_at}.reverse
+    @notifications = Kaminari.paginate_array(@notifications).page(params[:notifications]).per(10)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def update_all_notifications
+    current_user.unchecked_wows.each do |wow|
+      wow.update_column :checked, true
+    end
+    current_user.unchecked_comments.each do |comment|
+      comment.update_column :checked, true
+    end
+    current_user.unchecked_followers.each do |relationship|
+      relationship = current_user.passive_relationships.find_by(follower_id: relationship.follower.id)
+      relationship.update_column :checked, true
+    end
+    current_user.unchecked_showcase_notifications.each do |showcase_notification|
+      showcase_notification.update_column :checked, true
+    end
     respond_to :js
   end
 

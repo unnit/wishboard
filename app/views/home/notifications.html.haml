@@ -1,0 +1,9 @@
+.container.mar-des-page.mbottom40
+  %h3 Your Notifications
+  .col-xs-12.col-sm-12.notif-full-content.no-mar-pad.mtop10.light-border
+    = render partial: "home/notifications_content", locals: {notifications: @notifications}
+  #infinite-scrolling-content.hidden
+    = paginate @notifications, param_name: "notifications"
+  .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
+    %i.fa.fa-circle-o-notch.fa-spin.font21
+    Please wait...

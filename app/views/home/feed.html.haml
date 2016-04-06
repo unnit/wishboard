@@ -13,7 +13,7 @@
       = hidden_field_tag :prev_showcase, @showcases.current_page - 1
   .col-sm-3.hidden-xs.no-mar-pad.ptop15{style: "height: 1000px;"}
     %h4.no-mar-pad.padding15.white-fg.header-with-grad.font17{style: "border-top-left-radius:4px;border-top-right-radius:4px;"} People to follow
-    .col-sm-12.padding10.pright0.follow-wrapper.bg-shad.bg-white{style: "height: 300px;overflow:hidden;"}
+    .col-sm-12.padding10.follow-wrapper.bg-shad.bg-white{style: "height: 300px;overflow:hidden;"}
       .col-sm-12.no-mar-pad.follow-strip
         = render partial: "follow", locals: {users: @users}
       .col-xs-12.col-sm-12.text-center.feed-loader.padding20{style: "display:none;"}
@@ -28,7 +28,7 @@
     $(document).ready(function(){
       $(".follow-wrapper").mCustomScrollbar({
     					setHeight:330,
-    					theme:"inset-2-dark",
+    					theme:"minimal-dark",//rounded-dots-dark
               callbacks: {
                 whileScrolling: function(){
                   if ($('#infinite-scrolling-follow').length) {

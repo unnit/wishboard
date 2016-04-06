@@ -1,0 +1,4 @@
+$(".notif-loader").hide();
+$(".notif-content").append("#{j render partial: "home/notifications", locals: {notifications: @unchecked}}")
+$(".notif-inner-strip").mCustomScrollbar({setHeight:380,theme:"minimal-dark",advanced:{ updateOnContentResize: true }});
+$(".notif-inner-strip").mCustomScrollbar("update");

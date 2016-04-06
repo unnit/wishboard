@@ -93,7 +93,7 @@ class Product < ActiveRecord::Base
 
   validates :title, :category_id, :listing_type, :description, :terms_and_conditions, :doc_requirement, presence: true
 
-  validates :title, format: { with: /\A[a-zA-Z0-9\-\(\)\|\,\/\ ]*\z/, message: "only allows alphabets, numbers, special chars which includes -,()/|" }
+  validates :title, format: { with: /\A[a-zA-Z0-9\-\(\)\|\,\/\.\ ]*\z/, message: "only allows alphabets, numbers, special chars which includes -,()/|" }
 
   validates :title, length: { maximum: 80 }
   validates :description, length: { maximum: 1000 }

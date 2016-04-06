@@ -31,7 +31,7 @@ $(document).ready(function(){
   $(document).on("click", ".notif-icon", function(){
     $(".notif-toggle").toggle();
     if($(".notif-content").is(":empty")){
-      $.get("/notifications")
+      $.get("/unchecked_notifications")
     }
   })
   //Bulk Bookings
@@ -660,8 +660,7 @@ $(document).ready(function(){
       setTimeout(function(){$(".home_start_date").attr("readonly", true);}, 1000);
       setTimeout(function(){$(".home_end_date").attr("readonly", true);}, 1000);
   });
-
-  $("#myTab .tab-pane").mCustomScrollbar({
+  $("#myTab .tab-pane,.notif-inner-strip").mCustomScrollbar({
 					setHeight:380,
 					theme:"inset-2-dark"
 				});

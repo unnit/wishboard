@@ -1,2 +1,7 @@
-$(".notif-loader").hide();
-$(".notif-content").append("#{j render partial: "home/notifications", locals: {unchecked_wows: @unchecked_wows, unchecked_comments: @unchecked_comments, unchecked_followers: @unchecked_followers, unchecked_showcase_notifications: @unchecked_showcase_notifications}}")
+$('.feed-loader').hide();
+$(".notif-full-content").append("#{j render partial: "home/notifications_content", locals: {notifications: @notifications}}")
+-if @notifications.next_page
+  $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @notifications, param_name: 'notifications'}");
+- else
+  $(window).off('scroll');
+  $('#infinite-scrolling-content .pagination').remove();

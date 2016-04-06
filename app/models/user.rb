@@ -142,11 +142,15 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_followers
-    followers.where("relationships.checked = ?", false)
+    passive_relationships.where("relationships.checked = ?", false)
   end
 
   def unchecked_showcase_notifications
     showcase_notifications.where(checked: false)
+  end
+
+  def unchecked_notififcations_count
+    unchecked_wows.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count
   end
 
   #actions

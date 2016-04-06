@@ -63,6 +63,21 @@ class ShowcasesController < ApplicationController
   def show
   end
 
+  def tagged_showcases
+    @showcases = Showcase.tagged_with(params[:tag])
+    @tag = params[:tag]
+    if @showcases.blank?
+      redirect_to feed_path
+      return
+    else
+      @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(10)
+    end
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
   def wow
     @showcase.toggle_wow!(current_user)
     @showcase.reload

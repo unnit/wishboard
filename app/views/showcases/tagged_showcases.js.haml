@@ -1,0 +1,7 @@
+$('.feed-loader').hide();
+$(".tag-showcases").append("#{j render partial: "home/showcases", locals: {showcases: @showcases}}")
+-if @showcases.next_page
+  $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @showcases, param_name: 'showcases'}");
+- else
+  $(window).off('scroll');
+  $('#infinite-scrolling-content .pagination').remove();

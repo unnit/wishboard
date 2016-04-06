@@ -1,0 +1,28 @@
+- notifications.each do |notification|
+  - if notification.class.name == "Wow"
+    = link_to update_wow_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+      %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+      %span.weight600.grey-fg= truncate notification.user.name, length: 35
+      %span.font13.grey-fg
+        liked your
+        = notification.showcase.showcase_type_name
+  - elsif notification.class.name == "Comment"
+    = link_to update_comment_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+      %span.grey-fg= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+      %span.weight600.grey-fg= truncate notification.user.name, length: 35
+      %span.font13.grey-fg
+        commented on your
+        = notification.showcase.showcase_type_name
+  - elsif notification.class.name == "Relationship"
+    = link_to update_follower_checked_path(notification.follower), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+      %span= cl_image_tag notification.follower.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+      %span.weight600.grey-fg= truncate notification.follower.name, length: 35
+      %span.font13.grey-fg
+        started following you
+  - elsif notification.class.name == "ShowcaseNotification"
+    = link_to update_showcase_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+      %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+      %span.weight600.grey-fg= truncate notification.showcase.user.name, length: 35
+      %span.font13.grey-fg
+        showcased a
+        = notification.showcase.showcase_type_name

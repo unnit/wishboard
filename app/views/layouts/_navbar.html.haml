@@ -17,13 +17,13 @@
       .navbar-collapse.collapse.nav-border
         %ul.nav.navbar-nav.navbar-right{style: "display: #{@pro_view_visible || 'block'}"}
           - if current_user
-            %li.notif-icon.hidden-xs{style: "display: #{@notification_div || 'none'}"}
-              .glyphicon.glyphicon-bell.white-fg.font20.pon.pull-right.mtop15
+            %li.hidden-xs{style: "display: #{@notification_div || 'none'}"}
+              .glyphicon.glyphicon-bell.white-fg.font20.pon.pull-right.mtop15.notif-icon
               - if current_user.unchecked_notififcations_count > 0
-                .badge.notif-badge.pon.pull-right.mtop5= current_user.unchecked_notififcations_count
-              .sq-rot.notif-toggle.opacity0
-              .notif-arrow.notif-toggle.opacity0
-              .notif-wrap.bx-shad.notif-toggle.helvetica-font.opacity0
+                .badge.notif-badge.pon.pull-right.mtop5.notif-icon= current_user.unchecked_notififcations_count
+              .sq-rot.notif-toggle
+              .notif-arrow.notif-toggle
+              .notif-wrap.bx-shad.notif-toggle.helvetica-font
                 .col-xs-12.col-sm-12.text-center.notif-loader.padding10
                   %i.fa.fa-circle-o-notch.fa-spin.font21
                   Please wait...

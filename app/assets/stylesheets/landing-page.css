@@ -2880,7 +2880,15 @@ th.headerSortDown {
   top: 40px;
 }
 .notif-inner-strip{
+  max-height: 380px;
   overflow: hidden;
+}
+.follow-wrapper{
+  max-height: 330px;
+  overflow: hidden;
+}
+.notif-toggle{
+  display: none;
 }
 .notif-single:hover{
   background-color: #DCDCDC;
@@ -2918,9 +2926,6 @@ th.headerSortDown {
   -moz-transition: all 0.6s ease-in-out;
   -ms-transition:  all 0.6s ease-in-out;
   transition: all 0.6s ease-in-out;
-}
-.mCS_no_scrollbar {
-  height: auto !important;
 }
 .opacity0{
   opacity: 0;

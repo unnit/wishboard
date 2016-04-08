@@ -15,9 +15,9 @@ class HomeController < ApplicationController
     @showcase.build_location
     @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
     @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-    #@showcases = Showcase.order("RANDOM()").page(params[:showcases]).per(2)
-    @showcases = Showcase.all.limit(2).order(created_at: :desc)
-    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
+    #@showcases = Showcase.order("RANDOM()")
+    @showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(2)
+    #@showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
     @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
     @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
     respond_to do |format|

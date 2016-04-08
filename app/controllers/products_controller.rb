@@ -359,6 +359,7 @@ class ProductsController < ApplicationController
     end
     filtered_count = @products.count
     suggest_availability if filtered_count == 0 && result_count > 0
+    @products = @products.sort_by{|p| p.currently_available ? 0 : 1}
     @products = Kaminari.paginate_array(@products).page(params[:page]).per(21)
   end
 

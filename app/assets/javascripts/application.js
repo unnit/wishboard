@@ -29,7 +29,7 @@
 
 $(document).ready(function(){
   $(document).on("click", ".notif-icon", function(){
-    $(".notif-toggle").toggleClass("opacity0");
+    $(".notif-toggle").toggle();
     if($(".notif-content").is(":empty")){
       $.get("/unchecked_notifications")
     }
@@ -704,15 +704,17 @@ $(document).ready(function(){
       });
   }
   //Google Places
-  google.maps.event.addDomListener(window, 'load', function () {
-      var input= $('.pac-input')[0];
-      var autocomplete = new google.maps.places.Autocomplete(input);
-      google.maps.event.addDomListener(input, 'keydown', function(e) {
-        if (e.keyCode == 13 && $('.pac-container:visible').length) {
-          e.preventDefault();
-        }
-      });
-  });
+  if($('.pac-input').length){
+    var places_input= $('.pac-input')[0];
+    google.maps.event.addDomListener(window, 'load', function () {
+        var autocomplete = new google.maps.places.Autocomplete(places_input);
+        google.maps.event.addDomListener(places_input, 'keydown', function(e) {
+          if (e.keyCode == 13 && $('.pac-container:visible').length) {
+            e.preventDefault();
+          }
+        });
+    });
+  }
   //-----Table Sorter
   $("#admin-products, #admin-transactions").tablesorter();
   $("#booking_requests_table, #my_listings_table, #my_orders_table, #upcoming_bookings_table, #non_coco_bookings_table, #delete_non_coco_bookings_table").tablesorter();

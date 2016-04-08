@@ -1,5 +1,5 @@
 development:
-  time_out: 7
+  time_out: 15
   root_url: "https://localhost"
   transaction_return_url: "https://localhost/transactions/callback"
   admin_mail: "ayyo@cocociti.com"
@@ -34,7 +34,7 @@ development:
   manager_mobile_nos: ["+919037267357", "+919008888522", "+919037334459"]
 
 production:
-  time_out: 7
+  time_out: 15
   root_url: "https://www.cocociti.com"
   transaction_return_url: "https://www.cocociti.com/transactions/callback"
   admin_mail: "ayyo@cocociti.com"

@@ -31,7 +31,9 @@ class ProductsController < ApplicationController
 
   def create
     @product = current_user.products.build(create_product_params)
-    @product.hourly_price = 0 if @product.daily_type? || @product.hourly_price.blank?
+    @product.hourly_price = 0 if @product.daily_type?
+    @product.weekend_hourly_price = 0 if @product.daily_type?
+    @product.weekend_daily_price = 0 if @product.weekends_days_blank?
     @product.listing_type = Product::LISTING_TYPE[1][1]
     sanitize_free_product if @product.for_free?
     if @product.save
@@ -55,7 +57,11 @@ class ProductsController < ApplicationController
   def update
     @product.billing_type = params[:product][:billing_type]
     @product.hourly_price = params[:product][:hourly_price]
-    @product.hourly_price = 0 if @product.daily_type? || @product.hourly_price.blank?
+    @product.weekend_hourly_price = params[:product][:weekend_hourly_price]
+    @product.weekend_daily_price = params[:product][:weekend_daily_price]
+    @product.hourly_price = 0 if @product.daily_type?
+    @product.weekend_hourly_price = 0 if @product.daily_type?
+    @product.weekend_daily_price = 0 if @product.weekends_days_blank?
     @product.admin_approved = false
     #Adding location manually as it is creating new row each time
     @product.location.name = params[:product][:location_attributes][:name]
@@ -216,7 +222,7 @@ class ProductsController < ApplicationController
   private
   def create_product_params
     params.require(:product).permit(:user_id, :title, :category_id, :price, :tax, :security_deposit, :operator_type, :operator_price, :discount_3, :discount_10, :discount_20,
-                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id, :billing_type, :hourly_price,
+                                    :discount_30, :discount_90, :available, :description, :owner_type, :product_condition, :tech_spec, :internal_id, :billing_type, :hourly_price, :weekend_daily_price, :weekend_hourly_price,
                                     :terms_and_conditions, :year_of_manufacture, :image_1, :image_2, :image_3, :image_4, :image_5,
                                     :slug, {doc_requirement: []}, location_attributes: [:name])
   end

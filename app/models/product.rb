@@ -111,6 +111,8 @@ class Product < ActiveRecord::Base
   validates :billing_type, inclusion: { in: Product::BILLING_TYPE_VALUES, message: "should not be blank" }
 
   validates :hourly_price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, if: :hourly_type?
+  validates :weekend_daily_price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :weekends_days_blank?
+  validates :weekend_hourly_price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, if: :hourly_type?
   validates :price, :tax, :security_deposit, :operator_price, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
   validates :discount_3, :discount_10, :discount_20, :discount_30, :discount_90, numericality: { greater_than_or_equal_to: 0, message: "should be greater than or equal to zero" }, unless: :for_free?
 
@@ -179,6 +181,10 @@ class Product < ActiveRecord::Base
 
   def hourly_type?
     billing_type == Product::BILLING_TYPE_VALUES[1]
+  end
+
+  def weekends_days_blank?
+    user.profile.weekend_days_arr.blank?
   end
 
   def collect_security_deposit?
@@ -434,9 +440,9 @@ class Product < ActiveRecord::Base
   def seasonal_weekend_pricing(no_of_weekenddays, hours, end_day_weekend)
     weekend_pricing = 0
     if hours > 0 && end_day_weekend > 0
-      weekend_pricing = (((user.profile.increase/100)*price)*(no_of_weekenddays)) + (((user.profile.increase/100)*hourly_price)*hours) unless user.profile.increase.blank?
+      weekend_pricing = ((weekend_daily_price - price)*(no_of_weekenddays)) + ((weekend_hourly_price - hourly_price)*hours) unless weekends_days_blank?
     else
-      weekend_pricing = (((user.profile.increase/100)*price)*no_of_weekenddays) unless user.profile.increase.blank?
+      weekend_pricing = ((weekend_daily_price - price)*no_of_weekenddays) unless weekends_days_blank?
     end
     weekend_pricing.round(1)
   end

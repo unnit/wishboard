@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160403181328) do
+ActiveRecord::Schema.define(version: 20160408151803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -212,6 +212,8 @@ ActiveRecord::Schema.define(version: 20160403181328) do
     t.decimal  "admin_discount_percent", precision: 6,  scale: 2, default: 0.0
     t.integer  "admin_discount_amount",                           default: 0
     t.boolean  "currently_available",                             default: true
+    t.integer  "weekend_daily_price",                             default: 0
+    t.integer  "weekend_hourly_price",                            default: 0
   end
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree

@@ -188,10 +188,12 @@ class HomeController < ApplicationController
 
   def sign_up
     @pro_view_visible = "none"
+    @adv_search = "none"
   end
 
   def login
     @pro_view_visible = "none"
+    @adv_search = "none"
   end
 
   def offers

@@ -50,7 +50,8 @@ class Profile < ActiveRecord::Base
   validates :close_time, inclusion: { in: Profile::TIME_OPTIONS, message: "should not be blank" }, unless: :business_fields_mandatory_blank?
   validates :increase, length: { maximum: 6, message: "should not be greater than 6 digits." }, unless: :increase_blank?
   validates :increase_hourly, length: { maximum: 6, message: "should not be greater than 6 digits." }, unless: :increase_hourly_blank?
-
+  validates :increase, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :increase_blank?
+  validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :increase_hourly_blank?
   validates :increase, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :weekend_pricing_blank?
   validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :hourly_pricing_blank?
 

@@ -47,7 +47,8 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
             sign_in(user, bypass: true)
           end
           flash[:notice] = "Your account has been verified successfully. Experience Cocociti. Go Coco!!<br>Please fill in your profile before you continue so that we can ease your Cocociti journey.".html_safe
-          redirect_to settings_path
+          #redirect_to settings_path
+          redirect_to interests_path
           return
         else
           flash[:alert] = "Confirmation token mismatch. Please check your mail again"

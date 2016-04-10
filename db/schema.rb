@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160403181328) do
+ActiveRecord::Schema.define(version: 20160410191216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,19 @@ ActiveRecord::Schema.define(version: 20160403181328) do
   end
 
   add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
+
+  create_table "interests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "tag_id"
+    t.boolean  "active",     default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "interests", ["active"], name: "index_interests_on_active", using: :btree
+  add_index "interests", ["tag_id"], name: "index_interests_on_tag_id", using: :btree
+  add_index "interests", ["user_id", "tag_id"], name: "index_interests_on_user_id_and_tag_id", unique: true, using: :btree
+  add_index "interests", ["user_id"], name: "index_interests_on_user_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
@@ -212,6 +225,8 @@ ActiveRecord::Schema.define(version: 20160403181328) do
     t.decimal  "admin_discount_percent", precision: 6,  scale: 2, default: 0.0
     t.integer  "admin_discount_amount",                           default: 0
     t.boolean  "currently_available",                             default: true
+    t.integer  "weekend_daily_price",                             default: 0
+    t.integer  "weekend_hourly_price",                            default: 0
   end
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
@@ -268,6 +283,7 @@ ActiveRecord::Schema.define(version: 20160403181328) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.boolean  "checked",     default: false
+    t.boolean  "active",      default: true
   end
 
   add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
@@ -320,8 +336,9 @@ ActiveRecord::Schema.define(version: 20160403181328) do
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "featured",   default: false
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name", using: :btree
@@ -391,6 +408,7 @@ ActiveRecord::Schema.define(version: 20160403181328) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.boolean  "checked",     default: false
+    t.boolean  "active",      default: true
   end
 
   add_index "wows", ["showcase_id"], name: "index_wows_on_showcase_id", using: :btree

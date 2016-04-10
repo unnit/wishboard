@@ -1,5 +1,11 @@
 .container.mar-des-page
   .row
+    .col-xs-12.col-md-4.mtop20.no-padding-left
+      %ul.nav.nav-tabs
+        %li.toggle-url
+          %a{"data-toggle" => "tab", :href => "#"} Login
+        %li.active
+          %a{"data-toggle" => "tab", :href => "#"} Sign Up
     .col-md-12.mtop60
       = form_for(User.new, :url => user_registration_path, html: {"data-parsley-validate" => true, class: "agreement-require"}) do |f|
         .col-sm-12.errors
@@ -31,3 +37,11 @@
           #submit-signup.pulse-loader{style: "display:none;"} Loading...
           .col-sm-2.col-sm-offset-1.mbottom40
             = f.submit "Sign up", :class => 'btn btn-primary pop-up-but'
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".toggle-url").click(function(){
+        window.location.href = ("#{login_url}")
+      })
+    })

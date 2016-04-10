@@ -1,7 +1,7 @@
 - users.each do |user|
   .col-xs-12.col-sm-4{class: "user-wrapper-#{user.id}", style: "min-width: #{min_width ||= '292px'};padding: #{card_padding ||= '0px 5px 10px 5px'}"}
     .col-xs-12.col-sm-12.bg-white.bg-shad.no-mar-pad
-      .col-xs-12.col-sm-12.header-with-grad{style: "height:88px;background-color:#ffe066;"}
+      .col-xs-12.col-sm-12.header-with-grad{style: "height:88px;"}
       .col-xs-12.col-sm-12.padding5.ptop0
         %span.mtop5.mbottom5.pull-left.weight500.mleft95{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "top", style: "font-size: #{name_size ||= '12px'}"}
           = (truncate user.name, length: 20)

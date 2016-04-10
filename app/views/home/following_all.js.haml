@@ -1,0 +1,7 @@
+$('.feed-loader').hide();
+$(".user-wrapper").append("#{j render partial: "follow_people", locals: {users: @users}}")
+-if @users.next_page
+  $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @users, param_name: 'users'}");
+- else
+  $(window).off('scroll');
+  $('#infinite-scrolling-content .pagination').remove();

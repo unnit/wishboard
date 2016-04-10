@@ -155,6 +155,33 @@ class HomeController < ApplicationController
     render json: {user: (render_to_string '_user_card', layout: false, locals: {users: Array(user), card_padding: '0px'})}
   end
 
+  def interests
+  end
+
+  def following_all
+    @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
+    @users = Kaminari.paginate_array(@users).page(params[:users]).per(12)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def toggle_follow_interest
+    @tag = Tag.find_by_id params[:id]
+    current_user.toggle_follow_interest!(@tag)
+    @tag.reload
+    respond_to :js
+  end
+
+  def toggle_follow_all_interest
+    Tag.featured.each do |tag|
+      current_user.activate_all_interest!(tag)
+    end
+    @from_all = true
+    render "toggle_follow_interest.js"
+  end
+
   def get_state_and_city
     result={city: "", state: ""}
     address = Geokit::Geocoders::GoogleGeocoder.geocode "#{params[:zip]} India"
@@ -188,10 +215,12 @@ class HomeController < ApplicationController
 
   def sign_up
     @pro_view_visible = "none"
+    @adv_search = "none"
   end
 
   def login
     @pro_view_visible = "none"
+    @adv_search = "none"
   end
 
   def offers

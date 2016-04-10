@@ -441,6 +441,9 @@ small{
 .font25{
   font-size: 25px;
 }
+.font40{
+  font-size: 40px;
+}
 .weight500{
   font-weight: 500;
 }
@@ -542,9 +545,6 @@ small{
 .shadow{
   -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.4, transparent), to(rgba(0,0,0,0.2)));
 }
-.white-fg{
-  color: white;
-}
 .black-fg{
   color: black;
 }
@@ -557,8 +557,20 @@ small{
 .dark-grey-bg{
   background-color: #C1C1C1;
 }
+.white-fg{
+  color: white;
+}
+.green-fg{
+  color: #23A723 !important;
+}
+.blue-bg{
+  background-color: #337AB7;
+}
 .pattern-bg{
   background-color: #fafafa;
+}
+.tag-grey-fg{
+  color: #D0D0D0;
 }
 .lt-grey-fg{
   color: #BDBDBD !important;
@@ -576,4 +588,10 @@ small{
 }
 .helvetica-font{
   font-family: helvetica;
+}
+.pos-absolute{
+  position: absolute;
+}
+.pos-relative{
+  position: relative;
 }

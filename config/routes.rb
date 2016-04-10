@@ -67,6 +67,8 @@ Rails.application.routes.draw do
   get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
   get "user_signup_confirmation", to: "home#user_signup_confirmation"
+  get "interests", to: "home#interests"
+  get "people", to: "home#following_all", as: :following_all
   get "settings/business", to: "profiles#business_profile"
   get "dashboard", to: "profiles#dashboard"
   get "signup", to: "home#sign_up"
@@ -78,6 +80,8 @@ Rails.application.routes.draw do
   get "notifications", to: "home#notifications", as: :notifications
   get "update_all_notifications", to: "home#update_all_notifications", as: :update_all_notifications
   post "toggle_follow/:id", to: "home#toggle_follow", as: :user_toggle_follow
+  post "toggle_follow_all_interest", to: "home#toggle_follow_all_interest", as: :toggle_follow_all_interest
+  post "toggle_follow_interest/:id", to: "home#toggle_follow_interest", as: :user_toggle_follow_interest
   get ":id/showpieces", to: "home#myshowpieces", as: :myshowpieces
   get ":id/wishes", to: "home#mywishes", as: :mywishes
   get ":id/following", to: "home#following", as: :following

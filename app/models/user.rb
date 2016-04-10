@@ -13,14 +13,18 @@ class User < ActiveRecord::Base
   has_many :reviews, dependent: :destroy
   has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id"
   has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id"
-  has_many :following, through: :active_relationships, source: :followed
-  has_many :followers, through: :passive_relationships, source: :follower
+  has_many :following, -> {where("relationships.active = ?", true)}, through: :active_relationships, source: :followed
+  has_many :followers, -> {where("relationships.active = ?", true)}, through: :passive_relationships, source: :follower
   has_many :showcases
   has_many :wows
   has_many :comments
-  has_many :appreciations, -> (id) {where( "wows.user_id != ?", id)}, through: :showcases, source: :wows
-  has_many :received_comments, -> (id) {where( "comments.user_id != ?", id )}, through: :showcases, source: :comments
+  has_many :appreciations, -> (id) {where("wows.user_id != ? and wows.active = ?", id, true)}, through: :showcases, source: :wows
+  has_many :received_comments, -> (id) {where("comments.user_id != ?", id )}, through: :showcases, source: :comments
   has_many :showcase_notifications
+  has_many :interests
+  has_many :tags, through: :interests
+  has_many :active_interests, -> {where active: true}, class_name: "Interest", foreign_key: "user_id"
+  has_many :deactive_interests, -> {where active: false}, class_name: "Interest", foreign_key: "user_id"
 
   has_one :profile, dependent: :destroy
 
@@ -134,7 +138,7 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_wows
-    appreciations.where("wows.checked = ?", false)
+    appreciations.where("wows.checked = ? and wows.active = ?", false, true)
   end
 
   def unchecked_comments
@@ -142,7 +146,7 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_followers
-    passive_relationships.where("relationships.checked = ?", false)
+    passive_relationships.where("relationships.checked = ? and relationships.active = ?", false, true)
   end
 
   def unchecked_showcase_notifications
@@ -178,6 +182,48 @@ class User < ActiveRecord::Base
       unfollow(other_user)
     else
       follow(other_user)
+    end
+  end
+
+  def create_interest(tag)
+    interests.create(tag_id: tag.id)
+  end
+
+  def activate_interest(tag)
+    interests.find_by(tag_id: tag.id).update_column :active, true
+  end
+
+  def deactivate_interest(tag)
+    interests.find_by(tag_id: tag.id).update_column :active, false
+  end
+
+  def is_active_interest?(tag)
+    active_interests.map(&:tag_id).include?(tag.id)
+  end
+
+  def is_deactive_interest?(tag)
+    deactive_interests.map(&:tag_id).include?(tag.id)
+  end
+
+  def is_interest?(tag)
+    interests.map(&:tag_id).include?(tag.id)
+  end
+
+  def toggle_follow_interest!(tag)
+    if is_active_interest?(tag)
+      deactivate_interest(tag)
+    elsif is_deactive_interest?(tag)
+      activate_interest(tag)
+    else
+      create_interest(tag)
+    end
+  end
+
+  def activate_all_interest!(tag)
+    if is_interest?(tag)
+      activate_interest(tag)
+    else
+      create_interest(tag)
     end
   end
 

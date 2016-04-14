@@ -248,15 +248,15 @@ $(document).ready(function(){
     $(".error-ps-radio").fadeOut();
   })
   //Error notifications for title,desc,year,location
-  $(".showcase-submit").click(function(){
-    $.trim($("#showcase_title").val()).length == 0?($("#showcase_title").css("border-bottom", "1px solid #F25F5C"),i = 0):(i = 1)
-    $.trim($("#showcase_description").val()).length == 0?($("#showcase_description").css("border-bottom", "1px solid #F25F5C"),i = 0):(i = 1)
-    if($("input[name='showcase[showcase_type]']:checked").val() == 0){
-      $.trim($("#showcase_year").val()).length == 0?($("#showcase_year").css("border-bottom", "1px solid #F25F5C"),i = 0):(i = 1)
-      $.trim($("#showcase_location_attributes_name").val()).length == 0?($("#showcase_location_attributes_name").css("border-bottom", "1px solid #F25F5C"),i = 0):(i = 1)
-    }
-    if(i == 1){$("#new_showcase").submit();}else{return false;}
-  })
+  //$(".showcase-submit").click(function(){
+  //  $.trim($("#showcase_title").val()).length == 0?($("#showcase_title").css("border-bottom", "1px solid #F25F5C"),i = 0):(i = 1)
+  //  $.trim($("#showcase_description").val()).length == 0?($("#showcase_description").css("border-bottom", "1px solid #F25F5C"),i = 0):(i = 1)
+  //  if($("input[name='showcase[showcase_type]']:checked").val() == 0){
+  //    $.trim($("#showcase_year").val()).length == 0?($("#showcase_year").css("border-bottom", "1px solid #F25F5C"),i = 0):(i = 1)
+  //    $.trim($("#showcase_location_attributes_name").val()).length == 0?($("#showcase_location_attributes_name").css("border-bottom", "1px solid #F25F5C"),i = 0):(i = 1)
+  //  }
+  //  if(i == 1){$("#new_showcase").submit();}else{return false;}
+  //})
   //Remove error notifications for title,desc,year,location
   $("#showcase_title").on("keyup", function(){
     $.trim($("#showcase_title").val()).length > 0?($("#showcase_title").css("border-bottom", "1px solid #CCCCCC")):($("#showcase_title").css("border-bottom", "1px solid #F25F5C"))

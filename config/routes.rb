@@ -51,14 +51,26 @@ Rails.application.routes.draw do
 
   resources :profiles, only: [:create, :update] do
     collection do
-      post "update_business"
+      post :update_business
+      patch :update_address
+      patch :update_social
+      get :username_available
+      get :verify_mobile
+      patch :get_otp
+      patch :resend_otp
+      patch :verify_otp
     end
   end
 
   get :invitations, to: "invitations#index", as: :invitations
   post "invitations/send_email", to: "invitations#send_email", as: :send_email_invitations
 
-  get :settings, to: "settings#index"
+  get "settings/account", to: "profiles#index", as: :settings
+  get "settings/business", to: "profiles#business_profile"
+  get "settings/password", to: "profiles#password"
+  get "settings/social", to: "profiles#social"
+  get "settings/addressbook", to: "profiles#addressbook"
+  get "dashboard", to: "profiles#dashboard"
   get :about, to: "home#about"
   get :terms, to: "home#terms"
   get :privacy, to: "home#privacy"
@@ -69,8 +81,6 @@ Rails.application.routes.draw do
   get "user_signup_confirmation", to: "home#user_signup_confirmation"
   get "interests", to: "home#interests"
   get "people", to: "home#following_all", as: :following_all
-  get "settings/business", to: "profiles#business_profile"
-  get "dashboard", to: "profiles#dashboard"
   get "signup", to: "home#sign_up"
   get "login", to: "home#login"
   post :bulk_bookings, to: "home#bulk_bookings"

@@ -2,7 +2,7 @@
   $(".wow-link-#{@showcase.id}").next(".badge").show();
 - else
   $(".wow-link-#{@showcase.id}").next(".badge").hide();
-$(".wow-link-#{@showcase.id}").next(".badge").text("#{@showcase.wows.count}")
+$(".wow-link-#{@showcase.id}").next(".badge").text("#{@showcase.active_wows.count}")
 - if @showcase.wowed?(current_user)
   $(".wow-link-#{@showcase.id} i").addClass("heart-red-fg");
   $(".wow-link-#{@showcase.id} i").removeClass("fa-heart-o").addClass("fa-heart");

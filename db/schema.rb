@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160410191216) do
+ActiveRecord::Schema.define(version: 20160413142009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -262,6 +262,15 @@ ActiveRecord::Schema.define(version: 20160410191216) do
     t.decimal  "flat_discount_percent",    precision: 6, scale: 2, default: 0.0
     t.integer  "flat_discount_amount",                             default: 0
     t.boolean  "collect_security_deposit",                         default: true
+    t.string   "twitter"
+    t.string   "facebook"
+    t.string   "instagram"
+    t.string   "linkedin"
+    t.string   "website"
+    t.string   "other_url"
+    t.boolean  "mobile_verified",                                  default: false
+    t.string   "otp1"
+    t.string   "otp2"
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree

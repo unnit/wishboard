@@ -126,7 +126,6 @@ class TransactionsController < ApplicationController
     @address.mobile = params[:mobile]
     @address.email = params[:email]
     @address.landmark = params[:landmark]
-    @address.address_mandatory = "yes"
     @address.valid?
 
     unless @address.errors.full_messages.blank?

@@ -1,0 +1,53 @@
+= content_for :title do
+  -title = "Address Book - Cocociti"
+.container-fluid.grey-bg.ptop50.pbottom50
+  .container.mtop10
+    .row
+      = render partial: "profiles/settings_layout"
+      .col-md-9
+        .panel.panel-default#profile_form
+          .panel-heading
+            %h4.mtop-v-5 Address Book
+          .panel-body
+            .col-sm-12
+              ~ form_for @address, url: update_address_profiles_path, html: {class: "form-horizontal"} do |f|
+                .form-group
+                  %label.col-sm-2.control-label First Name
+                  .col-sm-4= f.text_field :first_name, class: "form-control", placeholder: "First Name", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-2.control-label Last Name
+                  .col-sm-4= f.text_field :last_name, class: "form-control", placeholder: "Last Name", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-2.control-label Mobile/Phone No.
+                  .col-sm-4= f.text_field :mobile, class: "form-control", placeholder: "Mobile/Phone No.", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-2.control-label Email
+                  .col-sm-4= f.text_field :email, class: "form-control", placeholder: "Email", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-2.control-label Address Line 1
+                  .col-sm-4= f.text_field :address1, class: "form-control", placeholder: "Flat/House No, Floor, Building", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-2.control-label Address Line 2
+                  .col-sm-4= f.text_field :address2, class: "form-control", placeholder: "Colony/Society, Street, Locality/Area", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-2.control-label Landmark
+                  .col-sm-4= f.text_field :landmark, class: "form-control", placeholder: "", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-2.control-label Pincode
+                  .col-sm-4= f.text_field :zip, class: "form-control check_zip", maxlength: 6, required: true
+                .form-group
+                  %label.col-sm-2.control-label Town/City
+                  .col-sm-4= f.text_field :city, class: "form-control city", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-2.control-label State
+                  .col-sm-4
+                    = f.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", required: true
+                .form-group
+                  .col-sm-6.text-center
+                    %button.btn.save-button.white-fg Save
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".addr-sett").addClass("active");
+    });

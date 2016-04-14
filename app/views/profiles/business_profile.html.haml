@@ -1,6 +1,6 @@
 = content_for :title do
   -title = "Business Settings"
-#learn-more-hourly.modal.fade
+#learn-more-hourly.modal.fade.helvetica-font
   .modal-dialog
     .modal-content.pop-up-mar
       .modal-header.pop-bac
@@ -21,24 +21,23 @@
           %br
           %br
       .clearfix
-.container.container-pad.mob-postlist-con.ptop70
-  .container.mob-postlist-con
+.container-fluid.grey-bg.mtop50.pbottom50.helvetica-font
+  .container.mtop10
     .row
-      .col-md-12
-        .panel.panel-primary.collbod
-          .collbocol.panel-heading{:style => "background-color:#e84242; border: none;"}
-            %h3.panel-title.about-text Business Info
-            %span.pull-right.clickable
-              %i.glyphicon.glyphicon-chevron-up
-          .row.panel-body
+      = render partial: "profiles/settings_layout"
+      .col-md-9
+        .panel.panel-default
+          .panel-heading
+            %h4.mtop-v-5 Business Info
+          .panel-body
             .col-md-12
-              ~ form_for :profile, url: update_business_profiles_path, html: {class: 'form-horizontal profile_form', role: "form"} do |f|
+              ~ form_for :profile, url: update_business_profiles_path, html: {class: 'form-horizontal profile_form font13', role: "form"} do |f|
                 %fieldset
                   .form-group
-                    .col-sm-12.note-font-size.website-color
+                    .col-sm-12.note-font-size.website-color.text-right
                       * marked fields are mandatory
-                    .col-sm-12
-                      %h3.mtop10 Your Business
+                    .col-sm-12.border-bt-side
+                      %h4.mtop10 Your Business
                   .form-group
                     %label.col-sm-2.control-label
                       Business Type
@@ -46,15 +45,77 @@
                     .col-sm-3
                       = f.select :business_type, Profile::BUSINESS_TYPE, {include_blank: 'Select'}, class: "select_box coco-select-box", required: true
                   .form-group
-                    %label.col-sm-2.control-label
+                    %label.col-sm-4.pright0.control-label
                       Collect Security Deposit through Cocociti
                       %span.website-color *
                     .col-sm-4.mtop10
                       = f.check_box :collect_security_deposit, {}, true
                   .form-group
+                    %label.col-sm-2.control-label.mtop5
+                      Days Available
+                      %span.website-color *
+                    .col-sm-10.mtop10
+                      - Date::DAYNAMES.each_with_index do |day, i|
+                        %span.mleft15
+                          = check_box_tag "profile[avail_days][]", i, @profile.avail_days_arr.include?(i.to_s), class: "styled", id: "#{day}"
+                          %label{:for => "#{day}"}= day
+                  .form-group
+                    %label.col-sm-2.control-label
+                      Open Time
+                      %span.website-color *
                     .col-sm-4
-                      %h3.mtop10.mbottom0 Pickup Address
-                    - if current_user.has_delivery_address? && current_user.no_pickup_address?
+                      = f.select :open_time, Profile.create_open_close_time, {include_blank: "Select Open Time"}, class: "coco-select-box", required: true
+                  .form-group
+                    %label.col-sm-2.control-label
+                      Close Time
+                      %span.website-color *
+                    .col-sm-4
+                      = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
+                  .form-group
+                    .col-sm-12.border-bt-side
+                      %h4.mtop10 Weekend/Seasonal Rental Pricing
+                  .form-group
+                    %label.col-sm-4.control-label Apply Weekend/Seasonal Rental Pricing
+                    .col-sm-4.mtop10
+                      - if !@profile.weekend_days_arr.blank? || (@profile.increase && @profile.increase != 0.00)
+                        = check_box_tag :weekend_pricing, "yes", true
+                      - else
+                        = check_box_tag :weekend_pricing, "yes", false
+                  .form-group.weekend_pricing_div.hidden
+                    %label.col-sm-2.control-label.mtop5 Your Weekend Days
+                    .col-sm-10.mtop10
+                      - Date::DAYNAMES.each_with_index do |day, i|
+                        %span.mleft15
+                          = check_box_tag "profile[weekend_days][]", i, @profile.weekend_days_arr.include?(i.to_s), class: "styled", id: "#{day}_as_weekend"
+                          %label{:for => "#{day}"}= day
+                  .form-group.weekend_pricing_div.hidden
+                    %label.col-sm-2.control-label.mtop5
+                      Rent Increase in %
+                    .col-sm-4
+                      = f.text_field :increase, :placeholder => "Increase in %. Ex: 10% not 110%", class: "form-control", maxlength: 6
+                  .form-group
+                    .col-sm-12.border-bt-side
+                      %h4.mtop10 Hourly Rental Pricing
+                  .form-group
+                    %label.col-sm-3.control-label Apply Hourly Rental Pricing
+                    .col-sm-4.mtop10
+                      - if (@profile.increase_hourly && @profile.increase_hourly != 0.00)
+                        = check_box_tag :hourly_pricing, "yes", true
+                      - else
+                        = check_box_tag :hourly_pricing, "yes", false
+                  .form-group.hourly_pricing_div.hidden
+                    %label.col-sm-2.control-label.mtop5
+                      Rent Increase in %
+                    .col-sm-4
+                      = f.text_field :increase_hourly, :placeholder => "Hourly rent increase in %", class: "form-control", maxlength: 6
+                    .col-sm-2
+                      %small.pon.learn-more-hourly{style: "text-decoration: underline;"}
+                        Learn more
+                  .form-group
+                    .col-sm-12.border-bt-side
+                      %h4.mtop10 Pickup Address
+                  - if current_user.has_delivery_address? && current_user.no_pickup_address?
+                    .form-group
                       .col-sm-12
                         %label.control-label Copy your Delivery Address&nbsp;&nbsp;
                         = check_box_tag :copy_address, 1, false, class: "mtop10 copy_address"
@@ -91,67 +152,6 @@
                       .col-sm-4
                         = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box pkp_address", required: true
                   .form-group
-                    %label.col-sm-2.control-label.mtop5
-                      Days Available
-                      %span.website-color *
-                    .col-sm-10.mtop10
-                      - Date::DAYNAMES.each_with_index do |day, i|
-                        %span.mleft15
-                          = check_box_tag "profile[avail_days][]", i, @profile.avail_days_arr.include?(i.to_s), class: "styled", id: "#{day}"
-                          %label{:for => "#{day}"}= day
-                  .form-group
-                    %label.col-sm-2.control-label
-                      Open Time
-                      %span.website-color *
-                    .col-sm-4
-                      = f.select :open_time, Profile.create_open_close_time, {include_blank: "Select Open Time"}, class: "coco-select-box", required: true
-                  .form-group
-                    %label.col-sm-2.control-label
-                      Close Time
-                      %span.website-color *
-                    .col-sm-4
-                      = f.select :close_time, Profile.create_open_close_time, {include_blank: "Select Close Time"}, class: "coco-select-box", required: true
-                  .form-group
-                    .col-sm-6
-                      %h3.mtop10 Weekend/Seasonal Rental Pricing
-                  .form-group
-                    %label.col-sm-2.control-label Apply Weekend/Seasonal Rental Pricing
-                    .col-sm-4.mtop10
-                      - if !@profile.weekend_days_arr.blank? || (@profile.increase && @profile.increase != 0.00)
-                        = check_box_tag :weekend_pricing, "yes", true
-                      - else
-                        = check_box_tag :weekend_pricing, "yes", false
-                  .form-group.weekend_pricing_div.hidden
-                    %label.col-sm-2.control-label.mtop5 Your Weekend Days
-                    .col-sm-10.mtop10
-                      - Date::DAYNAMES.each_with_index do |day, i|
-                        %span.mleft15
-                          = check_box_tag "profile[weekend_days][]", i, @profile.weekend_days_arr.include?(i.to_s), class: "styled", id: "#{day}_as_weekend"
-                          %label{:for => "#{day}"}= day
-                  .form-group.weekend_pricing_div.hidden
-                    %label.col-sm-2.control-label.mtop5
-                      Rent Increase in %
-                    .col-sm-4
-                      = f.text_field :increase, :placeholder => "Increase in %. Ex: 10% not 110%", class: "form-control", maxlength: 6
-                  .form-group
-                    .col-sm-4
-                      %h3.mtop10 Hourly Rental Pricing
-                  .form-group
-                    %label.col-sm-2.control-label Apply Hourly Rental Pricing
-                    .col-sm-4.mtop10
-                      - if (@profile.increase_hourly && @profile.increase_hourly != 0.00)
-                        = check_box_tag :hourly_pricing, "yes", true
-                      - else
-                        = check_box_tag :hourly_pricing, "yes", false
-                  .form-group.hourly_pricing_div.hidden
-                    %label.col-sm-2.control-label.mtop5
-                      Rent Increase in %
-                    .col-sm-4
-                      = f.text_field :increase_hourly, :placeholder => "Hourly rent increase in %", class: "form-control", maxlength: 6
-                    .col-sm-2
-                      %small.pon.learn-more-hourly{style: "text-decoration: underline;"}
-                        Learn more
-                  .form-group
                     .col-sm-offset-2.col-sm-10
                       .pull-right
                         %button.btn.btn-info.save-button Save
@@ -159,6 +159,7 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      $(".buss-sett").addClass("active");
       var checked = $("#weekend_pricing").is(":checked");
       if(checked == true){
         $(".weekend_pricing_div").removeClass("hidden");

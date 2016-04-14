@@ -1,7 +1,52 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_profile, only: [:dashboard, :update, :business_profile, :update_business]
+  before_action :set_profile, only: [:index, :social, :update_social, :update, :business_profile, :update_business]
   skip_before_filter :check_profile, only: [:update]
+
+  def index
+    @profile.init_availability if @profile.avail_days.blank?
+  end
+
+  def password
+  end
+
+  def addressbook
+    @address = current_user.addresses.delivery.first unless current_user.addresses.delivery.first.blank?
+  end
+
+  def update_address
+    if current_user.addresses.delivery.first
+      @address = current_user.addresses.delivery.first
+    else
+      @address = Address.new
+    end
+    @address.user = current_user
+    @address.first_name = params[:address][:first_name]
+    @address.last_name = params[:address][:last_name]
+    @address.email = params[:address][:email]
+    @address.mobile = params[:address][:mobile]
+    @address.address1 = params[:address][:address1]
+    @address.address2 = params[:address][:address2]
+    @address.landmark = params[:address][:landmark]
+    @address.city = params[:address][:city]
+    @address.zip = params[:address][:zip]
+    @address.state = params[:address][:state]
+    @address.address_type = Address::ADDRESS_TYPES[0][1]
+    if @address.save
+      redirect_to settings_addressbook_path, notice: "Your address has beeen successfully saved."
+    else
+      flash[:danger] = @address.errors.full_messages.join("<br/>")
+      render :addressbook
+    end
+  end
+
+  def social
+  end
+
+  def update_social
+    @profile.update(social_params)
+    redirect_to settings_social_path, notice: "Your social profiles have been successfully updated."
+  end
 
   def dashboard
     @conversations = current_user.mailbox.conversations.order(created_at: :desc).page(params[:booking_requests_received]).per(20)
@@ -13,32 +58,7 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    if current_user.addresses.delivery.first
-      @address = current_user.addresses.delivery.first
-    else
-      @address = Address.new
-    end
-    @address.user = current_user
-    @address.first_name = params[:profile][:first_name]
-    @address.last_name = params[:profile][:last_name]
-    @address.email = current_user.email
-    @address.mobile = params[:profile][:phone]
-    @address.address1 = params[:address][:address1]
-    @address.address2 = params[:address][:address2]
-    @address.landmark = params[:address][:landmark]
-    @address.city = params[:address][:city]
-    @address.zip = params[:address][:zip]
-    @address.state = params[:address][:state]
-    @address.address_type = Address::ADDRESS_TYPES[0][1]
-    @address.valid?
-    unless @address.errors.full_messages.blank?
-      flash[:danger] = @address.errors.full_messages.join("<br/>")
-      redirect_to settings_path
-      return
-    end
-
     if @profile.update(profile_params)
-      @address.save
       flash[:success] = 'Your profile has been successfully updated.'
     else
       flash[:danger] = @profile.errors.full_messages.join("<br/>")
@@ -68,7 +88,6 @@ class ProfilesController < ApplicationController
     @address.zip = params[:address][:zip]
     @address.state = params[:address][:state]
     @address.address_type = Address::ADDRESS_TYPES[1][1]
-    @address.address_mandatory = "yes"
     @address.valid?
     unless @address.errors.full_messages.blank?
       flash[:danger] = @address.errors.full_messages.join("<br/>")
@@ -94,17 +113,92 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def username_available
+    name = params[:uname]
+    profile = Profile.where("slug = ?", name)
+    if profile.blank?
+      render json: {result: "Available"}
+    elsif profile.first == current_user.profile
+      render json: {result: "It's you only"}
+    else
+      render json: {result: "It's already taken."}
+    end
+  end
+
+  def verify_mobile
+    mobile = params[:mobile]
+    profile = Profile.where("phone = ?", mobile)
+    if profile.blank?
+      session[:mobile_no] = params[:mobile]
+      render json: {result: "getotp"}
+    elsif profile.first == current_user.profile
+      render json: {result: "own"}
+    else
+      render json: {result: "associated"}
+    end
+  end
+
+  def get_otp
+    profile = current_user.profile
+    other_profile = Profile.where("phone = ?", session[:mobile_no])
+    if profile.phone != session[:mobile_no] && other_profile.blank?
+      profile.otp1 = rand(100000..999999)
+      profile.save
+      #send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp1}. Please do not share it with anyone.")
+    else
+      @unmatch = "yes"
+      flash[:alert] = "Mobile no you have entered is either associated with another account or your own verified number"
+    end
+    respond_to :js
+  end
+
+  def resend_otp
+    unless session[:mobile_no].blank?
+      profile = current_user.profile
+      profile.otp2 = rand(100000..999999)
+      profile.save
+      #send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp2}. Please do not share it with anyone.")
+      respond_to :js
+    end
+  end
+
+  def verify_otp
+    profile = current_user.profile
+    if (params[:otp] == profile.otp1 && !profile.otp1.blank?) || (params[:otp] == profile.otp2 && !profile.otp2.blank?)
+      profile.phone = session[:mobile_no]
+      profile.mobile_verified = true
+      profile.otp1 = nil
+      profile.otp2 = nil
+      profile.save
+      session.delete("mobile_no")
+    else
+      if session[:otp_entered].blank?
+        session[:otp_entered] = 1
+        @error = "yes"
+      else
+        @double_error = "yes"
+        session.delete("otp_entered")
+        flash[:alert] = "You have exceeded the given attempts to enter OTP. Please try again."
+      end
+    end
+    respond_to :js
+  end
+
   private
     def set_profile
       @profile = current_user.profile || current_user.create_profile
     end
 
     def profile_params
-      params.require(:profile).permit(:user_id, :first_name, :last_name, :gender, :date_of_birth, :image, :phone, :about)
+      params.require(:profile).permit(:user_id, :first_name, :last_name, :gender, :date_of_birth, :image, :phone, :about, :slug)
     end
 
     def business_params
       params.require(:profile).permit(:business_type, :collect_security_deposit, :open_time, :close_time, :increase, :increase_hourly, avail_days: [], weekend_days: [])
+    end
+
+    def social_params
+      params.require(:profile).permit(:twitter, :facebook, :instagram, :linkedin, :website, :other_url)
     end
 
 end

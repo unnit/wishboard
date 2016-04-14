@@ -39,7 +39,7 @@
         - else
           %i.fa.fa-heart-o
       .badge{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}"}
-        = showcase.wows.count
+        = showcase.active_wows.count
     .col-xs-8.col-sm-10.pon.comment-link.border-two.padding10.bg-light-grey
       %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
       .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}

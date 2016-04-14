@@ -1,0 +1,37 @@
+.container-fluid.grey-bg.ptop50.pbottom50
+  .container.mtop10
+    .row
+      = render partial: "profiles/settings_layout"
+      .col-md-9
+        .panel.panel-default#profile_form
+          .panel-heading
+            %h4.mtop-v-5 Address Book
+          .panel-body
+            .col-sm-12
+              ~ form_for @profile, url: update_social_profiles_path, html: {class: "form-horizontal"} do |f|
+                .form-group
+                  %label.col-sm-2.control-label Twitter
+                  .col-sm-5= f.text_field :twitter, class: "form-control", placeholder: "Your Twitter URL", maxlength: 200
+                .form-group
+                  %label.col-sm-2.control-label Facebook
+                  .col-sm-5= f.text_field :facebook, class: "form-control", placeholder: "Your Facebook URL", maxlength: 200
+                .form-group
+                  %label.col-sm-2.control-label Instagram
+                  .col-sm-5= f.text_field :instagram, class: "form-control", placeholder: "Your Instagram URL", maxlength: 200
+                .form-group
+                  %label.col-sm-2.control-label Linkedin
+                  .col-sm-5= f.text_field :linkedin, class: "form-control", placeholder: "Your Linkedin URL", maxlength: 200
+                .form-group
+                  %label.col-sm-2.control-label Website
+                  .col-sm-5= f.text_field :website, class: "form-control", placeholder: "Your Website URL", maxlength: 200
+                .form-group
+                  %label.col-sm-2.control-label Other
+                  .col-sm-5= f.text_field :other_url, class: "form-control", placeholder: "Any other profiles", maxlength: 200
+                .form-group
+                  .col-sm-7.text-center
+                    %button.btn.save-button.white-fg Save
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".soc-sett").addClass("active");
+    });

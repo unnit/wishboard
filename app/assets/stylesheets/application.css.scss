@@ -194,6 +194,9 @@ body{
 .ptop40{
   padding-top: 40px;
 }
+.ptop50{
+  padding-top: 50px;
+}
 .ptop70{
   padding-top: 70px;
 }
@@ -488,22 +491,6 @@ small{
 .light-border{
   border: 1px solid #F1F1F1 !important;
 }
-.border-left-band-showcase{
-  border-left: 2px solid !important;
-  border-left-color: #03a9f4 !important;
-}
-.border-left-band-action{
-  border-left: 2px solid !important;
-  border-left-color: #ff1654 !important;
-}
-.border-left-band-profile{
-  border-left: 2px solid !important;
-  border-left-color: #247BA0 !important;
-}
-.border-left-band-follow{
-  border-left: 2px solid !important;
-  border-left-color: #bce784 !important;
-}
 .border-solid{border: 1px solid #000;}
 .border-light{border: 1px solid #E2E2E2;}
 .no-border{
@@ -594,4 +581,7 @@ small{
 }
 .pos-relative{
   position: relative;
+}
+.pos-fixed{
+  position: fixed;
 }

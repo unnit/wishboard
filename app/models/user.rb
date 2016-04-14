@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   has_many :interests
   has_many :tags, through: :interests
   has_many :active_interests, -> {where active: true}, class_name: "Interest", foreign_key: "user_id"
-  has_many :deactive_interests, -> {where active: false}, class_name: "Interest", foreign_key: "user_id"
+  has_many :inactive_interests, -> {where active: false}, class_name: "Interest", foreign_key: "user_id"
 
   has_one :profile, dependent: :destroy
 
@@ -165,23 +165,33 @@ class User < ActiveRecord::Base
     rating.save
   end
 
-  def follow(other_user)
+  def create_follow(other_user)
     active_relationships.create(followed_id: other_user.id)
   end
 
-  def unfollow(other_user)
-    active_relationships.find_by(followed_id: other_user.id).destroy
+  def activate_follow(other_user)
+    active_relationships.find_by(followed_id: other_user.id).update_column :active, true
+  end
+
+  def deactivate_follow(other_user)
+    active_relationships.find_by(followed_id: other_user.id).update_column :active, false
   end
 
   def following?(other_user)
-    following.include?(other_user)
+    active_relationships.where(active: true).map(&:followed_id).include?(other_user.id)
+  end
+
+  def is_inactive_following?(other_user)
+    active_relationships.where(active: false).map(&:followed_id).include?(other_user.id)
   end
 
   def toggle_follow!(other_user)
     if following?(other_user)
-      unfollow(other_user)
+      deactivate_follow(other_user)
+    elsif is_inactive_following?(other_user)
+      activate_follow(other_user)
     else
-      follow(other_user)
+      create_follow(other_user)
     end
   end
 
@@ -201,8 +211,8 @@ class User < ActiveRecord::Base
     active_interests.map(&:tag_id).include?(tag.id)
   end
 
-  def is_deactive_interest?(tag)
-    deactive_interests.map(&:tag_id).include?(tag.id)
+  def is_inactive_interest?(tag)
+    inactive_interests.map(&:tag_id).include?(tag.id)
   end
 
   def is_interest?(tag)
@@ -212,7 +222,7 @@ class User < ActiveRecord::Base
   def toggle_follow_interest!(tag)
     if is_active_interest?(tag)
       deactivate_interest(tag)
-    elsif is_deactive_interest?(tag)
+    elsif is_inactive_interest?(tag)
       activate_interest(tag)
     else
       create_interest(tag)

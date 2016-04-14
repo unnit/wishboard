@@ -1,0 +1,10 @@
+- if @error == "yes"
+  $(".resend-msg").text("OTP entered is incorrect. Please check and enter again. Note: 1 attempt left")
+  $(".resend-msg").removeClass("hidden alert-success").addClass("alert-danger");
+- elsif @double_error == "yes"
+  location.reload();
+- else
+  $(".otp-wrapper").remove();
+  $(".mob-otp-verify").addClass("padding10 pbottom0 grey-fg")
+  $(".mob-otp-verify").text("Verified ");
+  $(".mob-otp-verify").append("<i class='fa fa-check-circle green-fg font17'></i>")

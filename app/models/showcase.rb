@@ -2,6 +2,8 @@ class Showcase < ActiveRecord::Base
   belongs_to :user
   belongs_to :product
   has_many :wows
+  has_many :active_wows, -> {where active: true}, class_name: "Wow", foreign_key: "showcase_id"
+  has_many :inactive_wows, -> {where active: false}, class_name: "Wow", foreign_key: "showcase_id"
   has_many :comments
   has_many :taggings
   has_many :tags, through: :taggings
@@ -34,23 +36,33 @@ class Showcase < ActiveRecord::Base
     tag.showcases unless tag.blank?
   end
 
-  def wow(user)
+  def create_wow(user)
     wows.create(user_id: user.id)
   end
 
-  def unwow(user)
-    wows.find_by(user_id: user.id).destroy
+  def activate_wow(user)
+    wows.find_by(user_id: user.id).update_column :active, true
+  end
+
+  def deactivate_wow(user)
+    wows.find_by(user_id: user.id).update_column :active, false
   end
 
   def wowed?(user)
-    wows.map(&:user_id).include?(user.id)
+    active_wows.map(&:user_id).include?(user.id)
+  end
+
+  def inactive_wowed?(user)
+    inactive_wows.map(&:user_id).include?(user.id)
   end
 
   def toggle_wow!(user)
     if wowed?(user)
-      unwow(user)
+      deactivate_wow(user)
+    elsif inactive_wowed?(user)
+      activate_wow(user)
     else
-      wow(user)
+      create_wow(user)
     end
   end
 
@@ -68,11 +80,11 @@ class Showcase < ActiveRecord::Base
   end
 
   def wows_many?
-    wows.count > 1
+    active_wows.count > 1
   end
 
   def wows_any?
-    wows.count >= 1
+    active_wows.count >= 1
   end
 
   def comments_many?

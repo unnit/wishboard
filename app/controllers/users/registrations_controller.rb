@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 respond_to :js, :html
-skip_before_filter :check_user_status, :check_profile
+skip_before_filter :check_user_status, :check_profile, :check_interests
 # before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
@@ -25,7 +25,7 @@ skip_before_filter :check_user_status, :check_profile
           redirect_to signup_path
           return
         else
-          redirect_to user_signup_confirmation_path
+          redirect_to confirmation_path
         end
       }
       format.js { respond_to :js }

@@ -4,24 +4,29 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   skip_before_filter :check_profile, if: :devise_controller?
-  before_filter :set_timezone, :check_user_status, :check_profile
+  before_filter :set_timezone, :check_user_status, :check_profile, :check_interests
 
   def set_timezone
     Time.zone = "Kolkata"
   end
 
   def check_user_status
-    if current_user
-      if current_user.inactive
-        redirect_to user_signup_confirmation_path
+    if current_user && current_user.inactive
+        redirect_to confirmation_path
         return
-      end
     end
   end
 
   def check_profile
-    if current_user && !current_user.finished_info? && !current_user.inactive
-      redirect_to settings_path, alert: "Please fill your profile before continue."
+    if current_user && current_user.profile.blank? && !current_user.inactive
+      redirect_to info_path
+      return
+    end
+  end
+
+  def check_interests
+    if current_user && (current_user.interests_count < 10) && !current_user.profile.blank? && !current_user.inactive
+      redirect_to interests_path
       return
     end
   end

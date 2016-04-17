@@ -1,28 +1,34 @@
 class HomeController < ApplicationController
-  skip_before_filter :check_user_status, only: [:user_signup_confirmation]
-  skip_before_filter :check_profile, only: [:get_state_and_city]
-  before_filter :back_to_home, only: [:login, :sign_up]
-  before_filter :authenticate_user!, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers, :notifications]
+  skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
+  skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :toggle_follow_all_interest]
+  before_filter :back_to_home, only: [:authenticate]
+  before_filter :authenticate_user!, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers, :notifications]
   before_filter :set_profile, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
-  before_filter :set_social_layout, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers, :notifications]
+  before_filter :set_social_layout, except: [:index, :offers]
 
   def index
     @adv_search = "none"
   end
 
   def feed
-    @showcase = Showcase.new
-    @showcase.build_location
-    @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
-    @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-    #@showcases = Showcase.order("RANDOM()")
-    @showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(2)
-    #@showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
-    @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
-    @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
-    respond_to do |format|
-      format.html
-      format.js
+    if current_user
+      @showcase = Showcase.new
+      @showcase.build_location
+      @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
+      @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
+      #@showcases = Showcase.order("RANDOM()")
+      @showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(2)
+      #@showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
+      @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
+      @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    else
+      @pro_view_visible = "none"
+      @adv_search = "none"
+      render :authenticate
     end
   end
 
@@ -209,16 +215,12 @@ class HomeController < ApplicationController
   end
 
   def user_signup_confirmation
+    redirect_to root_path unless current_user.inactive
     @pro_view_visible = "none"
     @adv_search = "none"
   end
 
-  def sign_up
-    @pro_view_visible = "none"
-    @adv_search = "none"
-  end
-
-  def login
+  def authenticate
     @pro_view_visible = "none"
     @adv_search = "none"
   end

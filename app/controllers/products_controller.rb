@@ -13,7 +13,7 @@ class ProductsController < ApplicationController
 
   def search
     #product_paginate
-    add_breadcrumb "Home", root_path
+    add_breadcrumb "Home", rent_path
     add_breadcrumb "Search Results", search_products_path
     product_search
     render :index
@@ -94,17 +94,17 @@ class ProductsController < ApplicationController
   end
 
   def show
-    add_breadcrumb "Home", root_path
+    add_breadcrumb "Home", rent_path
     add_breadcrumb "#{@product.category.parent_name.downcase.titleize}", category_path("#{@product.category.parent.slug}")
     add_breadcrumb "#{@product.category_name.downcase.titleize}", category_path("#{@product.category.slug}")
     add_breadcrumb "#{@product.title.downcase.titleize}", user_product_path(@product.id)
     unless @product.available?
       unless current_user
-        redirect_to root_path
+        redirect_to rent_path
         return
       else
         unless current_user == @product.user || current_user.admin?
-          redirect_to root_path
+          redirect_to rent_path
           return
         end
       end
@@ -201,7 +201,7 @@ class ProductsController < ApplicationController
     conditions.push category.id
     @products = Product.where(conditions)
     unless @products.blank?
-      add_breadcrumb "Home", root_path
+      add_breadcrumb "Home", rent_path
       add_breadcrumb "#{@products.first.category.parent_name.downcase.titleize}", category_path("#{@products.first.category.parent.slug}")
       add_breadcrumb "#{@products.first.category_name.downcase.titleize}", category_path("#{@products.first.category.slug}") unless parent_id.blank?
     end
@@ -427,7 +427,7 @@ class ProductsController < ApplicationController
   end
 
   def authenticate_owner
-    redirect_to root_path unless(@product.user == current_user || current_user.admin?)
+    redirect_to rent_path unless(@product.user == current_user || current_user.admin?)
   end
 
   def date_check_before_search
@@ -448,7 +448,7 @@ class ProductsController < ApplicationController
     end
     unless error_messages.blank?
       flash[:alert] = error_messages.join(", ")
-      redirect_to root_path
+      redirect_to rent_path
       return
     end
   end

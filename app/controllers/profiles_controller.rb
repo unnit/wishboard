@@ -1,10 +1,35 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
+  skip_before_filter :check_profile, :check_interests, only: [:info, :create, :username_available]
   before_action :set_profile, only: [:index, :social, :update_social, :update, :business_profile, :update_business]
-  skip_before_filter :check_profile, only: [:update]
+  before_filter :set_social_layout, except: [:dashboard]
+
+  def info
+    redirect_to root_path if current_user.profile
+    @profile = Profile.new
+  end
+
+  def create
+    unless current_user.profile
+      @profile = Profile.new(create_profile_params)
+      @profile.user = current_user
+      if @profile.save
+        flash[:notice] = "Your basic info has been created suucessfully. Please select the interests below so that we can serve you the best feed."
+        redirect_to interests_path
+      else
+        flash[:alert] = @profile.errors.full_messages.join("<br/>")
+        render :info
+      end
+    else
+      redirect_to root_path
+    end
+  end
 
   def index
-    @profile.init_availability if @profile.avail_days.blank?
+  end
+
+  def settings
+    redirect_to settings_path
   end
 
   def password
@@ -68,6 +93,7 @@ class ProfilesController < ApplicationController
 
   def business_profile
     @address = current_user.addresses.pickup.first
+    @profile.init_availability if @profile.avail_days.blank?
   end
 
   def update_business
@@ -186,11 +212,15 @@ class ProfilesController < ApplicationController
 
   private
     def set_profile
-      @profile = current_user.profile || current_user.create_profile
+      @profile = current_user.profile
+    end
+
+    def create_profile_params
+      params.require(:profile).permit(:first_name, :last_name, :slug)
     end
 
     def profile_params
-      params.require(:profile).permit(:user_id, :first_name, :last_name, :gender, :date_of_birth, :image, :phone, :about, :slug)
+      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :phone, :about, :slug)
     end
 
     def business_params

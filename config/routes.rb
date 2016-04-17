@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   post "invitations/send_email", to: "invitations#send_email", as: :send_email_invitations
 
   get "settings/account", to: "profiles#index", as: :settings
+  get "settings", to: "profiles#settings", as: :root_settings
   get "settings/business", to: "profiles#business_profile"
   get "settings/password", to: "profiles#password"
   get "settings/social", to: "profiles#social"
@@ -78,11 +79,12 @@ Rails.application.routes.draw do
   get "goodness-and-open-source", to: "home#goodness-and-open-source"
   get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
-  get "user_signup_confirmation", to: "home#user_signup_confirmation"
+  get "confirmation", to: "home#user_signup_confirmation"
+  get "info", to: "profiles#info"
   get "interests", to: "home#interests"
+  get "rent", to: "home#index"
   get "people", to: "home#following_all", as: :following_all
-  get "signup", to: "home#sign_up"
-  get "login", to: "home#login"
+  get "authenticate", to: "home#authenticate"
   post :bulk_bookings, to: "home#bulk_bookings"
   get "offers", to: "home#offers"
   get "feed", to: "home#feed"
@@ -141,5 +143,5 @@ Rails.application.routes.draw do
   get "/categories/:id", to: "products#category", as: :category
   get "/listings/:id", to: "products#show", as: :user_product
 
-  root 'home#index'
+  root 'home#feed'
 end

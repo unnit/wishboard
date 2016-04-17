@@ -1,0 +1,58 @@
+.container-fluid.grey-bg.ptop50.pbottom50.helvetica-font
+  .container.mtop10
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2
+        .panel.panel-default#profile_form
+          .panel-heading
+            %h4.mtop-v-5 Basic Info
+          .panel-body
+            .col-xs-12.col-sm-12
+              = form_for @profile, html: {class: "form-horizontal"} do |f|
+                .form-group
+                  %label.col-sm-3.col-xs-12.control-label
+                    Username
+                    %span.website-color *
+                  .col-sm-6
+                    = f.text_field :slug, :placeholder => "Username", class: "form-control username", maxlength: 200, required: true
+                  .col-sm-3.uname-avail.padding10.pbottom0.grey-fg.font13
+                  .col-sm-9.col-sm-offset-3.ptop10.font13
+                    %span.pull-left https://www.cocociti.com/
+                    %span.pull-left.username-url
+                .form-group
+                  %label.col-sm-3.control-label
+                    First Name
+                    %span.website-color *
+                  .col-sm-6
+                    = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 200, required: true
+                .form-group
+                  %label.col-sm-3.control-label
+                    Last Name
+                    %span.website-color *
+                  .col-sm-6
+                    = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200, required: true
+                .form-group
+                  .col-sm-12.text-center
+                    %button.btn.save-button.white-fg Next
+                .form-group.mtop10
+                  .col-sm-12.text-right.extra-small-font *You can always change these in your settings page.
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".acc-sett").addClass("active");
+      $(".username-url").text($(".username").val());
+      $(".username").on("keyup", function(){
+        $(".username-url").text($(this).val());
+        if($(this).val().length > 4){
+          $(".uname-avail").text("Checking...");
+          $.get("/profiles/username_available", {uname: $(this).val()}, function(data){
+            $(".uname-avail").text(data.result);
+            if(data.result == "Available"){
+              $(".uname-avail").append("&nbsp;<i class='fa fa-check-circle green-fg font17'></i>")
+            }
+          })
+        }else{
+          $(".uname-avail").text("It's too short");
+        }
+      })
+    });

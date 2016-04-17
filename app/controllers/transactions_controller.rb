@@ -60,7 +60,7 @@ class TransactionsController < ApplicationController
   def non_coco
     unless @product.user == current_user
       flash[:danger] = "You can't execute this action"
-      redirect_to root_path
+      redirect_to rent_path
       return
     end
     if params[:non_coco_start_date].blank? || params[:non_coco_end_date].blank?
@@ -218,7 +218,7 @@ class TransactionsController < ApplicationController
   def check_product_owner
     unless @transaction.seller == current_user
       flash[:danger] = "You can't execute this action"
-      redirect_to root_path
+      redirect_to rent_path
     end
   end
 
@@ -318,17 +318,17 @@ class TransactionsController < ApplicationController
   def basic_checks_before_checkout
     unless @transaction.user == current_user
       flash[:danger] = "Sorry, You can't execute this action"
-      redirect_to root_path
+      redirect_to rent_path
       return
     end
     if @transaction.timed_out? || @transaction.paid? || @transaction.requesting? || @transaction.non_coco_booking? || @transaction.denied?
       flash[:danger] = "Sorry, You cannot access this page as the booking is invalid."
-      redirect_to root_path
+      redirect_to rent_path
       return
     end
     if @transaction.past?
       flash[:danger] = "Invalid date range. Cannot book for past dates."
-      redirect_to root_path
+      redirect_to rent_path
       return
     end
   end

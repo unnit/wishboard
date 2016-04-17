@@ -50,24 +50,24 @@
                       .input-group.mbottom0.input-append.date.date_of_birth
                         %span#sizing-addon2.input-group-addon.bg-white
                           %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
-                        = f.text_field :date_of_birth, placeholder: "dd/mm/yyyy", class: "form-control bg-white pon", style: "border-radius:0", required: true, readonly: true
+                        = f.text_field :date_of_birth, placeholder: "dd/mm/yyyy", class: "form-control bg-white pon", style: "border-radius:0", readonly: true
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
                       Gender
                       %span.website-color #
                     .col-sm-5{style: "margin-top:8px;"}
-                      = f.radio_button :gender, "#{Profile::GENDER[0]}", required: true
+                      = f.radio_button :gender, "#{Profile::GENDER[0]}"
                       %label Male&nbsp;&nbsp;
-                      = f.radio_button :gender, "#{Profile::GENDER[1]}", required: true
+                      = f.radio_button :gender, "#{Profile::GENDER[1]}"
                       %label Female&nbsp;&nbsp;
-                      = f.radio_button :gender, "#{Profile::GENDER[2]}", required: true
+                      = f.radio_button :gender, "#{Profile::GENDER[2]}"
                       %label Others
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
                       Mobile
                       %span.website-color *
                     .col-sm-3
-                      = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10, required: true
+                      = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
                     .col-sm-7.mob-otp-verify.padding10.pbottom0.grey-fg
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"} About

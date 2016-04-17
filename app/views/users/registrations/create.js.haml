@@ -1,4 +1,4 @@
 - if @errors.blank?
-  location.reload();
+  window.location.href = ("#{confirmation_url}")
 - else
-  $("#signup .errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: @errors})}");
+  $("#home-sign-up .errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: @errors})}");

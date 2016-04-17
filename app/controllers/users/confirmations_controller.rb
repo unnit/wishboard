@@ -1,6 +1,6 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
 
-  skip_before_filter :check_user_status, only: [:new, :show]
+  skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:new, :show]
 
   # GET /resource/confirmation/new
   def new
@@ -12,7 +12,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
         current_user.save
         UserMailer.account_token_with_instructions(current_user, confirmation_token).deliver_now
         flash[:notice] = "Thank you, We have resent the mail. Please click the activate button in the mail to verify your email address."
-        redirect_to root_path
+        redirect_to confirmation_path
       else
         flash[:notice] = "We have already verified your account. Enjoy Cocociti. Go Coco!!"
         redirect_to root_path
@@ -46,9 +46,8 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
           unless current_user
             sign_in(user, bypass: true)
           end
-          flash[:notice] = "Your account has been verified successfully. Experience Cocociti. Go Coco!!<br>Please fill in your profile before you continue so that we can ease your Cocociti journey.".html_safe
-          #redirect_to settings_path
-          redirect_to interests_path
+          flash[:notice] = "Your account has been verified successfully. Experience Cocociti. Go Coco!!<br>Please help with us with few details so that we can serve you the best feed".html_safe
+          redirect_to info_path
           return
         else
           flash[:alert] = "Confirmation token mismatch. Please check your mail again"

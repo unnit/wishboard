@@ -27,12 +27,14 @@ class Profile < ActiveRecord::Base
   acts_as_mappable through: :location
   accepts_nested_attributes_for :location
 
-  validates :first_name, :last_name, :phone, :gender, :date_of_birth, :slug, presence: true, on: :update
+  validates :first_name, :last_name, :slug, presence: true
+  validates :slug, uniqueness: true
+  validates :first_name, :last_name, :slug, length: { maximum: 230, message: "should be within 220 characters." }
+  
   validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_blank?, on: :update
   validates_date :date_of_birth, :before => lambda { 18.years.ago },
                                :before_message => ": Must be at least 18 years old", on: :update
   validates :phone, uniqueness: true, on: :update
-  validates :slug, uniqueness: true, on: :update
   validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update
   validates :phone, numericality: true, on: :update
   validates :about, length: { maximum: 1000 }, on: :update, unless: :about_blank?

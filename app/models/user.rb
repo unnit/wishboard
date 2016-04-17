@@ -157,6 +157,10 @@ class User < ActiveRecord::Base
     unchecked_wows.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count
   end
 
+  def interests_count
+    active_interests.count
+  end
+
   #actions
 
   def rate!(product, value)

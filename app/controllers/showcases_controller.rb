@@ -13,7 +13,7 @@ class ShowcasesController < ApplicationController
       @showcase = current_user.showcases.build(wish_params)
     else
       flash[:alert] = "Hey, Are you going to Showcase or Wishlist?"
-      redirect_to feed_path
+      redirect_to root_path
       return
     end
     if params[:image].present?
@@ -22,10 +22,10 @@ class ShowcasesController < ApplicationController
     end
     if @showcase.save
       flash[:notice] = "Your product has been showcased successfully."
-      redirect_to feed_path
+      redirect_to root_path
     else
       flash[:alert] = @showcase.errors.full_messages.join(", ")
-      redirect_to feed_path
+      redirect_to root_path
     end
   end
 
@@ -67,7 +67,7 @@ class ShowcasesController < ApplicationController
     @showcases = Showcase.tagged_with(params[:tag])
     @tag = params[:tag]
     if @showcases.blank?
-      redirect_to feed_path
+      redirect_to root_path
       return
     else
       @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(10)

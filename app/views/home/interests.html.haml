@@ -11,6 +11,6 @@
             .fa.fa-check-circle.font40.tag-grey-fg.follow-tag-icon{class: "follow-tag-#{tag.id} #{'green-fg' if current_user.is_active_interest?(tag)}"}
           %span.full-width.pull-left.white-fg.padding10.blue-bg= tag.name
     .col-xs-12.col-sm-12
-      .pull-right.padding10
+      .pull-right.padding10.cont-intrsts{style: "display:none;"}
         = link_to invitations_path(invite_friends: "invite") do
           .btn.btn-primary Continue

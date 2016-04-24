@@ -1,4 +1,4 @@
 - if current_user
-  window.location.href = ("#{root_url}")
+  location.reload();
 - else
   $("#home-login .errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: ["Please enter a valid email and password."]})}")

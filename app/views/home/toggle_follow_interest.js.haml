@@ -2,3 +2,7 @@
   $(".follow-tag-#{@tag.id}").toggleClass("green-fg");
 - else
   $(".follow-tag-icon").addClass("green-fg");
+- if current_user.interests_count >= 10
+  $(".cont-intrsts").show();
+- else
+  $(".cont-intrsts").hide();

@@ -262,15 +262,16 @@ ActiveRecord::Schema.define(version: 20160413142009) do
     t.decimal  "flat_discount_percent",    precision: 6, scale: 2, default: 0.0
     t.integer  "flat_discount_amount",                             default: 0
     t.boolean  "collect_security_deposit",                         default: true
+    t.boolean  "mobile_verified",                                  default: false
+    t.string   "otp1"
+    t.string   "otp2"
     t.string   "twitter"
     t.string   "facebook"
     t.string   "instagram"
     t.string   "linkedin"
+    t.string   "google_plus"
     t.string   "website"
     t.string   "other_url"
-    t.boolean  "mobile_verified",                                  default: false
-    t.string   "otp1"
-    t.string   "otp2"
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree

@@ -1,10 +1,27 @@
 class ShowcasesController < ApplicationController
-  before_filter :authenticate_user!, except: [:show]
+  before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
   before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show]
   before_filter :authenticate_owner, only: [:edit, :update, :destroy]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
   before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
   before_filter :set_social_layout
+
+  def results
+    if params[:query].present?
+      @showcases = Showcase.search(params[:query])
+      @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(20)
+    else
+      @showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(20)
+    end
+    respond_to do |format|
+      format.html
+      format.js{render 'home/myprofile.js'}
+    end
+  end
+
+  def autocomplete
+    render json: Showcase.search(params[:q], autocomplete: true, limit: 20).map(&:title)
+  end
 
   def create
     if params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[0]
@@ -30,6 +47,7 @@ class ShowcasesController < ApplicationController
   end
 
   def edit
+    @showcase.build_location if @showcase.wishlist?
   end
 
   def update
@@ -121,7 +139,11 @@ class ShowcasesController < ApplicationController
   end
 
   def authenticate_owner
-    redirect_to root_path unless @showcase.owner?(current_user)
+    if @showcase
+      redirect_to root_path unless @showcase.owner?(current_user)
+    else
+      redirect_to root_path
+    end
   end
 
   def get_comment

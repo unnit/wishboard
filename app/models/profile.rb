@@ -29,15 +29,19 @@ class Profile < ActiveRecord::Base
 
   validates :first_name, :last_name, :slug, presence: true
   validates :slug, uniqueness: true
-  validates :first_name, :last_name, :slug, length: { maximum: 230, message: "should be within 220 characters." }
-  
+  validates :first_name, :last_name, length: { maximum: 100, message: "should be between 100 characters." }
+  validates :slug, length: { minimum: 6, maximum: 30, message: "should be between 6 and 30 characters." }
+  validates :slug, format: { with: /\A[a-zA-Z0-9\_]*\z/, message: "only allows alphabets, numbers and '_' " }
+
   validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_blank?, on: :update
   validates_date :date_of_birth, :before => lambda { 18.years.ago },
                                :before_message => ": Must be at least 18 years old", on: :update
-  validates :phone, uniqueness: true, on: :update
-  validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update
-  validates :phone, numericality: true, on: :update
-  validates :about, length: { maximum: 1000 }, on: :update, unless: :about_blank?
+  validates :phone, uniqueness: true, on: :update, unless: :phone_blank?
+  validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update, unless: :phone_blank?
+  validates :phone, numericality: true, on: :update, unless: :phone_blank?
+  validates :about, length: { maximum: 250 }, on: :update, unless: :about_blank?
+
+  validates :twitter, :facebook, :instagram, :linkedin, :google_plus, :website, :other_url, length: { maximum: 220 }, on: :update
 
   validates :avail_days, presence: true, unless: :business_fields_mandatory_blank?
   validates :weekend_days, presence: true, unless: :weekend_pricing_blank?
@@ -88,6 +92,10 @@ class Profile < ActiveRecord::Base
 
   def hourly_pricing_blank?
     hourly_pricing.blank?
+  end
+
+  def phone_blank?
+    phone.blank?
   end
 
   class << self

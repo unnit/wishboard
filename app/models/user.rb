@@ -29,13 +29,13 @@ class User < ActiveRecord::Base
   has_one :profile, dependent: :destroy
 
   class << self
-    def search(term)
+    def admin_search(term)
       results = joins(:profile)
       unless term.blank?
         results = results.where("lower(profiles.first_name) like ? or lower(profiles.last_name) like ? or lower(profiles.phone) like ? or lower(users.email) like ? ",
                             "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%")
       end
-      results
+      results.order(created_at: :desc)
     end
   end
 
@@ -58,8 +58,7 @@ class User < ActiveRecord::Base
   end
 
   def has_delivery_address?
-    delivery_address = addresses.delivery.first
-    if delivery_address.address1.blank? || delivery_address.address2.blank? || delivery_address.landmark.blank? || delivery_address.city.blank? || delivery_address.state.blank? || delivery_address.zip.blank?
+    if addresses.delivery.first.blank?
       return false
     else
       return true
@@ -71,11 +70,6 @@ class User < ActiveRecord::Base
     unless pickup_address
       return true
     end
-  end
-
-  def finished_info?
-    create_profile unless profile
-    profile.valid?
   end
 
   def same_user?(user)

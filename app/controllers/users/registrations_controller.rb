@@ -22,7 +22,7 @@ skip_before_filter :check_user_status, :check_profile, :check_interests
       format.html {
         unless @errors.blank?
           flash[:alert] = @errors.join(", ")
-          redirect_to signup_path
+          redirect_to root_path
           return
         else
           redirect_to confirmation_path
@@ -34,11 +34,13 @@ skip_before_filter :check_user_status, :check_profile, :check_interests
 
   def destroy
     # resource.destroy
-    resource.update(inactive: true)
-    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-    set_flash_message :notice, :destroyed if is_flashing_format?
-    yield resource if block_given?
-    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
+    if current_user.admin?
+      resource.update(inactive: true)
+      Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+      set_flash_message :notice, :destroyed if is_flashing_format?
+      yield resource if block_given?
+      respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
+    end
   end
 
   private

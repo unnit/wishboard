@@ -2,8 +2,8 @@
   .col-xs-12.col-sm-12.text-center
     = cl_image_tag user.avatar, class: "img-circle mtop20", style: "z-index: 1;", width: 160, height: 160, crop: :fill, gravity: :face
     %h4= (truncate user.name, length: 20)
-    %h5= (truncate user.profile.about, length: 200)
-  - unless current_user == user
+    %h5= (truncate user.profile.about, length: 250)
+  - if current_user && current_user != user
     .col-xs-12.col-sm-12.no-mar-pad.text-center{class: "follow-set-#{user.id}"}
       = link_to user_toggle_follow_path(user), remote: true, method: :post do
         .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey.btn-profile-blue
@@ -17,7 +17,10 @@
       %i.fa.fa-heart.heart-red-fg
     .col-xs-12.col-sm-12.no-mar-pad
       in
-      = current_user.same_user?(user) ? "your" : "#{user.name}'s"
+      - if current_user
+        = current_user.same_user?(user) ? "your" : "#{user.name}'s"
+      - else
+        #{user.name}'s
       showcase
   .col-sm-12.hidden-xs.mtop20
     .col-sm-12.no-mar-pad

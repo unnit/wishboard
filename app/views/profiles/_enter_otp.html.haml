@@ -10,7 +10,7 @@
         = form_tag verify_otp_profiles_path, {remote: true, class: "form-horizontal", method: :patch} do |f|
           .form-group
             %label.col-xs-12.col-sm-2.control-label Enter your OTP
-            .col-xs-12.col-sm-5= text_field_tag :otp, "", class: "form-control", placeholder: "Your OTP", maxlength: 10, required: true
+            .col-xs-12.col-sm-5= text_field_tag :otp, "", class: "form-control", placeholder: "Your OTP", maxlength: 6, required: true
           .form-group
             .col-xs-12.col-sm-7.text-center
               = submit_tag "Submit", class: "btn btn-social btn-shadow white-fg"

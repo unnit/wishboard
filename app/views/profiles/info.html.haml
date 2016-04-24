@@ -43,7 +43,7 @@
       $(".username-url").text($(".username").val());
       $(".username").on("keyup", function(){
         $(".username-url").text($(this).val());
-        if($(this).val().length > 4){
+        if($(this).val().length > 5){
           $(".uname-avail").text("Checking...");
           $.get("/profiles/username_available", {uname: $(this).val()}, function(data){
             $(".uname-avail").text(data.result);

@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
   skip_before_filter :check_profile, :check_interests, only: [:info, :create, :username_available]
-  before_action :set_profile, only: [:index, :social, :update_social, :update, :business_profile, :update_business]
+  before_action :set_profile, only: [:index, :social, :update_social, :update, :business_profile, :update_business, :dashboard]
   before_filter :set_social_layout, except: [:dashboard]
 
   def info
@@ -14,7 +14,7 @@ class ProfilesController < ApplicationController
       @profile = Profile.new(create_profile_params)
       @profile.user = current_user
       if @profile.save
-        flash[:notice] = "Your basic info has been created suucessfully. Please select the interests below so that we can serve you the best feed."
+        flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
         redirect_to interests_path
       else
         flash[:alert] = @profile.errors.full_messages.join("<br/>")
@@ -36,7 +36,11 @@ class ProfilesController < ApplicationController
   end
 
   def addressbook
-    @address = current_user.addresses.delivery.first unless current_user.addresses.delivery.first.blank?
+    unless current_user.addresses.delivery.first.blank?
+      @address = current_user.addresses.delivery.first
+    else
+      @address = Address.new
+    end
   end
 
   def update_address
@@ -69,8 +73,12 @@ class ProfilesController < ApplicationController
   end
 
   def update_social
-    @profile.update(social_params)
-    redirect_to settings_social_path, notice: "Your social profiles have been successfully updated."
+    if @profile.update(social_params)
+      redirect_to settings_social_path, notice: "Your social profiles have been successfully updated."
+    else
+      flash[:danger] = @profile.errors.full_messages.join(", ")
+      render :social
+    end
   end
 
   def dashboard
@@ -83,6 +91,13 @@ class ProfilesController < ApplicationController
   end
 
   def update
+    unless params[:profile][:phone].blank?
+      if params[:profile][:phone] != @profile.phone || !@profile.mobile_verified
+        flash[:danger] = "Please verify your mobile number"
+        redirect_to settings_path
+        return
+      end
+    end
     if @profile.update(profile_params)
       flash[:success] = 'Your profile has been successfully updated.'
     else
@@ -169,8 +184,9 @@ class ProfilesController < ApplicationController
     other_profile = Profile.where("phone = ?", session[:mobile_no])
     if profile.phone != session[:mobile_no] && other_profile.blank?
       profile.otp1 = rand(100000..999999)
-      profile.save
-      #send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp1}. Please do not share it with anyone.")
+      if profile.save
+        send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp1}. Please do not share it with anyone.")
+      end
     else
       @unmatch = "yes"
       flash[:alert] = "Mobile no you have entered is either associated with another account or your own verified number"
@@ -183,13 +199,17 @@ class ProfilesController < ApplicationController
       profile = current_user.profile
       profile.otp2 = rand(100000..999999)
       profile.save
-      #send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp2}. Please do not share it with anyone.")
+      send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp2}. Please do not share it with anyone.")
       respond_to :js
     end
   end
 
   def verify_otp
     profile = current_user.profile
+    logger.info '**********'
+    logger.info params[:otp]
+    logger.info profile.otp1
+    logger.info '**********'
     if (params[:otp] == profile.otp1 && !profile.otp1.blank?) || (params[:otp] == profile.otp2 && !profile.otp2.blank?)
       profile.phone = session[:mobile_no]
       profile.mobile_verified = true
@@ -197,14 +217,17 @@ class ProfilesController < ApplicationController
       profile.otp2 = nil
       profile.save
       session.delete("mobile_no")
+      session.delete("otp_entered")
     else
       if session[:otp_entered].blank?
         session[:otp_entered] = 1
         @error = "yes"
+        logger.info '%%%%%%%%%%%%%%'
       else
         @double_error = "yes"
         session.delete("otp_entered")
         flash[:alert] = "You have exceeded the given attempts to enter OTP. Please try again."
+        logger.info '################'
       end
     end
     respond_to :js
@@ -228,7 +251,7 @@ class ProfilesController < ApplicationController
     end
 
     def social_params
-      params.require(:profile).permit(:twitter, :facebook, :instagram, :linkedin, :website, :other_url)
+      params.require(:profile).permit(:twitter, :facebook, :instagram, :linkedin, :google_plus, :website, :other_url)
     end
 
 end

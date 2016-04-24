@@ -1,23 +1,19 @@
 %nav.navbar.navbar-default.navbar-fixed-top.topnav.nav-bar-color.border-bt-side{:role => "navigation", style: "box-shadow: 0 0px 1px rgba(0, 0, 0, 0.26);", class: "#{@nav_color || 'bg-white'}"}
   .navbar.navbar-fixed-top
-    .container
+    .container.padding0
       .navbar-header
         %button.navbar-toggle{data: {toggle: "collapse", target: ".navbar-collapse"}}
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        - if @brand_name
-          %a.navbar-brand.pleft5{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;color:white;"}
-            Cocociti
-        - else
-          %a.navbar-brand.logoh.no-padding-left{href: "/rent"}
-            %span.logo-sprite.pull-left
+        %a.navbar-brand.logoh.no-padding-left{href: "/rent"}
+          %span.logo-sprite.pull-left
         = render "layouts/search_form"
         = yield :header_extra
       .navbar-collapse.collapse.nav-border
-        %ul.nav.navbar-nav.navbar-right{style: "display: #{@pro_view_visible || 'block'}"}
+        %ul.nav.navbar-nav.navbar-right
           - if current_user
-            %li.hidden-xs{style: "display: #{@notification_div || 'none'}"}
+            %li.hidden-xs{style: "display: none"}
               .glyphicon.glyphicon-bell.white-fg.font20.pon.pull-right.mtop15.notif-icon
               - if current_user.unchecked_notififcations_count > 0
                 .badge.notif-badge.pon.pull-right.mtop5.notif-icon= current_user.unchecked_notififcations_count
@@ -31,14 +27,14 @@
                 = link_to notifications_path do
                   .col-xs-12.col-sm-12.padding5.text-center.bg-light-grey.weight600
                     See All
-            %li.hidden-xs.ptop5{style: "display: #{@list_item_display || 'block'}"}= link_to "List Your Item", new_product_path, class: "pa"
+            %li.hidden-xs.ptop5= link_to "List Your Item", new_product_path, class: "pa"
             %li.hidden-xs
               %ul.pro-view.pleft-10
                 %li.dropdown.pull-left
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
                     %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
                       = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 40, height: 40, crop: :fill
-                      %span.mtop10.pull-right{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "bottom", class: "#{@sal_color}"}
+                      %span.mtop10.pull-right{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "bottom"}
                         Hi
                         = (truncate current_user.name, length: 20)
                         %span.caret
@@ -99,7 +95,6 @@
   .coco-offer.text-center.btn-shadow
     .coco-ribbon
       %span.font-medium OFFERS
-
 - unless current_user
   #login.modal.fade
     .modal-dialog

@@ -410,6 +410,9 @@ small{
 .full-width{
   width: 100%;
 }
+.zero-width{
+  width: 0%;
+}
 .full-height{
   height: 100%;
 }
@@ -584,4 +587,10 @@ small{
 }
 .pos-fixed{
   position: fixed;
+}
+.hide-display{
+  display: none;
+}
+.block-display{
+  display: block;
 }

@@ -1,0 +1,92 @@
+%nav.navbar.navbar-default.navbar-fixed-top.topnav.nav-bar-color.border-bt-side{:role => "navigation", style: "box-shadow: 0 0px 1px rgba(0, 0, 0, 0.26);", class: "header-with-grad no-border"}
+  .navbar.navbar-fixed-top
+    .container.padding0
+      .navbar-header
+        %button.navbar-toggle{data: {toggle: "collapse", target: ".navbar-collapse"}}
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        %a.navbar-brand.pleft5{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;color:white;"}
+          Cocociti
+        = yield :header_extra
+      .col-sm-5.no-mar-pad.mtop10.hidden-xs
+        ~ form_tag results_path, method: :get do
+          .col-sm-11.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query", style: "border-radius: 4px 0px 0px 4px;"
+          .col-sm-1.no-mar-pad
+            %button.btn.btn-danger{type: 'submit', style: "border-radius: 0px 4px 4px 0;"}
+              %span.glyphicon.glyphicon-search
+      .navbar-collapse.collapse.nav-border
+        %ul.nav.navbar-nav.navbar-right{style: "display: #{@pro_view_visible || 'block'}"}
+          - if current_user
+            %li.hidden-xs
+              .glyphicon.glyphicon-bell.white-fg.font20.pon.pull-right.mtop15.notif-icon
+              - if current_user.unchecked_notififcations_count > 0
+                .badge.notif-badge.pon.pull-right.mtop5.notif-icon= current_user.unchecked_notififcations_count
+              .sq-rot.notif-toggle
+              .notif-arrow.notif-toggle
+              .notif-wrap.bx-shad.notif-toggle.helvetica-font
+                .col-xs-12.col-sm-12.text-center.notif-loader.padding10
+                  %i.fa.fa-circle-o-notch.fa-spin.font21
+                  Please wait...
+                .col-xs-12.col-sm-12.notif-content.no-mar-pad
+                = link_to notifications_path do
+                  .col-xs-12.col-sm-12.padding5.text-center.bg-light-grey.weight600
+                    See All
+            %li.hidden-xs
+              %ul.pro-view.pleft-10
+                %li.dropdown.pull-left
+                  = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
+                    %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
+                      = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 40, height: 40, crop: :fill
+                      %span.mtop10.pull-right.white-fg{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "bottom"}
+                        Hi
+                        = (truncate current_user.name, length: 20)
+                        %span.caret
+                  %ul.dropdown-menu.pull-left.mtop0{style: "width:180px;"}
+                    %li
+                      = link_to dashboard_path, style: "white-space: normal;" do
+                        %span Dashboard
+                        %span.glyphicon.glyphicon-user.pull-right
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to settings_path, style: "white-space: normal;" do
+                        %span Settings
+                        %span.glyphicon.glyphicon-cog.pull-right
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to invitations_path, style: "white-space: normal;" do
+                        %span Invite friends
+                        %span.glyphicon.glyphicon-envelope.pull-right
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
+                        %span Sign Out
+                        %span.glyphicon.glyphicon-log-out.pull-right
+            %li.hidden-xs= link_to "Showcase", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn", style: "background-color: #019081;padding: 7px;margin-top:7px;color:white;display: #{@sh_btn || 'block;'}"
+            %li.visible-xs.bg-white= link_to "List Your Item", new_product_path
+            %li.visible-xs.bg-white
+              = link_to dashboard_path, style: "white-space: normal;" do
+                %span Dashboard
+            %li.visible-xs.bg-white
+              = link_to settings_path, style: "white-space: normal;" do
+                %span Settings
+            %li.visible-xs.bg-white
+              = link_to settings_business_path, style: "white-space: normal;" do
+                %span Business Settings
+            %li.visible-xs.bg-white
+              = link_to invitations_path, style: "white-space: normal;" do
+                %span Invite friends
+            %li.visible-xs.bg-white
+              = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
+                %span Sign Out
+- if current_user
+  #showcase-modal.modal.fade
+    .modal-dialog
+      .modal-content.pop-up-mar
+        .modal-header.pop-bac
+          %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
+            %i.fa.fa-times
+          %h4.modal-title Your Showcase
+        .modal-body{style: "height: 315px;"}
+          .col-xs-12.col-sm-12.no-mar-pad.bg-white
+            = render partial: "home/post_showcase", locals: {showcase: @scase}

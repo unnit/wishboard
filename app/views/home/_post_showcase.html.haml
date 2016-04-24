@@ -6,50 +6,50 @@
   .col-xs-4.col-sm-4.text-center.submit-ps.padding10.white-fg{style: "background-color: #019081;"}
     Submit
 .col-xs-12.col-sm-12.no-mar-pad{style: "height: 12px;"}
-  .arrow
-  .arrow-z
-.col-xs-12.col-sm-12.no-mar-pad.mbottom10.bg-shad.mbottom30{style: "overflow-x: hidden;min-height:212px;"}
+  .arrow-wrapper
+    .arrow
+    .arrow-z
+.col-xs-12.col-sm-12.no-mar-pad.mbottom10.bg-shad.mbottom30.ps-wrapper.bg-white{style: "min-height:212px;"}
   .p-s-arrow.arrow-right.pon
-  .p-s-arrow.arrow-left.pon{style: "display: none;"}
+  .p-s-arrow.arrow-left.pon.hide-display
   = form_for showcase do |f|
-    .ps-wrapper{style: "width: 1665px;position:absolute;left:0;min-height:210px;"}
-      .text-center.set-1-ps.active{style: "width: 555px;min-height:210px;position:absolute;left:0;"}
-        .col-xs-12.col-sm-12.text-center.padding5{style: "height: 42px;"}
-          %span.error-ps-radio.padding5{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;display:none;"}
-            .glyphicon.glyphicon-exclamation-sign
-            Please select an option
-        .pad-v-40.pon.ps-showpiece.pull-left.btn-shadow{style: "width:120px;background-color:white;margin-left:152px;margin-right: 10px;"}
-          Showpiece
-          = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true, class: "hidden"
-        .pad-v-40.pon.ps-wish.pull-left.btn-shadow{style: "width:120px;background-color:white;"}
-          Wish
-          = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[1]}", required: true, class: "hidden"
-      .set-2-ps.ptop10{style: "width: 555px;min-height:210px;position:absolute;left:555px;padding-left: 30px;padding-right: 30px;"}
-        .col-xs-12.col-sm-12.text-center.padding5
-          %span.error-ps-photo.padding5{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;display:none;"}
-            .glyphicon.glyphicon-exclamation-sign
-            Please upload a photo
-        .col-xs-4.col-sm-4.text-center
-          %span.font11 Drag and Drop the Photo here.
-          .preview
-          .glyphicon.glyphicon-remove.preview-delete.bg-white{style: "display:none;z-index: 1;"}
-          .glyphicon.glyphicon-camera.file-input-button{style: "font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dashed;"}
-            = cl_image_upload_tag(:image, html: {accept: "image/*", capture: "camera"}, class: "border-medium")
-          .progress.progress-striped{style: "display: none;height: 10px;width:107px;"}
-            .progress-bar{style: "width: 0%;"}
-        .col-xs-8.col-sm-8
-          %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
-          %br
-          = f.text_field :all_tags, placeholder: "", class: "tm-input form-control tm-input-inverse tm-input-typeahead"
-      .set-3-ps.ptop10{style: "width: 555px;min-height:210px;position:absolute;left:1110px;padding-left: 30px;padding-right: 30px;"}
-        .col-xs-12.col-sm-12
-          = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 100
-        .col-xs-12.col-sm-12.mtop10
-          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left", required: true, maxlength: 1000
-        .col-xs-4.col-sm-4.mtop10
-          = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left", maxlength: 4
-        .col-xs-8.col-sm-8.mtop10
-          = f.fields_for :location do |lf|
-            = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input", maxlength: 100
-        .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
-          = f.submit "Submit", class: "btn btn-primary btn-shadow btn-social weight-bold showcase-submit"
+    .col-xs-12.col-sm-12.no-mar-pad.text-center.set-1-ps.active{style: "min-height:210px;"}
+      .col-xs-12.col-sm-12.text-center.padding5{style: "height: 42px;"}
+        %span.error-ps-radio.padding5.hide-display{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;"}
+          .glyphicon.glyphicon-exclamation-sign
+          Please select an option
+      .pad-v-40.pon.ps-showpiece.btn-shadow.inline-block{style: "width:120px;background-color:white;"}
+        Showpiece
+        = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true, class: "hidden showcase_type_0"
+      .pad-v-40.pon.ps-wish.btn-shadow.mleft10.inline-block{style: "width:120px;background-color:white;"}
+        Wish
+        = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[1]}", required: true, class: "hidden showcase_type_1"
+    .col-xs-12.col-sm-12.no-mar-pad.set-2-ps.ptop10.hide-display{style: "min-height:210px;"}
+      .col-xs-12.col-sm-12.text-center.padding5
+        %span.error-ps-photo.padding5.hide-display{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;"}
+          .glyphicon.glyphicon-exclamation-sign
+          Please upload a photo
+      .col-xs-4.col-sm-4.text-center
+        %span.font11 Drag and Drop the Photo here.
+        .preview
+        .glyphicon.glyphicon-remove.preview-delete.bg-white.hide-display{style: "z-index: 1;"}
+        .glyphicon.glyphicon-camera.file-input-button.grey-fg.padding20{style: "font-size: 65px;border: 1px dashed;"}
+          = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new" })
+        .progress.progress-striped.hide-display{style: "height: 10px;width:107px;"}
+          .progress-bar{style: "width: 0%;"}
+      .col-xs-8.col-sm-8
+        %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
+        %br
+        = f.text_field :all_tags, placeholder: "", class: "tm-input form-control tm-input-inverse tm-input-typeahead"
+    .col-xs-12.col-sm-12.no-mar-pad.set-3-ps.ptop10.hide-display{style: "min-height:210px;"}
+      .col-xs-12.col-sm-12
+        = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left title-gnrl", required: true, maxlength: 100
+      .col-xs-12.col-sm-12.mtop10
+        = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left des-gnrl", required: true, maxlength: 1000
+      .col-xs-4.col-sm-4.mtop10
+        = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left year-gnrl", maxlength: 4
+      .col-xs-8.col-sm-8.mtop10
+        = f.fields_for :location do |lf|
+          = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input loc-gnrl", maxlength: 100
+      .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
+        = f.submit "Submit", class: "btn btn-primary btn-shadow btn-social weight-bold showcase-submit"

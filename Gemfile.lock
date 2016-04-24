@@ -106,6 +106,14 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    elasticsearch (1.0.17)
+      elasticsearch-api (= 1.0.17)
+      elasticsearch-transport (= 1.0.17)
+    elasticsearch-api (1.0.17)
+      multi_json
+    elasticsearch-transport (1.0.17)
+      faraday
+      multi_json
     erubis (2.7.0)
     execjs (2.5.2)
     faraday (0.9.1)
@@ -260,6 +268,10 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    searchkick (1.2.1)
+      activemodel
+      elasticsearch (>= 1)
+      hashie
     sexp_processor (4.5.1)
     sidekiq (4.0.1)
       concurrent-ruby (~> 1.0)
@@ -339,6 +351,7 @@ DEPENDENCIES
   ruby-hmac
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  searchkick (~> 1.2, >= 1.2.1)
   sidekiq (~> 4.0, >= 4.0.1)
   spring
   uglifier (>= 1.3.0)

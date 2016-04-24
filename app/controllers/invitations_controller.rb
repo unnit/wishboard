@@ -1,5 +1,6 @@
 class InvitationsController < ApplicationController
   before_filter :authenticate_user!
+
   def send_email
     begin
       UserMailer.invite(current_user, params[:message], params[:emails]).deliver_now

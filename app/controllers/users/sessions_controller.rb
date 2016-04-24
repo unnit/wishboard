@@ -12,7 +12,8 @@ class Users::SessionsController < Devise::SessionsController
     self.resource = warden.authenticate!(:scope => resource_name, :recall => "users/sessions#login")
     flash[:notice] = "Signed in successfully." if current_user
     if session["user_return_to"]
-      respond_with resource, location: after_sign_in_path_for(resource)
+      #respond_with resource, location: after_sign_in_path_for(resource)
+      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}#{session.delete(:user_return_to)}'"
     else
       respond_to do |format|
         format.html { redirect_to root_path }

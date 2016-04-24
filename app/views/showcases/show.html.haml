@@ -1,6 +1,7 @@
-.container.mtop50.ptop20.pattern-bg.helvetica-font
-  .col-xs-12.col-sm-8.col-sm-offset-2
-    = render partial: "home/showcases", locals: {showcases: Array(@showcase), feed: "no"}
+.container-fluid.ptop50.pattern-bg
+  .container.ptop40.helvetica-font
+    .col-xs-12.col-sm-8.col-sm-offset-2
+      = render partial: "home/showcases", locals: {showcases: Array(@showcase), feed: "no"}
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){

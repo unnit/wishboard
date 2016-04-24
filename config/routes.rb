@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   resources :profiles, only: [:create, :update] do
     collection do
       post :update_business
-      patch :update_address
+      post :update_address
       patch :update_social
       get :username_available
       get :verify_mobile
@@ -88,6 +88,7 @@ Rails.application.routes.draw do
   post :bulk_bookings, to: "home#bulk_bookings"
   get "offers", to: "home#offers"
   get "feed", to: "home#feed"
+  get "results", to: "showcases#results"
   get "unchecked_notifications", to: "home#unchecked_notifications", as: :unchecked_notifications
   get "notifications", to: "home#notifications", as: :notifications
   get "update_all_notifications", to: "home#update_all_notifications", as: :update_all_notifications
@@ -135,6 +136,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :gettags
+      get :autocomplete
     end
   end
 

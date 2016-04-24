@@ -25,7 +25,7 @@
                       Username
                       %span.website-color *
                     .col-sm-3
-                      = f.text_field :slug, :placeholder => "Username", class: "form-control username", maxlength: 200, required: true
+                      = f.text_field :slug, :placeholder => "Username", class: "form-control username", maxlength: 30, required: true
                     .col-sm-3.uname-avail.padding10.pbottom0.grey-fg
                     .col-sm-10.col-sm-offset-2.ptop10
                       %span.pull-left https://www.cocociti.com/
@@ -35,12 +35,12 @@
                       First Name
                       %span.website-color *
                     .col-sm-3
-                      = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 200, required: true
+                      = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 100, required: true
                     %label.col-sm-2.control-label{:for => "textinput"}
                       Last Name
                       %span.website-color *
                     .col-sm-3
-                      = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200, required: true
+                      = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 100, required: true
                   /- if @profile.date_of_birth.blank? || @profile.gender.blank?
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
@@ -71,8 +71,8 @@
                     .col-sm-7.mob-otp-verify.padding10.pbottom0.grey-fg
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"} About
-                    .col-sm-8
-                      = f.text_area :about, class: "form-control textarea", row: "5", placeholder: "About You", maxlength: 1000
+                    .col-sm-10
+                      = f.text_area :about, class: "form-control textarea", rows: 4, placeholder: "About You", maxlength: 250
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"} Profile Pic
                     .col-sm-10
@@ -97,7 +97,7 @@
       $(".username-url").text($(".username").val());
       $(".username").on("keyup", function(){
         $(".username-url").text($(this).val());
-        if($(this).val().length > 4){
+        if($(this).val().length > 5){
           $(".uname-avail").text("Checking...");
           $.get("/profiles/username_available", {uname: $(this).val()}, function(data){
             $(".uname-avail").text(data.result);

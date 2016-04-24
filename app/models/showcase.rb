@@ -1,13 +1,14 @@
 class Showcase < ActiveRecord::Base
+  searchkick autocomplete: ['title']
   belongs_to :user
   belongs_to :product
-  has_many :wows
+  has_many :wows, dependent: :destroy
   has_many :active_wows, -> {where active: true}, class_name: "Wow", foreign_key: "showcase_id"
   has_many :inactive_wows, -> {where active: false}, class_name: "Wow", foreign_key: "showcase_id"
-  has_many :comments
-  has_many :taggings
+  has_many :comments, dependent: :destroy
+  has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
-  has_many :showcase_notifications
+  has_many :showcase_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
 

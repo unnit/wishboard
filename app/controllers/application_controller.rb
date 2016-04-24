@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   skip_before_filter :check_profile, if: :devise_controller?
-  before_filter :set_timezone, :check_user_status, :check_profile, :check_interests
+  before_filter :set_timezone, :check_user_status, :check_profile, :check_interests, :init_showcase
 
   def set_timezone
     Time.zone = "Kolkata"
@@ -31,16 +31,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def init_showcase
+    @scase = Showcase.new
+    @scase.build_location
+  end
+
   private
 
   def set_social_layout
-    @list_item_display = "none"
-    @adv_search = "none"
-    @offers_visible = "none"
-    @notification_div = "block"
-    @nav_color = "header-with-grad no-border"
-    @brand_name = "yes"
-    @sal_color = "white-fg"
+    @social_layout = "yes"
+  end
+
+  def set_plain_layout
+    @plain_layout = "yes"
   end
 
   def authenticate_user!(options={})
@@ -48,9 +51,9 @@ class ApplicationController < ActionController::Base
     super(options)
   end
 
-  def after_sign_in_path_for(resource)
-    session.delete("user_return_to") || root_path
-  end
+  #def after_sign_in_path_for(resource)
+  #  session.delete("user_return_to") || root_path
+  #end
 
   require 'rubygems'
   require 'plivo'

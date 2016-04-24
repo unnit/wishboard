@@ -36,6 +36,7 @@ gem 'sidekiq', '~> 4.0', '>= 4.0.1'
 gem 'validates_timeliness', '~> 3.0'
 gem 'plivo'
 gem "breadcrumbs_on_rails"
+gem 'searchkick', '~> 1.2', '>= 1.2.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

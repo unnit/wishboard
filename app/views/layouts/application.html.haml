@@ -13,15 +13,18 @@
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
     /[if lt IE 9]
       = javascript_include_tag "//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js", "//oss.maxcdn.com/respond/1.4.2/respond.min.js"
-    = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans:400,600"
-    /= stylesheet_link_tag "//fonts.googleapis.com/css?family=Roboto:400,500"
+    = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
     = render partial: "/layouts/head"
   %body
     = render partial: "/layouts/google_analytics"
-
-    = render partial: "/layouts/navbar"
+    - if @social_layout.present?
+      = render partial: "/layouts/navbar_social"
+    - elsif @plain_layout.present?
+      = render partial: "/layouts/navbar_plain"
+    - else
+      = render partial: "/layouts/navbar_rent"
     = render partial: "layouts/messages"
     = yield
     = render partial: "layouts/footer"

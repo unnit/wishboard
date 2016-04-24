@@ -2750,7 +2750,7 @@ th.headerSortDown {
 .file-input-button{
   overflow: hidden;
 }
-.file-input-button input{
+.file-input-button input, .file-input-button-edit input{
   position: absolute;
   top: 0;
   right: 0;
@@ -2809,13 +2809,18 @@ th.headerSortDown {
   right: 0px;
   border-right: 11px solid transparent;
 }
+.arrow-wrapper{
+  position: absolute;
+  bottom: 0;
+  left: 16.5%;
+}
 .arrow{
   content: "";
   border-bottom: 10px solid #ECECEC;
   border-left: 8px solid transparent;
   position: absolute;
   bottom: 0px;
-  left: 87px;
+  left: 0px;
   border-right: 8px solid transparent;
 }
 .arrow-z{
@@ -2826,7 +2831,7 @@ th.headerSortDown {
   border-right: 7px solid transparent;
   bottom: -1px;
   z-index: 1;
-  left: 88px;
+  left: 1px;
 }
 .p-s-arrow{
   position: absolute;
@@ -2836,6 +2841,12 @@ th.headerSortDown {
   border-radius: 50%;
   top: 73px;
   z-index: 1;
+}
+.set-1-ps, .set-2-ps, .set-3-ps{
+  -webkit-transition: all 0.6s ease-in-out;
+  -moz-transition: all 0.6s ease-in-out;
+  -ms-transition:  all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
 }
 .arrow-right{
   right: 5px;

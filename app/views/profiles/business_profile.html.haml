@@ -196,12 +196,12 @@
       $("#hourly_pricing").on("click", hourly_pricing_check);
       $(".copy_address").click(function(){
         if($(".copy_address").is(":checked")){
-          $("#address_address1").val("#{current_user.addresses.delivery.first.address1}");
-          $("#address_address2").val("#{current_user.addresses.delivery.first.address2}");
-          $("#address_zip").val("#{current_user.addresses.delivery.first.zip}");
-          $("#address_city").val("#{current_user.addresses.delivery.first.city}");
-          $("#address_state").val("#{current_user.addresses.delivery.first.state}");
-          $("#address_landmark").val("#{current_user.addresses.delivery.first.landmark}");
+          $("#address_address1").val("#{current_user.addresses.delivery.first.address1 if current_user.has_delivery_address?}");
+          $("#address_address2").val("#{current_user.addresses.delivery.first.address2 if current_user.has_delivery_address?}");
+          $("#address_zip").val("#{current_user.addresses.delivery.first.zip if current_user.has_delivery_address?}");
+          $("#address_city").val("#{current_user.addresses.delivery.first.city if current_user.has_delivery_address?}");
+          $("#address_state").val("#{current_user.addresses.delivery.first.state if current_user.has_delivery_address?}");
+          $("#address_landmark").val("#{current_user.addresses.delivery.first.landmark if current_user.has_delivery_address?}");
         }
         else{
           $(".pkp_address").val("");

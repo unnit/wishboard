@@ -1,0 +1,18 @@
+.col-xs-12.col-sm-12.full-width.pos-fixed.full-height.otp-wrapper{style: "top:0;left:0;z-index:10000000;background-color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0.6);"}
+  .col-xs-12.col-sm-6.col-sm-offset-3.mtop60.padding0
+    .panel.panel-default#profile_form
+      .panel-heading
+        %h4.mtop-v-5 Verify Mobile Number
+      .panel-body.bg-white
+        .col-xs-12.col-sm-12.mbottom20
+          %span.padding10.pull-left.full-width.mbottom5.alert-success.resend-msg.hidden
+          %span Please enter the OTP that you have received in your mobile number.
+        = form_tag verify_otp_profiles_path, {remote: true, class: "form-horizontal", method: :patch} do |f|
+          .form-group
+            %label.col-xs-12.col-sm-2.control-label Enter your OTP
+            .col-xs-12.col-sm-5= text_field_tag :otp, "", class: "form-control", placeholder: "Your OTP", maxlength: 6, required: true
+          .form-group
+            .col-xs-12.col-sm-7.text-center
+              = submit_tag "Submit", class: "btn btn-social btn-shadow white-fg"
+        .col-xs-12.col-sm-12.text-right
+          = link_to "Resend OTP", resend_otp_profiles_path, remote: true, method: :patch, style: "text-decoration: underline;", class: "resend-otp btn btn-default"

@@ -1,0 +1,4 @@
+- if @unmatch.blank?
+  $(".container-fluid").prepend("#{j render partial: "profiles/enter_otp"}")
+- else
+  location.reload();

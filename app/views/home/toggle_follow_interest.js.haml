@@ -1,0 +1,10 @@
+- if @follow_all.present?
+  $(".follow-tag-icon").addClass("green-fg");
+- elsif @unfollow_all.present?
+  $(".follow-tag-icon").removeClass("green-fg");
+- else
+  $(".follow-tag-#{@tag.id}").toggleClass("green-fg");
+- if current_user.interests_count >= 10
+  $(".cont-intrsts").show();
+- else
+  $(".cont-intrsts").hide();

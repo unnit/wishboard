@@ -1,0 +1,13 @@
+- users.each do |user|
+  .col-xs-12.col-sm-3.padding10{class: "follow-set-#{user.id}"}
+    .col-xs-12.col-sm-12.no-mar-pad.bg-white.font17.bg-shad.text-center{style: "width:257px;height:170px;"}
+      /
+        .pos-absolute
+          = cl_image_tag user.avatar, width: 257, height: 170, crop: :fill, gravity: :face
+      = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "full-width pull-left pos-relative", style: "margin-top:54px;margin-bottom:45px;" do
+        .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey
+          = submit_tag "Follow", class: "loader-button btn loader-in-follow-button padding0 grey-fg"
+          .loader-effect.btn.loader-in-follow-button.grey-fg{style: "display:none;"}
+            .ball-clip-rotate{style: "height:22px;"}
+              %div ...
+      %span.full-width.pull-left.white-fg.padding10.blue-bg.pos-relative= truncate user.name, length: 20

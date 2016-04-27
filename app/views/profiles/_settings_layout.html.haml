@@ -1,0 +1,22 @@
+.col-sm-3.hidden-xs.no-mar-pad
+  = render partial: "home/user_card", locals: {users: Array(current_user), card_padding: "0px", neg_mtop: "-146px", name_size: "17px;margin-bottom:10px;", xtra_col: "none;"}
+  .col-sm-12.no-mar-pad.mtop15
+    .list-group
+      = link_to settings_path, class: "list-group-item acc-sett" do
+        Settings
+        %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
+      = link_to settings_password_path, class: "list-group-item pass-sett" do
+        Password
+        %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
+      = link_to settings_social_path, class: "list-group-item soc-sett" do
+        Social
+        %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
+      = link_to settings_addressbook_path, class: "list-group-item addr-sett" do
+        Address Book
+        %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
+      = link_to settings_business_path, class: "list-group-item buss-sett" do
+        Business
+        %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
+      = link_to dashboard_path, class: "list-group-item dash-sett" do
+        Dashboard
+        %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}

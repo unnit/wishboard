@@ -1,5 +1,5 @@
 class Users::PasswordsController < Devise::PasswordsController
-  skip_before_filter :check_profile
+  skip_before_filter :check_user_status, :check_profile, :check_interests
   # GET /resource/password/new
   def new
 

@@ -1,0 +1,130 @@
+= content_for :title do
+  -title = "Settings - Cocociti"
+.container-fluid.grey-bg.ptop50.pbottom50.helvetica-font
+  .container.mtop10
+    .row
+      = render partial: "profiles/settings_layout"
+      .col-md-9
+        .panel.panel-default#profile_form
+          .panel-heading
+            %h4.mtop-v-5 Profile Info
+          .panel-body
+            #end_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{DateTime.current - 18.years}"}
+            #start_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{DateTime.current - 130.years}"}
+            .col-md-12
+              ~ form_for @profile, html: {class: 'form-horizontal profile_form font13', role: "form"} do |f|
+                %fieldset
+                  .form-group
+                    .col-sm-12.note-font-size.website-color.text-right
+                      - if @profile.date_of_birth.blank? || @profile.gender.blank?
+                        *, # marked fields are mandatory
+                      - else
+                        * marked fields are mandatory
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      Username
+                      %span.website-color *
+                    .col-sm-3
+                      = f.text_field :slug, :placeholder => "Username", class: "form-control username lowercase", maxlength: 30, required: true
+                    .col-sm-3.uname-avail.padding10.pbottom0.grey-fg
+                    .col-sm-10.col-sm-offset-2.ptop10
+                      %span.pull-left https://www.cocociti.com/
+                      %span.pull-left.username-url.lowercase
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      First Name
+                      %span.website-color *
+                    .col-sm-3
+                      = f.text_field :first_name, :placeholder => "First Name", class: "form-control", maxlength: 100, required: true
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      Last Name
+                      %span.website-color *
+                    .col-sm-3
+                      = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 100, required: true
+                  /- if @profile.date_of_birth.blank? || @profile.gender.blank?
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      Birthday
+                      %span.website-color #
+                    .col-sm-3
+                      .input-group.mbottom0.input-append.date.date_of_birth
+                        %span#sizing-addon2.input-group-addon.bg-white
+                          %span.glyphicon.glyphicon-calendar{"aria-hidden" => "true"}
+                        = f.text_field :date_of_birth, placeholder: "dd/mm/yyyy", class: "form-control bg-white pon", style: "border-radius:0", readonly: true
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      Gender
+                      %span.website-color #
+                    .col-sm-5{style: "margin-top:8px;"}
+                      = f.radio_button :gender, "#{Profile::GENDER[0]}"
+                      %label Male&nbsp;&nbsp;
+                      = f.radio_button :gender, "#{Profile::GENDER[1]}"
+                      %label Female&nbsp;&nbsp;
+                      = f.radio_button :gender, "#{Profile::GENDER[2]}"
+                      %label Others
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"}
+                      Mobile
+                    .col-sm-3
+                      = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
+                    .col-sm-7.mob-otp-verify.padding10.pbottom0.grey-fg
+                      - if @profile.mobile_verified
+                        Verified&nbsp;
+                        %i{class: "fa fa-check-circle green-fg font17"}
+                  .form-group
+                    %label.col-sm-2.control-label
+                      Location
+                    .col-sm-3
+                      = f.fields_for :location do |lf|
+                        = lf.text_field :name, placeholder: "Enter your location", class: "form-control map-location controls pac-input", maxlength: 240
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"} About
+                    .col-sm-10
+                      = f.text_area :about, class: "form-control textarea", rows: 4, placeholder: "About You", maxlength: 250
+                  .form-group
+                    %label.col-sm-2.control-label{:for => "textinput"} Profile Pic
+                    .col-sm-10
+                      Select file
+                      = f.file_field :image, class: "fileupload"
+                      %span= render partial: "/profiles/avatar"
+                    - if @profile.date_of_birth.blank? || @profile.gender.blank?
+                      .col-sm-10.col-sm-offset-2.mtop20.text-right
+                        - if @profile.date_of_birth.blank? || @profile.gender.blank?
+                          Fields marked with
+                          %span.website-color #
+                          cannot be changed later.
+                  .form-group
+                    .col-sm-12.text-center
+                      %button.btn.save-button.white-fg Save
+
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".acc-sett").addClass("active");
+      $(".user-mobile-no").on("keyup", function(){
+        if($(this).val().length == 10){
+          $(".mob-otp-verify").text("Checking...");
+          $.get("/profiles/verify_mobile", {mobile: $(this).val()}, function(data){
+            $(".mob-otp-verify").addClass("padding10 pbottom0 grey-fg")
+            if(data.result == "associated"){
+              $(".mob-otp-verify").text("Associated with another acount");
+            }else if(data.result == "getotp"){
+              $(".mob-otp-verify").removeClass("padding10 pbottom0 grey-fg")
+              $(".mob-otp-verify").html("<a data-remote='true' rel='nofollow' data-method='patch' href='/profiles/get_otp' class='btn btn-default'>Get OTP</a>")
+            }
+            else if(data.result == "own"){
+              $(".mob-otp-verify").text("It's your own verified number!");
+            }
+          })
+        }else{
+          $(".mob-otp-verify").addClass("padding10 pbottom0 grey-fg")
+          $(".mob-otp-verify").empty();
+          $(".mob-otp-verify").text("Please enter your 10 digit number without leading zero.")
+        }
+      })
+      $(".save-button").click(function(){
+          $("#profile_date_of_birth").removeAttr("readonly");
+          setTimeout(function(){$("#profile_date_of_birth").attr("readonly", true);}, 1000);
+      })
+    });

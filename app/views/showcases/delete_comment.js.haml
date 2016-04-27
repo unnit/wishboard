@@ -1,1 +1,2 @@
 $("#media-comment-#{@comment.id}").fadeOut(200, function(){$("#media-comment-#{@comment.id}").remove();});
+$(".comment-link-#{@comment.showcase.id}").next(".badge").text("#{@comment.showcase.comments.count}")

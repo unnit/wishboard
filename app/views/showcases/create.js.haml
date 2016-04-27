@@ -1,0 +1,16 @@
+$(".loader-button").show();
+$(".loader-effect").hide();
+$(".ps-wrapper .messages").html("#{j(render 'layouts/messages')}")
+- if @showcase.errors.blank?
+  var new_showcase = $("#{j render partial: 'home/showcases', locals: {showcases: Array(@showcase)}}").hide();
+  $(".showcase-strip").prepend(new_showcase);
+  $(".showcase-ps-#{@showcase.id}").fadeIn("slow");
+  $("#new_showcase")[0].reset();
+  $(".set-2-ps, .set-3-ps").removeClass("active block-display").addClass("hide-display");
+  $(".set-1-ps").addClass("active block-display");
+  $(".arrow-left").fadeOut();
+  $(".arrow-right").fadeIn();
+  $(".arrow-wrapper").animate({left: "16.5%"});
+  $(".preview-delete, .preview, .preview-edit").hide();
+  $(".file-input-button").show();
+  $(".ps-showpiece, .ps-wish").removeClass("header-with-grad white-fg");

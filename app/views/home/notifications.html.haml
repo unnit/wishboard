@@ -1,9 +1,13 @@
-.container.mar-des-page.mbottom40
-  %h3 Your Notifications
-  .col-xs-12.col-sm-12.notif-full-content.no-mar-pad.mtop10.light-border
-    = render partial: "home/notifications_content", locals: {notifications: @notifications}
-  #infinite-scrolling-content.hidden
-    = paginate @notifications, param_name: "notifications"
-  .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
-    %i.fa.fa-circle-o-notch.fa-spin.font21
-    Please wait...
+.container-fluid.ptop50.pattern-bg{style: "min-height:700px;"}
+  .container
+    %h3 Your Notifications
+    .col-xs-12.col-sm-12.notif-full-content.no-mar-pad.mtop10.light-border
+      - unless @notifications.blank?
+        = render partial: "home/notifications_content", locals: {notifications: @notifications}
+      - else
+        %h3.text-center No Activity yet???
+    #infinite-scrolling-content.hidden
+      = paginate @notifications, param_name: "notifications"
+    .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
+      %i.fa.fa-circle-o-notch.fa-spin.font21
+      Please wait...

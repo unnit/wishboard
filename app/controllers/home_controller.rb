@@ -1,28 +1,36 @@
 class HomeController < ApplicationController
-  skip_before_filter :check_user_status, only: [:user_signup_confirmation]
-  skip_before_filter :check_profile, only: [:get_state_and_city]
-  before_filter :back_to_home, only: [:login, :sign_up]
-  before_filter :authenticate_user!, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers, :notifications]
-  before_filter :set_profile, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
-  before_filter :set_social_layout, only: [:feed, :myprofile, :myshowpieces, :mywishes, :following, :followers, :notifications]
+  skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
+  skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
+  before_filter :back_to_home, only: [:authenticate]
+  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers]
+  before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
+  before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed]
+  before_filter :set_plain_layout, only: [:user_signup_confirmation, :interests]
 
   def index
     @adv_search = "none"
   end
 
   def feed
-    @showcase = Showcase.new
-    @showcase.build_location
-    @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
-    @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-    #@showcases = Showcase.order("RANDOM()")
-    @showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(2)
-    #@showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
-    @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
-    @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
-    respond_to do |format|
-      format.html
-      format.js
+    if current_user
+      @social_layout = "yes"
+      @sh_btn = 'none;'
+      @showcase = Showcase.new
+      @showcase.build_location
+      @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
+      @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
+      @showcases = Showcase.order("RANDOM()")
+      #@showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(2)
+      @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
+      @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
+      @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    else
+      @plain_layout = "yes"
+      render :authenticate
     end
   end
 
@@ -155,6 +163,37 @@ class HomeController < ApplicationController
     render json: {user: (render_to_string '_user_card', layout: false, locals: {users: Array(user), card_padding: '0px'})}
   end
 
+  def interests
+  end
+
+  def following_all
+    @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
+    @users = Kaminari.paginate_array(@users).page(params[:users]).per(12)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def toggle_follow_interest
+    @tag = Tag.find_by_id params[:id]
+    current_user.toggle_follow_interest!(@tag)
+    @tag.reload
+    respond_to :js
+  end
+
+  def follow_all_interest
+    current_user.activate_all_interest!
+    @follow_all = true
+    render "toggle_follow_interest.js"
+  end
+
+  def unfollow_all_interest
+    current_user.deactivate_all_interest!
+    @unfollow_all = true
+    render "toggle_follow_interest.js"
+  end
+
   def get_state_and_city
     result={city: "", state: ""}
     address = Geokit::Geocoders::GoogleGeocoder.geocode "#{params[:zip]} India"
@@ -182,18 +221,10 @@ class HomeController < ApplicationController
   end
 
   def user_signup_confirmation
-    @pro_view_visible = "none"
-    @adv_search = "none"
+    redirect_to root_path unless current_user.inactive
   end
 
-  def sign_up
-    @pro_view_visible = "none"
-    @adv_search = "none"
-  end
-
-  def login
-    @pro_view_visible = "none"
-    @adv_search = "none"
+  def authenticate
   end
 
   def offers
@@ -211,8 +242,8 @@ class HomeController < ApplicationController
     redirect_to root_path if current_user
   end
 
-  def set_profile
-    @profile = Profile.friendly.find params[:id]
+  def set_profile_caseless
+    @profile = Profile.friendly.find params[:id].downcase
     @user = @profile.user
   end
 

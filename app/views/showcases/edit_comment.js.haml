@@ -1,3 +1,1 @@
-$(".form-comment-#{@comment.id}").hide();
-$(".view-comment-#{@comment.id}").text("#{@comment.description}");
-$(".view-comment-#{@comment.id}").show();
+$("#media-comment-#{@comment.id}").replaceWith("#{j render partial: "comment", locals: {comment: @comment}}");

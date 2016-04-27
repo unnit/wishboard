@@ -12,13 +12,12 @@
     /[if lt IE 9]
       = javascript_include_tag "//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js", "//oss.maxcdn.com/respond/1.4.2/respond.min.js"
     = stylesheet_link_tag 'application', media: 'all'
-    = stylesheet_link_tag "//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"    
+    = stylesheet_link_tag "//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic"
     = csrf_meta_tags
   %body{"ng-app" => "general"}
     = render partial: "/layouts/admin_nav"
     .mtop50
       = render partial: "layouts/messages"
     = yield
-    = javascript_include_tag "//maps.googleapis.com/maps/api/js?sensor=false"
     = javascript_include_tag 'application'
     = yield :extra_js

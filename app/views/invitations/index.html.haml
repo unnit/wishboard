@@ -13,6 +13,13 @@
                 .col-sm-10= text_area_tag :emails, "", rows: "3", placeholder: "Emails", class: "form-control textarea"
               .form-group
                 %label.col-sm-2.control-label Personal Messages
-                .col-sm-10= text_area_tag :message, "", rows: "3", placeholder: "Personal Messages", class: "form-control textarea"
-              .pull-right{style: "margin-bottom:50px;"}
-                = submit_tag "Send Invite", class: "btn btn-info save-button"
+                .col-sm-10= text_area_tag :message, "", rows: "5", placeholder: "Personal Messages", class: "form-control textarea"
+              .form-group
+                .col-xs-12.col-sm-12.text-center
+                  = submit_tag "Send Invite", class: "btn btn-info save-button"
+              - if params[:invite_friends] == "invite"
+                .form-group
+                  .col-xs-12.col-sm-12
+                    .pull-right.padding10
+                      = link_to root_path do
+                        .btn.btn-primary Skip to Feed

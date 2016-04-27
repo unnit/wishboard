@@ -2,7 +2,7 @@ class Admin::UsersController < AdminController
   before_action :set_user, only: [:update, :lock, :unlock]
 
   def index
-    @users = User.search(params[:term]).page(params[:page]).per(40)
+    @users = User.admin_search(params[:term]).page(params[:page]).per(40)
   end
 
   def update

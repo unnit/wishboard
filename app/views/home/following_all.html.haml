@@ -1,0 +1,9 @@
+.container-fluid.grey-bg.mtop50.pbottom50
+  .container.mtop30
+    .col-xs-12.col-sm-12.user-wrapper
+      = render partial: "follow_people", locals: {users: @users}
+    #infinite-scrolling-content.hidden
+      = paginate @users, param_name: "users"
+    .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
+      %i.fa.fa-circle-o-notch.fa-spin.font21
+      Please wait...

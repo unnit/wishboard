@@ -1,35 +1,39 @@
-.container.mtop50.padding0.helvetica-font
-  .col-sm-3.hidden-xs.no-mar-pad.ptop15{style: "height: 1000px;"}
-    = render partial: "user_card", locals: {users: Array(current_user), card_padding: "0px", neg_mtop: "-146px", name_size: "17px;margin-bottom:10px;", xtra_col: "none;"}
-    .col-xs-12.col-sm-4.bg-shad.padding10.mtop20{style: "min-width: 292px;"}
-      %h4 Tag Cloud
-      - tag_cloud Tag.counts, %w{font11 font13 font17 font20} do |tag, css_class|
-        = link_to tag.name.strip, tag_path(tag.name), class: css_class
-  .col-xs-12.col-sm-6.ptop15
-    = render partial: "post_showcase", locals: {showcase: @showcase}
-    .col-sm-12.no-mar-pad.showcase-strip
-      = render partial: "home/showcases", locals: {showcases: @showcases}
-    .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
-      %i.fa.fa-circle-o-notch.fa-spin.font21
-      Please wait...
-    #infinite-scrolling-posts.hidden
-      = paginate @showcases, param_name: "showcases"
-      = hidden_field_tag :prev_showcase, @showcases.current_page - 1
-  .col-sm-3.hidden-xs.no-mar-pad.ptop15{style: "height: 1000px;"}
-    %h4.no-mar-pad.padding15.white-fg.header-with-grad.font17{style: "border-top-left-radius:4px;border-top-right-radius:4px;"} People to follow
-    .col-sm-12.padding10.follow-wrapper.bg-shad.bg-white
-      .col-sm-12.no-mar-pad.follow-strip
-        = render partial: "follow", locals: {users: @users}
-      .col-xs-12.col-sm-12.text-center.feed-loader.padding20{style: "display:none;"}
+.container-fluid.ptop50.pattern-bg.padding0
+  .container.padding0.helvetica-font
+    .col-sm-3.hidden-xs.no-mar-pad.ptop15{style: "height: 1000px;"}
+      = render partial: "user_card", locals: {users: Array(current_user), card_padding: "0px", neg_mtop: "-146px", name_size: "17px;margin-bottom:10px;", xtra_col: "none;"}
+      .col-xs-12.col-sm-4.bg-shad.padding10.mtop15.bg-white{style: "min-width: 292px;"}
+        %h4 Tag Cloud
+        - tag_cloud Tag.counts, %w{font11 font13 font17 font20} do |tag, css_class|
+          %span.padding5.mbottom5.inline-block.grey-bg
+            .glyphicon.glyphicon-tag
+            = link_to tag.name.strip, tag_path(tag.name), class: "#{css_class} black-fg"
+    .col-xs-12.col-sm-6.ptop15.padding-mob0
+      = render partial: "post_showcase", locals: {showcase: @showcase}
+      .col-sm-12.no-mar-pad.showcase-strip
+        = render partial: "home/showcases", locals: {showcases: @showcases}
+      .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
         %i.fa.fa-circle-o-notch.fa-spin.font21
         Please wait...
-      #infinite-scrolling-follow.hidden
-        = paginate @users, param_name: "users"
-      = hidden_field_tag :prev_user, @users.current_page - 1
+      #infinite-scrolling-posts.hidden
+        = paginate @showcases, param_name: "showcases"
+        = hidden_field_tag :prev_showcase, @showcases.current_page - 1
+    .col-sm-3.hidden-xs.no-mar-pad.ptop15{style: "height: 1000px;"}
+      %h4.no-mar-pad.padding15.white-fg.header-with-grad.font17{style: "border-top-left-radius:4px;border-top-right-radius:4px;"} People to follow
+      .col-sm-12.padding10.follow-wrapper.bg-shad.bg-white
+        .col-sm-12.no-mar-pad.follow-strip
+          = render partial: "follow", locals: {users: @users}
+        .col-xs-12.col-sm-12.text-center.feed-loader.padding20{style: "display:none;"}
+          %i.fa.fa-circle-o-notch.fa-spin.font21
+          Please wait...
+        #infinite-scrolling-follow.hidden
+          = paginate @users, param_name: "users"
+        = hidden_field_tag :prev_user, @users.current_page - 1
 
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      $("#showcase-modal").remove();
       $(".follow-wrapper").mCustomScrollbar({
     					theme:"minimal-dark",//rounded-dots-dark
               callbacks: {

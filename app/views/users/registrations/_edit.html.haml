@@ -1,29 +1,29 @@
-.panel.panel-primary.collbod#user_form
-  .collbocol.panel-heading{:style => "background-color:#e84242; border: none;"}
-    %h3.panel-title.about-text Account
-    %span.pull-right.clickable
-      %i.glyphicon.glyphicon-chevron-up
+.panel.panel-default#user_form
+  .panel-heading
+    %h4.mtop-v-5 Password
   .panel-body
     .row
       .col-md-12
-        ~ form_for(@user, as: :user, url: registration_path(:user), remote: true, html: {class: 'form-horizontal user_form', role: "form", method: :put}) do |f|
-          .errors.mbottom20
+        ~ form_for(current_user, as: :user, url: registration_path(:user), remote: true, html: {class: 'form-horizontal user_form', role: "form", method: :put}) do |f|
+          .messages.mbottom20
           %fieldset
             .form-group
-              %label.col-sm-2.control-label{:for => "textinput"} Current password
-              .col-sm-3
+              %label.col-sm-4.control-label Current password
+              .col-sm-4
                 = f.password_field :current_password, :placeholder => "password", class: "form-control"
-              .col-md-1{:style => "text-align:center;"}
-                %i.fa.fa-plus.fa-2x{style: "color:#e84242"}
-              .col-md-2
+            .form-group
+              %label.col-sm-4.control-label New password
+              .col-sm-4
                 = f.password_field :password, :placeholder => "New password", class: "form-control"
-              .col-md-2
-                = f.password_field :password_confirmation, :placeholder => "Repeat password", class: "form-control"
-              .col-md-2
-                /%button.btn.website-color-bg.white-fg Update
+            .form-group
+              %label.col-sm-4.control-label Verify password
+              .col-sm-4
+                = f.password_field :password_confirmation, :placeholder => "Verify password", class: "form-control"
+            .form-group
+              .col-md-8.text-center
                 .btn.website-color-bg.white-fg.no-mar-pad.loader-out-button
                   = f.submit "Update", class: "loader-button btn website-color-bg loader-in-button"
                   .loader-effect.btn.website-color-bg.loader-in-button{style: "display:none;"}
-                    .pull-left Updating...
+                    .pull-left.mleft15 Updating...
                     .ball-clip-rotate.pull-left{style: "height:22px;"}
                       %div

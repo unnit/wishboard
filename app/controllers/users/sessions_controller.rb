@@ -1,9 +1,10 @@
 class Users::SessionsController < Devise::SessionsController
 # before_filter :configure_sign_in_params, only: [:create]
-  skip_before_filter :check_user_status, :check_profile
+  skip_before_filter :check_user_status, :check_profile, :check_interests
+
   # GET /resource/sign_in
   def new
-    redirect_to login_path
+    redirect_to root_path
   end
 
   # POST /resource/sign_in
@@ -11,7 +12,8 @@ class Users::SessionsController < Devise::SessionsController
     self.resource = warden.authenticate!(:scope => resource_name, :recall => "users/sessions#login")
     flash[:notice] = "Signed in successfully." if current_user
     if session["user_return_to"]
-      respond_with resource, location: after_sign_in_path_for(resource)
+      #respond_with resource, location: after_sign_in_path_for(resource)
+      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}#{session.delete(:user_return_to)}'"
     else
       respond_to do |format|
         format.html { redirect_to root_path }
@@ -26,16 +28,16 @@ class Users::SessionsController < Devise::SessionsController
     respond_to do |format|
       format.html {
         flash[:alert] = "Please enter a valid email and password."
-        redirect_to login_path
+        redirect_to root_path
       }
       format.js { render "create.js" }
     end
   end
 
   # DELETE /resource/sign_out
-  # def destroy
+  #def destroy
   #   super
-  # end
+  #end
 
   # protected
 

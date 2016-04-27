@@ -51,14 +51,27 @@ Rails.application.routes.draw do
 
   resources :profiles, only: [:create, :update] do
     collection do
-      post "update_business"
+      post :update_business
+      post :update_address
+      patch :update_social
+      get :username_available
+      get :verify_mobile
+      patch :get_otp
+      patch :resend_otp
+      patch :verify_otp
     end
   end
 
   get :invitations, to: "invitations#index", as: :invitations
   post "invitations/send_email", to: "invitations#send_email", as: :send_email_invitations
 
-  get :settings, to: "settings#index"
+  get "settings/account", to: "profiles#index", as: :settings
+  get "settings", to: "profiles#settings", as: :root_settings
+  get "settings/business", to: "profiles#business_profile"
+  get "settings/password", to: "profiles#password"
+  get "settings/social", to: "profiles#social"
+  get "settings/addressbook", to: "profiles#addressbook"
+  get "dashboard", to: "profiles#dashboard"
   get :about, to: "home#about"
   get :terms, to: "home#terms"
   get :privacy, to: "home#privacy"
@@ -66,18 +79,23 @@ Rails.application.routes.draw do
   get "goodness-and-open-source", to: "home#goodness-and-open-source"
   get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
-  get "user_signup_confirmation", to: "home#user_signup_confirmation"
-  get "settings/business", to: "profiles#business_profile"
-  get "dashboard", to: "profiles#dashboard"
-  get "signup", to: "home#sign_up"
-  get "login", to: "home#login"
+  get "confirmation", to: "home#user_signup_confirmation"
+  get "info", to: "profiles#info"
+  get "interests", to: "home#interests"
+  get "rent", to: "home#index"
+  get "people", to: "home#following_all", as: :following_all
+  get "authenticate", to: "home#authenticate"
   post :bulk_bookings, to: "home#bulk_bookings"
   get "offers", to: "home#offers"
   get "feed", to: "home#feed"
+  get "results", to: "showcases#results"
   get "unchecked_notifications", to: "home#unchecked_notifications", as: :unchecked_notifications
   get "notifications", to: "home#notifications", as: :notifications
   get "update_all_notifications", to: "home#update_all_notifications", as: :update_all_notifications
   post "toggle_follow/:id", to: "home#toggle_follow", as: :user_toggle_follow
+  post "follow_all_interest", to: "home#follow_all_interest", as: :follow_all_interest
+  post "unfollow_all_interest", to: "home#unfollow_all_interest", as: :unfollow_all_interest
+  post "toggle_follow_interest/:id", to: "home#toggle_follow_interest", as: :user_toggle_follow_interest
   get ":id/showpieces", to: "home#myshowpieces", as: :myshowpieces
   get ":id/wishes", to: "home#mywishes", as: :mywishes
   get ":id/following", to: "home#following", as: :following
@@ -119,6 +137,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :gettags
+      get :autocomplete
     end
   end
 
@@ -127,5 +146,5 @@ Rails.application.routes.draw do
   get "/categories/:id", to: "products#category", as: :category
   get "/listings/:id", to: "products#show", as: :user_product
 
-  root 'home#index'
+  root 'home#feed'
 end

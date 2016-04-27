@@ -1,11 +1,14 @@
 class Showcase < ActiveRecord::Base
+  searchkick autocomplete: ['title']
   belongs_to :user
   belongs_to :product
-  has_many :wows
-  has_many :comments
-  has_many :taggings
+  has_many :wows, dependent: :destroy
+  has_many :active_wows, -> {where active: true}, class_name: "Wow", foreign_key: "showcase_id"
+  has_many :inactive_wows, -> {where active: false}, class_name: "Wow", foreign_key: "showcase_id"
+  has_many :comments, dependent: :destroy
+  has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
-  has_many :showcase_notifications
+  has_many :showcase_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
 
@@ -34,45 +37,42 @@ class Showcase < ActiveRecord::Base
     tag.showcases unless tag.blank?
   end
 
-  def wow(user)
+  def create_wow(user)
     wows.create(user_id: user.id)
   end
 
-  def unwow(user)
-    wows.find_by(user_id: user.id).destroy
+  def activate_wow(user)
+    wows.find_by(user_id: user.id).update_column :active, true
+  end
+
+  def deactivate_wow(user)
+    wows.find_by(user_id: user.id).update_column :active, false
   end
 
   def wowed?(user)
-    wows.map(&:user_id).include?(user.id)
+    active_wows.map(&:user_id).include?(user.id)
+  end
+
+  def inactive_wowed?(user)
+    inactive_wows.map(&:user_id).include?(user.id)
   end
 
   def toggle_wow!(user)
     if wowed?(user)
-      unwow(user)
+      deactivate_wow(user)
+    elsif inactive_wowed?(user)
+      activate_wow(user)
     else
-      wow(user)
+      create_wow(user)
     end
   end
 
-  def wishlist?
-    showcase_type == Showcase::SHOWCASE_VALUES[1]
-  end
-
-  def showpiece?
-    showcase_type == Showcase::SHOWCASE_VALUES[0]
-  end
-
-  def showcase_type_name
-    return Showcase::SHOWCASE_TYPE[0][0] if showpiece?
-    return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
-  end
-
   def wows_many?
-    wows.count > 1
+    active_wows.count > 1
   end
 
   def wows_any?
-    wows.count >= 1
+    active_wows.count >= 1
   end
 
   def comments_many?
@@ -89,6 +89,27 @@ class Showcase < ActiveRecord::Base
 
   def owner?(user)
     self.user == user
+  end
+
+  def wishlist?
+    showcase_type == Showcase::SHOWCASE_VALUES[1]
+  end
+
+  def showpiece?
+    showcase_type == Showcase::SHOWCASE_VALUES[0]
+  end
+
+  def showcase_type_name
+    return Showcase::SHOWCASE_TYPE[0][0] if showpiece?
+    return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
+  end
+
+  def commented_users
+    comments.map{|c| c.user.name}.uniq.join(", ")
+  end
+
+  def wowed_users
+    wows.map{|w| w.user.name}.uniq.join(", ")
   end
 
   after_create :create_showcase_notification

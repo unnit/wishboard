@@ -13,25 +13,29 @@ class User < ActiveRecord::Base
   has_many :reviews, dependent: :destroy
   has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id"
   has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id"
-  has_many :following, through: :active_relationships, source: :followed
-  has_many :followers, through: :passive_relationships, source: :follower
+  has_many :following, -> {where("relationships.active = ?", true)}, through: :active_relationships, source: :followed
+  has_many :followers, -> {where("relationships.active = ?", true)}, through: :passive_relationships, source: :follower
   has_many :showcases
   has_many :wows
   has_many :comments
-  has_many :appreciations, -> (id) {where( "wows.user_id != ?", id)}, through: :showcases, source: :wows
-  has_many :received_comments, -> (id) {where( "comments.user_id != ?", id )}, through: :showcases, source: :comments
+  has_many :appreciations, -> (id) {where("wows.user_id != ? and wows.active = ?", id, true)}, through: :showcases, source: :wows
+  has_many :received_comments, -> (id) {where("comments.user_id != ?", id )}, through: :showcases, source: :comments
   has_many :showcase_notifications
+  has_many :interests
+  has_many :tags, through: :interests
+  has_many :active_interests, -> {where active: true}, class_name: "Interest", foreign_key: "user_id"
+  has_many :inactive_interests, -> {where active: false}, class_name: "Interest", foreign_key: "user_id"
 
   has_one :profile, dependent: :destroy
 
   class << self
-    def search(term)
+    def admin_search(term)
       results = joins(:profile)
       unless term.blank?
         results = results.where("lower(profiles.first_name) like ? or lower(profiles.last_name) like ? or lower(profiles.phone) like ? or lower(users.email) like ? ",
                             "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%")
       end
-      results
+      results.order(created_at: :desc)
     end
   end
 
@@ -54,8 +58,7 @@ class User < ActiveRecord::Base
   end
 
   def has_delivery_address?
-    delivery_address = addresses.delivery.first
-    if delivery_address.address1.blank? || delivery_address.address2.blank? || delivery_address.landmark.blank? || delivery_address.city.blank? || delivery_address.state.blank? || delivery_address.zip.blank?
+    if addresses.delivery.first.blank?
       return false
     else
       return true
@@ -67,11 +70,6 @@ class User < ActiveRecord::Base
     unless pickup_address
       return true
     end
-  end
-
-  def finished_info?
-    create_profile unless profile
-    profile.valid?
   end
 
   def same_user?(user)
@@ -118,6 +116,10 @@ class User < ActiveRecord::Base
     profile.phone
   end
 
+  def location
+    profile.location
+  end
+
   def profile_id
     create_profile unless profile
     profile.id
@@ -134,7 +136,7 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_wows
-    appreciations.where("wows.checked = ?", false)
+    appreciations.where("wows.checked = ? and wows.active = ?", false, true)
   end
 
   def unchecked_comments
@@ -142,7 +144,7 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_followers
-    passive_relationships.where("relationships.checked = ?", false)
+    passive_relationships.where("relationships.checked = ? and relationships.active = ?", false, true)
   end
 
   def unchecked_showcase_notifications
@@ -153,6 +155,10 @@ class User < ActiveRecord::Base
     unchecked_wows.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count
   end
 
+  def interests_count
+    active_interests.count
+  end
+
   #actions
 
   def rate!(product, value)
@@ -161,23 +167,83 @@ class User < ActiveRecord::Base
     rating.save
   end
 
-  def follow(other_user)
+  def create_follow(other_user)
     active_relationships.create(followed_id: other_user.id)
   end
 
-  def unfollow(other_user)
-    active_relationships.find_by(followed_id: other_user.id).destroy
+  def activate_follow(other_user)
+    active_relationships.find_by(followed_id: other_user.id).update_column :active, true
+  end
+
+  def deactivate_follow(other_user)
+    active_relationships.find_by(followed_id: other_user.id).update_column :active, false
   end
 
   def following?(other_user)
-    following.include?(other_user)
+    active_relationships.where(active: true).map(&:followed_id).include?(other_user.id)
+  end
+
+  def is_inactive_following?(other_user)
+    active_relationships.where(active: false).map(&:followed_id).include?(other_user.id)
   end
 
   def toggle_follow!(other_user)
     if following?(other_user)
-      unfollow(other_user)
+      deactivate_follow(other_user)
+    elsif is_inactive_following?(other_user)
+      activate_follow(other_user)
     else
-      follow(other_user)
+      create_follow(other_user)
+    end
+  end
+
+  def create_interest(tag)
+    interests.create(tag_id: tag.id)
+  end
+
+  def activate_interest(tag)
+    interests.find_by(tag_id: tag.id).update_column :active, true
+  end
+
+  def deactivate_interest(tag)
+    interests.find_by(tag_id: tag.id).update_column :active, false
+  end
+
+  def is_active_interest?(tag)
+    active_interests.map(&:tag_id).include?(tag.id)
+  end
+
+  def is_inactive_interest?(tag)
+    inactive_interests.map(&:tag_id).include?(tag.id)
+  end
+
+  def is_interest?(tag)
+    interests.map(&:tag_id).include?(tag.id)
+  end
+
+  def toggle_follow_interest!(tag)
+    if is_active_interest?(tag)
+      deactivate_interest(tag)
+    elsif is_inactive_interest?(tag)
+      activate_interest(tag)
+    else
+      create_interest(tag)
+    end
+  end
+
+  def activate_all_interest!
+    Tag.featured.each do |tag|
+      if is_interest?(tag)
+        activate_interest(tag)
+      else
+        create_interest(tag)
+      end
+    end
+  end
+
+  def deactivate_all_interest!
+    active_interests.each do |interest|
+      deactivate_interest(interest.tag)
     end
   end
 

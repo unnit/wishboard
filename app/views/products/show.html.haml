@@ -328,6 +328,22 @@
 = content_for :extra_js do
   :javascript
     $(function(){
+      //Slider in product page
+      var slider = $('.bxslider').bxSlider({
+        pagerCustom: '#bx-pager',
+        keyboardEnabled: true
+      });
+
+      $(document).keydown(function(e){
+        if (e.keyCode == 39){ // Right arrow
+          slider.goToNextSlide();
+          return false;
+        }
+        else if (e.keyCode == 37){// left arrow
+          slider.goToPrevSlide();
+          return false;
+        }
+      });
       $(".detailed-breakup").click(function(){
           $(".breakup-columns,.non-breakup-columns").fadeToggle(100);
           if($(this).find("i").hasClass("glyphicon-menu-up"))

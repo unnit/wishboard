@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160408151803) do
+ActiveRecord::Schema.define(version: 20160413142009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,19 @@ ActiveRecord::Schema.define(version: 20160408151803) do
   end
 
   add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
+
+  create_table "interests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "tag_id"
+    t.boolean  "active",     default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "interests", ["active"], name: "index_interests_on_active", using: :btree
+  add_index "interests", ["tag_id"], name: "index_interests_on_tag_id", using: :btree
+  add_index "interests", ["user_id", "tag_id"], name: "index_interests_on_user_id_and_tag_id", unique: true, using: :btree
+  add_index "interests", ["user_id"], name: "index_interests_on_user_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
@@ -249,6 +262,16 @@ ActiveRecord::Schema.define(version: 20160408151803) do
     t.decimal  "flat_discount_percent",    precision: 6, scale: 2, default: 0.0
     t.integer  "flat_discount_amount",                             default: 0
     t.boolean  "collect_security_deposit",                         default: true
+    t.boolean  "mobile_verified",                                  default: false
+    t.string   "otp1"
+    t.string   "otp2"
+    t.string   "twitter"
+    t.string   "facebook"
+    t.string   "instagram"
+    t.string   "linkedin"
+    t.string   "google_plus"
+    t.string   "website"
+    t.string   "other_url"
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
@@ -270,6 +293,7 @@ ActiveRecord::Schema.define(version: 20160408151803) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.boolean  "checked",     default: false
+    t.boolean  "active",      default: true
   end
 
   add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
@@ -322,8 +346,9 @@ ActiveRecord::Schema.define(version: 20160408151803) do
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "featured",   default: false
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name", using: :btree
@@ -393,6 +418,7 @@ ActiveRecord::Schema.define(version: 20160408151803) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.boolean  "checked",     default: false
+    t.boolean  "active",      default: true
   end
 
   add_index "wows", ["showcase_id"], name: "index_wows_on_showcase_id", using: :btree

@@ -4,7 +4,7 @@ class Location < ActiveRecord::Base
 
   scope :for_product, -> {where(locatable_type: "Product")}
 
-  validates :name, presence: true
+  validates :name, presence: true, unless: :profile_type?
   validates :name, length: { maximum: 240 }
 
   def self.near_by(address, distance=10)
@@ -17,4 +17,9 @@ class Location < ActiveRecord::Base
     g=Geokit::Geocoders::GoogleGeocoder.geocode name
     update_columns(lat: g.lat, lng: g.lng) if g.lat && g.lng
   end
+
+  def profile_type?
+    locatable_type == "Profile"
+  end
+
 end

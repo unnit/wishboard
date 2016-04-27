@@ -6,8 +6,8 @@ class Address < ActiveRecord::Base
   scope :pickup, -> {where address_type: Address::ADDRESS_TYPES[1][1]}
   scope :delivery, -> {where address_type: Address::ADDRESS_TYPES[0][1]}
 
-  validates :first_name, :last_name, :address1, :address2, :city, :zip, :state, :mobile, :email, :landmark, presence: true
-  validates :first_name, :last_name, :email, :address1, :address2, :city, :state, :landmark, length: { maximum: 200 }
+  validates :first_name, :last_name, :address1, :address2, :city, :zip, :state, :country, :mobile, :email, :landmark, presence: true
+  validates :first_name, :last_name, :email, :address1, :address2, :city, :state, :country, :landmark, length: { maximum: 200 }
   validates :zip, length: { maximum: 6 }
   validates :zip, :mobile, numericality: true
   validates :mobile, length: { is: 10, message: "should not be greater than 10 digits." }

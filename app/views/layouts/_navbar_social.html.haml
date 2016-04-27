@@ -1,6 +1,6 @@
 %nav.navbar.navbar-default.navbar-fixed-top.topnav.nav-bar-color.border-bt-side{:role => "navigation", style: "box-shadow: 0 0px 1px rgba(0, 0, 0, 0.26);", class: "header-with-grad no-border"}
   .navbar.navbar-fixed-top
-    .container.padding0
+    .container
       .navbar-header
         %button.navbar-toggle{data: {toggle: "collapse", target: ".navbar-collapse"}}
           %span.icon-bar
@@ -38,47 +38,49 @@
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
                     %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
                       = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 40, height: 40, crop: :fill
-                      %span.mtop10.pull-right.white-fg{title: "#{current_user.name}", "data-toggle" => "tooltip", "data-placement" => "bottom"}
-                        Hi
-                        = (truncate current_user.name, length: 20)
-                        %span.caret
-                  %ul.dropdown-menu.pull-left.mtop0{style: "width:180px;"}
+                  %ul.dropdown-menu.pull-left.mtop10.font13.bg-shad{style: "width:180px;"}
+                    .arrow-wrapper-nav
+                      .arrow-nav
+                      .arrow-z-nav
                     %li
-                      = link_to dashboard_path, style: "white-space: normal;" do
-                        %span Dashboard
-                        %span.glyphicon.glyphicon-user.pull-right
+                      = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
+                        %span.black-fg= truncate current_user.name, length: 25
+                        %br
+                        %span.font11.grey-fg View Profile
                     %li.divider{style: "overflow: visible"}
                     %li
                       = link_to settings_path, style: "white-space: normal;" do
-                        %span Settings
-                        %span.glyphicon.glyphicon-cog.pull-right
+                        %span.grey-fg Settings
+                    %li.divider{style: "overflow: visible"}
+                    %li
+                      = link_to dashboard_path, style: "white-space: normal;" do
+                        %span.grey-fg Dashboard
                     %li.divider{style: "overflow: visible"}
                     %li
                       = link_to invitations_path, style: "white-space: normal;" do
-                        %span Invite friends
-                        %span.glyphicon.glyphicon-envelope.pull-right
+                        %span.grey-fg Invite friends
                     %li.divider{style: "overflow: visible"}
                     %li
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
-                        %span Sign Out
-                        %span.glyphicon.glyphicon-log-out.pull-right
+                        %span.grey-fg Sign Out
             %li.hidden-xs= link_to "Showcase", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn", style: "background-color: #019081;padding: 7px;margin-top:7px;color:white;display: #{@sh_btn || 'block;'}"
-            %li.visible-xs.bg-white= link_to "List Your Item", new_product_path
             %li.visible-xs.bg-white
-              = link_to dashboard_path, style: "white-space: normal;" do
-                %span Dashboard
+              = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
+                %span.black-fg= truncate current_user.name, length: 25
+                %br
+                %span.font11.grey-fg View Profile
             %li.visible-xs.bg-white
               = link_to settings_path, style: "white-space: normal;" do
-                %span Settings
+                %span.grey-fg Settings
             %li.visible-xs.bg-white
-              = link_to settings_business_path, style: "white-space: normal;" do
-                %span Business Settings
+              = link_to dashboard_path, style: "white-space: normal;" do
+                %span.grey-fg Dashboard
             %li.visible-xs.bg-white
               = link_to invitations_path, style: "white-space: normal;" do
-                %span Invite friends
+                %span.grey-fg Invite friends
             %li.visible-xs.bg-white
               = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
-                %span Sign Out
+                %span.grey-fg Sign Out
 - if current_user
   #showcase-modal.modal.fade
     .modal-dialog
@@ -89,4 +91,4 @@
           %h4.modal-title Your Showcase
         .modal-body{style: "height: 315px;"}
           .col-xs-12.col-sm-12.no-mar-pad.bg-white
-            = render partial: "home/post_showcase", locals: {showcase: @scase}
+            = render partial: "home/post_showcase", locals: {showcase: @scase, header: "yes"}

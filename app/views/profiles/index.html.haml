@@ -25,11 +25,11 @@
                       Username
                       %span.website-color *
                     .col-sm-3
-                      = f.text_field :slug, :placeholder => "Username", class: "form-control username", maxlength: 30, required: true
+                      = f.text_field :slug, :placeholder => "Username", class: "form-control username lowercase", maxlength: 30, required: true
                     .col-sm-3.uname-avail.padding10.pbottom0.grey-fg
                     .col-sm-10.col-sm-offset-2.ptop10
                       %span.pull-left https://www.cocociti.com/
-                      %span.pull-left.username-url
+                      %span.pull-left.username-url.lowercase
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
                       First Name
@@ -65,10 +65,18 @@
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
                       Mobile
-                      %span.website-color *
                     .col-sm-3
                       = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
                     .col-sm-7.mob-otp-verify.padding10.pbottom0.grey-fg
+                      - if @profile.mobile_verified
+                        Verified&nbsp;
+                        %i{class: "fa fa-check-circle green-fg font17"}
+                  .form-group
+                    %label.col-sm-2.control-label
+                      Location
+                    .col-sm-3
+                      = f.fields_for :location do |lf|
+                        = lf.text_field :name, placeholder: "Enter your location", class: "form-control map-location controls pac-input", maxlength: 240
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"} About
                     .col-sm-10
@@ -94,25 +102,11 @@
   :javascript
     $(document).ready(function(){
       $(".acc-sett").addClass("active");
-      $(".username-url").text($(".username").val());
-      $(".username").on("keyup", function(){
-        $(".username-url").text($(this).val());
-        if($(this).val().length > 5){
-          $(".uname-avail").text("Checking...");
-          $.get("/profiles/username_available", {uname: $(this).val()}, function(data){
-            $(".uname-avail").text(data.result);
-            if(data.result == "Available"){
-              $(".uname-avail").append("&nbsp;<i class='fa fa-check-circle green-fg font17'></i>")
-            }
-          })
-        }else{
-          $(".uname-avail").text("It's too short");
-        }
-      })
       $(".user-mobile-no").on("keyup", function(){
         if($(this).val().length == 10){
           $(".mob-otp-verify").text("Checking...");
           $.get("/profiles/verify_mobile", {mobile: $(this).val()}, function(data){
+            $(".mob-otp-verify").addClass("padding10 pbottom0 grey-fg")
             if(data.result == "associated"){
               $(".mob-otp-verify").text("Associated with another acount");
             }else if(data.result == "getotp"){
@@ -124,7 +118,9 @@
             }
           })
         }else{
+          $(".mob-otp-verify").addClass("padding10 pbottom0 grey-fg")
           $(".mob-otp-verify").empty();
+          $(".mob-otp-verify").text("Please enter your 10 digit number without leading zero.")
         }
       })
       $(".save-button").click(function(){

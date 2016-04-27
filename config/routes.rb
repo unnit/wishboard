@@ -93,7 +93,8 @@ Rails.application.routes.draw do
   get "notifications", to: "home#notifications", as: :notifications
   get "update_all_notifications", to: "home#update_all_notifications", as: :update_all_notifications
   post "toggle_follow/:id", to: "home#toggle_follow", as: :user_toggle_follow
-  post "toggle_follow_all_interest", to: "home#toggle_follow_all_interest", as: :toggle_follow_all_interest
+  post "follow_all_interest", to: "home#follow_all_interest", as: :follow_all_interest
+  post "unfollow_all_interest", to: "home#unfollow_all_interest", as: :unfollow_all_interest
   post "toggle_follow_interest/:id", to: "home#toggle_follow_interest", as: :user_toggle_follow_interest
   get ":id/showpieces", to: "home#myshowpieces", as: :myshowpieces
   get ":id/wishes", to: "home#mywishes", as: :mywishes

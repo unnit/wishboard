@@ -44,6 +44,9 @@
                     .col-sm-4
                       = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", required: true
                   .form-group
+                    %label.col-sm-3.control-label Country
+                    .col-sm-4= af.text_field :country, class: "form-control", maxlength: 200, required: true
+                  .form-group
                     .col-sm-6.text-center
                       %button.btn.save-button.white-fg Save
 

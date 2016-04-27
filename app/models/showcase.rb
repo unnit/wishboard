@@ -67,19 +67,6 @@ class Showcase < ActiveRecord::Base
     end
   end
 
-  def wishlist?
-    showcase_type == Showcase::SHOWCASE_VALUES[1]
-  end
-
-  def showpiece?
-    showcase_type == Showcase::SHOWCASE_VALUES[0]
-  end
-
-  def showcase_type_name
-    return Showcase::SHOWCASE_TYPE[0][0] if showpiece?
-    return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
-  end
-
   def wows_many?
     active_wows.count > 1
   end
@@ -102,6 +89,27 @@ class Showcase < ActiveRecord::Base
 
   def owner?(user)
     self.user == user
+  end
+
+  def wishlist?
+    showcase_type == Showcase::SHOWCASE_VALUES[1]
+  end
+
+  def showpiece?
+    showcase_type == Showcase::SHOWCASE_VALUES[0]
+  end
+
+  def showcase_type_name
+    return Showcase::SHOWCASE_TYPE[0][0] if showpiece?
+    return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
+  end
+
+  def commented_users
+    comments.map{|c| c.user.name}.uniq.join(", ")
+  end
+
+  def wowed_users
+    wows.map{|w| w.user.name}.uniq.join(", ")
   end
 
   after_create :create_showcase_notification

@@ -1,16 +1,32 @@
 .container-fluid.grey-bg.ptop50.pbottom50
-  .container.mtop30
-    .col-xs-12.col-sm-12
-      .pull-right.padding10
-        = link_to toggle_follow_all_interest_path, remote: true, method: :post do
-          .btn.btn-primary Select All
-    - Tag.featured.each do |tag|
-      .col-xs-12.col-sm-3.padding10
-        .col-xs-12.col-sm-12.no-mar-pad.bg-white.font17.bg-shad.text-center{style: "height:170px;"}
-          = link_to user_toggle_follow_interest_path(tag), remote: true, method: :post, class: "full-width pull-left", style: "margin-top:54px;margin-bottom:35px;" do
-            .fa.fa-check-circle.font40.tag-grey-fg.follow-tag-icon{class: "follow-tag-#{tag.id} #{'green-fg' if current_user.is_active_interest?(tag)}"}
-          %span.full-width.pull-left.white-fg.padding10.blue-bg= tag.name
+  .container.mtop10
+    .col-xs-12.col-sm-12.mbottom5
+      .pull-left.font17
+        What are your interests? Follow your interests below and we’ll customize your feed to help you discover the best based on it.
+        %br
+        Please select a minimum of 10 interests to continue.
+      .pull-right.btn.btn-default
+        %span.pull-left.mright5 Select All
+        = check_box_tag :toggle_all_interest, "yes", false, class: "pull-left"
+    .col-xs-12.col-sm-12{style: "height: 500px;overflow-y: scroll;"}
+      - Tag.featured.each do |tag|
+        .col-xs-12.col-sm-3.padding10
+          .col-xs-12.col-sm-12.no-mar-pad.bg-white.font17.bg-shad.text-center{style: "height:170px;"}
+            = link_to user_toggle_follow_interest_path(tag), remote: true, method: :post, class: "full-width pull-left", style: "margin-top:54px;margin-bottom:35px;" do
+              .fa.fa-check-circle.font40.tag-grey-fg.follow-tag-icon{class: "follow-tag-#{tag.id} #{'green-fg' if current_user.is_active_interest?(tag)}"}
+            %span.full-width.pull-left.white-fg.padding10.blue-bg= tag.name
     .col-xs-12.col-sm-12
       .pull-right.padding10.cont-intrsts{style: "display:none;"}
         = link_to invitations_path(invite_friends: "invite") do
           .btn.btn-primary Continue
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $("#toggle_all_interest").click(function(){
+        if($(this).is(':checked')){
+          $.post("/follow_all_interest");
+        }else{
+          $.post("/unfollow_all_interest");
+        }
+      })
+    })

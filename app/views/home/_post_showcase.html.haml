@@ -1,3 +1,4 @@
+- header ||= "no"
 .col-xs-12.col-sm-12.grey-bg.bg-shad.no-mar-pad
   .col-xs-4.col-sm-4.text-center.select-ps.padding10.white-fg{style: "background-color: #00C3AF;"}
     Select
@@ -10,9 +11,12 @@
     .arrow
     .arrow-z
 .col-xs-12.col-sm-12.no-mar-pad.mbottom10.bg-shad.mbottom30.ps-wrapper.bg-white{style: "min-height:212px;"}
+  .col-xs-12.col-sm-12.messages
   .p-s-arrow.arrow-right.pon
   .p-s-arrow.arrow-left.pon.hide-display
-  = form_for showcase do |f|
+  = form_for showcase, remote: true do |f|
+    - if header == "yes"
+      = hidden_field_tag :header, "yes"
     .col-xs-12.col-sm-12.no-mar-pad.text-center.set-1-ps.active{style: "min-height:210px;"}
       .col-xs-12.col-sm-12.text-center.padding5{style: "height: 42px;"}
         %span.error-ps-radio.padding5.hide-display{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;"}
@@ -52,4 +56,9 @@
         = f.fields_for :location do |lf|
           = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input loc-gnrl", maxlength: 100
       .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
-        = f.submit "Submit", class: "btn btn-primary btn-shadow btn-social weight-bold showcase-submit"
+        .btn.btn-social.white-fg.no-mar-pad.loader-out-button
+          = f.submit "Submit", class: "loader-button btn btn-social loader-in-button showcase-submit"
+          .loader-effect.btn.btn-social.loader-in-button{style: "display:none;"}
+            .pull-left Please Wait...
+            .ball-clip-rotate.pull-left{style: "height:22px;"}
+              %div

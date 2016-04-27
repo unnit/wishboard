@@ -94,10 +94,6 @@ class ProductsController < ApplicationController
   end
 
   def show
-    add_breadcrumb "Home", rent_path
-    add_breadcrumb "#{@product.category.parent_name.downcase.titleize}", category_path("#{@product.category.parent.slug}")
-    add_breadcrumb "#{@product.category_name.downcase.titleize}", category_path("#{@product.category.slug}")
-    add_breadcrumb "#{@product.title.downcase.titleize}", user_product_path(@product.id)
     unless @product.available?
       unless current_user
         redirect_to rent_path
@@ -109,6 +105,16 @@ class ProductsController < ApplicationController
         end
       end
     end
+    if current_user && !current_user.profile.mobile_verified
+      session[:listing_id] = @product.id
+      flash[:danger] = "Please update and verify your mobile number."
+      redirect_to settings_path
+      return
+    end
+    add_breadcrumb "Home", rent_path
+    add_breadcrumb "#{@product.category.parent_name.downcase.titleize}", category_path("#{@product.category.parent.slug}")
+    add_breadcrumb "#{@product.category_name.downcase.titleize}", category_path("#{@product.category.slug}")
+    add_breadcrumb "#{@product.title.downcase.titleize}", user_product_path(@product.id)
     @days = @product.daily_type? ? 1 : 0
     @hours = @product.hourly_type? ? 4 : 0
     @no_of_weekenddays = 0

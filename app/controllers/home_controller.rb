@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
-  skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :toggle_follow_all_interest]
+  skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
   before_filter :back_to_home, only: [:authenticate]
   before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers]
   before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
@@ -182,11 +182,15 @@ class HomeController < ApplicationController
     respond_to :js
   end
 
-  def toggle_follow_all_interest
-    Tag.featured.each do |tag|
-      current_user.activate_all_interest!(tag)
-    end
-    @from_all = true
+  def follow_all_interest
+    current_user.activate_all_interest!
+    @follow_all = true
+    render "toggle_follow_interest.js"
+  end
+
+  def unfollow_all_interest
+    current_user.deactivate_all_interest!
+    @unfollow_all = true
     render "toggle_follow_interest.js"
   end
 

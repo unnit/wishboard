@@ -12,6 +12,7 @@ class ProfilesController < ApplicationController
   def create
     unless current_user.profile
       @profile = Profile.new(create_profile_params)
+      @profile.slug = params[:profile][:slug].downcase
       @profile.user = current_user
       if @profile.save
         flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
@@ -26,10 +27,31 @@ class ProfilesController < ApplicationController
   end
 
   def index
+    @profile.build_location unless @profile.location
   end
 
   def settings
     redirect_to settings_path
+  end
+
+  def update
+    unless params[:profile][:phone].blank?
+      if params[:profile][:phone] != @profile.phone || !@profile.mobile_verified
+        flash[:danger] = "Please verify your mobile number"
+        redirect_to settings_path
+        return
+      end
+    else
+      @profile.mobile_verified = false
+    end
+    @profile.slug = params[:profile][:slug].downcase
+    if @profile.update(profile_params)
+      flash[:success] = 'Your profile has been successfully updated.'
+      redirect_to settings_path
+    else
+      flash[:danger] = @profile.errors.full_messages.join("<br/>")
+      render :index
+    end
   end
 
   def password
@@ -90,22 +112,6 @@ class ProfilesController < ApplicationController
     @upcoming_bookings = Transaction.where('product_id in (?)', @my_products.map{|p| p.id}).paid.order(created_at: :desc).page(params[:upcoming_bookings]).per(50)
   end
 
-  def update
-    unless params[:profile][:phone].blank?
-      if params[:profile][:phone] != @profile.phone || !@profile.mobile_verified
-        flash[:danger] = "Please verify your mobile number"
-        redirect_to settings_path
-        return
-      end
-    end
-    if @profile.update(profile_params)
-      flash[:success] = 'Your profile has been successfully updated.'
-    else
-      flash[:danger] = @profile.errors.full_messages.join("<br/>")
-    end
-    redirect_to settings_path
-  end
-
   def business_profile
     @address = current_user.addresses.pickup.first
     @profile.init_availability if @profile.avail_days.blank?
@@ -128,6 +134,7 @@ class ProfilesController < ApplicationController
     @address.city = params[:address][:city]
     @address.zip = params[:address][:zip]
     @address.state = params[:address][:state]
+    @address.country = params[:address][:country]
     @address.address_type = Address::ADDRESS_TYPES[1][1]
     @address.valid?
     unless @address.errors.full_messages.blank?
@@ -155,7 +162,7 @@ class ProfilesController < ApplicationController
   end
 
   def username_available
-    name = params[:uname]
+    name = params[:uname].downcase
     profile = Profile.where("slug = ?", name)
     if profile.blank?
       render json: {result: "Available"}
@@ -184,9 +191,8 @@ class ProfilesController < ApplicationController
     other_profile = Profile.where("phone = ?", session[:mobile_no])
     if profile.phone != session[:mobile_no] && other_profile.blank?
       profile.otp1 = rand(100000..999999)
-      if profile.save
-        send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp1}. Please do not share it with anyone.")
-      end
+      profile.save
+      send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp1}. Please do not share it with anyone.")
     else
       @unmatch = "yes"
       flash[:alert] = "Mobile no you have entered is either associated with another account or your own verified number"
@@ -206,10 +212,6 @@ class ProfilesController < ApplicationController
 
   def verify_otp
     profile = current_user.profile
-    logger.info '**********'
-    logger.info params[:otp]
-    logger.info profile.otp1
-    logger.info '**********'
     if (params[:otp] == profile.otp1 && !profile.otp1.blank?) || (params[:otp] == profile.otp2 && !profile.otp2.blank?)
       profile.phone = session[:mobile_no]
       profile.mobile_verified = true
@@ -218,16 +220,18 @@ class ProfilesController < ApplicationController
       profile.save
       session.delete("mobile_no")
       session.delete("otp_entered")
+      if session[:listing_id]
+        render js: "window.location = '#{user_product_url(session.delete(:listing_id))}'"
+        return
+      end
     else
       if session[:otp_entered].blank?
         session[:otp_entered] = 1
         @error = "yes"
-        logger.info '%%%%%%%%%%%%%%'
       else
         @double_error = "yes"
         session.delete("otp_entered")
         flash[:alert] = "You have exceeded the given attempts to enter OTP. Please try again."
-        logger.info '################'
       end
     end
     respond_to :js
@@ -239,11 +243,11 @@ class ProfilesController < ApplicationController
     end
 
     def create_profile_params
-      params.require(:profile).permit(:first_name, :last_name, :slug)
+      params.require(:profile).permit(:first_name, :last_name)
     end
 
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :phone, :about, :slug)
+      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :phone, :about, location_attributes: [:id, :name])
     end
 
     def business_params

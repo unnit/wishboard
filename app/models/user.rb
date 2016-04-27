@@ -116,6 +116,10 @@ class User < ActiveRecord::Base
     profile.phone
   end
 
+  def location
+    profile.location
+  end
+
   def profile_id
     create_profile unless profile
     profile.id
@@ -227,11 +231,19 @@ class User < ActiveRecord::Base
     end
   end
 
-  def activate_all_interest!(tag)
-    if is_interest?(tag)
-      activate_interest(tag)
-    else
-      create_interest(tag)
+  def activate_all_interest!
+    Tag.featured.each do |tag|
+      if is_interest?(tag)
+        activate_interest(tag)
+      else
+        create_interest(tag)
+      end
+    end
+  end
+
+  def deactivate_all_interest!
+    active_interests.each do |interest|
+      deactivate_interest(interest.tag)
     end
   end
 

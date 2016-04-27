@@ -265,7 +265,7 @@ html * {
 body {
   font-size: 1.5rem;
   color: #331d35;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 a {
@@ -2833,6 +2833,30 @@ th.headerSortDown {
   z-index: 1;
   left: 1px;
 }
+.arrow-wrapper-nav{
+  position: absolute;
+  top: 0;
+  left: 76%;
+}
+.arrow-nav{
+  content: "";
+  border-bottom: 8px solid #ECECEC;
+  border-left: 9px solid transparent;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  border-right: 9px solid transparent;
+}
+.arrow-z-nav{
+  content: "";
+  position: absolute;
+  border-bottom: 7px solid #FFFFFF;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  bottom: -1px;
+  z-index: 1;
+  left: 1px;
+}
 .p-s-arrow{
   position: absolute;
   width: 35px;
@@ -2927,6 +2951,9 @@ th.headerSortDown {
 .opacity0{
   opacity: 0;
 }
+.pac-container{
+  z-index: 2000;
+}
 /******************Other CSS for header and future use *******/
 .header-with-grad{
   background-color: #00A896 !important;
@@ -2946,14 +2973,18 @@ th.headerSortDown {
   .coco-offer{
     top: 84px;
   }
+  .padding-mob0{
+    padding: 0px;
+  }
   .mob-pad{
     padding-left: 15px !important;
     padding-right: 15px !important;
   }
   .mob-height{
-    height: 290px;
+    height: auto;
     background: white;
     background-color: #81A9CC;
+    padding-bottom: 30px !important;
   }
   .modal-width{
     width: auto;

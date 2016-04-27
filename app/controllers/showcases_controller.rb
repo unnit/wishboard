@@ -38,12 +38,16 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
+      logger.info '*******************Success'
       flash[:notice] = "Your product has been showcased successfully."
-      redirect_to root_path
+      if params[:header].present?
+        render js: "location.reload()"
+        return
+      end
     else
       flash[:alert] = @showcase.errors.full_messages.join(", ")
-      redirect_to root_path
     end
+    respond_to :js
   end
 
   def edit

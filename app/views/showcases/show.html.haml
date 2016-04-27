@@ -1,11 +1,12 @@
-.container-fluid.ptop50.pattern-bg
-  .container.ptop40.helvetica-font
-    .col-xs-12.col-sm-8.col-sm-offset-2
+.container-fluid.ptop50.pattern-bg.padding0
+  .container.ptop40.helvetica-font.padding0
+    .col-xs-12.col-sm-8.col-sm-offset-2.padding0
       = render partial: "home/showcases", locals: {showcases: Array(@showcase), feed: "no"}
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
-      if(#{params[:q]}){
+      var c_wrap = "#{params[:q].blank? ? '': params[:q]}";
+      if( c_wrap != ""){
         $('html, body').animate({
             scrollTop: $("#media-comment-#{params[:q]}").offset().top - 55
             }, 500);

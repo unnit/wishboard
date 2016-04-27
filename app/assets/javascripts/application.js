@@ -28,14 +28,38 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
+  //Username
+  $(".username-url").text($(".username").val());
+  $(".username").on("keyup", function(){
+    var return_text = $(this).val().replace(/[^a-zA-Z0-9_-]/g,'');
+    $(this).val(return_text);
+    $(".username-url").text(return_text);
+    if($(this).val().length > 5){
+      $(".uname-avail").text("Checking...");
+      $.get("/profiles/username_available", {uname: $(this).val()}, function(data){
+        $(".uname-avail").text(data.result);
+        if(data.result == "Available"){
+          $(".uname-avail").append("&nbsp;<i class='fa fa-check-circle green-fg font17'></i>")
+        }
+      })
+    }else{
+      $(".uname-avail").text("Username is too short");
+    }
+  })
+  // Notification Icon
   $(document).on("click", ".notif-icon", function(){
     $(".notif-toggle").toggle();
     if($(".notif-content").is(":empty")){
       $.get("/unchecked_notifications")
     }
   })
-  $("body").click(function(){
-    $(".notif-toggle").hide();
+  $("html,body").click(function(e){
+    var container = $(".notif-icon")
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        $(".notif-toggle").hide();
+    }
   });
   //Bulk Bookings
   $("#bulk-bookings").click(function(){
@@ -47,9 +71,9 @@ $(document).ready(function(){
     $(".loader-effect").show();
   })
   //Follow button loader effect
-  $(document).on("click", ".loader-button", function(){
-    $(this).hide();
-    $(this).next(".loader-effect").show();
+  $(document).on("click", ".loader-out-follow-button", function(){
+    $(this).find(".loader-button").hide();
+    $(this).find(".loader-effect").show();
   });
   //Focus on comments
   $(document).on("click", ".comment-link", function(){
@@ -147,10 +171,10 @@ $(document).ready(function(){
       $('.tm-input').typeahead('val', "");
   });
   $(".tm-input").on('tm:hide', function() {
-    $(".tt-hint").hide();
+    $(".tm-input.tt-hint").hide();
   })
-  $(".tm-input").on('tm:show', function(e, taglist) {
-    $(".tt-hint").show();
+  $(".tm-input").on('tm:show', function() {
+    $(".tm-input.tt-hint").show();
   });
   var showcases = new Bloodhound({
     datumTokenizer: function(datum) {
@@ -261,7 +285,11 @@ $(document).ready(function(){
       $.trim($("#showcase_year").val()).length < 4?($("#showcase_year").css("border-bottom", "1px solid #F25F5C"),c = 0):(c = 1)
       $.trim($("#showcase_location_attributes_name").val()).length == 0?($("#showcase_location_attributes_name").css("border-bottom", "1px solid #F25F5C"),d = 0):(d = 1)
     }
-    if(a == 1 && b == 1 && c == 1 && d == 1){$("#new_showcase").submit();}
+    if(a == 1 && b == 1 && c == 1 && d == 1){
+      $("#new_showcase").submit();
+      $("#new_showcase .loader-button").hide();
+      $("#new_showcase .loader-effect").show();
+    }
   })
   //Remove error notifications for title,desc,year,location
   $(".title-gnrl").on("keyup", function(){
@@ -420,30 +448,12 @@ $(document).ready(function(){
   })
 
   // Menu Drop Down on hover
-  $('.dropdown').hover(function() {
-      $(this).addClass('open');
-  },
-  function() {
-      $(this).removeClass('open');
-  });
-
-  //Slider in product page
-  var slider = $('.bxslider').bxSlider({
-    pagerCustom: '#bx-pager',
-    keyboardEnabled: true
-  });
-
-  $(document).keydown(function(e){
-    if (e.keyCode == 39){ // Right arrow
-      slider.goToNextSlide();
-      return false;
-    }
-    else if (e.keyCode == 37){// left arrow
-      slider.goToPrevSlide();
-      return false;
-    }
-  });
-
+  //$('.dropdown').hover(function() {
+  //    $(this).addClass('open');
+  //},
+  //function() {
+  //    $(this).removeClass('open');
+  //});
 
   //Map
   if($("#gmap").length){
@@ -748,6 +758,15 @@ $(document).ready(function(){
     google.maps.event.addDomListener(window, 'load', function () {
         var autocomplete = new google.maps.places.Autocomplete(places_input);
         google.maps.event.addDomListener(places_input, 'keydown', function(e) {
+          if (e.keyCode == 13 && $('.pac-container:visible').length) {
+            e.preventDefault();
+          }
+        });
+    });
+    var places_input_1= $('.pac-input')[1];
+    google.maps.event.addDomListener(window, 'load', function () {
+        var autocomplete = new google.maps.places.Autocomplete(places_input_1);
+        google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
           if (e.keyCode == 13 && $('.pac-container:visible').length) {
             e.preventDefault();
           }

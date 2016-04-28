@@ -53,6 +53,10 @@
                         %span.grey-fg Settings
                     %li.divider{style: "overflow: visible"}
                     %li
+                      = link_to rent_path, style: "white-space: normal;" do
+                        %span.grey-fg Rent
+                    %li.divider{style: "overflow: visible"}
+                    %li
                       = link_to dashboard_path, style: "white-space: normal;" do
                         %span.grey-fg Dashboard
                     %li.divider{style: "overflow: visible"}
@@ -72,6 +76,9 @@
             %li.visible-xs.bg-white
               = link_to settings_path, style: "white-space: normal;" do
                 %span.grey-fg Settings
+            %li.visible-xs.bg-white
+              = link_to rent_path, style: "white-space: normal;" do
+                %span.grey-fg Rent
             %li.visible-xs.bg-white
               = link_to dashboard_path, style: "white-space: normal;" do
                 %span.grey-fg Dashboard

@@ -28,6 +28,15 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
+  //Auth Page
+  $(".scase-login").hover(function(){
+    $(this).text("Login/SignUp");
+  },function(){
+    $(this).text("Showcase")
+  })
+  $(".scase-login").click(function(){
+    $(".login-email").focus();
+  })
   //Username
   $(".username-url").text($(".username").val());
   $(".username").on("keyup", function(){

@@ -2978,6 +2978,10 @@ th.headerSortDown {
   width: 900px;
 }
 @media only screen and (max-width: 776px) {
+  .bg-mob-auth{
+    background: #fff;
+    color: #00A896 !important;
+  }
   .coco-offer{
     top: 84px;
   }

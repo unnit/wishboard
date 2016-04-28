@@ -5,7 +5,7 @@
         %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;border-radius: 0px;color: white;"} Login
       %li.toggle-url
         %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;border-radius: 0px;color: white;"} Sign Up
-    .tab-content.ptop10{style: "min-height: 600px;"}
+    .tab-content.ptop10{style: "min-height: 400px;"}
       #home-login.tab-pane.fade.in.active
         .col-md-12.mtop40
           = form_for(User.new, :url => new_user_session_path, remote: true, html: {"data-parsley-validate" => true}) do |f|

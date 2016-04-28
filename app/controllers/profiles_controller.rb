@@ -75,7 +75,7 @@ class ProfilesController < ApplicationController
     @address.user = current_user
     @address.first_name = params[:address][:first_name]
     @address.last_name = params[:address][:last_name]
-    @address.email = params[:address][:email]
+    @address.email = current_user.email
     @address.mobile = params[:address][:mobile]
     @address.address1 = params[:address][:address1]
     @address.address2 = params[:address][:address2]
@@ -83,7 +83,9 @@ class ProfilesController < ApplicationController
     @address.city = params[:address][:city]
     @address.zip = params[:address][:zip]
     @address.state = params[:address][:state]
+    @address.country = params[:address][:country]
     @address.address_type = Address::ADDRESS_TYPES[0][1]
+    @address.address_book = "yes"
     if @address.save
       redirect_to settings_addressbook_path, notice: "Your address has beeen successfully saved."
     else

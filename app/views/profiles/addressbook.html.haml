@@ -10,42 +10,38 @@
             %h4.mtop-v-5 Address Book
           .panel-body
             .col-sm-12
-              ~ form_for :profile, url: update_address_profiles_path, html: {class: "form-horizontal"} do |f|
+              ~ form_for :profile, url: update_address_profiles_path, html: {class: "form-horizontal font13"} do |f|
                 = fields_for :address do |af|
                   .form-group
-                    %label.col-sm-3.control-label First Name
+                    %label.col-sm-2.control-label First Name
                     .col-sm-4= af.text_field :first_name, class: "form-control", placeholder: "First Name", maxlength: 200, required: true
-                  .form-group
-                    %label.col-sm-3.control-label Last Name
+                    %label.col-sm-2.control-label Last Name
                     .col-sm-4= af.text_field :last_name, class: "form-control", placeholder: "Last Name", maxlength: 200, required: true
                   .form-group
-                    %label.col-sm-3.control-label Mobile/Phone No.
-                    .col-sm-4= af.text_field :mobile, class: "form-control", placeholder: "Mobile/Phone No.", maxlength: 200, required: true
+                    %label.col-sm-2.control-label Mobile No.
+                    .col-sm-4= af.text_field :mobile, class: "form-control", placeholder: "Mobile No.", maxlength: 10, required: true
                   .form-group
-                    %label.col-sm-3.control-label Email
-                    .col-sm-4= af.text_field :email, class: "form-control", placeholder: "Email", maxlength: 200, required: true
-                  .form-group
-                    %label.col-sm-3.control-label Address Line 1
+                    %label.col-sm-2.control-label Address Line 1
                     .col-sm-4= af.text_field :address1, class: "form-control", placeholder: "Flat/House No, Floor, Building", maxlength: 200, required: true
                   .form-group
-                    %label.col-sm-3.control-label Address Line 2
-                    .col-sm-4= af.text_field :address2, class: "form-control", placeholder: "Colony/Society, Street, Locality/Area", maxlength: 200, required: true
+                    %label.col-sm-2.control-label Address Line 2
+                    .col-sm-4= af.text_field :address2, class: "form-control", placeholder: "Colony/Society, Street, Locality", maxlength: 200, required: true
                   .form-group
-                    %label.col-sm-3.control-label Landmark
+                    %label.col-sm-2.control-label Landmark
                     .col-sm-4= af.text_field :landmark, class: "form-control", placeholder: "", maxlength: 200, required: true
                   .form-group
-                    %label.col-sm-3.control-label Pincode
+                    %label.col-sm-2.control-label Pincode
                     .col-sm-4= af.text_field :zip, class: "form-control check_zip", maxlength: 6, required: true
                   .form-group
-                    %label.col-sm-3.control-label Town/City
+                    %label.col-sm-2.control-label Town/City
                     .col-sm-4= af.text_field :city, class: "form-control city", maxlength: 200, required: true
                   .form-group
-                    %label.col-sm-3.control-label State
+                    %label.col-sm-2.control-label State
                     .col-sm-4
                       = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box", required: true
                   .form-group
-                    %label.col-sm-3.control-label Country
-                    .col-sm-4= af.text_field :country, class: "form-control", maxlength: 200, required: true
+                    %label.col-sm-2.control-label Country
+                    .col-sm-4= af.text_field :country, class: "form-control country", maxlength: 200, required: true
                   .form-group
                     .col-sm-6.text-center
                       %button.btn.save-button.white-fg Save

@@ -151,6 +151,11 @@
                         %span.website-color *
                       .col-sm-4
                         = af.select :state, india_states, {include_blank: 'Select State'}, class: "select_box state coco-select-box pkp_address", required: true
+                    .form-group
+                      %label.col-sm-2.control-label
+                        Country
+                        %span.website-color *
+                      .col-sm-4= af.text_field :country, class: "form-control country", maxlength: 200, required: true
                   .form-group
                     .col-sm-offset-2.col-sm-10
                       .pull-right

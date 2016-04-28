@@ -35,7 +35,7 @@ class Profile < ActiveRecord::Base
 
   validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_blank?, on: :update
   validates_date :date_of_birth, :before => lambda { 18.years.ago },
-                               :before_message => ": Must be at least 18 years old", on: :update
+                               :before_message => ": Must be at least 18 years old", on: :update, unless: :bday_blank?
   validates :phone, uniqueness: true, on: :update, unless: :phone_blank?
   validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update, unless: :phone_blank?
   validates :phone, numericality: true, on: :update, unless: :phone_blank?
@@ -73,6 +73,10 @@ class Profile < ActiveRecord::Base
 
   def about_blank?
     about.blank?
+  end
+
+  def bday_blank?
+    date_of_birth.blank?
   end
 
   def business_fields_mandatory_blank?

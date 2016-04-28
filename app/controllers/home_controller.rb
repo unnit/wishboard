@@ -195,7 +195,7 @@ class HomeController < ApplicationController
   end
 
   def get_state_and_city
-    result={city: "", state: ""}
+    result={city: "", state: "", country: "India"}
     address = Geokit::Geocoders::GoogleGeocoder.geocode "#{params[:zip]} India"
     if address
       logger.info address.state

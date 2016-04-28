@@ -747,6 +747,7 @@ $(document).ready(function(){
     }, function(result) {
       $('.city').val(result.city);
       $('.state').val(result.state);
+      $('.country').val(result.country);
     }, "json");
   });
   //-----Show search Bar in header when search in home scrolls up

@@ -2977,6 +2977,9 @@ th.headerSortDown {
 .modal-width{
   width: 900px;
 }
+.mleft-mob{
+  margin-left: 40%;
+}
 @media only screen and (max-width: 776px) {
   .bg-mob-auth{
     background: #fff;
@@ -2984,6 +2987,9 @@ th.headerSortDown {
   }
   .coco-offer{
     top: 84px;
+  }
+  .mleft-mob{
+    margin-left: 32%;
   }
   .padding-mob0{
     padding: 0px;

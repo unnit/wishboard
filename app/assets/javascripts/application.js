@@ -200,15 +200,15 @@ $(document).ready(function(){
   })
   $(".arrow-right").click(function(){
     if($(".set-2-ps").hasClass("active")){
-      //if($(".file-input-button").css("display") == "none"){
+      if($(".file-input-button").css("display") == "none"){
         $(".set-2-ps, .set-1-ps").removeClass("active block-display").addClass("hide-display");
         $(".set-3-ps").addClass("active block-display");
         $(".arrow-right").fadeOut();
         $(".arrow-wrapper").animate({left: "83.5%"});
-      //}
-      //else{
-        //$(".error-ps-photo").css("display", "inline-block");
-      //}
+      }
+      else{
+        $(".error-ps-photo").css("display", "inline-block");
+      }
     }
     if($(".set-1-ps").hasClass("active")){
       if($(this).closest(".ps-wrapper").find("input[name='showcase[showcase_type]']").is(':checked'))

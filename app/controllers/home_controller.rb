@@ -29,7 +29,7 @@ class HomeController < ApplicationController
         format.js
       end
     else
-      @plain_layout = "yes"
+      @auth_layout = "yes"
       render :authenticate
     end
   end

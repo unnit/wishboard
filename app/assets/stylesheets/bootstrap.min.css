@@ -4686,7 +4686,8 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .nav>li>a:focus,
 .nav>li>a:hover {
     text-decoration: none;
-    background-color: #eee
+    background-color: #eee;
+    background-color: rgba(238, 238, 238, 0.31);
 }
 
 .nav>li.disabled>a {
@@ -4747,7 +4748,8 @@ textarea.input-group-sm>.input-group-btn>.btn {
     color: #fff;
     cursor: default;
     /*background-color: #fff;*/
-    background-color: #388CA7;
+    /*background-color: #388CA7;*/
+    background-color: #1C8888;
     border: 1px solid #ddd;
     border-bottom-color: transparent
 }

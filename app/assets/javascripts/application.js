@@ -75,9 +75,9 @@ $(document).ready(function(){
     $("#bulk-bookings-pop-up").modal("show");
   });
   //Loader Icon
-  $("form.bulk-bookings-form, form.user_form").submit(function(){
-    $(".loader-button").hide();
-    $(".loader-effect").show();
+  $("form.bulk-bookings-form, form.user_form, form.login-form, form.signup-form").submit(function(){
+    $(this).find(".loader-button").hide();
+    $(this).find(".loader-effect").show();
   })
   //Follow button loader effect
   $(document).on("click", ".loader-out-follow-button", function(){

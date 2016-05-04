@@ -1,4 +1,6 @@
 - if current_user
   location.reload();
 - else
-  $("#home-login .errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: ["Please enter a valid email and password."]})}")
+  $("form.login-form .errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: ["Please enter a valid email and password."]})}")
+  $(".loader-effect").hide();
+  $(".loader-button").show();

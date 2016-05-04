@@ -109,7 +109,7 @@
               Login with Facebook
           .col-sm-9.col-sm-offset-3.or-text.hidden
             %span OR
-          = form_for(User.new, :url => new_user_session_path, html: {"data-parsley-validate" => true, remote: true}) do |f|
+          = form_for(User.new, :url => new_user_session_path, html: {"data-parsley-validate" => true, remote: true, class: "login-form"}) do |f|
             .col-sm-12.errors
             .form-group.clearfix
               = f.label :email, :class => 'col-sm-3 control-label'
@@ -126,12 +126,15 @@
                     %i.fa.fa-lock
                   = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
             .form-group.clearfix
-              .col-sm-offset-3.col-sm-9.text-center
+              .col-sm-offset-3.col-sm-9.text-center.font11
                 = link_to "Forgot password?", new_user_password_path
             .form-group.clearfix
               .col-sm-offset-5.col-sm-5.text-center
-                = f.submit "Login",:class => 'btn btn-primary pop-up-but login-button'
-                #login-loader.pulse-loader{style: "display:none;"} Loading...
+                = f.submit "Login", class: "loader-button btn pop-up-but login-button"
+                .loader-effect.btn.pop-up-but{style: "display:none;"}
+                  .inline-block{style: "margin-top: 8px;"} Please Wait...
+                  .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                    %div
         .clearfix
 
   #signup.modal.fade
@@ -148,7 +151,7 @@
               Sign Up with Facebook
           .col-sm-9.col-sm-offset-3.or-text.hidden
             %span OR
-          = form_for(User.new, :url => user_registration_path, html: {"data-parsley-validate" => true, remote: true, class: "agreement-require"}) do |f|
+          = form_for(User.new, :url => user_registration_path, html: {"data-parsley-validate" => true, remote: true, class: "agreement-require signup-form"}) do |f|
             .col-sm-12.errors
             .form-group.clearfix
               = f.label :email, :class => 'col-sm-3 control-label'
@@ -173,9 +176,12 @@
                   = f.password_field :password_confirmation, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
             .form-group.clearfix
               .col-sm-12
-                %span.mleft10.textt-center By continuing, you agree to the Terms of Service
+                %span.mleft10.textt-center.font11 By continuing, you agree to the Terms of Service
             .form-group.clearfix
-              #submit-signup.pulse-loader{style: "display:none;"} Loading...
               .col-sm-offset-4.col-sm-4
-                = f.submit "Sign up", :class => 'btn btn-primary pop-up-but'
+                = f.submit "Sign up", class: "loader-button btn pop-up-but login-button"
+                .loader-effect.btn.pop-up-but{style: "display:none;"}
+                  .inline-block{style: "margin-top: 8px;"} Please Wait...
+                  .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                    %div
         .clearfix

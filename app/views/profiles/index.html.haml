@@ -34,6 +34,8 @@
                     .col-sm-10.col-sm-offset-2.ptop10
                       %span.pull-left https://www.cocociti.com/
                       %span.pull-left.username-url.lowercase
+                    .col-sm-10.col-sm-offset-2.ptop10.font11.grey-fg
+                      Note: Only hyphens and underscores are allowed.
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
                       First Name
@@ -107,7 +109,7 @@
           $.get("/profiles/verify_mobile", {mobile: $(this).val()}, function(data){
             $(".mob-otp-verify").addClass("padding10 pbottom0 grey-fg")
             if(data.result == "associated"){
-              $(".mob-otp-verify").text("Associated with another acount");
+              $(".mob-otp-verify").text("Associated with another account");
             }else if(data.result == "getotp"){
               $(".mob-otp-verify").removeClass("padding10 pbottom0 grey-fg")
               $(".mob-otp-verify").html("<a data-remote='true' rel='nofollow' data-method='patch' href='/profiles/get_otp' class='btn btn-default'>Get OTP</a>")

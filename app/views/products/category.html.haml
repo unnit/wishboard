@@ -4,7 +4,11 @@
 - else
   = content_for :title do
     - unless @from_all_page
-      -title = "#{@products.first.category_path} for rent in Bangalore"
+      - title = "#{@products.first.category_path} for rent in Bangalore"
+    - else
+      - title = "Rent Anything Online. Hire or rent Bikes, Self drive Cars, and all things at world's largest rental marketplace - Cocociti.com"
+  = content_for :meta_content do
+    - meta_content = "Cocociti is the most effortless way to rent or hire everything and anything online - Bikes, Self Drive cars, Cameras, Dress, Backpacks, Tents, Electronics, Furniture, Home Appliances, Tools & Equipment Rental and avail on demand access to things at Cocociti."
   .container-fluid.mar-des-page.grey-bg
     .col-xs-12.col-md-12
       .ol.breadcrumb.mbottom0.note-font-size

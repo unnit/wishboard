@@ -3,12 +3,12 @@
     %ul.nav.nav-tabs{style: "border-bottom: none;", class: "mleft-mob"}
       %li.active
         %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;border-radius: 0px;color: white;"} Login
-      %li.toggle-url
+      %li
         %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;border-radius: 0px;color: white;"} Sign Up
     .tab-content.ptop10{style: "min-height: 550px;"}
       #home-login.tab-pane.fade.in.active
         .col-md-12.mtop40
-          = form_for(User.new, :url => new_user_session_path, remote: true, html: {"data-parsley-validate" => true}) do |f|
+          = form_for(User.new, :url => new_user_session_path, remote: true, html: {"data-parsley-validate" => true, class: "login-form"}) do |f|
             .col-sm-12.errors
             .form-group.clearfix
               = f.label :email, :class => 'col-sm-3 control-label text-right'
@@ -26,13 +26,17 @@
                   = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
             .form-group.clearfix.mtop20
               .col-sm-offset-4.col-sm-6
-                = link_to "Forgot password?", new_user_password_path, class: "white-fg"
+                = link_to "Forgot password?", new_user_password_path, class: "white-fg font13"
             .form-group.clearfix.mbottom40.pbottom100
               .col-sm-4.col-sm-offset-4.text-center.mbottom40
-                = f.submit "Login",:class => 'btn btn-primary pop-up-but login-button'
+                = f.submit "Login", class: "loader-button btn pop-up-but login-button"
+                .loader-effect.btn.pop-up-but{style: "display:none;"}
+                  .inline-block{style: "margin-top: 8px;"} Please Wait...
+                  .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                    %div
       #home-sign-up.tab-pane.fade
         .col-md-12.mtop40
-          = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require"}) do |f|
+          = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require signup-form"}) do |f|
             .col-sm-12.errors
             .form-group.clearfix
               = f.label :email, :class => 'col-sm-3 control-label text-right'
@@ -57,16 +61,20 @@
                   = f.password_field :password_confirmation, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
             .form-group.clearfix
               .col-sm-8.col-sm-offset-2
-                %span.mleft10.textt-center By continuing, you agree to the Terms of Service
+                %span.mleft10.textt-center.font11 By continuing, you agree to the Terms of Service
             .form-group.clearfix.mbottom40.pbottom100
               #submit-signup.pulse-loader{style: "display:none;"} Loading...
               .col-sm-4.col-sm-offset-4.mbottom40
-                = f.submit "Sign up", :class => 'btn btn-primary pop-up-but'
+                = f.submit "Sign up", class: "loader-button btn pop-up-but login-button"
+                .loader-effect.btn.pop-up-but{style: "display:none;"}
+                  .inline-block{style: "margin-top: 8px;"} Please Wait...
+                  .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                    %div
   .col-xs-12.col-sm-6.padding20.bg-white
     .col-xs-12.col-sm-12.no-mar-pad
       %h3.grey-fg.text-center.font21{style: "margin-top: 15.5%"}
         Discover showcases and wishlists around the world
-      .col-xs-12.col-sm-4.col-sm-offset-4.btn-social.padding20.font25.text-center.white-fg.mtop10.pon.scase-login Showcase
+      .col-xs-12.col-sm-4.col-sm-offset-4.btn-social.padding20.font21.text-center.white-fg.mtop10.pon.scase-login{style: "border: 1px solid #00A896;"} Showcase
     .col-xs-12.col-sm-12.no-mar-pad
       %h3.grey-fg.text-center.font21.mtop30
         Access things around you, as and when you need it

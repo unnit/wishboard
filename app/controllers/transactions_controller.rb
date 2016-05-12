@@ -138,6 +138,7 @@ class TransactionsController < ApplicationController
     @address.state = params[:state]
     @address.mobile = params[:mobile]
     @address.landmark = params[:landmark]
+    @address.country = 'India'
     @address.email = current_user.email
     @address.address_type = Address::ADDRESS_TYPES[0][1]
     @address.valid?

@@ -107,7 +107,15 @@ class TransactionsController < ApplicationController
       @return_url=GLOBAL_VARIABLES[:transaction_return_url]
     end
     #@notifyUrl=""
+    unless current_user.addresses.delivery.first.blank?
       @address = current_user.addresses.delivery.first
+    else
+      @address = Address.new
+      @address.first_name = current_user.profile.first_name
+      @address.last_name = current_user.profile.last_name
+      @address.email = current_user.email
+      @address.mobile = current_user.profile.phone
+    end
     @transaction.generate_txnid!
   end
 
@@ -115,7 +123,12 @@ class TransactionsController < ApplicationController
     error_messages = []
     error_messages << "Sorry, you cannot proceed with the operation." unless @transaction.coco_transaction_id == params[:mid]
     error_messages << "Sorry, you cannot proceed with the operation. The booking has timed out." if @transaction.timed_out?
-    @address = current_user.addresses.delivery.first
+    unless current_user.addresses.delivery.first.blank?
+      @address = current_user.addresses.delivery.first
+    else
+      @address = Address.new
+      @address.user = current_user
+    end
     @address.first_name = params[:first_name]
     @address.last_name = params[:last_name]
     @address.address1 = params[:address1]
@@ -124,8 +137,9 @@ class TransactionsController < ApplicationController
     @address.zip = params[:zip]
     @address.state = params[:state]
     @address.mobile = params[:mobile]
-    @address.email = params[:email]
     @address.landmark = params[:landmark]
+    @address.email = current_user.email
+    @address.address_type = Address::ADDRESS_TYPES[0][1]
     @address.valid?
 
     unless @address.errors.full_messages.blank?

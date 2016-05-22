@@ -1,15 +1,16 @@
-.container.mtop60.bg-shad.mbottom40.padding0.helvetica-font{style: "background-color: #F7F7F7;"}
+.container-fluid.mtop50.bg-shad.padding0.helvetica-font.bg-light-grey
   = render partial: "profile", locals: {user: @user}
-  .col-xs-12.col-sm-9.padding10.ptop0.user-wrapper
-    = render partial: "user_card", locals: {users: @following, min_width: "282px"}
-  #infinite-scrolling-content.hidden
-    = paginate @following, param_name: "following"
-  .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
-    %i.fa.fa-circle-o-notch.fa-spin.font21
-    Please wait...
-
-= content_for :extra_js do
-  :javascript
-    $(document).ready(function(){
-      $(".following-profile").addClass("active-link");
-    });
+  .container.padding0
+    .col-md-12.mbottom10
+      .ol.breadcrumb.no-mar-pad.note-font-size
+        = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
+    .col-xs-12.col-sm-12.padding10.ptop0.user-wrapper
+      - if @following.present?
+        = render partial: "user_card", locals: {users: @following, min_width: "282px"}
+      - else
+        %h3.text-center.padding20{style: "height:300px;"} “Not following anyone!”
+    #infinite-scrolling-content.hidden
+      = paginate @following, param_name: "following"
+    .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
+      %i.fa.fa-circle-o-notch.fa-spin.font21
+      Please wait...

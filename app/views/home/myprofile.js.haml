@@ -1,5 +1,5 @@
 $('.feed-loader').hide();
-$(".showcase-strip").append("#{j render partial: "showcases", locals: {showcases: @showcases}}")
+$(".showcase-strip").append("#{j render partial: "showcase_cards", locals: {showcases: @showcases}}")
 -if @showcases.next_page
   $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @showcases, param_name: 'showcases'}");
 - else

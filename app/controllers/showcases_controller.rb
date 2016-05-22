@@ -38,7 +38,6 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
-      logger.info '*******************Success'
       flash[:notice] = "Your product has been showcased successfully."
       if params[:header].present?
         render js: "location.reload()"
@@ -83,6 +82,10 @@ class ShowcasesController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def tagged_showcases

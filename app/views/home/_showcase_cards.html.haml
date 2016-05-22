@@ -1,0 +1,28 @@
+- showcases.each do |showcase|
+  .col-xs-12.col-sm-3.mbottom20
+    .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-white
+      = link_to showcase_path(showcase), remote: true do
+        = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 180, crop: :fill, gravity: :face
+      .col-xs-12.col-sm-12.no-mar-pad.text-right
+        .col-xs-4.col-sm-4.col-sm-offset-4.col-xs-offset-4.padding5
+          - if current_user
+            = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
+              - if showcase.wowed?(current_user)
+                %i.fa.fa-heart.heart-red-fg
+              - else
+                %i.fa.fa-heart-o
+          - else
+            = link_to root_path, class: "black-fg" do
+              %i.fa.fa-heart-o
+          .badge{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
+            = showcase.active_wows.count
+        .col-xs-4.col-sm-4.pon.comment-link.padding5
+          - if current_user
+            %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
+            .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users}", "data-toggle" => "tooltip"}
+              = showcase.comments.count
+          - else
+            = link_to root_path, class: "black-fg" do
+              %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
+              .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
+                = showcase.comments.count

@@ -1,92 +1,78 @@
 = content_for :title do
-  - title = "#{@user.name} (#{@profile.slug}) | Cocociti"
-.col-xs-12.col-sm-3.no-mar-pad.white-fg.mob-height
-  .col-xs-12.col-sm-12.text-center
-    = cl_image_tag user.avatar, class: "img-circle mtop20", style: "z-index: 1;", width: 160, height: 160, crop: :fill, gravity: :face
-    %h4= (truncate user.name, length: 20)
-    %h4= (truncate user.location.name, length: 30 ) if user.location
-    %h5= (truncate @profile.about, length: 250)
-    .col-xs-12.col-sm-12.mbottom10
-      - if @profile.facebook.present?
-        = link_to @profile.facebook do
-          .fa.fa-facebook-official.white-fg.font25.mright5
-      - if @profile.twitter.present?
-        = link_to @profile.twitter do
-          .fa.fa-twitter-square.white-fg.font25.mright5
-      - if @profile.instagram.present?
-        = link_to @profile.instagram do
-          .fa.fa-instagram.white-fg.font25.mright5
-      - if @profile.linkedin.present?
-        = link_to @profile.linkedin do
-          .fa.fa-linkedin-square.white-fg.font25.mright5
-      - if @profile.google_plus.present?
-        = link_to @profile.google_plus do
-          .fa.fa-google-plus-square.white-fg.font25.mright5
-      - if @profile.website.present?
-        = link_to @profile.website do
-          .fa.fa-globe.white-fg.font25.mright5
-      - if @profile.other_url.present?
-        = link_to @profile.other_url do
-          .fa.fa-link.white-fg.font25
-    - if current_user && current_user.same_user?(user)
-      = link_to settings_path do
-        .btn.btn-profile-blue.white-fg
-          %span Settings
-          %span.glyphicon.glyphicon-cog
-  - if current_user && current_user != user
-    .col-xs-12.col-sm-12.no-mar-pad.text-center{class: "follow-set-#{user.id}"}
-      = link_to user_toggle_follow_path(user), remote: true, method: :post do
-        .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey.btn-profile-blue
-          = submit_tag "#{ current_user.following?(user) ? 'Following' : "Follow" }", class: "loader-button btn loader-in-follow-button padding0 btn-profile-blue white-fg font12"
-          .loader-effect.btn.loader-in-follow-button{style: "display:none;"}
-            .ball-clip-rotate{style: "height:22px;"}
-              %div ...
-  .col-xs-12.col-sm-8.col-sm-offset-2.text-center.padding10.mtop10.btn-profile-blue
-    .col-xs-12.col-sm-12.no-mar-pad.font21
-      %span= user.appreciations.count
-      %i.fa.fa-heart.heart-red-fg
-    .col-xs-12.col-sm-12.no-mar-pad
-      in
-      - if current_user
-        = current_user.same_user?(user) ? "your" : "#{user.name}'s"
-      - else
-        #{user.name}'s
-      showcase
-  .col-sm-12.hidden-xs.mtop20
-    .col-sm-12.no-mar-pad
-      %h4.white-fg Following
-      - user.following.limit(10).each do |following|
-        = link_to myprofile_path(following.profile.slug) do
-          = cl_image_tag following.avatar, class: "img-circle pull-left mright5 mbottom5", width: 40, height: 40, crop: :fill
-      - if user.nil_following?
-        .col-sm-12.padding20.btn-profile-blue
-          Not Following anyone? Start following people to build your product network.
-    .col-sm-12.no-mar-pad.mtop20
-      %h4.white-fg Followers
-      - user.followers.limit(10).each do |follower|
-        = link_to myprofile_path(follower.profile.slug) do
-          = cl_image_tag follower.avatar, class: "img-circle pull-left mright5 mbottom5", width: 40, height: 40, crop: :fill
-      - if user.nil_following?
-        .col-sm-12.padding20.btn-profile-blue
-          No Followers yet.
-.col-xs-12.col-sm-9.padding40
-  = link_to myprofile_path(@profile.slug) do
-    .col-xs-12.col-sm-2.col-sm-offset-1.padding10.pon.pattern-bg.showcase-profile.text-center
-      %h5.weight-bold.lt-grey-fg SHOWCASE
-      %h4= user.showcases.count
-  = link_to myshowpieces_path(@profile.slug) do
-    .col-xs-6.col-sm-2.padding10.pon.pattern-bg.showpieces-profile.text-center
-      %h5.weight-bold.lt-grey-fg SHOWPIECES
-      %h4= user.showcases.showpieces.count
-  = link_to mywishes_path(@profile.slug) do
-    .col-xs-6.col-sm-2.pon.padding10.pattern-bg.wishes-profile.text-center
-      %h5.weight-bold.lt-grey-fg WISHES
-      %h4= user.showcases.wishes.count
-  = link_to following_path(@profile.slug) do
-    .col-xs-6.col-sm-2.pon.padding10.pattern-bg.following-profile.text-center
-      %h5.weight-bold.lt-grey-fg FOLLOWING
-      %h4= user.following.count
-  = link_to followers_path(@profile.slug) do
-    .col-xs-6.col-sm-2.pon.padding10.pattern-bg.followers-profile.text-center
-      %h5.weight-bold.lt-grey-fg FOLLOWERS
-      %h4= user.followers.count
+  - title = "#{user.name} (#{@profile.slug}) | Cocociti"
+.container-fluid.pattern-bg{style: "min-height: 50px;border-bottom: 1px solid #e5e5e5;line-height: 50px;"}
+  .container.padding0
+    %ul.mbottom0.padding0
+      %li.inline-block.mright20
+        = link_to myprofile_path(@profile.slug) do
+          %span.black-fg= user.collections.count + 2
+          %span.grey-fg Showcases
+      %li.inline-block.mright20
+        = link_to following_path(@profile.slug) do
+          %span.black-fg= user.following.count
+          %span.grey-fg Following
+      %li.inline-block.mright20
+        = link_to followers_path(@profile.slug) do
+          %span.black-fg= user.followers.count
+          %span.grey-fg Followers
+      %li.inline-block.hidden-xs.pull-right
+        - if current_user && current_user.same_user?(user)
+          = link_to settings_path do
+            .btn.grey-fg.prof-sett
+              %span.glyphicon.glyphicon-cog.pull-left
+      %li.inline-block.hidden-xs.pull-right
+        - if current_user && current_user != user
+          .btn.text-center.pright0{class: "follow-set-#{user.id}"}
+            = link_to user_toggle_follow_path(user), remote: true, method: :post do
+              .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey
+                = submit_tag "#{ current_user.following?(user) ? 'Following' : "Follow" }", class: "loader-button btn loader-in-follow-button padding0 font12 grey-fg"
+                .loader-effect.btn.loader-in-follow-button.grey-fg{style: "display:none;"}
+                  .ball-clip-rotate{style: "height:22px;"}
+                    %div ...
+.container-fluid
+  .container.padding0
+    .col-xs-12.col-sm-12.text-center.padding0.mbottom10{style: "border-bottom: 1px solid #e5e5e5;"}
+      = cl_image_tag user.avatar, class: "img-circle", style: "z-index: 1;margin-top:-45px;", width: 100, height: 100, crop: :fill, gravity: :face
+      .col-xs-12.col-sm-12.padding0.mbottom10.text-right.text-center-mob.font-bit-large.mob-mtop0{style: "margin-top: -52px;"}
+        - if @profile.facebook.present?
+          = link_to @profile.facebook do
+            .fa.fa-facebook-official.grey-fg.mright5
+        - if @profile.twitter.present?
+          = link_to @profile.twitter do
+            .fa.fa-twitter-square.grey-fg.mright5
+        - if @profile.instagram.present?
+          = link_to @profile.instagram do
+            .fa.fa-instagram.grey-fg.mright5
+        - if @profile.linkedin.present?
+          = link_to @profile.linkedin do
+            .fa.fa-linkedin-square.grey-fg.mright5
+        - if @profile.google_plus.present?
+          = link_to @profile.google_plus do
+            .fa.fa-google-plus-square.grey-fg.mright5
+        - if @profile.website.present?
+          = link_to @profile.website do
+            .fa.fa-globe.grey-fg.font25.mright5
+        - if @profile.other_url.present?
+          = link_to @profile.other_url do
+            .fa.fa-link.white-fg.font25
+      %h4.font21.mtop0= (truncate user.name, length: 20)
+      %h6.grey-fg
+        - if user.location && user.location.name.present?
+          .fa.fa-anchor
+          = (truncate user.location.name, length: 30)
+      %h5.grey-fg= (truncate @profile.about, length: 250)
+      %ul.mbottom0.padding0.visible-xs
+        %li.inline-block
+          - if current_user && current_user != user
+            .btn.text-center{class: "follow-set-#{user.id}"}
+              = link_to user_toggle_follow_path(user), remote: true, method: :post do
+                .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey
+                  = submit_tag "#{ current_user.following?(user) ? 'Following' : "Follow" }", class: "loader-button btn loader-in-follow-button padding0 font12 grey-fg"
+                  .loader-effect.btn.loader-in-follow-button.grey-fg{style: "display:none;"}
+                    .ball-clip-rotate{style: "height:22px;"}
+                      %div ...
+        %li.inline-block
+          - if current_user && current_user.same_user?(user)
+            = link_to settings_path do
+              .btn.grey-fg.prof-sett
+                %span.glyphicon.glyphicon-cog.pull-left

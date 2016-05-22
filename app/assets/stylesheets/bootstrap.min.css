@@ -3666,7 +3666,7 @@ textarea.form-group-lg .form-control {
 .btn:active.focus,
 .btn:active:focus,
 .btn:focus {
-    outline: thin dotted;
+    outline: none;
     /*outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px*/
 }
@@ -4744,12 +4744,11 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .nav-tabs>li.active>a,
 .nav-tabs>li.active>a:focus,
 .nav-tabs>li.active>a:hover {
-    /*color: #555;*/
     color: #fff;
     cursor: default;
-    /*background-color: #fff;*/
-    /*background-color: #388CA7;*/
-    background-color: #1C8888;
+    /*background-color: #388CA7;
+    background-color: #1C8888;*/
+    background-color: #848484;
     border: 1px solid #ddd;
     border-bottom-color: transparent
 }

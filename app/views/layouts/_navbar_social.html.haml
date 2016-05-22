@@ -1,4 +1,4 @@
-%nav.navbar.navbar-default.navbar-fixed-top.topnav.nav-bar-color.border-bt-side{:role => "navigation", style: "box-shadow: 0 0px 1px rgba(0, 0, 0, 0.26);", class: "header-with-grad no-border"}
+%nav.navbar.navbar-default.navbar-fixed-top.topnav.nav-bar-color.no-border{:role => "navigation", style: "box-shadow: 0 1px 1px rgba(0,0,0,0.07);"}
   .navbar.navbar-fixed-top
     .container
       .navbar-header
@@ -6,20 +6,20 @@
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        %a.navbar-brand.pleft5{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;color:white;"}
+        %a.navbar-brand.pleft5{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;color:black;"}
           Cocociti
         = yield :header_extra
-      .col-sm-5.no-mar-pad.mtop10.hidden-xs
+      .col-sm-4.no-mar-pad.hidden-xs{style: "margin-top: 8px;"}
         ~ form_tag results_path, method: :get do
-          .col-sm-11.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query", style: "border-radius: 4px 0px 0px 4px;"
-          .col-sm-1.no-mar-pad
-            %button.btn.btn-danger{type: 'submit', style: "border-radius: 0px 4px 4px 0;"}
-              %span.glyphicon.glyphicon-search
+          .col-sm-11.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query", style: "border-radius: 20px;"
+          .col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
+            %button.btn{type: 'submit', style: "background-color: transparent;"}
+              %span.glyphicon.glyphicon-search.grey-fg
       .navbar-collapse.collapse.nav-border
-        %ul.nav.navbar-nav.navbar-right{style: "display: #{@pro_view_visible || 'block'}"}
+        %ul.nav.navbar-nav.navbar-right
           - if current_user
             %li.hidden-xs
-              .glyphicon.glyphicon-bell.white-fg.font20.pon.pull-right.mtop15.notif-icon
+              .fa.fa-bell-o.font20.pon.pull-right.mtop15.notif-icon.grey-fg
               - if current_user.unchecked_notififcations_count > 0
                 .badge.notif-badge.pon.pull-right.mtop5.notif-icon= current_user.unchecked_notififcations_count
               .sq-rot.notif-toggle
@@ -67,7 +67,7 @@
                     %li
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
-            %li.hidden-xs= link_to "Showcase", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn", style: "background-color: #019081;padding: 7px;margin-top:7px;color:white;display: #{@sh_btn || 'block;'}"
+            %li.hidden-xs= link_to "Showcase", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn", style: "padding: 7px 12px;margin-top:7px;border: 1px solid #ccc;border-radius:18px;display: #{@sh_btn || 'block;'}"
             %li.visible-xs.bg-white
               = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
                 %span.black-fg= truncate current_user.name, length: 25

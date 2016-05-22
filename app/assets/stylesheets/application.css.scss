@@ -230,6 +230,9 @@ body{
 .pleft5{
   padding-left: 5px;
 }
+.pleft15{
+  padding-left: 15px;
+}
 .pright5{
   padding-right: 5px;
 }
@@ -435,6 +438,9 @@ small{
   font-size: 13px;
   letter-spacing: 0px;
 }
+.font16{
+  font-size: 16px;
+}
 .font17{
   font-size: 17px;
 }
@@ -516,15 +522,10 @@ small{
   color: grey !important
 }
 .btn-social{
-  /*background-color: #f25f5c;*/
-  background-color: #00A896;
+  background-color: #848484;
 }
 .btn-grey{
   background-color: rgb(191, 191, 191);
-}
-.btn-profile-blue{
-  border-radius: 13px;
-  background-color: rgb(104, 133, 158)
 }
 .heart-red-fg{
   color: #FF1F1B;
@@ -542,7 +543,7 @@ small{
   color: #ADADAD;
 }
 .grey-bg{
-  background-color: #eee !important;
+  background-color: #DADADA !important;
 }
 .dark-grey-bg{
   background-color: #C1C1C1;

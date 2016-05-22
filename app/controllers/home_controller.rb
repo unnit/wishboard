@@ -114,8 +114,8 @@ class HomeController < ApplicationController
   end
 
   def myprofile
-    @showcases = @user.showcases.order(created_at: :desc)
-    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
+    add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
+    add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     respond_to do |format|
       format.html
       format.js
@@ -123,8 +123,11 @@ class HomeController < ApplicationController
   end
 
   def myshowpieces
+    add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
+    add_breadcrumb "Showcases", myprofile_path(@profile.slug)
+    add_breadcrumb "Showpieces", myshowpieces_path(@profile.slug)
     @showcases = @user.showcases.showpieces.order(created_at: :desc)
-    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html
       format.js { render :myprofile }
@@ -132,8 +135,11 @@ class HomeController < ApplicationController
   end
 
   def mywishes
+    add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
+    add_breadcrumb "Showcases", myprofile_path(@profile.slug)
+    add_breadcrumb "Wishes", mywishes_path(@profile.slug)
     @showcases = @user.showcases.wishes.order(created_at: :desc)
-    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(4)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html
       format.js { render :myprofile }
@@ -141,6 +147,8 @@ class HomeController < ApplicationController
   end
 
   def following
+    add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
+    add_breadcrumb "Following", following_path(@profile.slug)
     @following = @user.following.order(created_at: :desc)
     @following = Kaminari.paginate_array(@following).page(params[:following]).per(12)
     respond_to do |format|
@@ -150,6 +158,8 @@ class HomeController < ApplicationController
   end
 
   def followers
+    add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
+    add_breadcrumb "Following", followers_path(@profile.slug)
     @followers = @user.followers.order(created_at: :desc)
     @followers = Kaminari.paginate_array(@followers).page(params[:followers]).per(12)
     respond_to do |format|

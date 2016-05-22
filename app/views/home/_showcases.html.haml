@@ -1,7 +1,7 @@
 - feed ||= "yes"
 - showcases.each do |showcase|
   .col-xs-12.col-sm-12.no-mar-pad.mbottom30.bg-white.bg-shad.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id}"}
-    .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey
+    .col-xs-12.col-sm-12.no-mar-pad.grey-bg
       - if showcase.owner?(current_user)
         %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop10.pon{style: "position: absolute;right:0px;"}
         .col-xs-4.col-sm-2.option-showcase.bg-shad.bg-white.text-center.bg-white.right15

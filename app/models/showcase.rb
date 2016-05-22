@@ -8,6 +8,7 @@ class Showcase < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
+  has_many :collections, through: :collection_showcases
   has_many :showcase_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location

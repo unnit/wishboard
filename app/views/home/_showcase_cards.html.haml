@@ -1,8 +1,9 @@
 - showcases.each do |showcase|
-  .col-xs-12.col-sm-3.mbottom20
+  .col-xs-6.col-sm-3.mbottom20.padding10
     .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-white
-      = link_to showcase_path(showcase), remote: true do
-        = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 180, crop: :fill, gravity: :face
+      .col-xs-12.col-sm-12.no-mar-pad.text-center
+        = link_to showcase_path(showcase), remote: true do
+          = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 180, crop: :fill, gravity: :face
       .col-xs-12.col-sm-12.no-mar-pad.text-right
         .col-xs-4.col-sm-4.col-sm-offset-4.col-xs-offset-4.padding5
           - if current_user

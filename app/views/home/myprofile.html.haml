@@ -4,11 +4,11 @@
     .col-md-12.mbottom10
       .ol.breadcrumb.no-mar-pad.note-font-size
         = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
-    .col-xs-12.col-sm-3.padding-mob0
+    .col-xs-12.col-sm-3.mbottom20
       = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           Showpieces
-    .col-xs-12.col-sm-3.padding-mob0
+    .col-xs-12.col-sm-3.mbottom20
       = link_to mywishes_path(@profile.slug), style: "color: #292929" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float.pon
           Wishes

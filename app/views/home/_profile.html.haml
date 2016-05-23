@@ -32,7 +32,7 @@
 .container-fluid
   .container.padding0
     .col-xs-12.col-sm-12.text-center.padding0.mbottom10{style: "border-bottom: 1px solid #e5e5e5;"}
-      = cl_image_tag user.avatar, class: "img-circle", style: "z-index: 1;margin-top:-45px;", width: 100, height: 100, crop: :fill, gravity: :face
+      = cl_image_tag user.avatar, class: "img-circle mob-mtop10", style: "z-index: 1;margin-top: -45px;", width: 100, height: 100, crop: :fill, gravity: :face
       .col-xs-12.col-sm-12.padding0.mbottom10.text-right.text-center-mob.font-bit-large.mob-mtop0{style: "margin-top: -52px;"}
         - if @profile.facebook.present?
           = link_to @profile.facebook do
@@ -61,7 +61,7 @@
           .fa.fa-anchor
           = (truncate user.location.name, length: 30)
       %h5.grey-fg= (truncate @profile.about, length: 250)
-      %ul.mbottom0.padding0.visible-xs
+      %ul.mbottom10.padding0.visible-xs
         %li.inline-block
           - if current_user && current_user != user
             .btn.text-center{class: "follow-set-#{user.id}"}

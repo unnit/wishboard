@@ -1,0 +1,5 @@
+$('#cont-wrapper').modal('hide');
+- if @showcase_to_hide
+  $(".showcase-card-#{@showcase_to_hide.id}").fadeOut();
+  $(".showcase-card-#{@showcase_to_hide.id}").remove();
+$(".messages").html("#{j render partial: 'layouts/messages'}")

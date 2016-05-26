@@ -1,7 +1,7 @@
 - feed ||= "yes"
 - showcases.each do |showcase|
   .col-xs-12.col-sm-12.no-mar-pad.mbottom30.bg-white.bg-shad.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id}"}
-    .col-xs-12.col-sm-12.no-mar-pad.grey-bg
+    .col-xs-12.col-sm-12.no-mar-pad
       - if showcase.owner?(current_user)
         %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop10.pon{style: "position: absolute;right:0px;"}
         .col-xs-4.col-sm-2.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
@@ -55,11 +55,14 @@
           %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
           .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
             = showcase.comments.count
-    .col-xs-3.col-sm-3.border-two.padding10.bg-light-grey{style: "height: 43px;"}
     .col-xs-3.col-sm-3.border-two.padding5.bg-light-grey.text-right{style: "height: 43px;"}
       - if current_user && showcase.product.present?
         = link_to user_product_path(showcase.product), target: "_blank" do
           .btn.btn-sm.btn-social.white-fg Rent
+    .col-xs-3.col-sm-3.border-two.padding10.bg-light-grey.text-right{style: "height: 43px;"}
+      - if current_user && showcase.owner?(current_user)
+        = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true do
+          .fa.fa-plus.grey-fg
     .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey{class: "user-comments-#{showcase.id}"}
       - if feed == "yes"
         - showcase.comments.order(created_at: :desc).limit(4).each do |comment|

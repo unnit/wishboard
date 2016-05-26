@@ -1,11 +1,15 @@
 - showcases.each do |showcase|
-  .col-xs-6.col-sm-3.mbottom20.padding10
-    .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-white
+  .col-xs-6.col-sm-3.padding10{class: "showcase-card-#{showcase.id}"}
+    .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
       .col-xs-12.col-sm-12.no-mar-pad.text-center
         = link_to showcase_path(showcase), remote: true do
-          = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 180, crop: :fill, gravity: :face
-      .col-xs-12.col-sm-12.no-mar-pad.text-right
-        .col-xs-4.col-sm-4.col-sm-offset-4.col-xs-offset-4.padding5
+          = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face
+      .col-xs-12.col-sm-12.no-mar-pad
+        .col-xs-4.col-sm-4.padding5
+          - if current_user && current_user.same_user?(@user)
+            = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true do
+              .fa.fa-plus.grey-fg
+        .col-xs-4.col-sm-4.padding5.text-right
           - if current_user
             = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
               - if showcase.wowed?(current_user)
@@ -17,7 +21,7 @@
               %i.fa.fa-heart-o
           .badge{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
             = showcase.active_wows.count
-        .col-xs-4.col-sm-4.pon.comment-link.padding5
+        .col-xs-4.col-sm-4.padding5.text-right
           - if current_user
             %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
             .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users}", "data-toggle" => "tooltip"}

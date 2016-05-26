@@ -1,0 +1,16 @@
+.container.padding0{style: "max-width:450px;margin-top: 10%;max-height: 60%;overflow-y: auto;"}
+  .col-xs-12.col-sm-12.bg-white.padding20.border5
+    .panel.panel-default.mbottom0#profile_form
+      .panel-heading
+        %h4.mtop-v-5 Select your showcases to add
+      .panel-body
+        = form_tag add_showcases_path, remote: true, class: "form-horizontal" do
+          = hidden_field_tag :id, showcase.id
+          = hidden_field_tag :collection_id, collection_id
+          .form-group.text-center
+            - current_user.collections.each do |collection|
+              .col-xs-6.col-sm-6
+                %label.font17= collection.name
+                = check_box_tag "#{collection.name}", "#{collection.id}", collection.showcases.include?(@showcase)
+          .form-group.text-center
+            = submit_tag "Add", class: "btn btn-sm grey-fg"

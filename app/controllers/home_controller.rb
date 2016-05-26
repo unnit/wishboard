@@ -2,8 +2,8 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
   skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
   before_filter :back_to_home, only: [:authenticate]
-  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers]
-  before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :following, :followers]
+  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers]
+  before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers]
   before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed]
   before_filter :set_plain_layout, only: [:user_signup_confirmation, :interests]
 
@@ -139,6 +139,23 @@ class HomeController < ApplicationController
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Wishes", mywishes_path(@profile.slug)
     @showcases = @user.showcases.wishes.order(created_at: :desc)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
+    respond_to do |format|
+      format.html
+      format.js { render :myprofile }
+    end
+  end
+
+  def view_collection
+    @collection = Collection.find_by_id params[:showcase]
+    if @collection.blank?
+      redirect_to root_path
+      return
+    end
+    add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
+    add_breadcrumb "Showcases", myprofile_path(@profile.slug)
+    add_breadcrumb "#{@collection.name}"
+    @showcases = @collection.showcases.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html

@@ -1,0 +1,9 @@
+- if @collection.errors.blank?
+  $(".create-collect")[0].reset();
+  $(".create-collect").hide();
+  $(".plus-prof").show();
+  var collection = $("#{j render partial: 'showcases/collection', locals: {collection: @collection}}").hide();
+  $(".collection-strip").append(collection);
+  $(".collection-#{@collection.id}").fadeIn('slow');
+- else
+  $(".create-collect-err").text("#{@collection.errors.full_messages.first}");

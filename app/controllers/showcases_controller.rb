@@ -1,7 +1,7 @@
 class ShowcasesController < ApplicationController
-  before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show]
-  before_filter :authenticate_owner, only: [:edit, :update, :destroy]
+  before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete, :create_collection, :delete_collection, :add]
+  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add]
+  before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
   before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
   before_filter :set_social_layout
@@ -82,6 +82,8 @@ class ShowcasesController < ApplicationController
   end
 
   def show
+    @to_move = "yes" if params[:to_move] == "yes"
+    @collection_id = params[:collection_id]
     respond_to do |format|
       format.html
       format.js
@@ -129,6 +131,39 @@ class ShowcasesController < ApplicationController
     q = params[:q].downcase
     @tags = Tag.where("lower(name) like ?", "%#{q}%")
     render json: @tags.map{|tag| tag.name}
+  end
+
+  def create_collection
+    @collection = current_user.collections.build(name: params[:name])
+    @collection.save
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def delete_collection
+    @collection = Collection.find_by_id params[:id]
+    if @collection.user == current_user
+      @collection.destroy
+      respond_to :js
+    end
+  end
+
+  def add
+    current_user.collections.each do |collection|
+      if params["#{collection.name}"].to_i == collection.id
+        CollectionShowcase.where(collection_id: collection.id, showcase_id: @showcase.id).first_or_create!
+      else
+        collection_showcase = CollectionShowcase.where(collection_id: collection.id, showcase_id: @showcase.id).first
+        if collection_showcase
+          collection_showcase.destroy
+          @showcase_to_hide = @showcase if params[:collection_id].to_i == collection.id
+        end
+      end
+    end
+    flash[:notice] = "Successfully added to the selected showcases."
+    respond_to :js
   end
 
   private

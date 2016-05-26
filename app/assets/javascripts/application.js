@@ -86,7 +86,7 @@ $(document).ready(function(){
   });
   //Focus on comments
   $(document).on("click", ".comment-link", function(){
-    $(this).next().next(".new-comment").find(".comment-description").focus();
+    $(this).closest(".showcase-ps-wrapper").find(".comment-description").focus();
   });
   //Showcase Edit Delete option
   $(document).on("click", ".action-showcase", function(){
@@ -344,6 +344,22 @@ $(document).ready(function(){
       }
     });
   }
+  //Profile page create collection
+    $(".plus-prof").click(function(){
+      $(".plus-prof").hide();
+      $(".create-collect").fadeIn();
+    })
+    $(".clos-c-collect").click(function(){
+      $(".create-collect")[0].reset();
+      $(".create-collect").hide();
+      $(".plus-prof").fadeIn();
+    })
+    $(document).on( "mouseover", ".collection-wrapper", function(){
+      $(this).find(".close-sprite").fadeIn();
+    });
+    $(document).on( "mouseleave", ".collection-wrapper", function(){
+      $(this).find(".close-sprite").fadeOut();
+    });
   //Image loading bar effect
   $('.cloudinary-fileupload-new').bind('fileuploadprogress', function(e, data) {
     $('.progress').css("display", "inline-block");

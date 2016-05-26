@@ -1,2 +1,5 @@
-$("#cont-wrapper").html("#{j render partial: "home/pop_showcase", locals: {showcase: @showcase}}");
+- if @to_move == "yes"
+  $("#cont-wrapper").html("#{j render partial: "home/move_showcase", locals: {showcase: @showcase, collection_id: @collection_id }}");
+- else
+  $("#cont-wrapper").html("#{j render partial: "home/pop_showcase", locals: {showcase: @showcase}}");
 $("#cont-wrapper").modal('show');

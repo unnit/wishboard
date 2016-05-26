@@ -1,5 +1,6 @@
 = content_for :title do
   - title = "#{user.name} (#{@profile.slug}) | Cocociti"
+.messages
 .container-fluid.pattern-bg{style: "min-height: 50px;border-bottom: 1px solid #e5e5e5;line-height: 50px;"}
   .container.padding0
     %ul.mbottom0.padding0
@@ -76,3 +77,4 @@
             = link_to settings_path do
               .btn.grey-fg.prof-sett
                 %span.glyphicon.glyphicon-cog.pull-left
+#cont-wrapper.modal.fade.padding0

@@ -2977,6 +2977,21 @@ th.headerSortDown {
   line-height: 175px;
   font-size: 1.4em;
 }
+.plus-sprite{
+  background: url('images/coco-sprite.png') -603px -250px;
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  margin-top: 35.5px;
+}
+.close-sprite{
+  background: url('images/coco-sprite.png') -667px -222px;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
 /******************Other CSS for header and future use *******/
 .header-with-grad{
   /*background-color: #00A896 !important;*/

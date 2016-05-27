@@ -5,3 +5,4 @@
         .close-sprite.hide-display
     = link_to view_collection_path(collection.user.profile.slug, showcase: collection.id), style: "color: #292929", class: "inline-block full-width full-height" do
       = collection.name
+      .badge.font17= collection.showcases.count

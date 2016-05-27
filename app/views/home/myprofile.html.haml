@@ -9,10 +9,12 @@
         = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do
           .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
             Showpieces
+            .badge.font17= @user.showcases.showpieces.count
       .col-xs-12.col-sm-3.mbottom20
         = link_to mywishes_path(@profile.slug), style: "color: #292929" do
           .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
             Wishes
+            .badge.font17= @user.showcases.wishes.count
       - @user.collections.each do |collection|
         = render partial: "showcases/collection", locals: {collection: collection}
     - if current_user && current_user.same_user?(@user)

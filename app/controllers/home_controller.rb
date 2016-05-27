@@ -176,7 +176,7 @@ class HomeController < ApplicationController
 
   def followers
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
-    add_breadcrumb "Following", followers_path(@profile.slug)
+    add_breadcrumb "Followers", followers_path(@profile.slug)
     @followers = @user.followers.order(created_at: :desc)
     @followers = Kaminari.paginate_array(@followers).page(params[:followers]).per(12)
     respond_to do |format|

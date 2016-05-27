@@ -5,5 +5,6 @@
   var collection = $("#{j render partial: 'showcases/collection', locals: {collection: @collection}}").hide();
   $(".collection-strip").append(collection);
   $(".collection-#{@collection.id}").fadeIn('slow');
+  $(".collections-count").text(parseInt($(".collections-count").text()) + 1)
 - else
   $(".create-collect-err").text("#{@collection.errors.full_messages.first}");

@@ -1,2 +1,3 @@
 $(".collection-#{@collection.id}").fadeOut();
+$(".collections-count").text(parseInt($(".collections-count").text()) - 1)
 $(".collection-#{@collection.id}").remove();

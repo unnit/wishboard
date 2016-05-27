@@ -1,20 +1,20 @@
 = content_for :title do
   - title = "#{user.name} (#{@profile.slug}) | Cocociti"
 .messages
-.container-fluid.pattern-bg{style: "min-height: 50px;border-bottom: 1px solid #e5e5e5;line-height: 50px;"}
+.container-fluid.pattern-bg{style: "min-height: 50px;border-bottom: 1px solid #e5e5e5;line-height: 50px;", class: "prof-user-#{user.id}"}
   .container.padding0
     %ul.mbottom0.padding0
       %li.inline-block.mright20
         = link_to myprofile_path(@profile.slug) do
-          %span.black-fg= user.collections.count + 2
+          %span.black-fg.collections-count= user.collections.count + 2
           %span.grey-fg Showcases
       %li.inline-block.mright20
         = link_to following_path(@profile.slug) do
-          %span.black-fg= user.following.count
+          %span.black-fg.prof-following-count= user.following.count
           %span.grey-fg Following
       %li.inline-block.mright20
         = link_to followers_path(@profile.slug) do
-          %span.black-fg= user.followers.count
+          %span.black-fg.prof-followers-count= user.followers.count
           %span.grey-fg Followers
       %li.inline-block.hidden-xs.pull-right
         - if current_user && current_user.same_user?(user)
@@ -23,7 +23,7 @@
               %span.glyphicon.glyphicon-cog.pull-left
       %li.inline-block.hidden-xs.pull-right
         - if current_user && current_user != user
-          .btn.text-center.pright0{class: "follow-set-#{user.id}"}
+          .text-center.padding0{class: "follow-set-#{user.id}"}
             = link_to user_toggle_follow_path(user), remote: true, method: :post do
               .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey
                 = submit_tag "#{ current_user.following?(user) ? 'Following' : "Follow" }", class: "loader-button btn loader-in-follow-button padding0 font12 grey-fg"

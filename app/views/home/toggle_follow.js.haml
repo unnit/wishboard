@@ -1,7 +1,7 @@
 $(".follow-set-#{@user.id} .loader-effect").hide();
 $(".follow-set-#{@user.id} .loader-button").show();
-$(".user-wrapper-#{current_user.id} .following-count").text("#{current_user.following.count}")
-$(".user-wrapper-#{@user.id} .followers-count").text("#{@user.followers.count}")
+$(".user-wrapper-#{current_user.id} .following-count, .prof-user-#{current_user.id} .prof-following-count").text("#{current_user.following.count}")
+$(".user-wrapper-#{@user.id} .followers-count, .prof-user-#{@user.id} .prof-followers-count").text("#{@user.followers.count}")
 - if current_user.following?(@user)
   $(".follow-set-#{@user.id} .loader-button").val("Following");
 - else

@@ -4,6 +4,7 @@
     .col-md-12.mbottom10.no-mar-pad.pleft-10
       .ol.breadcrumb.no-mar-pad.note-font-size
         = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
+        .badge.coll-show-count= @user.showcases.wishes.count
     .col-xs-12.col-sm-12.no-mar-pad
       .col-xs-12.col-sm-12.no-mar-pad.showcase-strip
         - if @showcases.present?

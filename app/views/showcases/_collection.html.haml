@@ -7,7 +7,7 @@
     = link_to view_collection_path(collection.user.profile.slug, showcase: collection.id), style: "color: #292929", class: "inline-block full-width full-height" do
       %span.coll-name= collection.name
       .badge.font17.weight500= collection.showcases.count
-  .col-xs-12.col-sm-12.no-mar-pad.text-center.full-height.edit-coll-wrapper.hide-display{class: "edit-collection-#{collection.id}", style: "border-radius: 2px;border: 1px solid #5A5A5A;height: 198px;"}
+  .col-xs-12.col-sm-12.no-mar-pad.text-center.full-height.edit-coll-wrapper.hide-display{class: "edit-collection-#{collection.id}", style: "border-radius: 2px;border: 1px solid #5A5A5A;height: 200px;"}
     = form_tag edit_collection_showcase_path(collection), remote: true, class: "form-horizontal col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1" do
       .close-sprite.pon.clos-e-collect{style: "left: -10px;opacity: 0.5;"}
       .form-group{style: "margin-top: 35.5px;"}

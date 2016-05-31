@@ -26,9 +26,9 @@
         %span.padding5.mbottom5.pull-left.mright5.grey-bg
           .glyphicon.glyphicon-tag
           = link_to tag.name, tag_path(tag.name), class: "black-fg"
-    .col-xs-12.col-sm-12.padding10
+    .col-xs-12.col-sm-12.padding10.pbottom0
       %h4.no-mar-pad= showcase.title
-    .col-xs-12.col-sm-12.padding10
+    .col-xs-12.col-sm-12.padding10.ptop0
       %span.small.grey-fg.excerpt-desc= truncate(raw(showcase.description), length: 150)
       - if showcase.description.length > 150
         %span.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.description)
@@ -59,11 +59,12 @@
       -# if current_user && showcase.product.present?
         = link_to user_product_path(showcase.product), target: "_blank" do
           .btn.btn-sm.btn-social.white-fg Rent
-      .fb-share-button{"data-href" => "#{showcase_url(showcase)}"}
     .col-xs-3.col-sm-3.border-two.padding10.bg-light-grey.text-right{style: "height: 43px;"}
       - if current_user && showcase.owner?(current_user)
-        = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true do
+        = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "pull-right" do
           .fa.fa-plus.grey-fg
+      -# unless feed == "yes"
+      .fb-share-button{"data-href" => "#{showcase_url(showcase)}", "data-layout" => "icon", class: "pull-right mright5", style: "margin-top: -4px;"}
     .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey{class: "user-comments-#{showcase.id}"}
       - if feed == "yes"
         - showcase.comments.order(created_at: :desc).limit(4).each do |comment|

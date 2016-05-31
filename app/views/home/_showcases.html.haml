@@ -56,9 +56,10 @@
           .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
             = showcase.comments.count
     .col-xs-3.col-sm-3.border-two.padding5.bg-light-grey.text-right{style: "height: 43px;"}
-      - if current_user && showcase.product.present?
+      -# if current_user && showcase.product.present?
         = link_to user_product_path(showcase.product), target: "_blank" do
           .btn.btn-sm.btn-social.white-fg Rent
+      .fb-share-button{"data-href" => "#{showcase_url(showcase)}"}
     .col-xs-3.col-sm-3.border-two.padding10.bg-light-grey.text-right{style: "height: 43px;"}
       - if current_user && showcase.owner?(current_user)
         = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true do

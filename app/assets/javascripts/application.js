@@ -30,7 +30,7 @@
 $(document).ready(function(){
   //Auth Page
   $(".scase-login").hover(function(){
-    $(this).text("Login/SignUp");
+    $(this).html("<i class='fa fa-long-arrow-left' aria-hidden='true'></i>&nbsp;Login/SignUp");
   },function(){
     $(this).text("Showcase")
   })

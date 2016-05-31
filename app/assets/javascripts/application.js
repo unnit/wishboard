@@ -356,11 +356,11 @@ $(document).ready(function(){
     })
     $(document).on("click", ".clos-e-collect", function(){
       $(this).closest(".edit-coll-wrapper").hide();
-      $(this).closest(".collection-wrapper").find(".create-coll-wrapper").fadeIn();
+      $(this).closest(".collection-wrapper").find(".view-coll-wrapper").fadeIn();
     })
     $(document).on("click", ".edit-coll-icon", function(){
-      $(this).closest(".create-coll-wrapper").hide();
-      $(this).closest(".create-coll-wrapper").next(".edit-coll-wrapper").fadeIn();
+      $(this).closest(".view-coll-wrapper").hide();
+      $(this).closest(".view-coll-wrapper").next(".edit-coll-wrapper").fadeIn();
     })
     $(document).on( "mouseover", ".collection-wrapper", function(){
       $(this).find(".close-sprite, .edit-coll-icon").fadeIn();

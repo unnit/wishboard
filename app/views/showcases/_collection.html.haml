@@ -1,5 +1,5 @@
 .col-xs-12.col-sm-3.mbottom20.collection-wrapper{class: "collection-#{collection.id}"}
-  .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float.pon.create-coll-wrapper{class: "create-collection-#{collection.id}"}
+  .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float.pon.view-coll-wrapper{class: "view-collection-#{collection.id}"}
     - if collection.user == current_user
       = link_to delete_collection_showcase_path(collection), remote: true, method: :delete, data: { confirm: "Are you sure you want to delete #{collection.name}?" }, style: "z-index: 1;" do
         .close-sprite.hide-display

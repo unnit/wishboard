@@ -1,6 +1,6 @@
 .container.padding0{style: "max-width:450px;margin-top: 10%;max-height: 60%;overflow-y: auto;"}
   - if current_user.collections.blank?
-    .col-xs-12.col-sm-12.bg-white.padding20.border5.create-coll-wrapper
+    .col-xs-12.col-sm-12.bg-white.padding20.border5.move-create-coll-wrapper
       = render partial: "showcases/create_collection"
   .col-xs-12.col-sm-12.bg-white.padding20.border5.move-showc-wrapper{class: "#{'hide-display' if current_user.collections.blank?}"}
     .panel.panel-default.mbottom0#profile_form

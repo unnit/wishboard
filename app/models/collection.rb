@@ -6,4 +6,8 @@ class Collection < ActiveRecord::Base
   validates :name, presence: true
   validates :name, length: { maximum: 100 }
 
+  def owner?(user)
+    self.user == user
+  end
+
 end

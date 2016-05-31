@@ -135,6 +135,7 @@ Rails.application.routes.draw do
       post :comment
       post :edit_comment
       delete :delete_comment
+      post :edit_collection
       delete :delete_collection
     end
     collection do

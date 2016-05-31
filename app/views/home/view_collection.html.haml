@@ -4,7 +4,7 @@
     .col-md-12.mbottom10.no-mar-pad.pleft-10
       .ol.breadcrumb.no-mar-pad.note-font-size
         = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
-        .badge.coll-show-count= @collection.showcases.count
+        .badge.coll-show-count.weight500= @collection.showcases.count
     .col-xs-12.col-sm-12.no-mar-pad
       .col-xs-12.col-sm-12.no-mar-pad.showcase-strip{style: "min-height: 132px;"}
         - if @showcases.present?
@@ -13,7 +13,7 @@
           - if current_user && current_user.same_user?(@user)
             %h3.text-center.padding20 “Sometimes things become possible if we want them bad enough.” - T.S. Eliot
             .col-xs-12.col-md-12.text-center
-              = link_to "Showpiece", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn btn-default grey-fg", style: "padding: 7px 12px;;border: 1px solid #ccc;border-radius:18px;"
+              = link_to "Showpiece", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn black80-bg white-fg", style: "padding: 7px 12px;;border: 1px solid #ccc;border-radius:18px;"
           - else
             %h3.text-center.padding20{style: "height:300px;"} “Ayyo...No Showpieces!”
       #infinite-scrolling-content.hidden

@@ -2985,12 +2985,18 @@ th.headerSortDown {
   margin-top: 35.5px;
 }
 .close-sprite{
-  background: url('images/coco-sprite.png') -667px -222px;
-  width: 20px;
-  height: 20px;
+  background: url('images/coco-sprite.png') -668px -222px;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 10px;
+  left: 25px;
+}
+.edit-coll-icon{
   position: absolute;
   top: 10px;
   left: 10px;
+  opacity: 0.7;
 }
 /******************Other CSS for header and future use *******/
 .header-with-grad{

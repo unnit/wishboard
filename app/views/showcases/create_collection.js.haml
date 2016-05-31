@@ -6,5 +6,9 @@
   $(".collection-strip").append(collection);
   $(".collection-#{@collection.id}").fadeIn('slow');
   $(".collections-count").text(parseInt($(".collections-count").text()) + 1)
+  - if current_user.collections.count == 1
+    $(".create-coll-wrapper").hide();
+    $(".current-coll").html("#{j render partial: 'showcases/current_collections'}");
+    $(".move-showc-wrapper").fadeIn();
 - else
   $(".create-collect-err").text("#{@collection.errors.full_messages.first}");

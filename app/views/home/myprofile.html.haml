@@ -9,26 +9,14 @@
         = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do
           .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
             Showpieces
-            .badge.font17= @user.showcases.showpieces.count
+            .badge.font17.weight500= @user.showcases.showpieces.count
       .col-xs-12.col-sm-3.mbottom20
         = link_to mywishes_path(@profile.slug), style: "color: #292929" do
           .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
             Wishes
-            .badge.font17= @user.showcases.wishes.count
+            .badge.font17.weight500= @user.showcases.wishes.count
       - @user.collections.each do |collection|
         = render partial: "showcases/collection", locals: {collection: collection}
     - if current_user && current_user.same_user?(@user)
       .col-xs-12.col-sm-3.mbottom20
-        .col-xs-12.col-sm-12.no-mar-pad{style: "border-radius: 2px;border: 1px solid #5A5A5A;height: 198px"}
-          .col-xs-12.col-sm-12.no-mar-pad.text-center.full-height
-            .plus-sprite.pon.plus-prof
-            %h5.mtop5.pon.grey-fg.plus-prof Add
-            = form_tag create_collection_showcases_path, remote: true, class: "form-horizontal create-collect col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 hide-display" do
-              .close-sprite.pon.clos-c-collect{style: "left: -10px;opacity: 0.5;"}
-              .form-group{style: "margin-top: 35.5px;"}
-                %label Name
-                = text_field_tag :name, params[:name], class: "form-control grey-bg", required: true, maxlength: 100
-              .form-group
-                = submit_tag "Create", class: "btn btn-sm"
-              .form-group
-                .create-collect-err{style: "color: red;"}
+        = render partial: "showcases/create_collection"

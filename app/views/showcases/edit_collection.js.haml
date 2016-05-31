@@ -1,0 +1,6 @@
+- if @collection.errors.blank?
+  $(".edit-collection-#{@collection.id}").hide();
+  $(".create-collection-#{@collection.id}").find(".coll-name").text("#{@collection.name}")
+  $(".create-collection-#{@collection.id}").fadeIn();
+- else
+  $(".edit-collect-err").text("#{@collection.errors.full_messages.first}");

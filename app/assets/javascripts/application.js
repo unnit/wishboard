@@ -345,20 +345,28 @@ $(document).ready(function(){
     });
   }
   //Profile page create collection
-    $(".plus-prof").click(function(){
+    $(document).on("click", ".plus-prof", function(){
       $(".plus-prof").hide();
       $(".create-collect").fadeIn();
     })
-    $(".clos-c-collect").click(function(){
+    $(document).on("click", ".clos-c-collect", function(){
       $(".create-collect")[0].reset();
       $(".create-collect").hide();
       $(".plus-prof").fadeIn();
     })
+    $(document).on("click", ".clos-e-collect", function(){
+      $(this).closest(".edit-coll-wrapper").hide();
+      $(this).closest(".collection-wrapper").find(".create-coll-wrapper").fadeIn();
+    })
+    $(document).on("click", ".edit-coll-icon", function(){
+      $(this).closest(".create-coll-wrapper").hide();
+      $(this).closest(".create-coll-wrapper").next(".edit-coll-wrapper").fadeIn();
+    })
     $(document).on( "mouseover", ".collection-wrapper", function(){
-      $(this).find(".close-sprite").fadeIn();
+      $(this).find(".close-sprite, .edit-coll-icon").fadeIn();
     });
     $(document).on( "mouseleave", ".collection-wrapper", function(){
-      $(this).find(".close-sprite").fadeOut();
+      $(this).find(".close-sprite, .edit-coll-icon").fadeOut();
     });
   //Image loading bar effect
   $('.cloudinary-fileupload-new').bind('fileuploadprogress', function(e, data) {

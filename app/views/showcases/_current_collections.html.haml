@@ -1,0 +1,4 @@
+- current_user.collections.each do |collection|
+  .col-xs-6.col-sm-6
+    %label.font17= collection.name
+    = check_box_tag "#{collection.name}", "#{collection.id}", collection.showcases.include?(@showcase)

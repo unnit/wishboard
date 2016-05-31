@@ -4,6 +4,8 @@ class ShowcasesController < ApplicationController
   before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
   before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
+  before_filter :get_collection, only: [:edit_collection, :delete_collection]
+  before_filter :authenticate_collection_owner, only: [:edit_collection, :delete_collection]
   before_filter :set_social_layout
 
   def results
@@ -142,12 +144,15 @@ class ShowcasesController < ApplicationController
     end
   end
 
+  def edit_collection
+    @collection.name = params[:name]
+    @collection.save
+    respond_to :js
+  end
+
   def delete_collection
-    @collection = Collection.find_by_id params[:id]
-    if @collection.user == current_user
-      @collection.destroy
-      respond_to :js
-    end
+    @collection.destroy
+    respond_to :js
   end
 
   def add
@@ -182,9 +187,13 @@ class ShowcasesController < ApplicationController
 
   def authenticate_owner
     if @showcase
-      redirect_to root_path unless @showcase.owner?(current_user)
+      unless @showcase.owner?(current_user)
+        redirect_to root_path
+        return
+      end
     else
       redirect_to root_path
+      return
     end
   end
 
@@ -193,7 +202,21 @@ class ShowcasesController < ApplicationController
   end
 
   def authenticate_comment_owner
-    redirect_to root_path unless @comment.owner?(current_user)
+    unless @comment.owner?(current_user)
+      redirect_to root_path
+      return
+    end
+  end
+
+  def get_collection
+    @collection = Collection.find_by_id params[:id]
+  end
+
+  def authenticate_collection_owner
+    unless @collection.owner?(current_user)
+      redirect_to root_path
+      return
+    end
   end
 
 end

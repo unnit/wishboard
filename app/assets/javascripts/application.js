@@ -28,6 +28,11 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
+  $(document).on("click", ".btnShare", function(){
+    elem = $(this);
+    postToFeed(elem.data('title'), elem.data('desc'), elem.prop('href'), elem.data('image'));
+    return false;
+  });
   //Auth Page
   $(".scase-login").hover(function(){
     $(this).html("<i class='fa fa-long-arrow-left' aria-hidden='true'></i>&nbsp;Login/SignUp");

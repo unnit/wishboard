@@ -52,8 +52,11 @@
       - if current_user && showcase.owner?(current_user)
         = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "pull-right" do
           .fa.fa-plus.grey-fg
-      - unless feed == "yes"
-        .fb-share-button{"data-href" => "#{showcase_url(showcase)}", "data-layout" => "icon", class: "pull-right mright5", style: "margin-top: -4px;"}
+      /
+        -# unless feed == "yes"
+          .fb-share-button{"data-href" => "#{showcase_url(showcase)}", "data-layout" => "icon", class: "pull-right mright5", style: "margin-top: -4px;"}
+      %a{href: "#{showcase_url(showcase)}", "data-image" => "https://res.cloudinary.com/cocociti/image/upload/#{showcase.image}", "data-title" => "#{showcase.title}", "data-desc" => "#{showcase.description}", class: "btnShare"}
+        .fa.fa-facebook-official.grey-fg.mright5
     .col-xs-12.col-sm-12.padding10.showcase-tags
       - showcase.tags.each do |tag|
         %span.padding5.mbottom5.pull-left.mright5.grey-bg

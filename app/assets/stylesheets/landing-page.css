@@ -3024,6 +3024,9 @@ th.headerSortDown {
   .coco-offer{
     top: 84px;
   }
+  .no-bord-mob{
+    border: none !important;
+  }
   .mleft-mob{
     margin-left: 32%;
   }

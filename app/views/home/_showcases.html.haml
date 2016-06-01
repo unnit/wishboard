@@ -1,6 +1,6 @@
 - feed ||= "yes"
 - showcases.each do |showcase|
-  .col-xs-12.col-sm-12.no-mar-pad.mbottom30.bg-white.bg-shad.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id}"}
+  .col-xs-12.col-sm-12.no-mar-pad.mbottom30.bg-white.bg-shad.no-bord-mob.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id}"}
     .col-xs-12.col-sm-12.no-mar-pad
       - if showcase.owner?(current_user)
         %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop10.pon{style: "position: absolute;right:0px;"}
@@ -16,23 +16,12 @@
           %span.weight600.hovercard{"data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
         %span.small.grey-fg added
         = link_to showcase_path(showcase) do
-          %span.weight600= truncate showcase.title.titleize, length: 50
+          %span.weight600= truncate showcase.title, length: 50
         %span.small.grey-fg to
         %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
-    .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
-      = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
-    .col-xs-12.col-sm-12.padding10.showcase-tags
-      - showcase.tags.each do |tag|
-        %span.padding5.mbottom5.pull-left.mright5.grey-bg
-          .glyphicon.glyphicon-tag
-          = link_to tag.name, tag_path(tag.name), class: "black-fg"
-    .col-xs-12.col-sm-12.padding10.pbottom0
-      %h4.no-mar-pad= showcase.title
-    .col-xs-12.col-sm-12.padding10.ptop0
-      %span.small.grey-fg.excerpt-desc= truncate(raw(showcase.description), length: 150)
-      - if showcase.description.length > 150
-        %span.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.description)
-        %a.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+    = link_to showcase_path(showcase) do
+      .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
+        = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
     .col-xs-3.col-sm-3.border-two.padding10.bg-light-grey{style: "height: 43px;"}
       - if current_user
         = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
@@ -63,8 +52,20 @@
       - if current_user && showcase.owner?(current_user)
         = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "pull-right" do
           .fa.fa-plus.grey-fg
-      -# unless feed == "yes"
-      .fb-share-button{"data-href" => "#{showcase_url(showcase)}", "data-layout" => "icon", class: "pull-right mright5", style: "margin-top: -4px;"}
+      - unless feed == "yes"
+        .fb-share-button{"data-href" => "#{showcase_url(showcase)}", "data-layout" => "icon", class: "pull-right mright5", style: "margin-top: -4px;"}
+    .col-xs-12.col-sm-12.padding10.showcase-tags
+      - showcase.tags.each do |tag|
+        %span.padding5.mbottom5.pull-left.mright5.grey-bg
+          .glyphicon.glyphicon-tag
+          = link_to tag.name, tag_path(tag.name), class: "black-fg"
+    .col-xs-12.col-sm-12.padding10.pbottom0
+      %h4.no-mar-pad= showcase.title
+    .col-xs-12.col-sm-12.padding10.ptop0
+      %span.small.grey-fg.excerpt-desc= truncate(raw(showcase.description), length: 150)
+      - if showcase.description.length > 150
+        %span.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.description)
+        %a.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
     .col-xs-12.col-sm-12.no-mar-pad.bg-light-grey{class: "user-comments-#{showcase.id}"}
       - if feed == "yes"
         - showcase.comments.order(created_at: :desc).limit(4).each do |comment|

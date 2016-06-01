@@ -50,7 +50,7 @@
         js.async = true;js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
         ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
     function postToFeed(title, desc, url, image){
-    var obj = {method: 'feed',link: url, picture: 'http://www.url.com/images/'+image,name: title,description: desc};
+    var obj = {method: 'feed',link: url, picture: 'https://res.cloudinary.com/cocociti/image/upload/'+image,name: title,description: desc};
     function callback(response){}
     FB.ui(obj, callback);
     }
@@ -68,7 +68,7 @@
         js.async = true;js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
         ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
     function postToFeed(title, desc, url, image){
-    var obj = {method: 'feed',link: url, picture: 'http://www.url.com/images/'+image,name: title,description: desc};
+    var obj = {method: 'feed',link: url, picture: 'https://res.cloudinary.com/cocociti/image/upload/'+image,name: title,description: desc};
     function callback(response){}
     FB.ui(obj, callback);
     }

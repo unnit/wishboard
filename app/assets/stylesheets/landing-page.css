@@ -2990,12 +2990,12 @@ th.headerSortDown {
   height: 10px;
   position: absolute;
   top: 10px;
-  left: 25px;
+  left: 10px;
 }
 .edit-coll-icon{
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: 25px;
   opacity: 0.7;
 }
 /******************Other CSS for header and future use *******/

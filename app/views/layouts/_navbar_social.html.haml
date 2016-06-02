@@ -88,7 +88,7 @@
             %li.visible-xs.bg-white
               = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                 %span.grey-fg Sign Out
-- if current_user
+- if current_user && !@scase_modal.present?
   #showcase-modal.modal.fade
     .modal-dialog
       .modal-content.pop-up-mar

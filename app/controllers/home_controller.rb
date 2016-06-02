@@ -15,13 +15,14 @@ class HomeController < ApplicationController
     if current_user
       @social_layout = "yes"
       @sh_btn = 'none;'
+      @scase_modal = "no"
       @showcase = Showcase.new
       @showcase.build_location
       @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
       @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-      @showcases = Showcase.order("RANDOM()")
-      #@showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(2)
-      @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
+      #@showcases = Showcase.order("RANDOM()")
+      @showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(2)
+      #@showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
       @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
       @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
       respond_to do |format|
@@ -147,7 +148,7 @@ class HomeController < ApplicationController
   end
 
   def view_collection
-    @collection = Collection.find_by_id params[:showcase]
+    @collection = Collection.find_by_id params[:name]
     if @collection.blank?
       redirect_to root_path
       return

@@ -1,35 +1,36 @@
-.container.mtop50.ptop20.pbottom70.helvetica-font
-  .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
-    = form_for @showcase do |f|
-      .col-xs-12.col-sm-12.no-mar-pad.mbottom30{style: "overflow: hidden;max-height:400px;"}
-        .preview-edit
-          = cl_image_tag @showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
-        .glyphicon.glyphicon-remove.preview-delete-edit.bg-white.pon{style: "position: absolute;z-index: 1;top:0;right:0"}
-        .col-xs-12.col-sm-12.text-center.no-mar-pad.mtop20
-          .glyphicon.glyphicon-camera.file-input-button-edit{style: "display:none;font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dashed;"}
-            = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-edit" })
-        .col-xs-12.col-sm-12.text-center.no-mar-pad.mtop5
-          .progress.progress-striped.progress-edit{style: "display: none;height: 10px;width:107px;"}
-            .progress-bar.progress-bar-edit{style: "width: 0%;"}
-      .col-xs-12.col-sm-12
-        %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
-        %br
-        = f.text_field :all_tags, placeholder: "Tags separated with enter, comma, or tab", class: "tm-input form-control tm-input-inverse tm-input-typeahead"
-      .col-xs-12.col-sm-12.text-center.ptop10
-        = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left title-gnrl", required: true, maxlength: 100
-      .col-xs-12.col-sm-12.text-center.ptop10
-        = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left des-gnrl", required: true, maxlength: 1000
-      .col-xs-4.col-sm-3.ptop10
-        = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left year-edit", maxlength: 4, style: "display: #{@showcase.wishlist? ? 'none' : 'block'}"
-      .col-xs-8.col-sm-6.ptop10
-        = f.fields_for :location do |lf|
-          = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input loc-edit", maxlength: 100, style: "display: #{@showcase.wishlist? ? 'none' : 'block'}"
-      .col-xs-12.col-sm-3.mtop10{style: "color: #9A9A9A;"}
-        %span.no-mar-pad.col-xs-12.col-sm-12
-          = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true, class: "ps-edit-showpiece"
-          %label.mbottom0 Showpiece
-        %span.no-mar-pad.col-xs-12.col-sm-12
-          = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[1]}", required: true, class: "ps-edit-wish"
-          %label.mbottom0 Wish
-      .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
-        = f.submit "#{@showcase.wishlist? ? 'Wishlist' : 'Showcase'}", class: "btn btn-primary btn-shadow btn-social weight-bold showcase-edit-submit"
+.container-fluid.ptop50.bg-light-grey.padding0
+  .container.ptop20.pbottom70.helvetica-font
+    .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
+      = form_for @showcase do |f|
+        .col-xs-12.col-sm-12.no-mar-pad.mbottom30{style: "overflow: hidden;max-height:400px;"}
+          .preview-edit
+            = cl_image_tag @showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
+          .glyphicon.glyphicon-remove.preview-delete-edit.bg-white.pon{style: "position: absolute;z-index: 1;top:0;right:0"}
+          .col-xs-12.col-sm-12.text-center.no-mar-pad.mtop20
+            .glyphicon.glyphicon-camera.file-input-button-edit{style: "display:none;font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dashed;"}
+              = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-edit" })
+          .col-xs-12.col-sm-12.text-center.no-mar-pad.mtop5
+            .progress.progress-striped.progress-edit{style: "display: none;height: 10px;width:107px;"}
+              .progress-bar.progress-bar-edit{style: "width: 0%;"}
+        .col-xs-12.col-sm-12
+          %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
+          %br
+          = f.text_field :all_tags, placeholder: "Tags separated with enter, comma, or tab", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead"
+        .col-xs-12.col-sm-12.text-center.ptop10
+          = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left title-gnrl", required: true, maxlength: 100
+        .col-xs-12.col-sm-12.text-center.ptop10
+          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left des-gnrl", required: true, maxlength: 1000
+        .col-xs-4.col-sm-3.ptop10
+          = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left year-edit", maxlength: 4, style: "display: #{@showcase.wishlist? ? 'none' : 'block'}"
+        .col-xs-8.col-sm-6.ptop10
+          = f.fields_for :location do |lf|
+            = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input loc-edit", maxlength: 100, style: "display: #{@showcase.wishlist? ? 'none' : 'block'}"
+        .col-xs-12.col-sm-3.mtop10{style: "color: #9A9A9A;"}
+          %span.no-mar-pad.col-xs-12.col-sm-12
+            = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true, class: "ps-edit-showpiece"
+            %label.mbottom0 Showpiece
+          %span.no-mar-pad.col-xs-12.col-sm-12
+            = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[1]}", required: true, class: "ps-edit-wish"
+            %label.mbottom0 Wish
+        .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
+          = f.submit "#{@showcase.wishlist? ? 'Wishlist' : 'Showcase'}", class: "btn btn-primary btn-shadow btn-social weight-bold showcase-edit-submit"

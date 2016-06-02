@@ -120,6 +120,19 @@ $(document).ready(function(){
     $(this).text("See More")
     $(this).removeClass("see-less").addClass("see-more")
   });
+  //See more in comment description
+  $(document).on("click", ".see-more-comment", function(){
+    $(this).siblings(".excerpt-comment-desc").hide();
+    $(this).siblings(".full-comment-desc").show();
+    $(this).text("See Less")
+    $(this).removeClass("see-more-comment").addClass("see-less-comment")
+  });
+  $(document).on("click", ".see-less-comment", function(){
+    $(this).siblings(".full-comment-desc").hide();
+    $(this).siblings(".excerpt-comment-desc").show();
+    $(this).text("See More")
+    $(this).removeClass("see-less-comment").addClass("see-more-comment")
+  });
   //Hovercard
   function hoverCard(){
     $(".hovercard").tooltipster({
@@ -148,8 +161,8 @@ $(document).ready(function(){
   hoverCard();
   $(document).on("mouseover", ".hovercard", hoverCard);
   // POST SHOWCASE JQUERY -------- 1.slide actions in post showcase
-  if($("#showcase_all_tags").val() != null){
-    var prefilled_tags = $("#showcase_all_tags").val().split(",")
+  if($(".tm-edit-input").val() != null){
+    var prefilled_tags = $(".tm-edit-input").val().split(",");
   }
   else{
     var prefilled_tags = [];
@@ -174,6 +187,10 @@ $(document).ready(function(){
   });
   var tagApi = $(".tm-input").tagsManager({
     hiddenTagListName: "showcase[all_tags]",
+    maxTags: 15
+  });
+  var tagEditApi = $(".tm-edit-input").tagsManager({
+    hiddenTagListName: "showcase[all_tags]",
     maxTags: 15,
     prefilled: prefilled_tags
   });
@@ -184,11 +201,24 @@ $(document).ready(function(){
       tagApi.tagsManager("pushTag", d.value);
       $('.tm-input').typeahead('val', "");
   });
+  $(".tm-edit-input").typeahead(null, {
+    display: 'value',
+    source: tags,
+  }).on('typeahead:selected', function (e, d) {
+      tagEditApi.tagsManager("pushTag", d.value);
+      $('.tm-edit-input').typeahead('val', "");
+  });
   $(".tm-input").on('tm:hide', function() {
     $(".tm-input.tt-hint").hide();
-  })
+  });
+  $(".tm-edit-input").on('tm:hide', function() {
+    $(".tm-edit-input.tt-hint").hide();
+  });
   $(".tm-input").on('tm:show', function() {
     $(".tm-input.tt-hint").show();
+  });
+  $(".tm-edit-input").on('tm:show', function() {
+    $(".tm-edit-input.tt-hint").show();
   });
   var showcases = new Bloodhound({
     datumTokenizer: function(datum) {

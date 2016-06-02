@@ -98,7 +98,7 @@ Rails.application.routes.draw do
   post "toggle_follow_interest/:id", to: "home#toggle_follow_interest", as: :user_toggle_follow_interest
   get ":id/showpieces", to: "home#myshowpieces", as: :myshowpieces
   get ":id/wishes", to: "home#mywishes", as: :mywishes
-  get ":id/showcases", to: "home#view_collection", as: :view_collection
+  get ":id/showcases/:name", to: "home#view_collection", as: :view_collection
   get ":id/following", to: "home#following", as: :following
   get ":id/followers", to: "home#followers", as: :followers
   get "user_card/:id", to: "home#user_card", as: :get_user_card

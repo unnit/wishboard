@@ -18,6 +18,8 @@ class Showcase < ActiveRecord::Base
   SHOWCASE_VALUES = [0, 1]
 
   validates :title, :description, :image, presence: true
+  validates :title, length: { maximum: 100 }
+  validates :description, length: { maximum: 1000 }
   validates :year, presence: true, if: :showpiece?
   validates :year, numericality: { only_integer: true, greater_than_or_equal_to: 1700, less_than_or_equal_to: DateTime.current.year, message: "should be between 1700 and #{DateTime.current.year}"}, if: :showpiece?
 

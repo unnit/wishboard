@@ -1,0 +1,11 @@
+$(".loader-button").show();
+$(".loader-effect").hide();
+- if @wiki.errors.blank?
+  - if current_user.wikis.count == 1
+    $(".new-wiki-1").remove();
+  - elsif current_user.wikis.count == 2
+    $(".new-wiki-2").remove();
+  $(".wiki-form-title, .wiki-form-desc").val("");
+  $(".wiki-strip").append("#{j render partial: 'home/wiki', locals: {wiki: @wiki}}");
+- else
+  $(".messages").html("#{j render partial: 'layouts/messages'}")

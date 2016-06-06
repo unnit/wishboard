@@ -1,0 +1,23 @@
+.col-xs-12.col-sm-12.mbottom5.no-mar-pad.wiki-wrapper{class: "wiki-#{wiki.id}"}
+  .col-xs-12.col-sm-12.no-mar-pad.view-wiki-wrapper{class: "view-wiki-#{wiki.id}"}
+    %h4.pull-left.mbottom0.wiki-title{style: "text-decoration: underline"}= wiki.title
+    - if wiki.user == current_user
+      %span.pull-right
+        = link_to delete_wiki_path(wiki), remote: true, method: :delete, data: { confirm: "Are you sure you want to delete #{wiki.title}?" }, style: "z-index: 1;" do
+          .close-sprite.hide-display.pull-left.mright5
+        .fa.fa-pencil.font12.hide-display.edit-wiki-icon.pull-left.mleft5.pon{style: "z-index: 1"}
+    %h5.full-width.pull-left.mbottom20.wiki-desc{style: "line-height: 23px;"}= simple_format wiki.description
+  .col-xs-12.col-sm-8.no-mar-pad.edit-wiki-wrapper.hide-display{class: "edit-wiki-#{wiki.id}"}
+    = form_for wiki, url: edit_wiki_path(wiki), remote: true, html: {class: "form-horizontal form-wiki-wrap"} do |f|
+      .close-sprite.pon.clos-e-wiki.pull-right
+      .form-group
+        = f.text_field :title, class: "form-control coco-input-field bg-light-grey", required: true, placeholder: "Title"
+      .form-group
+        = f.text_area :description, class: "form-control coco-input-field bg-light-grey", rows: 4, required: true, placeholder: "Description"
+      .form-group.text-center
+        .btn.btn-social.white-fg.no-mar-pad.loader-out-button
+          = f.submit "Save", class: "loader-button btn btn-social loader-in-button"
+          .loader-effect.btn.btn-social.loader-in-button{style: "display:none;"}
+            .pull-left Please Wait...
+            .ball-clip-rotate.pull-left{style: "height:22px;"}
+              %div

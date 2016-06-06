@@ -1,5 +1,8 @@
 = content_for :title do
-  - title = "#{user.name} (#{@profile.slug}) | Cocociti"
+  - title = "#{user.name} (@#{@profile.slug}) | Cocociti"
+- if @profile.about.present?
+  = content_for :meta_content do
+    - meta_content = "#{@profile.about}"
 .messages
 .container-fluid.pattern-bg{style: "min-height: 50px;border-bottom: 1px solid #e5e5e5;line-height: 50px;", class: "prof-user-#{user.id}"}
   .container.padding0
@@ -16,6 +19,9 @@
         = link_to followers_path(@profile.slug) do
           %span.black-fg.prof-followers-count= user.followers.count
           %span.grey-fg Followers
+      %li.inline-block.mright20
+        = link_to wiki_path(@profile.slug) do
+          %span.grey-fg Wiki
       %li.inline-block.hidden-xs.pull-right
         - if current_user && current_user.same_user?(user)
           = link_to settings_path do
@@ -55,12 +61,12 @@
             .fa.fa-globe.grey-fg.mright5
         - if @profile.other_url.present?
           = link_to @profile.other_url do
-            .fa.fa-link.white-fg.font25
-      %h4.font21.mtop0= (truncate user.name, length: 20)
+            .fa.fa-link.grey-fg
+      %h4.font21.mtop0= (truncate user.name, length: 40)
       %h6.grey-fg
         - if user.location && user.location.name.present?
           .fa.fa-anchor
-          = (truncate user.location.name, length: 30)
+          = (truncate user.location.name, length: 40)
       %h5.grey-fg= (truncate @profile.about, length: 250)
       %ul.mbottom10.padding0.visible-xs
         %li.inline-block

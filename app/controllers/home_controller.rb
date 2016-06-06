@@ -2,8 +2,9 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
   skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
   before_filter :back_to_home, only: [:authenticate]
-  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers]
-  before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers]
+  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers]
+  before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers, :wiki]
+  before_filter :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
   before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed]
   before_filter :set_plain_layout, only: [:user_signup_confirmation, :interests]
 
@@ -186,6 +187,36 @@ class HomeController < ApplicationController
     end
   end
 
+  def wiki
+    @wiki = Wiki.new
+  end
+
+  def create_wiki
+    @wiki = current_user.wikis.build(title: params[:wiki][:title], description: params[:wiki][:description])
+    if @wiki.valid?
+      @wiki.save
+    else
+      flash[:alert] = @wiki.errors.full_messages.join(", ")
+    end
+    respond_to :js
+  end
+
+  def edit_wiki
+    @wiki.title = params[:wiki][:title]
+    @wiki.description = params[:wiki][:description]
+    if @wiki.valid?
+      @wiki.save
+    else
+      flash[:alert] = @wiki.errors.full_messages.join(", ")
+    end
+    respond_to :js
+  end
+
+  def delete_wiki
+    @wiki.destroy
+    render js: "$('.wiki-#{@wiki.id}').fadeOut();$('.wiki-#{@wiki.id}').remove();"
+  end
+
   def user_card
     user = User.find_by_id params[:id]
     render json: {user: (render_to_string '_user_card', layout: false, locals: {users: Array(user), card_padding: '0px'})}
@@ -273,6 +304,14 @@ class HomeController < ApplicationController
   def set_profile_caseless
     @profile = Profile.friendly.find params[:id].downcase
     @user = @profile.user
+  end
+
+  def set_wiki_and_check_owner
+    @wiki =  Wiki.find_by_id params[:id]
+    unless @wiki.user == current_user
+      redirect_to root_path
+      return
+    end
   end
 
 end

@@ -80,7 +80,7 @@ $(document).ready(function(){
     $("#bulk-bookings-pop-up").modal("show");
   });
   //Loader Icon
-  $("form.bulk-bookings-form, form.user_form, form.login-form, form.signup-form").submit(function(){
+  $("form.bulk-bookings-form, form.user_form, form.login-form, form.signup-form, form.form-wiki-wrap").submit(function(){
     $(this).find(".loader-button").hide();
     $(this).find(".loader-effect").show();
   })
@@ -185,9 +185,11 @@ $(document).ready(function(){
       }
     }
   });
+  blank_array = []
   var tagApi = $(".tm-input").tagsManager({
     hiddenTagListName: "showcase[all_tags]",
-    maxTags: 15
+    maxTags: 15,
+    prefilled: blank_array
   });
   var tagEditApi = $(".tm-edit-input").tagsManager({
     hiddenTagListName: "showcase[all_tags]",
@@ -322,17 +324,23 @@ $(document).ready(function(){
   //Error notifications for title,desc,year,location
   $(".showcase-submit").click(function(e){
     e.preventDefault();
+    var currentTime = new Date();
     $.trim($("#showcase_title").val()).length == 0?($("#showcase_title").css("border-bottom", "1px solid #F25F5C"),a = 0):(a = 1)
     $.trim($("#showcase_description").val()).length == 0?($("#showcase_description").css("border-bottom", "1px solid #F25F5C"),b = 0):(b = 1)
     c=1;d=1;
     if($("input[name='showcase[showcase_type]']:checked").val() == 0){
       $.trim($("#showcase_year").val()).length < 4?($("#showcase_year").css("border-bottom", "1px solid #F25F5C"),c = 0):(c = 1)
       $.trim($("#showcase_location_attributes_name").val()).length == 0?($("#showcase_location_attributes_name").css("border-bottom", "1px solid #F25F5C"),d = 0):(d = 1)
+      if($("#showcase_year").val() < 1700 || $("#showcase_year").val() > currentTime.getFullYear()){
+        c = 0;
+        $("#showcase_year").css("border-bottom", "1px solid #F25F5C");
+      }
     }
     if(a == 1 && b == 1 && c == 1 && d == 1){
       $("#new_showcase").submit();
       $("#new_showcase .loader-button").hide();
       $("#new_showcase .loader-effect").show();
+      tagApi.tagsManager("empty");
     }
   })
   //Remove error notifications for title,desc,year,location
@@ -403,6 +411,21 @@ $(document).ready(function(){
     $(document).on( "mouseleave", ".collection-wrapper", function(){
       $(this).find(".close-sprite, .edit-coll-icon").fadeOut();
     });
+  // Profile page wiki
+  $(document).on( "mouseover", ".wiki-wrapper", function(){
+    $(this).find(".close-sprite, .edit-wiki-icon").fadeIn();
+  });
+  $(document).on( "mouseleave", ".wiki-wrapper", function(){
+    $(this).find(".close-sprite, .edit-wiki-icon").fadeOut();
+  });
+  $(document).on("click", ".clos-e-wiki", function(){
+    $(this).closest(".edit-wiki-wrapper").hide();
+    $(this).closest(".wiki-wrapper").find(".view-wiki-wrapper").fadeIn();
+  })
+  $(document).on("click", ".edit-wiki-icon", function(){
+    $(this).closest(".view-wiki-wrapper").hide();
+    $(this).closest(".view-wiki-wrapper").next(".edit-wiki-wrapper").fadeIn();
+  })
   //Image loading bar effect
   $('.cloudinary-fileupload-new').bind('fileuploadprogress', function(e, data) {
     $('.progress').css("display", "inline-block");

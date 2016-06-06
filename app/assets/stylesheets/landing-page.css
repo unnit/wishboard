@@ -2975,7 +2975,7 @@ th.headerSortDown {
   background-image: linear-gradient(to left top, #CCCCCC 50%, #AFAFAF 50%);
   padding: 10px;
   line-height: 175px;
-  font-size: 1.4em;
+  font-size: 1.1em;
 }
 .plus-sprite{
   background: url('images/coco-sprite.png') -603px -250px;
@@ -2988,6 +2988,8 @@ th.headerSortDown {
   background: url('images/coco-sprite.png') -668px -222px;
   width: 10px;
   height: 10px;
+}
+.close-coll{
   position: absolute;
   top: 10px;
   left: 10px;

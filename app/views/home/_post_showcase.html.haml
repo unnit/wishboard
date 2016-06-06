@@ -54,7 +54,7 @@
         = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left year-gnrl", maxlength: 4
       .col-xs-8.col-sm-8.mtop10
         = f.fields_for :location do |lf|
-          = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input loc-gnrl", maxlength: 100
+          = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input loc-gnrl", maxlength: 240
       .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
         .btn.btn-social.white-fg.no-mar-pad.loader-out-button
           = f.submit "Submit", class: "loader-button btn btn-social loader-in-button showcase-submit"

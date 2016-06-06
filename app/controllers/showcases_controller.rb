@@ -70,8 +70,8 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
-      flash[:notice] = "Your product has been showcased successfully."
-      redirect_to edit_showcase_path(@showcase)
+      flash[:notice] = "Your product has been updated successfully."
+      redirect_to showcase_path(@showcase)
     else
       flash[:alert] = @showcase.errors.full_messages.join(", ")
       render :edit

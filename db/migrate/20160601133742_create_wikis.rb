@@ -2,7 +2,7 @@ class CreateWikis < ActiveRecord::Migration
   def change
     create_table :wikis do |t|
       t.string :title
-      t.string :description
+      t.text :description
       t.integer :user_id
       t.integer :position
       t.timestamps null: false

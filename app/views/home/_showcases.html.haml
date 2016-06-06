@@ -83,5 +83,5 @@
             = link_to myprofile_path(current_user.profile.slug) do
               = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
           .media-body
-            = f.text_area :description, rows: 3, class: "form-control comment-description grey-bg", id: "comment-description-#{showcase.id}"
+            = f.text_area :description, rows: 3, class: "form-control comment-description", id: "comment-description-#{showcase.id}"
             = f.submit "Comment", class: "btn btn-primary btn-social mtop10 btn-shadow"

@@ -101,6 +101,10 @@ Rails.application.routes.draw do
   get ":id/showcases/:name", to: "home#view_collection", as: :view_collection
   get ":id/following", to: "home#following", as: :following
   get ":id/followers", to: "home#followers", as: :followers
+  get ":id/wiki", to: "home#wiki", as: :wiki
+  post "create_wiki", to: "home#create_wiki", as: :create_wiki
+  patch "edit_wiki/:id", to: "home#edit_wiki", as: :edit_wiki
+  delete "delete_wiki/:id", to: "home#delete_wiki", as: :delete_wiki
   get "user_card/:id", to: "home#user_card", as: :get_user_card
   get "check_wow/:id", to: "home#update_wow_checked", as: :update_wow_checked
   get "check_comment/:id", to: "home#update_comment_checked", as: :update_comment_checked

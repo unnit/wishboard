@@ -1,0 +1,4 @@
+- if @wiki.errors.blank?
+  $(".wiki-#{@wiki.id}").replaceWith("#{j render partial: 'home/wiki', locals: { wiki: @wiki }}")
+- else
+  $(".messages").html("#{j render partial: 'layouts/messages'}")

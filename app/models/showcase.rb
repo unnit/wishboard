@@ -17,11 +17,11 @@ class Showcase < ActiveRecord::Base
   SHOWCASE_TYPE = [["Showpiece", 0], ["Wish", 1]]
   SHOWCASE_VALUES = [0, 1]
 
-  validates :title, :description, :image, presence: true
+  validates :title, :image, presence: true
   validates :title, length: { maximum: 100 }
   validates :description, length: { maximum: 1000 }
-  validates :year, presence: true, if: :showpiece?
-  validates :year, numericality: { only_integer: true, greater_than_or_equal_to: 1700, less_than_or_equal_to: DateTime.current.year, message: "should be between 1700 and #{DateTime.current.year}"}, if: :showpiece?
+  validates :year, presence: true, unless: :year_blank?
+  validates :year, numericality: { only_integer: true, greater_than_or_equal_to: 1700, less_than_or_equal_to: DateTime.current.year, message: "should be between 1700 and #{DateTime.current.year}"}, unless: :year_blank?
 
   scope :wishes, -> {where showcase_type: Showcase::SHOWCASE_VALUES[1]}
   scope :showpieces, -> {where showcase_type: Showcase::SHOWCASE_VALUES[0]}
@@ -93,6 +93,10 @@ class Showcase < ActiveRecord::Base
 
   def owner?(user)
     self.user == user
+  end
+
+  def year_blank?
+    year.blank?
   end
 
   def wishlist?

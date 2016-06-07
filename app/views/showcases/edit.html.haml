@@ -19,7 +19,7 @@
         .col-xs-12.col-sm-12.text-center.ptop10
           = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left title-gnrl", required: true, maxlength: 100
         .col-xs-12.col-sm-12.text-center.ptop10
-          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left des-gnrl", required: true, maxlength: 1000
+          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left des-gnrl", maxlength: 1000
         .col-xs-4.col-sm-3.ptop10
           = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left year-edit", maxlength: 4, style: "display: #{@showcase.wishlist? ? 'none' : 'block'}"
         .col-xs-8.col-sm-6.ptop10

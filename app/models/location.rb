@@ -4,7 +4,7 @@ class Location < ActiveRecord::Base
 
   scope :for_product, -> {where(locatable_type: "Product")}
 
-  validates :name, presence: true, unless: :profile_type?
+  validates :name, presence: true, unless: :profile_or_showcase_type?
   validates :name, length: { maximum: 240 }
 
   def self.near_by(address, distance=10)
@@ -18,8 +18,8 @@ class Location < ActiveRecord::Base
     update_columns(lat: g.lat, lng: g.lng) if g.lat && g.lng
   end
 
-  def profile_type?
-    locatable_type == "Profile"
+  def profile_or_showcase_type?
+    locatable_type == "Profile" || locatable_type == "Showcase"
   end
 
 end

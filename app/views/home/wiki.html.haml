@@ -11,8 +11,8 @@
       .col-xs-12.col-sm-12.no-mar-pad
         - if current_user.wikis.count < 3
           - (3 - @user.wikis.count).times do |x|
-            .col-xs-12.col-sm-8.mbottom20.no-mar-pad{class: "new-wiki-#{x+1}"}
+            .col-xs-12.col-sm-12.mbottom20.no-mar-pad{class: "new-wiki-#{x+1}"}
               = render partial: "home/create_wiki"
         - else
-          .col-xs-12.col-sm-8.mbottom20.no-mar-pad.new-wiki-1
+          .col-xs-12.col-sm-12.mbottom20.no-mar-pad.new-wiki-1
             = render partial: "home/create_wiki"

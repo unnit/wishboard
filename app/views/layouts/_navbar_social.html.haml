@@ -88,6 +88,12 @@
             %li.visible-xs.bg-white
               = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                 %span.grey-fg Sign Out
+          - else
+            %li.hidden-xs
+              = link_to "Login/SignUp", root_path, class: "grey-fg btn", style: "padding: 7px 12px;margin-top: 7px;border: 1px solid #ccc;border-radius:18px;"
+            %li.visible-xs.bg-white
+              = link_to root_path, style: "white-space: normal;" do
+                %span.grey-fg Login/SignUp
 - if current_user && !@scase_modal.present?
   #showcase-modal.modal.fade
     .modal-dialog

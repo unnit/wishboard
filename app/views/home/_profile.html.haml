@@ -42,25 +42,25 @@
       = cl_image_tag user.avatar, class: "img-circle mob-mtop10", style: "z-index: 1;margin-top: -45px;", width: 100, height: 100, crop: :fill, gravity: :face
       .col-xs-12.col-sm-12.padding0.mbottom10.text-right.text-center-mob.font-bit-large.mob-mtop0{style: "margin-top: -52px;"}
         - if @profile.facebook.present?
-          = link_to @profile.facebook do
+          = link_to @profile.facebook, target: "_blank" do
             .fa.fa-facebook-official.grey-fg.mright5
         - if @profile.twitter.present?
-          = link_to @profile.twitter do
+          = link_to @profile.twitter, target: "_blank" do
             .fa.fa-twitter-square.grey-fg.mright5
         - if @profile.instagram.present?
-          = link_to @profile.instagram do
+          = link_to @profile.instagram, target: "_blank" do
             .fa.fa-instagram.grey-fg.mright5
         - if @profile.linkedin.present?
-          = link_to @profile.linkedin do
+          = link_to @profile.linkedin, target: "_blank" do
             .fa.fa-linkedin-square.grey-fg.mright5
         - if @profile.google_plus.present?
-          = link_to @profile.google_plus do
+          = link_to @profile.google_plus, target: "_blank" do
             .fa.fa-google-plus-square.grey-fg.mright5
         - if @profile.website.present?
-          = link_to @profile.website do
+          = link_to @profile.website, target: "_blank" do
             .fa.fa-globe.grey-fg.mright5
         - if @profile.other_url.present?
-          = link_to @profile.other_url do
+          = link_to @profile.other_url, target: "_blank" do
             .fa.fa-link.grey-fg
       %h4.font21.mtop0= (truncate user.name, length: 40)
       %h6.grey-fg

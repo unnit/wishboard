@@ -24,7 +24,7 @@ class HomeController < ApplicationController
       #@showcases = Showcase.order("RANDOM()")
       @showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(2)
       #@showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
-      @users = User.where.not(id:current_user.following.map(&:id).append(current_user.id))
+      @users = User.joins(:profile).where.not(id:current_user.following.map(&:id).append(current_user.id))
       @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
       respond_to do |format|
         format.html

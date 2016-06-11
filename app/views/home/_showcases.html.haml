@@ -21,7 +21,7 @@
         %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
     = link_to showcase_path(showcase) do
       .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
-        = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 637, crop: :fill, gravity: :face
+        = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face
     .col-xs-3.col-sm-3.border-two.padding10.bg-white{style: "height: 43px;"}
       - if current_user
         = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do

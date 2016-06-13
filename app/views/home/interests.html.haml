@@ -1,14 +1,14 @@
 .container-fluid.bg-light-grey.ptop50.pbottom50
-  .container.mtop10
+  .container.mtop10.padding0
     .col-xs-12.col-sm-12.mbottom5
       .pull-left.font17
         What are your interests? Follow your interests below and we’ll customize your feed to help you discover the best based on it.
         %br
         Please select a minimum of 10 interests to continue.
-      .pull-right.btn.btn-default
+      .pull-right.padding5
         %span.pull-left.mright5 Select All
         = check_box_tag :toggle_all_interest, "yes", false, class: "pull-left"
-    .col-xs-12.col-sm-12{style: "height: 500px;overflow-y: scroll;"}
+    .col-xs-12.col-sm-12.no-mar-pad{style: "height: 500px;overflow-y: scroll;"}
       - Tag.featured.each do |tag|
         .col-xs-12.col-sm-3.padding10
           .col-xs-12.col-sm-12.no-mar-pad.bg-white.font17.bg-shad.text-center{style: "height:170px;"}

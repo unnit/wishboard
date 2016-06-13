@@ -72,6 +72,8 @@
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
                       Mobile
+                      %br
+                      %span.grey-fg.font11 *Not visible to others
                     .col-sm-3
                       = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
                     .col-sm-7.mob-otp-verify.padding10.pbottom0.grey-fg

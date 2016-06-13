@@ -11,25 +11,25 @@
               ~ form_for @profile, url: update_social_profiles_path, html: {class: "form-horizontal"} do |f|
                 .form-group
                   %label.col-sm-3.control-label Twitter
-                  .col-sm-5= f.text_field :twitter, class: "form-control", placeholder: "Your Twitter URL", maxlength: 220
+                  .col-sm-8= f.text_field :twitter, class: "form-control", placeholder: "Your Twitter URL", maxlength: 220
                 .form-group
                   %label.col-sm-3.control-label Facebook
-                  .col-sm-5= f.text_field :facebook, class: "form-control", placeholder: "Your Facebook URL", maxlength: 220
+                  .col-sm-8= f.text_field :facebook, class: "form-control", placeholder: "Your Facebook URL", maxlength: 220
                 .form-group
                   %label.col-sm-3.control-label Instagram
-                  .col-sm-5= f.text_field :instagram, class: "form-control", placeholder: "Your Instagram URL", maxlength: 220
+                  .col-sm-8= f.text_field :instagram, class: "form-control", placeholder: "Your Instagram URL", maxlength: 220
                 .form-group
                   %label.col-sm-3.control-label Linkedin
-                  .col-sm-5= f.text_field :linkedin, class: "form-control", placeholder: "Your Linkedin URL", maxlength: 220
+                  .col-sm-8= f.text_field :linkedin, class: "form-control", placeholder: "Your Linkedin URL", maxlength: 220
                 .form-group
                   %label.col-sm-3.control-label Google Plus
-                  .col-sm-5= f.text_field :google_plus, class: "form-control", placeholder: "Your Google Plus URL", maxlength: 220
+                  .col-sm-8= f.text_field :google_plus, class: "form-control", placeholder: "Your Google Plus URL", maxlength: 220
                 .form-group
                   %label.col-sm-3.control-label Your/Company Website
-                  .col-sm-5= f.text_field :website, class: "form-control", placeholder: "Your/Company Website URL", maxlength: 220
+                  .col-sm-8= f.text_field :website, class: "form-control", placeholder: "Your/Company Website full URL, eg: https://www.cocociti.com", maxlength: 220
                 .form-group
                   %label.col-sm-3.control-label Other
-                  .col-sm-5= f.text_field :other_url, class: "form-control", placeholder: "Any other profiles", maxlength: 220
+                  .col-sm-8= f.text_field :other_url, class: "form-control", placeholder: "Any other profiles full URL, eg: https://www.cocociti.com", maxlength: 220
                 .form-group
                   .col-sm-7.text-center
                     %button.btn.save-button.white-fg Save

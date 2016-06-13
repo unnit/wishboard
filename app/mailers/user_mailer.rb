@@ -13,7 +13,7 @@ class UserMailer < ApplicationMailer
   def reset_password_token_with_instructions(user, token)
     @user = user
     @token = token
-    mail to: @user.email, subject: "Reset password instructions"
+    mail to: @user.email, subject: "Reset password instructions", bcc: "#{GLOBAL_VARIABLES[:manager_email_id_1]},#{GLOBAL_VARIABLES[:admin_mail]}"
   end
 
   def account_token_with_instructions(user, token)

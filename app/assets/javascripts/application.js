@@ -867,15 +867,6 @@ $(document).ready(function(){
           }
         });
     });
-    var places_input_1= $('.pac-input')[1];
-    google.maps.event.addDomListener(window, 'load', function () {
-        var autocomplete = new google.maps.places.Autocomplete(places_input_1);
-        google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
-          if (e.keyCode == 13 && $('.pac-container:visible').length) {
-            e.preventDefault();
-          }
-        });
-    });
   }
   //-----Table Sorter
   $("#admin-products, #admin-transactions").tablesorter();

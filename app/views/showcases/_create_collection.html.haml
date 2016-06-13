@@ -3,7 +3,7 @@
     .plus-sprite.pon.plus-prof
     %h5.mtop5.pon.grey-fg.plus-prof Add
     = form_tag create_collection_showcases_path, remote: true, class: "form-horizontal create-collect col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 hide-display" do
-      .close-sprite.pon.clos-c-collect{style: "left: -10px;opacity: 0.5;"}
+      .close-sprite.pon.clos-c-collect.pos-absolute{style: "left: -10px;opacity: 0.5;top: 10px;"}
       .form-group{style: "margin-top: 35.5px;"}
         %label Name
         = text_field_tag :name, params[:name], class: "form-control grey-bg", required: true, maxlength: 100

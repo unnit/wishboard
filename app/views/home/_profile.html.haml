@@ -3,6 +3,9 @@
 - if @profile.about.present?
   = content_for :meta_content do
     - meta_content = "#{@profile.about}"
+- else
+  = content_for :meta_content do
+    - meta_content = "Discover showpieces and wishlists of #{user.name}"
 .messages
 .container-fluid.pattern-bg{style: "min-height: 50px;border-bottom: 1px solid #e5e5e5;line-height: 50px;", class: "prof-user-#{user.id}"}
   .container.padding0
@@ -39,7 +42,7 @@
 .container-fluid
   .container.padding0
     .col-xs-12.col-sm-12.text-center.padding0.mbottom10{style: "border-bottom: 1px solid #e5e5e5;"}
-      = cl_image_tag user.avatar, class: "img-circle mob-mtop10", style: "z-index: 1;margin-top: -45px;", width: 100, height: 100, crop: :fill, gravity: :face
+      = cl_image_tag user.avatar, class: "img-circle mob-mtop10", style: "z-index: 1;margin-top: -45px;", width: 100, height: 100, crop: :fill, gravity: :face, alt: "#{user.name}"
       .col-xs-12.col-sm-12.padding0.mbottom10.text-right.text-center-mob.font-bit-large.mob-mtop0{style: "margin-top: -52px;"}
         - if @profile.facebook.present?
           = link_to "https://facebook.com/#{@profile.facebook.split('/').last}", target: "_blank" do

@@ -11,9 +11,9 @@
     = form_for wiki, url: edit_wiki_path(wiki), remote: true, html: {class: "form-horizontal form-wiki-wrap"} do |f|
       .close-sprite.pon.clos-e-wiki.pull-right
       .form-group
-        = f.text_field :title, class: "form-control coco-input-field bg-light-grey", required: true, placeholder: "Title"
+        = f.text_field :title, class: "form-control coco-input-field bg-light-grey", required: true, placeholder: "Title", maxlength: 200
       .form-group
-        = f.text_area :description, class: "form-control coco-input-field bg-light-grey", rows: 4, required: true, placeholder: "Description"
+        = f.text_area :description, class: "form-control coco-input-field bg-light-grey", rows: 4, required: true, placeholder: "Description", maxlength: 6000
       .form-group.text-center
         .btn.btn-social.white-fg.no-mar-pad.loader-out-button
           = f.submit "Save", class: "loader-button btn btn-social loader-in-button"

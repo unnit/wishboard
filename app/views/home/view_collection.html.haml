@@ -13,7 +13,7 @@
           - if current_user && current_user.same_user?(@user)
             %h3.text-center.padding20 “Sometimes things become possible if we want them bad enough.” - T.S. Eliot
             .col-xs-12.col-md-12.text-center
-              = link_to "Showpiece", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn black80-bg white-fg", style: "padding: 7px 12px;;border: 1px solid #ccc;border-radius:18px;"
+              = link_to "Add Showcase", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn black80-bg white-fg", style: "padding: 7px 12px;;border: 1px solid #ccc;border-radius:18px;"
           - else
             %h3.text-center.padding20{style: "height:300px;"} “Ayyo...No Showpieces!”
       #infinite-scrolling-content.hidden

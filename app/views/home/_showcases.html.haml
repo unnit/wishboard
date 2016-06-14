@@ -10,7 +10,7 @@
           = link_to showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
             Delete...
       = link_to myprofile_path(showcase.user.profile.slug), class: "pull-left full-width text-center", style: "margin-top: -20px;" do
-        = cl_image_tag showcase.user.avatar, class: "img-circle hovercard", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face
+        = cl_image_tag showcase.user.avatar, class: "img-circle hovercard", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face, alt: showcase.user.name
       %span.full-width.pull-left.text-center.font-medium.padding10.ptop0
         = link_to myprofile_path(showcase.user.profile.slug) do
           %span.weight600.hovercard{"data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
@@ -21,7 +21,7 @@
         %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
     = link_to showcase_path(showcase) do
       .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
-        = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face
+        = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
     .col-xs-3.col-sm-3.border-two.padding10.bg-white{style: "height: 43px;"}
       - if current_user
         = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do

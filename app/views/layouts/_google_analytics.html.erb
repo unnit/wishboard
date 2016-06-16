@@ -54,15 +54,6 @@
     function callback(response){}
     FB.ui(obj, callback);
     }
-    FB.api(
-    "/dheeraj.thuvara/friends",
-    function (response) {
-      if (response && !response.error) {
-        /* handle the result */
-	       console.log(JSON.stringify(response));
-      }
-    }
-    );
   </script>
 <% end %>
 <% if Rails.env.development? %>

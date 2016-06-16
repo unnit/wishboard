@@ -13,7 +13,7 @@
     = link_to myprofile_path(comment.user.profile.slug) do
       %strong= comment.user.name.titleize
     .view-comment-showcase{class: "view-comment-#{comment.id}"}
-      %span.small.grey-fg.excerpt-comment-desc= truncate(raw(comment.description), length: 150)
+      %span.small.grey-fg.excerpt-comment-desc= simple_format(truncate_html(comment.description, 150))
       - if comment.description.length > 150
         %span.small.grey-fg.full-comment-desc{style: "display: none;"}= simple_format(comment.description)
         %a.small.grey-fg.see-more-comment.pon{style: "color: blue !important;"} See More

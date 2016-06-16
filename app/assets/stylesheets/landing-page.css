@@ -2972,10 +2972,18 @@ th.headerSortDown {
   height: 200px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.07);
   background: #CCCCCC;
-  background-image: linear-gradient(to left top, #CCCCCC 50%, #AFAFAF 50%);
+  /*background-image: linear-gradient(to left top, #CCCCCC 50%, #AFAFAF 50%);*/
   padding: 10px;
   line-height: 175px;
-  font-size: 1.1em;
+}
+.scase-name-wrap{
+  background-color: #777777;
+  border-radius: 20px;
+  padding: 8px;
+  letter-spacing: 0.5px;
+}
+.scase-name-wrap .badge{
+  border: 1px solid #bbbbbb;
 }
 .plus-sprite{
   background: url('images/coco-sprite.png') -603px -250px;
@@ -2988,6 +2996,15 @@ th.headerSortDown {
   background: url('images/coco-sprite.png') -668px -222px;
   width: 10px;
   height: 10px;
+}
+.embed-sprite{
+  background: url('images/coco-sprite.png') -720px -221px;
+  width: 26px;
+  height: 14px;
+  opacity: 0.5;
+}
+.h40{
+  height: 40px;
 }
 .close-coll{
   position: absolute;

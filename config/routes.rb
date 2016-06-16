@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       member do
         post :lock
         post :unlock
+        patch :update_verified
       end
     end
     resources :categories, only: [:index, :create, :update, :destroy]

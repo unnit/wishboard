@@ -1,5 +1,5 @@
 class Admin::UsersController < AdminController
-  before_action :set_user, only: [:update, :lock, :unlock]
+  before_action :set_user, only: [:update, :lock, :unlock, :update_verified]
 
   def index
     @users = User.admin_search(params[:term]).page(params[:page]).per(40)
@@ -7,6 +7,11 @@ class Admin::UsersController < AdminController
 
   def update
     flash[:success] = 'User was successfully updated.' if @user.update(user_params)
+    respond_to :js
+  end
+
+  def update_verified
+    @user.toggle_verify!
     respond_to :js
   end
 

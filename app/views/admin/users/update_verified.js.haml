@@ -1,0 +1,1 @@
+$("#user-row-#{@user.id} .verify-actions").html("#{escape_javascript(render partial: 'verify', locals: {user: @user})}");

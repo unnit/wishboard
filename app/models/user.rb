@@ -127,6 +127,11 @@ class User < ActiveRecord::Base
     profile.id
   end
 
+  def toggle_verify!
+    toggle_verify = !verified
+    update_column :verified, toggle_verify
+  end
+
   def rated_value(product)
     rating = ratings.find_by_product_id product.id
     return rating ? rating.value : 0

@@ -140,6 +140,7 @@ GEM
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
     hashie (3.4.2)
+    hpricot (0.8.6)
     html2haml (2.0.0)
       erubis (~> 2.7.0)
       haml (~> 4.0.0)
@@ -332,6 +333,7 @@ DEPENDENCIES
   geokit-rails
   global
   haml-rails
+  hpricot (~> 0.8.6)
   httparty
   jbuilder (~> 2.0)
   jquery-fileupload-rails

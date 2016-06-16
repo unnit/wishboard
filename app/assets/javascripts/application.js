@@ -385,6 +385,11 @@ $(document).ready(function(){
     }
   })
   //POST SHOWCASE -----end
+  //Showcase embed
+  $(document).on("click", ".embed-link", function(){
+    $("#cont-wrapper").html("<div class='modal-dialog'><div class='modal-content pop-up-mar'><div class='modal-header pop-bac'><button class='close' data-dismiss='modal' type='button'> <i class='fa fa-times'></i></button><h4 class='modal-title'>Embed</h4></div><div class='modal-body'><div class='col-sm-12 col-xs-12'><h5 class='weight600'>Embed this Showcase to your website by copying the code below</h5><textarea rows='4' class='full-width grey-fg' onClick='this.setSelectionRange(0, this.value.length)' readonly=true><a class='embedly-card' href='"+$(this).data('url')+"'>"+$(this).data('title')+"</a><script async src='https://cdn.embedly.com/widgets/platform.js' charset='UTF-8'></script></textarea><br><br></div></div><div class='clearfix'></div></div></div>");
+    $("#cont-wrapper").modal('show');
+  })
   //Hide success/failure messages after 30 secs.
   if($(".alert-message-div").length){
     $(".alert-message-div").delay(30000).fadeOut();

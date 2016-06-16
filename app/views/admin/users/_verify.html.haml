@@ -1,0 +1,5 @@
+= link_to update_verified_admin_user_path(user), method: :patch, remote: true do
+  - if user.verified?
+    %span.btn.btn-sm.btn-success.glyphicon.glyphicon-ok-circle
+  - else
+    %span.btn.btn-sm.btn-danger.glyphicon.glyphicon-ban-circle

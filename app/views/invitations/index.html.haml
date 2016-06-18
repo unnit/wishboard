@@ -1,25 +1,36 @@
 = content_for :title do
   -title = "Invite Friends - Cocociti"
-.container-fluid.aboutpad
-  .container.container-pad
-    .container
-      .row
-        .col-md-12
-          %p Add the email addresses of the people you are inviting to the field below. If you add multiple email addresses, separate them with comma.
-          ~ form_tag send_email_invitations_path, class: "form-horizontal" do
-            %fieldset
-              .form-group
-                %label.col-sm-2.control-label Emails
-                .col-sm-10= text_area_tag :emails, "", rows: "3", placeholder: "Emails", class: "form-control textarea"
-              .form-group
-                %label.col-sm-2.control-label Personal Messages
-                .col-sm-10= text_area_tag :message, "", rows: "5", placeholder: "Personal Messages", class: "form-control textarea"
-              .form-group
-                .col-xs-12.col-sm-12.text-center
-                  = submit_tag "Send Invite", class: "btn btn-info save-button"
-              - if params[:invite_friends] == "invite"
-                .form-group
-                  .col-xs-12.col-sm-12
-                    .pull-right.padding10
-                      = link_to root_path do
-                        .btn.btn-primary Skip to Feed
+.container-fluid.bg-light-grey.ptop50.pbottom50.helvetica-font
+  .container.mtop10
+    #google_client_id{"data-client-id" => "#{GLOBAL_VARIABLES[:google_client_id]}"}
+    #google_api_key{"data-api-key" => "#{GLOBAL_VARIABLES[:google_api_key]}"}
+    .row
+      .col-xs-12.col-sm-12
+        .panel.panel-default#profile_form
+          .panel-heading
+            %h5.mtop-v-5.font-medium
+              Add the email addresses of the people you are inviting to the field below. If you add multiple email addresses, separate them with a comma.
+          .panel-body
+            .col-xs-12.col-sm-12
+              ~ form_tag send_email_invitations_path, class: "form-horizontal" do
+                %fieldset.mtop30
+                  .form-group
+                    %label.col-sm-2.control-label Emails
+                    .col-sm-10.no-mar-pad= text_area_tag :emails, "", rows: "2", placeholder: "Enter the emails here", class: "form-control textarea bg-light-grey import-emails"
+                  .form-group
+                    .col-sm-10.col-sm-offset-2.padding0
+                      .btn.btn-primary.google-contacts-import
+                        .glyphicon.glyphicon-envelope
+                        &nbsp;Import Your Gmail Contacts
+                  .form-group
+                    %label.col-sm-2.control-label Personal Messages
+                    .col-sm-10.no-mar-pad= text_area_tag :message, "", rows: "5", placeholder: "Invite message for your friends.", class: "form-control textarea bg-light-grey"
+                  .form-group
+                    .col-xs-12.col-sm-12.text-center
+                      = submit_tag "Send Invite", class: "btn save-button mtop10 white-fg"
+                  - if params[:invite_friends] == "invite"
+                    .form-group
+                      .col-xs-12.col-sm-12.no-mar-pad
+                        .pull-right.padding10
+                          = link_to root_path do
+                            .btn.btn-sm.btn-primary Skip to Feed

@@ -194,19 +194,19 @@
           .featured-button ADVENTURE | SPORTS | TRAVEL GEAR
       .col-md-12.col-sm-12.no-mar-pad.featured-list-1
         - Product.featured.best_deal.each_slice(4) do |slide|
-          .col-md-12.col-sm-12
+          .col-md-12.col-sm-12.no-mar-pad
             - slide.each do |product|
               .col-md-3.col-sm-4
                 = render partial: "best_deals", locals: {product: product}
       .col-md-12.col-sm-12.no-mar-pad.featured-list-2{style: "display:none;"}
         - Product.featured.where(parent_category: 1).best_deal.each_slice(4) do |slide|
-          .col-md-12.col-sm-12
+          .col-md-12.col-sm-12.no-mar-pad
             - slide.each do |product|
               .col-md-3.col-sm-4
                 = render partial: "best_deals", locals: {product: product}
       .col-md-12.col-sm-12.no-mar-pad.featured-list-3{style: "display:none;"}
         - Product.featured.where(parent_category: 10).best_deal.each_slice(4) do |slide|
-          .col-md-12.col-sm-12
+          .col-md-12.col-sm-12.no-mar-pad
             - slide.each do |product|
               .col-md-3.col-sm-4
                 = render partial: "best_deals", locals: {product: product}

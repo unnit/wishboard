@@ -2064,8 +2064,8 @@ font-size: 14px;
   background-color: #e84242;
   border: none;
   border-radius: 0;
-  width: 160px;
-  height: 48px;
+  width: 150px;
+  height: 40px;
   font-size: 17px;
   font-weight: 700;
 }
@@ -3020,7 +3020,7 @@ th.headerSortDown {
 /******************Other CSS for header and future use *******/
 .header-with-grad{
   /*background-color: #00A896 !important;*/
-  background-color: #DADADA !important;
+  background-color: #808080 !important;
   box-shadow: 0 0px 1px rgba(0, 0, 0, 0.26);
   /*background-color: #50514F !important;
   background: -webkit-linear-gradient(to right, #21152C, #391D2E , #5B2631);
@@ -3039,6 +3039,10 @@ th.headerSortDown {
   .bg-mob-auth{
     background: #fff;
     color: #B7B7B7 !important;
+  }
+  .mob-scase-opt{
+    width: 101px !important;
+    padding: 40px 0 !important;
   }
   .coco-offer{
     top: 84px;

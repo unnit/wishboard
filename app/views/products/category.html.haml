@@ -10,12 +10,13 @@
   = content_for :meta_content do
     - meta_content = "Cocociti is the most effortless way to rent or hire everything and anything online - Bikes, Self Drive cars, Cameras, Dress, Backpacks, Tents, Electronics, Furniture, Home Appliances, Tools & Equipment Rental and avail on demand access to things at Cocociti."
   .container-fluid.mar-des-page.grey-bg
-    .col-xs-12.col-md-12
-      .ol.breadcrumb.mbottom0.note-font-size
-        = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
-    .col-xs-12.col-md-12.no-mar-pad.col-sm-12.ptop10.mbottom40
-      - @products.each_slice(4) do |slide|
-        .col-xs-12.col-sm-12
-          - slide.each do |product|
-            .col-xs-12.col-sm-3
-              = render partial: "product", locals: {product: product}
+    .container.padding0
+      .col-xs-12.col-md-12
+        .ol.breadcrumb.mbottom0.note-font-size
+          = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
+      .col-xs-12.col-md-12.no-mar-pad.col-sm-12.ptop10.mbottom40
+        - @products.each_slice(4) do |slide|
+          .col-xs-12.col-sm-12.no-mar-pad
+            - slide.each do |product|
+              .col-xs-12.col-sm-3
+                = render partial: "product", locals: {product: product}

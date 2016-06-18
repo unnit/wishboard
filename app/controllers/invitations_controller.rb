@@ -8,6 +8,6 @@ class InvitationsController < ApplicationController
     rescue Exception => e
       flash[:danger] = e.message
     end
-    redirect_to invitations_path
+    redirect_to :back
   end
 end

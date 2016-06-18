@@ -22,10 +22,10 @@
         %span.error-ps-radio.padding5.hide-display{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;"}
           .glyphicon.glyphicon-exclamation-sign
           Please select an option
-      .pad-v-40.pon.ps-showpiece.btn-shadow.inline-block{style: "width:120px;background-color:white;"}
+      .pad-v-50.pon.ps-showpiece.btn-shadow.inline-block.mob-scase-opt.img-circle{style: "width:121px;background-color:white;"}
         Showpiece
         = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true, class: "hidden showcase_type_0"
-      .pad-v-40.pon.ps-wish.btn-shadow.mleft10.inline-block{style: "width:120px;background-color:white;"}
+      .pad-v-50.pon.ps-wish.btn-shadow.mleft10.inline-block.mob-scase-opt.img-circle{style: "width:121px;background-color:white;"}
         Wish
         = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[1]}", required: true, class: "hidden showcase_type_1"
     .col-xs-12.col-sm-12.no-mar-pad.set-2-ps.ptop10.hide-display{style: "min-height:210px;"}
@@ -33,29 +33,31 @@
         %span.error-ps-photo.padding5.hide-display{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;"}
           .glyphicon.glyphicon-exclamation-sign
           Please upload a photo
-      .col-xs-4.col-sm-4.text-center
-        %span.font11 Drag and Drop the Photo here.
+      .col-xs-12.col-sm-4.col-sm-offset-1.text-center.padding0
+        %span.font11.col-xs-12.col-sm-12.padding0 Drag and Drop the Photo here.
         .preview
-        .glyphicon.glyphicon-remove.preview-delete.bg-white.hide-display{style: "z-index: 1;"}
-        .glyphicon.glyphicon-camera.file-input-button.grey-fg.padding20{style: "font-size: 65px;border: 1px dashed;"}
-          = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new" })
-        .progress.progress-striped.hide-display{style: "height: 10px;width:107px;"}
-          .progress-bar{style: "width: 0%;"}
-      .col-xs-8.col-sm-8
+        .glyphicon.glyphicon-remove.preview-delete.bg-white.hide-display.pon{style: "z-index: 1;"}
+        .col-xs-12.col-sm-12.no-mar-pad
+          .glyphicon.glyphicon-camera.file-input-button.grey-fg.padding20{style: "font-size: 65px;border: 1px dashed;"}
+            = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new" })
+        .col-xs-12.col-sm-12.no-mar-pad
+          .progress.progress-striped.hide-display.mbottom0.mtop5{style: "height: 10px;width:107px;"}
+            .progress-bar{style: "width: 0%;"}
+      .col-xs-12.col-sm-6
         %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
         %br
         = f.text_field :all_tags, placeholder: "", class: "tm-input form-control tm-input-inverse tm-input-typeahead"
-    .col-xs-12.col-sm-12.no-mar-pad.set-3-ps.ptop10.hide-display{style: "min-height:210px;"}
-      .col-xs-12.col-sm-12
+    .col-xs-10.col-xs-offset-1.col-sm-10.col-sm-offset-1.set-3-ps.ptop10.hide-display{style: "min-height:210px;"}
+      .col-xs-12.col-sm-12.no-mar-pad
         = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left title-gnrl", required: true, maxlength: 100
-      .col-xs-12.col-sm-12.mtop10
+      .col-xs-12.col-sm-12.mtop10.no-mar-pad
         = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left des-gnrl", maxlength: 1000
-      .col-xs-4.col-sm-4.mtop10
+      .col-xs-4.col-sm-4.mtop10.no-mar-pad.pright5
         = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left year-gnrl", maxlength: 4
-      .col-xs-8.col-sm-8.mtop10
+      .col-xs-8.col-sm-8.mtop10.no-mar-pad.pright5
         = f.fields_for :location do |lf|
           = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input loc-gnrl", maxlength: 240
-      .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
+      .col-xs-12.col-sm-12.mtop15.text-center.showcase-btn-wrapper
         .btn.btn-social.white-fg.no-mar-pad.loader-out-button
           = f.submit "Submit", class: "loader-button btn btn-social loader-in-button showcase-submit"
           .loader-effect.btn.btn-social.loader-in-button{style: "display:none;"}

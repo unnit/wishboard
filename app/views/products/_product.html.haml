@@ -7,7 +7,7 @@
           OUT FOR RENT
           .glyphicon.glyphicon-exclamation-sign
   = link_to user_product_path(product.id), target: "_blank" do
-    = cl_image_tag product.image.filename, class: "img-responsive img-style-new", alt: "#{product.title}-#{product.category_name}", width: 253, height: 190, crop: :fill
+    = cl_image_tag product.image.filename, class: "img-responsive img-style-new", alt: "#{product.title}-#{product.category_name}", width: 280, height: 190, crop: :fill
   = cl_image_tag product.user.avatar, class: "img-circle profile_pic", width: 40, height: 40, crop: :fill, gravity: :face
   %h4.media-heading.price-bg
     = link_to "javascript:;", target: "_parent", class: "bd-#{product.listing_type_name.downcase}" do

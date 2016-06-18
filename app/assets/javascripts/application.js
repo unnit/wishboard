@@ -454,7 +454,7 @@ $(document).ready(function(){
     $('.preview').html(
       $.cloudinary.image(data.result.public_id,
         { format: data.result.format, version: data.result.version,
-          crop: 'fill', width: 150, height: 100 })
+          crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
     );
     $('.progress-bar').css('width', '0%');
     $(".preview-delete").show();
@@ -476,7 +476,7 @@ $(document).ready(function(){
     $('.preview-edit').html(
       $.cloudinary.image(data.result.public_id,
         { format: data.result.format, version: data.result.version,
-          crop: 'fill', width: 637 })
+          crop: 'fill', height: 480, class: 'img-responsive inline-display' })
     );
     $('.progress-bar-edit').css('width', '0%');
     $(".preview-delete-edit").show();
@@ -879,4 +879,34 @@ $(document).ready(function(){
   $("table#booking_requests_table, table#my_listings_table, table#my_orders_table, table#upcoming_bookings_table, table#non_coco_bookings_table, table#delete_non_coco_bookings_table").tableSearch({
 		searchPlaceHolder:'Please search here...',
 	});
+  //Import Google Contacts
+  var clientId = $("#google_client_id").data("client-id");
+  var apiKey = $("#google_api_key").data("api-key");
+  var scopes = 'https://www.googleapis.com/auth/contacts.readonly';
+  $(document).on("click",".google-contacts-import", function(){
+    gapi.client.setApiKey(apiKey);
+    window.setTimeout(authorize);
+  });
+  function authorize() {
+    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthorization);
+  }
+  function handleAuthorization(authorizationResult){
+    if (authorizationResult && !authorizationResult.error){
+      $.get("https://www.google.com/m8/feeds/contacts/default/thin?alt=json&access_token=" + authorizationResult.access_token + "&max-results=300&v=3.0",
+        function(response){
+          ct = [];
+          ct = response.feed.entry;
+          for(i=0;i<ct.length;i++){
+            var contact = ct[i]
+            if(contact.gd$email && contact.gd$email.length > 0){
+              if($(".import-emails").val().length == 0){
+                $(".import-emails").val(contact.gd$email[0].address)
+              }else{
+                $(".import-emails").val($(".import-emails").val() + ',' + contact.gd$email[0].address)
+              }
+            }
+          }
+      });
+    }
+  }
 });

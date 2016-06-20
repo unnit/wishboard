@@ -2,6 +2,7 @@ $('.feed-loader').hide();
 $(".user-wrapper").append("#{j render partial: "user_card", locals: {users: @following, min_width: "282px"}}")
 -if @following.next_page
   $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @following, param_name: 'following'}");
+  $(window).on('scroll', function() {var more_posts_url = $('#infinite-scrolling-content .pagination .next a').attr('href');if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 250) {$(window).off("scroll");$('.feed-loader').show();$.getScript(more_posts_url);}});
 - else
   $(window).off('scroll');
   $('#infinite-scrolling-content .pagination').remove();

@@ -398,7 +398,8 @@ $(document).ready(function(){
   if ($('#infinite-scrolling-content').length) {
     $(window).on('scroll', function() {
       var more_posts_url = $('#infinite-scrolling-content .pagination .next a').attr('href');
-      if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 60) {
+      if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 250) {
+        $(window).off("scroll");
         $('.feed-loader').show();
         $.getScript(more_posts_url);
       }

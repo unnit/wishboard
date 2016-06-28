@@ -103,6 +103,7 @@ Rails.application.routes.draw do
   get ":id/following", to: "home#following", as: :following
   get ":id/followers", to: "home#followers", as: :followers
   get ":id/wiki", to: "home#wiki", as: :wiki
+  get ":id/giveaways", to: "giveaways#index", as: :view_giveaways
   post "create_wiki", to: "home#create_wiki", as: :create_wiki
   patch "edit_wiki/:id", to: "home#edit_wiki", as: :edit_wiki
   delete "delete_wiki/:id", to: "home#delete_wiki", as: :delete_wiki
@@ -149,6 +150,9 @@ Rails.application.routes.draw do
       post :create_collection
       post :add
     end
+  end
+
+  resources :giveaways, except: [:index] do
   end
 
   post "product/:id/checkout", to: "transactions#new", as: :product_checkout

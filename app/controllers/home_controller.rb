@@ -301,11 +301,6 @@ class HomeController < ApplicationController
     redirect_to root_path if current_user
   end
 
-  def set_profile_caseless
-    @profile = Profile.friendly.find params[:id].downcase
-    @user = @profile.user
-  end
-
   def set_wiki_and_check_owner
     @wiki =  Wiki.find_by_id params[:id]
     unless @wiki.user == current_user

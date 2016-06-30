@@ -3,6 +3,6 @@
 - else
   $(".comment-link-#{@showcase.id}").next(".badge").hide();
 $(".comment-link-#{@showcase.id}").next(".badge").text("#{@showcase.comments.count}")
-$(".comment-link-#{@showcase.id}").next(".badge").attr("data-original-title", "#{@showcase.commented_users}")
+$(".comment-link-#{@showcase.id}").next(".badge").attr("data-original-title", "#{@showcase.commented_users_names}")
 $(".user-comments-#{@showcase.id}").append("#{j render partial: "comment", locals: {comment: @comment}}");
 $("#comment-description-#{@showcase.id}").val("");

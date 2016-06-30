@@ -1,0 +1,14 @@
+%p{style: "font-size: 16px;"}
+  = link_to myprofile_url(@showcase.user.profile.slug) do
+    %span= truncate @showcase.user.name.titleize, length: 50
+  &nbsp;
+  %span added
+  = link_to showcase_url(@showcase) do
+    %span= truncate @showcase.title, length: 50
+  &nbsp;
+  %span to
+  %span= @showcase.wishlist? ? "<a href='#{GLOBAL_VARIABLES[:root_url]}/#{@showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='#{GLOBAL_VARIABLES[:root_url]}/#{@showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
+%br
+Discover more on
+%a{href: "#{GLOBAL_VARIABLES[:root_url]}"}
+  Cocociti

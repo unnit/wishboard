@@ -1,0 +1,12 @@
+%p
+  = link_to myprofile_url(@commenter.profile.slug) do
+    %span= truncate @commenter.name.titleize, length: 50
+  %span commented on
+  = link_to showcase_url(@showcase) do
+    %span= truncate @showcase.title, length: 50
+  that you have commented before.
+%br
+%br
+Discover more on
+%a{href: "#{GLOBAL_VARIABLES[:root_url]}"}
+  Cocociti

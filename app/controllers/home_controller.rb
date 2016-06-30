@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
   skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
   before_filter :back_to_home, only: [:authenticate]
-  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers]
+  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :fanday]
   before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers, :wiki]
   before_filter :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
   before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed]
@@ -34,6 +34,10 @@ class HomeController < ApplicationController
       @auth_layout = "yes"
       render :authenticate
     end
+  end
+
+  def fanday
+
   end
 
   def unchecked_notifications

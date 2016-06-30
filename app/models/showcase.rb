@@ -6,6 +6,7 @@ class Showcase < ActiveRecord::Base
   has_many :active_wows, -> {where active: true}, class_name: "Wow", foreign_key: "showcase_id"
   has_many :inactive_wows, -> {where active: false}, class_name: "Wow", foreign_key: "showcase_id"
   has_many :comments, dependent: :destroy
+  has_many :commented_users, through: :comments, source: :user
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
   has_many :collection_showcases, dependent: :destroy
@@ -43,6 +44,7 @@ class Showcase < ActiveRecord::Base
 
   def create_wow(user)
     wows.create(user_id: user.id)
+    ShowcaseMailer.send_wow_notification(self.user, user, self).deliver_now unless self.user == user
   end
 
   def activate_wow(user)
@@ -112,20 +114,22 @@ class Showcase < ActiveRecord::Base
     return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
   end
 
-  def commented_users
-    comments.map{|c| c.user.name}.uniq.join(", ")
+  def commented_users_names
+    commented_users.uniq.map{|c| c.name}.join(", ")
   end
 
   def wowed_users
     wows.map{|w| w.user.name}.uniq.join(", ")
   end
 
-  after_create :create_showcase_notification
+  after_create :create_and_send_showcase_notification
 
   private
-  def create_showcase_notification
+  def create_and_send_showcase_notification
     user.followers.each do |follower|
       self.showcase_notifications.create(user_id: follower.id)
+      ShowcaseMailer.new_showcase(follower, self).deliver_now
+      AdminMailer.new_showcase(self).deliver_now
     end
   end
 

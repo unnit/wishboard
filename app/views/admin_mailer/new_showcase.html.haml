@@ -1,0 +1,12 @@
+%p
+  New #{@showcase.showcase_type_name} in Cocociti.
+  %br
+  %br
+  Title: #{@showcase.title}
+  %br
+  %br
+  %br
+  %br
+  = link_to "#{showcase_url(@showcase)}", style: "text-decoration: none" do
+    %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+      View #{@showcase.title}

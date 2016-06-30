@@ -1,0 +1,9 @@
+%p{style: "font-size: 16px;"}
+  = link_to myprofile_url(@follower.profile.slug) do
+    %span= truncate @follower.name.titleize, length: 50
+  &nbsp;
+  started following you
+%br
+Discover more on
+%a{href: "#{GLOBAL_VARIABLES[:root_url]}"}
+  Cocociti

@@ -112,6 +112,7 @@ Rails.application.routes.draw do
   get "check_follower/:id", to: "home#update_follower_checked", as: :update_follower_checked
   get "check_showcase/:id", to: "home#update_showcase_checked", as: :update_showcase_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
+  get "fanday", to: "home#fanday"
   get ":id", to: "home#myprofile", as: :myprofile
 
   resources :messages, only: [:destroy, :index, :show] do

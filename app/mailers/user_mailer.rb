@@ -27,4 +27,10 @@ class UserMailer < ApplicationMailer
     mail to: "#{GLOBAL_VARIABLES[:manager_email_id_1]},#{GLOBAL_VARIABLES[:manager_email_id_2]}", subject: "Bulk Bookings"
   end
 
+  def send_follow_notification(follower, followed)
+    @follower = follower
+    @followed = followed
+    mail to: @followed.email, subject: "#{@follower.name} started following you"
+  end
+
 end

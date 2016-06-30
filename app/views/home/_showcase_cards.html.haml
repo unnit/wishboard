@@ -27,7 +27,7 @@
           - if current_user
             = link_to showcase_path(showcase), remote: true do
               %i.fa.fa-comment-o.black-fg{class: "comment-link-#{showcase.id}"}
-            .badge.font11.bg-white.grey-fg.pleft0.weight500{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users}", "data-toggle" => "tooltip"}
+            .badge.font11.bg-white.grey-fg.pleft0.weight500{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}", "data-toggle" => "tooltip"}
               = showcase.comments.count
           - else
             = link_to root_path, class: "black-fg" do

@@ -77,7 +77,7 @@ Rails.application.routes.draw do
   get :terms, to: "home#terms"
   get :privacy, to: "home#privacy"
   get :contact, to: "home#contact"
-  get "goodness-and-open-source", to: "home#goodness-and-open-source"
+  get "goodness-and-open-source", to: "home#goodness_and_open_source"
   get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
   get "confirmation", to: "home#user_signup_confirmation"

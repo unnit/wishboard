@@ -1,12 +1,55 @@
-.container-fluid.ptop50.padding0.fanday-wrapper{style: "background-image: linear-gradient(to right bottom, #286ebb 0, #5e99db 80%);"}
-  .container.padding0.white-fg
-    %h1.mtop70.text-center{style: "font-size: 6em;margin-top: 125px;letter-spacing: 2px"}
-      World Fans’ Day
-    %h3.mtop10.text-center
-      A celebrity to fan event
-.container-fluid.padding0.fanday-wrapper{style: "background-image: linear-gradient(to right bottom, #4CAF50 0, #97e49a 80%);"}
-  .container.padding0
-.container-fluid.padding0.fanday-wrapper{style: "background-image: linear-gradient(to right bottom, #F44336 0, #fb7c73 80%);"}
-  .container.padding0
-.container-fluid.padding0.fanday-wrapper{style: "background-image: linear-gradient(to right bottom, #FFEB3B 0, #f9ec77 80%);"}
-  .container.padding0
+.container-fluid.ptop50.padding0.full-height.wrap-1
+  .pos-absolute.glassy-bg
+  .container.padding0.white-fg.text-center
+    .col-xs-12.col-sm-12.no-mar-pad
+      %h1.mtop70{style: "font-size: 6em;margin-top: 125px;letter-spacing: 2px;text-shadow: 0 1px 0 #374683;"}
+        World Fans’ Day
+      %h3.mtop10
+        A celebrity to fan event
+.container-fluid.padding0.wrap-2{style: "min-height: 700px;"}
+  .container.padding0.white-fg.text-center.ptop70.pbottom70
+    .col-sm-4.col-xs-12.mtop70
+      .col-sm-12.col-xs-12.padding20.fan-q-box.q-box-1.hide-display
+        %h2
+          WHO
+        %h4.mtop20
+          Your favourite celebrities are here with you.
+    .col-sm-4.col-xs-12.mtop70
+      .col-sm-12.col-xs-12.padding20.fan-q-box.q-box-2.hide-display
+        %h2
+          WHAT
+        %h4.mtop20
+          To show their love with lovely gifts.
+    .col-sm-4.col-xs-12.mtop70
+      .col-sm-12.col-xs-12.padding20.fan-q-box.q-box-3.hide-display
+        %h2
+          HOW
+        %h4.mtop20
+          Sign Up on Cocociti and request for the gifts from your favourite celebrities.
+.container-fluid.padding0.wrap-3{style: "background-color: #3079a0;min-height: 700px;"}
+  .container.padding0.white-fg.text-center.pbottom70
+    %h1.mtop70.mbottom40
+      WHAT CAN BE DONE ON THIS WEBSITE OTHER THAN FREE GIFTS
+    .col-sm-6.col-xs-12
+      .col-sm-12.col-xs-12.fan-box{style: "height: 300px"}
+        %h4 You have an awesome platform to showcase your showpieces and wishlists that you love.
+    .col-sm-6.col-xs-12.fan-trans
+      .col-sm-12.col-xs-12.fan-box{style: "height: 300px"}
+        %h4 Discover interesting people & their showcases around the world
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(window).scroll(function(){
+        if($(window).scrollTop() >= ($(".wrap-2").offset().top) - 400){
+          $(".q-box-1").fadeIn(500,function(){
+            $(".q-box-2").fadeIn(500,function(){
+              $(".q-box-3").fadeIn(500);
+            })
+          })
+        }
+        //if($(window).scrollTop() >= ($(".wrap-3").offset().top) - 400){
+        //  $(".fan-box").addClass("mtop70 mob-mtop0")
+        //}
+      })
+    })

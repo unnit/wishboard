@@ -5,7 +5,7 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :fanday]
   before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers, :wiki]
   before_filter :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
-  before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed]
+  before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fanday]
   before_filter :set_plain_layout, only: [:user_signup_confirmation, :interests]
 
   def index
@@ -37,7 +37,7 @@ class HomeController < ApplicationController
   end
 
   def fanday
-
+    @special_layout = "yes"
   end
 
   def unchecked_notifications

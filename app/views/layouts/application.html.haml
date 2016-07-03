@@ -25,6 +25,8 @@
       = render partial: "/layouts/navbar_plain"
     - elsif @auth_layout.present?
       = render partial: "/layouts/navbar_auth"
+    - elsif @special_layout.present?
+      = render partial: "/layouts/navbar_special"
     - else
       = render partial: "/layouts/navbar_rent"
     = render partial: "layouts/messages"

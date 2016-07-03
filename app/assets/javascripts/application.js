@@ -392,7 +392,7 @@ $(document).ready(function(){
   })
   //Hide success/failure messages after 30 secs.
   if($(".alert-message-div").length){
-    $(".alert-message-div").delay(30000).fadeOut();
+    $(".alert-message-div").delay(7000).fadeOut();
   }
   //Infinite Scroll
   if ($('#infinite-scrolling-content').length) {

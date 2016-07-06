@@ -209,7 +209,8 @@ padding-bottom: 4PX;
 
 footer {
     padding: 30px 0;
-    background-color: #002F4D;
+    /*background-color: #002F4D;*/
+    background-color: #171717;
 }
 
 
@@ -3026,24 +3027,27 @@ th.headerSortDown {
   background-color: rgb(56, 56, 56);
 }
 .wrap-2{
-  background-color: #212121;
-  background-image: url('images/fanday-1.png');
-  /*#6475dc -- vurb blue + #458ce3 -- image
+  background-color: #6475dc;
+  /*background-image: url('images/jean-pattern-bg.png');
+  background-repeat: repeat;
+  #6475dc -- vurb blue + #458ce3 -- image
   #5f95d8 + #458ce3 -- image
-  #212121 - black*/
+  #212121 - black
+  text-shadow: 0 1px 0 #c5c5c5;
+  */
 }
 .fan-box{
-  margin-top: 0.6rem;
-  padding: 0.8rem 2rem 2rem 2rem;
+  height: 300px;
+  background-color: rgb(89, 106, 214);
+  box-shadow: 0 0 2px #5363cc inset;
+  /*background-color: rgb(42, 179, 181);-box-bg-color
+  box-shadow: 0 0 2px #279798 inset;*/
   border-radius: 4px;
   border: none;
-  background: #256c93;
-  box-shadow: 0 0 2px #033b40 inset;
-  transition: all 0.75s ease-in-out 1s;
 }
-.fan-q-box{
-  height: 300px;
-  background-color: rgba(0, 0, 0, 0.75);
+.fan-box-btn{
+  background-color: #3b4ec3;
+  /*background-color: #218e90;*/
 }
 .glassy-bg{
   background: url('images/glassy.png') center no-repeat;
@@ -3051,6 +3055,17 @@ th.headerSortDown {
   width: 100%;
   height: 100%;
   background-size: contain;
+}
+.brd-box{
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.fn-ln-mr:hover{
+  border: 1px solid #31cacc;
+  color: #31cacc;
 }
 /******************Other CSS for header and future use *******/
 .header-with-grad{

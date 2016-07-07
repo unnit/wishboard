@@ -1,0 +1,32 @@
+.container-fluid.ptop50.bg-light-grey.padding0
+  .container.padding0.ptop20.pbottom70.helvetica-font
+    .col-xs-12.col-sm-6.col-sm-offset-3
+      .panel.panel-default#profile_form
+        .panel-heading
+          %h4.mtop-v-5 Edit Giveaway Item
+        .panel-body
+          .col-xs-12.col-sm-12.ptop10
+            = form_for @giveaway, html: {class: "form-horizontal", multipart: true} do |f|
+              .form-group
+                %label.col-sm-2 Name*
+                .col-sm-10
+                  = f.text_field :name, class: "form-control", placeholder: "Please type the name", required: true
+              .form-group
+                %label.col-sm-2 Description
+                .col-sm-10
+                  = f.text_area :description, class: "form-control", placeholder: "Please type the description", required: true, rows: 3
+              .form-group
+                %label.col-sm-2 Image*
+                .col-sm-10.photo-edit-wrapper
+                  .preview-edit{"data-source" => "showcase"}
+                    = cl_image_tag @giveaway.image, class: "img-responsive inline-display", width: 150, height: 100, crop: :fill, gravity: :face, alt: @giveaway.name
+                  .glyphicon.glyphicon-remove.preview-delete-edit.bg-white.pon{style: "z-index: 1;margin-left: 68px;"}
+                  .col-xs-12.col-sm-12.no-mar-pad
+                    .glyphicon.glyphicon-camera.file-input-button-edit.mtop20.padding20.grey-fg{style: "display:none;font-size: 65px;border: 1px dashed;"}
+                      = cl_image_upload_tag(:image_giveaway, html: { class: "cloudinary-fileupload-edit" })
+                  .col-xs-12.col-sm-12.no-mar-pad
+                    .progress.progress-striped.progress-edit.mtop5.mbottom0{style: "display: none;height: 10px;width:107px;"}
+                      .progress-bar.progress-bar-edit{style: "width: 0%;"}
+              .form-group
+                .col-xs-12.col-sm-12.text-center
+                  %button.btn.save-button.white-fg.mtop10 Update

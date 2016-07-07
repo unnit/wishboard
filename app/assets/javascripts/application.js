@@ -446,46 +446,60 @@ $(document).ready(function(){
   })
   //Image loading bar effect
   $('.cloudinary-fileupload-new').bind('fileuploadprogress', function(e, data) {
-    $('.progress').css("display", "inline-block");
-    $('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find('.progress').css("display", "inline-block");
+    $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
   $('.cloudinary-fileupload-new').bind('cloudinarydone', function(e, data) {
-    $(".file-input-button, .progress").hide();
-    $(".preview, .preview-edit").show();
-    $('.preview').html(
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find(".file-input-button, .progress").hide();
+    $wrap.find(".preview").show();
+    $wrap.find('.preview').html(
       $.cloudinary.image(data.result.public_id,
         { format: data.result.format, version: data.result.version,
           crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
     );
-    $('.progress-bar').css('width', '0%');
-    $(".preview-delete").show();
-    $(".error-ps-photo").fadeOut();
+    $wrap.find('.progress-bar').css('width', '0%');
+    $wrap.find(".preview-delete").show();
+    $wrap.find(".error-ps-photo").fadeOut();
     return true;
   });
   $(".preview-delete").click(function(){
-    $(".preview-delete, .preview, .preview-edit").hide();
-    $(".file-input-button").show();
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find(".preview-delete, .preview").hide();
+    $wrap.find(".file-input-button").show();
   })
   //Image- loading of edit page
   $('.cloudinary-fileupload-edit').bind('fileuploadprogress', function(e, data) {
-    $('.progress-edit').css("display", "inline-block");
-    $('.progress-bar-edit').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find('.progress-edit').css("display", "inline-block");
+    $wrap.find('.progress-bar-edit').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
   $('.cloudinary-fileupload-edit').bind('cloudinarydone', function(e, data) {
-    $(".file-input-button-edit, .progress-edit").hide();
-    $(".preview-edit").show();
-    $('.preview-edit').html(
-      $.cloudinary.image(data.result.public_id,
-        { format: data.result.format, version: data.result.version,
-          crop: 'fill', height: 480, class: 'img-responsive inline-display' })
-    );
-    $('.progress-bar-edit').css('width', '0%');
-    $(".preview-delete-edit").show();
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find(".file-input-button-edit, .progress-edit").hide();
+    $wrap.find(".preview-edit").show();
+    if($wrap.find(".preview-edit").data("source") == "showcase"){
+      $wrap.find('.preview-edit').html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
+      );
+    }else{
+      $wrap.find('.preview-edit').html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', height: 480, class: 'img-responsive inline-display' })
+      );
+    }
+    $wrap.find('.progress-bar-edit').css('width', '0%');
+    $wrap.find(".preview-delete-edit").show();
     return true;
   });
   $(".preview-delete-edit").click(function(){
-    $(".preview-delete-edit, .preview-edit").hide();
-    $(".file-input-button-edit").show();
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find(".preview-delete-edit, .preview-edit").hide();
+    $wrap.find(".file-input-button-edit").show();
   })
 
   //Home page - Rent, Lend pages

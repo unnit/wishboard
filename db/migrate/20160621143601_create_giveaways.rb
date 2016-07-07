@@ -4,6 +4,7 @@ class CreateGiveaways < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.integer :user_id
+      t.string :image
       t.boolean :approved, default: false
       t.timestamps null: false
     end

@@ -12,15 +12,40 @@ class GiveawaysController < ApplicationController
   end
 
   def new
+    @giveaway = Giveaway.new
   end
 
   def create
+    @giveaway = current_user.giveaways.build(giveaway_params)
+    if params[:image_giveaway].present?
+      uploaded = Cloudinary::PreloadedFile.new(params[:image_giveaway])
+      @giveaway.image = uploaded.identifier unless uploaded.blank?
+    end
+    if @giveaway.save
+      flash[:notice] = "Giveaway has been successfully added"
+      redirect_to view_giveaways_path(current_user.profile.slug)
+    else
+      flash[:alert] = @giveaway.errors.full_messages.join(", ")
+      render :new
+    end
   end
 
   def edit
   end
 
   def update
+    @giveaway.assign_attributes(giveaway_params)
+    if params[:image_giveaway].present?
+      uploaded = Cloudinary::PreloadedFile.new(params[:image_giveaway])
+      @giveaway.image = uploaded.identifier unless uploaded.blank?
+    end
+    if @giveaway.save
+      flash[:notice] = "Giveaway has been successfully added"
+      redirect_to view_giveaways_path(current_user.profile.slug)
+    else
+      flash[:alert] = @giveaway.errors.full_messages.join(", ")
+      render :edit
+    end
   end
 
   def destroy
@@ -30,6 +55,10 @@ class GiveawaysController < ApplicationController
   end
 
   private
+
+  def giveaway_params
+    params.require(:giveaway).permit(:name, :description)
+  end
 
   def set_giveaway
     @giveaway = Giveaway.find_by_id params[:id]

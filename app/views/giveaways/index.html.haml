@@ -1,6 +1,23 @@
 .container-fluid.mtop50.bg-shad.pbottom50.padding0.helvetica-font.bg-light-grey{style: "min-height:1000px;"}
   = render partial: "home/profile", locals: {user: @user}
   .container.padding0
-    .col-md-12.mbottom10
+    .col-xs-10.col-md-11.mbottom10
       .ol.breadcrumb.no-mar-pad.note-font-size
         = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
+    .col-xs-2.col-md-1.text-right.no-mar-pad
+      = link_to new_giveaway_path do
+        %i.fa.fa-plus-circle.grey-fg.font25
+    .giveaway-strip
+      - @user.giveaways.each do |giveaway|
+        .col-xs-12.col-sm-3.mbottom20.padding10.bg-white
+          %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute{style: "right:0px;"}
+          .col-xs-4.col-sm-4.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
+            - if giveaway.owner?(current_user)
+              = link_to edit_giveaway_path(giveaway), class: "full-width grey-fg pull-left small padding5" do
+                Edit...
+              = link_to giveaway_path(giveaway), method: :delete, data: { confirm: "Are you sure you want to delete your #{giveaway.name}?" }, class: "full-width grey-fg pull-left small padding5" do
+                Delete...
+          %h5.text-center= truncate giveaway.name, length: 40
+          = cl_image_tag giveaway.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: giveaway.name
+          .col-xs-12.col-sm-12.no-mar-pad.mtop10{class: "gway-btn-#{giveaway.id}"}
+            .btn.btn-grey.full-width Request

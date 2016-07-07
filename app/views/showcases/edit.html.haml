@@ -2,12 +2,12 @@
   .container.padding0.ptop20.pbottom70.helvetica-font
     .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
       = form_for @showcase do |f|
-        .col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center{style: "overflow: hidden;max-height:480px;height: auto;"}
+        .col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-edit-wrapper{style: "overflow: hidden;max-height:480px;height: auto;"}
           .preview-edit
             = cl_image_tag @showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
-          .glyphicon.glyphicon-remove.preview-delete-edit.bg-white.pon{style: "position: absolute;z-index: 1;top:0;right:0"}
+          .glyphicon.glyphicon-remove.preview-delete-edit.bg-white.pon.pos-absolute{style: "z-index: 1;top:0;right:0"}
           .col-xs-12.col-sm-12.no-mar-pad
-            .glyphicon.glyphicon-camera.file-input-button-edit.mtop20{style: "display:none;font-size: 65px;color: #E0E0E0;padding: 20px;border: 1px dashed;"}
+            .glyphicon.glyphicon-camera.file-input-button-edit.mtop20.padding20.grey-fg{style: "display: none;font-size: 65px;border: 1px dashed;"}
               = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-edit" })
           .col-xs-12.col-sm-12.no-mar-pad
             .progress.progress-striped.progress-edit.mtop5.mbottom0{style: "display: none;height: 10px;width:107px;"}

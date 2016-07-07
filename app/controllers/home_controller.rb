@@ -150,7 +150,7 @@ class HomeController < ApplicationController
 
   def view_collection
     @collection = Collection.find_by_id params[:name]
-    if @collection.blank?
+    if @collection.blank? || @collection.user != @user
       redirect_to root_path
       return
     end

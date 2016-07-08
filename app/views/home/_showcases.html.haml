@@ -36,12 +36,12 @@
       - else
         = link_to root_path, class: "black-fg" do
           %i.fa.fa-heart-o.pull-left
-      .badge.pull-left{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
+      .badge.pull-left{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
         = showcase.active_wows.count
     .col-xs-3.col-sm-3.pon.comment-link.border-two.padding10.bg-white.h40
       - if current_user
         %i.fa.fa-comment-o.pull-left{class: "comment-link-#{showcase.id}"}
-        .badge.pull-left{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}", "data-toggle" => "tooltip"}
+        .badge.pull-left{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
           = showcase.comments.count
       - else
         = link_to root_path, class: "black-fg" do

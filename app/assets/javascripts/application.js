@@ -100,6 +100,14 @@ $(document).ready(function(){
     });
     $(this).next(".option-showcase").fadeToggle(100);
   })
+  $("html,body").click(function(e){
+    var container = $(".action-showcase")
+    if (!container.is(e.target) // if the target of the click isn't the container...
+        && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        $(".option-showcase").hide();
+    }
+  });
   //Edit comment of showcase
   $(document).on("click", ".edit-comment-showcase", function(){
     $(this).closest(".option-showcase").hide(100);

@@ -119,7 +119,7 @@ class Showcase < ActiveRecord::Base
   end
 
   def wowed_users
-    wows.map{|w| w.user.name}.uniq.join(", ")
+    active_wows.map{|w| w.user.name}.join(", ")
   end
 
   after_create :create_and_send_showcase_notification

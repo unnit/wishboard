@@ -25,6 +25,11 @@
       %li.inline-block.mright20
         = link_to wiki_path(@profile.slug) do
           %span.grey-fg Wiki
+      /
+        %li.inline-block.mright20
+          = link_to view_giveaways_path(@profile.slug) do
+            .btn.btn-primary.hvr-icon-pop
+              Give Away
       %li.inline-block.hidden-xs.pull-right
         - if current_user && current_user.same_user?(user)
           = link_to settings_path do

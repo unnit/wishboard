@@ -1,0 +1,34 @@
+.container-fluid.mtop50.bg-shad.pbottom50.padding0.helvetica-font.bg-light-grey{style: "min-height:1000px;"}
+  = render partial: "home/profile", locals: {user: @user}
+  .container.padding0
+    .col-xs-10.col-md-11.mbottom10
+      .ol.breadcrumb.no-mar-pad.note-font-size
+        = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
+    .col-xs-2.col-md-1.text-right.no-mar-pad
+      = link_to new_giveaway_path do
+        %i.fa.fa-plus-circle.grey-fg.font25
+    .giveaway-strip
+      .row
+        - @user.giveaways.each do |giveaway|
+          .col-xs-12.col-sm-3
+            .col-xs-12.col-sm-12.mbottom20.padding10.bg-white.mright20
+              %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute{style: "right:0px;"}
+              .col-xs-4.col-sm-4.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
+                - if giveaway.owner?(current_user)
+                  = link_to edit_giveaway_path(giveaway), class: "full-width grey-fg pull-left small padding5" do
+                    Edit...
+                  = link_to giveaway_path(giveaway), method: :delete, data: { confirm: "Are you sure you want to delete your #{giveaway.name}?" }, class: "full-width grey-fg pull-left small padding5" do
+                    Delete...
+              %h5.text-center.mtop0= truncate giveaway.name, length: 40
+              .col-xs-12.col-sm-12.no-mar-pad.gway-img-wrap
+                - if giveaway.description.present?
+                  .pos-absolute.gway-desc.hide-display.full-width.full-height.padding10.font13{style: "background-color: rgba(255,255,255,0.6)"}
+                    = giveaway.description
+                = cl_image_tag giveaway.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: giveaway.name
+              - unless giveaway.owner?(current_user)
+                .col-xs-12.col-sm-12.no-mar-pad.mtop10{class: "gway-btn-#{giveaway.id}"}
+                  = link_to request_giveaway_giveaway_path(giveaway), remote: true, method: :post do
+                    .btn.btn-gold.white-fg.full-width.gway-rqst Request
+                  %span.full-width.text-center.hide-display.gway-requested.pull-left{style: "padding: 6px 12px;color: green;"}
+                    Requested
+                    .fa.fa-check.font17

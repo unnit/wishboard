@@ -103,6 +103,7 @@ Rails.application.routes.draw do
   get ":id/following", to: "home#following", as: :following
   get ":id/followers", to: "home#followers", as: :followers
   get ":id/wiki", to: "home#wiki", as: :wiki
+  get ":id/giveaways", to: "giveaways#index", as: :view_giveaways
   post "create_wiki", to: "home#create_wiki", as: :create_wiki
   patch "edit_wiki/:id", to: "home#edit_wiki", as: :edit_wiki
   delete "delete_wiki/:id", to: "home#delete_wiki", as: :delete_wiki
@@ -112,7 +113,7 @@ Rails.application.routes.draw do
   get "check_follower/:id", to: "home#update_follower_checked", as: :update_follower_checked
   get "check_showcase/:id", to: "home#update_showcase_checked", as: :update_showcase_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
-  get "fanday", to: "home#fanday"
+  get "fansday", to: "home#fansday"
   get ":id", to: "home#myprofile", as: :myprofile
 
   resources :messages, only: [:destroy, :index, :show] do
@@ -149,6 +150,12 @@ Rails.application.routes.draw do
       get :autocomplete
       post :create_collection
       post :add
+    end
+  end
+
+  resources :giveaways, except: [:index] do
+    member do
+      post :request_giveaway
     end
   end
 

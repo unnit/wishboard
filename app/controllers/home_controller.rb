@@ -2,10 +2,10 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
   skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
   before_filter :back_to_home, only: [:authenticate]
-  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fanday]
+  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate]
   before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers, :wiki]
   before_filter :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
-  before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fanday]
+  before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
   before_filter :set_plain_layout, only: [:user_signup_confirmation, :interests]
 
   def index
@@ -36,7 +36,7 @@ class HomeController < ApplicationController
     end
   end
 
-  def fanday
+  def fansday
     @special_layout = "yes"
   end
 
@@ -154,7 +154,7 @@ class HomeController < ApplicationController
 
   def view_collection
     @collection = Collection.find_by_id params[:name]
-    if @collection.blank?
+    if @collection.blank? || @collection.user != @user
       redirect_to root_path
       return
     end
@@ -192,6 +192,8 @@ class HomeController < ApplicationController
   end
 
   def wiki
+    add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
+    add_breadcrumb "Wiki", wiki_path(@profile.slug)
     @wiki = Wiki.new
   end
 
@@ -288,6 +290,7 @@ class HomeController < ApplicationController
   end
 
   def authenticate
+    @auth_layout = "yes"
   end
 
   def offers
@@ -303,11 +306,6 @@ class HomeController < ApplicationController
 
   def back_to_home
     redirect_to root_path if current_user
-  end
-
-  def set_profile_caseless
-    @profile = Profile.friendly.find params[:id].downcase
-    @user = @profile.user
   end
 
   def set_wiki_and_check_owner

@@ -1,0 +1,32 @@
+.container-fluid.ptop50.bg-light-grey.padding0
+  .container.padding0.ptop20.pbottom70.helvetica-font
+    .col-xs-12.col-sm-6.col-sm-offset-3
+      .panel.panel-default#profile_form
+        .panel-heading
+          %h4.mtop-v-5 Add Giveaway Item
+        .panel-body
+          .col-xs-12.col-sm-12.ptop10
+            = form_for @giveaway, html: {class: "form-horizontal", multipart: true} do |f|
+              .form-group
+                %label.col-sm-2 Name*
+                .col-sm-10
+                  = f.text_field :name, class: "form-control", placeholder: "Please type the name", required: true
+              .form-group
+                %label.col-sm-2 Description
+                .col-sm-10
+                  = f.text_area :description, class: "form-control", placeholder: "Please type the description", required: true, rows: 3
+              .form-group
+                %label.col-sm-2 Image*
+                .col-sm-10.photo-upload-wrapper
+                  %span.font11.col-xs-12.col-sm-12.padding0 Drag and Drop the Photo here.
+                  .preview
+                  .glyphicon.glyphicon-remove.preview-delete.bg-white.hide-display.pon{style: "z-index: 1;margin-left: 68px;"}
+                  .col-xs-12.col-sm-12.no-mar-pad
+                    .glyphicon.glyphicon-camera.file-input-button.grey-fg.padding20{style: "font-size: 65px;border: 1px dashed;"}
+                      = cl_image_upload_tag(:image_giveaway, html: { class: "cloudinary-fileupload-new" })
+                  .col-xs-12.col-sm-12.no-mar-pad
+                    .progress.progress-striped.hide-display.mbottom0.mtop5{style: "height: 10px;width:107px;"}
+                      .progress-bar{style: "width: 0%;"}
+              .form-group
+                .col-xs-12.col-sm-12.text-center
+                  %button.btn.save-button.white-fg Create

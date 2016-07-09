@@ -4,11 +4,11 @@
     .col-md-12.mbottom10
       .ol.breadcrumb.no-mar-pad.note-font-size
         = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
-    .col-xs-12.col-sm-12.wiki-strip.no-mar-pad.mbottom20
+    .col-xs-12.col-sm-12.wiki-strip.mbottom20
       - @user.wikis.each do |wiki|
         = render partial: "home/wiki", locals: { wiki: wiki }
     - if current_user == @user
-      .col-xs-12.col-sm-12.no-mar-pad
+      .col-xs-12.col-sm-12
         - if current_user.wikis.count < 3
           - (3 - @user.wikis.count).times do |x|
             .col-xs-12.col-sm-12.mbottom20.no-mar-pad{class: "new-wiki-#{x+1}"}

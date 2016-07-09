@@ -1,12 +1,12 @@
 .container-fluid.ptop50.padding0
   .col-xs-12.col-sm-6.white-fg{style: "padding-top: 8%;background-color:#B7B7B7;"}
     %ul.nav.nav-tabs{style: "border-bottom: none;", class: "mleft-mob"}
-      %li.active
+      %li{class: "#{'active' unless params[:tab] == "signup"}"}
         %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;border-radius: 0px;color: white;"} Login
-      %li
+      %li{class: "#{'active' if params[:tab] == "signup"}"}
         %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;border-radius: 0px;color: white;"} Sign Up
     .tab-content.ptop10{style: "min-height: 550px;"}
-      #home-login.tab-pane.fade.in.active
+      #home-login.tab-pane.fade{class: "#{'active in' unless params[:tab] == "signup"}"}
         .col-md-12.mtop40
           = form_for(User.new, :url => new_user_session_path, remote: true, html: {"data-parsley-validate" => true, class: "login-form"}) do |f|
             .col-sm-12.errors
@@ -34,7 +34,7 @@
                   .inline-block{style: "margin-top: 8px;"} Please Wait...
                   .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
                     %div
-      #home-sign-up.tab-pane.fade
+      #home-sign-up.tab-pane.fade{class: "#{'active in' if params[:tab] == "signup"}"}
         .col-md-12.mtop40
           = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require signup-form"}) do |f|
             .col-sm-12.errors

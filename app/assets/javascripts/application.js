@@ -103,11 +103,22 @@ $(document).ready(function(){
   $("html,body").click(function(e){
     var container = $(".action-showcase")
     if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0) // ... nor a descendant of the container
+      && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
-        $(".option-showcase").hide();
+      $(".option-showcase").hide();
     }
   });
+
+  //Giveaway
+  $(document).on("mouseover", ".gway-img-wrap", function(){
+    $(this).find(".gway-desc").show();
+  });
+  $(document).on("mouseleave", ".gway-img-wrap", function(){
+    $(this).find(".gway-desc").hide();
+  })
+  $(document).on("click", ".gway-rqst", function(){
+    $(this).html("<span>Please Wait...</span><span class='ball-clip-rotate' style='height:22px;'><div style='height:15px;width:15px;'></div></span>")
+  })
   //Edit comment of showcase
   $(document).on("click", ".edit-comment-showcase", function(){
     $(this).closest(".option-showcase").hide(100);
@@ -400,7 +411,7 @@ $(document).ready(function(){
   })
   //Hide success/failure messages after 30 secs.
   if($(".alert-message-div").length){
-    $(".alert-message-div").delay(7000).fadeOut();
+    $(".alert-message-div").delay(30000).fadeOut();
   }
   //Infinite Scroll
   if ($('#infinite-scrolling-content').length) {
@@ -454,46 +465,60 @@ $(document).ready(function(){
   })
   //Image loading bar effect
   $('.cloudinary-fileupload-new').bind('fileuploadprogress', function(e, data) {
-    $('.progress').css("display", "inline-block");
-    $('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find('.progress').css("display", "inline-block");
+    $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
   $('.cloudinary-fileupload-new').bind('cloudinarydone', function(e, data) {
-    $(".file-input-button, .progress").hide();
-    $(".preview, .preview-edit").show();
-    $('.preview').html(
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find(".file-input-button, .progress").hide();
+    $wrap.find(".preview").show();
+    $wrap.find('.preview').html(
       $.cloudinary.image(data.result.public_id,
         { format: data.result.format, version: data.result.version,
           crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
     );
-    $('.progress-bar').css('width', '0%');
-    $(".preview-delete").show();
-    $(".error-ps-photo").fadeOut();
+    $wrap.find('.progress-bar').css('width', '0%');
+    $wrap.find(".preview-delete").show();
+    $wrap.find(".error-ps-photo").fadeOut();
     return true;
   });
   $(".preview-delete").click(function(){
-    $(".preview-delete, .preview, .preview-edit").hide();
-    $(".file-input-button").show();
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find(".preview-delete, .preview").hide();
+    $wrap.find(".file-input-button").show();
   })
   //Image- loading of edit page
   $('.cloudinary-fileupload-edit').bind('fileuploadprogress', function(e, data) {
-    $('.progress-edit').css("display", "inline-block");
-    $('.progress-bar-edit').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find('.progress-edit').css("display", "inline-block");
+    $wrap.find('.progress-bar-edit').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
   $('.cloudinary-fileupload-edit').bind('cloudinarydone', function(e, data) {
-    $(".file-input-button-edit, .progress-edit").hide();
-    $(".preview-edit").show();
-    $('.preview-edit').html(
-      $.cloudinary.image(data.result.public_id,
-        { format: data.result.format, version: data.result.version,
-          crop: 'fill', height: 480, class: 'img-responsive inline-display' })
-    );
-    $('.progress-bar-edit').css('width', '0%');
-    $(".preview-delete-edit").show();
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find(".file-input-button-edit, .progress-edit").hide();
+    $wrap.find(".preview-edit").show();
+    if($wrap.find(".preview-edit").data("source") == "showcase"){
+      $wrap.find('.preview-edit').html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
+      );
+    }else{
+      $wrap.find('.preview-edit').html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', height: 480, class: 'img-responsive inline-display' })
+      );
+    }
+    $wrap.find('.progress-bar-edit').css('width', '0%');
+    $wrap.find(".preview-delete-edit").show();
     return true;
   });
   $(".preview-delete-edit").click(function(){
-    $(".preview-delete-edit, .preview-edit").hide();
-    $(".file-input-button-edit").show();
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find(".preview-delete-edit, .preview-edit").hide();
+    $wrap.find(".file-input-button-edit").show();
   })
 
   //Home page - Rent, Lend pages

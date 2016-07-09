@@ -55,6 +55,11 @@ class ApplicationController < ActionController::Base
   #  session.delete("user_return_to") || root_path
   #end
 
+  def set_profile_caseless
+    @profile = Profile.friendly.find params[:id].downcase
+    @user = @profile.user
+  end
+
   require 'rubygems'
   require 'plivo'
   def send_mobile_sms(no, msg)

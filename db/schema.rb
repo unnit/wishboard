@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160614113458) do
+ActiveRecord::Schema.define(version: 20160708204151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,26 @@ ActiveRecord::Schema.define(version: 20160614113458) do
   end
 
   add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
+
+  create_table "giveaway_requests", force: :cascade do |t|
+    t.integer  "giveaway_id"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "giveaway_requests", ["giveaway_id"], name: "index_giveaway_requests_on_giveaway_id", using: :btree
+  add_index "giveaway_requests", ["user_id"], name: "index_giveaway_requests_on_user_id", using: :btree
+
+  create_table "giveaways", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "user_id"
+    t.string   "image"
+    t.boolean  "approved",    default: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
 
   create_table "interests", force: :cascade do |t|
     t.integer  "user_id"

@@ -90,10 +90,14 @@
                 %span.grey-fg Sign Out
           - else
             %li.hidden-xs
-              = link_to "Login/SignUp", root_path, class: "grey-fg btn", style: "padding: 7px 12px;margin-top: 7px;border: 1px solid #ccc;border-radius:18px;"
+              = link_to "SignUp", authenticate_path(tab: "signup"), class: "btn", style: "padding: 7px 15px;margin-top: 7px;border-radius:18px;border: 1px solid #ccc;"
+            %li.hidden-xs
+              = link_to "Login", authenticate_path, class: "btn tt-blue-bg white-fg mleft10", style: "padding: 7px 15px;margin-top: 7px;border-radius:18px;"
             %li.visible-xs.bg-white
-              = link_to root_path, style: "white-space: normal;" do
-                %span.grey-fg Login/SignUp
+              = link_to authenticate_path, style: "white-space: normal;" do
+                %span.grey-fg Login
+              = link_to authenticate_path(tab: "signup"), style: "white-space: normal;" do
+                %span.grey-fg SignUp
 - if current_user && !@scase_modal.present?
   #showcase-modal.modal.fade
     .modal-dialog

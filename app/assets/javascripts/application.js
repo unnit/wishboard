@@ -100,6 +100,16 @@ $(document).ready(function(){
     });
     $(this).next(".option-showcase").fadeToggle(100);
   })
+  //Giveaway
+  $(document).on("mouseover", ".gway-img-wrap", function(){
+    $(this).find(".gway-desc").show();
+  });
+  $(document).on("mouseleave", ".gway-img-wrap", function(){
+    $(this).find(".gway-desc").hide();
+  })
+  $(document).on("click", ".gway-rqst", function(){
+    $(this).html("<span>Please Wait...</span><span class='ball-clip-rotate' style='height:22px;'><div style='height:15px;width:15px;'></div></span>")
+  })
   //Edit comment of showcase
   $(document).on("click", ".edit-comment-showcase", function(){
     $(this).closest(".option-showcase").hide(100);

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623111121) do
+ActiveRecord::Schema.define(version: 20160708204151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,16 @@ ActiveRecord::Schema.define(version: 20160623111121) do
   end
 
   add_index "credentials", ["user_id"], name: "index_credentials_on_user_id", using: :btree
+
+  create_table "giveaway_requests", force: :cascade do |t|
+    t.integer  "giveaway_id"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "giveaway_requests", ["giveaway_id"], name: "index_giveaway_requests_on_giveaway_id", using: :btree
+  add_index "giveaway_requests", ["user_id"], name: "index_giveaway_requests_on_user_id", using: :btree
 
   create_table "giveaways", force: :cascade do |t|
     t.string   "name"
@@ -323,16 +333,6 @@ ActiveRecord::Schema.define(version: 20160623111121) do
   add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
   add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
-
-  create_table "requests", force: :cascade do |t|
-    t.integer  "giveaway_id"
-    t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "requests", ["giveaway_id"], name: "index_requests_on_giveaway_id", using: :btree
-  add_index "requests", ["user_id"], name: "index_requests_on_user_id", using: :btree
 
   create_table "reviews", force: :cascade do |t|
     t.integer  "user_id"

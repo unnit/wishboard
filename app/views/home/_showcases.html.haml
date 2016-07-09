@@ -34,7 +34,7 @@
           - else
             %i.fa.fa-heart-o.pull-left
       - else
-        = link_to root_path, class: "black-fg" do
+        = link_to authenticate_path, class: "black-fg" do
           %i.fa.fa-heart-o.pull-left
       .badge.pull-left{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
         = showcase.active_wows.count
@@ -44,7 +44,7 @@
         .badge.pull-left{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users}", "data-toggle" => "tooltip"}
           = showcase.comments.count
       - else
-        = link_to root_path, class: "black-fg" do
+        = link_to authenticate_path, class: "black-fg" do
           %i.fa.fa-comment-o.pull-left{class: "comment-link-#{showcase.id}"}
           .badge.pull-left{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
             = showcase.comments.count

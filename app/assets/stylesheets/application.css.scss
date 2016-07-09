@@ -556,7 +556,7 @@ small{
   background-color: #4a4a4a;
 }
 .white-fg{
-  color: white;
+  color: white !important;
 }
 .green-fg{
   color: #23A723 !important;
@@ -607,4 +607,18 @@ small{
 }
 .border5{
   border-radius: 5px;
+}
+.btn-gold{
+  background-color: #a3681b;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9A041', endColorstr='#FF7C4907');
+  background-image: -webkit-linear-gradient(top, #e9a041 0%, #bb7519);
+  background-image: -moz-linear-gradient(top, #e9a041 0%, #bb7519);
+  background-image: -o-linear-gradient(top, #e9a041 0%, #bb7519);
+  background-image: linear-gradient(top, #e9a041 0%, #bb7519);
+}
+.tt-blue-bg{
+  background-color: #41a6e4  !important;
+}
+.tt-blue-fg{
+  color: #41a6e4 !important;
 }

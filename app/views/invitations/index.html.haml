@@ -1,11 +1,11 @@
 = content_for :title do
   -title = "Invite Friends - Cocociti"
-.container-fluid.bg-light-grey.ptop50.pbottom50.helvetica-font
-  .container.mtop10
+.container-fluid.bg-light-grey.ptop50.pbottom50.helvetica-font.padding0
+  .container.mtop10.padding0
     #google_client_id{"data-client-id" => "#{GLOBAL_VARIABLES[:google_client_id]}"}
     #google_api_key{"data-api-key" => "#{GLOBAL_VARIABLES[:google_api_key]}"}
     .row
-      .col-xs-12.col-sm-12
+      .col-xs-12.col-sm-12.no-mar-pad
         .panel.panel-default#profile_form
           .panel-heading
             %h5.mtop-v-5.font-medium
@@ -30,7 +30,7 @@
                       = submit_tag "Send Invite", class: "btn save-button mtop10 white-fg"
                   - if params[:invite_friends] == "invite"
                     .form-group
-                      .col-xs-12.col-sm-12.no-mar-pad
-                        .pull-right.padding10
+                      .col-xs-12.col-sm-12.no-mar-pad.text-right.text-center-mob
+                        .padding10.pbottom0
                           = link_to root_path do
-                            .btn.btn-sm.btn-primary Skip to Feed
+                            Skip to Feed

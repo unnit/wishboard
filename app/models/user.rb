@@ -28,8 +28,8 @@ class User < ActiveRecord::Base
   has_many :collections
   has_many :wikis
   has_many :giveaways
-  has_many :requests
-  has_many :requested_giveaways, through: :requests, source: :giveaway
+  has_many :giveaway_requests
+  has_many :requested_giveaways, through: :giveaway_requests, source: :giveaway
 
   has_one :profile, dependent: :destroy
 

@@ -1,6 +1,6 @@
 class GiveawaysController < ApplicationController
   before_filter :authenticate_user!, except: [:show]
-  before_filter :set_giveaway, only: [:edit, :update, :destroy]
+  before_filter :set_giveaway, only: [:edit, :update, :destroy, :request_giveaway]
   before_filter :check_owner, only: [:edit, :update, :destroy]
   before_filter :set_profile_caseless, only: [:index]
   before_filter :set_social_layout
@@ -49,9 +49,20 @@ class GiveawaysController < ApplicationController
   end
 
   def destroy
+    @giveaway.destroy
+    redirect_to :back
   end
 
   def show
+  end
+
+  def request_giveaway
+    if @giveaway && !@giveaway.owner?(current_user)
+      GiveawayRequest.where(giveaway_id: @giveaway.id, user_id: current_user.id).first_or_create!
+      respond_to :js
+    else
+      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}'"
+    end
   end
 
   private

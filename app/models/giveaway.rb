@@ -1,7 +1,7 @@
 class Giveaway < ActiveRecord::Base
   belongs_to :user
-  has_many :requests
-  has_many :requetsed_users, through: :requests, source: :user
+  has_many :giveaway_requests
+  has_many :requested_users, through: :giveaway_requests, source: :user
 
   validates :name, :image, presence: true
   validates :name, length: { maximum: 100 }

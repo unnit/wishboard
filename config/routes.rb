@@ -153,6 +153,9 @@ Rails.application.routes.draw do
   end
 
   resources :giveaways, except: [:index] do
+    member do
+      post :request_giveaway
+    end
   end
 
   post "product/:id/checkout", to: "transactions#new", as: :product_checkout

@@ -2,7 +2,7 @@ class ShowcaseMailer < ApplicationMailer
 
   def new_showcase(followers_email, showcase)
     @showcase = showcase
-    mail to: followers_email, subject: "#{showcase.user.name} has showcased a #{showcase.showcase_type_name}"
+    mail to: "me", subject: "#{showcase.user.name} has showcased a #{showcase.showcase_type_name}", bcc: followers_email
   end
 
   def send_showcase_owner_notification_for_comment(owner, commenter, showcase)

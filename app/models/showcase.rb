@@ -128,9 +128,10 @@ class Showcase < ActiveRecord::Base
   def create_and_send_showcase_notification
     user.followers.each do |follower|
       self.showcase_notifications.create(user_id: follower.id)
-      ShowcaseMailer.new_showcase(follower, self).deliver_now
-      AdminMailer.new_showcase(self).deliver_now
     end
+    followers_email = user.followers.map{|f| f.email}.join(",")
+    ShowcaseMailer.new_showcase(followers_email, self).deliver_now
+    AdminMailer.new_showcase(self).deliver_now
   end
 
 end

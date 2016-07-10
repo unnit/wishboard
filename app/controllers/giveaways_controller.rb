@@ -1,5 +1,5 @@
 class GiveawaysController < ApplicationController
-  before_filter :authenticate_user!, except: [:show]
+  before_filter :authenticate_user!, except: [:show, :index]
   before_filter :set_giveaway, only: [:edit, :update, :destroy, :request_giveaway]
   before_filter :check_owner, only: [:edit, :update, :destroy]
   before_filter :set_profile_caseless, only: [:index]

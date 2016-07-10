@@ -20,9 +20,9 @@
                   = link_to giveaway_path(giveaway), method: :delete, data: { confirm: "Are you sure you want to delete your #{giveaway.name}?" }, class: "full-width grey-fg pull-left small padding5" do
                     Delete...
               %h5.text-center.mtop0= truncate giveaway.name, length: 40
-              .col-xs-12.col-sm-12.no-mar-pad.gway-img-wrap
+              .col-xs-12.col-sm-12.no-mar-pad.gway-img-wrap.text-center
                 - if giveaway.description.present?
-                  .pos-absolute.gway-desc.hide-display.full-width.full-height.padding10.font13{style: "background-color: rgba(255,255,255,0.6)"}
+                  .pos-absolute.gway-desc.hide-display.full-width.full-height.padding10.font13.text-left{style: "background-color: rgba(255,255,255,0.7)"}
                     = giveaway.description
                 = cl_image_tag giveaway.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: giveaway.name
               - unless giveaway.owner?(current_user)

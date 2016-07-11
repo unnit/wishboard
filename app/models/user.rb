@@ -179,7 +179,6 @@ class User < ActiveRecord::Base
 
   def create_follow(other_user)
     active_relationships.create(followed_id: other_user.id)
-    UserMailer.send_follow_notification(self, other_user).deliver_now
   end
 
   def activate_follow(other_user)

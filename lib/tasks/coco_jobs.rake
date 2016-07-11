@@ -11,4 +11,36 @@ namespace :coco_jobs do
     end
   end
 
+  task send_email_notifications: :environment do
+    showcase_notifications = ShowcaseNotification.where("mailed = ?", false)
+    showcase_notifications.each do |showcase_notification|
+      ShowcaseMailer.new_showcase(showcase_notification.user.email, showcase_notification.showcase).deliver_now
+      showcase_notification.mailed = true
+      showcase_notification.save
+    end
+    wows = Wow.where("mailed = ?", false)
+    wows.each do |wow|
+      ShowcaseMailer.send_wow_notification(wow.showcase.user.email, wow.user, wow.showcase).deliver_now unless wow.showcase.user == wow.user
+      wow.mailed = true
+      wow.save
+    end
+    comments = Comment.where("mailed = ?", false)
+    comments.each do |comment|
+      ShowcaseMailer.send_showcase_owner_notification_for_comment(comment.showcase.user.email, comment.user, comment.showcase).deliver_now unless comment.user == comment.showcase.user
+      comment.mailed = true
+      comment.save
+      members = comment.showcase.commented_users.uniq.reject{|m| m == comment.showcase.user}
+      members = members.reject{|m| m == comment.user}
+      members.each do |member|
+        ShowcaseMailer.send_showcase_member_notification_for_comment(member.email, comment.user, comment.showcase).deliver_now
+      end
+    end
+    relationships = Relationship.where("mailed = ?", false)
+    relationships.each do |relationship|
+      UserMailer.send_follow_notification(relationship.follower, relationship.followed.email).deliver_now
+      relationship.mailed = true
+      relationship.save
+    end
+  end
+
 end

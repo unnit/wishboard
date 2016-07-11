@@ -44,7 +44,6 @@ class Showcase < ActiveRecord::Base
 
   def create_wow(user)
     wows.create(user_id: user.id)
-    ShowcaseMailer.send_wow_notification(self.user, user, self).deliver_now unless self.user == user
   end
 
   def activate_wow(user)
@@ -129,9 +128,6 @@ class Showcase < ActiveRecord::Base
     user.followers.each do |follower|
       self.showcase_notifications.create(user_id: follower.id)
     end
-    followers_email = user.followers.map{|f| f.email}.join(",")
-    ShowcaseMailer.new_showcase(followers_email, self).deliver_now
-    AdminMailer.new_showcase(self).deliver_now
   end
 
 end

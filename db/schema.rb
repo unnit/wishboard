@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160708204151) do
+ActiveRecord::Schema.define(version: 20160711071058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 20160708204151) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.boolean  "checked",     default: false
+    t.boolean  "mailed",      default: false
   end
 
   create_table "credentials", force: :cascade do |t|
@@ -328,6 +329,7 @@ ActiveRecord::Schema.define(version: 20160708204151) do
     t.datetime "updated_at",                  null: false
     t.boolean  "checked",     default: false
     t.boolean  "active",      default: true
+    t.boolean  "mailed",      default: false
   end
 
   add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
@@ -351,6 +353,7 @@ ActiveRecord::Schema.define(version: 20160708204151) do
     t.boolean  "checked",     default: false
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.boolean  "mailed",      default: false
   end
 
   create_table "showcases", force: :cascade do |t|
@@ -465,6 +468,7 @@ ActiveRecord::Schema.define(version: 20160708204151) do
     t.datetime "updated_at",                  null: false
     t.boolean  "checked",     default: false
     t.boolean  "active",      default: true
+    t.boolean  "mailed",      default: false
   end
 
   add_index "wows", ["showcase_id"], name: "index_wows_on_showcase_id", using: :btree

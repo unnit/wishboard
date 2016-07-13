@@ -4,7 +4,7 @@
       = cl_image_tag comment.user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
   .media-body.font-medium
     - if comment.owner?(current_user)
-      %i.glyphicon.glyphicon-edit.grey-fg.action-showcase.grey-fg.pull-right.mtop5.pon
+      %i.glyphicon.glyphicon-edit.grey-fg.action-showcase.grey-fg.pull-right.mtop5.mleft5.pon
       .col-xs-4.col-sm-2.option-showcase.bg-shad.bg-white.pull-right.text-center
         %span.full-width.grey-fg.pull-left.small.padding5.edit-comment-showcase.pon
           Edit...
@@ -12,6 +12,9 @@
           Delete...
     = link_to myprofile_path(comment.user.profile.slug) do
       %strong= comment.user.name.titleize
+    %span.pull-right.font11.mtop5.grey-fg
+      .fa.fa-clock-o
+      = time_ago_in_words(comment.created_at)
     .view-comment-showcase{class: "view-comment-#{comment.id}"}
       %span.small.grey-fg.excerpt-comment-desc= simple_format(truncate_html(comment.description, 150))
       - if comment.description.length > 150

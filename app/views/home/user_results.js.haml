@@ -1,0 +1,8 @@
+$('.feed-loader').hide();
+$(".user-wrapper").append("#{j render partial: "user_card", locals: {users: @users, min_width: "282px"}}")
+-if @users.next_page
+  $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @users, param_name: 'users'}");
+  $(window).on('scroll', function() {var more_posts_url = $('#infinite-scrolling-content .pagination .next a').attr('href');if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 250) {$(window).off("scroll");$('.feed-loader').show();$.getScript(more_posts_url);}});
+- else
+  $(window).off('scroll');
+  $('#infinite-scrolling-content .pagination').remove();

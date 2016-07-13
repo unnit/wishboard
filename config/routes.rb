@@ -90,6 +90,8 @@ Rails.application.routes.draw do
   get "offers", to: "home#offers"
   get "feed", to: "home#feed"
   get "results", to: "showcases#results"
+  get "profiles", to: "home#user_results", as: :user_results
+  get "user_autocomplete", to: "home#user_autocomplete"
   get "unchecked_notifications", to: "home#unchecked_notifications", as: :unchecked_notifications
   get "notifications", to: "home#notifications", as: :notifications
   get "update_all_notifications", to: "home#update_all_notifications", as: :update_all_notifications

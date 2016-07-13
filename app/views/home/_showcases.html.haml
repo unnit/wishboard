@@ -73,12 +73,12 @@
     .col-xs-12.col-sm-12.no-mar-pad.bg-white{class: "user-comments-#{showcase.id}"}
       - if feed == "yes"
         - if showcase.comments.count > 4
-          = link_to showcase_path(showcase), target: "_blank", class: "padding10 pbottom0 grey-fg font12" do
-            View all comments
-        - showcase.comments.order(created_at: :desc).limit(4).each do |comment|
+          = link_to showcase_path(showcase), target: "_blank", class: "padding10 pbottom0 grey-fg font12", style: "text-decoration: underline;" do
+            View #{showcase.comments.count - 4} more #{(showcase.comments.count - 4) > 1 ? 'comments' : 'comment'}
+        - showcase.comments.last(4).each do |comment|
           = render partial: "showcases/comment", locals: {comment: comment}
       - else
-        - showcase.comments.order(created_at: :desc).each do |comment|
+        - showcase.comments.each do |comment|
           = render partial: "showcases/comment", locals: {comment: comment}
     - if current_user
       .media.new-comment.padding10.pbottom20.bg-white

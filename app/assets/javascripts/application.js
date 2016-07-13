@@ -263,6 +263,28 @@ $(document).ready(function(){
     display: 'value',
     source: showcases,
   })
+  var profiles = new Bloodhound({
+    datumTokenizer: function(datum) {
+      return Bloodhound.tokenizers.whitespace(datum.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+      wildcard: '%QUERY',
+      url: '/user_autocomplete?q=%QUERY',
+      transform: function(response) {
+        // Map the remote source JSON array to a JavaScript object array
+        return $.map(response, function(profiles) {
+          return {
+            value: profiles.first_name+" "+profiles.last_name
+          };
+        });
+      }
+    }
+  });
+  $(".profile-query").typeahead(null, {
+    display: 'value',
+    source: profiles,
+  })
   $(".arrow-right").click(function(){
     if($(".set-2-ps").hasClass("active")){
       if($(".file-input-button").css("display") == "none"){

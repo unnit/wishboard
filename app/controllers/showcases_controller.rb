@@ -1,5 +1,5 @@
 class ShowcasesController < ApplicationController
-  before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete, :create_collection, :delete_collection, :add]
+  before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
   before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add]
   before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
@@ -167,7 +167,7 @@ class ShowcasesController < ApplicationController
         end
       end
     end
-    flash[:notice] = "Successfully added to the selected showcases."
+    flash[:notice] = "Showcases arranged successfully."
     respond_to :js
   end
 

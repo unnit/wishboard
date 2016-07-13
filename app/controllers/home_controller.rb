@@ -36,6 +36,26 @@ class HomeController < ApplicationController
     end
   end
 
+  def user_results
+    if params[:user_query].present?
+      profiles = Profile.where("first_name = ? or last_name = ?", params[:user_query].split(" ").first, params[:user_query].split(" ").last)
+      @users = profiles.map{|p| p.user}
+      @users = Kaminari.paginate_array(@users).page(params[:users]).per(20)
+    else
+      @profiles = Profile.all.order(created_at: :desc)
+      @users = profiles.map{|p| p.user}
+      @users = Kaminari.paginate_array(@users).page(params[:users]).per(20)
+    end
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def user_autocomplete
+    render json: Profile.search(params[:q], autocomplete: true, limit: 20).flat_map{|p| [{first_name: p.first_name, last_name: p.last_name}]}
+  end
+
   def fansday
     @special_layout = "yes"
   end

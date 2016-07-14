@@ -13,7 +13,7 @@
               = time_ago_in_words(showcase.created_at)
             = link_to showcase_path(showcase) do
               = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
-            %h5.mbottom0.mtop5=truncate showcase.title, length: 30
+            %h6.mbottom0.mtop5=truncate showcase.title, length: 22
     .col-xs-12.no-mar-pad.visible-xs.mbottom20
       #myCarousel.carousel.slide{data: {ride: "carousel"}}
         .carousel-inner{role: "listbox"}
@@ -27,7 +27,7 @@
                       = time_ago_in_words(showcase.created_at)
                     = link_to showcase_path(showcase) do
                       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
-                    %h5.mbottom0.mtop5=truncate showcase.title, length: 30
+                    %h6.mbottom0.mtop5=truncate showcase.title, length: 22
     .collection-strip
       .col-xs-12.col-sm-3.mbottom20
         = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do

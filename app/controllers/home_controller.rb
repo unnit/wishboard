@@ -142,6 +142,7 @@ class HomeController < ApplicationController
   def myprofile
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
+    @showcases = @user.showcases.order(created_at: :desc).limit(6)
     respond_to do |format|
       format.html
       format.js

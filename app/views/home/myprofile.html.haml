@@ -4,6 +4,30 @@
     .col-md-12.mbottom10
       .ol.breadcrumb.no-mar-pad.note-font-size
         = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
+    .col-md-12.no-mar-pad.mbottom20.hidden-xs
+      - @showcases.each do |showcase|
+        .col-sm-2
+          .col-sm-12.padding5.bg-white.text-right
+            %span.font11.grey-fg.full-width.pull-left
+              .fa.fa-clock-o
+              = time_ago_in_words(showcase.created_at)
+            = link_to showcase_path(showcase) do
+              = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
+            %h5.mbottom0.mtop5=truncate showcase.title, length: 30
+    .col-xs-12.no-mar-pad.visible-xs.mbottom20
+      #myCarousel.carousel.slide{data: {ride: "carousel"}}
+        .carousel-inner{role: "listbox"}
+          - @showcases.each_slice(2).with_index do |showcases, i|
+            .item{class: "#{'active' if i==0}"}
+              - showcases.each do |showcase|
+                .col-xs-6
+                  .col-xs-12.padding5.bg-white.text-center
+                    %span.font11.grey-fg.full-width.text-right.pull-left
+                      .fa.fa-clock-o
+                      = time_ago_in_words(showcase.created_at)
+                    = link_to showcase_path(showcase) do
+                      = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
+                    %h5.mbottom0.mtop5=truncate showcase.title, length: 30
     .collection-strip
       .col-xs-12.col-sm-3.mbottom20
         = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do

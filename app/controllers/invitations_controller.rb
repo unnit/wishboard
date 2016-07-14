@@ -4,10 +4,10 @@ class InvitationsController < ApplicationController
   def send_email
     begin
       UserMailer.invite(current_user, params[:message], params[:emails]).deliver_now
-      flash[:success] = "invitations sent successfully"
+      flash[:success] = "Invitations sent successfully"
     rescue Exception => e
       flash[:danger] = e.message
     end
-    redirect_to :back
+    redirect_to root_path
   end
 end

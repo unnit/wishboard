@@ -25,7 +25,7 @@
             }, 500);
         var x = 0;
         var intervalID = setInterval(function () {
-          $("#media-comment-#{params[:q]}").toggleClass("btn-social white-fg");
+          $("#media-comment-#{params[:q]}").toggleClass("bg-light-grey");
           if (++x === 6) {
             window.clearInterval(intervalID);
           }

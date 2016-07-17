@@ -28,21 +28,21 @@
                     = link_to showcase_path(showcase) do
                       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
                     %h6.mbottom0.mtop5=truncate showcase.title, length: 22
-    .collection-strip
-      .col-xs-12.col-sm-3.mbottom20
-        = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do
-          .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
-            %span.scase-name-wrap.white-fg.font-medium
-              Showpieces
-              .badge.weight500= @user.showcases.showpieces.count
-      .col-xs-12.col-sm-3.mbottom20
-        = link_to mywishes_path(@profile.slug), style: "color: #292929" do
-          .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
-            %span.scase-name-wrap.white-fg.font-medium
-              Wishes
-              .badge.weight500= @user.showcases.wishes.count
-      - @user.collections.each do |collection|
-        = render partial: "showcases/collection", locals: {collection: collection}
     - if current_user && current_user.same_user?(@user)
       .col-xs-12.col-sm-3.mbottom20
         = render partial: "showcases/create_collection"
+    .col-xs-12.col-sm-3.mbottom20
+      = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do
+        .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
+          %span.scase-name-wrap.white-fg.font-medium
+            Showpieces
+            .badge.weight500= @user.showcases.showpieces.count
+    .col-xs-12.col-sm-3.mbottom20
+      = link_to mywishes_path(@profile.slug), style: "color: #292929" do
+        .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
+          %span.scase-name-wrap.white-fg.font-medium
+            Wishes
+            .badge.weight500= @user.showcases.wishes.count
+    .collection-strip
+      - @user.collections.each do |collection|
+        = render partial: "showcases/collection", locals: {collection: collection}

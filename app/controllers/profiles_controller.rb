@@ -2,8 +2,8 @@ class ProfilesController < ApplicationController
   before_action :authenticate_user!
   skip_before_filter :check_profile, :check_interests, only: [:info, :create, :username_available]
   before_action :set_profile, only: [:index, :social, :update_social, :update, :business_profile, :update_business, :dashboard]
-  before_filter :set_social_layout, except: [:dashboard, :info]
-  before_filter :set_plain_layout, only: [:info]
+  before_filter :set_social_layout, except: [:dashboard, :info, :create]
+  before_filter :set_plain_layout, only: [:info, :create]
 
   def info
     redirect_to root_path if current_user.profile
@@ -246,7 +246,7 @@ class ProfilesController < ApplicationController
     end
 
     def create_profile_params
-      params.require(:profile).permit(:first_name, :last_name)
+      params.require(:profile).permit(:first_name, :last_name, :image)
     end
 
     def profile_params

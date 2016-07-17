@@ -90,7 +90,7 @@
                     %label.col-sm-2.control-label{:for => "textinput"} About
                     .col-sm-10
                       = f.text_area :about, class: "form-control textarea", rows: 4, placeholder: "About You", maxlength: 250
-                  .form-group
+                  .form-group.set-prof-pic
                     %label.col-sm-2.control-label{:for => "textinput"} Profile Pic
                     .col-sm-10
                       Select file
@@ -139,4 +139,17 @@
             }
           });
       });
+      var c_wrap = "#{params[:change].blank? ? '': params[:change]}";
+      if( c_wrap != ""){
+        $('html, body').animate({
+            scrollTop: $(".set-prof-pic").offset().top - 55
+            }, 500);
+        var x = 0;
+        var intervalID = setInterval(function () {
+          $(".set-prof-pic").toggleClass("bg-light-grey");
+          if (++x === 2) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000);
+      }
     });

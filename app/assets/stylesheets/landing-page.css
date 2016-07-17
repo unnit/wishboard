@@ -3106,6 +3106,9 @@ th.headerSortDown {
   .padding-mob0{
     padding: 0px;
   }
+  .mob-ptop60{
+    padding-top: 60px !important;
+  }
   .mob-pad{
     padding-left: 15px !important;
     padding-right: 15px !important;

@@ -33,6 +33,11 @@
                   .col-sm-6.no-mar-pad
                     = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200, required: true
                 .form-group
+                  %label.col-sm-3.control-label.no-mar-pad Profile Pic&nbsp;&nbsp;&nbsp;&nbsp;
+                  .col-sm-6.no-mar-pad
+                    Select file
+                    = f.file_field :image, class: "fileupload"
+                .form-group
                   .col-sm-12.text-center
                     %button.btn.save-button.white-fg Next
                 .form-group.mtop10

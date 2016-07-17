@@ -108,7 +108,22 @@ $(document).ready(function(){
       $(".option-showcase").hide();
     }
   });
-
+  // Edit photo in profile page
+  $(document).on("mouseover", ".main-prof-pic,#edit-prof-pic", function(){
+    $("#edit-prof-pic").show();
+  });
+  $(document).on("mouseleave", ".main-prof-pic,#edit-prof-pic", function(){
+    $("#edit-prof-pic").hide();
+  });
+  //Move-Showcase page add btn
+  $(document).on("click", ".add-move-showc", function(){
+    $(".move-showc-wrapper").hide();
+    $(".move-create-coll-wrapper,.create-collect").show();
+  })
+  $(document).on("click", ".clos-add-mov", function(){
+    $(".move-create-coll-wrapper").hide();
+    $(".move-showc-wrapper").show();
+  })
   //Giveaway
   $(document).on("mouseover", ".gway-img-wrap", function(){
     $(this).find(".gway-desc").show();
@@ -450,6 +465,7 @@ $(document).ready(function(){
     $(document).on("click", ".plus-prof", function(){
       $(".plus-prof").hide();
       $(".create-collect").fadeIn();
+      $(".cc-field").focus();
     })
     $(document).on("click", ".clos-c-collect", function(){
       $(".create-collect")[0].reset();

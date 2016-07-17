@@ -1,4 +1,4 @@
 - current_user.collections.each do |collection|
-  .col-xs-6.col-sm-6
+  .col-xs-12.col-sm-6
     %label.font17= truncate collection.name, length: 15
     = check_box_tag "#{collection.name}", "#{collection.id}", collection.showcases.include?(@showcase)

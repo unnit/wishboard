@@ -3,7 +3,7 @@
   $(".create-collect").hide();
   $(".plus-prof").show();
   var collection = $("#{j render partial: 'showcases/collection', locals: {collection: @collection}}").hide();
-  $(".collection-strip").append(collection);
+  $(".collection-strip").prepend(collection);
   $(".collection-#{@collection.id}").fadeIn('slow');
   $(".collections-count").text(parseInt($(".collections-count").text()) + 1)
   $(".move-create-coll-wrapper").hide();

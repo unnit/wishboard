@@ -47,8 +47,12 @@
 .container-fluid
   .container.padding0
     .col-xs-12.col-sm-12.text-center.padding0.mbottom10{style: "border-bottom: 1px solid #e5e5e5;"}
-      = cl_image_tag user.avatar, class: "img-circle mob-mtop10", style: "z-index: 1;margin-top: -45px;", width: 100, height: 100, crop: :fill, gravity: :face, alt: "#{user.name}"
-      .col-xs-12.col-sm-12.padding0.mbottom10.text-right.text-center-mob.font-bit-large.mob-mtop0{style: "margin-top: -52px;"}
+      .img-circle.inline-block.pos-relative.mob-mtop10{style: "width: 100px;height: 100px;margin-top: -45px;overflow:hidden;"}
+        = cl_image_tag user.avatar, class: "img-circle main-prof-pic", width: 100, height: 100, crop: :fill, gravity: :face, alt: "#{user.name}"
+        = link_to settings_path(change: "profilepic") do
+          .pos-absolute.font25.grey-fg.hide-display#edit-prof-pic{style: "top:45px;width: 100px;height:55px;background-color:rgba(0,0,0,0.5);"}
+            .fa.fa-pencil.white-fg.mtop10
+      .col-xs-12.col-sm-4.col-sm-offset-8.padding0.mbottom10.text-right.text-center-mob.font-bit-large.mob-mtop0{style: "margin-top: -52px;"}
         - if @profile.facebook.present?
           = link_to "https://facebook.com/#{@profile.facebook.split('/').last}", target: "_blank" do
             .fa.fa-facebook-official.grey-fg.mright5

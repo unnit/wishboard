@@ -102,10 +102,10 @@
     - else
       .col-xs-6.padding10
         = link_to authenticate_path(tab: "signup") do
-          .btn.btn-sm.cc-dark-bg.white-fg.full-width Join
+          .btn.btn-sm.bg-white.cc-dark-fg.full-width Join
       .col-xs-6.padding10
         = link_to authenticate_path do
-          .btn.btn-sm.bg-light-grey.full-width Login
+          .btn.btn-sm.full-width.white-fg Login
 - if current_user && !@scase_modal.present?
   #showcase-modal.modal.fade
     .modal-dialog

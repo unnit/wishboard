@@ -23,7 +23,7 @@
     .col-sm-3.col-xs-12.no-mar-pad.ptop15{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
       .col-xs-12.col-sm-12.padding10.cc-dark-bg.bg-shad{style: "border-bottom: none;"}
         ~ form_tag user_results_path, method: :get do
-          .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search", class: "form-control profile-query", style: "border-radius: 20px;"
+          .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search people/friends", class: "form-control profile-query", style: "border-radius: 20px;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.grey-fg

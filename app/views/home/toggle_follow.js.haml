@@ -3,6 +3,10 @@ $(".follow-set-#{@user.id} .loader-button").show();
 $(".user-wrapper-#{current_user.id} .following-count, .prof-user-#{current_user.id} .prof-following-count").text("#{current_user.following.count}")
 $(".user-wrapper-#{@user.id} .followers-count, .prof-user-#{@user.id} .prof-followers-count").text("#{@user.followers.count}")
 - if current_user.following?(@user)
-  $(".follow-set-#{@user.id} .loader-button").val("Following");
+  $(".follow-set-#{@user.id} .loader-button").removeClass("cc-dark-fg").addClass("green-fg");
+  $(".follow-set-#{@user.id} .loader-out-follow-button").removeClass("blue-border").addClass("green-border");
+  $(".follow-set-#{@user.id} .loader-button").html("Following&nbsp;<i class='fa fa-check green-fg'></i>");
 - else
-  $(".follow-set-#{@user.id} .loader-button").val("Follow");
+  $(".follow-set-#{@user.id} .loader-button").removeClass("green-fg").addClass("cc-dark-fg");
+  $(".follow-set-#{@user.id} .loader-out-follow-button").removeClass("green-border").addClass("blue-border");
+  $(".follow-set-#{@user.id} .loader-button").html("Follow&nbsp;<i class='fa fa-plus-circle'></i>");

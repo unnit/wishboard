@@ -1,7 +1,7 @@
 .messages
-.container-fluid.ptop50.bg-light-grey.padding0
+.container-fluid.ptop50.bg-light-grey.padding0.mob-ptop100{style: "min-height: 1000px;"}
   .container.padding0.helvetica-font
-    .col-sm-3.hidden-xs.no-mar-pad.ptop15{style: "height: 1000px;"}
+    .col-sm-3.hidden-xs.no-mar-pad.ptop15
       = render partial: "user_card", locals: {users: Array(current_user), card_padding: "0px", neg_mtop: "-146px", name_size: "17px;margin-bottom:10px;", xtra_col: "none;"}
       .col-xs-12.col-sm-4.bg-shad.padding10.mtop15.bg-white{style: "min-width: 292px;"}
         %h4.mtop-v-5 Trending
@@ -10,7 +10,7 @@
             /.fa.fa-circle{style: "color:green"}
             .fa.fa-line-chart{style: "color:green"}
             = link_to tag.name.strip, tag_path(tag.name), class: "#{css_class} black-fg"
-    .col-xs-12.col-sm-6.ptop15.padding-mob0
+    .col-xs-12.col-sm-6.ptop15.padding-mob0.main-feed{class: "#{'hide-display' if params[:view] == "follow"}"}
       = render partial: "post_showcase", locals: {showcase: @showcase}
       .col-sm-12.no-mar-pad.showcase-strip
         = render partial: "home/showcases", locals: {showcases: @showcases}
@@ -20,16 +20,15 @@
       #infinite-scrolling-posts.hidden
         = paginate @showcases, param_name: "showcases"
         = hidden_field_tag :prev_showcase, @showcases.current_page - 1
-    .col-sm-3.hidden-xs.no-mar-pad.ptop15{style: "height: 1000px;"}
-      /%h4.no-mar-pad.padding15.bg-white.font17{style: "border-top-left-radius:4px;border-top-right-radius:4px;"} People to follow
-      .col-sm-12.bg-white.padding10
+    .col-sm-3.col-xs-12.no-mar-pad.ptop15{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
+      .col-xs-12.col-sm-12.padding10.cc-dark-bg.bg-shad{style: "border-bottom: none;"}
         ~ form_tag user_results_path, method: :get do
-          .col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search", class: "form-control profile-query", style: "border-radius: 20px;"
-          .col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
+          .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search", class: "form-control profile-query", style: "border-radius: 20px;"
+          .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.grey-fg
-      .col-sm-12.padding10.follow-wrapper.bg-shad.bg-white
-        .col-sm-12.no-mar-pad.follow-strip
+      .col-xs-12.col-sm-12.padding10.follow-wrapper.bg-shad.bg-white
+        .col-xs-12.col-sm-12.no-mar-pad.follow-strip
           = render partial: "follow", locals: {users: @users}
         .col-xs-12.col-sm-12.text-center.feed-loader.padding20{style: "display:none;"}
           %i.fa.fa-circle-o-notch.fa-spin.font21
@@ -64,5 +63,11 @@
             $.getScript(more_posts_url+'&prev_showcase_page='+$("#prev_showcase").val()+'&prev_user_page='+$("#prev_user").val());
           }
         });
+      }
+      if(#{params[:view] == "follow"}){
+        $(".follow-mob").addClass("cc-xtr-dark-bg");
+      }
+      else{
+        $(".feed-mob").addClass("cc-xtr-dark-bg");
       }
     });

@@ -9,19 +9,19 @@
         %a.navbar-brand.pleft5{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;color:black;"}
           Cocociti
         = yield :header_extra
-      .col-sm-4.no-mar-pad.hidden-xs{style: "margin-top: 8px;"}
+      .col-xs-12.col-sm-4.no-mar-pad.hidden-xs.search-wrap{style: "margin-top: 8px;"}
         ~ form_tag results_path, method: :get do
-          .col-sm-11.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query", style: "border-radius: 20px;"
-          .col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
+          .col-xs-12.col-sm-11.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query", style: "border-radius: 20px;"
+          .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.grey-fg
       .navbar-collapse.collapse.nav-border
-        %ul.nav.navbar-nav.navbar-right
+        %ul.nav.navbar-nav.navbar-right.bg-white.mtop0
           - if current_user
             %li.hidden-xs
-              .fa.fa-bell-o.font20.pon.pull-right.mtop15.notif-icon.grey-fg
+              .fa.fa-bell-o.font20.pon.pull-right.mtop15.notif-icon.cc-dark-fg
               - if current_user.unchecked_notififcations_count > 0
-                .badge.notif-badge.pon.pull-right.mtop5.notif-icon= current_user.unchecked_notififcations_count
+                .badge.notif-badge.pon.pull-right.mtop5.notif-icon.cc-dark-bg= current_user.unchecked_notififcations_count
               .sq-rot.notif-toggle
               .notif-arrow.notif-toggle
               .notif-wrap.bx-shad.notif-toggle.helvetica-font
@@ -59,7 +59,7 @@
                     %li
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
-            %li.hidden-xs= link_to "Showcase", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn tt-blue-bg white-fg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
+            %li.hidden-xs= link_to "Showcase", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn cc-dark-bg white-fg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
             %li.visible-xs.bg-white
               = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
                 %span.black-fg= truncate current_user.name, length: 25
@@ -69,27 +69,43 @@
               = link_to settings_path, style: "white-space: normal;" do
                 %span.grey-fg Settings
             %li.visible-xs.bg-white
-              = link_to rent_path, style: "white-space: normal;" do
-                %span.grey-fg Rent
-            %li.visible-xs.bg-white
-              = link_to dashboard_path, style: "white-space: normal;" do
-                %span.grey-fg Dashboard
-            %li.visible-xs.bg-white
               = link_to invitations_path, style: "white-space: normal;" do
                 %span.grey-fg Invite friends
-            %li.visible-xs.bg-white
+            %li.visible-xs.bg-white.border-bt-side
               = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                 %span.grey-fg Sign Out
           - else
             %li.hidden-xs
               = link_to "SignUp", authenticate_path(tab: "signup"), class: "btn", style: "padding: 7px 15px;margin-top: 7px;border-radius:18px;border: 1px solid #ccc;"
             %li.hidden-xs
-              = link_to "Login", authenticate_path, class: "btn tt-blue-bg white-fg mleft10", style: "padding: 7px 15px;margin-top: 7px;border-radius:18px;"
+              = link_to "Login", authenticate_path, class: "btn cc-dark-bg white-fg mleft10", style: "padding: 7px 15px;margin-top: 7px;border-radius:18px;"
             %li.visible-xs.bg-white
               = link_to authenticate_path, style: "white-space: normal;" do
                 %span.grey-fg Login
               = link_to authenticate_path(tab: "signup"), style: "white-space: normal;" do
                 %span.grey-fg SignUp
+  .full-width.visible-xs.cc-dark-bg.font20.pos-fixed.text-center{style: "top: 50px;"}
+    - if current_user
+      = link_to root_path do
+        .col-xs-3.padding10.feed-mob
+          .fa.fa-newspaper-o.white-fg
+      = link_to notifications_path do
+        .col-xs-3.padding10.notif-mob
+          .fa.fa-bell-o.white-fg
+          - if current_user.unchecked_notififcations_count > 0
+            .badge.notif-badge.pon.mright0.neg-mleft15.notif-icon.bg-white.cc-dark-fg= current_user.unchecked_notififcations_count
+      .col-xs-3.padding10.follow-mob
+        = link_to root_path(view: "follow") do
+          .fa.fa-group.white-fg
+      .col-xs-3.padding10.search-mob
+        .fa.fa-search.white-fg
+    - else
+      .col-xs-6.padding10
+        = link_to authenticate_path(tab: "signup") do
+          .btn.btn-sm.cc-dark-bg.white-fg.full-width Join
+      .col-xs-6.padding10
+        = link_to authenticate_path do
+          .btn.btn-sm.bg-light-grey.full-width Login
 - if current_user && !@scase_modal.present?
   #showcase-modal.modal.fade
     .modal-dialog

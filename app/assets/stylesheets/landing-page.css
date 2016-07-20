@@ -2696,7 +2696,6 @@ th.headerSortDown {
   border: 0px;
 }
 .loader-out-follow-button{
-  border-radius: 13px;
   width: 91px;
   height: 26px;
 }
@@ -2704,7 +2703,12 @@ th.headerSortDown {
   width: 89px;
   height: 24px;
   border: 0px;
-  border-radius: 13px;
+}
+.blue-border{
+  border: 1px solid #2196F3 !important;
+}
+.green-border{
+  border: 1px solid #23A723 !important;
 }
 .errors>.alert-success{
   margin-top: 0px !important
@@ -2862,7 +2866,6 @@ th.headerSortDown {
   position: absolute;
   width: 35px;
   height: 35px;
-  border: 2px solid #e76f62;
   border-radius: 50%;
   top: 73px;
   z-index: 1;
@@ -3070,7 +3073,7 @@ th.headerSortDown {
 /******************Other CSS for header and future use *******/
 .header-with-grad{
   /*background-color: #00A896 !important;*/
-  background-color: #808080 !important;
+  background-color: #41a6e4 !important;
   box-shadow: 0 0px 1px rgba(0, 0, 0, 0.26);
   /*background-color: #50514F !important;
   background: -webkit-linear-gradient(to right, #21152C, #391D2E , #5B2631);
@@ -3106,8 +3109,8 @@ th.headerSortDown {
   .padding-mob0{
     padding: 0px;
   }
-  .mob-ptop60{
-    padding-top: 60px !important;
+  .mob-ptop100{
+    padding-top: 100px !important;
   }
   .mob-pad{
     padding-left: 15px !important;

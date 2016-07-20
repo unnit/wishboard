@@ -33,6 +33,14 @@ $(document).ready(function(){
     postToFeed(elem.data('title'), elem.data('desc'), elem.prop('href'), elem.data('image'));
     return false;
   });
+  //Search bar visible in mobile
+  $(document).on("click", ".search-mob", function(){
+    $(".navbar-header").hide();
+    $(".feed-mob, .notif-mob, .follow-mob").removeClass("cc-xtr-dark-bg");
+    $(".search-mob").addClass("cc-xtr-dark-bg");
+    $(".search-wrap").removeClass("hidden-xs");
+    $("#query").focus();
+  })
   //Auth Page
   $(".scase-login").hover(function(){
     $(this).html("<i class='fa fa-long-arrow-left' aria-hidden='true'></i>&nbsp;Login/SignUp");

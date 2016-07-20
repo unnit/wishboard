@@ -1,18 +1,24 @@
 - users.each do |user|
   .col-xs-12.col-sm-3{class: "user-wrapper-#{user.id}", style: "min-width: #{min_width ||= '292px'};padding: #{card_padding ||= '0px 5px 10px 5px'}"}
     .col-xs-12.col-sm-12.bg-white.bg-shad.no-mar-pad
-      .col-xs-12.col-sm-12.grey-bg{style: "height:88px;"}
+      .col-xs-12.col-sm-12.cc-dark-bg{style: "height:88px;"}
       .col-xs-12.col-sm-12.padding5.ptop0
         %span.mtop5.mbottom5.pull-left.weight500.mleft95{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "auto", style: "font-size: #{name_size ||= '12px'}"}
           = (truncate user.name, length: 20)
         - if current_user && current_user != user
           .col-xs-12.col-sm-12.no-mar-pad{class: "follow-set-#{user.id}"}
             = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "mleft95 pull-left" do
-              .btn.no-mar-pad.loader-out-follow-button.follow-button.btn-grey
-                = submit_tag "#{ current_user.following?(user) ? 'Following' : "Follow" }", class: "loader-button btn loader-in-follow-button padding0 grey-fg"
-                .loader-effect.btn.loader-in-follow-button.grey-fg{style: "display:none;"}
+              .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(user) ? 'green-border' : 'blue-border'}", style: "line-height: 0px;"}
+                %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(user) ? 'green-fg' : 'cc-dark-fg'}"}
+                  - if current_user.following?(user)
+                    Following
+                    %i.fa.fa-check
+                  - else
+                    Follow
+                    %i.fa.fa-plus-circle
+                .loader-effect.btn.loader-in-follow-button{style: "display:none;padding-top: 3px;"}
                   .ball-clip-rotate{style: "height:22px;"}
-                    %div ...
+                    %div.blue-border ...
         - else
           .col-xs-12.col-sm-12{style: "height: 27px;display: #{xtra_col ||= 'block'}"}
         .col-xs-12.col-sm-12.no-mar-pad.text-center

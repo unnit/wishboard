@@ -10,7 +10,7 @@
           Cocociti
         = yield :header_extra
       .col-xs-12.col-sm-4.no-mar-pad.hidden-xs.search-wrap{style: "margin-top: 8px;"}
-        ~ form_tag results_path, method: :get do
+        ~ form_tag results_path, method: :get, id: "header-search" do
           .col-xs-12.col-sm-11.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query", style: "border-radius: 20px;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
@@ -105,7 +105,7 @@
           .btn.btn-sm.bg-white.cc-dark-fg.full-width Join
       .col-xs-6.padding10
         = link_to authenticate_path do
-          .btn.btn-sm.full-width.white-fg Login
+          .btn.btn-sm.full-width.white-fg.light-border Login
 - if current_user && !@scase_modal.present?
   #showcase-modal.modal.fade
     .modal-dialog

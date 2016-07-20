@@ -285,7 +285,9 @@ $(document).ready(function(){
   $(".search-query").typeahead(null, {
     display: 'value',
     source: showcases,
-  })
+  }).on('typeahead:selected', function (e, d) {
+      $("#header-search").submit();
+  });
   var profiles = new Bloodhound({
     datumTokenizer: function(datum) {
       return Bloodhound.tokenizers.whitespace(datum.value);
@@ -307,7 +309,9 @@ $(document).ready(function(){
   $(".profile-query").typeahead(null, {
     display: 'value',
     source: profiles,
-  })
+  }).on('typeahead:selected', function (e, d) {
+      $("#profile-search-form").submit();
+  });
   $(".arrow-right").click(function(){
     if($(".set-2-ps").hasClass("active")){
       if($(".file-input-button").css("display") == "none"){

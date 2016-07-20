@@ -38,7 +38,7 @@ class HomeController < ApplicationController
 
   def user_results
     if params[:user_query].present?
-      profiles = Profile.where("first_name = ? or last_name = ?", params[:user_query].split(" ").first, params[:user_query].split(" ").last)
+      profiles = Profile.where("lower(first_name) = ? or lower(last_name) = ?", params[:user_query].split(" ").first.downcase, params[:user_query].split(" ").last.downcase)
       @users = profiles.map{|p| p.user}
       @users = Kaminari.paginate_array(@users).page(params[:users]).per(20)
     else

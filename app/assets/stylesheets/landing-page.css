@@ -2251,6 +2251,7 @@ height:50px;
     border-radius: 2px;
     border-bottom: 1px solid #C1C1C1;
     padding: 5px 10px;
+    line-height: 38px;
 }
 .text-muted:hover, .text-muted:active, .text-muted:focus{
   color: #777;

@@ -28,6 +28,10 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
+  //Setting footer proper for mac devices
+  if($(document).height() <= $(window).height()){
+    $("footer").css({"position": "absolute", "bottom": "0"});
+  }
   //Facebook
   $(document).on("click", ".btnShare", function(){
     elem = $(this);

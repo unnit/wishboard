@@ -1,83 +1,84 @@
-.container-fluid.ptop50.padding0
-  .col-xs-12.col-sm-6.white-fg{style: "padding-top: 8%;background-color:#B7B7B7;"}
-    %ul.nav.nav-tabs{style: "border-bottom: none;", class: "mleft-mob"}
-      %li{class: "#{'active' unless params[:tab] == "signup"}"}
-        %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;border-radius: 0px;color: white;"} Login
-      %li{class: "#{'active' if params[:tab] == "signup"}"}
-        %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;border-radius: 0px;color: white;"} Sign Up
-    .tab-content.ptop10{style: "min-height: 550px;"}
-      #home-login.tab-pane.fade{class: "#{'active in' unless params[:tab] == "signup"}"}
-        .col-md-12.mtop40
-          = form_for(User.new, :url => new_user_session_path, remote: true, html: {"data-parsley-validate" => true, class: "login-form"}) do |f|
-            .col-sm-12.errors
-            .form-group.clearfix
-              = f.label :email, :class => 'col-sm-3 control-label text-right'
-              .col-sm-7
-                .input-group
-                  %span.input-group-addon
-                    %i.fa.fa-user
-                  = f.text_field :email, placeholder: t("email_address", default: "Email Address"), class: "form-control login-email", "data-parsley-trigger" => "change", required: true
-            .form-group.clearfix
-              = f.label :Password, :class => 'col-sm-3 control-label text-right'
-              .col-sm-7
-                .input-group
-                  %span.input-group-addon
-                    %i.fa.fa-lock
-                  = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
-            .form-group.clearfix.mtop20
-              .col-sm-offset-4.col-sm-6
-                = link_to "Forgot password?", new_user_password_path, class: "white-fg font13"
-            .form-group.clearfix.mbottom40.pbottom100
-              .col-sm-4.col-sm-offset-4.text-center.mbottom40
-                = f.submit "Login", class: "loader-button btn pop-up-but login-button"
-                .loader-effect.btn.pop-up-but{style: "display:none;"}
-                  .inline-block{style: "margin-top: 8px;"} Please Wait...
-                  .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
-                    %div
-      #home-sign-up.tab-pane.fade{class: "#{'active in' if params[:tab] == "signup"}"}
-        .col-md-12.mtop40
-          = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require signup-form"}) do |f|
-            .col-sm-12.errors
-            .form-group.clearfix
-              = f.label :email, :class => 'col-sm-3 control-label text-right'
-              .col-sm-7
-                .input-group
-                  %span.input-group-addon
-                    %i.fa.fa-user
-                  = f.text_field :email, :autofocus => true, placeholder: t("email_address", default: "Email Address"), class: "form-control", "data-parsley-trigger" => "change", required: true
-            .form-group.clearfix
-              = f.label :Password, :class => 'col-sm-3 control-label text-right'
-              .col-sm-7
-                .input-group
-                  %span.input-group-addon
-                    %i.fa.fa-lock
-                  = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
-            .form-group.clearfix
-              = f.label :password_confirmation, "Confirm Password", :class => 'col-sm-3 control-label text-right'
-              .col-sm-7
-                .input-group
-                  %span.input-group-addon
-                    %i.fa.fa-lock
-                  = f.password_field :password_confirmation, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
-            .form-group.clearfix
-              .col-sm-8.col-sm-offset-2
-                %span.mleft10.textt-center.font11 By continuing, you agree to the Terms of Service
-            .form-group.clearfix.mbottom40.pbottom100
-              #submit-signup.pulse-loader{style: "display:none;"} Loading...
-              .col-sm-4.col-sm-offset-4.mbottom40
-                = f.submit "Sign up", class: "loader-button btn pop-up-but login-button"
-                .loader-effect.btn.pop-up-but{style: "display:none;"}
-                  .inline-block{style: "margin-top: 8px;"} Please Wait...
-                  .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
-                    %div
-  .col-xs-12.col-sm-6.padding20.bg-white
-    .col-xs-12.col-sm-12.no-mar-pad
-      %h3.grey-fg.text-center.font21{style: "margin-top: 26.5%"}
-        Discover people, showcases and wishlists around the world
-      .col-xs-12.col-sm-4.col-sm-offset-4.btn-social.padding20.font21.text-center.white-fg.mtop10.pon.scase-login{style: "border: 1px solid #848484;"} Showcase
-    /
-      .col-xs-12.col-sm-12.no-mar-pad
-        %h3.grey-fg.text-center.font21.mtop30
-          Access things around you, as and when you need it
-        =link_to rent_path do
-          .col-xs-12.col-sm-4.col-sm-offset-4.padding20.font21.text-center.white-fg.mtop10{style: "color: #848484;border: 1px solid #848484"} Rent
+.container-fluid.padding-mob0.ptop50{style: "min-height: 1000px;"}
+  .container.padding0
+    .col-xs-12.col-sm-6.text-center-mob
+      %h1{style: "color: #fa765e;font-size: 4em;"} Cocociti
+      %h4 Discover people, showcases and wishlists around the world
+    .col-xs-12.col-sm-6.bg-white.box-shad.ptop50{style: "border: 40px solid #f2f2f4;border-radius: 20px;overflow: hidden;min-height: 525px;"}
+      .pos-absolute.bubble-1
+      .pos-absolute.bubble-3
+      .pos-absolute.bubble-2
+      %ul.nav.nav-tabs{style: "border-bottom: none;", class: "mleft-mob"}
+        %li{class: "#{'active' unless params[:tab] == "signup"}"}
+          %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;border-radius: 0px;"} Login
+        %li{class: "#{'active' if params[:tab] == "signup"}"}
+          %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;border-radius: 0px;"} Sign Up
+      .tab-content.ptop10
+        #home-login.tab-pane.fade{class: "#{'active in' unless params[:tab] == "signup"}"}
+          .col-md-12.mtop40
+            = form_for(User.new, :url => new_user_session_path, remote: true, html: {"data-parsley-validate" => true, class: "login-form"}) do |f|
+              .col-sm-12.errors
+              .form-group.clearfix
+                = f.label :email, :class => 'col-sm-3 control-label text-right'
+                .col-sm-9
+                  .input-group
+                    %span.input-group-addon
+                      %i.fa.fa-user
+                    = f.text_field :email, placeholder: t("email_address", default: "Email Address"), class: "form-control login-email", "data-parsley-trigger" => "change", required: true
+              .form-group.clearfix
+                = f.label :Password, :class => 'col-sm-3 control-label text-right'
+                .col-sm-9
+                  .input-group
+                    %span.input-group-addon
+                      %i.fa.fa-lock
+                    = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+              .form-group.clearfix.mtop20
+                .col-sm-offset-4.col-sm-6
+                  = link_to "Forgot password?", new_user_password_path, class: "font13"
+              .form-group.clearfix.mbottom40
+                .col-sm-4.col-sm-offset-4.text-center
+                  = f.submit "Login", class: "loader-button btn pop-up-but login-button"
+                  .loader-effect.btn.pop-up-but{style: "display:none;"}
+                    .inline-block{style: "margin-top: 8px;"} Please Wait...
+                    .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                      %div
+        #home-sign-up.tab-pane.fade{class: "#{'active in' if params[:tab] == "signup"}"}
+          .col-md-12.mtop40
+            = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require signup-form"}) do |f|
+              .col-sm-12.errors
+              .form-group.clearfix
+                = f.label :email, :class => 'col-sm-3 control-label text-right'
+                .col-sm-9
+                  .input-group
+                    %span.input-group-addon
+                      %i.fa.fa-user
+                    = f.text_field :email, :autofocus => true, placeholder: t("email_address", default: "Email Address"), class: "form-control", "data-parsley-trigger" => "change", required: true
+              .form-group.clearfix
+                = f.label :Password, :class => 'col-sm-3 control-label text-right'
+                .col-sm-9
+                  .input-group
+                    %span.input-group-addon
+                      %i.fa.fa-lock
+                    = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+              .form-group.clearfix
+                = f.label :password_confirmation, "Confirm Password", :class => 'col-sm-3 control-label text-right'
+                .col-sm-9
+                  .input-group
+                    %span.input-group-addon
+                      %i.fa.fa-lock
+                    = f.password_field :password_confirmation, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+              .form-group.clearfix
+                .col-sm-8.col-sm-offset-2
+                  %span.mleft10.textt-center.font11 By continuing, you agree to the Terms of Service
+              .form-group.clearfix
+                #submit-signup.pulse-loader{style: "display:none;"} Loading...
+                .col-sm-4.col-sm-offset-4.mbottom40
+                  = f.submit "Sign up", class: "loader-button btn pop-up-but login-button"
+                  .loader-effect.btn.pop-up-but{style: "display:none;"}
+                    .inline-block{style: "margin-top: 8px;"} Please Wait...
+                    .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                      %div
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $("body").addClass("bg-auth");
+    })

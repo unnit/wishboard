@@ -28,8 +28,6 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
-  //Setting footer proper for mac devices
-  $(".container-fluid").css("min-height", $(window).height());
   //Facebook
   $(document).on("click", ".btnShare", function(){
     elem = $(this);

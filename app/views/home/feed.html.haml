@@ -1,14 +1,19 @@
 .messages
-.container-fluid.ptop50.bg-light-grey.padding0.mob-ptop100{style: "min-height: 1000px;"}
+.container-fluid.ptop50.pattern-bg.padding0.mob-ptop100{style: "min-height: 1000px;"}
+  .pos-fixed.bubble-1
+  .pos-fixed.bubble-3
+  .pos-fixed.bubble-2
   .container.padding0.helvetica-font
     .col-sm-3.hidden-xs.no-mar-pad.ptop15
       = render partial: "user_card", locals: {users: Array(current_user), card_padding: "0px", neg_mtop: "-146px", name_size: "17px;margin-bottom:10px;", xtra_col: "none;"}
       .col-xs-12.col-sm-4.bg-shad.padding10.mtop15.bg-white{style: "min-width: 292px;"}
-        %h4.mtop-v-5 Trending
+        %h4.header-text.no-mar-pad.font17.weight500{style: "text-align: left; line-height: 35px;"}
+          TRENDING
+          .fa.fa-line-chart.green-fg
         - tag_cloud Tag.counts, %w{font11 font13 font17 font20} do |tag, css_class|
           %span.padding5.mbottom5.inline-block.grey-fg
             /.fa.fa-circle{style: "color:green"}
-            .fa.fa-line-chart{style: "color:green"}
+            .fa.fa-line-chart.green-fg
             = link_to tag.name.strip, tag_path(tag.name), class: "#{css_class} black-fg"
     .col-xs-12.col-sm-6.ptop15.padding-mob0.main-feed{class: "#{'hide-display' if params[:view] == "follow"}"}
       = render partial: "post_showcase", locals: {showcase: @showcase}
@@ -21,9 +26,9 @@
         = paginate @showcases, param_name: "showcases"
         = hidden_field_tag :prev_showcase, @showcases.current_page - 1
     .col-sm-3.col-xs-12.no-mar-pad.ptop15{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
-      .col-xs-12.col-sm-12.padding10.cc-dark-bg.bg-shad{style: "border-bottom: none;"}
+      .col-xs-12.col-sm-12.padding10.bg-shad.bg-white{style: "border-bottom: none;"}
         ~ form_tag user_results_path, method: :get, id: "profile-search-form" do
-          .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search people/friends", class: "form-control profile-query", style: "border-radius: 20px;"
+          .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search people/friends", class: "form-control profile-query bg-light-grey", style: "border-radius: 20px;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.grey-fg

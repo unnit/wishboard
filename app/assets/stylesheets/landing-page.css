@@ -3071,6 +3071,54 @@ th.headerSortDown {
   border: 1px solid #31cacc;
   color: #31cacc;
 }
+/***Bubbles in homepage*******/
+.bubble-1{
+  width: 400px;
+  height: 400px;
+  bottom: -196px;
+  left: -228px;
+  background-image: url('images/bubble-1.png');
+  animation: bubble1move 5s linear infinite alternate;
+}
+.bubble-2{
+  width: 250px;
+  height: 250px;
+  bottom: -180px;
+  right: 0;
+  background-image: url('images/bubble-2.png');
+  animation: bubble2move 5s linear infinite alternate;
+}
+.bubble-3{
+  width: 150px;
+  height: 400px;
+  bottom: -278px;
+  right: 0px;
+  background-image: url('images/bubble-3.png');
+}
+@keyframes bubble1move{
+  0%, 100%{
+    transform: translate(0, 0);
+  }
+  50%{
+    transform: translate(50px, 0);
+  }
+  80%{
+    transform: translate(-150px 0);
+  }
+}
+@keyframes bubble2move{
+  0%, 100%{
+    transform: translate(0, 0);
+  }
+  30%{
+    transform: translate(0, 25px);
+  }
+  60%{
+    transform: translate(0, -30px);
+  }
+}
+/********/
+
 /******************Other CSS for header and future use *******/
 .header-with-grad{
   /*background-color: #00A896 !important;*/

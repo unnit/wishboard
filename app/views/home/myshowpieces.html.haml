@@ -1,3 +1,5 @@
+= content_for :title do
+  - title = "Showcases by #{@user.name} (@#{@profile.slug}) | Cocociti"
 .container-fluid.ptop50.mob-ptop100.bg-shad.padding0.helvetica-font.bg-light-grey.pbottom50
   = render partial: "profile", locals: {user: @user}
   .container.padding0

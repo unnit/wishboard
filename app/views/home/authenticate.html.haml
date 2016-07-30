@@ -9,9 +9,9 @@
       .pos-absolute.bubble-2
       %ul.nav.nav-tabs{style: "border-bottom: none;", class: "mleft-mob"}
         %li{class: "#{'active' unless params[:tab] == "signup"}"}
-          %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;border-radius: 0px;"} Login
+          %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;"} Login
         %li{class: "#{'active' if params[:tab] == "signup"}"}
-          %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;border-radius: 0px;"} Sign Up
+          %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;"} Sign Up
       .tab-content.ptop10
         #home-login.tab-pane.fade{class: "#{'active in' unless params[:tab] == "signup"}"}
           .col-md-12.mtop40

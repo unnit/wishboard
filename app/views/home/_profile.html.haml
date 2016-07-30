@@ -1,11 +1,9 @@
-= content_for :title do
-  - title = "#{user.name} (@#{@profile.slug}) | Cocociti"
 - if @profile.about.present?
   = content_for :meta_content do
     - meta_content = "#{@profile.about}"
 - else
   = content_for :meta_content do
-    - meta_content = "Discover showpieces and wishlists of #{user.name}"
+    - meta_content = "Discover showcases and wishlists of #{user.name}"
 .messages
 .container-fluid.pattern-bg{style: "min-height: 50px;border-bottom: 1px solid #e5e5e5;line-height: 50px;", class: "prof-user-#{user.id}"}
   .container.padding0

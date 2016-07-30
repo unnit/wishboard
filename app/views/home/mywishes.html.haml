@@ -1,3 +1,5 @@
+= content_for :title do
+  - title = "Wishes by #{@user.name} (@#{@profile.slug}) | Cocociti"
 .container-fluid.ptop50.mob-ptop100.bg-shad.pbottom50.padding0.helvetica-font{style: "background-color: #F7F7F7;"}
   = render partial: "profile", locals: {user: @user}
   .container.padding0

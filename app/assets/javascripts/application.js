@@ -32,6 +32,10 @@ $(document).ready(function(){
   if($(document).height() <= $(window).height()){
     $("footer").css({"position": "absolute", "bottom": "0"});
   }
+  //Close help text in feed
+  $(document).on("click", ".clos-help", function(){
+    $(this).closest(".help-txt-wrap").hide();
+  })
   //Facebook
   $(document).on("click", ".btnShare", function(){
     elem = $(this);

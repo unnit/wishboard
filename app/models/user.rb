@@ -48,6 +48,14 @@ class User < ActiveRecord::Base
     role=="admin"
   end
 
+  def profile?
+    if profile.present?
+      return "YES"
+    else
+      return "NO"
+    end
+  end
+
   def user_status
     if inactive == true
       return "NO"

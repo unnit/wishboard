@@ -90,10 +90,6 @@
             %li.active.nav-login= link_to "Sign Up", "#signup", data: {toggle: "modal", dismiss: "modal"}, style: "padding-bottom: 14px"
             %li.ptop5.hidden-xs= link_to "List Your Item", "#login", class: "pa", style: "color: #fff", data: {toggle: "modal", dismiss: "modal"}
             %li.visible-xs.bg-white.nav-login= link_to "List Your Item", "#login", data: {toggle: "modal", dismiss: "modal"}
-%a{href: "/offers", style: "display: #{@offers_visible || 'none'}"}
-  .coco-offer.text-center.btn-shadow
-    .coco-ribbon
-      %span.font-medium OFFERS
 - unless current_user
   #login.modal.fade
     .modal-dialog

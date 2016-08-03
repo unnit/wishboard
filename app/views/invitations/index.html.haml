@@ -18,13 +18,18 @@
                     %label.col-sm-2.control-label Emails
                     .col-sm-10.no-mar-pad= text_area_tag :emails, "", rows: "2", placeholder: "Enter the emails here", class: "form-control textarea bg-light-grey import-emails"
                   .form-group
-                    .col-sm-10.col-sm-offset-2.padding0
+                    .col-xs-12.col-sm-4.col-sm-offset-2.padding0
                       .btn.btn-primary.google-contacts-import
                         .glyphicon.glyphicon-envelope
                         &nbsp;Import Your Gmail Contacts
+                      .status-invite.inline-block
                   .form-group
                     %label.col-sm-2.control-label Personal Messages
                     .col-sm-10.no-mar-pad= text_area_tag :message, "", rows: "5", placeholder: "Invite message for your friends.", class: "form-control textarea bg-light-grey"
+                    .col-xs-12.col-sm-10.col-sm-offset-2.mtop5.padding0.font11
+                      %a.inv-msg-templ.pon
+                        Click here
+                      to add a default template.
                   .form-group
                     .col-xs-12.col-sm-12.text-center
                       = submit_tag "Send Invite", class: "btn save-button mtop10 white-fg"

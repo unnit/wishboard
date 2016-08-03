@@ -977,6 +977,7 @@ $(document).ready(function(){
   var apiKey = $("#google_api_key").data("api-key");
   var scopes = 'https://www.googleapis.com/auth/contacts.readonly';
   $(document).on("click",".google-contacts-import", function(){
+    $(".status-invite").html("<i class='fa fa-spinner fa-spin'>");
     gapi.client.setApiKey(apiKey);
     window.setTimeout(authorize);
   });
@@ -999,7 +1000,14 @@ $(document).ready(function(){
               }
             }
           }
+          $(".status-invite").empty();
+          if($(".import-emails").val().length == 0){
+            $(".status-invite").html("<span style='color: red;'>Sorry, No emails found.</span>")
+          }
       });
     }
   }
+  $(document).on("click", ".inv-msg-templ", function(){
+    $("#message").val("Hey, found this website super interesting. It allows us to share our wishes, achievements and showcase things we own to our friends. Along with discovering people with similar interests. The website name is www.cocociti.com , Sign up & don't forget to follow me there. :)")
+  });
 });

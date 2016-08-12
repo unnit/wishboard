@@ -1,7 +1,7 @@
 - showcases.each do |showcase|
   .col-xs-6.col-sm-3.padding10{class: "showcase-card-#{showcase.id}"}
     .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-      .col-xs-12.col-sm-12.no-mar-pad.text-center
+      .col-xs-12.col-sm-12.no-mar-pad.text-center.min189h
         = link_to showcase_path(showcase), remote: true do
           = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
       .col-xs-12.col-sm-12.no-mar-pad
@@ -10,27 +10,27 @@
             = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{@collection.id if @collection.present?}"), remote: true do
               .fa.fa-plus.grey-fg.pull-left
           %a{href: "#{showcase_url(showcase)}", "data-image" => "#{showcase.image}", "data-title" => "#{showcase.title}", "data-desc" => "#{showcase.description}", class: "btnShare"}
-            .fa.fa-facebook-official.grey-fg.pull-left
+            .fa.fa-facebook-official.pull-left
         .col-xs-4.col-sm-4.padding5.text-right
           - if current_user
-            = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
+            = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} heart-red-fg" do
               - if showcase.wowed?(current_user)
-                %i.fa.fa-heart.heart-red-fg
+                %i.fa.fa-heart
               - else
                 %i.fa.fa-heart-o
           - else
-            = link_to authenticate_path, class: "black-fg" do
+            = link_to authenticate_path, class: "heart-red-fg" do
               %i.fa.fa-heart-o
-          .badge.font11.bg-white.grey-fg.pleft0.weight500{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
+          .badge.font11.bg-white.pleft0.weight500{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
             = showcase.active_wows.count
         .col-xs-4.col-sm-4.padding5.text-right
           - if current_user
-            = link_to showcase_path(showcase), remote: true do
-              %i.fa.fa-comment-o.black-fg{class: "comment-link-#{showcase.id}"}
-            .badge.font11.bg-white.grey-fg.pleft0.weight500{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}", "data-toggle" => "tooltip"}
+            = link_to showcase_path(showcase), remote: true, class: "comment-fg" do
+              %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
+            .badge.font11.bg-white.pleft0.weight500{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}", "data-toggle" => "tooltip"}
               = showcase.comments.count
           - else
-            = link_to authenticate_path, class: "black-fg" do
+            = link_to authenticate_path, class: "comment-fg" do
               %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
               .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
                 = showcase.comments.count

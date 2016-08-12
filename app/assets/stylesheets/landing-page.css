@@ -2212,6 +2212,9 @@ height:50px;
 .pad-mob{
     padding-left: 5px;
 }
+.view-comment-showcase p{
+  margin-bottom: 0px;
+}
 
 /**********Extra CSS ******/
 .help-links a:hover, .help-links span:hover{

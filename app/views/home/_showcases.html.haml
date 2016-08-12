@@ -23,7 +23,7 @@
         %span.pull-right.font11.mtop5.grey-fg
           .fa.fa-clock-o
           = time_ago_in_words(showcase.created_at)
-    = link_to showcase_path(showcase) do
+    = link_to showcase_path(showcase), class: "pull-left min300h" do
       .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
         = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
     .col-xs-3.col-sm-3.border-two.padding10.bg-white.h40
@@ -32,21 +32,21 @@
           - if showcase.wowed?(current_user)
             %i.fa.fa-heart.heart-red-fg.pull-left
           - else
-            %i.fa.fa-heart-o.pull-left
+            %i.fa.fa-heart-o.heart-red-fg.pull-left
       - else
         = link_to authenticate_path, class: "black-fg" do
-          %i.fa.fa-heart-o.pull-left
-      .badge.pull-left{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
+          %i.fa.fa-heart-o.heart-red-fg.pull-left
+      .badge.pull-left.wow-badge-bg{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
         = showcase.active_wows.count
     .col-xs-3.col-sm-3.pon.comment-link.border-two.padding10.bg-white.h40
       - if current_user
-        %i.fa.fa-comment-o.pull-left{class: "comment-link-#{showcase.id}"}
-        .badge.pull-left{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
+        %i.fa.fa-comment-o.pull-left.comment-fg{class: "comment-link-#{showcase.id}"}
+        .badge.pull-left.comment-badge-bg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
           = showcase.comments.count
       - else
         = link_to authenticate_path, class: "black-fg" do
-          %i.fa.fa-comment-o.pull-left{class: "comment-link-#{showcase.id}"}
-          .badge.pull-left{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
+          %i.fa.fa-comment-o.pull-left.comment-fg{class: "comment-link-#{showcase.id}"}
+          .badge.pull-left.comment-badge-bg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
             = showcase.comments.count
     .col-xs-3.col-sm-3.border-two.padding5.bg-white.text-right.h40
       -# if current_user && showcase.product.present?
@@ -55,9 +55,9 @@
     .col-xs-3.col-sm-3.border-two.padding10.bg-white.text-right.h40
       - if current_user && showcase.owner?(current_user)
         = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
-          .fa.fa-plus.grey-fg.pull-right.font16
+          .fa.fa-plus.grey-fg.pull-right.font16{title: "Arrange Showcase"}
       %a{href: "#{showcase_url(showcase)}", "data-image" => "#{showcase.image}", "data-title" => "#{showcase.title}", "data-desc" => "#{showcase.description}", class: "btnShare"}
-        .fa.fa-facebook-official.grey-fg.pull-right
+        .fa.fa-facebook-official.pull-right{title: "Share to Facebook"}
     .col-xs-12.col-sm-12.padding10.pbottom0.bg-white
       %h4.no-mar-pad= showcase.title
     .col-xs-12.col-sm-12.padding10.ptop0.bg-white
@@ -81,7 +81,7 @@
         - showcase.comments.each do |comment|
           = render partial: "showcases/comment", locals: {comment: comment}
     - if current_user
-      .media.new-comment.padding10.pbottom20.bg-white
+      .media.new-comment.padding5.pbottom20.bg-white
         = form_for :comment, url: comment_showcase_path(showcase), remote: true do |f|
           .media-left
             = link_to myprofile_path(current_user.profile.slug) do

@@ -538,6 +538,12 @@ small{
 .bg-light-grey{
   background-color: #F1F1F1;
 }
+.min300h{
+  min-height: 300px;
+}
+.min189h{
+  min-height: 189px;
+}
 .grey-fg{
   color: grey !important;
 }
@@ -555,8 +561,17 @@ small{
   background-color: rgba(0,0,0,0.5);
 }
 .heart-red-fg{
-  /*color: #FF1F1B;*/
-  color: #2d2d2d;
+  color: #ff534a;
+  /*color: #2d2d2d;*/
+}
+.wow-badge-bg{
+  background-color: #fb7c56;
+}
+.comment-fg{
+  color: #bb009a;
+}
+.comment-badge-bg{
+  background-color: #d268bf;
 }
 .btn-shadow{
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12) !important;

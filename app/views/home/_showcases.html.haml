@@ -23,7 +23,7 @@
         %span.pull-right.font11.mtop5.grey-fg
           .fa.fa-clock-o
           = time_ago_in_words(showcase.created_at)
-    = link_to showcase_path(showcase), class: "pull-left min300h" do
+    = link_to showcase_path(showcase) do
       .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
         = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
     .col-xs-3.col-sm-3.border-two.padding10.bg-white.h40

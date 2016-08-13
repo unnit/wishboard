@@ -75,10 +75,10 @@
         - if showcase.comments.count > 4
           = link_to showcase_path(showcase), target: "_blank", class: "padding10 pbottom0 font12", style: "text-decoration: underline;" do
             View #{showcase.comments.count - 4} more #{(showcase.comments.count - 4) > 1 ? 'comments' : 'comment'}
-        - showcase.comments.last(4).each do |comment|
+        - showcase.comments.order(:created_at).last(4).each do |comment|
           = render partial: "showcases/comment", locals: {comment: comment}
       - else
-        - showcase.comments.each do |comment|
+        - showcase.comments.order(:created_at).each do |comment|
           = render partial: "showcases/comment", locals: {comment: comment}
     - if current_user
       .media.new-comment.padding5.pbottom20.bg-white
@@ -87,5 +87,5 @@
             = link_to myprofile_path(current_user.profile.slug) do
               = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
           .media-body
-            = f.text_area :description, rows: 3, class: "form-control comment-description", id: "comment-description-#{showcase.id}"
+            = f.text_area :description, rows: 3, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true
             = f.submit "Comment", class: "btn btn-primary btn-social mtop10 btn-shadow"

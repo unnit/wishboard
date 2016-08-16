@@ -17,19 +17,15 @@
             = link_to tag.name.strip, tag_path(tag.name), class: "#{css_class} black-fg"
     .col-xs-12.col-sm-6.ptop15.padding-mob0.main-feed{class: "#{'hide-display' if params[:view] == "follow"}"}
       = render partial: "post_showcase", locals: {showcase: @showcase}
-      .col-xs-12.col-sm-12.padding0.help-txt-wrap.white-fg.mtop10.text-center.light-border{style: "background-color: #f5f7f6;"}
-        /
-          .padding10.grad1
-          .close-sprite.pos-absolute.clos-help.pon{style: "right: 10px;"}
-          .media.mtop0
-            .media-left{style: "vertical-align: middle;"}
-              .fa.fa-info-circle.font25
-            .media-body.font13
-              Show: Showcase things you own or your achievements.
-              %br
-              Wish: Add any of your wish here and let the world know it.
-        %span
-          %img.img-responsive{src:"#{GLOBAL_VARIABLES[:root_url]}/assets/images/ind-day-triangle.jpg"}
+      .col-xs-12.col-sm-12.padding10.grad1.help-txt-wrap.white-fg.mtop10
+        .close-sprite.pos-absolute.clos-help.pon{style: "right: 10px;"}
+        .media.mtop0
+          .media-left{style: "vertical-align: middle;"}
+            .fa.fa-info-circle.font25
+          .media-body.font13
+            Show: Showcase things you own or your achievements.
+            %br
+            Wish: Add any of your wish here and let the world know it.
       .col-xs-12.col-sm-12.no-mar-pad.showcase-strip.mtop40
         = render partial: "home/showcases", locals: {showcases: @showcases}
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}

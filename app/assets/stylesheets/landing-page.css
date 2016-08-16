@@ -2968,9 +2968,8 @@ th.headerSortDown {
   background: -webkit-linear-gradient( to right, #B7B7B7 0%, #B7B7B7 50%, #FFFFFF 50%, #FFFFFF 100% );
   background: -o-linear-gradient( to right, #B7B7B7 0%, #B7B7B7 50%, #FFFFFF 50%, #FFFFFF 100% );
   background: -moz-linear-gradient( to right, #B7B7B7 0%, #B7B7B7 50%, #FFFFFF 50%, #FFFFFF 100% );
-  background: linear-gradient( to right, #B7B7B7 0%, #B7B7B7 50%, #FFFFFF 50%, #FFFFFF 100% );
-  background-image: url('images/auth-bg.png');*/
-  background-image: url('images/ind-day.jpg');
+  background: linear-gradient( to right, #B7B7B7 0%, #B7B7B7 50%, #FFFFFF 50%, #FFFFFF 100% );*/
+  background-image: url('images/auth-bg.png');
   background-size: cover;
   background-attachment: fixed;
   background-position: bottom;

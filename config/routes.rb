@@ -146,6 +146,7 @@ Rails.application.routes.draw do
       delete :delete_comment
       post :edit_collection
       delete :delete_collection
+      post :rewish
     end
     collection do
       get :gettags

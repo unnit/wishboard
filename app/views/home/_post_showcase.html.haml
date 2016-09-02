@@ -36,7 +36,7 @@
       .col-xs-12.col-sm-4.col-sm-offset-1.text-center.padding0.photo-upload-wrapper
         %span.font11.col-xs-12.col-sm-12.padding0 Drag and Drop the Photo here.
         .preview
-        .glyphicon.glyphicon-remove.preview-delete.bg-white.hide-display.pon{style: "z-index: 1;"}
+        .glyphicon.glyphicon-remove.preview-delete.hide-display.pon{style: "z-index: 1;"}
         .col-xs-12.col-sm-12.no-mar-pad
           .glyphicon.glyphicon-camera.file-input-button.grey-fg.padding20{style: "font-size: 65px;border: 1px dashed;"}
             = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new" })

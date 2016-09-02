@@ -2710,6 +2710,11 @@ th.headerSortDown {
 .blue-border{
   border: 1px solid #2196F3 !important;
 }
+.loader-strong-img{
+  border: 4px solid #2196F3 !important;
+  height: 40px;
+  width: 40px;
+}
 .green-border{
   border: 1px solid #23A723 !important;
 }

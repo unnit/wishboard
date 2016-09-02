@@ -12,6 +12,7 @@
  *= require bootstrap.min
  *= require landing-page
  *= require style
+ *= require font-awesome
  *= require bxslider/jquery.bxslider
  *= require bootstrap-slider.min
  *= require_self
@@ -22,13 +23,6 @@
  *= require tooltipster
  *= require tagmanager
  */
-
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
-//@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
-@import "font-awesome-sass/assets/stylesheets/font-awesome-sprockets";
-@import "font-awesome-sass/assets/stylesheets/font-awesome";
-
-//@import 'bootstrap-datetimepicker';
 
 /*@font-face {
   font-family: 'museo_sans_rounded100';
@@ -60,6 +54,9 @@ body{
 }
 .mtop0{
   margin-top: 0px;
+}
+.mtop2{
+  margin-top: 2px;
 }
 .mtop15{
   margin-top: 15px;
@@ -279,6 +276,9 @@ body{
 .padding20{
   padding: 20px;
 }
+.padding100{
+  padding: 100px;
+}
 .height100{
   height: 100px;
 }
@@ -291,7 +291,6 @@ body{
 .sub-row td{
   background: #eee;
 }
-
 .clickable {
   cursor: pointer;
 }
@@ -654,6 +653,15 @@ small{
   background-image: -moz-linear-gradient(top, #e9a041 0%, #bb7519);
   background-image: -o-linear-gradient(top, #e9a041 0%, #bb7519);
   background-image: linear-gradient(top, #e9a041 0%, #bb7519);
+}
+.btn-outline-edit{
+  border: 2px solid #cb69c6;
+  color: #cb69ce !important;
+  font-weight: bold;
+}
+.flipped{
+  transform: rotateX(360deg);
+  -webkit-transform: rotateX(360deg);
 }
 /*** Exclusive Color Theme of Cocociti ***/
 .cc-xtr-dark-bg{

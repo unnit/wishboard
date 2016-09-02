@@ -5907,15 +5907,18 @@ a.thumbnail:hover {
 .alert {
     padding: 10px;
     margin-bottom: 20px;
+    color: #000000;
+    background-color: #ffffff;
     border: 1px solid transparent;
-    border-radius: 2px;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
+    border-radius: 4px;
     position: fixed;
-    top: 50px;
-    left: 20%;
-    width: 60%;
+    bottom: 10px;
+    right: 10px;
+    width: auto;
     z-index: 10000;
+    -webkit-transform-style: preserve-3d;
+    transition: all 0.6s;
+    -webkit-transition: all 0.6s;
 }
 
 .alert h4 {
@@ -5950,13 +5953,8 @@ a.thumbnail:hover {
 }
 
 .alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-    /*color: #FFFFFF;
-    background-color: #61B329;
-    border-top: 1px solid #FFFFFF;
-    font-weight: bold;*/
+    border: 1px solid #2be0c7;
+    border-top: 6px solid #2be0c7;
 }
 
 .alert-success hr {
@@ -5996,12 +5994,8 @@ a.thumbnail:hover {
 }
 
 .alert-danger {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-    /*color: #FFFFFF;
-    background-color: #CF0000;
-    font-weight: bold;*/
+    border: 1px solid #fb6d6b;
+    border-top: 6px solid #fb6d6b;
 }
 
 .alert-danger hr {

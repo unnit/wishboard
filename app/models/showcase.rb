@@ -2,6 +2,10 @@ class Showcase < ActiveRecord::Base
   searchkick autocomplete: ['title']
   belongs_to :user
   belongs_to :product
+  belongs_to :parent, class_name: "Showcase"
+  belongs_to :grandparent, class_name: "Showcase"
+  has_many :children, class_name: "Showcase", foreign_key: "parent_id"
+  has_many :grandchildren, class_name: "Showcase", foreign_key: "parent_id"
   has_many :wows, dependent: :destroy
   has_many :active_wows, -> {where active: true}, class_name: "Wow", foreign_key: "showcase_id"
   has_many :inactive_wows, -> {where active: false}, class_name: "Wow", foreign_key: "showcase_id"
@@ -88,6 +92,10 @@ class Showcase < ActiveRecord::Base
     comments.count >= 1
   end
 
+  def children_any?
+    children.count >= 1
+  end
+
   def wows_comments_any?
     wows_any? || comments_any?
   end
@@ -117,14 +125,18 @@ class Showcase < ActiveRecord::Base
     commented_users.uniq.map{|c| c.name}.join(", ")
   end
 
+  def children_owner_names
+    children.map{|c| c.user.name}.join(", ")
+  end
+
   def wowed_users
     active_wows.map{|w| w.user.name}.join(", ")
   end
 
-  after_create :create_and_send_showcase_notification
+  after_create :create_showcase_notification
 
   private
-  def create_and_send_showcase_notification
+  def create_showcase_notification
     user.followers.each do |follower|
       self.showcase_notifications.create(user_id: follower.id)
     end

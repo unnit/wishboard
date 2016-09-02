@@ -15,7 +15,8 @@
       %span.full-width.pull-left.text-center.font-medium.padding10.ptop0.pright5
         = link_to myprofile_path(showcase.user.profile.slug) do
           %span.weight600.hovercard{"data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
-        %span.small.grey-fg added
+        %span.small.grey-fg
+          = showcase.parent.present? ? 'rewished' : 'added'
         = link_to showcase_path(showcase) do
           %span.weight600= truncate showcase.title, length: 50
         %span.small.grey-fg to
@@ -34,7 +35,7 @@
           - else
             %i.fa.fa-heart-o.heart-red-fg.pull-left
       - else
-        = link_to authenticate_path, class: "black-fg" do
+        = link_to authenticate_path do
           %i.fa.fa-heart-o.heart-red-fg.pull-left
       .badge.pull-left.wow-badge-bg{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
         = showcase.active_wows.count
@@ -44,14 +45,24 @@
         .badge.pull-left.comment-badge-bg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
           = showcase.comments.count
       - else
-        = link_to authenticate_path, class: "black-fg" do
+        = link_to authenticate_path do
           %i.fa.fa-comment-o.pull-left.comment-fg{class: "comment-link-#{showcase.id}"}
-          .badge.pull-left.comment-badge-bg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
+          .badge.pull-left.comment-badge-bg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
             = showcase.comments.count
-    .col-xs-3.col-sm-3.border-two.padding5.bg-white.text-right.h40
-      -# if current_user && showcase.product.present?
-        = link_to user_product_path(showcase.product), target: "_blank" do
-          .btn.btn-sm.btn-social.white-fg Rent
+    .col-xs-3.col-sm-3.border-two.padding10.bg-white.h40
+      - if current_user
+        - if !showcase.owner?(current_user)
+          = link_to rewish_showcase_path(showcase), method: :post do
+            %i.fa.fa-clone.pull-left
+            %span.font11.grey-fg.pull-left.mtop2 Rewish
+          .badge.pull-left.mleft5.blue-bg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+            = showcase.children.count
+      - else
+        = link_to authenticate_path do
+          %i.fa.fa-clone.pull-left
+          %span.font11.grey-fg.pull-left.mtop2 Rewish
+        .badge.pull-left.mleft5.blue-bg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+          = showcase.children.count
     .col-xs-3.col-sm-3.border-two.padding10.bg-white.text-right.h40
       - if current_user && showcase.owner?(current_user)
         = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do

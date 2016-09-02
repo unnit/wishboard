@@ -1,6 +1,6 @@
 class ShowcasesController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add]
+  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish]
   before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
   before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
@@ -40,7 +40,7 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
-      flash[:notice] = "Your product has been showcased successfully."
+      flash[:notice] = "Your item is showcased successfully."
       if params[:header].present?
         render js: "location.reload()"
         return
@@ -70,7 +70,7 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
-      flash[:notice] = "Your product has been updated successfully."
+      flash[:notice] = "Your showcase is updated successfully."
       redirect_to showcase_path(@showcase)
     else
       flash[:alert] = @showcase.errors.full_messages.join(", ")
@@ -80,6 +80,7 @@ class ShowcasesController < ApplicationController
 
   def destroy
     @showcase.destroy
+    flash[:notice] = "Your item is deleted successfully"
     redirect_to :back
   end
 
@@ -89,6 +90,19 @@ class ShowcasesController < ApplicationController
     respond_to do |format|
       format.html
       format.js
+    end
+  end
+
+  def rewish
+    unless @showcase.owner?(current_user)
+      @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at"))
+      @rewish.user = current_user
+      @rewish.parent = @showcase
+      @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
+      if @rewish.save
+        flash[:notice] = "You have rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
+        redirect_to root_path
+      end
     end
   end
 

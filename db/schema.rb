@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160711071058) do
+ActiveRecord::Schema.define(version: 20160819193603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -362,12 +362,16 @@ ActiveRecord::Schema.define(version: 20160711071058) do
     t.integer  "year"
     t.integer  "user_id"
     t.string   "image"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.integer  "showcase_type"
     t.integer  "product_id"
+    t.integer  "parent_id"
+    t.integer  "grandparent_id"
   end
 
+  add_index "showcases", ["grandparent_id"], name: "index_showcases_on_grandparent_id", using: :btree
+  add_index "showcases", ["parent_id"], name: "index_showcases_on_parent_id", using: :btree
   add_index "showcases", ["user_id"], name: "index_showcases_on_user_id", using: :btree
 
   create_table "taggings", force: :cascade do |t|

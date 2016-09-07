@@ -98,6 +98,7 @@ class ShowcasesController < ApplicationController
       @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at"))
       @rewish.user = current_user
       @rewish.parent = @showcase
+      @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]
       @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
       if @rewish.save
         flash[:notice] = "You have rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe

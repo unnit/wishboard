@@ -13,7 +13,7 @@
             %span.font11.grey-fg.full-width.pull-left
               .fa.fa-clock-o
               = time_ago_in_words(showcase.created_at)
-            = link_to showcase_path(showcase) do
+            = link_to showcase_path(showcase), remote: true do
               = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
             %h6.mbottom0.mtop5=truncate showcase.title, length: 22
     .col-xs-12.no-mar-pad.visible-xs.mbottom20
@@ -27,7 +27,7 @@
                     %span.font11.grey-fg.full-width.text-right.pull-left
                       .fa.fa-clock-o
                       = time_ago_in_words(showcase.created_at)
-                    = link_to showcase_path(showcase) do
+                    = link_to showcase_path(showcase), remote: true do
                       = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
                     %h6.mbottom0.mtop5=truncate showcase.title, length: 22
     - if current_user && current_user.same_user?(@user)

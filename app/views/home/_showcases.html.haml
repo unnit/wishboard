@@ -52,10 +52,10 @@
     .col-xs-3.col-sm-3.border-two.padding10.bg-white.h40
       - if current_user
         - if !showcase.owner?(current_user)
-          = link_to rewish_showcase_path(showcase), method: :post do
+          %span.rewish-link.pon.cc-dark-fg{"data-id" => "#{showcase.id}"}
             %i.fa.fa-clone.pull-left
             %span.font11.grey-fg.pull-left.mtop2 Rewish
-          .badge.pull-left.mleft5.blue-bg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+          .badge.pull-left.mleft5.cc-dark-bg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
             = showcase.children.count
       - else
         = link_to authenticate_path do

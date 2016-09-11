@@ -2310,6 +2310,21 @@ height:50px;
 .instagram-sprite{
   background: url('images/coco-sprite.png') -501px -215px;
 }
+.following-sprite{
+  background: url(images/coco-sprite.png) -445px -227px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+}
+.followers-sprite{
+  background: url(images/coco-sprite.png) -412px -226px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+}
+.vert-middle{
+  vertical-align: middle;
+}
 .home-bike-sprite{
   background: url('images/coco-sprite-2.png') -15px -16px;
   width: 147px;
@@ -3107,6 +3122,14 @@ th.headerSortDown {
   right: 0px;
   background-image: url('images/bubble-3.png');
 }
+.bubble-4{
+  width: 400px;
+  height: 300px;
+  bottom: -196px;
+  left: -247px;
+  background-image: url('images/bubble-1.png');
+  animation: bubble1move 5s linear infinite alternate;
+}
 @keyframes bubble1move{
   0%, 100%{
     transform: translate(0, 0);
@@ -3128,6 +3151,10 @@ th.headerSortDown {
   60%{
     transform: translate(0, -30px);
   }
+}
+.blog-ring{
+  -webkit-box-shadow: 0.563em 0.317em 0 0 rgba(224, 87, 83, 0.5), 0 0.563em 0 0 rgba(224, 170, 83, 0.5), -0.317em 0.563em 0 0 rgba(220, 223, 83, 0.5), -0.563em -0.563em 0 0 rgba(73, 196, 88, 0.5), 0 -0.317em 0 0 rgba(73, 161, 196, 0.5), 0.563em 0 0 0 rgba(100, 73, 196, 0.5), 0.563em -0.317em 0 0 rgba(204, 76, 140, 0.5);
+  box-shadow: 0.563em 0.317em 0 0 rgba(224, 87, 83, 0.5), 0 0.563em 0 0 rgba(224, 170, 83, 0.5), -0.317em 0.563em 0 0 rgba(220, 223, 83, 0.5), -0.563em -0.563em 0 0 rgba(73, 196, 88, 0.5), 0 -0.317em 0 0 rgba(73, 161, 196, 0.5), 0.563em 0 0 0 rgba(100, 73, 196, 0.5), 0.563em -0.317em 0 0 rgba(204, 76, 140, 0.5);
 }
 /********/
 

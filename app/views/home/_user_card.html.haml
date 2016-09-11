@@ -1,43 +1,44 @@
 - users.each do |user|
-  .col-xs-12.col-sm-3{class: "user-wrapper-#{user.id}", style: "min-width: #{min_width ||= '292px'};padding: #{card_padding ||= '0px 5px 10px 5px'}"}
-    .col-xs-12.col-sm-12.bg-white.bg-shad.no-mar-pad
-      .col-xs-12.col-sm-12.cc-dark-bg{style: "height:88px;"}
-      .col-xs-12.col-sm-12.padding5.ptop0
-        %span.mtop5.mbottom5.pull-left.weight500.mleft95{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "auto", style: "font-size: #{name_size ||= '12px'}"}
-          = (truncate user.name, length: 20)
-        - if current_user && current_user != user
-          .col-xs-12.col-sm-12.no-mar-pad{class: "follow-set-#{user.id}"}
-            = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "mleft95 pull-left" do
-              .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(user) ? 'green-border' : 'blue-border'}", style: "line-height: 0px;"}
-                %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(user) ? 'green-fg' : 'cc-dark-fg'}"}
-                  - if current_user.following?(user)
-                    Following
-                    %i.fa.fa-check
-                  - else
-                    Follow
-                    %i.fa.fa-plus-circle
-                .loader-effect.btn.loader-in-follow-button{style: "display:none;padding-top: 3px;"}
-                  .ball-clip-rotate{style: "height:22px;"}
-                    %div.blue-border ...
-        - else
-          .col-xs-12.col-sm-12{style: "height: 27px;display: #{xtra_col ||= 'block'}"}
-        .col-xs-12.col-sm-12.no-mar-pad.text-center
-          = link_to myshowpieces_path(user.profile.slug) do
-            .col-xs-3.col-sm-3.no-mar-pad.grey-fg
-              %span.font13 Showpieces
-              %h4= user.showcases.showpieces.count
-          = link_to mywishes_path(user.profile.slug) do
-            .col-xs-3.col-sm-3.no-mar-pad.grey-fg
-              %span.font13 Wishes
-              %h4= user.showcases.wishes.count
-          = link_to following_path(user.profile.slug) do
-            .col-xs-3.col-sm-3.no-mar-pad.grey-fg
-              %span.font13 Following
-              %h4.following-count= user.following.count
-          = link_to followers_path(user.profile.slug) do
-            .col-xs-3.col-sm-3.no-mar-pad.grey-fg
-              %span.font13 Followers
-              %h4.followers-count= user.followers.count
-      .col-xs-12.col-sm-12{style: "margin-top: #{neg_mtop ||= '-168px;'}"}
-        = link_to myprofile_path(user.profile.slug) do
-          = cl_image_tag user.avatar, class: "img-circle pull-left", style: "z-index: 1;position: relative;", width: 80, height: 80, crop: :fill
+  .col-xs-12.col-sm-12.text-center.bg-shad.bg-white{class: "user-wrapper-#{user.id} padding0", style: "max-width: #{max_width ||= '292px'};margin: #{card_margin ||= '0px 5px 10px 0px'};"}
+    .col-xs-12.col-sm-12.inline-block.padding5.pbottom0
+      = link_to settings_path, class: "pull-right" do
+        %span.glyphicon.glyphicon-cog.grey-fg
+    .col-xs-12.col-sm-12.inline-block
+      = link_to myprofile_path(user.profile.slug) do
+        = cl_image_tag user.avatar, class: "img-circle", width: 100, height: 100, crop: :fill, gravity: :face, style: "border: 4px solid #5eb3e8;"
+    .col-xs-12.col-sm-12.padding5
+      %span.full-width.pull-left.weight500.font17.black-fg{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "auto"}
+        = (truncate user.name, length: 20)
+      %span.full-width.pull-left.grey-fg.font11
+        @#{user.profile.slug}
+      - if current_user && current_user != user
+        .col-xs-12.col-sm-12.no-mar-pad.mtop5{class: "follow-set-#{user.id}"}
+          = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "mleft95 pull-left" do
+            .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(user) ? 'green-border' : 'blue-border'}", style: "line-height: 0px;"}
+              %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(user) ? 'green-fg' : 'cc-dark-fg'}"}
+                - if current_user.following?(user)
+                  Following
+                  %i.fa.fa-check
+                - else
+                  Follow
+                  %i.fa.fa-plus-circle
+              .loader-effect.btn.loader-in-follow-button{style: "display:none;padding-top: 3px;"}
+                .ball-clip-rotate{style: "height:22px;"}
+                  %div.blue-border ...
+    .col-xs-6.col-sm-6.padding5.text-right{title: "Following", "data-toggle" => "tooltip", "data-placement" => "auto"}
+      = link_to following_path(user.profile.slug), class: "grey-fg" do
+        .following-sprite
+        %span.pull-right.no-mar-pad.font-medium.weight600.following-count{style: "line-height: 30px;"}= user.following.count
+    .col-xs-6.col-sm-6.padding5.text-left{title: "Followers", "data-toggle" => "tooltip", "data-placement" => "auto"}
+      = link_to followers_path(user.profile.slug), class: "grey-fg" do
+        %span.pull-left.no-mar-pad.font-medium.weight600.followers-count.inline-display{style: "line-height: 30px;"}= user.followers.count
+        .followers-sprite
+    .col-xs-12.col-sm-12.no-mar-pad.text-center.pattern-bg
+      .col-xs-6.col-sm-6.padding10{style: "border-right: 1px solid #d8d8d8;border-top: 1px solid #d8d8d8;"}
+        = link_to myshowpieces_path(user.profile.slug), class: "cc-dark-fg" do
+          %span.font-medium Showpieces
+          %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.showpieces.count
+      .col-xs-6.col-sm-6.padding10{style: "border-top: 1px solid #d8d8d8;"}
+        = link_to mywishes_path(user.profile.slug), class: "cc-dark-fg" do
+          %span.font-medium Wishes
+          %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.wishes.count

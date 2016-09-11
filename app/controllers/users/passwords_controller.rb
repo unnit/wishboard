@@ -1,6 +1,6 @@
 class Users::PasswordsController < Devise::PasswordsController
   skip_before_filter :check_user_status, :check_profile, :check_interests
-  before_filter :set_social_layout, only: [:new, :edit]
+  before_filter :set_social_layout, only: [:new, :edit, :update]
   # GET /resource/password/new
   def new
 

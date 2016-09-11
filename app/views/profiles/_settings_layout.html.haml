@@ -1,5 +1,5 @@
 .col-sm-3.hidden-xs.no-mar-pad
-  = render partial: "home/user_card", locals: {users: Array(current_user), card_padding: "0px", neg_mtop: "-146px", name_size: "17px;margin-bottom:10px;", xtra_col: "none;"}
+  = render partial: "home/user_card", locals: {users: Array(current_user), card_margin: "0px"}
   .col-sm-12.no-mar-pad.mtop15
     .list-group
       = link_to settings_path, class: "list-group-item acc-sett" do

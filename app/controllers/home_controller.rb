@@ -246,7 +246,7 @@ class HomeController < ApplicationController
 
   def user_card
     user = User.find_by_id params[:id]
-    render json: {user: (render_to_string '_user_card', layout: false, locals: {users: Array(user), card_padding: '0px'})}
+    render json: {user: (render_to_string '_user_card', layout: false, locals: {users: Array(user), card_margin: '0px'})}
   end
 
   def interests

@@ -8,7 +8,7 @@
         = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
     .col-xs-12.col-sm-12.padding10.ptop0.user-wrapper
       - if @following.present?
-        = render partial: "user_card", locals: {users: @following, min_width: "282px"}
+        = render partial: "user_card", locals: {users: @following, max_width: "282px"}
       - else
         %h3.text-center.padding20{style: "height:300px;"} “Not following anyone!”
     #infinite-scrolling-content.hidden

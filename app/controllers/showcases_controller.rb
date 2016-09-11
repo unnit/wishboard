@@ -40,7 +40,7 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
-      flash[:notice] = "Your item is showcased successfully."
+      flash[:notice] = "#{@showcase.title} showcased."
       if params[:header].present?
         render js: "location.reload()"
         return
@@ -70,7 +70,7 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
-      flash[:notice] = "Your showcase is updated successfully."
+      flash[:notice] = "#{@showcase.title} updated."
       redirect_to showcase_path(@showcase)
     else
       flash[:alert] = @showcase.errors.full_messages.join(", ")
@@ -80,7 +80,7 @@ class ShowcasesController < ApplicationController
 
   def destroy
     @showcase.destroy
-    flash[:notice] = "Your item is deleted successfully"
+    flash[:notice] = "#{@showcase.title} deleted."
     redirect_to :back
   end
 
@@ -101,7 +101,7 @@ class ShowcasesController < ApplicationController
       @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]
       @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
       if @rewish.save
-        flash[:notice] = "You have rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
+        flash[:notice] = "Rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
         redirect_to root_path
       end
     end

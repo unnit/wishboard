@@ -103,6 +103,9 @@ body{
 .neg-mleft15{
   margin-left: -15px;
 }
+.neg-mtop5{
+  margin-top: -5px;
+}
 .mtop5{
   margin-top: 5px;
 }
@@ -520,9 +523,10 @@ small{
   border: none !important;
 }
 .bg-shad{
-    border: 1px solid #E6E6E6;
-    border-radius: 2px;
-    box-shadow: 0 0px 1px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 0px rgba(0,0,0,0.08), 0 2px 2px rgba(0,0,0,0.05);
+    border-radius: 3px;
+    border: 1px solid #e4e4e4;
+    border-bottom: none;
 }
 .grad1{
   background: #fa7068; /* For browsers that do not support gradients */

@@ -1,7 +1,7 @@
 - users.each do |user|
-  .col-xs-12.col-sm-12.border-bt-side.no-mar-pad{style: "height: 80px;", class: "follow-set-#{user.id}"}
+  .col-xs-12.col-sm-12.no-mar-pad.mbottom10.padding10.ptop0.bg-shad.border5{class: "follow-set-#{user.id}", style: "border: 1px solid #f3f3f3;"}
     .col-xs-2.col-sm-2.no-mar-pad
-      = cl_image_tag user.avatar, class: "img-circle hovercard mtop10", data: {id: user.id}, width: 40, height: 40, crop: :fill
+      = cl_image_tag user.avatar, class: "img-circle hovercard mtop10", data: {id: user.id}, width: 40, height: 40, crop: :fill, gravity: :face
     .col-xs-10.col-sm-10
       %span.mtop5.pull-left
         = (truncate user.name.titleize, length: 40)

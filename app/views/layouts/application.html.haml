@@ -8,6 +8,12 @@
       %meta{:name => "robots", :content => "noindex"}
     %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Discover showcases and wishlists from celebrities and people around the world. Have it? Flaunt it. Let the world discover you.'}", :name => "description"}
     %meta{:content => "", :name => "author"}
+    %meta{name: "apple-mobile-web-app-capable", content: "yes"}
+    %meta{name: "apple-mobile-web-app-status-bar-style", content: "black"}
+    %meta{name: "apple-mobile-web-app-title", content: "Cocociti"}
+    %link{rel: "apple-touch-icon", href: "assets/logo/logo-152.png"}
+    %meta{name: "msapplication-TileImage", content: "assets/logo/logo-144.png"}
+    %meta{name: "msapplication-TileColor", content: "#2F3BA2"}
     %title= content_for?(:title) ? yield(:title) : "Discover showcases, wishlists and people around the world - Cocociti"
 
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries

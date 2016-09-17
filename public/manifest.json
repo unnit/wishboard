@@ -1,0 +1,14 @@
+{
+  "name": "Cocociti",
+  "short_name": "Cocociti",
+  "icons": [{
+        "src": "favicon.png",
+        "type": "image/png",
+        "sizes": "128x128"
+      }],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2196F3",
+  "theme_color": "#2196F3"
+}

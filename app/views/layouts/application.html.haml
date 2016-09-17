@@ -14,6 +14,7 @@
     /[if lt IE 9]
       = javascript_include_tag "//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js", "//oss.maxcdn.com/respond/1.4.2/respond.min.js"
     = stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans:400,600"
+    %link{rel: "manifest", href: "manifest.json"}
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
     = render partial: "/layouts/head"

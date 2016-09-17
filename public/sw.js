@@ -20,9 +20,7 @@
 // Version 0.54
 
 var CACHE_NAME = 'cocociti';
-var urlsToCache = [
-  '/'
-];
+var urlsToCache = [];
 
 self.addEventListener('install', function(event) {
   // Perform install steps

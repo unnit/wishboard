@@ -28,6 +28,11 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
+  if('serviceWorker' in navigator) {
+  navigator.serviceWorker
+           .register('/sw.js')
+           .then(function() { console.log("Service Worker Registered"); });
+  }
   //Setting footer proper for mac devices
   if($(document).height() <= $(window).height()){
     $("footer").css({"position": "absolute", "bottom": "0"});
@@ -157,6 +162,13 @@ $(document).ready(function(){
   $(document).on("click", ".clos-add-mov", function(){
     $(".move-create-coll-wrapper").hide();
     $(".move-showc-wrapper").show();
+  })
+  //Showcase description show/hide
+  $(document).on("mouseover", ".show-img-wrap", function(){
+    $(this).find(".show-details").show();
+  });
+  $(document).on("mouseleave", ".show-img-wrap", function(){
+    $(this).find(".show-details").hide();
   })
   //Giveaway
   $(document).on("mouseover", ".gway-img-wrap", function(){

@@ -71,6 +71,13 @@ $(document).ready(function(){
     $(".search-mob").addClass("cc-xtr-dark-bg");
     $(".search-wrap").removeClass("hidden-xs");
     $("#query").focus();
+    var x = 0;
+    var intervalID = setInterval(function () {
+      $("#query").toggleClass("bg-light-grey");
+      if (++x === 6) {
+        window.clearInterval(intervalID);
+      }
+    }, 500);
   })
   //Auth Page
   $(".scase-login").hover(function(){

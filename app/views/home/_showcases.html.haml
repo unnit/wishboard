@@ -49,7 +49,7 @@
           %i.fa.fa-comment-o.pull-left.comment-fg{class: "comment-link-#{showcase.id}"}
           .badge.pull-left.comment-badge-bg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
             = showcase.comments.count
-    .col-xs-3.col-sm-3.border-two.padding10.bg-white.h40
+    .col-xs-4.col-sm-3.border-two.padding10.bg-white.h40
       - if current_user
         - if !showcase.owner?(current_user)
           %span.rewish-link.pon.cc-dark-fg{"data-id" => "#{showcase.id}"}
@@ -63,7 +63,7 @@
           %span.font11.grey-fg.pull-left.mtop2 Rewish
         .badge.pull-left.mleft5.blue-bg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
           = showcase.children.count
-    .col-xs-3.col-sm-3.border-two.padding10.bg-white.text-right.h40
+    .col-xs-2.col-sm-3.border-two.padding10.bg-white.text-right.h40.pleft0
       - if current_user && showcase.owner?(current_user)
         = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
           .fa.fa-plus.grey-fg.pull-right.font16{title: "Arrange Showcase"}

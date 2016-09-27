@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       end
     end
     resources :transactions, only: [:index]
+    resources :showcases
   end
 
   devise_for :users, :controllers => {
@@ -153,6 +154,7 @@ Rails.application.routes.draw do
       get :autocomplete
       post :create_collection
       post :add
+      post :multiple_rewish
     end
   end
 

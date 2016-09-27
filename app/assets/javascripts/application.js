@@ -41,6 +41,30 @@ $(document).ready(function(){
   $(document).on("click", ".clos-help", function(){
     $(this).closest(".help-txt-wrap").hide();
   })
+  //Admin Wishes button effect
+  $(document).on("click", ".brd-box", function(){
+    $(this).removeClass("brd-box").addClass("fild-box");
+    $(this).find(".fa-square-o").removeClass("fa-square-o").addClass("fa-check-square-o");
+    $(".add-wishlist").show();
+    if($("#showcase_ids").val() == ""){
+      $("#showcase_ids").val($(this).data("id"));
+    }
+    else{
+      $("#showcase_ids").val($("#showcase_ids").val()+','+$(this).data("id"));
+    }
+  });
+  $(document).on("click", ".fild-box", function(){
+    ids = [];
+    $(this).removeClass("fild-box").addClass("brd-box");
+    $(this).find(".fa-check-square-o").removeClass("fa-check-square-o").addClass("fa-square-o");
+    if($(".fild-box").length == 0){
+      $(".add-wishlist").hide();
+    }
+    $(".fild-box").each(function(){
+      ids.push($(this).data("id"));
+    })
+    $("#showcase_ids").val(ids.toString());
+  });
   //Rewish Popup
   $(document).on("click", ".rewish-link", function(){
     $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>Awesome! This will appear in your wishlist. You may edit the content soon after this.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/rewish' class='btn btn-sm bg-white cc-dark-fg full-width' data-method='post'>Rewish</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-rewish'>Not now</a></div></div></div>");

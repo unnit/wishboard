@@ -95,16 +95,27 @@ class ShowcasesController < ApplicationController
 
   def rewish
     unless @showcase.owner?(current_user)
-      @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at"))
-      @rewish.user = current_user
-      @rewish.parent = @showcase
-      @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]
+      create_rewish
       @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
       if @rewish.save
         flash[:notice] = "Rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
         redirect_to root_path
       end
     end
+  end
+
+  def multiple_rewish
+    unique_ids = params[:showcase_ids].split(",").uniq
+    unique_ids.each do |id|
+      @showcase = Showcase.find_by_id(id)
+      if @showcase.admin_created?
+        create_rewish
+        @rewish.grandparent = @showcase
+        @rewish.save
+      end
+    end
+    flash[:notice] = "Wished successfully"
+    redirect_to :back
   end
 
   def tagged_showcases
@@ -232,6 +243,14 @@ class ShowcasesController < ApplicationController
       redirect_to root_path
       return
     end
+  end
+
+  def create_rewish
+    @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at"))
+    @rewish.user = current_user
+    @rewish.parent = @showcase
+    @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]
+    @rewish.admin_created = false
   end
 
 end

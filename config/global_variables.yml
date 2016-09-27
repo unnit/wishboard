@@ -34,6 +34,7 @@ development:
   manager_mobile_nos: ["+919037267357", "+919008888522", "+919037334459"]
   google_client_id: "866179074557-htrj6huurf5c1q51j0i7ubiljde2oe4h.apps.googleusercontent.com"
   google_api_key: "AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank"
+  super_admin_ids: [1, 2, 7]
 
 production:
   time_out: 15
@@ -70,3 +71,4 @@ production:
   manager_mobile_nos: ["+919037267357", "+919008888522", "+919037334459"]
   google_client_id: "866179074557-htrj6huurf5c1q51j0i7ubiljde2oe4h.apps.googleusercontent.com"
   google_api_key: "AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank"
+  super_admin_ids: [1, 2, 7]

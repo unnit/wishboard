@@ -9,18 +9,23 @@
             Edit...
           = link_to showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
             Delete...
+        - if current_user && current_user.admin?
+          = link_to edit_admin_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5" do
+            Edit as Admin...
+          = link_to admin_showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
+            Delete as Admin...
         %span.embed-link.pon.full-width.grey-fg.pull-left.small.padding5{"data-url" => "#{showcase_url(showcase)}", "data-title" => "#{showcase.title}"}= showcase.wishlist? ? "Embed Wish".html_safe : "Embed Showpiece".html_safe
       = link_to myprofile_path(showcase.user.profile.slug), class: "pull-left full-width text-center", style: "margin-top: -20px;" do
         = cl_image_tag showcase.user.avatar, class: "img-circle hovercard", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face, alt: showcase.user.name
       %span.full-width.pull-left.text-center.font-medium.padding10.ptop0.pright5
         = link_to myprofile_path(showcase.user.profile.slug) do
-          %span.weight600.hovercard{"data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
+          %span.weight600.hovercard.grey70-fg{"data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
         %span.small.grey-fg
           = showcase.parent.present? ? 'rewished' : 'added'
         = link_to showcase_path(showcase) do
-          %span.weight600= truncate showcase.title, length: 50
+          %span.weight600.grey70-fg= truncate showcase.title, length: 50
         %span.small.grey-fg to
-        %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
+        %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes' class='grey70-fg'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces' class='.grey70-fg'> Showcase</a>".html_safe
         %span.pull-right.font11.mtop5.grey-fg
           .fa.fa-clock-o
           = time_ago_in_words(showcase.created_at)

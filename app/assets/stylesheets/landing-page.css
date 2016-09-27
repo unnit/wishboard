@@ -2805,9 +2805,6 @@ th.headerSortDown {
   padding: 5px 0px;
   border-radius: 4px;
 }
-.right15{
-  right: 15px;
-}
 .form-comment-showcase{
   display: none;
 }
@@ -2890,7 +2887,7 @@ th.headerSortDown {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  top: 73px;
+  top: 88px;
   z-index: 1;
 }
 .set-1-ps, .set-2-ps, .set-3-ps{
@@ -3155,6 +3152,18 @@ th.headerSortDown {
 .blog-ring{
   -webkit-box-shadow: 0.563em 0.317em 0 0 rgba(224, 87, 83, 0.5), 0 0.563em 0 0 rgba(224, 170, 83, 0.5), -0.317em 0.563em 0 0 rgba(220, 223, 83, 0.5), -0.563em -0.563em 0 0 rgba(73, 196, 88, 0.5), 0 -0.317em 0 0 rgba(73, 161, 196, 0.5), 0.563em 0 0 0 rgba(100, 73, 196, 0.5), 0.563em -0.317em 0 0 rgba(204, 76, 140, 0.5);
   box-shadow: 0.563em 0.317em 0 0 rgba(224, 87, 83, 0.5), 0 0.563em 0 0 rgba(224, 170, 83, 0.5), -0.317em 0.563em 0 0 rgba(220, 223, 83, 0.5), -0.563em -0.563em 0 0 rgba(73, 196, 88, 0.5), 0 -0.317em 0 0 rgba(73, 161, 196, 0.5), 0.563em 0 0 0 rgba(100, 73, 196, 0.5), 0.563em -0.317em 0 0 rgba(204, 76, 140, 0.5);
+}
+.adn-box{
+  border: 1px solid #6a67ce;
+  border-radius: 15px;
+  color: #6a67ce;
+}
+.brd-box{
+  color: #6a67ce !important;
+}
+.fild-box{
+  background-color: #6a67ce;
+  color: white !important;
 }
 /********/
 

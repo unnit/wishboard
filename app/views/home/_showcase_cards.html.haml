@@ -3,7 +3,7 @@
     .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
       .col-xs-12.col-sm-12.no-mar-pad.text-center.min189h.show-img-wrap
         = link_to showcase_path(showcase), remote: true do
-          .pos-absolute.show-details.hide-display.full-width.full-height.padding10.font13.text-left{style: "background-color: rgba(255,255,255,0.7)"}
+          .pos-absolute.show-details.hide-display.full-width.full-height.padding10.font13.text-left.grey-fg{style: "background-color: rgba(255,255,255,0.7)"}
             %h4.mtop0= showcase.title
             - if showcase.description.present?
               %span= truncate showcase.description, length: 250
@@ -15,7 +15,7 @@
               .fa.fa-plus.grey-fg.pull-left
           %a{href: "#{showcase_url(showcase)}", "data-image" => "#{showcase.image}", "data-title" => "#{showcase.title}", "data-desc" => "#{showcase.description}", class: "btnShare"}
             .fa.fa-facebook-official.pull-left
-        .col-xs-4.col-sm-4.padding5.text-right
+        .col-xs-4.col-sm-4.padding5
           - if current_user
             = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} heart-red-fg" do
               - if showcase.wowed?(current_user)
@@ -27,7 +27,7 @@
               %i.fa.fa-heart-o
           .badge.font11.bg-white.pleft0.weight500{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
             = showcase.active_wows.count
-        .col-xs-4.col-sm-4.padding5.text-right
+        .col-xs-4.col-sm-4.padding5
           - if current_user
             = link_to showcase_path(showcase), remote: true, class: "comment-fg" do
               %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
@@ -38,3 +38,16 @@
               %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
               .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
                 = showcase.comments.count
+        %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop8.pon.pos-absolute.neg-right6
+        .col-xs-6.col-sm-6.option-showcase.bg-shad.bg-white.text-center.bg-white.right15.bottom10
+          - if showcase.owner?(current_user)
+            = link_to edit_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5" do
+              Edit...
+            = link_to showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
+              Delete...
+          - if current_user && current_user.admin?
+            = link_to edit_admin_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5" do
+              Edit as Admin...
+            = link_to admin_showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
+              Delete as Admin...
+          %span.embed-link.pon.full-width.grey-fg.pull-left.small.padding5{"data-url" => "#{showcase_url(showcase)}", "data-title" => "#{showcase.title}"}= showcase.wishlist? ? "Embed Wish".html_safe : "Embed Showpiece".html_safe

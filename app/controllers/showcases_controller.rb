@@ -85,6 +85,10 @@ class ShowcasesController < ApplicationController
   end
 
   def show
+    if @showcase.admin_created?
+      redirect_to root_path
+      return
+    end
     @to_move = "yes" if params[:to_move] == "yes"
     @collection_id = params[:collection_id]
     respond_to do |format|
@@ -119,7 +123,7 @@ class ShowcasesController < ApplicationController
   end
 
   def tagged_showcases
-    @showcases = Showcase.tagged_with(params[:tag])
+    @showcases = Showcase.tagged_with(params[:tag]).where("admin_created = ?", false)
     @tag = params[:tag]
     if @showcases.blank?
       redirect_to root_path

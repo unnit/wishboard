@@ -1,6 +1,6 @@
 $(".loader-button").show();
 $(".loader-effect").hide();
-$(".ps-wrapper .messages").html("#{j(render 'layouts/messages')}")
+$(".messages").html("#{j(render 'layouts/messages')}")
 - if @showcase.errors.blank?
   var new_showcase = $("#{j render partial: 'home/showcases', locals: {showcases: Array(@showcase)}}").hide();
   $(".showcase-strip").prepend(new_showcase);

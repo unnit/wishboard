@@ -137,8 +137,10 @@ class Showcase < ActiveRecord::Base
 
   private
   def create_showcase_notification
-    user.followers.each do |follower|
-      self.showcase_notifications.create(user_id: follower.id)
+    unless self.admin_created?
+      user.followers.each do |follower|
+        self.showcase_notifications.create(user_id: follower.id)
+      end
     end
   end
 

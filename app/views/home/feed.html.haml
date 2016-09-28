@@ -36,7 +36,7 @@
                           = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
                         .col-sm-8.col-sm-offset-2.mtop10.pbottom10
                           %span.text-center.pull-left.full-width.pon.padding5.font-medium.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
-                            = truncate admin_showcase.title, length: 20
+                            = truncate admin_showcase.title, length: 16
                             .fa.fa-square-o
             %a.left.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "prev"}
               %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}

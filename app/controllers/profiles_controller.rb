@@ -17,7 +17,7 @@ class ProfilesController < ApplicationController
       @profile.user = current_user
       if @profile.save
         flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
-        redirect_to interests_path
+        redirect_to invitations_path(invite_friends: "invite")
       else
         flash[:alert] = @profile.errors.full_messages.join("<br/>")
         render :info

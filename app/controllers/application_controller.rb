@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   skip_before_filter :check_profile, if: :devise_controller?
-  before_filter :set_timezone, :check_user_status, :check_profile, :check_interests, :init_showcase
+  before_filter :set_timezone, :check_user_status, :check_profile, :init_showcase
+  #before_filter :check_interests
 
   def set_timezone
     Time.zone = "Kolkata"

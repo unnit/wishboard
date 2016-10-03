@@ -112,6 +112,10 @@ $(document).ready(function(){
   $(".scase-login").click(function(){
     $(".login-email").focus();
   })
+  //Sign up email space validation
+  $(".signup-email").on("keyup", function(){
+    $(this).val($(this).val().replace(" ",""));
+  })
   //Username
   $(".username-url").text($(".username").val());
   $(".username").on("keyup", function(){

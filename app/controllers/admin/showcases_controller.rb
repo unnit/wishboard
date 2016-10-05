@@ -5,7 +5,7 @@ class Admin::ShowcasesController < AdminController
 
   def index
     @showcases = Showcase.where("admin_created = ?", true)
-    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
     respond_to do |format|
       format.html
       format.js { render "home/myprofile" }

@@ -85,7 +85,7 @@ class ShowcasesController < ApplicationController
   end
 
   def show
-    if @showcase.admin_created?
+    if !@showcase || @showcase.admin_created?
       redirect_to root_path
       return
     end

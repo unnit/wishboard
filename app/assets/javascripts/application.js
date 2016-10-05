@@ -28,14 +28,9 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
-  if('serviceWorker' in navigator) {
-  navigator.serviceWorker
-           .register('/sw.js')
-           .then(function() { console.log("Service Worker Registered"); });
-  }
   //Setting footer proper for mac devices
   if($(document).height() <= $(window).height()){
-    $("footer").css({"position": "absolute", "bottom": "0"});
+    setTimeout(function(){$("footer").css({"position": "absolute", "bottom": "0"});}, 3000);
   }
   //Close help text in feed
   $(document).on("click", ".clos-help", function(){
@@ -589,7 +584,6 @@ $(document).ready(function(){
   //Image loading bar effect
   $('.cloudinary-fileupload-new').bind('fileuploadprogress', function(e, data) {
     $wrap = $(this).closest(".photo-upload-wrapper")
-    console.log("HI");
     $wrap.find('.progress').css("display", "inline-block");
     $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
@@ -1075,4 +1069,9 @@ $(document).ready(function(){
   $(document).on("click", ".inv-msg-templ", function(){
     $("#message").val("Hey, found this website super interesting. It allows us to share our wishes, achievements and showcase things we own to our friends. Along with discovering people with similar interests. The website name is www.cocociti.com , Sign up & don't forget to follow me there. :)")
   });
+  if('serviceWorker' in navigator) {
+  navigator.serviceWorker
+           .register('/sw.js')
+           .then(function() { console.log("Service Worker Registered"); });
+  }
 });

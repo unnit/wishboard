@@ -582,12 +582,12 @@ $(document).ready(function(){
     $(this).closest(".view-wiki-wrapper").next(".edit-wiki-wrapper").fadeIn();
   })
   //Image loading bar effect
-  $('.cloudinary-fileupload-new').bind('fileuploadprogress', function(e, data) {
+  $('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {
     $wrap = $(this).closest(".photo-upload-wrapper")
     $wrap.find('.progress').css("display", "inline-block");
     $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
-  $('.cloudinary-fileupload-new').bind('cloudinarydone', function(e, data) {
+  $('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {
     $wrap = $(this).closest(".photo-upload-wrapper")
     $wrap.find(".file-input-button, .progress").hide();
     $wrap.find(".preview").show();
@@ -607,12 +607,12 @@ $(document).ready(function(){
     $wrap.find(".file-input-button").show();
   })
   //Image- loading of edit page
-  $('.cloudinary-fileupload-edit').bind('fileuploadprogress', function(e, data) {
+  $('.cloudinary-fileupload-edit').on('fileuploadprogress', function(e, data) {
     $wrap = $(this).closest(".photo-edit-wrapper")
     $wrap.find('.progress-edit').css("display", "inline-block");
     $wrap.find('.progress-bar-edit').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
-  $('.cloudinary-fileupload-edit').bind('cloudinarydone', function(e, data) {
+  $('.cloudinary-fileupload-edit').on('cloudinarydone', function(e, data) {
     $wrap = $(this).closest(".photo-edit-wrapper")
     $wrap.find(".file-input-button-edit, .progress-edit").hide();
     $wrap.find(".preview-edit").show();
@@ -1069,9 +1069,9 @@ $(document).ready(function(){
   $(document).on("click", ".inv-msg-templ", function(){
     $("#message").val("Hey, found this website super interesting. It allows us to share our wishes, achievements and showcase things we own to our friends. Along with discovering people with similar interests. The website name is www.cocociti.com , Sign up & don't forget to follow me there. :)")
   });
-  if('serviceWorker' in navigator) {
-  navigator.serviceWorker
-           .register('/sw.js')
-           .then(function() { console.log("Service Worker Registered"); });
-  }
+  //if('serviceWorker' in navigator) {
+  //navigator.serviceWorker
+  //         .register('/sw.js')
+  //         .then(function() { console.log("Service Worker Registered"); });
+  //}
 });

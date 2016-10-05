@@ -589,6 +589,7 @@ $(document).ready(function(){
   //Image loading bar effect
   $('.cloudinary-fileupload-new').bind('fileuploadprogress', function(e, data) {
     $wrap = $(this).closest(".photo-upload-wrapper")
+    console.log("HI");
     $wrap.find('.progress').css("display", "inline-block");
     $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });

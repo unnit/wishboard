@@ -28,6 +28,63 @@
 //= require typeahead.bundle
 
 $(document).ready(function(){
+  //Image loading bar effect
+  $('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find('.progress').css("display", "inline-block");
+    $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+  });
+  $('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find(".file-input-button, .progress").hide();
+    $wrap.find(".preview").show();
+    $wrap.find('.preview').html(
+      $.cloudinary.image(data.result.public_id,
+        { format: data.result.format, version: data.result.version,
+          crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
+    );
+    $wrap.find('.progress-bar').css('width', '0%');
+    $wrap.find(".preview-delete").show();
+    $wrap.find(".error-ps-photo").fadeOut();
+    return true;
+  });
+  $(".preview-delete").click(function(){
+    $wrap = $(this).closest(".photo-upload-wrapper")
+    $wrap.find(".preview-delete, .preview").hide();
+    $wrap.find(".file-input-button").show();
+  })
+  //Image- loading of edit page
+  $('.cloudinary-fileupload-edit').on('fileuploadprogress', function(e, data) {
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find('.progress-edit').css("display", "inline-block");
+    $wrap.find('.progress-bar-edit').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+  });
+  $('.cloudinary-fileupload-edit').on('cloudinarydone', function(e, data) {
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find(".file-input-button-edit, .progress-edit").hide();
+    $wrap.find(".preview-edit").show();
+    if($wrap.find(".preview-edit").data("source") == "showcase"){
+      $wrap.find('.preview-edit').html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
+      );
+    }else{
+      $wrap.find('.preview-edit').html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', height: 480, class: 'img-responsive inline-display' })
+      );
+    }
+    $wrap.find('.progress-bar-edit').css('width', '0%');
+    $wrap.find(".preview-delete-edit").show();
+    return true;
+  });
+  $(".preview-delete-edit").click(function(){
+    $wrap = $(this).closest(".photo-edit-wrapper")
+    $wrap.find(".preview-delete-edit, .preview-edit").hide();
+    $wrap.find(".file-input-button-edit").show();
+  })
   //Setting footer proper for mac devices
   if($(document).height() <= $(window).height()){
     setTimeout(function(){$("footer").css({"position": "absolute", "bottom": "0"});}, 3000);
@@ -581,63 +638,6 @@ $(document).ready(function(){
     $(this).closest(".view-wiki-wrapper").hide();
     $(this).closest(".view-wiki-wrapper").next(".edit-wiki-wrapper").fadeIn();
   })
-  //Image loading bar effect
-  $('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {
-    $wrap = $(this).closest(".photo-upload-wrapper")
-    $wrap.find('.progress').css("display", "inline-block");
-    $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
-  });
-  $('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {
-    $wrap = $(this).closest(".photo-upload-wrapper")
-    $wrap.find(".file-input-button, .progress").hide();
-    $wrap.find(".preview").show();
-    $wrap.find('.preview').html(
-      $.cloudinary.image(data.result.public_id,
-        { format: data.result.format, version: data.result.version,
-          crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
-    );
-    $wrap.find('.progress-bar').css('width', '0%');
-    $wrap.find(".preview-delete").show();
-    $wrap.find(".error-ps-photo").fadeOut();
-    return true;
-  });
-  $(".preview-delete").click(function(){
-    $wrap = $(this).closest(".photo-upload-wrapper")
-    $wrap.find(".preview-delete, .preview").hide();
-    $wrap.find(".file-input-button").show();
-  })
-  //Image- loading of edit page
-  $('.cloudinary-fileupload-edit').on('fileuploadprogress', function(e, data) {
-    $wrap = $(this).closest(".photo-edit-wrapper")
-    $wrap.find('.progress-edit').css("display", "inline-block");
-    $wrap.find('.progress-bar-edit').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
-  });
-  $('.cloudinary-fileupload-edit').on('cloudinarydone', function(e, data) {
-    $wrap = $(this).closest(".photo-edit-wrapper")
-    $wrap.find(".file-input-button-edit, .progress-edit").hide();
-    $wrap.find(".preview-edit").show();
-    if($wrap.find(".preview-edit").data("source") == "showcase"){
-      $wrap.find('.preview-edit').html(
-        $.cloudinary.image(data.result.public_id,
-          { format: data.result.format, version: data.result.version,
-            crop: 'fill', width: 150, height: 100, class: 'img-responsive inline-display' })
-      );
-    }else{
-      $wrap.find('.preview-edit').html(
-        $.cloudinary.image(data.result.public_id,
-          { format: data.result.format, version: data.result.version,
-            crop: 'fill', height: 480, class: 'img-responsive inline-display' })
-      );
-    }
-    $wrap.find('.progress-bar-edit').css('width', '0%');
-    $wrap.find(".preview-delete-edit").show();
-    return true;
-  });
-  $(".preview-delete-edit").click(function(){
-    $wrap = $(this).closest(".photo-edit-wrapper")
-    $wrap.find(".preview-delete-edit, .preview-edit").hide();
-    $wrap.find(".file-input-button-edit").show();
-  })
 
   //Home page - Rent, Lend pages
   n=!0,t=!0;
@@ -1069,9 +1069,9 @@ $(document).ready(function(){
   $(document).on("click", ".inv-msg-templ", function(){
     $("#message").val("Hey, found this website super interesting. It allows us to share our wishes, achievements and showcase things we own to our friends. Along with discovering people with similar interests. The website name is www.cocociti.com , Sign up & don't forget to follow me there. :)")
   });
-  //if('serviceWorker' in navigator) {
-  //navigator.serviceWorker
-  //         .register('/sw.js')
-  //         .then(function() { console.log("Service Worker Registered"); });
-  //}
+  if('serviceWorker' in navigator) {
+  navigator.serviceWorker
+           .register('/sw.js')
+           .then(function() { console.log("Service Worker Registered"); });
+  }
 });

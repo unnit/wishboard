@@ -1070,9 +1070,9 @@ $(document).ready(function(){
   $(document).on("click", ".inv-msg-templ", function(){
     $("#message").val("Hey, found this website super interesting. It allows us to share our wishes, achievements and showcase things we own to our friends. Along with discovering people with similar interests. The website name is www.cocociti.com , Sign up & don't forget to follow me there. :)")
   });
-  //if('serviceWorker' in navigator) {
-  //navigator.serviceWorker
-  //         .register('/sw.js')
-  //         .then(function() { console.log("Service Worker Registered"); });
-  //}
+  if('serviceWorker' in navigator) {
+  navigator.serviceWorker
+           .register('/assets/service-worker/sw.js')
+           .then(function() { console.log("Service Worker Registered"); });
+  }
 });

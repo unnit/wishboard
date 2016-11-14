@@ -1,0 +1,52 @@
+.container-fluid.ptop50.mob-ptop100.pattern-bg{style: "min-height: 700px;"}
+  .container.mtop40
+    .col-xs-12.col-sm-4.col-sm-offset-2.padding20{style: "background-color: #ffa49d;height:200px;"}
+      .col-xs-6.col-sm-6
+        .balance-coins-sprite.inline-block
+        %span.inline-block.full-width.white-fg{style: "letter-spacing: 2px;"}
+          BALANCE
+      .col-xs-6.col-sm-6
+        .pull-right.wdrw-btn.pon SEND TO BANK
+      %span.full-width.text-center.pull-left.font20.white-fg= current_user.wallet.unused_coins.to_i
+    .col-xs-12.col-sm-3.padding20{style: "background-color: #ffdac5;height:200px;color: #ffa49d;"}
+      .col-xs-12.col-sm-12.mbottom10.text-center
+        .total-coins-sprite.inline-block
+        %span.inline-block.full-width{style: "letter-spacing: 2px;"}
+          TOTAL
+      %span.full-width.text-center.pull-left.font16= current_user.wallet.total_coins.to_i
+    .col-xs-12.col-sm-3.padding20{style: "background-color: #ffede5;height:200px;color: #ffa49d;"}
+      .col-xs-12.col-sm-12.mbottom10.text-center
+        .used-coins-sprite.inline-block
+        %span.inline-block.full-width{style: "letter-spacing: 2px;"}
+          USED
+      %span.full-width.text-center.pull-left.font16= current_user.wallet.used_coins.to_i
+    .col-xs-12.col-sm-6.padding10.mtop30{style: "height: 250px;"}
+      %h4.mtop10.mbottom10.full-width.text-center WITHDRAWAL HISTORY
+      .col-xs-12.col-sm-12.no-mar-pad
+        - @withdraws.each do |withdraw|
+          Coins withdrawn -
+          = withdraw.coins
+          &nbsp;&nbsp;
+          Date -
+          = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
+          &nbsp;&nbsp;
+          - if withdraw.status == Withdraw::STATUS[0]
+            = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" } do
+              Delete
+    .col-xs-12.col-sm-6.padding10.border-lt-side.mtop30{style: "height: 250px;"}
+      %h4.mtop10.mbottom10.full-width.text-center RULES
+      .col-xs-12.col-sm-12.no-mar-pad
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      if(#{current_user.can_withdraw?} == true){
+        $("#cont-wrapper").html("#{j( render partial: 'profiles/bank_info', locals: {last_transaction: @withdraws.last })}");
+      }else{
+        $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font20'>Sorry, You cannot send your coins to bank now.</div>")
+      }
+      $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>")
+      $(document).on("click", ".wdrw-btn", function(){
+        $("#cont-wrapper").modal('show');
+      })
+    })

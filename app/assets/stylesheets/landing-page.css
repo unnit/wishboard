@@ -2396,6 +2396,39 @@ height:50px;
   height:35px;
   background: url('images/coco-sprite.png') -9px -172px;
 }
+.coin-sprite-o-less{
+  width: 62px;
+  height: 62px;
+  background: url(images/coco-sprite.png) -721px -247px;
+  opacity: 0.4;
+  -webkit-transform-style: preserve-3d;
+  transition: all 0.6s;
+  -webkit-transition: all 0.6s;
+}
+.coin-sprite-o-full{
+  width: 62px;
+  height: 62px;
+  background: url(images/coco-sprite.png) -721px -247px;
+  opacity: 1;
+  -webkit-transform-style: preserve-3d;
+  transition: all 0.6s;
+  -webkit-transition: all 0.6s;
+}
+.balance-coins-sprite{
+  width: 52px;
+  height: 50px;
+  background: url(images/coco-sprite.png) -881px -252px
+}
+.total-coins-sprite{
+  width: 58px;
+  height: 50px;
+  background: url(images/coco-sprite.png) -807px -249px;
+}
+.used-coins-sprite{
+  width: 53px;
+  height: 50px;
+  background: url(images/coco-sprite.png) -941px -253px;
+}
 .why-us{
   background-color: #286ebb;
   background-image: -webkit-linear-gradient( left top, #286ebb 0, #5e99db 80%);

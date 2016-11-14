@@ -30,8 +30,10 @@ class User < ActiveRecord::Base
   has_many :giveaways
   has_many :giveaway_requests
   has_many :requested_giveaways, through: :giveaway_requests, source: :giveaway
+  has_many :withdraws
 
   has_one :profile, dependent: :destroy
+  has_one :wallet, dependent: :destroy
 
   class << self
     def admin_search(term)
@@ -47,6 +49,7 @@ class User < ActiveRecord::Base
   def admin?
     role=="admin"
   end
+
 
   def profile?
     if profile.present?
@@ -89,6 +92,15 @@ class User < ActiveRecord::Base
     self == user
   end
 
+  def can_withdraw?
+    unused_coins = wallet.unused_coins.to_i
+    if (unused_coins == 10 || unused_coins == 20 || unused_coins == 50 || unused_coins == 100 || unused_coins%200 == 0) && unused_coins !=0
+      return true
+    else
+      return false
+    end
+  end
+
   def nil_following?
     following.count == 0
   end
@@ -99,6 +111,10 @@ class User < ActiveRecord::Base
 
   def can_review?(product)
     transactions.paid.where(product_id: product.id).count > 0
+  end
+
+  def withdraw_history
+    withdraws.where("status = ? or status = ? or status = ?", Withdraw::STATUS[0], Withdraw::STATUS[1], Withdraw::STATUS[2])
   end
 
   def generate_reset_password_token

@@ -32,13 +32,26 @@
     = link_to showcase_path(showcase) do
       .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
         = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
+        .h40.pos-absolute{style: "top: 45%;left: 45%;"}
+          - if current_user
+            - if !showcase.owner?(current_user) && showcase.active_coins.count <= 50 && showcase.coin_wish?
+              = link_to coin_showcase_path(showcase), remote: true, method: :post, class: "coin-link-#{showcase.id} black-fg" do
+                - if showcase.coined?(current_user)
+                  .coin-sprite-o-full.pos-relative.flipped-horz
+                - else
+                  .coin-sprite-o-less.pos-relative.flipped-horz
+          - else
+            = link_to authenticate_path do
+              %i.coin-sprite-o-less
+          .badge.wow-badge-bg{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
+            = showcase.active_coins.count
     .col-xs-3.col-sm-3.border-two.padding10.bg-white.h40
       - if current_user
         = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
           - if showcase.wowed?(current_user)
-            %i.fa.fa-heart.heart-red-fg.pull-left
+            %i.fa.fa-heart.heart-red-fg.pull-left.hvr-push
           - else
-            %i.fa.fa-heart-o.heart-red-fg.pull-left
+            %i.fa.fa-heart-o.heart-red-fg.pull-left.hvr-push
       - else
         = link_to authenticate_path do
           %i.fa.fa-heart-o.heart-red-fg.pull-left

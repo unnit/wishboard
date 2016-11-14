@@ -678,9 +678,31 @@ small{
   color: #cb69ce !important;
   font-weight: bold;
 }
+.wdrw-btn{
+  color: #fffc9e;
+  border: 2px solid #fffc9e;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
 .flipped{
   transform: rotateX(360deg);
   -webkit-transform: rotateX(360deg);
+}
+.flipped-horz{
+  -webkit-animation: horz 1s infinite; /* Safari 4.0 - 8.0 */
+  animation: horz 1s infinite;
+}
+@keyframes horz {
+    0%   {transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);}
+    25%  {transform: rotateY(90deg);
+    -webkit-transform: rotateY(90deg);}
+    50%  {transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);}
+    75%  {transform: rotateY(270deg);
+    -webkit-transform: rotateY(270deg);}
+    100% {transform: rotateY(360deg);
+    -webkit-transform: rotateY(360deg);}
 }
 /*** Exclusive Color Theme of Cocociti ***/
 .cc-xtr-dark-bg{

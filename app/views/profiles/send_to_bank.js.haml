@@ -1,0 +1,4 @@
+- if @withdraw.errors.blank?
+  location.reload();
+- else
+  $(".messages").html("#{j(render partial: 'layouts/messages')}")

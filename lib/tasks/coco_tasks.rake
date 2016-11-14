@@ -94,4 +94,13 @@ namespace :coco_tasks do
     end
   end
 
+  task create_wallet_for_all_users: :environment do
+    profiles = Profile.all
+    profiles.each do |profile|
+      wallet = Wallet.new
+      wallet.user = profile.user
+      wallet.save
+    end
+  end
+
 end

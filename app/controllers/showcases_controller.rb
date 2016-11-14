@@ -1,6 +1,6 @@
 class ShowcasesController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish]
+  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :coin]
   before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
   before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
@@ -143,6 +143,14 @@ class ShowcasesController < ApplicationController
     respond_to :js
   end
 
+  def coin
+    if @showcase.active_coins.count <= 50
+      @showcase.toggle_coin!(current_user) unless @showcase.owner?(current_user)
+      @showcase.reload
+      respond_to :js
+    end
+  end
+
   def comment
     @comment = @showcase.comments.create(description: params[:comment][:description], user_id: current_user.id)
     respond_to :js
@@ -255,6 +263,7 @@ class ShowcasesController < ApplicationController
     @rewish.parent = @showcase
     @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]
     @rewish.admin_created = false
+    @rewish.all_tags = @showcase.all_tags
   end
 
 end

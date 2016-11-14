@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919125208) do
+ActiveRecord::Schema.define(version: 20161112063302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,18 @@ ActiveRecord::Schema.define(version: 20160919125208) do
     t.integer  "feature_pos", default: 0
     t.string   "slug"
   end
+
+  create_table "coins", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "showcase_id"
+    t.boolean  "active",      default: true
+    t.boolean  "checked"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "coins", ["showcase_id"], name: "index_coins_on_showcase_id", using: :btree
+  add_index "coins", ["user_id"], name: "index_coins_on_user_id", using: :btree
 
   create_table "collection_showcases", force: :cascade do |t|
     t.integer  "collection_id"
@@ -369,6 +381,7 @@ ActiveRecord::Schema.define(version: 20160919125208) do
     t.integer  "parent_id"
     t.integer  "grandparent_id"
     t.boolean  "admin_created",  default: false
+    t.boolean  "coin_wish",      default: false
   end
 
   add_index "showcases", ["grandparent_id"], name: "index_showcases_on_grandparent_id", using: :btree
@@ -450,10 +463,21 @@ ActiveRecord::Schema.define(version: 20160919125208) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.boolean  "verified",               default: false
+    t.string   "invite_code"
+    t.string   "invited_code"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "wallets", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "total_coins"
+    t.integer  "used_coins"
+    t.integer  "unused_coins"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "wikis", force: :cascade do |t|
     t.string   "title"
@@ -465,6 +489,22 @@ ActiveRecord::Schema.define(version: 20160919125208) do
   end
 
   add_index "wikis", ["user_id"], name: "index_wikis_on_user_id", using: :btree
+
+  create_table "withdraws", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "coins"
+    t.string   "name"
+    t.string   "acc_no"
+    t.string   "ifsccode"
+    t.string   "mmid"
+    t.string   "status"
+    t.string   "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "withdraws", ["status"], name: "index_withdraws_on_status", using: :btree
+  add_index "withdraws", ["user_id"], name: "index_withdraws_on_user_id", using: :btree
 
   create_table "wows", force: :cascade do |t|
     t.integer  "user_id"

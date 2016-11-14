@@ -1,0 +1,10 @@
+- if @showcase.coins_any?
+  $(".coin-link-#{@showcase.id}").next(".badge").show();
+- else
+  $(".coin-link-#{@showcase.id}").next(".badge").hide();
+$(".coin-link-#{@showcase.id}").next(".badge").text("#{@showcase.active_coins.count}")
+$(".coin-link-#{@showcase.id}").next(".badge").attr("title", "#{@showcase.coined_users}")
+- if @showcase.coined?(current_user)
+  $(".coin-link-#{@showcase.id}").find(".coin-sprite-o-less").removeClass("coin-sprite-o-less").addClass("coin-sprite-o-full");
+- else
+  $(".coin-link-#{@showcase.id}").find(".coin-sprite-o-full").removeClass("coin-sprite-o-full").addClass("coin-sprite-o-less");

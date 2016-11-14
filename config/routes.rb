@@ -61,6 +61,10 @@ Rails.application.routes.draw do
       patch :get_otp
       patch :resend_otp
       patch :verify_otp
+      post :send_to_bank
+    end
+    member do
+      post :delete_withdraw_request
     end
   end
 
@@ -91,6 +95,7 @@ Rails.application.routes.draw do
   get "offers", to: "home#offers"
   get "feed", to: "home#feed"
   get "results", to: "showcases#results"
+  get "wallet", to: "profiles#wallet"
   get "profiles", to: "home#user_results", as: :user_results
   get "user_autocomplete", to: "home#user_autocomplete"
   get "unchecked_notifications", to: "home#unchecked_notifications", as: :unchecked_notifications
@@ -148,6 +153,7 @@ Rails.application.routes.draw do
       post :edit_collection
       delete :delete_collection
       post :rewish
+      post :coin
     end
     collection do
       get :gettags

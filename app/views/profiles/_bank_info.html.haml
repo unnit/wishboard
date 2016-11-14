@@ -1,0 +1,37 @@
+.container.padding0{style: "max-width:600px;margin-top: 10%;"}
+  .col-xs-12.col-sm-12.bg-white.padding10.border5
+    .panel.panel-default.mbottom0
+      .panel-heading
+        %h4.mtop-v-5 Your Bank Details
+      .panel-body
+        = form_tag send_to_bank_profiles_path, remote: true, class: "form-horizontal" do
+          .form-group
+            .col-xs-12.col-sm-4
+              Name
+              %span.heart-red-fg *
+            .col-xs-12.col-sm-8
+              = text_field_tag :name, "#{last_transaction.name unless last_transaction.blank?}", class: "form-control", required: true
+          .form-group
+            .col-xs-12.col-sm-4
+              Coins
+              %span.heart-red-fg *
+            .col-xs-12.col-sm-8
+              = text_field_tag :coins, "#{current_user.wallet.unused_coins.to_i}", class: "form-control", required: true
+          .form-group
+            .col-xs-12.col-sm-4
+              Account No
+              %span.heart-red-fg *
+            .col-xs-12.col-sm-8
+              = text_field_tag :acc_no, "#{last_transaction.acc_no unless last_transaction.blank?}", class: "form-control", required: true
+          .form-group
+            .col-xs-12.col-sm-4
+              IFSC Code
+              %span.heart-red-fg *
+            .col-xs-12.col-sm-8
+              = text_field_tag :ifsccode, "#{last_transaction.ifsccode unless last_transaction.blank?}", class: "form-control", required: true
+          .form-group
+            .col-xs-12.col-sm-4 MMID
+            .col-xs-12.col-sm-8
+              = text_field_tag :mmid, "#{last_transaction.mmid unless last_transaction.blank?}", class: "form-control"
+          .form-group.text-center
+            = submit_tag "Submit", class: "btn btn-gold"

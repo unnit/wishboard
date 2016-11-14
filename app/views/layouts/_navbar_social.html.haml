@@ -57,6 +57,10 @@
                         %span.grey-fg Invite friends
                     %li.divider{style: "overflow: visible"}
                     %li
+                      = link_to wallet_path, style: "white-space: normal;" do
+                        %span.grey-fg Wallet
+                    %li.divider{style: "overflow: visible"}
+                    %li
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
             %li.hidden-xs= link_to "Showcase", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn cc-dark-bg white-fg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
@@ -71,6 +75,9 @@
             %li.visible-xs.bg-white
               = link_to invitations_path, style: "white-space: normal;" do
                 %span.grey-fg Invite friends
+            %li.visible-xs.bg-white
+              = link_to wallet_path, style: "white-space: normal;" do
+                %span.grey-fg Wallet
             %li.visible-xs.bg-white.border-bt-side
               = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                 %span.grey-fg Sign Out

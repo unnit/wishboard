@@ -16,6 +16,9 @@ class ProfilesController < ApplicationController
       @profile.slug = params[:profile][:slug].downcase
       @profile.user = current_user
       if @profile.save
+        wallet = Wallet.new
+        wallet.user = current_user
+        wallet.save
         flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
         redirect_to invitations_path(invite_friends: "invite")
       else
@@ -240,6 +243,53 @@ class ProfilesController < ApplicationController
     respond_to :js
   end
 
+  def wallet
+    @withdraws = current_user.withdraw_history
+  end
+
+  def send_to_bank
+    unless current_user.can_withdraw?
+      render js: "window.location = '#{root_path}'"
+      return
+    end
+    @withdraw = Withdraw.new
+    @withdraw.name = params[:name]
+    @withdraw.coins = params[:coins]
+    @withdraw.acc_no = params[:acc_no]
+    @withdraw.ifsccode = params[:ifsccode]
+    @withdraw.mmid = params[:mmid]
+    @withdraw.user = current_user
+    @withdraw.status = Withdraw::STATUS[0]
+    if @withdraw.save
+      wallet = current_user.wallet
+      wallet.unused_coins = wallet.unused_coins.to_i - params[:coins].to_i
+      wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
+      wallet.save
+      flash[:notice] = "You have successfully initiated the withdrawal procedure. We will verify the details and update your account"
+    else
+      flash[:alert] = @withdraw.errors.full_messages.join(", ")
+    end
+    respond_to :js
+  end
+
+  def delete_withdraw_request
+    @withdraw = Withdraw.find_by_id params[:id]
+    if @withdraw && @withdraw.user == current_user
+      @withdraw.status = Withdraw::STATUS[3]
+      if @withdraw.save
+        wallet = current_user.wallet
+        wallet.unused_coins = wallet.unused_coins.to_i + @withdraw.coins.to_i
+        wallet.used_coins = wallet.used_coins.to_i - @withdraw.coins.to_i
+        wallet.save
+        flash[:notice] = "Withdraw request deleted successfully"
+      end
+    else
+      redirect_to root_path
+      return
+    end
+    redirect_to :back
+  end
+
   private
     def set_profile
       @profile = current_user.profile
@@ -260,5 +310,6 @@ class ProfilesController < ApplicationController
     def social_params
       params.require(:profile).permit(:twitter, :facebook, :instagram, :linkedin, :google_plus, :website, :other_url)
     end
+
 
 end

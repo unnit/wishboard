@@ -24,7 +24,7 @@ class HomeController < ApplicationController
       #@showcases = Showcase.order("RANDOM()")
       @showcases = Showcase.where("admin_created = ?", false).order(created_at: :desc).page(params[:showcases]).per(5)
       #@showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
-      @admin_showcases = Showcase.where("admin_created = ? and id not in (?)", true, current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq)
+      @admin_showcases = Showcase.where("admin_created = ? and coin_wish = ? and id not in (?)", true, false,  current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq)
       @users = User.joins(:profile).where.not(id:current_user.following.map(&:id).append(current_user.id), verified: false)
       @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
       respond_to do |format|

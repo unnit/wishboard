@@ -9,6 +9,9 @@ class Showcase < ActiveRecord::Base
   has_many :wows, dependent: :destroy
   has_many :active_wows, -> {where active: true}, class_name: "Wow", foreign_key: "showcase_id"
   has_many :inactive_wows, -> {where active: false}, class_name: "Wow", foreign_key: "showcase_id"
+  has_many :coins, dependent: :destroy
+  has_many :active_coins, -> {where active: true}, class_name: "Coin", foreign_key: "showcase_id"
+  has_many :inactive_coins, -> {where active: false}, class_name: "Coin", foreign_key: "showcase_id"
   has_many :comments, dependent: :destroy
   has_many :commented_users, through: :comments, source: :user
   has_many :taggings, dependent: :destroy
@@ -46,6 +49,7 @@ class Showcase < ActiveRecord::Base
     tag.showcases unless tag.blank?
   end
 
+  ##---Wow activate and deactivate
   def create_wow(user)
     wows.create(user_id: user.id)
   end
@@ -82,6 +86,48 @@ class Showcase < ActiveRecord::Base
 
   def wows_any?
     active_wows.count >= 1
+  end
+
+  ##--- Coin activation and deactivation
+  def create_coin(user)
+    coins.create(user_id: user.id)
+    user.wallet.update(:total_coins => (user.wallet.total_coins.to_i + 1), :unused_coins => (user.wallet.unused_coins.to_i + 1))
+  end
+
+  def activate_coin(user)
+    coins.find_by(user_id: user.id).update_column :active, true
+    user.wallet.update(:total_coins => (user.wallet.total_coins.to_i + 1), :unused_coins => (user.wallet.unused_coins.to_i + 1))
+  end
+
+  def deactivate_coin(user)
+    coins.find_by(user_id: user.id).update_column :active, false
+    user.wallet.update(:total_coins => (user.wallet.total_coins.to_i - 1), :unused_coins => (user.wallet.unused_coins.to_i - 1))
+  end
+
+  def coined?(user)
+    active_coins.map(&:user_id).include?(user.id)
+  end
+
+  def inactive_coined?(user)
+    inactive_coins.map(&:user_id).include?(user.id)
+  end
+
+  def toggle_coin!(user)
+    if coined?(user)
+      deactivate_coin(user)
+    elsif inactive_coined?(user)
+      activate_coin(user)
+    else
+      create_coin(user)
+    end
+  end
+
+  def coins_many?
+    active_coins.count > 1
+  end
+
+  def coins_any?
+    active_coins.count >= 1
   end
 
   def comments_many?
@@ -131,6 +177,10 @@ class Showcase < ActiveRecord::Base
 
   def wowed_users
     active_wows.map{|w| w.user.name}.join(", ")
+  end
+
+  def coined_users
+    active_coins.map{|c| c.user.name}.join(", ")
   end
 
   after_create :create_showcase_notification

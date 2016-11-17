@@ -1,7 +1,8 @@
 class ShowcasesController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :coin]
-  before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add]
+  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :coin, :toggle_achieve_wish, :add_coin_wish]
+  before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish]
+  before_filter :check_coin_wish, only: [:edit, :update]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
   before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
   before_filter :get_collection, only: [:edit_collection, :delete_collection]
@@ -28,13 +29,16 @@ class ShowcasesController < ApplicationController
   def create
     if params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[0]
       @showcase = current_user.showcases.build(showpiece_params)
+      @showcase.user_status = Showcase::USER_STATUS[1]
     elsif params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[1]
       @showcase = current_user.showcases.build(wish_params)
+      @showcase.user_status = Showcase::USER_STATUS[0]
     else
       flash[:alert] = "Hey, Are you going to Showcase or Wishlist?"
       redirect_to root_path
       return
     end
+    @showcase.admin_created = false
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -60,6 +64,7 @@ class ShowcasesController < ApplicationController
       @showcase.assign_attributes(showpiece_params)
     elsif params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[1]
       @showcase.assign_attributes(wish_params)
+      @showcase.user_status = params[:showcase][:user_status] unless @showcase.user_status == Showcase::USER_STATUS[1]
     else
       flash[:alert] = "Hey, Are you going to Showcase or Wishlist?"
       redirect_to edit_showcase_path(@showcase)
@@ -98,13 +103,16 @@ class ShowcasesController < ApplicationController
   end
 
   def rewish
-    unless @showcase.owner?(current_user)
+    unless @showcase.owner?(current_user) || @showcase.coin_wish?
       create_rewish
       @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
       if @rewish.save
         flash[:notice] = "Rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
         redirect_to root_path
       end
+    else
+      redirect_to root_path
+      return
     end
   end
 
@@ -112,7 +120,7 @@ class ShowcasesController < ApplicationController
     unique_ids = params[:showcase_ids].split(",").uniq
     unique_ids.each do |id|
       @showcase = Showcase.find_by_id(id)
-      if @showcase.admin_created?
+      if @showcase.can_only_rewish?
         create_rewish
         @rewish.grandparent = @showcase
         @rewish.save
@@ -120,6 +128,25 @@ class ShowcasesController < ApplicationController
     end
     flash[:notice] = "Wished successfully"
     redirect_to :back
+  end
+
+  def add_coin_wish
+    if @showcase.can_only_coin_wish?
+      active_coin_wish = current_user.active_coin_wish.first
+      if active_coin_wish.present?
+        active_coin_wish.coin_wish_status = Showcase::COIN_WISH_STATUS[1]
+        active_coin_wish.save
+      end
+      create_rewish
+      @rewish.grandparent = @showcase
+      @rewish.coin_wish_status = Showcase::COIN_WISH_STATUS[0]
+      @rewish.save
+      flash[:notice] = "#{@rewish.title} made as coin wish successfully"
+      redirect_to root_path
+    else
+      redirect_to root_path
+      return
+    end
   end
 
   def tagged_showcases
@@ -144,8 +171,8 @@ class ShowcasesController < ApplicationController
   end
 
   def coin
-    if @showcase.active_coins.count <= 50
-      @showcase.toggle_coin!(current_user) unless @showcase.owner?(current_user)
+    if @showcase.active_coins.count <= 50 && @showcase.coin_wish? && @showcase.coin_wish_active? && !@showcase.owner?(current_user) && current_user.unlocked_coin_wish?
+      @showcase.toggle_coin!(current_user)
       @showcase.reload
       respond_to :js
     end
@@ -209,6 +236,13 @@ class ShowcasesController < ApplicationController
     respond_to :js
   end
 
+  def toggle_achieve_wish
+    @showcase.toggle_user_status!
+    @showcase.reload
+    @showcase.achieved? ? flash[:notice] = "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : flash[:notice] = "Undoed successfully."
+    respond_to :js
+  end
+
   private
 
   def showpiece_params
@@ -263,7 +297,15 @@ class ShowcasesController < ApplicationController
     @rewish.parent = @showcase
     @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]
     @rewish.admin_created = false
+    @rewish.user_status = Showcase::USER_STATUS[0]
     @rewish.all_tags = @showcase.all_tags
+  end
+
+  def check_coin_wish
+    if @showcase.coin_wish?
+      redirect_to root_path
+      return
+    end
   end
 
 end

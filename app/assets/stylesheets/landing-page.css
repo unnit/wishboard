@@ -3117,13 +3117,6 @@ th.headerSortDown {
   height: 100%;
   background-size: contain;
 }
-.brd-box{
-  border: 1px solid #d4d4d4;
-  border-radius: 2px;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
-}
 .fn-ln-mr:hover{
   border: 1px solid #31cacc;
   color: #31cacc;
@@ -3191,10 +3184,15 @@ th.headerSortDown {
   border-radius: 15px;
   color: #6a67ce;
 }
-.brd-box{
+.brd-box,.coin-brd-box{
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
   color: #6a67ce !important;
 }
-.fild-box{
+.fild-box,.coin-fild-box{
   background-color: #6a67ce;
   color: white !important;
 }

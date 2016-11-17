@@ -69,7 +69,7 @@
                         %label Female&nbsp;&nbsp;
                         = f.radio_button :gender, "#{Profile::GENDER[2]}"
                         %label Others
-                  .form-group
+                  .form-group.set-mob-no
                     %label.col-sm-2.control-label{:for => "textinput"}
                       Mobile
                       %br
@@ -148,6 +148,19 @@
         var intervalID = setInterval(function () {
           $(".set-prof-pic").toggleClass("bg-light-grey");
           if (++x === 2) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000);
+      }
+      var c_wrap = "#{params[:unlock].blank? ? '': params[:unlock]}";
+      if( c_wrap != ""){
+        $('html, body').animate({
+            scrollTop: $(".set-mob-no").offset().top - 80
+            }, 500);
+        var x = 0;
+        var intervalID = setInterval(function () {
+          $(".set-mob-no").toggleClass("bg-light-grey");
+          if (++x === 4) {
             window.clearInterval(intervalID);
           }
         }, 1000);

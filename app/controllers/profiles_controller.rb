@@ -39,17 +39,22 @@ class ProfilesController < ApplicationController
   end
 
   def update
+    @profile.assign_attributes(profile_params)
     unless params[:profile][:phone].blank?
       if params[:profile][:phone] != @profile.phone || !@profile.mobile_verified
         flash[:danger] = "Please verify your mobile number"
-        redirect_to settings_path
+        render :index
         return
+      else
+        @profile.phone = params[:profile][:phone]
       end
     else
-      @profile.mobile_verified = false
+      if !@profile.phone.present? && !@profile.mobile_verified
+        @profile.mobile_verified = false
+      end
     end
     @profile.slug = params[:profile][:slug].downcase
-    if @profile.update(profile_params)
+    if @profile.save
       flash[:success] = 'Your profile has been successfully updated.'
       redirect_to settings_path
     else
@@ -300,7 +305,7 @@ class ProfilesController < ApplicationController
     end
 
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :phone, :about, location_attributes: [:id, :name])
+      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :about, location_attributes: [:id, :name])
     end
 
     def business_params

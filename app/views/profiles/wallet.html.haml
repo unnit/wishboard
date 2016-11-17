@@ -30,9 +30,13 @@
           Date -
           = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
           &nbsp;&nbsp;
-          - if withdraw.status == Withdraw::STATUS[0]
+          - if withdraw.open?
             = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" } do
               Delete
+          - elsif withdraw.closed?
+            Completed
+          -elsif withdraw.rejected?
+            Rejected
     .col-xs-12.col-sm-6.padding10.border-lt-side.mtop30{style: "height: 250px;"}
       %h4.mtop10.mbottom10.full-width.text-center RULES
       .col-xs-12.col-sm-12.no-mar-pad

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161112063302) do
+ActiveRecord::Schema.define(version: 20161114091945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -374,14 +374,17 @@ ActiveRecord::Schema.define(version: 20161112063302) do
     t.integer  "year"
     t.integer  "user_id"
     t.string   "image"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "showcase_type"
     t.integer  "product_id"
     t.integer  "parent_id"
     t.integer  "grandparent_id"
-    t.boolean  "admin_created",  default: false
-    t.boolean  "coin_wish",      default: false
+    t.boolean  "admin_created",    default: false
+    t.boolean  "coin_wish",        default: false
+    t.integer  "admin_status"
+    t.integer  "user_status"
+    t.integer  "coin_wish_status"
   end
 
   add_index "showcases", ["grandparent_id"], name: "index_showcases_on_grandparent_id", using: :btree
@@ -497,7 +500,7 @@ ActiveRecord::Schema.define(version: 20161112063302) do
     t.string   "acc_no"
     t.string   "ifsccode"
     t.string   "mmid"
-    t.string   "status"
+    t.integer  "status"
     t.string   "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

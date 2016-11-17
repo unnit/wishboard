@@ -24,15 +24,29 @@ class Showcase < ActiveRecord::Base
 
   SHOWCASE_TYPE = [["Showpiece", 0], ["Wish", 1]]
   SHOWCASE_VALUES = [0, 1]
+  ADMIN_STATUS_NAME = [["Active", 0], ["Inactive", 1]]
+  ADMIN_STATUS = [0, 1]
+  USER_STATUS_NAME = [["Started", 0], ["Completed", 1]]
+  USER_STATUS = [0, 1]
+  COIN_WISH_STATUS_NAME = [["Active", 0], ["Inactive", 1]]
+  COIN_WISH_STATUS = [0, 1]
 
   validates :title, :image, presence: true
   validates :title, length: { maximum: 100 }
   validates :description, length: { maximum: 1000 }
   validates :year, presence: true, unless: :year_blank?
   validates :year, numericality: { only_integer: true, greater_than_or_equal_to: 1700, less_than_or_equal_to: DateTime.current.year, message: "should be between 1700 and #{DateTime.current.year}"}, unless: :year_blank?
+  validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
 
   scope :wishes, -> {where showcase_type: Showcase::SHOWCASE_VALUES[1]}
   scope :showpieces, -> {where showcase_type: Showcase::SHOWCASE_VALUES[0]}
+
+  HUMANIZED_ATTRIBUTES = {
+    user_status: "Achieved"
+  }
+  def self.human_attribute_name(attr, options = {})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
 
   def all_tags=(names)
     self.tags = names.split(",").map do |name|
@@ -47,6 +61,18 @@ class Showcase < ActiveRecord::Base
   def self.tagged_with(name)
     tag = Tag.find_by_name(name)
     tag.showcases unless tag.blank?
+  end
+
+  def admin_creation?
+    admin_created == true
+  end
+
+  def can_only_rewish?
+    admin_created? && !coin_wish? && admin_status == ADMIN_STATUS[0]
+  end
+
+  def can_only_coin_wish?
+    admin_created? && coin_wish? && admin_status == ADMIN_STATUS[0]
   end
 
   ##---Wow activate and deactivate
@@ -167,6 +193,14 @@ class Showcase < ActiveRecord::Base
     return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
   end
 
+  def achieved?
+    user_status == USER_STATUS[1]
+  end
+
+  def coin_wish_active?
+    coin_wish_status == COIN_WISH_STATUS[0]
+  end
+
   def commented_users_names
     commented_users.uniq.map{|c| c.name}.join(", ")
   end
@@ -181,6 +215,11 @@ class Showcase < ActiveRecord::Base
 
   def coined_users
     active_coins.map{|c| c.user.name}.join(", ")
+  end
+
+  def toggle_user_status!
+    new_status = user_status == USER_STATUS[0] ? USER_STATUS[1] : USER_STATUS[0]
+    update_column :user_status, new_status
   end
 
   after_create :create_showcase_notification

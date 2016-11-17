@@ -18,8 +18,9 @@ class Admin::ShowcasesController < AdminController
   end
 
   def create
-    @showcase = current_user.showcases.build(wish_params)
+    @showcase = current_user.showcases.build(admin_wish_params)
     @showcase.admin_created = true
+    @showcase.showcase_type = Showcase::SHOWCASE_VALUES[1]
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -35,17 +36,16 @@ class Admin::ShowcasesController < AdminController
 
   def edit
     @showcase.build_location
-    render "showcases/edit"
   end
 
   def update
-    @showcase.assign_attributes(wish_params)
+    @showcase.assign_attributes(admin_wish_params)
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
-      flash[:notice] = "#{@showcase.title} created successfully"
+      flash[:notice] = "#{@showcase.title} updated successfully"
       redirect_to edit_admin_showcase_path
     else
       flash[:alert] = @showcase.errors.full_messages.join(", ")
@@ -61,8 +61,8 @@ class Admin::ShowcasesController < AdminController
 
   private
 
-  def wish_params
-    params.require(:showcase).permit(:title, :description, :showcase_type, :all_tags)
+  def admin_wish_params
+    params.require(:showcase).permit(:title, :description, :admin_status, :coin_wish, :all_tags)
   end
 
   def get_showcase

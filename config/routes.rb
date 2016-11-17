@@ -154,6 +154,7 @@ Rails.application.routes.draw do
       delete :delete_collection
       post :rewish
       post :coin
+      post :toggle_achieve_wish
     end
     collection do
       get :gettags
@@ -161,6 +162,7 @@ Rails.application.routes.draw do
       post :create_collection
       post :add
       post :multiple_rewish
+      post :add_coin_wish
     end
   end
 

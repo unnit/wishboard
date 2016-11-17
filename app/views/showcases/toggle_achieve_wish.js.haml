@@ -1,0 +1,5 @@
+$(".messages").html("#{j(render partial: 'layouts/messages')}")
+- if @showcase.achieved?
+  $(".toggle-achieve-#{@showcase.id}").hide();
+- else
+  $(".toggle-achieve-#{@showcase.id}").show();

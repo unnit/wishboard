@@ -118,6 +118,15 @@ $(document).ready(function(){
     })
     $("#showcase_ids").val(ids.toString());
   });
+  //Coin Wishes selection
+  $(document).on("click", ".coin-brd-box", function(){
+    $(this).closest(".coin-wish-wrapper").find(".coin-fild-box").removeClass("coin-fild-box").addClass("coin-brd-box");
+    $(this).closest(".coin-wish-wrapper").find(".fa-circle").removeClass("fa-circle").addClass("fa-circle-thin");
+    $(this).removeClass("coin-brd-box").addClass("coin-fild-box");
+    $(this).find(".fa-circle-thin").removeClass("fa-circle-thin").addClass("fa-circle");
+    $(".coin-add-wishlist").show();
+    $(".coin_wish_id").val($(this).data("id"));
+  });
   //Rewish Popup
   $(document).on("click", ".rewish-link", function(){
     $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>Awesome! This will appear in your wishlist. You may edit the content soon after this.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/rewish' class='btn btn-sm bg-white cc-dark-fg full-width' data-method='post'>Rewish</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-rewish'>Not now</a></div></div></div>");
@@ -505,6 +514,8 @@ $(document).ready(function(){
   $(".ps-edit-showpiece").click(function(){
     $(this).prop("checked", "checked");
     $(".year-edit, .loc-edit").show();
+    $(".showcase-user-status").hide();
+    $("#showcase_user_status").prop("checked", false);
     //$(".year-edit, .loc-edit").attr("required", true);
     $(".showcase-edit-submit").val("Showcase");
   });
@@ -513,6 +524,7 @@ $(document).ready(function(){
     $(".year-edit, .loc-edit").hide();
     //$(".year-edit, .loc-edit").removeAttr("required");
     $(".year-edit, .loc-edit").val("");
+    $(".showcase-user-status").show();
     $(".showcase-edit-submit").val("Wishlist");
   })
   //Error notifications for title,desc,year,location

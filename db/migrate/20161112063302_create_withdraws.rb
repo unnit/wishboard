@@ -7,7 +7,7 @@ class CreateWithdraws < ActiveRecord::Migration
       t.string :acc_no
       t.string :ifsccode
       t.string :mmid
-      t.string :status
+      t.integer :status
       t.string :comment
       t.timestamps null: false
     end

@@ -101,6 +101,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def unlocked_coin_wish?
+    profile.mobile_verified?
+  end
+
   def nil_following?
     following.count == 0
   end
@@ -115,6 +119,14 @@ class User < ActiveRecord::Base
 
   def withdraw_history
     withdraws.where("status = ? or status = ? or status = ?", Withdraw::STATUS[0], Withdraw::STATUS[1], Withdraw::STATUS[2])
+  end
+
+  def coin_wishes
+    showcases.where("coin_wish = ? and admin_created = ?", true, false)
+  end
+
+  def active_coin_wish
+    showcases.where("coin_wish = ? and admin_created = ? and coin_wish_status = ?", true, false, Showcase::COIN_WISH_STATUS[0])
   end
 
   def generate_reset_password_token

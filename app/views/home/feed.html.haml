@@ -66,6 +66,54 @@
             ~ form_tag multiple_rewish_showcases_path do
               = hidden_field_tag :showcase_ids
               = submit_tag "Add to Wishlist", class: "btn btn-md wow-badge-bg white-fg"
+      .col-xs-12.col-sm-12.no-mar-pad.mbottom40.coin-wish-wrapper
+        - if current_user.unlocked_coin_wish?
+          - if @coin_wishes.present?
+            #myCoinCarousel.carousel.slide.hidden-xs.mtop10{data: {ride: "carousel"}}
+              .carousel-inner{role: "listbox"}
+                - @coin_wishes.each_slice(2).with_index do |coin_wishes, i|
+                  .item{class: "#{'active' if i==0}"}
+                    - coin_wishes.each do |coin_wish|
+                      .col-sm-6.padding5
+                        .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
+                          .col-sm-12.no-mar-pad.text-center.min186h.show-img-wrap
+                            = cl_image_tag coin_wish.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: coin_wish.title
+                          .col-sm-8.col-sm-offset-2.mtop10.pbottom10
+                            %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.coin-brd-box{"data-id" => "#{coin_wish.id}"}
+                              = truncate coin_wish.title, length: 18
+                              .fa.fa-circle-thin
+              %a.left.carousel-control{href: "#myCoinCarousel", role: "button", "data-slide" => "prev"}
+                %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
+                %span.sr-only Previous
+              %a.right.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "next"}
+                %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
+                %span.sr-only Next
+            #myCoinMobileCarousel.carousel.slide.visible-xs.mtop10{data: {ride: "carousel"}}
+              .carousel-inner{role: "listbox"}
+                - @coin_wishes.each.with_index do |coin_wish, i|
+                  .item{class: "#{'active' if i==0}"}
+                    .col-xs-12.padding5
+                      .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
+                        .col-xs-12.no-mar-pad.text-center.min186h.show-img-wrap
+                          = cl_image_tag coin_wish.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: coin_wish.title
+                        .col-xs-8.col-xs-offset-2.mtop10.pbottom10
+                          %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.coin-brd-box{"data-id" => "#{coin_wish.id}"}
+                            = truncate coin_wish.title, length: 18
+                            .fa.fa-circle-thin
+              %a.left.carousel-control{href: "#myCoinMobileCarousel", role: "button", "data-slide" => "prev"}
+                %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
+                %span.sr-only Previous
+              %a.right.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "next"}
+                %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
+                %span.sr-only Next
+            .col-xs-12.col-sm-12.text-center.hide-display.coin-add-wishlist.mtop20
+              ~ form_tag add_coin_wish_showcases_path do
+                = hidden_field_tag :id, "", {class: "coin_wish_id"}
+                = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg", data: {confirm: "#{current_user.active_coin_wish.blank? ? '' : 'You already hace one active coin wish. Are you sure you want to proceed with the new one?'}"}
+        - else
+          %span.full-width.padding50.text-center.bg-white.pull-left
+            = link_to settings_path(unlock: "coin_wish"), class: "btn btn-outline-edit" do
+              Unlock Coin Wish
       .col-xs-12.col-sm-12.no-mar-pad.showcase-strip
         = render partial: "home/showcases", locals: {showcases: @showcases}
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}

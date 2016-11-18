@@ -297,6 +297,7 @@ class ShowcasesController < ApplicationController
     @rewish.parent = @showcase
     @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]
     @rewish.admin_created = false
+    @rewish.admin_status = nil
     @rewish.user_status = Showcase::USER_STATUS[0]
     @rewish.all_tags = @showcase.all_tags
   end

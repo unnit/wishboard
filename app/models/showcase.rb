@@ -117,17 +117,17 @@ class Showcase < ActiveRecord::Base
   ##--- Coin activation and deactivation
   def create_coin(user)
     coins.create(user_id: user.id)
-    user.wallet.update(:total_coins => (user.wallet.total_coins.to_i + 1), :unused_coins => (user.wallet.unused_coins.to_i + 1))
+    self.user.wallet.update(:total_coins => (user.wallet.total_coins.to_i + 1), :unused_coins => (user.wallet.unused_coins.to_i + 1))
   end
 
   def activate_coin(user)
     coins.find_by(user_id: user.id).update_column :active, true
-    user.wallet.update(:total_coins => (user.wallet.total_coins.to_i + 1), :unused_coins => (user.wallet.unused_coins.to_i + 1))
+    self.user.wallet.update(:total_coins => (user.wallet.total_coins.to_i + 1), :unused_coins => (user.wallet.unused_coins.to_i + 1))
   end
 
   def deactivate_coin(user)
     coins.find_by(user_id: user.id).update_column :active, false
-    user.wallet.update(:total_coins => (user.wallet.total_coins.to_i - 1), :unused_coins => (user.wallet.unused_coins.to_i - 1))
+    self.user.wallet.update(:total_coins => (user.wallet.total_coins.to_i - 1), :unused_coins => (user.wallet.unused_coins.to_i - 1))
   end
 
   def coined?(user)

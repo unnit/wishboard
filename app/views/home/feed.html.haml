@@ -42,7 +42,7 @@
               %a.left.carousel-control{href: "#myCoinCarousel", role: "button", "data-slide" => "prev"}
                 %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
                 %span.sr-only Previous
-              %a.right.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "next"}
+              %a.right.carousel-control{href: "#myCoinCarousel", role: "button", "data-slide" => "next"}
                 %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
                 %span.sr-only Next
             #myCoinMobileCarousel.carousel.slide.visible-xs{data: {ride: "carousel"}}
@@ -60,7 +60,7 @@
               %a.left.carousel-control{href: "#myCoinMobileCarousel", role: "button", "data-slide" => "prev"}
                 %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
                 %span.sr-only Previous
-              %a.right.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "next"}
+              %a.right.carousel-control{href: "#myCoinMobileCarousel", role: "button", "data-slide" => "next"}
                 %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
                 %span.sr-only Next
             .col-xs-12.col-sm-12.text-center.hide-display.coin-add-wishlist.mtop10.mbottom20
@@ -115,7 +115,11 @@
               = hidden_field_tag :showcase_ids
               = submit_tag "Add to Wishlist", class: "btn btn-md wow-badge-bg white-fg"
       .col-xs-12.col-sm-12.no-mar-pad.showcase-strip.mtop30
-        = render partial: "home/showcases", locals: {showcases: @showcases}
+        - unless @showcases.blank?
+          = render partial: "home/showcases", locals: {showcases: @showcases}
+        - else
+          %h3.text-center.padding20.bg-white{style: "height:300px;"}
+            Ayyo! Nothing to show. Invite your friends and follow others to activate your feed.
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
         %i.fa.fa-circle-o-notch.fa-spin.font21
         Please wait...

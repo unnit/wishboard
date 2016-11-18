@@ -1,9 +1,9 @@
 - if @showcase.coins_any?
-  $(".coin-link-#{@showcase.id}").next(".badge").show();
+  $(".badge-coin-link-#{@showcase.id}").next(".badge").show();
 - else
-  $(".coin-link-#{@showcase.id}").next(".badge").hide();
-$(".coin-link-#{@showcase.id}").next(".badge").text("#{@showcase.active_coins.count}")
-$(".coin-link-#{@showcase.id}").next(".badge").attr("title", "#{@showcase.coined_users}")
+  $(".badge-coin-link-#{@showcase.id}").next(".badge").hide();
+$(".badge-coin-link-#{@showcase.id}").next(".badge").text("#{@showcase.active_coins.count}")
+$(".badge-coin-link-#{@showcase.id}").next(".badge").attr("title", "#{@showcase.coined_users}")
 - if @showcase.coined?(current_user)
   $(".coin-link-#{@showcase.id}").find(".coin-sprite-o-less").removeClass("coin-sprite-o-less").addClass("coin-sprite-o-full");
 - else

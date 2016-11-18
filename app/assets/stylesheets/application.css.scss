@@ -681,6 +681,17 @@ small{
   color: #cb69ce !important;
   font-weight: bold;
 }
+.btn-outline-gold{
+  border: 1px solid #ffb900;
+  color: #ffb900 !important;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.btn-outline-gold:hover{
+  background-color: #ffb900;
+  color: white !important;
+}
 .wdrw-btn{
   color: #fffc9e;
   border: 2px solid #fffc9e;

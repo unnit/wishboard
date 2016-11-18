@@ -114,7 +114,7 @@
               $(".mob-otp-verify").text("Associated with another account");
             }else if(data.result == "getotp"){
               $(".mob-otp-verify").removeClass("padding10 pbottom0 grey-fg")
-              $(".mob-otp-verify").html("<a data-remote='true' rel='nofollow' data-method='patch' href='/profiles/get_otp' class='btn btn-default'>Get OTP</a>")
+              $(".mob-otp-verify").html("<a data-remote='true' rel='nofollow' data-method='patch' href='/profiles/get_otp' class='btn btn-default get-otp-link'>Get OTP</a>")
             }
             else if(data.result == "own"){
               $(".mob-otp-verify").text("It's your own verified number!");
@@ -125,6 +125,9 @@
           $(".mob-otp-verify").empty();
           $(".mob-otp-verify").text("Please enter your 10 digit number without leading zero.")
         }
+      })
+      $(document).on("click", ".get-otp-link", function(){
+        $(".mob-otp-verify").html("Please wait&nbsp;&nbsp;<i class='fa fa-spinner fa-spin font21 mtop5'><i>");
       })
       $(".save-button").click(function(){
           $("#profile_date_of_birth").removeAttr("readonly");
@@ -152,15 +155,16 @@
           }
         }, 1000);
       }
-      var c_wrap = "#{params[:unlock].blank? ? '': params[:unlock]}";
-      if( c_wrap != ""){
+      var d_wrap = "#{params[:unlock].blank? ? '': params[:unlock]}";
+      if( d_wrap != ""){
+        $(".messages").html("<div class='alert alert-success alert-dismissable alert-message-div' role='alert'><button class='close' data-dismiss='alert' type='button'><span aria-hidden='true'>×</span><span class='sr-only'>Close</span></button><ul><li>Please verify your mobile number to unlock coin wishes</li></ul></div>")
         $('html, body').animate({
             scrollTop: $(".set-mob-no").offset().top - 80
             }, 500);
         var x = 0;
         var intervalID = setInterval(function () {
-          $(".set-mob-no").toggleClass("bg-light-grey");
-          if (++x === 4) {
+          $(".set-mob-no").toggleClass("grey-bg");
+          if (++x === 6) {
             window.clearInterval(intervalID);
           }
         }, 1000);

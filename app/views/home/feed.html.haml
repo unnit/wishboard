@@ -14,7 +14,7 @@
             = link_to tag.name.strip, tag_path(tag.name), class: "font11 black-fg"
     .col-xs-12.col-sm-6.ptop15.padding-mob0.main-feed{class: "#{'hide-display' if params[:view] == "follow"}"}
       = render partial: "post_showcase", locals: {showcase: @showcase}
-      .col-xs-12.col-sm-12.padding10.grad1.help-txt-wrap.white-fg.mtop10.bg-shad
+      .col-xs-12.col-sm-12.padding10.grad1.help-txt-wrap.white-fg.mtop10.mbottom10.bg-shad
         .close-sprite.pos-absolute.clos-help.pon{style: "right: 10px;"}
         .media.mtop0
           .media-left{style: "vertical-align: middle;"}
@@ -23,53 +23,10 @@
             Show: Showcase things you own or your achievements.
             %br
             Wish: Add any of your wish here and let the world know it.
-      .col-xs-12.col-sm-12.no-mar-pad.mbottom40
-        - if @admin_showcases.present?
-          #myCarousel.carousel.slide.hidden-xs.mtop10{data: {ride: "carousel"}}
-            .carousel-inner{role: "listbox"}
-              - @admin_showcases.each_slice(2).with_index do |admin_showcases, i|
-                .item{class: "#{'active' if i==0}"}
-                  - admin_showcases.each do |admin_showcase|
-                    .col-sm-6.padding5
-                      .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-                        .col-sm-12.no-mar-pad.text-center.min186h.show-img-wrap
-                          = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
-                        .col-sm-8.col-sm-offset-2.mtop10.pbottom10
-                          %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
-                            = truncate admin_showcase.title, length: 18
-                            .fa.fa-square-o
-            %a.left.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "prev"}
-              %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
-              %span.sr-only Previous
-            %a.right.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "next"}
-              %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
-              %span.sr-only Next
-          #myMobileCarousel.carousel.slide.visible-xs.mtop10{data: {ride: "carousel"}}
-            .carousel-inner{role: "listbox"}
-              - @admin_showcases.each.with_index do |admin_showcase, i|
-                .item{class: "#{'active' if i==0}"}
-                  .col-xs-12.padding5
-                    .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-                      .col-xs-12.no-mar-pad.text-center.min186h.show-img-wrap
-                        = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
-                      .col-xs-8.col-xs-offset-2.mtop10.pbottom10
-                        %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
-                          = truncate admin_showcase.title, length: 18
-                          .fa.fa-square-o
-            %a.left.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "prev"}
-              %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
-              %span.sr-only Previous
-            %a.right.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "next"}
-              %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
-              %span.sr-only Next
-          .col-xs-12.col-sm-12.text-center.hide-display.add-wishlist.mtop20
-            ~ form_tag multiple_rewish_showcases_path do
-              = hidden_field_tag :showcase_ids
-              = submit_tag "Add to Wishlist", class: "btn btn-md wow-badge-bg white-fg"
-      .col-xs-12.col-sm-12.no-mar-pad.mbottom40.coin-wish-wrapper
+      .col-xs-12.col-sm-12.no-mar-pad.mbottom10.coin-wish-wrapper
         - if current_user.unlocked_coin_wish?
           - if @coin_wishes.present?
-            #myCoinCarousel.carousel.slide.hidden-xs.mtop10{data: {ride: "carousel"}}
+            #myCoinCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
               .carousel-inner{role: "listbox"}
                 - @coin_wishes.each_slice(2).with_index do |coin_wishes, i|
                   .item{class: "#{'active' if i==0}"}
@@ -88,7 +45,7 @@
               %a.right.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "next"}
                 %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
                 %span.sr-only Next
-            #myCoinMobileCarousel.carousel.slide.visible-xs.mtop10{data: {ride: "carousel"}}
+            #myCoinMobileCarousel.carousel.slide.visible-xs{data: {ride: "carousel"}}
               .carousel-inner{role: "listbox"}
                 - @coin_wishes.each.with_index do |coin_wish, i|
                   .item{class: "#{'active' if i==0}"}
@@ -106,15 +63,58 @@
               %a.right.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "next"}
                 %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
                 %span.sr-only Next
-            .col-xs-12.col-sm-12.text-center.hide-display.coin-add-wishlist.mtop20
+            .col-xs-12.col-sm-12.text-center.hide-display.coin-add-wishlist.mtop10.mbottom20
               ~ form_tag add_coin_wish_showcases_path do
                 = hidden_field_tag :id, "", {class: "coin_wish_id"}
                 = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg", data: {confirm: "#{current_user.active_coin_wish.blank? ? '' : 'You already hace one active coin wish. Are you sure you want to proceed with the new one?'}"}
         - else
-          %span.full-width.padding50.text-center.bg-white.pull-left
-            = link_to settings_path(unlock: "coin_wish"), class: "btn btn-outline-edit" do
+          %span.full-width.padding50.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;"}
+            = link_to settings_path(unlock: "coin_wish"), class: "btn btn-outline-gold" do
               Unlock Coin Wish
-      .col-xs-12.col-sm-12.no-mar-pad.showcase-strip
+      .col-xs-12.col-sm-12.no-mar-pad.mbottom10
+        - if @admin_showcases.present?
+          #myCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
+            .carousel-inner{role: "listbox"}
+              - @admin_showcases.each_slice(2).with_index do |admin_showcases, i|
+                .item{class: "#{'active' if i==0}"}
+                  - admin_showcases.each do |admin_showcase|
+                    .col-sm-6.padding5
+                      .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
+                        .col-sm-12.no-mar-pad.text-center.min186h.show-img-wrap
+                          = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
+                        .col-sm-8.col-sm-offset-2.mtop10.pbottom10
+                          %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
+                            = truncate admin_showcase.title, length: 18
+                            .fa.fa-square-o
+            %a.left.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "prev"}
+              %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
+              %span.sr-only Previous
+            %a.right.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "next"}
+              %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
+              %span.sr-only Next
+          #myMobileCarousel.carousel.slide.visible-xs{data: {ride: "carousel"}}
+            .carousel-inner{role: "listbox"}
+              - @admin_showcases.each.with_index do |admin_showcase, i|
+                .item{class: "#{'active' if i==0}"}
+                  .col-xs-12.padding5
+                    .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
+                      .col-xs-12.no-mar-pad.text-center.min186h.show-img-wrap
+                        = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
+                      .col-xs-8.col-xs-offset-2.mtop10.pbottom10
+                        %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
+                          = truncate admin_showcase.title, length: 18
+                          .fa.fa-square-o
+            %a.left.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "prev"}
+              %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
+              %span.sr-only Previous
+            %a.right.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "next"}
+              %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
+              %span.sr-only Next
+          .col-xs-12.col-sm-12.text-center.hide-display.add-wishlist.mtop10.mbottom20
+            ~ form_tag multiple_rewish_showcases_path do
+              = hidden_field_tag :showcase_ids
+              = submit_tag "Add to Wishlist", class: "btn btn-md wow-badge-bg white-fg"
+      .col-xs-12.col-sm-12.no-mar-pad.showcase-strip.mtop30
         = render partial: "home/showcases", locals: {showcases: @showcases}
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
         %i.fa.fa-circle-o-notch.fa-spin.font21

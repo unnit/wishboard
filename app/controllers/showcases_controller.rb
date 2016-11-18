@@ -2,7 +2,7 @@ class ShowcasesController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
   before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :coin, :toggle_achieve_wish, :add_coin_wish]
   before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish]
-  before_filter :check_coin_wish, only: [:edit, :update]
+  before_filter :check_coin_wish, only: [:edit, :update, :delete]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
   before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
   before_filter :get_collection, only: [:edit_collection, :delete_collection]

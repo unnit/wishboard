@@ -35,17 +35,19 @@
         = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
         .h40.pos-absolute{style: "top: 45%;left: 45%;"}
           - if current_user
-            - if !showcase.owner?(current_user) && showcase.active_coins.count <= 50 && showcase.coin_wish? && showcase.coin_wish_active? && current_user.unlocked_coin_wish?
-              = link_to coin_showcase_path(showcase), remote: true, method: :post, class: "coin-link-#{showcase.id} black-fg" do
-                - if showcase.coined?(current_user)
-                  .coin-sprite-o-full.pos-relative.flipped-horz
-                - else
+            - if !showcase.owner?(current_user) && showcase.active_coins.count <= 50 && showcase.coin_wish? && showcase.coin_wish_active?
+              - if current_user.unlocked_coin_wish?
+                = link_to coin_showcase_path(showcase), remote: true, method: :post, class: "coin-link-#{showcase.id} black-fg" do
+                  - if showcase.coined?(current_user)
+                    .coin-sprite-o-full.pos-relative.flipped-horz
+                  - else
+                    .coin-sprite-o-less.pos-relative.flipped-horz
+              - else
+                = link_to settings_path(unlock: "coin_wish") do
                   .coin-sprite-o-less.pos-relative.flipped-horz
           - else
             = link_to authenticate_path do
               %i.coin-sprite-o-less
-          .badge.wow-badge-bg{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
-            = showcase.active_coins.count
         - if current_user && (showcase.wishlist? && showcase.owner?(current_user) && !showcase.achieved?)
           .pos-absolute{style: "bottom: 30px;left: 0px;", class: "toggle-achieve-#{showcase.id}"}
             = link_to toggle_achieve_wish_showcase_path(showcase), class: "padding10 pull-left white-fg achieve-bg", method: :post, remote: true, style: "border-top-right-radius:5px;border-bottom-right-radius:5px;" do
@@ -88,6 +90,10 @@
             %span.font11.grey-fg.pull-left.mtop2 Rewish
           .badge.pull-left.mleft5.blue-bg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
             = showcase.children.count
+      - else
+        %span.font11.grey-fg.pull-left.mtop2{class: "badge-coin-link-#{showcase.id}"} Coins
+        .badge.wow-badge-bg.pull-left.mleft5{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
+          = showcase.active_coins.count
     .col-xs-2.col-sm-3.border-two.padding10.bg-white.text-right.h40.pleft0
       - if current_user && showcase.owner?(current_user)
         = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do

@@ -171,8 +171,8 @@ class ShowcasesController < ApplicationController
   end
 
   def coin
-    if @showcase.active_coins.count <= 50 && @showcase.coin_wish? && @showcase.coin_wish_active? && !@showcase.owner?(current_user) && current_user.unlocked_coin_wish?
-      @showcase.toggle_coin!(current_user)
+    if @showcase.active_coins.count <= 50 && @showcase.coin_wish? && @showcase.coin_wish_active? && !@showcase.owner?(current_user) && current_user.unlocked_coin_wish? && !@showcase.coined?(current_user)
+      @showcase.add_coin!(current_user)
       @showcase.reload
       respond_to :js
     end

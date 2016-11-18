@@ -37,10 +37,10 @@
           - if current_user
             - if !showcase.owner?(current_user) && showcase.active_coins.count <= 50 && showcase.coin_wish? && showcase.coin_wish_active?
               - if current_user.unlocked_coin_wish?
-                = link_to coin_showcase_path(showcase), remote: true, method: :post, class: "coin-link-#{showcase.id} black-fg" do
-                  - if showcase.coined?(current_user)
-                    .coin-sprite-o-full.pos-relative.flipped-horz
-                  - else
+                - if showcase.coined?(current_user)
+                  .coin-sprite-o-full.pos-relative.flipped-horz
+                - else
+                  = link_to coin_showcase_path(showcase), remote: true, method: :post, class: "coin-link-#{showcase.id} black-fg", data: {confirm: "You are about to gift 1 coin to your friend. We will credit 1 rupee on your behalf to the owner of this coin wish and this can't be undone, yay! Happy gifting"} do
                     .coin-sprite-o-less.pos-relative.flipped-horz
               - else
                 = link_to settings_path(unlock: "coin_wish") do

@@ -66,7 +66,7 @@
             .col-xs-12.col-sm-12.text-center.hide-display.coin-add-wishlist.mtop10.mbottom20
               ~ form_tag add_coin_wish_showcases_path do
                 = hidden_field_tag :id, "", {class: "coin_wish_id"}
-                = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg", data: {confirm: "#{current_user.active_coin_wish.blank? ? '' : 'You already hace one active coin wish. Are you sure you want to proceed with the new one?'}"}
+                = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg", data: {confirm: "#{current_user.active_coin_wish.blank? ? '' : 'Only one coish can be active at a time. If you click okay and proceed, current selection will become your active coin wish. But do not worry, the old earnings will be added to your wallet without any deductions.'}"}
         - else
           %span.full-width.padding50.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;"}
             = link_to settings_path(unlock: "coin_wish"), class: "btn btn-outline-gold" do

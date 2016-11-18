@@ -4,7 +4,7 @@ class CreateCoins < ActiveRecord::Migration
       t.integer :user_id
       t.integer :showcase_id
       t.boolean :active, default: true
-      t.boolean :checked, defalt: false
+      t.boolean :checked, default: false
       t.timestamps null: false
     end
     add_index :coins, :user_id

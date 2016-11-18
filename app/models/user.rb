@@ -17,8 +17,10 @@ class User < ActiveRecord::Base
   has_many :followers, -> {where("relationships.active = ?", true)}, through: :passive_relationships, source: :follower
   has_many :showcases
   has_many :wows
+  has_many :coins
   has_many :comments
   has_many :appreciations, -> (id) {where("wows.user_id != ? and wows.active = ?", id, true)}, through: :showcases, source: :wows
+  has_many :gift_coins, -> (id) {where("coins.active = ?", true)}, through: :showcases, source: :coins
   has_many :received_comments, -> (id) {where("comments.user_id != ?", id )}, through: :showcases, source: :comments
   has_many :showcase_notifications
   has_many :interests
@@ -185,6 +187,10 @@ class User < ActiveRecord::Base
     appreciations.where("wows.checked = ? and wows.active = ?", false, true)
   end
 
+  def unchecked_coins
+    gift_coins.where("coins.checked = ? and coins.active = ?", false, true)
+  end
+
   def unchecked_comments
     received_comments.where("comments.checked = ?", false)
   end
@@ -198,7 +204,7 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_notififcations_count
-    unchecked_wows.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count
+    unchecked_wows.count + unchecked_coins.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count
   end
 
   def interests_count

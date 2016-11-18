@@ -1,8 +1,12 @@
-.container-fluid.padding0.ptop50.mob-ptop100.bg-light-grey.mbottom40{style: "min-height:700px;"}
+.container-fluid.padding0.ptop50.mob-ptop100.bg-white.mbottom40{style: "min-height:700px;"}
   .container.padding0
     %h3.pleft-10 Your notifications
     .col-xs-12.col-sm-12.notif-full-content.no-mar-pad.mtop10.light-border
       - unless @notifications.blank?
+        %span.full-width.pull-right
+          = link_to update_all_notifications_path, remote: true do
+            .col-xs-12.col-sm-12.padding5.text-right
+              Mark all as read
         = render partial: "home/notifications_content", locals: {notifications: @notifications}
       - else
         %h3.text-center No Activity yet???

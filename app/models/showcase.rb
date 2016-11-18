@@ -148,6 +148,10 @@ class Showcase < ActiveRecord::Base
     end
   end
 
+  def add_coin!(user)
+    create_coin(user)
+  end
+
   def coins_many?
     active_coins.count > 1
   end

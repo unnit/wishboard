@@ -117,6 +117,7 @@ Rails.application.routes.draw do
   delete "delete_wiki/:id", to: "home#delete_wiki", as: :delete_wiki
   get "user_card/:id", to: "home#user_card", as: :get_user_card
   get "check_wow/:id", to: "home#update_wow_checked", as: :update_wow_checked
+  get "check_coin/:id", to: "home#update_coin_checked", as: :update_coin_checked
   get "check_comment/:id", to: "home#update_comment_checked", as: :update_comment_checked
   get "check_follower/:id", to: "home#update_follower_checked", as: :update_follower_checked
   get "check_showcase/:id", to: "home#update_showcase_checked", as: :update_showcase_checked

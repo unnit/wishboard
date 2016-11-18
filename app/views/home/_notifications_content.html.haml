@@ -5,6 +5,12 @@
       %span.weight600.grey-fg= truncate notification.user.name, length: 35
       %span.font13.grey-fg
         liked an item in your showcase
+  - elsif notification.class.name == "Coin"
+    = link_to update_coin_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+      %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+      %span.weight600.grey-fg= truncate notification.user.name, length: 35
+      %span.font13.grey-fg
+        gifted a coin
   - elsif notification.class.name == "Comment"
     = link_to update_comment_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
       %span.grey-fg= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face

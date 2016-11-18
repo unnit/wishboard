@@ -73,12 +73,12 @@ class HomeController < ApplicationController
   end
 
   def unchecked_notifications
-    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications).sort_by{|e| e.created_at}.reverse
+    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications + current_user.unchecked_coins).sort_by{|e| e.created_at}.reverse
     respond_to :js
   end
 
   def notifications
-    @notifications = (current_user.appreciations + current_user.received_comments + current_user.passive_relationships + current_user.showcase_notifications).sort_by{|e| e.created_at}.reverse
+    @notifications = (current_user.appreciations + current_user.gift_coins + current_user.received_comments + current_user.passive_relationships + current_user.showcase_notifications).sort_by{|e| e.created_at}.reverse
     @notifications = Kaminari.paginate_array(@notifications).page(params[:notifications]).per(10)
     respond_to do |format|
       format.html
@@ -89,6 +89,9 @@ class HomeController < ApplicationController
   def update_all_notifications
     current_user.unchecked_wows.each do |wow|
       wow.update_column :checked, true
+    end
+    current_user.unchecked_coins.each do |coin|
+      coin.update_column :checked, true
     end
     current_user.unchecked_comments.each do |comment|
       comment.update_column :checked, true
@@ -108,6 +111,16 @@ class HomeController < ApplicationController
     unless wow.blank?
       wow.update_column :checked, true if wow.showcase.user == current_user
       redirect_to showcase_path(wow.showcase)
+    else
+      redirect_to root_path
+    end
+  end
+
+  def update_coin_checked
+    coin = Coin.find_by_id params[:id]
+    unless coin.blank?
+      coin.update_column :checked, true if coin.showcase.user == current_user
+      redirect_to showcase_path(coin.showcase)
     else
       redirect_to root_path
     end

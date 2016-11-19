@@ -634,6 +634,9 @@ small{
   color: #BDBDBD !important;
 }
 .bg-white{background-color: white !important;}
+.bg-blue{
+  background-color: #595cea;
+}
 .achieve-bg{
   background-color: #dc8131;
 }
@@ -707,6 +710,15 @@ small{
 .flipped{
   transform: rotateX(360deg);
   -webkit-transform: rotateX(360deg);
+}
+.bulge-out{
+  -webkit-animation: hvr-buzz 1s infinite; /* Safari 4.0 - 8.0 */
+  animation: hvr-buzz 1s infinite;
+}
+.clos-ps-wrapper{
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
 }
 .flipped-horz{
   -webkit-animation: horz 1s infinite; /* Safari 4.0 - 8.0 */

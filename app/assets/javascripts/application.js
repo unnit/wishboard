@@ -91,6 +91,10 @@ $(document).ready(function(){
     $(".ps-click-wrapper").hide();
     $(".ps-wrapper").fadeIn();
   })
+  $(document).on("click", ".clos-ps-wrapper", function(){
+    $(".ps-wrapper").hide();
+    $(".ps-click-wrapper").fadeIn();
+  })
   //Coin Wishes - Learn More
   $(document).on("click", ".c-w-lrn-mr", function(){
     $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font16'><h3 class='full-width mbottom20 text-center txt-underline'>Know more about Coin Wishes</h3><ul><li class='mbottom10'>Coin wishes help you earn for each click you get on your coin wish, simple.</li><li class='mbottom10'>Wherever you see a coin icon above your friend's post, click on it to gift him/her a coin</li><li class='mbottom10'>1 click on a coin icon = ₹ 1 rupee (For your wishes & while gifting)</li><li class='mbottom10'>You can withdraw the coins earned to your bank account any time at the intervals of 10, 20, 50, 100 & in multiples of 200 thereafter</li><li class='mbottom10'>Also, for each friend you invite to Cocociti you get 2 coins.</li><li class='mbottom10'>Remember, 1 coin = ₹ 1 rupee. No coupons or complications, earn WHITE MONEY at your convenience, just by clicking.</li><br>Happy Wishing.</ul></div>")

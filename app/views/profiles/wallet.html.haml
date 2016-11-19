@@ -8,38 +8,47 @@
       .col-xs-6.col-sm-6
         .pull-right.wdrw-btn.pon SEND TO BANK
       %span.full-width.text-center.pull-left.font20.white-fg= current_user.wallet.unused_coins.to_i
-    .col-xs-12.col-sm-3.padding20{style: "background-color: #ffdac5;height:200px;color: #ffa49d;"}
+    .col-xs-12.col-sm-3.padding20{style: "background-color: #ffdac5;height:200px;color: #ec827a;"}
       .col-xs-12.col-sm-12.mbottom10.text-center
         .total-coins-sprite.inline-block
         %span.inline-block.full-width{style: "letter-spacing: 2px;"}
           TOTAL
       %span.full-width.text-center.pull-left.font16= current_user.wallet.total_coins.to_i
-    .col-xs-12.col-sm-3.padding20{style: "background-color: #ffede5;height:200px;color: #ffa49d;"}
+    .col-xs-12.col-sm-3.padding20{style: "background-color: #ffede5;height:200px;color: #ec827a;"}
       .col-xs-12.col-sm-12.mbottom10.text-center
         .used-coins-sprite.inline-block
         %span.inline-block.full-width{style: "letter-spacing: 2px;"}
           USED
       %span.full-width.text-center.pull-left.font16= current_user.wallet.used_coins.to_i
-    .col-xs-12.col-sm-6.padding10.mtop30{style: "height: 250px;"}
-      %h4.mtop10.mbottom10.full-width.text-center WITHDRAWAL HISTORY
-      .col-xs-12.col-sm-12.no-mar-pad
+    .col-xs-12.col-sm-6.padding10.ptop0.mtop30
+      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad WITHDRAWAL HISTORY
+      .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}
         - @withdraws.each do |withdraw|
-          Coins withdrawn -
-          = withdraw.coins
-          &nbsp;&nbsp;
-          Date -
-          = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
-          &nbsp;&nbsp;
-          - if withdraw.open?
-            = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" } do
-              Delete
-          - elsif withdraw.closed?
-            Completed
-          -elsif withdraw.rejected?
-            Rejected
-    .col-xs-12.col-sm-6.padding10.border-lt-side.mtop30{style: "height: 250px;"}
-      %h4.mtop10.mbottom10.full-width.text-center RULES
-      .col-xs-12.col-sm-12.no-mar-pad
+          %h5.no-mar-pad.padding10.border5.bg-shad.light-border
+            Coins withdrawn -
+            = withdraw.coins
+            &nbsp;&nbsp;
+            Date -
+            = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
+            &nbsp;&nbsp;
+            - if withdraw.open?
+              = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" } do
+                Delete Request
+            - elsif withdraw.closed?
+              Completed
+            -elsif withdraw.rejected?
+              Rejected
+    .col-xs-12.col-sm-6.padding10.ptop0.border-lt-side.mtop30{style: "min-height: 250px;"}
+      %h4.no-mar-pad.padding10.full-width.text-center.border5.bg-shad.light-border RULES
+      .col-xs-12.col-sm-12.no-mar-pad.mtop10
+        %ul
+          %li 1 click on a coin icon = ₹1 rupee (For your wishes & while gifting)
+          %li For each friend you invite to Cocociti, you get 2 coins. Isn't that awesome?
+          %li You can withdraw the coins earned to your bank account any time at the intervals of 10, 20, 50, 100 & in multiples of 200 thereafter
+          %li The first time you can withdraw when you reach ₹10, next time when you reach ₹20, then 50, 100 and 200 each time after your first 200.
+          %li Have questions? Don't worry, write to us at ayyo@cocociti.com and we'll be happy to help.
+          %br
+          %span.font20 Happy Wishing.
 
 = content_for :extra_js do
   :javascript
@@ -49,7 +58,7 @@
       }else{
         $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font16'>Ayyo! You can withdraw money to your bank only when your wallet balance reach 10, 20, 50, 100 & multiples of 200 thereafter. Don't worry if you are short of these numbers, just ask your friends to help you to reach.<br><br>Tip: You can withdraw 10 rupees even if your earnings are 10 or above.</div>")
       }
-      $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>")
+      $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
       $(document).on("click", ".wdrw-btn", function(){
         $("#cont-wrapper").modal('show');
       })

@@ -86,14 +86,21 @@ $(document).ready(function(){
     $wrap.find(".preview-delete-edit, .preview-edit").hide();
     $wrap.find(".file-input-button-edit").show();
   })
+  //Click to show showcase wrapper
+  $(document).on("click", ".ps-click-btn", function(){
+    $(".ps-click-wrapper").hide();
+    $(".ps-wrapper").fadeIn();
+  })
+  //Coin Wishes - Learn More
+  $(document).on("click", ".c-w-lrn-mr", function(){
+    $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font16'><h3 class='full-width mbottom20 text-center txt-underline'>Know more about Coin Wishes</h3><ul><li class='mbottom10'>Coin wishes help you earn for each click you get on your coin wish, simple.</li><li class='mbottom10'>Wherever you see a coin icon above your friend's post, click on it to gift him/her a coin</li><li class='mbottom10'>1 click on a coin icon = ₹ 1 rupee (For your wishes & while gifting)</li><li class='mbottom10'>You can withdraw the coins earned to your bank account any time at the intervals of 10, 20, 50, 100 & in multiples of 200 thereafter</li><li class='mbottom10'>Also, for each friend you invite to Cocociti you get 2 coins.</li><li class='mbottom10'>Remember, 1 coin = ₹ 1 rupee. No coupons or complications, earn WHITE MONEY at your convenience, just by clicking.</li><br>Happy Wishing.</ul></div>")
+    $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
+    $("#cont-wrapper").modal("show");
+  })
   //Setting footer proper for mac devices
   if($(document).height() <= $(window).height()){
     setTimeout(function(){$("footer").css({"position": "absolute", "bottom": "0"});}, 3000);
   }
-  //Close help text in feed
-  $(document).on("click", ".clos-help", function(){
-    $(this).closest(".help-txt-wrap").hide();
-  })
   //Admin Wishes button effect
   $(document).on("click", ".brd-box", function(){
     $(this).removeClass("brd-box").addClass("fild-box");

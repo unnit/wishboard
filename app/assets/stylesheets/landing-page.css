@@ -3196,6 +3196,14 @@ th.headerSortDown {
   background-color: #6a67ce;
   color: white !important;
 }
+.pos-q-ps-clk{
+  top: 22px;
+  right: 10px;
+}
+.pos-q-km-clk{
+  top: 15px;
+  right: 10px;
+}
 /********/
 
 /******************Other CSS for header and future use *******/

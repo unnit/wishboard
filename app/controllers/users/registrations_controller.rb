@@ -12,6 +12,8 @@ skip_before_filter :check_user_status, :check_profile, :check_interests
       token = user.generate_account_confirmation_token
       user.confirmation_token = token
       user.confirmation_sent_at = DateTime.current
+      user.invited_code = params[:invited_code]
+      user.invited_code = nil unless user.valid?
       user.save
       user.reload
       UserMailer.account_token_with_instructions(user, token).deliver_now

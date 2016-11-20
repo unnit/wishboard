@@ -31,6 +31,7 @@ class Profile < ActiveRecord::Base
   validates :first_name, :last_name, :slug, presence: true
   validates :slug, uniqueness: true
   validates :first_name, :last_name, length: { maximum: 100, message: "should be between 100 characters." }
+  validates :first_name, :last_name, format: { with: /\A[a-zA-Z\.\ ]*\z/, message: "only allows alphabets, dot and space" }
   validates :slug, length: { minimum: 6, maximum: 30, message: "should be between 6 and 30 characters." }
   validates :slug, format: { with: /\A[a-zA-Z0-9\_\-]*\z/, message: "only allows alphabets, numbers, underscore and hyphen" }
 

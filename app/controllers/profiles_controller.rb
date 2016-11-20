@@ -8,6 +8,7 @@ class ProfilesController < ApplicationController
   def info
     redirect_to root_path if current_user.profile
     @profile = Profile.new
+    @referrer = current_user.referrer
   end
 
   def create
@@ -15,10 +16,24 @@ class ProfilesController < ApplicationController
       @profile = Profile.new(create_profile_params)
       @profile.slug = params[:profile][:slug].downcase
       @profile.user = current_user
-      if @profile.save
-        wallet = Wallet.new
-        wallet.user = current_user
-        wallet.save
+      @referrer = current_user.referrer if current_user.invited_code == params[:invited_code]
+      current_user.invited_code = params[:invited_code]
+      unless current_user.valid?
+        flash[:alert] = "Invalid invite code."
+        render :info
+        return
+      end
+      if @profile.valid?
+        create_wallet
+        current_user.invite_code = current_user.generate_invite_code
+        if current_user.referrer.present?
+          referrer_wallet = current_user.referrer.wallet
+          referrer_wallet.total_coins = referrer_wallet.total_coins.to_i + 2
+          referrer_wallet.unused_coins = referrer_wallet.unused_coins.to_i + 2
+          referrer_wallet.save
+        end
+        current_user.save
+        @profile.save
         flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
         redirect_to invitations_path(invite_friends: "invite")
       else
@@ -314,6 +329,15 @@ class ProfilesController < ApplicationController
 
     def social_params
       params.require(:profile).permit(:twitter, :facebook, :instagram, :linkedin, :google_plus, :website, :other_url)
+    end
+
+    def create_wallet
+      wallet = Wallet.new
+      wallet.user = current_user
+      wallet.total_coins = 0
+      wallet.unused_coins = 0
+      wallet.used_coins = 0
+      wallet.save
     end
 
 

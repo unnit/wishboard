@@ -103,4 +103,13 @@ namespace :coco_tasks do
     end
   end
 
+  task set_invite_code_for_all_users: :environment do
+    profiles = Profile.all
+    profiles.each do |profile|
+      user = profile.user
+      user.invite_code = user.generate_invite_code
+      user.save
+    end
+  end
+
 end

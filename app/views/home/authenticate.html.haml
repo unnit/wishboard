@@ -44,6 +44,7 @@
         #home-sign-up.tab-pane.fade{class: "#{'active in' if params[:tab] == "signup"}"}
           .col-md-12.mtop40
             = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require signup-form"}) do |f|
+              = hidden_field_tag :invited_code, "#{params[:invited_code]}"
               .col-sm-12.errors
               .form-group.clearfix
                 = f.label :email, :class => 'col-sm-3 control-label text-right'

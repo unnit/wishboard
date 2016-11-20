@@ -37,6 +37,12 @@ class User < ActiveRecord::Base
   has_one :profile, dependent: :destroy
   has_one :wallet, dependent: :destroy
 
+  validates :invited_code, format: { with: /\A[a-zA-Z0-9]*\z/ }, if: :invited_code_present?
+
+  def invited_code_present?
+    invited_code.present?
+  end
+
   class << self
     def admin_search(term)
       results = joins(:profile)
@@ -48,10 +54,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  def referrals
+    users = User.where("invited_code = ?", self.invite_code) unless self.invite_code.blank?
+    return users
+  end
+
+  def referrer
+    user = User.find_by_invite_code self.invited_code unless self.invited_code.blank?
+    return user
+  end
+
   def admin?
     role=="admin"
   end
-
 
   def profile?
     if profile.present?
@@ -137,6 +152,10 @@ class User < ActiveRecord::Base
 
   def generate_account_confirmation_token
     return Digest::SHA1.hexdigest([Time.now, rand].join)
+  end
+
+  def generate_invite_code
+    return self.profile.first_name[0..4].gsub(/[^a-z]/i, '').upcase + SecureRandom.hex(2).upcase
   end
 
   def avatar

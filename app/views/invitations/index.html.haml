@@ -8,12 +8,21 @@
       .col-xs-12.col-sm-12.no-mar-pad
         .panel.panel-default#profile_form
           .panel-heading
-            %h5.mtop-v-5.font-medium
-              Add the email addresses of the people you are inviting to the field below. If you add multiple email addresses, separate them with a comma.
+            %h4.mtop-v-5
+              Send Invitations
           .panel-body
             .col-xs-12.col-sm-12
               ~ form_tag send_email_invitations_path, class: "form-horizontal" do
-                %fieldset.mtop30
+                %fieldset.mtop10
+                  .col-xs-12.col-sm-6.mbottom10.text-center
+                    %span.inline-block.padding5{style: "border: 1px solid #337ab7;"}
+                      %span.pull-left.mright5.grey-fg{style: "margin-top: 7px;"} Your Referral Code:
+                      %span.pull-left.font25{style: "color: #337ab7;"}= current_user.invite_code
+                  .col-xs-12.col-sm-6.mbottom10
+                    %ul
+                      %li.font20 You get 2 rupees for each friend you refer.
+                      %li If you add multiple email addresses, separate them with a comma.
+                      %li Your invite code will be automatically send with the email, no need to type it again.
                   .form-group
                     %label.col-sm-2.control-label Emails
                     .col-sm-10.no-mar-pad= text_area_tag :emails, "", rows: "2", placeholder: "Enter the emails here", class: "form-control textarea bg-light-grey import-emails"
@@ -25,11 +34,7 @@
                       .status-invite.inline-block
                   .form-group
                     %label.col-sm-2.control-label Personal Messages
-                    .col-sm-10.no-mar-pad= text_area_tag :message, "", rows: "5", placeholder: "Invite message for your friends.", class: "form-control textarea bg-light-grey"
-                    .col-xs-12.col-sm-10.col-sm-offset-2.mtop5.padding0.font11
-                      %a.inv-msg-templ.pon
-                        Click here
-                      to add a default template.
+                    .col-sm-10.no-mar-pad= text_area_tag :message, "Hey, found this website super interesting. It allows us to share our wishes, achievements and showcase things we own to our friends along with discovering people with similar interests. Sign up & don't forget to follow me there. :)", rows: "5", placeholder: "Invite message for your friends.", class: "form-control textarea bg-light-grey"
                   .form-group
                     .col-xs-12.col-sm-12.text-center
                       = submit_tag "Send Invite", class: "btn save-button mtop10 white-fg"

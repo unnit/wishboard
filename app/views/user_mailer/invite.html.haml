@@ -4,7 +4,7 @@ has invited you to join Cocociti
 %br
 %br
 %br
-= link_to "#{root_url}", style: "text-decoration: none" do
+= link_to "#{root_url(invited_code: @user.invite_code)}", style: "text-decoration: none" do
   %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
     Click to Join
 %br

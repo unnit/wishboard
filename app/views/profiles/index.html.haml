@@ -169,4 +169,18 @@
           }
         }, 1000);
       }
+      var e_wrap = "#{params[:verify].blank? ? '': params[:verify]}";
+      if( e_wrap != ""){
+        $(".messages").html("<div class='alert alert-success alert-dismissable alert-message-div' role='alert'><button class='close' data-dismiss='alert' type='button'><span aria-hidden='true'>×</span><span class='sr-only'>Close</span></button><ul><li>Please verify your mobile number.</li></ul></div>")
+        $('html, body').animate({
+            scrollTop: $(".set-mob-no").offset().top - 80
+            }, 500);
+        var x = 0;
+        var intervalID = setInterval(function () {
+          $(".set-mob-no").toggleClass("grey-bg");
+          if (++x === 6) {
+            window.clearInterval(intervalID);
+          }
+        }, 1000);
+      }
     });

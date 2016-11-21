@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
 
   def can_withdraw?
     unused_coins = wallet.unused_coins.to_i
-    if (unused_coins == 10 || unused_coins == 20 || unused_coins == 50 || unused_coins == 100 || unused_coins%200 == 0) && unused_coins !=0
+    if (unused_coins == 10 || unused_coins == 20 || unused_coins == 50 || unused_coins == 100 || unused_coins%200 == 0) && unused_coins !=0 && mobile_verified?
       return true
     else
       return false
@@ -119,6 +119,10 @@ class User < ActiveRecord::Base
   end
 
   def unlocked_coin_wish?
+    profile.mobile_verified?
+  end
+
+  def mobile_verified?
     profile.mobile_verified?
   end
 

@@ -62,6 +62,8 @@ Rails.application.routes.draw do
       patch :resend_otp
       patch :verify_otp
       post :send_to_bank
+      get :unlock_coin_wish
+      get :verify_profile
     end
     member do
       post :delete_withdraw_request

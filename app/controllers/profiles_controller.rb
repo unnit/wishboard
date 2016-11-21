@@ -26,12 +26,6 @@ class ProfilesController < ApplicationController
       if @profile.valid?
         create_wallet
         current_user.invite_code = current_user.generate_invite_code
-        if current_user.referrer.present?
-          referrer_wallet = current_user.referrer.wallet
-          referrer_wallet.total_coins = referrer_wallet.total_coins.to_i + 2
-          referrer_wallet.unused_coins = referrer_wallet.unused_coins.to_i + 2
-          referrer_wallet.save
-        end
         current_user.save
         @profile.save
         flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
@@ -239,6 +233,12 @@ class ProfilesController < ApplicationController
   def verify_otp
     profile = current_user.profile
     if (params[:otp] == profile.otp1 && !profile.otp1.blank?) || (params[:otp] == profile.otp2 && !profile.otp2.blank?)
+      if current_user.referrer.present? && profile.mobile_verified ==  false
+        referrer_wallet = current_user.referrer.wallet
+        referrer_wallet.total_coins = referrer_wallet.total_coins.to_i + 2
+        referrer_wallet.unused_coins = referrer_wallet.unused_coins.to_i + 2
+        referrer_wallet.save
+      end
       profile.phone = session[:mobile_no]
       profile.mobile_verified = true
       profile.otp1 = nil
@@ -248,6 +248,16 @@ class ProfilesController < ApplicationController
       session.delete("otp_entered")
       if session[:listing_id]
         render js: "window.location = '#{user_product_url(session.delete(:listing_id))}'"
+        return
+      elsif session[:unlock_coin_wish].present?
+        session.delete(:unlock_coin_wish)
+        flash[:notice] = "You have successfully unlocked coin wish."
+        render js: "window.location = '#{root_url}'"
+        return
+      elsif session[:verify_profile].present?
+        session.delete(:verify_profile)
+        flash[:notice] = "You have successfully verified your profile."
+        render js: "window.location = '#{wallet_url}'"
         return
       end
     else
@@ -261,6 +271,24 @@ class ProfilesController < ApplicationController
       end
     end
     respond_to :js
+  end
+
+  def unlock_coin_wish
+    unless current_user.unlocked_coin_wish?
+      session[:unlock_coin_wish] = "yes"
+      redirect_to settings_path(unlock: "coin_wish")
+    else
+      redirect_to root_path
+    end
+  end
+
+  def verify_profile
+    unless current_user.mobile_verified?
+      session[:verify_profile] = "yes"
+      redirect_to settings_path(verify: "mobile")
+    else
+      redirect_to root_path
+    end
   end
 
   def wallet
@@ -334,8 +362,8 @@ class ProfilesController < ApplicationController
     def create_wallet
       wallet = Wallet.new
       wallet.user = current_user
-      wallet.total_coins = 0
-      wallet.unused_coins = 0
+      wallet.total_coins = 2
+      wallet.unused_coins = 2
       wallet.used_coins = 0
       wallet.save
     end

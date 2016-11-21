@@ -63,9 +63,12 @@
                 = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg", data: {confirm: "#{current_user.active_coin_wish.blank? ? '' : 'Only one coish can be active at a time. If you click okay and proceed, current selection will become your active coin wish. But do not worry, the old earnings will be added to your wallet without any deductions.'}"}
       - else
         .col-xs-12.col-sm-12.no-mar-pad.mbottom10
-          %span.full-width.padding50.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;"}
-            = link_to settings_path(unlock: "coin_wish"), class: "btn btn-outline-gold" do
+          %span.full-width.ptop50.pbottom50.pleft-10.pright-10.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;"}
+            = link_to unlock_coin_wish_profiles_path, class: "btn btn-outline-gold" do
               Unlock Coin Wish
+            %h6.mbottom0.grey-fg Click Unlock above to activate coin wishes and receive sign up bonus to your bank account.
+            %span.font11.grey-fg.txt-underline.pon.c-w-lrn-mr
+              Know More
       - if @admin_showcases.present?
         .col-xs-12.col-sm-12.no-mar-pad
           .col-xs-12.col-sm-12.text-center.no-mar-pad

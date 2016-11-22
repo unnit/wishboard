@@ -26,6 +26,7 @@
 //= require jquery.tooltipster
 //= require tagmanager
 //= require typeahead.bundle
+//= require jssocials.min
 
 $(document).ready(function(){
   //Image loading bar effect

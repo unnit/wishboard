@@ -6,7 +6,10 @@
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
     - if Rails.env.development?
       %meta{:name => "robots", :content => "noindex"}
-    %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is where the world comes to wish & showcase. Wish it, achieve it, showcase it. Discover wishes & people with similar wishes. What is your wish?'}", :name => "description"}
+    - if params[:invite_code].blank?
+      %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is where the world comes to wish & showcase. Wish it, achieve it, showcase it. Discover wishes & people with similar wishes. What is your wish?'}", :name => "description"}
+    - else
+      %meta{:content => "Sign up here to earn free money to fulfill your wishes. I just did.", :name => "description"}
     %meta{:content => "", :name => "author"}
     %meta{name: "apple-mobile-web-app-capable", content: "yes"}
     %meta{name: "apple-mobile-web-app-status-bar-style", content: "black"}

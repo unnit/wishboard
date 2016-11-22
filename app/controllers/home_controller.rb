@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
   skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
   before_filter :back_to_home, only: [:authenticate]
-  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate]
+  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs]
   before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers, :wiki]
   before_filter :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
   before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]

@@ -111,8 +111,19 @@ class User < ActiveRecord::Base
 
   def can_withdraw?
     unused_coins = wallet.unused_coins.to_i
-    if (unused_coins == 10 || unused_coins == 20 || unused_coins == 50 || unused_coins == 100 || unused_coins%200 == 0) && unused_coins !=0 && mobile_verified?
-      return true
+    count = withdraws.count
+    if mobile_verified?
+      if count == 0
+        unused_coins >= 10 ? true : false
+      elsif count == 1
+        unused_coins >= 20 ? true : false
+      elsif count == 2
+        unused_coins >= 50 ? true : false
+      elsif count == 3
+        unused_coins >= 100 ? true : false
+      elsif count >= 4
+        unused_coins >= 200 ? true : false
+      end
     else
       return false
     end

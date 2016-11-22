@@ -1,5 +1,7 @@
 = content_for :title do
   -title = "Invite Friends - Cocociti"
+= content_for :meta_content do
+  -meta_content = "Click the link to signup"
 .container-fluid.bg-light-grey.ptop50.mob-ptop100.pbottom50.helvetica-font.padding0
   .container.mtop10.padding0
     #google_client_id{"data-client-id" => "#{GLOBAL_VARIABLES[:google_client_id]}"}
@@ -20,15 +22,16 @@
                       %span.pull-left.font25{style: "color: #337ab7;"}= current_user.invite_code
                   .col-xs-12.col-sm-6.mbottom10
                     %ul
-                      %li.font20 You get 2 rupees for each  verified friend you refer.
+                      %li.font20 You get 2 rupees for each verified friend you referred.
                       %li If you add multiple email addresses, separate them with a comma.
                       %li Your invite code will be automatically send with the email, no need to type it again.
                   .form-group
                     %label.col-sm-2.control-label Emails
                     .col-sm-10.no-mar-pad= text_area_tag :emails, "", rows: "2", placeholder: "Enter the emails here", class: "form-control textarea bg-light-grey import-emails"
                   .form-group
-                    .col-xs-12.col-sm-4.col-sm-offset-2.padding0
-                      .btn.btn-primary.google-contacts-import
+                    .col-xs-12.col-sm-10.col-sm-offset-2.padding0
+                      #shareRoundIcons.pull-left
+                      .btn.btn-primary.google-contacts-import.mtop10.mleft10
                         .glyphicon.glyphicon-envelope
                         &nbsp;Import Your Gmail Contacts
                       .status-invite.inline-block
@@ -44,3 +47,15 @@
                         .padding10.pbottom0
                           = link_to root_path do
                             Skip to Feed
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      //Share buttons using jssocial
+      $("#shareRoundIcons").jsSocials({
+        url: "https://www.cocociti.com?invited_code=#{current_user.invite_code}",
+        text: "Sign up here to earn free money to fulfill your wishes. I just did.",
+        showLabel: false,
+        showCount: false,
+        shares: ["twitter", "facebook", "googleplus", "linkedin", "pinterest", "whatsapp"]
+      });
+    });

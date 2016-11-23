@@ -86,7 +86,6 @@ Rails.application.routes.draw do
   get :contact, to: "home#contact"
   get "goodness-and-open-source", to: "home#goodness_and_open_source"
   get "jobs", to: "home#jobs"
-  get "invite", to: "home#invite"
   get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
   get "confirmation", to: "home#user_signup_confirmation"

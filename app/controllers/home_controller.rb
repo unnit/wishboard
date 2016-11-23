@@ -344,10 +344,6 @@ class HomeController < ApplicationController
     @offers_visible = "none"
   end
 
-  def invite
-    redirect_to root_path(invited_code: params[:invited_code])
-  end
-
   private
 
   def bulk_params

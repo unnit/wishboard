@@ -40,7 +40,7 @@
                   .col-sm-6.col-xs-12.mob-mtop10.padding-mob0
                     - unless @referrer.blank?
                       %span.pull-left.mright5.mtop10.font12.dull-color-italic
-                        Invited by
+                        Invited by&nbsp;
                         = truncate @referrer.name, length: 25
                       %span.pull-left= cl_image_tag @referrer.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
                 .form-group

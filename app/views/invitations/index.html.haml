@@ -51,8 +51,8 @@
       //Share buttons using jssocial
       if(#{Rails.env.production?}){
         $.ajax({url: "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank", type: 'POST', contentType: "application/json", data: {longUrl: "https://www.cocociti.com?invited_code=#{current_user.invite_code}"}, dataType: "jsonp", success: function(result){
-          short_url = result["id"]
-          console.log(short_url);
+          short_url = result
+          console.log(result);
         }});
       }
       $("#shareRoundIcons").jsSocials({

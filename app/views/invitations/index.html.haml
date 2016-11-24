@@ -49,6 +49,12 @@
   :javascript
     $(document).ready(function(){
       //Share buttons using jssocial
+      if(#{Rails.env.production?}){
+        $.post("https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank", {"longUrl": "https://www.cocociti.com?invited_code=#{current_user.invite_code}"}, function(result){
+          short_url = result["id"]
+          console.log(short_url);
+        });
+      }
       $("#shareRoundIcons").jsSocials({
         url: "https://www.cocociti.com?invited_code=#{current_user.invite_code}",
         text: "Sign up here to earn free money to fulfill your wishes. I just did.",

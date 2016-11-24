@@ -128,6 +128,10 @@
         = paginate @showcases, param_name: "showcases"
         = hidden_field_tag :prev_showcase, @showcases.current_page - 1
     .col-sm-3.col-xs-12.no-mar-pad.ptop15{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
+      .col-xs-12.col-sm-12.text-center.padding15.mbottom20.bg-white.bg-shad
+        = link_to invitations_path do
+          .btn.btn-md{style: "color: #595cea;border: 1px solid #595cea;"}
+            Invite Friends
       .col-xs-12.col-sm-12.padding10.bg-white{style: "border-bottom: none;"}
         ~ form_tag user_results_path, method: :get, id: "profile-search-form" do
           .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search people/friends", class: "form-control profile-query bg-light-grey", style: "border-radius: 20px;"

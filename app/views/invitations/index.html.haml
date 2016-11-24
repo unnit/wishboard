@@ -50,7 +50,7 @@
     $(document).ready(function(){
       //Share buttons using jssocial
       if(#{Rails.env.production?}){
-        $.post("https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank", {longUrl : "https://www.cocociti.com?invited_code=#{current_user.invite_code}"}, {dataType: "json"}, function(result){
+        $.ajax(url: "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank", type: POST, Content-Type: application/json, {"longUrl" : "https://www.cocociti.com?invited_code=#{current_user.invite_code}"}, success: function(result){
           short_url = result["id"]
           console.log(short_url);
         });

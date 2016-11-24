@@ -1,0 +1,21 @@
+.container.padding0{style: "max-width:450px;margin-top: 10%;"}
+  .col-xs-12.col-sm-12.padding20.border5.text-center{style: "background-color: #15C1EF;"}
+    - if showcase.wishlist?
+      %span.full-width.mtop10.mbottom20
+        %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/piggybank.gif"}
+    %span.full-width.mbottom20
+      Share your Wish with your friends
+    %span.full-width
+      #shareRoundIcons
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      //Share buttons using jssocial
+      $("#shareRoundIcons").jsSocials({
+        url: "https://www.cocociti.com/showcases/#{showcase.id}",
+        showLabel: false,
+        showCount: false,
+        shares: ["twitter", "facebook", "pinterest", "whatsapp"]
+      });
+    });

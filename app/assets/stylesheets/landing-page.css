@@ -3326,4 +3326,8 @@ th.headerSortDown {
     left: 0 !important;
     width: 100% !important;
   }
+  .jssocials-share-whatsapp .jssocials-share-link {
+    background: #29a628; display: block !important;}
+    .jssocials-share-whatsapp .jssocials-share-link:hover {
+      background: #1f7d1e; display: block !important; }
 }

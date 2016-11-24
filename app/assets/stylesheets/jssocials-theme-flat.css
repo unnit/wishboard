@@ -35,9 +35,9 @@
     background: #c93412; }
 
 .jssocials-share-whatsapp .jssocials-share-link {
-  background: #29a628; }
+  background: #29a628;display: none;}
   .jssocials-share-whatsapp .jssocials-share-link:hover {
-    background: #1f7d1e; }
+    background: #1f7d1e;display: none; }
 
 .jssocials-share-telegram .jssocials-share-link {
   background: #2ca5e0; }

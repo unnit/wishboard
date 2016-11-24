@@ -2,6 +2,9 @@ $(".loader-button").show();
 $(".loader-effect").hide();
 $(".messages").html("#{j(render 'layouts/messages')}")
 - if @showcase.errors.blank?
+  $("#cont-wrapper").html("#{j render partial: 'showcases/wish_success', locals: {showcase: @showcase}}");
+  $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>")
+  $("#cont-wrapper").modal('show');
   var new_showcase = $("#{j render partial: 'home/showcases', locals: {showcases: Array(@showcase)}}").hide();
   $(".showcase-strip").prepend(new_showcase);
   $(".showcase-ps-#{@showcase.id}").fadeIn("slow");

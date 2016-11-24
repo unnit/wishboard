@@ -19,6 +19,7 @@ class HomeController < ApplicationController
       @scase_modal = "no"
       @showcase = Showcase.new
       @showcase.build_location
+      @wallet = current_user.wallet
       @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
       @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
       #@showcases = Showcase.order("RANDOM()")

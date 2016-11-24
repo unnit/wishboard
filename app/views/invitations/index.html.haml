@@ -49,13 +49,14 @@
   :javascript
     $(document).ready(function(){
       //Share buttons using jssocial
+      short_url = "";
       obj = {"longUrl" : "https://www.cocociti.com?invited_code=#{current_user.invite_code}"}
       $.ajax({url: "https://content.googleapis.com/urlshortener/v1/url?key=AIzaSyD-a9IF8KKYgoC3cpgS-Al7hLQDbugrDcw&alt=json", type: 'POST', contentType: "application/json", data: JSON.stringify(obj), dataType: "application/json", success: function(result){
         short_url = result["id"]
         console.log(result["id"]);
       }});
       if(short_url == ""){
-        short_url = "https://www.cocociti.com?invited_code=#{current_user.invite_code}"
+        short_url = "https://www.cocociti.com?invited_code=#{current_user.invite_code}";
       }
       $("#shareRoundIcons").jsSocials({
         url: short_url,

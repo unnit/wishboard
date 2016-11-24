@@ -49,14 +49,14 @@
   :javascript
     $(document).ready(function(){
       //Share buttons using jssocial
-      short_url = "";
       obj = {"longUrl" : "https://www.cocociti.com?invited_code=#{current_user.invite_code}"}
-      $.ajax({url: "https://content.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&alt=json", type: 'POST', contentType: "application/json", data: JSON.stringify(obj), success: function(data){short_url = data["id"];console.log(short_url);console.log("Hi");}, error: function(data){console.log("Hi");}});
-      $("#shareRoundIcons").jsSocials({
-        url: short_url,
-        text: "Sign up here to earn free money to fulfill your wishes. I just did.",
-        showLabel: false,
-        showCount: false,
-        shares: ["twitter", "facebook", "googleplus", "linkedin", "pinterest", "whatsapp"]
-      });
+      $.ajax({url: "https://content.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&alt=json", type: 'POST', contentType: "application/json", data: JSON.stringify(obj), success: function(data){
+        $("#shareRoundIcons").jsSocials({
+          url: data["id"],
+          text: "Sign up here to earn free money to fulfill your wishes. I just did.",
+          showLabel: false,
+          showCount: false,
+          shares: ["twitter", "facebook", "googleplus", "linkedin", "pinterest", "whatsapp"]
+        });
+      }});
     });

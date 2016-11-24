@@ -17,3 +17,4 @@ $(".messages").html("#{j(render 'layouts/messages')}")
   $(".preview-delete, .preview, .preview-edit").hide();
   $(".file-input-button").show();
   $(".ps-showpiece, .ps-wish").removeClass("header-with-grad white-fg");
+  $("#shareShowcaseRoundIcons").jsSocials({url: "https://www.cocociti.com/showcases/#{@showcase.id}",showLabel: false,showCount: false,shares: ["twitter", "facebook", "pinterest", "whatsapp"]});

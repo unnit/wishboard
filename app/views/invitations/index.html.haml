@@ -51,11 +51,13 @@
       //Share buttons using jssocial
       short_url = "";
       obj = {"longUrl" : "https://www.cocociti.com?invited_code=#{current_user.invite_code}"}
-      $.ajax({async: true, url: "https://content.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&alt=json", type: 'POST', contentType: "application/json", data: JSON.stringify(obj), dataType: "application/json", success: function(data){
-        short_url = data.id;
-        console.log(data);
+      $.post("https://content.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&alt=json", JSON.stringify(obj), dataType: "application/json", function(result){
+        short_url = result.id;
+        console.log(result);
         console.log("Hi");
-      }});
+        console.log(result.id);
+        console.log(result["id"]);
+      });
       if(short_url == ""){
         short_url = "https://www.cocociti.com?invited_code=#{current_user.invite_code}";
       }

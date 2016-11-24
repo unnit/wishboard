@@ -34,12 +34,14 @@
                     = f.text_field :last_name, :placeholder => "Last Name", class: "form-control", maxlength: 200, required: true
                 .form-group
                   %label.col-sm-3.col-xs-12.control-label.no-mar-pad
-                    Invited by&nbsp;&nbsp;
+                    Invitation Code&nbsp;&nbsp;
                   .col-sm-3.col-xs-12.no-mar-pad
                     = text_field_tag :invited_code, "#{current_user.invited_code}", :placeholder => "Optional", class: "form-control", maxlength: 200
-                  .col-sm-3.col-xs-12.mob-mtop10.padding-mob0
+                  .col-sm-6.col-xs-12.mob-mtop10.padding-mob0
                     - unless @referrer.blank?
-                      %span.pull-left.mright5.mtop10.font12.dull-color-italic= truncate @referrer.name, length: 25
+                      %span.pull-left.mright5.mtop10.font12.dull-color-italic
+                        Invited by
+                        = truncate @referrer.name, length: 25
                       %span.pull-left= cl_image_tag @referrer.avatar, class: "img-circle", width: 40, height: 40, crop: :fill
                 .form-group
                   %label.col-sm-3.col-xs-12.control-label.no-mar-pad Your Profile Pic&nbsp;&nbsp;&nbsp;&nbsp;

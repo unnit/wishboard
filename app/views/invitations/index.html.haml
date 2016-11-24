@@ -50,8 +50,9 @@
     $(document).ready(function(){
       //Share buttons using jssocial
       short_url = "";
-      obj = JSON.stringify({"longUrl" : "https://www.cocociti.com?invited_code=#{current_user.invite_code}"})
-      $.post("https://content.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&alt=json", obj, dataType: "application/json", function(result){
+      obj = {"longUrl" : "https://www.cocociti.com?invited_code=#{current_user.invite_code}"};
+      data = JSON.stringify(obj);
+      $.post("https://content.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&alt=json", data, function(result){
         short_url = result["id"];
         console.log(result);
         console.log("Hi");

@@ -35,7 +35,7 @@ class ShowcasesController < ApplicationController
       @showcase.user_status = Showcase::USER_STATUS[0]
     else
       flash[:alert] = "Hey, Are you going to Showcase or Wishlist?"
-      redirect_to root_path
+      render js: "location.reload()"
       return
     end
     @showcase.admin_created = false
@@ -43,7 +43,9 @@ class ShowcasesController < ApplicationController
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
-    if @showcase.save
+    if @showcase.valid?
+      current_user.update_wallet(1)
+      @showcase.save
       flash[:notice] = "#{@showcase.title} showcased."
       if params[:header].present?
         render js: "location.reload()"

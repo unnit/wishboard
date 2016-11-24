@@ -11,12 +11,14 @@
     .arrow-wrapper
       .arrow
       .arrow-z
-.col-xs-12.col-sm-12.padding15.text-center.ps-click-wrapper.bg-white.mbottom10.bg-shad
-  %span.btn.btn-md.white-fg.ps-click-btn.bg-blue Show / Wish
-  %span.pos-absolute.pos-q-ps-clk
-    %i.font20.fa.fa-question-circle-o.grey-fg{title: "<b>Show:</b> Showcase things you own or your achievements.<br><br><b>Wish:</b> Add any of your wish here and let the world know it.", "data-toggle" => "tooltip", "data-placement" => "auto", "data-html" => "true"}
-.col-xs-12.col-sm-12.no-mar-pad.bg-shad.ps-wrapper.pattern-bg.hide-display.mbottom10{style: "min-height:212px;border-radius: 4px;"}
-  .close-sprite.pon.pos-absolute.clos-ps-wrapper
+- if header != "yes"
+  .col-xs-12.col-sm-12.padding15.text-center.ps-click-wrapper.bg-white.mbottom10.bg-shad
+    %span.btn.btn-md.white-fg.ps-click-btn.bg-blue Show / Wish
+    %span.pos-absolute.pos-q-ps-clk
+      %i.font20.fa.fa-question-circle-o.grey-fg{title: "<b>Show:</b> Showcase things you own or your achievements.<br><br><b>Wish:</b> Add any of your wish here and let the world know it.", "data-toggle" => "tooltip", "data-placement" => "auto", "data-html" => "true"}
+.col-xs-12.col-sm-12.no-mar-pad.bg-shad.ps-wrapper.pattern-bg.mbottom10{style: "min-height:212px;border-radius: 4px;display: #{header == "yes" ? 'block' : 'none;'}"}
+  - if header != "yes"
+    .close-sprite.pon.pos-absolute.clos-ps-wrapper
   .col-xs-12.col-sm-12
   .p-s-arrow.arrow-right.pon
   .p-s-arrow.arrow-left.pon.hide-display

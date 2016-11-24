@@ -234,10 +234,7 @@ class ProfilesController < ApplicationController
     profile = current_user.profile
     if (params[:otp] == profile.otp1 && !profile.otp1.blank?) || (params[:otp] == profile.otp2 && !profile.otp2.blank?)
       if current_user.referrer.present? && profile.mobile_verified ==  false
-        referrer_wallet = current_user.referrer.wallet
-        referrer_wallet.total_coins = referrer_wallet.total_coins.to_i + 2
-        referrer_wallet.unused_coins = referrer_wallet.unused_coins.to_i + 2
-        referrer_wallet.save
+        current_user.referrer.update_wallet(2)
       end
       profile.phone = session[:mobile_no]
       profile.mobile_verified = true

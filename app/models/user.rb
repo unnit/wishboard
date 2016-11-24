@@ -173,6 +173,10 @@ class User < ActiveRecord::Base
     return self.profile.first_name[0..4].gsub(/[^a-z]/i, '').upcase + SecureRandom.hex(2).upcase
   end
 
+  def update_wallet(no_of_coins)
+    self.wallet.update(:total_coins => (self.wallet.total_coins.to_i + no_of_coins.to_i), :unused_coins => (self.wallet.unused_coins.to_i + no_of_coins.to_i))
+  end
+
   def avatar
     url = profile.image.filename if profile
     url = GLOBAL_VARIABLES[:default_profile_pic] if url.blank?

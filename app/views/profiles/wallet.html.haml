@@ -1,5 +1,5 @@
 .container-fluid.ptop50.mob-ptop100.pattern-bg{style: "min-height: 700px;"}
-  .container.mtop40
+  .container.mtop40.padding0
     .col-xs-12.col-sm-4.col-sm-offset-2.padding20{style: "background-color: #ffa49d;height:200px;"}
       .col-xs-6.col-sm-6
         .balance-coins-sprite.inline-block
@@ -11,19 +11,19 @@
         - else
           = link_to verify_profile_profiles_path do
             .pull-right.send-to-bank-btn.pon SEND TO BANK
-      %span.full-width.text-center.pull-left.font20.white-fg= current_user.wallet.unused_coins.to_i
+      %span.full-width.text-center.pull-left.white-fg{style: "font-size: 58px;"}= current_user.wallet.unused_coins.to_i
     .col-xs-12.col-sm-3.padding20{style: "background-color: #ffdac5;height:200px;color: #ec827a;"}
-      .col-xs-12.col-sm-12.mbottom10.text-center
+      .col-xs-12.col-sm-12.text-center
         .total-coins-sprite.inline-block
         %span.inline-block.full-width{style: "letter-spacing: 2px;"}
           TOTAL
-      %span.full-width.text-center.pull-left.font16= current_user.wallet.total_coins.to_i
+      %span.full-width.text-center.pull-left{style: "font-size: 58px;"}= current_user.wallet.total_coins.to_i
     .col-xs-12.col-sm-3.padding20{style: "background-color: #ffede5;height:200px;color: #ec827a;"}
-      .col-xs-12.col-sm-12.mbottom10.text-center
+      .col-xs-12.col-sm-12.text-center
         .used-coins-sprite.inline-block
         %span.inline-block.full-width{style: "letter-spacing: 2px;"}
           USED
-      %span.full-width.text-center.pull-left.font16= current_user.wallet.used_coins.to_i
+      %span.full-width.text-center.pull-left{style: "font-size: 58px;"}= current_user.wallet.used_coins.to_i
     .col-xs-12.col-sm-6.padding10.ptop0.mtop30
       %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad WITHDRAWAL HISTORY
       .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}

@@ -44,7 +44,7 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.valid?
-      current_user.update_wallet(1)
+      current_user.update_wallet(1) if @showcase.wishlist?
       @showcase.save
       flash[:notice] = "#{@showcase.title} showcased."
       if params[:header].present?

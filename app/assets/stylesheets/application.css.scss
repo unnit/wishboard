@@ -573,6 +573,14 @@ small{
 .grey70-fg:hover, .grey70-fg:active, .grey70-fg:focus{
   color: #333333 !important;
 }
+.btn-v-outline{
+  color: #595cea;
+  border: 1px solid #595cea;
+}
+.btn-v-outline:hover, .btn-v-outline:focus {
+  background-color: #595cea !important;
+  color: white !important;
+}
 .btn-social{
   background-color: #848484;
 }
@@ -699,6 +707,11 @@ small{
 .btn-outline-gold:hover{
   background-color: #ffb900;
   color: white !important;
+}
+.transition-effect{
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
 }
 .send-to-bank-btn{
   color: #fffc9e;

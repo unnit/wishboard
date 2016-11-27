@@ -24,6 +24,12 @@ namespace :coco_jobs do
       wow.mailed = true
       wow.save
     end
+    coins = Coin.where("mailed = ?", false)
+    coins.each do |coin|
+      ShowcaseMailer.send_coin_notification(coin.showcase.user.email, coin.user, coin.showcase).deliver_now unless coin.showcase.user == coin.user
+      coin.mailed = true
+      coin.save
+    end
     comments = Comment.where("mailed = ?", false)
     comments.each do |comment|
       ShowcaseMailer.send_showcase_owner_notification_for_comment(comment.showcase.user.email, comment.user, comment.showcase).deliver_now unless comment.user == comment.showcase.user

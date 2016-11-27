@@ -23,4 +23,10 @@ class ShowcaseMailer < ApplicationMailer
     mail to: owner_email, subject: "#{wower.name} liked your #{showcase.showcase_type_name}"
   end
 
+  def send_coin_notification(owner_email, coiner, showcase)
+    @coiner = coiner
+    @showcase = showcase
+    mail to: owner_email, subject: "#{coiner.name} gifted your #{showcase.showcase_type_name} a coin"
+  end
+
 end

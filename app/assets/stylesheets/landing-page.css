@@ -2414,10 +2414,15 @@ height:50px;
   transition: all 0.6s;
   -webkit-transition: all 0.6s;
 }
+.balance-coins-sprite-grey{
+  width: 35px;
+  height: 33px;
+  background: url(images/coco-sprite.png) -818px -306px;
+}
 .balance-coins-sprite{
   width: 52px;
   height: 50px;
-  background: url(images/coco-sprite.png) -881px -252px
+  background: url(images/coco-sprite.png) -881px -252px;
 }
 .total-coins-sprite{
   width: 58px;
@@ -2450,6 +2455,9 @@ height:50px;
   -o-transform: skew(0, -3deg);
   transform: skew(0, -3deg);
   -webkit-backface-visibility: hidden;
+}
+.ps-click-btn:hover, .ps-click-btn:focus{
+  box-shadow: 0 0 0 3px rgb(137, 140, 255);
 }
 .discount-circle{
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12) !important;

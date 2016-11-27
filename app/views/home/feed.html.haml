@@ -15,7 +15,7 @@
         - if @coin_wishes.present?
           .col-xs-12.col-sm-12.no-mar-pad
             .col-xs-12.col-sm-12.text-center.no-mar-pad
-              %span.header-text.weight500.zero-letter-spacing COIN WISHES
+              %span.header-text.weight500.zero-letter-spacing.font16 COIN WISHES
               %span.pos-absolute.pos-q-km-clk.font11.grey-fg.txt-underline.pon.c-w-lrn-mr
                 Know More
                 %i.fa.fa-question-circle-o
@@ -72,7 +72,7 @@
       - if @admin_showcases.present?
         .col-xs-12.col-sm-12.no-mar-pad
           .col-xs-12.col-sm-12.text-center.no-mar-pad
-            %span.header-text.weight500.zero-letter-spacing POPULAR WISHES
+            %span.header-text.weight500.zero-letter-spacing.font16 POPULAR WISHES
         .col-xs-12.col-sm-12.no-mar-pad.mbottom10
           #myCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
             .carousel-inner{role: "listbox"}
@@ -128,17 +128,17 @@
         = paginate @showcases, param_name: "showcases"
         = hidden_field_tag :prev_showcase, @showcases.current_page - 1
     .col-sm-3.col-xs-12.no-mar-pad.ptop15{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
-      .col-xs-12.col-sm-12.text-center.padding15.mbottom20.bg-white.bg-shad
-        = link_to invitations_path do
-          .btn.btn-md{style: "color: #595cea;border: 1px solid #595cea;"}
-            Invite Friends
       .col-xs-12.col-sm-12.padding10.bg-white{style: "border-bottom: none;"}
         ~ form_tag user_results_path, method: :get, id: "profile-search-form" do
           .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search people/friends", class: "form-control profile-query bg-light-grey", style: "border-radius: 20px;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.grey-fg
-      .col-xs-12.col-sm-12.padding10.follow-wrapper.bg-shad.bg-white
+      .col-xs-12.col-sm-12.text-center.padding15.mbottom20.bg-white.bg-shad
+        = link_to invitations_path do
+          .btn.btn-md.btn-v-outline.transition-effect
+            Invite Friends
+      .col-xs-12.col-sm-12.padding10.follow-wrapper.bg-shad.bg-white.hide-display
         .col-xs-12.col-sm-12.no-mar-pad.follow-strip
           = render partial: "follow", locals: {users: @users}
         .col-xs-12.col-sm-12.text-center.feed-loader.padding20{style: "display:none;"}
@@ -147,6 +147,25 @@
         #infinite-scrolling-follow.hidden
           = paginate @users, param_name: "users"
         = hidden_field_tag :prev_user, @users.current_page - 1
+      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center
+        .col-xs-8.col-sm-8.no-mar-pad.grey-fg.font12
+          %span.balance-coins-sprite-grey.inline-block
+          .full-width.pull-left.neg-mtop5
+            %span.inline-block Balance
+            %span.inline-block.font20= @wallet.unused_coins
+        .col-xs-4.col-sm-4.no-mar-pad
+          = link_to wallet_path do
+            .btn.btn-sm.mtop15.btn-v-outline.transition-effect
+              Your Wallet
+        .col-xs-12.col-sm-12.no-mar-pad.mtop10.font12.grey-fg.hide-display
+          .col-xs-4.col-sm-4.padding5
+            Total
+            %br
+            = @wallet.total_coins
+          .col-xs-4.col-sm-4.padding5
+            Used
+            %br
+            = @wallet.used_coins
 
 = content_for :extra_js do
   :javascript

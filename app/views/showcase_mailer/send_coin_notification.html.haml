@@ -1,0 +1,12 @@
+%p{style: "font-size: 16px;"}
+  = link_to myprofile_url(@coiner.profile.slug) do
+    %span= truncate @coiner.name.titleize, length: 50
+  &nbsp;
+  %span gifted your
+  = link_to showcase_url(@showcase) do
+    %span= truncate @showcase.title, length: 50
+  a coin.
+%br
+Discover more on
+%a{href: "#{GLOBAL_VARIABLES[:root_url]}"}
+  Cocociti

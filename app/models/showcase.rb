@@ -197,6 +197,11 @@ class Showcase < ActiveRecord::Base
     return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
   end
 
+  def admin_status_name
+    return Showcase::ADMIN_STATUS_NAME[0][0] if admin_status == ADMIN_STATUS[0]
+    return Showcase::ADMIN_STATUS_NAME[1][0] if admin_status == ADMIN_STATUS[1]
+  end
+
   def achieved?
     user_status == USER_STATUS[1]
   end

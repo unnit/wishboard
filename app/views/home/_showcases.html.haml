@@ -26,7 +26,7 @@
         = link_to showcase_path(showcase) do
           %span.weight600.grey70-fg= truncate showcase.title, length: 50
         %span.small.grey-fg to
-        %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes' class='grey70-fg'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces' class='.grey70-fg'> Showcase</a>".html_safe
+        %span.weight600= showcase.wishlist? ? "<a href='/#{showcase.user.profile.slug}/wishes' class='grey70-fg'> Wishlist</a>".html_safe : "<a href='/#{showcase.user.profile.slug}/showpieces' class='grey70-fg'> Showcase</a>".html_safe
         %span.pull-right.font11.mtop5.grey-fg
           .fa.fa-clock-o
           = time_ago_in_words(showcase.created_at)

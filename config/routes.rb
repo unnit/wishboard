@@ -6,11 +6,13 @@ Rails.application.routes.draw do
       collection do
         get :messages
         post :send_message
+        get :withdraws
       end
       member do
         post :lock
         post :unlock
         patch :update_verified
+        post :update_withdraw
       end
     end
     resources :categories, only: [:index, :create, :update, :destroy]
@@ -86,6 +88,7 @@ Rails.application.routes.draw do
   get :contact, to: "home#contact"
   get "goodness-and-open-source", to: "home#goodness_and_open_source"
   get "jobs", to: "home#jobs"
+  get "hackers", to: "home#hackers"
   get :sitemap, to: "home#sitemap"
   get "home/get_state_and_city", to: "home#get_state_and_city"
   get "confirmation", to: "home#user_signup_confirmation"

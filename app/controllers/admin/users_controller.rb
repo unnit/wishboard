@@ -45,6 +45,22 @@ class Admin::UsersController < AdminController
     redirect_to messages_admin_users_path
   end
 
+  def withdraws
+    @withdraws = Withdraw.all.order(created_at: :desc).page(params[:withdraws]).per(30)
+  end
+
+  def update_withdraw
+    withdraw = Withdraw.find params[:id]
+    withdraw.status = params[:status]
+    withdraw.comment = params[:comment]
+    if withdraw.save
+      flash[:notice] = "Updated successfully"
+    else
+      flash[:alert] = withdraw.errors.join.(", ")
+    end
+    respond_to :js
+  end
+
   private
     def set_user
       @user = User.find(params[:id])

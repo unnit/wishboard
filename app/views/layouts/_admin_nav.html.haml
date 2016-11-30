@@ -18,6 +18,7 @@
         %li{class: "#{'active' if controller_name=='transactions'}"}= link_to "Transactions", admin_transactions_path
         %li{class: "#{'active' if controller_name=='users'}"}= link_to "Messaging", messages_admin_users_path
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Showcase", admin_showcases_path
+        %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Withdraws", withdraws_admin_users_path
         %li
           = link_to destroy_user_session_path, method: :delete do
             %span Sign out

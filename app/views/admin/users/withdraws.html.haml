@@ -1,0 +1,39 @@
+#cont-wrapper.modal.fade.padding0
+.messages
+.container-fluid.ptop50.mob-ptop100.bg-shad.padding0.helvetica-font.bg-light-grey.pbottom50{style: "min-height: 1000px;"}
+  .container.padding0
+    .col-xs-12.col-sm-12.no-mar-pad
+      .col-xs-12.col-sm-12
+        %h3.pull-left User Withdraw Requests
+      .col-xs-12.col-sm-12.no-mar-pad
+        .table-responsive
+          %table.table.table-striped.table-bordered.table-hover.font12
+            %thead
+              %tr
+                %th
+                %th Name
+                %th Coins Requested
+                %th Acc Holder Name
+                %th Acc No
+                %th IFSCode
+                %th Mobile
+                %th MMID
+                %th Created At
+                %th Status
+                %th Comment
+                %th Update
+            %tbody.showcase-strip
+              = render partial: "admin/users/withdraw_content", locals: {withdraws: @withdraws, page: params[:page]}
+      #infinite-scrolling-content.hidden
+        = paginate @withdraws, param_name: "withdraws"
+      .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
+        %i.fa.fa-circle-o-notch.fa-spin.font21
+        Please wait...
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(document).on("click", ".withdraw-edit", function(){
+        $.post("/admin/users/"+$(this).data("id")+"/update_withdraw", {status: $(".withdraw-status-"+$(this).data("id")).val(), comment: $(".withdraw-comment-"+$(this).data("id")).val()})
+      })
+    })

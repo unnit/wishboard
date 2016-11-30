@@ -4,7 +4,7 @@
     %meta{:charset => "utf-8"}
     %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
-    - if Rails.env.development?
+    - if Rails.env.development? || request.fullpath == GLOBAL_VARIABLES[:hacker_relative_path]
       %meta{:name => "robots", :content => "noindex"}
     %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is where the world comes to wish & showcase. Wish it, achieve it, showcase it. Discover wishes & people with similar wishes. What is your wish?'}", :name => "description"}
     %meta{:content => "", :name => "author"}

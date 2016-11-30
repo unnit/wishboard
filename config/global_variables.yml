@@ -35,6 +35,7 @@ development:
   google_client_id: "866179074557-htrj6huurf5c1q51j0i7ubiljde2oe4h.apps.googleusercontent.com"
   google_api_key: "AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank"
   super_admin_ids: [1, 2, 7]
+  hacker_relative_path: "/hackers"
 
 production:
   time_out: 15
@@ -72,3 +73,4 @@ production:
   google_client_id: "866179074557-htrj6huurf5c1q51j0i7ubiljde2oe4h.apps.googleusercontent.com"
   google_api_key: "AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank"
   super_admin_ids: [1, 2, 7]
+  hacker_relative_path: "/hackers"

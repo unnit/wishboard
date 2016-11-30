@@ -1,14 +1,12 @@
 class Admin::ShowcasesController < AdminController
-  layout "application"
   before_filter :get_showcase, only: [:edit, :update, :destroy]
-  before_filter :set_plain_layout
 
   def index
     @showcases = Showcase.where("admin_created = ?", true)
-    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(30)
     respond_to do |format|
       format.html
-      format.js { render "home/myprofile" }
+      format.js
     end
   end
 

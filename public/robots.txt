@@ -6,4 +6,5 @@ Disallow: /admin*
 Disallow: /terms
 Disallow: /privacy
 Disallow: /rent
+Disallow: /hackers
 Disallow: /categories/bikes-two-wheelers

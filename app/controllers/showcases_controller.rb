@@ -176,6 +176,7 @@ class ShowcasesController < ApplicationController
     if @showcase.active_coins.count <= 50 && @showcase.coin_wish? && @showcase.coin_wish_active? && !@showcase.owner?(current_user) && current_user.unlocked_coin_wish? && !@showcase.coined?(current_user)
       @showcase.add_coin!(current_user)
       @showcase.reload
+      flash[:notice] = "Coin gifted successfully"
       respond_to :js
     end
   end

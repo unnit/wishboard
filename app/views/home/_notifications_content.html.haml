@@ -27,5 +27,12 @@
     = link_to update_showcase_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
       %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
       %span.weight600.grey-fg= truncate notification.showcase.user.name, length: 35
-      %span.font13.grey-fg
-        showcased an item
+      - if notification.showcase.wishlist? && notification.showcase.coin_wish?
+        %span.font13.grey-fg
+          added a new coin wish
+      - elsif notification.showcase.wishlist?
+        %span.font13.grey-fg
+          added a new wish
+      - else
+        %span.font13.grey-fg
+          showcased an item

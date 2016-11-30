@@ -7,6 +7,7 @@ $(".badge-coin-link-#{@showcase.id}").next(".badge").attr("title", "#{@showcase.
 - if @showcase.coined?(current_user)
   $(".coin-link-#{@showcase.id}").html("<div class='coin-sprite-o-full pos-relative flipped-horz'></div>");
   $(".coin-link-#{@showcase.id}").find(".coin-sprite-o-less").removeClass("coin-sprite-o-less").addClass("coin-sprite-o-full");
+  $(".messages").html("#{j render partial: 'layouts/messages'}")
 /
   - if @showcase.coined?(current_user)
     $(".coin-link-#{@showcase.id}").find(".coin-sprite-o-less").removeClass("coin-sprite-o-less").addClass("coin-sprite-o-full");

@@ -36,6 +36,7 @@ development:
   google_api_key: "AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank"
   super_admin_ids: [1, 2, 7]
   hacker_relative_path: "/hackers"
+  featured_wishes: [279, 284, 290, 291, 295, 289, 281, 282]
 
 production:
   time_out: 15
@@ -74,3 +75,4 @@ production:
   google_api_key: "AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank"
   super_admin_ids: [1, 2, 7]
   hacker_relative_path: "/hackers"
+  featured_wishes: [1335, 1286, 1220, 1186, 1151, 1147, 1125, 1105]

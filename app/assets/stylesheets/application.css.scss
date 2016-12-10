@@ -223,6 +223,9 @@ body{
 .pbottom20{
   padding-bottom: 20px;
 }
+.pbottom30{
+  padding-bottom: 30px;
+}
 .pbottom50{
   padding-bottom: 50px;
 }
@@ -561,6 +564,9 @@ small{
 .min186h{
   min-height: 186px;
 }
+.h260{
+  height: 260px;
+}
 .grey-fg{
   color: grey !important;
 }
@@ -651,7 +657,7 @@ small{
   background-color: #dc8131;
 }
 .inline-block{
-  display: inline-block;
+  display: inline-block !important;
 }
 .inline-display{
   display: inline;

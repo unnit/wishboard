@@ -3133,8 +3133,8 @@ th.headerSortDown {
 .bubble-1{
   width: 400px;
   height: 400px;
-  bottom: -196px;
-  left: -228px;
+  bottom: -277px;
+  left: -255px;
   background-image: url('images/bubble-1.png');
   animation: bubble1move 5s linear infinite alternate;
 }
@@ -3212,6 +3212,19 @@ th.headerSortDown {
   top: 15px;
   right: 10px;
 }
+.w-h-it-wrk h3{
+  font-size: 1.4em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  margin-bottom: .5em;
+}
+.orng-bbtom{
+  border-bottom: 1px solid #f36400;
+}
+.orng-brgt{
+  border-right: 1px solid #f36400;
+}
 /********/
 
 /******************Other CSS for header and future use *******/
@@ -3232,7 +3245,141 @@ th.headerSortDown {
 .mleft-mob{
   margin-left: 40%;
 }
+/*****Home page i want to effect************************/
+
+.cd-headline {
+    font-size: 3rem;
+    line-height: 1.2
+}
+
+@media only screen and (min-width: 768px) {
+    .cd-headline {
+        font-size:3rem;
+        font-weight: 300
+    }
+}
+
+@media only screen and (min-width: 1170px) {
+    .cd-headline {
+        font-size:6rem
+    }
+}
+
+.cd-words-wrapper {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    border-bottom: 5px solid white;
+    min-height: 35px;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 479px) {
+    .cd-words-wrapper {
+        min-height:20px;
+        border-bottom-width: 3px
+    }
+}
+
+.cd-words-wrapper b {
+    display: inline-block;
+    position: absolute;
+    white-space: nowrap;
+    left: 0;
+    top: 0
+}
+
+.cd-words-wrapper b.is-visible {
+    position: relative
+}
+
+.no-js .cd-words-wrapper b {
+    opacity: 0
+}
+
+.no-js .cd-words-wrapper b.is-visible {
+    opacity: 1
+}
+
+.cd-headline.type .cd-words-wrapper {
+    vertical-align: top;
+    overflow: hidden
+}
+
+.cd-headline.type .cd-words-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: 90%;
+    width: 1px;
+    background-color: rgba(255,255,255,0.3)
+}
+
+.cd-headline.type .cd-words-wrapper.waiting::after {
+    -webkit-animation: cd-pulse 1s infinite;
+    -moz-animation: cd-pulse 1s infinite;
+    animation: cd-pulse 1s infinite
+}
+
+.cd-headline.type .cd-words-wrapper.selected {
+    background-color: rgba(255,255,255,0.3)
+}
+
+.cd-headline.type .cd-words-wrapper.selected::after {
+    visibility: hidden
+}
+
+.cd-headline.type .cd-words-wrapper.selected b {
+    color: #fff
+}
+
+.cd-headline.type b {
+    visibility: hidden
+}
+
+.cd-headline.type b.is-visible {
+    visibility: visible
+}
+
+.cd-headline.type i {
+    position: absolute;
+    visibility: hidden;
+    font-style: normal
+}
+
+.cd-headline.type i.in {
+    position: relative;
+    visibility: visible
+}
+.topLeftRounded{
+  position: absolute;;
+  z-index: 10;
+  bottom: 0px;
+}
+.topLeftRounded path, .bottomRightRounded path{
+  fill: #fff;
+  stroke: #fff;
+}
+.bottomRightRounded{
+  position: absolute;
+  z-index: 9;
+  transform: rotate(180deg);
+  top: 0px;
+}
+/*******************************/
 @media only screen and (max-width: 776px) {
+  .mobmin125h{
+    min-height: 125px !important;
+  }
+  .orng-brgt{
+    border-right: none;
+  }
   .bg-mob-auth{
     background: #fff;
     color: #B7B7B7 !important;
@@ -3333,6 +3480,9 @@ th.headerSortDown {
   .alert-mob{
     left: 0 !important;
     width: 100% !important;
+  }
+  .mob-font20{
+    font-size: 20px;
   }
   .jssocials-share-whatsapp .jssocials-share-link {
     background: #29a628; display: block !important;}

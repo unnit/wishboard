@@ -1,100 +1,121 @@
-.container-fluid.padding-mob0.ptop50{style: "min-height: 1000px;"}
+.errors
+.container-fluid.white-fg.padding0.pbottom100.pos-relative{style: "min-height: 120%;background-image: linear-gradient(to right, #0891e6 0%, #1ab9cb 100%);"}
   .container.padding0
-    .col-xs-12.col-sm-6.text-center-mob
-      %h1{style: "color: #fa765e;font-size: 4em;"} Cocociti
-      %h4.txt-underline Discover showcases, wishlists and people around the world
-      %span.full-width.pull-left.mbottom5.mtop10.text-left
-        %b.font17 Share
-        your wishes with people who care about you.
-      %span.full-width.pull-left.mbottom5.text-left
-        %b.font17 Connect
-        to people with similar wishes.
-      %span.full-width.pull-left.mbottom5.text-left
-        %b.font17 Find
-        the best options to fulfill your wishes.
-      %span.full-width.pull-left.mbottom5.text-left
-        %b.font17 Know
-        your best friend's wishes before gifting.
-      %span.full-width.pull-left.mbottom5.text-left.mbottom10
-        %b.font17 Make Money
-        for each click on your coin wish, simple.
-    .col-xs-12.col-sm-6.bg-white.box-shad.ptop50{style: "border: 40px solid #f2f2f4;border-radius: 20px;overflow: hidden;min-height: 525px;"}
-      .pos-absolute.bubble-1
-      .pos-absolute.bubble-3
-      .pos-absolute.bubble-2
-      %ul.nav.nav-tabs{style: "border-bottom: none;", class: "mleft-mob"}
-        %li{class: "#{'active' unless params[:tab] == "signup"}"}
-          %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;"} Login
-        %li{class: "#{'active' if params[:tab] == "signup"}"}
-          %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;"} Sign Up
-      .tab-content.ptop10
-        #home-login.tab-pane.fade{class: "#{'active in' unless params[:tab] == "signup"}"}
-          .col-md-12.mtop40
-            = form_for(User.new, :url => new_user_session_path, remote: true, html: {"data-parsley-validate" => true, class: "login-form"}) do |f|
-              .col-sm-12.errors
-              .form-group.clearfix
-                = f.label :email, :class => 'col-sm-3 control-label text-right'
-                .col-sm-9
-                  .input-group
-                    %span.input-group-addon
-                      %i.fa.fa-user
-                    = f.text_field :email, placeholder: t("email_address", default: "Email Address"), class: "form-control login-email", "data-parsley-trigger" => "change", required: true
-              .form-group.clearfix
-                = f.label :Password, :class => 'col-sm-3 control-label text-right'
-                .col-sm-9
-                  .input-group
-                    %span.input-group-addon
-                      %i.fa.fa-lock
-                    = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
-              .form-group.clearfix.mtop20
-                .col-sm-offset-4.col-sm-6
+    %h3.mbottom20.weight-bold.text-center Cocociti
+    .col-xs-12.col-sm-8.no-mar-pad.text-center-mob
+      %h2.mob-font20.mob-mtop0{style: "margin-top: 150px;"}
+        One life. Million Desires. What's yours?
+      .cd-intro.height100
+        %h1.mtop0.cd-headline.letters.type
+          %span.weight-bold I want to
+          %span.cd-words-wrapper.waiting
+            %b.is-visible travel alone
+            %b attend sunburn
+            %b learn guitar
+            %b climb Everest
+            %b scuba dive
+            %b visit Goa
+            %b go Camping
+            %b go Kayaking
+            %b hike Kilimanjaro
+    .col-xs-12.col-sm-4
+      .col-xs-12.col-sm-12.box-shad.ptop50.bg-white{style: "border: 5px solid #f2f2f4;border-radius: 10px;overflow: hidden;min-height: 525px;z-index: 20;"}
+        .pos-absolute.bubble-1
+        .pos-absolute.bubble-3
+        %ul.nav.nav-tabs.inline-block.full-width.text-center{style: "border-bottom: none;"}
+          %li.inline-block{class: "#{'active' unless params[:tab] == "signup"}", style: "float: none;"}
+            %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;"} Login
+          %li.inline-block{class: "#{'active' if params[:tab] == "signup"}", style: "float: none;"}
+            %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;"} Sign Up
+        .tab-content.ptop10
+          #home-login.tab-pane.fade{class: "#{'active in' unless params[:tab] == "signup"}"}
+            .col-md-12.mtop50.padding0
+              = form_for(User.new, :url => new_user_session_path, remote: true, html: {"data-parsley-validate" => true, class: "login-form"}) do |f|
+                .form-group.clearfix
+                  .col-sm-12
+                    .input-group
+                      %span.input-group-addon
+                        %i.fa.fa-envelope
+                      = f.text_field :email, placeholder: t("email_address", default: "Email Address"), class: "form-control login-email", "data-parsley-trigger" => "change", required: true
+                .form-group.clearfix
+                  .col-sm-12
+                    .input-group
+                      %span.input-group-addon
+                        %i.fa.fa-lock
+                      = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+                .form-group.clearfix.mtop20.text-center
                   = link_to "Forgot password?", new_user_password_path, class: "font13"
-              .form-group.clearfix.mbottom40
-                .col-xs-12.col-sm-6.col-sm-offset-3.text-center
-                  = f.submit "Login", class: "loader-button btn pop-up-but login-button"
-                  .loader-effect.btn.pop-up-but{style: "display:none;"}
-                    .inline-block{style: "margin-top: 8px;"} Please Wait...
-                    .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
-                      %div
-        #home-sign-up.tab-pane.fade{class: "#{'active in' if params[:tab] == "signup"}"}
-          .col-md-12.mtop40
-            = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require signup-form"}) do |f|
-              = hidden_field_tag :invited_code, "#{params[:invited_code]}"
-              .col-sm-12.errors
-              .form-group.clearfix
-                = f.label :email, :class => 'col-sm-3 control-label text-right'
-                .col-sm-9
-                  .input-group
-                    %span.input-group-addon
-                      %i.fa.fa-user
-                    = f.text_field :email, :autofocus => true, placeholder: t("email_address", default: "Email Address"), class: "form-control signup-email", "data-parsley-trigger" => "change", required: true
-              .form-group.clearfix
-                = f.label :Password, :class => 'col-sm-3 control-label text-right'
-                .col-sm-9
-                  .input-group
-                    %span.input-group-addon
-                      %i.fa.fa-lock
-                    = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
-              .form-group.clearfix
-                = f.label :password_confirmation, "Confirm Password", :class => 'col-sm-3 control-label text-right'
-                .col-sm-9
-                  .input-group
-                    %span.input-group-addon
-                      %i.fa.fa-lock
-                    = f.password_field :password_confirmation, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
-              .form-group.clearfix
-                .col-sm-8.col-sm-offset-2
-                  %span.mleft10.textt-center.font11 By continuing, you agree to the Terms of Service
-              .form-group.clearfix
-                #submit-signup.pulse-loader{style: "display:none;"} Loading...
-                .col-xs-12.col-sm-6.col-sm-offset-3.mbottom40
-                  = f.submit "Sign up", class: "loader-button btn pop-up-but login-button"
-                  .loader-effect.btn.pop-up-but{style: "display:none;"}
-                    .inline-block{style: "margin-top: 8px;"} Please Wait...
-                    .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
-                      %div
-= content_for :extra_js do
-  :javascript
-    $(document).ready(function(){
-      $("body").addClass("bg-auth");
-    })
+                .form-group.clearfix.mbottom40
+                  .col-xs-12.col-sm-6.col-sm-offset-3.text-center
+                    = f.submit "Login", class: "loader-button btn pop-up-but login-button"
+                    .loader-effect.btn.pop-up-but{style: "display:none;"}
+                      .inline-block.font12.mtop10 Please Wait...
+                      .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                        %div
+          #home-sign-up.tab-pane.fade{class: "#{'active in' if params[:tab] == "signup"}"}
+            .col-md-12.padding0.mtop40
+              = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require signup-form"}) do |f|
+                = hidden_field_tag :invited_code, "#{params[:invited_code]}"
+                .form-group.clearfix
+                  .col-sm-12
+                    .input-group
+                      %span.input-group-addon
+                        %i.fa.fa-envelope
+                      = f.text_field :email, :autofocus => true, placeholder: t("email_address", default: "Email Address"), class: "form-control signup-email", "data-parsley-trigger" => "change", required: true
+                .form-group.clearfix
+                  .col-sm-12
+                    .input-group
+                      %span.input-group-addon
+                        %i.fa.fa-lock
+                      = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+                .form-group.clearfix
+                  .col-sm-12
+                    .input-group
+                      %span.input-group-addon
+                        %i.fa.fa-lock
+                      = f.password_field :password_confirmation, :placeholder => t('password', default: "Confirm Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+                .form-group.clearfix
+                  .col-sm-8.col-sm-offset-2
+                    %span.mleft10.textt-center.font11 By continuing, you agree to the Terms of Service
+                .form-group.clearfix
+                  #submit-signup.pulse-loader{style: "display:none;"} Loading...
+                  .col-xs-12.col-sm-6.col-sm-offset-3.mbottom40
+                    = f.submit "Sign up", class: "loader-button btn pop-up-but login-button"
+                    .loader-effect.btn.pop-up-but{style: "display:none;"}
+                      .inline-block.font12.mtop10 Please Wait...
+                      .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                        %div
+  %svg.topLeftRounded{:height => "100", :preserveaspectratio => "none", :version => "1.1", :viewbox => "50 20 50 80", :width => "100%", :xmlns => "http://www.w3.org/2000/svg"}
+    %path{:d => "M0,100 C15,100 35,50 50,50 L50,50 C65,50 85,100 100,100 Z"}
+.container-fluid.ptop30.pbottom30.bg-white
+  %h3.mtop0.mbottom0.weight-bold.mbottom20.text-center
+    %span{style: "line-height: 100px;"}
+      WE ADD ₹1 TO YOUR WALLET THE MOMENT YOU WISH FOR YOU TO BUILD ON
+.container-fluid.white-fg.padding0.pbottom100.pos-relative{style: "background-image: linear-gradient(135deg, #ff683e 0%, #fe9124 100%);"}
+  %svg.bottomRightRounded{:height => "100", :preserveaspectratio => "none", :version => "1.1", :viewbox => "0 20 50 80", :width => "100%", :xmlns => "http://www.w3.org/2000/svg"}
+    %path{:d => "M0,100 C15,100 35,50 50,50 L50,50 C65,50 85,100 100,100 Z"}
+  .container.padding0.w-h-it-wrk
+    %h1.text-center.weight-bold.mbottom40.ptop70{style: "font-size: 2em"} How it Works
+    .col-xs-12.col-sm-5.min186h.padding20.col-sm-offset-1.orng-brgt.orng-bbtom.text-center-mob
+      %h3 Showcase
+      %p.font-medium Tell the world about those awesome wishes you achieved and showcase it on your Cocociti profile.
+    .col-xs-12.col-sm-5.min186h.padding20.orng-bbtom.text-center-mob
+      %h3 Coin Wish
+      %p.font-medium Coin wishes help you earn for each click you get on your coin wishes, simple. Gift 1 rupee to others just by clicking on their coin wishes.
+    .col-xs-12.col-sm-5.min186h.padding20.col-sm-offset-1.orng-brgt.text-center-mob
+      %h3 Social
+      %p.font-medium Post wishes with photos. Share it to Fb, Twitter, WhatsApp, and many more apps to let your friends know what you are wishing for.
+    .col-xs-12.col-sm-5.min186h.padding20.text-center-mob
+      %h3 Your personal Brand
+      %p.font-medium Cocociti profile is your personal brand statement . Show & tell the world about things you have achieved and what you want to do.
+  %svg.topLeftRounded{:height => "100", :preserveaspectratio => "none", :version => "1.1", :viewbox => "50 20 50 80", :width => "100%", :xmlns => "http://www.w3.org/2000/svg"}
+    %path{:d => "M0,100 C15,100 35,50 50,50 L50,50 C65,50 85,100 100,100 Z"}
+.container-fluid.ptop30.pbottom30.bg-white
+  %h4.cc-dark-fg.mbottom20.text-center “It is not true that people stop pursuing dreams because they grow old, they grow old because they stop pursuing dreams.” ― Gabriel García Márquez
+.container-fluidptop30.pbottom100.pos-relative.white-fg{style: "background-image: linear-gradient(to right, #0891e6 0%, #1ab9cb 100%);"}
+  %svg.bottomRightRounded{:height => "100", :preserveaspectratio => "none", :version => "1.1", :viewbox => "0 20 50 80", :width => "100%", :xmlns => "http://www.w3.org/2000/svg"}
+    %path{:d => "M0,100 C15,100 35,50 50,50 L50,50 C65,50 85,100 100,100 Z"}
+  .container.padding0.w-h-it-wrk
+    %h1.text-center.weight-bold.mbottom40.ptop70{style: "font-size: 2em"} Featured Wishes
+    - @showcases.each do |showcase|
+      = render partial: "home/showcase_card_with_user", locals: {showcase: showcase}

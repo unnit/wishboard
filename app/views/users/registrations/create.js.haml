@@ -1,6 +1,6 @@
 - if @errors.blank?
   window.location.href = ("#{confirmation_url}")
 - else
-  $("form.signup-form .errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: @errors})}");
+  $(".errors").html("#{escape_javascript(render partial: 'layouts/errors', locals: {errors: @errors})}");
   $(".loader-effect").hide();
   $(".loader-button").show();

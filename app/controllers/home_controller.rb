@@ -45,6 +45,7 @@ class HomeController < ApplicationController
       end
     else
       @auth_layout = "yes"
+      @showcases = Showcase.where('id in (?)', GLOBAL_VARIABLES[:featured_wishes])
       render :authenticate
     end
   end
@@ -338,6 +339,7 @@ class HomeController < ApplicationController
 
   def authenticate
     @auth_layout = "yes"
+    @showcases = Showcase.where('id in (?)', GLOBAL_VARIABLES[:featured_wishes])
   end
 
   def offers

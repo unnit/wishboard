@@ -3374,8 +3374,8 @@ th.headerSortDown {
 }
 /*******************************/
 @media only screen and (max-width: 776px) {
-  .mobmin125h{
-    min-height: 125px !important;
+  .mob125h{
+    height: 125px !important;
   }
   .orng-brgt{
     border-right: none;

@@ -1,9 +1,9 @@
 .col-xs-6.col-sm-3.padding10{class: "showcase-card-#{showcase.id}"}
   .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-white.pbottom0.box-shad.border5
-    .col-xs-12.col-sm-12.no-mar-pad.text-center.min189h.show-img-wrap.mobmin125h
+    .col-xs-12.col-sm-12.no-mar-pad.text-center.h189.show-img-wrap.mob125h.hidden-overflow
       = link_to showcase_path(showcase), remote: true do
         .pos-absolute.show-details.hide-display.full-width.full-height.padding10.font13.text-left.grey-fg{style: "background-color: rgba(255,255,255,0.7)"}
-          %h4.mtop0= showcase.title
+          %h4.mtop0= truncate showcase.title, length: 40
           - if showcase.description.present?
             %span= truncate showcase.description, length: 250
         = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
@@ -24,7 +24,7 @@
         - else
           = link_to authenticate_path, class: "heart-red-fg" do
             %i.fa.fa-heart-o
-        .badge.font11.bg-white.pleft0.weight500{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
+        .badge.font11.bg-white.pleft0.weight500.hidden-xs{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
           = showcase.active_wows.count
       .col-xs-4.col-sm-4.padding5
         - if current_user
@@ -35,7 +35,7 @@
         - else
           = link_to authenticate_path, class: "comment-fg" do
             %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
-            .badge{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
+            .badge.font11.bg-white.pleft0.weight500.hidden-xs{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
               = showcase.comments.count
       %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop8.pon.pos-absolute.neg-right6
       .col-xs-6.col-sm-6.option-showcase.bg-shad.bg-white.text-center.bg-white.right15.bottom10

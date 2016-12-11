@@ -3372,6 +3372,26 @@ th.headerSortDown {
   transform: rotate(180deg);
   top: 0px;
 }
+.hw-sh-sprite{
+  width: 68px;
+  height: 78px;
+  background: url(images/coco-sprite.png) -4px -422px;
+}
+.hw-cw-sprite{
+  width: 72px;
+  height: 78px;
+  background: url(images/coco-sprite.png) -75px -421px;
+}
+.hw-sc-sprite{
+  width: 72px;
+  height: 78px;
+  background: url(images/coco-sprite.png) -152px -421px;
+}
+.hw-pf-sprite{
+  width: 72px;
+  height: 78px;
+  background: url(images/coco-sprite.png) -227px -421px;
+}
 /*******************************/
 @media only screen and (max-width: 776px) {
   .mob125h{
@@ -3379,6 +3399,9 @@ th.headerSortDown {
   }
   .orng-brgt{
     border-right: none;
+  }
+  .mob-orng-bbtom{
+    border-bottom: 1px solid #f36400;
   }
   .bg-mob-auth{
     background: #fff;

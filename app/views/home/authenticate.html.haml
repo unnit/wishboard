@@ -1,3 +1,5 @@
+.pos-absolute.hidden-xs.text-center.font25.full-width{style: "bottom: 5px;z-index:8;color:white;"}
+  .fa.fa-arrow-down.bulge-out.pon
 .errors
 .container-fluid.white-fg.padding0.pbottom100.pos-relative{style: "min-height: 120%;background-image: linear-gradient(to right, #0891e6 0%, #1ab9cb 100%);"}
   .container.padding0
@@ -88,7 +90,7 @@
   %svg.topLeftRounded{:height => "100", :preserveaspectratio => "none", :version => "1.1", :viewbox => "50 20 50 80", :width => "100%", :xmlns => "http://www.w3.org/2000/svg"}
     %path{:d => "M0,100 C15,100 35,50 50,50 L50,50 C65,50 85,100 100,100 Z"}
 .container-fluid.ptop30.pbottom30.bg-white
-  %h3.weight-bold.mbottom20.text-center
+  %h3.weight-bold.mbottom20.text-center.add-1
     %span
       WE ADD ₹1 TO YOUR WALLET FOR ALL YOUR WISHES
 .container-fluid.white-fg.padding0.pbottom100.pos-relative{style: "background-image: linear-gradient(135deg, #ff683e 0%, #fe9124 100%);"}
@@ -123,3 +125,10 @@
     %h1.text-center.weight-bold.mbottom40.ptop70{style: "font-size: 2em"} Featured Wishes
     - @showcases.each do |showcase|
       = render partial: "home/showcase_card_with_user", locals: {showcase: showcase}
+= content_for :extra_js do
+  :javascript
+    $(document).on("click", ".fa-arrow-down", function(){
+      $('html, body').animate({
+          scrollTop: $(".add-1").offset().top - 20
+          }, 500);
+    })

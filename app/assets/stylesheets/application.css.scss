@@ -742,8 +742,8 @@ small{
   -webkit-transform: rotateX(360deg);
 }
 .bulge-out{
-  -webkit-animation: hvr-buzz 1s infinite; /* Safari 4.0 - 8.0 */
-  animation: hvr-buzz 1s infinite;
+  -webkit-animation: hvr-wobble-vertical 1s infinite; /* Safari 4.0 - 8.0 */
+  animation: hvr-wobble-vertical 1s infinite;
 }
 .clos-ps-wrapper{
   top: 10px;

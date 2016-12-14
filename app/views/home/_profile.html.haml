@@ -14,11 +14,13 @@
       %li.inline-block.mright20
         = link_to following_path(@profile.slug) do
           %span.black-fg.prof-following-count= user.following.count
-          %span.grey-fg Following
+          %span.grey-fg.hidden-xs Following
+          .following-sprite.visible-xs-inline.pos-relative{style: "top: 6px;"}
       %li.inline-block.mright20
         = link_to followers_path(@profile.slug) do
           %span.black-fg.prof-followers-count= user.followers.count
-          %span.grey-fg Followers
+          %span.grey-fg.hidden-xs Followers
+          .followers-sprite.visible-xs-inline.pos-relative{style: "top: 6px;"}
       %li.inline-block.mright20
         = link_to wiki_path(@profile.slug) do
           %span.grey-fg Wiki

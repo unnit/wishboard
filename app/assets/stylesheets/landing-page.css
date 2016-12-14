@@ -3392,8 +3392,14 @@ th.headerSortDown {
   height: 78px;
   background: url(images/coco-sprite.png) -227px -421px;
 }
+.visible-xs-inline{
+  display: none !important;
+}
 /*******************************/
 @media only screen and (max-width: 776px) {
+  .visible-xs-inline{
+    display: inline-block !important;
+  }
   .mob125h{
     height: 125px !important;
   }

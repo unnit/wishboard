@@ -63,7 +63,7 @@
                 = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg", data: {confirm: "#{current_user.active_coin_wish.blank? ? '' : 'Only one coish can be active at a time. If you click okay and proceed, current selection will become your active coin wish. But do not worry, the old earnings will be added to your wallet without any deductions.'}"}
       - else
         .col-xs-12.col-sm-12.no-mar-pad.mbottom10
-          %span.full-width.ptop50.pbottom50.pleft-10.pright-10.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;", "data-step" => "2", "data-intro" => "Coin Wishes help you to earn whenever your friends click on it. Click unlock and start earning."}
+          %span.full-width.ptop50.pbottom50.pleft-10.pright-10.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;", "data-step" => "2", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>COIN WISHES</h3>Coin Wishes help you to earn whenever your friends click on it. Click unlock and start earning.</span>"}
             = link_to unlock_coin_wish_profiles_path, class: "btn btn-outline-gold" do
               Unlock Coin Wish&nbsp;
               .fa.fa-unlock
@@ -71,51 +71,52 @@
             %span.font11.grey-fg.txt-underline.pon.c-w-lrn-mr
               Know More
       - if @admin_showcases.present?
-        .col-xs-12.col-sm-12.no-mar-pad
-          .col-xs-12.col-sm-12.text-center.no-mar-pad
-            %span.header-text.weight500.zero-letter-spacing.font16 POPULAR NEW YEAR WISHES
-        .col-xs-12.col-sm-12.no-mar-pad.mbottom10{"data-step" => "3", "data-intro" => "Feling lazy? Start by adding popular wishes to your wishlist just with a single click."}
-          #myCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
-            .carousel-inner{role: "listbox"}
-              - @admin_showcases.each_slice(2).with_index do |admin_showcases, i|
-                .item{class: "#{'active' if i==0}"}
-                  - admin_showcases.each do |admin_showcase|
-                    .col-sm-6.padding5
-                      .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-                        .col-sm-12.no-mar-pad.text-center.min186h.show-img-wrap
+        .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "3", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>ONE CLICK WISHES</h3>Feling lazy? Start by adding popular wishes to your wishlist just with a single click.</span>"}
+          .col-xs-12.col-sm-12.no-mar-pad
+            .col-xs-12.col-sm-12.text-center.no-mar-pad
+              %span.header-text.weight500.zero-letter-spacing.font16 POPULAR NEW YEAR WISHES
+          .col-xs-12.col-sm-12.no-mar-pad.mbottom10
+            #myCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
+              .carousel-inner{role: "listbox"}
+                - @admin_showcases.each_slice(2).with_index do |admin_showcases, i|
+                  .item{class: "#{'active' if i==0}"}
+                    - admin_showcases.each do |admin_showcase|
+                      .col-sm-6.padding5
+                        .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
+                          .col-sm-12.no-mar-pad.text-center.min186h.show-img-wrap
+                            = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
+                          .col-sm-8.col-sm-offset-2.mtop10.pbottom10
+                            %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
+                              = truncate admin_showcase.title, length: 18
+                              .fa.fa-square-o
+              %a.left.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "prev"}
+                %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
+                %span.sr-only Previous
+              %a.right.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "next"}
+                %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
+                %span.sr-only Next
+            #myMobileCarousel.carousel.slide.visible-xs{data: {ride: "carousel"}}
+              .carousel-inner{role: "listbox"}
+                - @admin_showcases.each.with_index do |admin_showcase, i|
+                  .item{class: "#{'active' if i==0}"}
+                    .col-xs-12.padding5
+                      .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
+                        .col-xs-12.no-mar-pad.text-center.min186h.show-img-wrap
                           = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
-                        .col-sm-8.col-sm-offset-2.mtop10.pbottom10
+                        .col-xs-8.col-xs-offset-2.mtop10.pbottom10
                           %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
                             = truncate admin_showcase.title, length: 18
                             .fa.fa-square-o
-            %a.left.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "prev"}
-              %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
-              %span.sr-only Previous
-            %a.right.carousel-control{href: "#myCarousel", role: "button", "data-slide" => "next"}
-              %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
-              %span.sr-only Next
-          #myMobileCarousel.carousel.slide.visible-xs{data: {ride: "carousel"}}
-            .carousel-inner{role: "listbox"}
-              - @admin_showcases.each.with_index do |admin_showcase, i|
-                .item{class: "#{'active' if i==0}"}
-                  .col-xs-12.padding5
-                    .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-                      .col-xs-12.no-mar-pad.text-center.min186h.show-img-wrap
-                        = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
-                      .col-xs-8.col-xs-offset-2.mtop10.pbottom10
-                        %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
-                          = truncate admin_showcase.title, length: 18
-                          .fa.fa-square-o
-            %a.left.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "prev"}
-              %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
-              %span.sr-only Previous
-            %a.right.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "next"}
-              %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
-              %span.sr-only Next
-          .col-xs-12.col-sm-12.text-center.hide-display.add-wishlist.mtop10.mbottom20
-            ~ form_tag multiple_rewish_showcases_path do
-              = hidden_field_tag :showcase_ids
-              = submit_tag "Add to Wishlist", class: "btn btn-md wow-badge-bg white-fg"
+              %a.left.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "prev"}
+                %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true}
+                %span.sr-only Previous
+              %a.right.carousel-control{href: "#myMobileCarousel", role: "button", "data-slide" => "next"}
+                %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true}
+                %span.sr-only Next
+            .col-xs-12.col-sm-12.text-center.hide-display.add-wishlist.mtop10.mbottom20
+              ~ form_tag multiple_rewish_showcases_path do
+                = hidden_field_tag :showcase_ids
+                = submit_tag "Add to Wishlist", class: "btn btn-md wow-badge-bg white-fg"
       .col-xs-12.col-sm-12.no-mar-pad.showcase-strip.mtop30
         - unless @showcases.blank?
           = render partial: "home/showcases", locals: {showcases: @showcases}
@@ -123,7 +124,7 @@
           .col-xs-12.col-sm-12.text-center.padding10.bg-white.mbottom40
             %h5 Ayyo! Nothing to show. Invite your friends and follow others to activate your feed.
             %h4.weight-bold.mtop20 TOP PERFORMERS
-            .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "7", "data-intro" => "An empty feed is boring. Follow a minimum of our 8 most active users above to get the best out of Cocociti and to be updated."}
+            .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "7", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>BE UPDATED</h3>An empty feed is boring. Follow a minimum of our 8 most active users above to get the best out of Cocociti and to be updated.</span>"}
               - @top_performers.each do |performer|
                 .col-xs-6.col-sm-3.padding5
                   .col-sm-12.col-xs-12.border5.padding5{style: "border: 1px solid #d4d4d4;"}
@@ -148,13 +149,13 @@
         = paginate @showcases, param_name: "showcases"
         = hidden_field_tag :prev_showcase, @showcases.current_page - 1
     .col-sm-3.col-xs-12.no-mar-pad.ptop15.check-mobile#rhs-feed{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
-      .col-xs-12.col-sm-12.padding10.bg-white.rhs-intro{style: "border-bottom: none;", "data-step" => "4", "data-intro" => "Feeling lonely? Type their names and search for your friends here."}
+      .col-xs-12.col-sm-12.padding10.bg-white.rhs-intro{style: "border-bottom: none;", "data-step" => "4", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>SEARCH FRIENDS</h3>Feeling lonely? Type names and search for your friends here.</span>"}
         ~ form_tag user_results_path, method: :get, id: "profile-search-form" do
           .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search people/friends", class: "form-control profile-query bg-light-grey", style: "border-radius: 20px;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.grey-fg
-      .col-xs-12.col-sm-12.text-center.padding15.mbottom20.bg-white.bg-shad.rhs-intro{"data-step" => "5", "data-intro" => "Couldn't find your friends? Don't worry! Just invite them to be part of your wishes & to know theirs."}
+      .col-xs-12.col-sm-12.text-center.padding15.mbottom20.bg-white.bg-shad.rhs-intro{"data-step" => "5", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>INVITE FRIENDS</h3>Couldn't find your friends? Don't worry! Just invite them to be part of your wishes & to know theirs.</span>"}
         = link_to invitations_path do
           .btn.btn-md.btn-v-outline.transition-effect
             Invite Friends
@@ -167,7 +168,7 @@
         #infinite-scrolling-follow.hidden
           =# paginate @users, param_name: "users"
         =# hidden_field_tag :prev_user, @users.current_page - 1
-      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro{"data-step" => "6", "data-intro" => "Did you know that we add ₹1 for all your wishes & ₹2 to your wallet whenever your friends join Cocociti? Check your earnings status here."}
+      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro{"data-step" => "6", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>CHECK YOUR EARNINGS</h3>Did you know that we add ₹1 for all your wishes & ₹2 to your wallet whenever your friends join Cocociti? Check your earnings status here.</span>"}
         .col-xs-8.col-sm-8.no-mar-pad.grey-fg.font12
           %span.balance-coins-sprite-grey.inline-block
           .full-width.pull-left.neg-mtop5

@@ -42,8 +42,8 @@
                 .form-group.clearfix
                   .col-sm-12
                     .input-group
-                      %span.input-group-addon
-                        %i.fa.fa-lock
+                      %span.input-group-addon{style: "padding: 6px 13px;"}
+                        %i.fa.fa-lock.font-bit-large
                       = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
                 .form-group.clearfix.mtop20.text-center
                   = link_to "Forgot password?", new_user_password_path, class: "font13"
@@ -67,14 +67,14 @@
                 .form-group.clearfix
                   .col-sm-12
                     .input-group
-                      %span.input-group-addon
-                        %i.fa.fa-lock
+                      %span.input-group-addon{style: "padding: 6px 13px;"}
+                        %i.fa.fa-lock.font-bit-large
                       = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
                 .form-group.clearfix
                   .col-sm-12
                     .input-group
-                      %span.input-group-addon
-                        %i.fa.fa-lock
+                      %span.input-group-addon{style: "padding: 6px 13px;"}
+                        %i.fa.fa-lock.font-bit-large
                       = f.password_field :password_confirmation, :placeholder => t('password', default: "Confirm Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
                 .form-group.clearfix
                   .col-sm-8.col-sm-offset-2

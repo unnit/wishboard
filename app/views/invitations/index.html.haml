@@ -13,6 +13,8 @@
           .panel-body
             .col-xs-12.col-sm-12
               ~ form_tag send_email_invitations_path, class: "form-horizontal" do
+                - if params[:invite_friends] == "invite"
+                  = hidden_field_tag :intro, "yes"
                 %fieldset.mtop10
                   .col-xs-12.col-sm-6.mbottom10.text-center
                     %span.inline-block.padding5{style: "border: 1px solid #337ab7;"}
@@ -43,7 +45,7 @@
                     .form-group
                       .col-xs-12.col-sm-12.no-mar-pad.text-right.text-center-mob
                         .padding10.pbottom0
-                          = link_to root_path do
+                          = link_to root_path(welcome: "tour") do
                             Skip to Feed
 = content_for :extra_js do
   :javascript

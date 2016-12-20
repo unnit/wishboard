@@ -3395,8 +3395,14 @@ th.headerSortDown {
 .visible-xs-inline{
   display: none !important;
 }
+.hidden-xs-inline{
+  display: inline-block !important;
+}
 /*******************************/
 @media only screen and (max-width: 776px) {
+  .hidden-xs-inline{
+    display: none !important;
+  }
   .visible-xs-inline{
     display: inline-block !important;
   }
@@ -3438,6 +3444,9 @@ th.headerSortDown {
   }
   .mob-mtop0{
     margin-top: 0px !important;
+  }
+  .check-mobile{
+    z-index: 10;
   }
   .mob-mtop10{
     margin-top: 10px !important;

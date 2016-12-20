@@ -27,6 +27,7 @@
 //= require tagmanager
 //= require typeahead.bundle
 //= require jssocials
+//= require intro
 
 $(document).ready(function(){
   //Image loading bar effect

@@ -1,8 +1,11 @@
 - users.each do |user|
   .col-xs-12.col-sm-12.text-center.bg-shad.bg-white{class: "user-wrapper-#{user.id} padding0", style: "max-width: #{max_width ||= '292px'};margin: #{card_margin ||= '0px 5px 10px 0px'};"}
     .col-xs-12.col-sm-12.inline-block.padding5.pbottom0
-      = link_to settings_path, class: "pull-right" do
-        %span.glyphicon.glyphicon-cog.grey-fg
+      - if current_user && current_user.same_user?(user)
+        = link_to settings_path, class: "pull-right" do
+          %span.glyphicon.glyphicon-cog.grey-fg
+      - else
+        %span.full-width.pull-left{style: "height: 21px;"}
     .col-xs-12.col-sm-12.inline-block
       = link_to myprofile_path(user.profile.slug) do
         = cl_image_tag user.avatar, class: "img-circle", width: 100, height: 100, crop: :fill, gravity: :face, style: "border: 4px solid #5eb3e8;"

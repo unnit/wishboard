@@ -37,6 +37,7 @@ development:
   super_admin_ids: [1, 2, 7]
   hacker_relative_path: "/hackers"
   featured_wishes: [279, 284, 290, 291, 295, 289, 281, 282]
+  top_performers: [1, 2, 7, 3, 19, 56, 9, 3]
 
 production:
   time_out: 15
@@ -76,3 +77,4 @@ production:
   super_admin_ids: [1, 2, 7]
   hacker_relative_path: "/hackers"
   featured_wishes: [1335, 1286, 1220, 1186, 1151, 1147, 1125, 1105]
+  top_performers: [1, 2, 100, 95, 12, 359, 682, 250]

@@ -8,6 +8,10 @@ class InvitationsController < ApplicationController
     rescue Exception => e
       flash[:danger] = e.message
     end
-    redirect_to root_path
+    if params[:intro] == "yes"
+      redirect_to root_path(welcome: "tour")
+    else
+      redirect_to root_path
+    end
   end
 end

@@ -24,6 +24,7 @@
  *= require tagmanager
  *= require jssocials
  *= require jssocials-theme-flat
+ *= require introjs
  */
 
 /*@font-face {
@@ -37,10 +38,31 @@
   font-weight: normal;
   font-style: normal;
 
-}*/
+}
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('/assets/fonts/ProximaNovaAlt-Light.eot');
+  src: url('/assets/fonts/ProximaNovaAlt-Light.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/ProximaNova-Light.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('/assets/fonts/ProximaNova-Medium.eot');
+  src: url('/assets/fonts/ProximaNova-Medium.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/ProximaNova-Medium.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('/assets/fonts/ProximaNova-Bold.eot');
+  src: url('/assets/fonts/ProximaNova-Bold.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/ProximaNova-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+*/
 
 body{
-  /*font-family: 'museo_sans_rounded100';*/
   font-family: 'Open Sans', sans-serif;
   /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
 }

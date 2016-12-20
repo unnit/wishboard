@@ -22,23 +22,22 @@ class HomeController < ApplicationController
       @wallet = current_user.wallet
       @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
       @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-      #@showcases = Showcase.order("RANDOM()")
       @showcases = Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(created_at: :desc).page(params[:showcases]).per(5)
-      #@showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(2)
       admin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = false"]
       unless current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq.blank?
         admin_wish_conditions[0]+=" and id not in (?) "
         admin_wish_conditions.push current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq
       end
-      @admin_showcases = Showcase.where(admin_wish_conditions)
+      @admin_showcases = Showcase.where(admin_wish_conditions).order(created_at: :desc)
       coin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = true"]
       unless current_user.coin_wishes.map{|c| c.id}.uniq.blank?
         coin_wish_conditions[0]+=" and id not in (?) "
         coin_wish_conditions.push current_user.coin_wishes.map{|c| c.parent_id}.uniq
       end
-      @coin_wishes = Showcase.where(coin_wish_conditions)
-      @users = User.joins(:profile).where.not(id:current_user.following.map(&:id).append(current_user.id), verified: false)
-      @users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
+      @coin_wishes = Showcase.where(coin_wish_conditions).order(created_at: :desc)
+      #@users = User.joins(:profile).where.not(id:current_user.following.map(&:id).append(current_user.id), verified: false)
+      #@users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
+      @top_performers = User.where("id in (?)", GLOBAL_VARIABLES[:top_performers])
       respond_to do |format|
         format.html
         format.js

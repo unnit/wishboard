@@ -63,17 +63,18 @@
                 = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg", data: {confirm: "#{current_user.active_coin_wish.blank? ? '' : 'Only one coish can be active at a time. If you click okay and proceed, current selection will become your active coin wish. But do not worry, the old earnings will be added to your wallet without any deductions.'}"}
       - else
         .col-xs-12.col-sm-12.no-mar-pad.mbottom10
-          %span.full-width.ptop50.pbottom50.pleft-10.pright-10.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;"}
+          %span.full-width.ptop50.pbottom50.pleft-10.pright-10.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;", "data-step" => "2", "data-intro" => "Coin Wishes help you to earn whenever your friends click on it. Click unlock and start earning."}
             = link_to unlock_coin_wish_profiles_path, class: "btn btn-outline-gold" do
-              Unlock Coin Wish
+              Unlock Coin Wish&nbsp;
+              .fa.fa-unlock
             %h6.mbottom0.grey-fg Click Unlock above to activate coin wishes and receive sign up bonus to your bank account.
             %span.font11.grey-fg.txt-underline.pon.c-w-lrn-mr
               Know More
       - if @admin_showcases.present?
         .col-xs-12.col-sm-12.no-mar-pad
           .col-xs-12.col-sm-12.text-center.no-mar-pad
-            %span.header-text.weight500.zero-letter-spacing.font16 POPULAR WISHES
-        .col-xs-12.col-sm-12.no-mar-pad.mbottom10
+            %span.header-text.weight500.zero-letter-spacing.font16 POPULAR NEW YEAR WISHES
+        .col-xs-12.col-sm-12.no-mar-pad.mbottom10{"data-step" => "3", "data-intro" => "Feling lazy? Start by adding popular wishes to your wishlist just with a single click."}
           #myCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
             .carousel-inner{role: "listbox"}
               - @admin_showcases.each_slice(2).with_index do |admin_showcases, i|
@@ -119,35 +120,54 @@
         - unless @showcases.blank?
           = render partial: "home/showcases", locals: {showcases: @showcases}
         - else
-          %h3.text-center.padding20.bg-white{style: "height:300px;"}
-            Ayyo! Nothing to show. Invite your friends and follow others to activate your feed.
+          .col-xs-12.col-sm-12.text-center.padding10.bg-white.mbottom40
+            %h5 Ayyo! Nothing to show. Invite your friends and follow others to activate your feed.
+            %h4.weight-bold.mtop20 TOP PERFORMERS
+            .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "7", "data-intro" => "An empty feed is boring. Follow a minimum of our 8 most active users above to get the best out of Cocociti and to be updated."}
+              - @top_performers.each do |performer|
+                .col-xs-6.col-sm-3.padding5
+                  .col-sm-12.col-xs-12.border5.padding5{style: "border: 1px solid #d4d4d4;"}
+                    = cl_image_tag performer.avatar, class: "img-circle mtop-v-5", width: 40, height: 40, crop: :fill
+                    %div.mtop-v-5{class: "follow-set-#{performer.id}"}
+                      = link_to user_toggle_follow_path(performer), remote: true, method: :post do
+                        .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(performer) ? 'green-border' : 'blue-border'}", style: "line-height: 0px;"}
+                          %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(performer) ? 'green-fg' : 'cc-dark-fg'}"}
+                            - if current_user.following?(performer)
+                              Following
+                              %i.fa.fa-check
+                            - else
+                              Follow
+                              %i.fa.fa-plus-circle
+                          .loader-effect.btn.loader-in-follow-button{style: "display:none;padding-top: 3px;"}
+                            .ball-clip-rotate{style: "height:22px;"}
+                              %div.blue-border ...
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
         %i.fa.fa-circle-o-notch.fa-spin.font21
         Please wait...
       #infinite-scrolling-posts.hidden
         = paginate @showcases, param_name: "showcases"
         = hidden_field_tag :prev_showcase, @showcases.current_page - 1
-    .col-sm-3.col-xs-12.no-mar-pad.ptop15{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
-      .col-xs-12.col-sm-12.padding10.bg-white{style: "border-bottom: none;"}
+    .col-sm-3.col-xs-12.no-mar-pad.ptop15.check-mobile#rhs-feed{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
+      .col-xs-12.col-sm-12.padding10.bg-white.rhs-intro{style: "border-bottom: none;", "data-step" => "4", "data-intro" => "Feeling lonely? Type their names and search for your friends here."}
         ~ form_tag user_results_path, method: :get, id: "profile-search-form" do
           .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :user_query, params[:user_query], placeholder: "Search people/friends", class: "form-control profile-query bg-light-grey", style: "border-radius: 20px;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.grey-fg
-      .col-xs-12.col-sm-12.text-center.padding15.mbottom20.bg-white.bg-shad
+      .col-xs-12.col-sm-12.text-center.padding15.mbottom20.bg-white.bg-shad.rhs-intro{"data-step" => "5", "data-intro" => "Couldn't find your friends? Don't worry! Just invite them to be part of your wishes & to know theirs."}
         = link_to invitations_path do
           .btn.btn-md.btn-v-outline.transition-effect
             Invite Friends
       .col-xs-12.col-sm-12.padding10.follow-wrapper.bg-shad.bg-white.hide-display
         .col-xs-12.col-sm-12.no-mar-pad.follow-strip
-          = render partial: "follow", locals: {users: @users}
+          =# render partial: "follow", locals: {users: @users}
         .col-xs-12.col-sm-12.text-center.feed-loader.padding20{style: "display:none;"}
           %i.fa.fa-circle-o-notch.fa-spin.font21
           Please wait...
         #infinite-scrolling-follow.hidden
-          = paginate @users, param_name: "users"
-        = hidden_field_tag :prev_user, @users.current_page - 1
-      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center
+          =# paginate @users, param_name: "users"
+        =# hidden_field_tag :prev_user, @users.current_page - 1
+      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro{"data-step" => "6", "data-intro" => "Did you know that we add ₹1 for all your wishes & ₹2 to your wallet whenever your friends join Cocociti? Check your earnings status here."}
         .col-xs-8.col-sm-8.no-mar-pad.grey-fg.font12
           %span.balance-coins-sprite-grey.inline-block
           .full-width.pull-left.neg-mtop5
@@ -157,15 +177,6 @@
           = link_to wallet_path do
             .btn.btn-sm.mtop15.btn-v-outline.transition-effect
               Your Wallet
-        .col-xs-12.col-sm-12.no-mar-pad.mtop10.font12.grey-fg.hide-display
-          .col-xs-4.col-sm-4.padding5
-            Total
-            %br
-            = @wallet.total_coins
-          .col-xs-4.col-sm-4.padding5
-            Used
-            %br
-            = @wallet.used_coins
 
 = content_for :extra_js do
   :javascript
@@ -199,5 +210,12 @@
       }
       else{
         $(".feed-mob").addClass("cc-xtr-dark-bg");
+      }
+      var welcome = "#{params[:welcome].blank? ? '' : params[:welcome]}"
+      if(welcome == "tour" || "#{current_user.sign_in_count}" <= 2){
+        if($("#rhs-feed").css("z-index") == 10){
+          $(this).find(".rhs-intro").removeAttr("data-step data-intro");
+        }
+        introJs().start();
       }
     });

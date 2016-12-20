@@ -29,7 +29,7 @@
           = link_to view_giveaways_path(@profile.slug) do
             .btn.btn-primary.hvr-icon-pop
               Give Away
-      %li.inline-block.hidden-xs.pull-right
+      %li.hidden-xs-inline.pull-right
         - if current_user && current_user.same_user?(user)
           = link_to settings_path do
             .btn.grey-fg.prof-sett

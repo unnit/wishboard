@@ -125,10 +125,19 @@
     %h1.text-center.weight-bold.mbottom40.ptop70{style: "font-size: 2em"} Featured Wishes
     - @showcases.each do |showcase|
       = render partial: "home/showcase_card_with_user", locals: {showcase: showcase}
+#cont-wrapper.modal.fade.padding0
+  %span.pull-right.padding5.mbottom20{style: "z-index: 1051;"}
+    %button.pull-left.btn.grey-bg.padding10{"data-dismiss" => "modal", :type => "button", style: "border-radius: 50%;"}
+      %span.close-sprite.pull-left
+  .container-fluid.mtop20.text-center
+    %img.img-responsive.mtop40.inline-block{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/Justwish.jpg"}
 = content_for :extra_js do
   :javascript
-    $(document).on("click", ".fa-arrow-down", function(){
-      $('html, body').animate({
-          scrollTop: $(".add-1").offset().top - 20
-          }, 500);
+    $(document).ready(function(){
+      $(document).on("click", ".fa-arrow-down", function(){
+        $('html, body').animate({
+            scrollTop: $(".add-1").offset().top - 20
+            }, 500);
+      });
+      if("#{params[:contest]}" == "xmas2016"){$("#cont-wrapper").modal("show");}
     })

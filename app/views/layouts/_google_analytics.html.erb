@@ -45,22 +45,21 @@
     FB.ui(obj, callback);
     }
   </script>
-<% end %>
-<% if Rails.env.development? %>
+  <!-- Facebook Pixel Code -->
   <script>
-    window.fbAsyncInit = function(){
-    FB.init({
-        appId: '626323537517191', status: true, cookie: true, xfbml: true });
-    };
-    (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-        if(d.getElementById(id)) {return;}
-        js = d.createElement('script'); js.id = id;
-        js.async = true;js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
-        ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
-    function postToFeed(title, desc, url, image){
-    var obj = {method: 'feed',link: url, picture: 'https://res.cloudinary.com/cocociti/image/upload/'+image,name: title,description: desc};
-    function callback(response){}
-    FB.ui(obj, callback);
-    }
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window,document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+   fbq('init', '266371560444554');
+  fbq('track', 'PageView');
   </script>
+  <noscript>
+   <img height="1" width="1" src="https://www.facebook.com/tr?id=266371560444554&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Facebook Pixel Code -->
 <% end %>

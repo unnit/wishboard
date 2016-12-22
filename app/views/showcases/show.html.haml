@@ -13,7 +13,7 @@
           %h5.mbottom20.mtop20 Discover people, showcases and wishlists around the world
           .col-xs-12.col-sm-12
             = link_to "Sign Up", authenticate_path(tab: "signup"), class: "btn bg-white full-width cc-dark-fg mtop20 mbottom20"
-    .col-xs-12.col-sm-6.col-sm-offset-3.padding0
+    .col-xs-12.col-sm-10.col-sm-offset-1.col-md-6.col-md-offset-3.padding0
       = render partial: "home/showcases", locals: {showcases: Array(@showcase), feed: "no"}
 = content_for :extra_js do
   :javascript

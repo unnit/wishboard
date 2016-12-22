@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :tags, through: :interests
   has_many :active_interests, -> {where active: true}, class_name: "Interest", foreign_key: "user_id"
   has_many :inactive_interests, -> {where active: false}, class_name: "Interest", foreign_key: "user_id"
+  has_many :active_tags, through: :active_interests, source: :tag
   has_many :collections
   has_many :wikis
   has_many :giveaways

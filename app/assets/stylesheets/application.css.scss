@@ -586,8 +586,8 @@ small{
 .min189h{
   min-height: 189px;
 }
-.min186h{
-  min-height: 186px;
+.h186{
+  height: 186px;
 }
 .hidden-overflow{
   overflow: hidden !important;
@@ -597,6 +597,12 @@ small{
 }
 .h189{
   height: 189px;
+}
+.light-grey-fg:hover, .light-grey-fg:active, .light-grey-fg:focus{
+  color: #bbbbbb !important;
+}
+.light-grey-fg{
+  color: #bbbbbb !important;
 }
 .grey-fg{
   color: grey !important;
@@ -667,6 +673,9 @@ small{
 }
 .green-fg{
   color: #23A723 !important;
+}
+.green-border{
+  border: 1px solid #23A723 !important;
 }
 .blue-bg{
   background-color: #337AB7;

@@ -38,6 +38,7 @@ class HomeController < ApplicationController
       #@users = User.joins(:profile).where.not(id:current_user.following.map(&:id).append(current_user.id), verified: false)
       #@users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
       @top_performers = User.where("id in (?)", GLOBAL_VARIABLES[:top_performers])
+      @featured_tags = Tag.featured - current_user.active_tags
       respond_to do |format|
         format.html
         format.js
@@ -290,7 +291,7 @@ class HomeController < ApplicationController
   def toggle_follow_interest
     @tag = Tag.find_by_id params[:id]
     current_user.toggle_follow_interest!(@tag)
-    @tag.reload
+    current_user.active_interests.reload
     respond_to :js
   end
 

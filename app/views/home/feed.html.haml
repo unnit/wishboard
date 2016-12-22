@@ -26,10 +26,10 @@
                   .item{class: "#{'active' if i==0}"}
                     - coin_wishes.each do |coin_wish|
                       .col-sm-6.padding5
-                        .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-                          .col-sm-12.no-mar-pad.text-center.min186h.show-img-wrap
+                        .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0.bg-shad
+                          .col-sm-12.no-mar-pad.text-center.h186.show-img-wrap.tab125h
                             = cl_image_tag coin_wish.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: coin_wish.title
-                          .col-sm-8.col-sm-offset-2.mtop10.pbottom10
+                          .col-md-8.col-sm-12.col-md-offset-2.mtop10.pbottom10
                             %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.coin-brd-box{"data-id" => "#{coin_wish.id}"}
                               = truncate coin_wish.title, length: 18
                               .fa.fa-circle-thin
@@ -44,10 +44,10 @@
                 - @coin_wishes.each.with_index do |coin_wish, i|
                   .item{class: "#{'active' if i==0}"}
                     .col-xs-12.padding5
-                      .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-                        .col-xs-12.no-mar-pad.text-center.min186h.show-img-wrap
+                      .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0.bg-shad
+                        .col-xs-12.no-mar-pad.text-center.h186.show-img-wrap
                           = cl_image_tag coin_wish.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: coin_wish.title
-                        .col-xs-8.col-xs-offset-2.mtop10.pbottom10
+                        .col-xs-12.mtop10.pbottom10
                           %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.coin-brd-box{"data-id" => "#{coin_wish.id}"}
                             = truncate coin_wish.title, length: 18
                             .fa.fa-circle-thin
@@ -82,10 +82,10 @@
                   .item{class: "#{'active' if i==0}"}
                     - admin_showcases.each do |admin_showcase|
                       .col-sm-6.padding5
-                        .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-                          .col-sm-12.no-mar-pad.text-center.min186h.show-img-wrap
+                        .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0.bg-shad
+                          .col-sm-12.no-mar-pad.text-center.h186.show-img-wrap.tab125h
                             = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
-                          .col-sm-8.col-sm-offset-2.mtop10.pbottom10
+                          .col-md-8.col-sm-12.col-md-offset-2.mtop10.pbottom10
                             %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
                               = truncate admin_showcase.title, length: 18
                               .fa.fa-square-o
@@ -100,10 +100,10 @@
                 - @admin_showcases.each.with_index do |admin_showcase, i|
                   .item{class: "#{'active' if i==0}"}
                     .col-xs-12.padding5
-                      .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
-                        .col-xs-12.no-mar-pad.text-center.min186h.show-img-wrap
+                      .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0.bg-shad
+                        .col-xs-12.no-mar-pad.text-center.h186.show-img-wrap
                           = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
-                        .col-xs-8.col-xs-offset-2.mtop10.pbottom10
+                        .col-xs-12.mtop10.pbottom10
                           %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
                             = truncate admin_showcase.title, length: 18
                             .fa.fa-square-o
@@ -127,7 +127,7 @@
             .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "7", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>BE UPDATED</h3>An empty feed is boring. Follow a minimum of our 8 most active users above to get the best out of Cocociti and to be updated.</span>"}
               - @top_performers.each do |performer|
                 .col-xs-6.col-sm-3.padding5
-                  .col-sm-12.col-xs-12.border5.padding5{style: "border: 1px solid #d4d4d4;"}
+                  .col-sm-12.col-xs-12.border5.padding5.bg-shad{style: "border: 1px solid #d4d4d4;"}
                     = cl_image_tag performer.avatar, class: "img-circle mtop-v-5", width: 40, height: 40, crop: :fill
                     %div.mtop-v-5{class: "follow-set-#{performer.id}"}
                       = link_to user_toggle_follow_path(performer), remote: true, method: :post do
@@ -168,16 +168,34 @@
         #infinite-scrolling-follow.hidden
           =# paginate @users, param_name: "users"
         =# hidden_field_tag :prev_user, @users.current_page - 1
-      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro{"data-step" => "6", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>CHECK YOUR EARNINGS</h3>Did you know that we add ₹1 for all your wishes & ₹2 to your wallet whenever your friends join Cocociti? Check your earnings status here.</span>"}
-        .col-xs-8.col-sm-8.no-mar-pad.grey-fg.font12
+      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro.mbottom20{"data-step" => "6", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>CHECK YOUR EARNINGS</h3>Did you know that we add ₹1 for all your wishes & ₹2 to your wallet whenever your friends join Cocociti? Check your earnings status here.</span>"}
+        .col-xs-12.col-sm-12.col-md-8.no-mar-pad.grey-fg.font12
           %span.balance-coins-sprite-grey.inline-block
           .full-width.pull-left.neg-mtop5
             %span.inline-block Balance
             %span.inline-block.font20= @wallet.unused_coins
-        .col-xs-4.col-sm-4.no-mar-pad
+        .col-xs-12.col-sm-12.col-md-4.no-mar-pad
           = link_to wallet_path do
             .btn.btn-sm.mtop15.btn-v-outline.transition-effect
               Your Wallet
+      - if @featured_tags.present?
+        .col-xs-12.col-sm-12.hidden-xs.padding10.bg-shad.bg-white.text-center.mbottom20{style: "height: 180px;"}
+          #myInterestsCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
+            %span.pull-left.font12.weight-bold.ptop5.pbottom5.grey-fg.mbottom10 FOLLOW INTERESTS
+            %a.light-grey-fg.pull-right.pleft5.border-lt-side{href: "#myInterestsCarousel", role: "button", "data-slide" => "next"}
+              %span{"aria-hidden" => true} >
+              %span.sr-only Next
+            %a.light-grey-fg.pull-right.pright5{href: "#myInterestsCarousel", role: "button", "data-slide" => "prev"}
+              %span{"aria-hidden" => true} <
+              %span.sr-only Previous
+            .carousel-inner{role: "listbox"}
+              - @featured_tags.each_slice(3).with_index do |tags, i|
+                .item{class: "#{'active' if i==0}"}
+                  - tags.each do |tag|
+                    = link_to user_toggle_follow_interest_path(tag), remote: true, method: :post do
+                      .btn.btn-sm.border-medium.full-width.grey-fg.follow-tag-wrap.mbottom5{id: "follow-tag-#{tag.id}"}
+                        = truncate tag.name, length: 30
+                        .fa.fa-check-circle.font20
 
 = content_for :extra_js do
   :javascript

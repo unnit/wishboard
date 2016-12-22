@@ -1,10 +1,9 @@
 - if @follow_all.present?
-  $(".follow-tag-icon").addClass("green-fg");
+  $(".follow-tag-wrap").removeClass("border-medium grey-fg").addClass("green-fg green-border");
 - elsif @unfollow_all.present?
-  $(".follow-tag-icon").removeClass("green-fg");
+  $(".follow-tag-wrap").removeClass("green-fg green-border").addClass("border-medium grey-fg");
 - else
-  $(".follow-tag-#{@tag.id}").toggleClass("green-fg");
-- if current_user.interests_count >= 10
-  $(".cont-intrsts").show();
-- else
-  $(".cont-intrsts").hide();
+  - if current_user.is_active_interest?(@tag)
+    $("#follow-tag-#{@tag.id}").removeClass("border-medium grey-fg").addClass("green-fg green-border");
+  - else
+    $("#follow-tag-#{@tag.id}").removeClass("green-fg green-border").addClass("border-medium grey-fg");

@@ -3399,7 +3399,25 @@ th.headerSortDown {
   display: inline-block !important;
 }
 /*******************************/
-@media only screen and (max-width: 776px) {
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .tab125h{
+    height: 125px !important;
+  }
+  .tab-font20{
+    font-size: 20px;
+  }
+  .tab-mtop10{
+    margin-top: 10px !important;
+  }
+  .tab-mtop0{
+    margin-top: 0px !important;
+  }
+  .text-center-tab{
+    text-align: center !important;
+  }
+}
+
+@media only screen and (max-width: 767px) {
   .hidden-xs-inline{
     display: none !important;
   }

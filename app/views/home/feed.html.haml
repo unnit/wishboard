@@ -20,14 +20,14 @@
                 Know More
                 %i.fa.fa-question-circle-o
           .col-xs-12.col-sm-12.no-mar-pad.mbottom10.coin-wish-wrapper
-            #myCoinCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
+            #myCoinCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}, data: {interval: false}}
               .carousel-inner{role: "listbox"}
                 - @coin_wishes.each_slice(2).with_index do |coin_wishes, i|
                   .item{class: "#{'active' if i==0}"}
                     - coin_wishes.each do |coin_wish|
                       .col-sm-6.padding5
                         .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0.bg-shad
-                          .col-sm-12.no-mar-pad.text-center.h186.show-img-wrap.tab125h
+                          .col-sm-12.no-mar-pad.text-center.h186.show-img-wrap.tab125h.hidden-overflow
                             = cl_image_tag coin_wish.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: coin_wish.title
                           .col-md-8.col-sm-12.col-md-offset-2.mtop10.pbottom10
                             %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.coin-brd-box{"data-id" => "#{coin_wish.id}"}
@@ -45,7 +45,7 @@
                   .item{class: "#{'active' if i==0}"}
                     .col-xs-12.padding5
                       .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0.bg-shad
-                        .col-xs-12.no-mar-pad.text-center.h186.show-img-wrap
+                        .col-xs-12.no-mar-pad.text-center.h186.show-img-wrap.hidden-overflow
                           = cl_image_tag coin_wish.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: coin_wish.title
                         .col-xs-12.mtop10.pbottom10
                           %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.coin-brd-box{"data-id" => "#{coin_wish.id}"}
@@ -83,7 +83,7 @@
                     - admin_showcases.each do |admin_showcase|
                       .col-sm-6.padding5
                         .col-sm-12.no-mar-pad.padding10.bg-white.pbottom0.bg-shad
-                          .col-sm-12.no-mar-pad.text-center.h186.show-img-wrap.tab125h
+                          .col-sm-12.no-mar-pad.text-center.h186.show-img-wrap.tab125h.hidden-overflow
                             = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
                           .col-md-8.col-sm-12.col-md-offset-2.mtop10.pbottom10
                             %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
@@ -101,7 +101,7 @@
                   .item{class: "#{'active' if i==0}"}
                     .col-xs-12.padding5
                       .col-xs-12.no-mar-pad.padding10.bg-white.pbottom0.bg-shad
-                        .col-xs-12.no-mar-pad.text-center.h186.show-img-wrap
+                        .col-xs-12.no-mar-pad.text-center.h186.show-img-wrap.hidden-overflow
                           = cl_image_tag admin_showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: admin_showcase.title
                         .col-xs-12.mtop10.pbottom10
                           %span.text-center.pull-left.full-width.pon.padding5.font12.adn-box.brd-box{"data-id" => "#{admin_showcase.id}"}
@@ -180,7 +180,7 @@
               Your Wallet
       - if @featured_tags.present?
         .col-xs-12.col-sm-12.hidden-xs.padding10.bg-shad.bg-white.text-center.mbottom20{style: "height: 180px;"}
-          #myInterestsCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
+          #myInterestsCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}, data: {interval: false}}
             %span.pull-left.font12.weight-bold.ptop5.pbottom5.grey-fg.mbottom10 FOLLOW INTERESTS
             %a.light-grey-fg.pull-right.pleft5.border-lt-side{href: "#myInterestsCarousel", role: "button", "data-slide" => "next"}
               %span{"aria-hidden" => true} >

@@ -1,15 +1,15 @@
 $('.feed-loader').hide();
-- if @user_updated
-  $(".follow-strip").append("#{j render partial: "follow", locals: {users: @users}}");
-  $("#prev_user").val("#{@users.current_page}")
+//-# if @user_updated
+//$(".follow-strip").append("#{j render partial: "follow", locals: {users: @users}}");
+//$("#prev_user").val("#{@users.current_page}")
 - if @showcase_updated
   $(".showcase-strip").append("#{j render partial: "showcases", locals: {showcases: @showcases}}")
   $("#prev_showcase").val("#{@showcases.current_page}")
-- if @users.next_page
-  $('#infinite-scrolling-follow .pagination').replaceWith("#{j paginate @users, param_name: 'users'}");
-- else
-  $(".follow-wrapper").off('scroll');
-  $('#infinite-scrolling-follow .pagination').remove();
+//-# if @users.next_page
+//$('#infinite-scrolling-follow .pagination').replaceWith("#{j paginate @users, param_name: 'users'}");
+//-# else
+//$(".follow-wrapper").off('scroll');
+//$('#infinite-scrolling-follow .pagination').remove();
 - if @showcases.next_page
   $('#infinite-scrolling-posts .pagination').replaceWith("#{j paginate @showcases, param_name: 'showcases'}");
   $(window).on('scroll', function (){var more_posts_url = $('#infinite-scrolling-posts .pagination .next a').attr('href');if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 250) {$(window).off("scroll");$('.feed-loader').show();$.getScript(more_posts_url+'&prev_showcase_page='+$("#prev_showcase").val()+'&prev_user_page='+$("#prev_user").val());}});

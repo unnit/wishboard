@@ -21,7 +21,7 @@ class HomeController < ApplicationController
       @showcase.build_location
       @wallet = current_user.wallet
       @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
-      @user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
+      #@user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
       @showcases = Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(created_at: :desc).page(params[:showcases]).per(5)
       admin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = false"]
       unless current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq.blank?

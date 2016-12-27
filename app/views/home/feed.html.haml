@@ -1,6 +1,6 @@
 .container-fluid.ptop50.padding0.mob-ptop100{style: "min-height: 1000px;background:#ebeced;"}
   .container.padding0.helvetica-font
-    .col-sm-3.hidden-xs.no-mar-pad.ptop15
+    .col-sm-3.hidden-xs.no-mar-pad.ptop15#lhs-feed
       = render partial: "user_card", locals: {users: Array(current_user), card_margin: "0px"}
       .col-xs-12.col-sm-4.padding10.pleft0.mtop15{style: "min-width: 292px;"}
         %h6.no-mar-pad.font12.pleft0.text-left.weight-bold{style: "line-height: 18px;border-bottom: none;"}
@@ -126,9 +126,10 @@
             %h4.weight-bold.mtop20 TOP PERFORMERS
             .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "7", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>BE UPDATED</h3>An empty feed is boring. Follow a minimum of our 8 most active users above to get the best out of Cocociti and to be updated.</span>"}
               - @top_performers.each do |performer|
-                .col-xs-6.col-sm-3.padding5
-                  .col-sm-12.col-xs-12.border5.padding5.bg-shad{style: "border: 1px solid #d4d4d4;"}
-                    = cl_image_tag performer.avatar, class: "img-circle mtop-v-5", width: 40, height: 40, crop: :fill
+                .col-xs-6.col-sm-6.col-md-3.padding5
+                  .col-sm-12.col-xs-12.padding5{style: "border: 1px solid #f1f1f1; height: 125px;"}
+                    = cl_image_tag performer.avatar, class: "img-circle mtop10 mbottom5", width: 40, height: 40, crop: :fill
+                    %h5.no-mar-pad.font11= truncate performer.name, length: 15
                     %div.mtop-v-5{class: "follow-set-#{performer.id}"}
                       = link_to user_toggle_follow_path(performer), remote: true, method: :post do
                         .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(performer) ? 'green-border' : 'blue-border'}", style: "line-height: 0px;"}
@@ -155,7 +156,7 @@
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.grey-fg
-      .col-xs-12.col-sm-12.text-center.padding15.mbottom20.bg-white.bg-shad.rhs-intro{"data-step" => "5", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>INVITE FRIENDS</h3>Couldn't find your friends? Don't worry! Just invite them to be part of your wishes & to know theirs.</span>"}
+      .col-xs-12.col-sm-12.text-center.padding15.mbottom10.bg-white.bg-shad.rhs-intro{"data-step" => "5", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>INVITE FRIENDS</h3>Couldn't find your friends? Don't worry! Just invite them to be part of your wishes & to know theirs.</span>"}
         = link_to invitations_path do
           .btn.btn-md.btn-v-outline.transition-effect
             Invite Friends
@@ -168,7 +169,9 @@
         #infinite-scrolling-follow.hidden
           =# paginate @users, param_name: "users"
         =# hidden_field_tag :prev_user, @users.current_page - 1
-      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro.mbottom20{"data-step" => "6", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>CHECK YOUR EARNINGS</h3>Did you know that we add ₹1 for all your wishes & ₹2 to your wallet whenever your friends join Cocociti? Check your earnings status here.</span>"}
+      .col-xs-12.col-sm-12.hidden-xs.padding10.bg-shad.bg-white.text-center.mbottom10#sim-wrapper{style: "min-height: 183px;"}
+        .fa.fa-spinner.fa-spin.sim-frnds-spinner.mtop70
+      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro.mbottom10{"data-step" => "6", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>CHECK YOUR EARNINGS</h3>Did you know that we add ₹1 for all your wishes & ₹2 to your wallet whenever your friends join Cocociti? Check your earnings status here.</span>"}
         .col-xs-12.col-sm-12.col-md-8.no-mar-pad.grey-fg.font12
           %span.balance-coins-sprite-grey.inline-block
           .full-width.pull-left.neg-mtop5
@@ -181,7 +184,7 @@
       - if @featured_tags.present?
         .col-xs-12.col-sm-12.hidden-xs.padding10.bg-shad.bg-white.text-center.mbottom20{style: "height: 180px;"}
           #myInterestsCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}, data: {interval: false}}
-            %span.pull-left.font12.weight-bold.ptop5.pbottom5.grey-fg.mbottom10 FOLLOW INTERESTS
+            %span.pull-left.font12.weight-bold.ptop5.pbottom5.grey-fg.mbottom5 FOLLOW INTERESTS
             %a.light-grey-fg.pull-right.pleft5.border-lt-side{href: "#myInterestsCarousel", role: "button", "data-slide" => "next"}
               %span{"aria-hidden" => true} >
               %span.sr-only Next
@@ -237,4 +240,11 @@
         }
         introJs().start();
       }
+      $.get("/get_similar_friends");
+      width = $("#lhs-feed").width();
+      left = $("#lhs-feed").position().left;
+      top = $("#lhs-feed").position().top;
+      $(".main-feed").css({"left": width-1, "position": "relative"});
+      $("#lhs-feed").css({"width":width , "top": top, "left": left, "position": "fixed"});
+      $("#rhs-feed").css({"width": width, "top": top, "right": left, "position": "fixed"});
     });

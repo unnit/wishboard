@@ -107,6 +107,7 @@ Rails.application.routes.draw do
   get "unchecked_notifications", to: "home#unchecked_notifications", as: :unchecked_notifications
   get "notifications", to: "home#notifications", as: :notifications
   get "update_all_notifications", to: "home#update_all_notifications", as: :update_all_notifications
+  get "get_similar_friends", to: "home#get_similar_friends"
   post "toggle_follow/:id", to: "home#toggle_follow", as: :user_toggle_follow
   post "follow_all_interest", to: "home#follow_all_interest", as: :follow_all_interest
   post "unfollow_all_interest", to: "home#unfollow_all_interest", as: :unfollow_all_interest

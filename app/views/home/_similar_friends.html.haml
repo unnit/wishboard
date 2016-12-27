@@ -1,0 +1,29 @@
+#mySfCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}, data: {interval: false}}
+  %span.pull-left.font12.weight-bold.ptop5.pbottom5.grey-fg.mbottom5 FOLLOW LIKE MINDED PEOPLE
+  %a.light-grey-fg.pull-right.pleft5.border-lt-side{href: "#mySfCarousel", role: "button", "data-slide" => "next"}
+    %span{"aria-hidden" => true} >
+    %span.sr-only Next
+  %a.light-grey-fg.pull-right.pright5{href: "#myInterestsCarousel", role: "button", "data-slide" => "prev"}
+    %span{"aria-hidden" => true} <
+    %span.sr-only Previous
+  .carousel-inner{role: "listbox"}
+    - similar_friends.each_slice(2).with_index do |friends, i|
+      .item{class: "#{'active' if i==0}"}
+        - friends.each do |friend|
+          .col-xs-6.col-sm-12.col-md-6.padding5.ptop0
+            .col-sm-12.col-xs-12.padding5{style: "border: 1px solid #f1f1f1; height: 125px;"}
+              = cl_image_tag friend.avatar, class: "img-circle mtop10 mbottom5", width: 40, height: 40, crop: :fill
+              %h5.no-mar-pad.font11= truncate friend.name, length: 15
+              %div.mtop-v-5{class: "follow-set-#{friend.id}"}
+                = link_to user_toggle_follow_path(friend), remote: true, method: :post do
+                  .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(friend) ? 'green-border' : 'blue-border'}", style: "line-height: 0px;"}
+                    %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(friend) ? 'green-fg' : 'cc-dark-fg'}"}
+                      - if current_user.following?(friend)
+                        Following
+                        %i.fa.fa-check
+                      - else
+                        Follow
+                        %i.fa.fa-plus-circle
+                    .loader-effect.btn.loader-in-follow-button{style: "display:none;padding-top: 3px;"}
+                      .ball-clip-rotate{style: "height:22px;"}
+                        %div.blue-border ...

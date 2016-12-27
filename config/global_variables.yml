@@ -38,6 +38,7 @@ development:
   hacker_relative_path: "/hackers"
   featured_wishes: [279, 284, 290, 291, 295, 289, 281, 282]
   top_performers: [1, 2, 7, 3, 19, 56, 9, 3]
+  slug_exceptions: ["settings", "dashboard", "about", "terms", "privacy", "contact", "goodness-and-open-source", "jobs", "hackers", "sitemap", "confirmation", "info", "interests", "rent", "people", "authenticate", "bulk_bookings", "offers", "feed", "results", "wallet", "profiles", "user_autocomplete", "unchecked_notifications", "notifications", "update_all_notifications", "fansday", "get_similar_friends"]
 
 production:
   time_out: 15
@@ -78,3 +79,4 @@ production:
   hacker_relative_path: "/hackers"
   featured_wishes: [1335, 1286, 1220, 1186, 1151, 1147, 1125, 1105]
   top_performers: [1, 2, 100, 95, 12, 359, 682, 250]
+  slug_exceptions: ["settings", "dashboard", "about", "terms", "privacy", "contact", "goodness-and-open-source", "jobs", "hackers", "sitemap", "confirmation", "info", "interests", "rent", "people", "authenticate", "bulk_bookings", "offers", "feed", "results", "wallet", "profiles", "user_autocomplete", "unchecked_notifications", "notifications", "update_all_notifications", "fansday", "get_similar_friends"]

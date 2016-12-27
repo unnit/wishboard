@@ -63,6 +63,8 @@ class ProfilesController < ApplicationController
       end
     end
     @profile.slug = params[:profile][:slug].downcase
+    logger.info '****************'
+    logger.info params[:profile][:slug].downcase
     if @profile.save
       flash[:success] = 'Your profile has been successfully updated.'
       redirect_to settings_path
@@ -183,13 +185,17 @@ class ProfilesController < ApplicationController
 
   def username_available
     name = params[:uname].downcase
-    profile = Profile.where("slug = ?", name)
-    if profile.blank?
-      render json: {result: "Available"}
-    elsif profile.first == current_user.profile
-      render json: {result: "It's you only"}
+    if GLOBAL_VARIABLES[:slug_exceptions].include?(name)
+      render json: {result: "Not available"}
     else
-      render json: {result: "It's already taken."}
+      profile = Profile.where("slug = ?", name)
+      if profile.blank?
+        render json: {result: "Available"}
+      elsif profile.first == current_user.profile
+        render json: {result: "It's you only"}
+      else
+        render json: {result: "It's already taken."}
+      end
     end
   end
 

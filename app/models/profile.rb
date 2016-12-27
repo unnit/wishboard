@@ -34,6 +34,7 @@ class Profile < ActiveRecord::Base
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z\.\ ]*\z/, message: "only allows alphabets, dot and space" }
   validates :slug, length: { minimum: 6, maximum: 30, message: "should be between 6 and 30 characters." }
   validates :slug, format: { with: /\A[a-zA-Z0-9\_\-]*\z/, message: "only allows alphabets, numbers, underscore and hyphen" }
+  validates :slug, exclusion: { in: GLOBAL_VARIABLES[:slug_exceptions], message: "not available" }
 
   validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_blank?, on: :update
   validates_date :date_of_birth, :before => lambda { 18.years.ago },

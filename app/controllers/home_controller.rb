@@ -50,6 +50,17 @@ class HomeController < ApplicationController
     end
   end
 
+  def get_similar_friends
+    if current_user.active_tags.present?
+      @similar_friends = current_user.similar_friends.uniq.reject{|f| f.id == current_user.id || current_user.following.map(&:id).include?(f.id)}.take(20)
+    elsif current_user.referrer.present?
+      @similar_friends = current_user.referrer.following.reject{|f| current_user.following.map(&:id).include?(f.id)}.take(20)
+    else
+      @similar_friends = User.where("id in (?)", GLOBAL_VARIABLES[:top_performers])
+    end
+    respond_to :js
+  end
+
   def user_results
     if params[:user_query].present?
       profiles = Profile.where("lower(first_name) = ? or lower(last_name) = ?", params[:user_query].split(" ").first.downcase, params[:user_query].split(" ").last.downcase)

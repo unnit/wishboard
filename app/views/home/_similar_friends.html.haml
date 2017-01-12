@@ -12,7 +12,8 @@
         - friends.each do |friend|
           .col-xs-6.col-sm-12.col-md-6.padding5.ptop0
             .col-sm-12.col-xs-12.padding5{style: "border: 1px solid #f1f1f1; height: 125px;"}
-              = cl_image_tag friend.avatar, class: "img-circle mtop10 mbottom5", width: 40, height: 40, crop: :fill
+              = link_to myprofile_path(friend.profile.slug), target: "_blank" do
+                = cl_image_tag friend.avatar, class: "img-circle mtop10 mbottom5 hovercard", data: {id: friend.id}, width: 40, height: 40, crop: :fill
               %h5.no-mar-pad.font11= truncate friend.name, length: 15
               %div.mtop-v-5{class: "follow-set-#{friend.id}"}
                 = link_to user_toggle_follow_path(friend), remote: true, method: :post do

@@ -1,4 +1,4 @@
-%nav.navbar.navbar-default.navbar-fixed-top.topnav.nav-bar-color.no-border.bg-shad{:role => "navigation"}
+%nav.navbar.navbar-default.navbar-fixed-top.topnav.violet-bg.no-border.bg-shad{:role => "navigation"}
   .navbar.navbar-fixed-top
     .container
       .navbar-header
@@ -6,22 +6,22 @@
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        %a.navbar-brand.pleft5{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;color:black;"}
+        %a.navbar-brand.pleft5.white-fg{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;"}
           Cocociti
         = yield :header_extra
       .col-xs-12.col-sm-4.no-mar-pad.hidden-xs.search-wrap{style: "margin-top: 8px;"}
         ~ form_tag results_path, method: :get, id: "header-search" do
-          .col-xs-12.col-sm-11.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query", style: "border-radius: 20px;"
+          .col-xs-12.col-sm-11.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query cc-med-bg cc-dark-fg-border", style: "border-radius: 20px;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
-              %span.glyphicon.glyphicon-search.grey-fg
+              %span.glyphicon.glyphicon-search.white-fg
       .navbar-collapse.collapse.nav-border
-        %ul.nav.navbar-nav.navbar-right.bg-white.mtop0
+        %ul.nav.navbar-nav.navbar-right.mtop0
           - if current_user
             %li.hidden-xs
-              .fa.fa-bell-o.font20.pon.pull-right.mtop15.notif-icon.cc-dark-fg
+              .fa.fa-bell-o.font20.pon.pull-right.mtop15.notif-icon.white-fg
               - if current_user.unchecked_notififcations_count > 0
-                .badge.notif-badge.pon.pull-right.mtop5.notif-icon.cc-dark-bg= current_user.unchecked_notififcations_count
+                .badge.notif-badge.pon.pull-right.mtop5.notif-icon.bg-white.cc-dark-fg= current_user.unchecked_notififcations_count
               .sq-rot.notif-toggle
               .notif-arrow.notif-toggle
               .notif-wrap.bx-shad.notif-toggle.helvetica-font
@@ -36,8 +36,8 @@
               %ul.pro-view.pleft-10
                 %li.dropdown.pull-left
                   = link_to "#", class: "dropdown-toggle", data: {toggle: "dropdown"} do
-                    %span.avatar.pull-right.mleft5{style: "margin-top: -11px; margin-right: 15px;"}
-                      = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 40, height: 40, crop: :fill
+                    %span.avatar.pull-right.mleft5{style: "margin-top: -7px;margin-right: 15px;"}
+                      = cl_image_tag current_user.avatar, class: "img-circle pull-right mleft5", width: 30, height: 30, crop: :fill
                   %ul.dropdown-menu.pull-left.mtop10.font13.bg-shad{style: "width:180px;"}
                     .arrow-wrapper-nav
                       .arrow-nav
@@ -63,7 +63,7 @@
                     %li
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
-            %li.hidden-xs= link_to "Wish", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn cc-dark-bg white-fg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
+            %li.hidden-xs= link_to "Wish", "#", class: "btn white-fg ps-nav-btn cc-hvy-dark-bg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
             %li.visible-xs.bg-white
               = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
                 %span.black-fg= truncate current_user.name, length: 25
@@ -113,16 +113,10 @@
       .col-xs-6.padding10
         = link_to authenticate_path do
           .btn.btn-sm.full-width.white-fg.light-border Login
-- if current_user && !@scase_modal.present?
-  #showcase-modal.modal.fade
-    .modal-dialog
-      .modal-content.pop-up-mar
-        .modal-header.pop-bac
-          %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }
-            %i.fa.fa-times
-          %h4.modal-title Your Showcase
-        .modal-body{style: "height: 243px;"}
-          .col-xs-12.col-sm-12.no-mar-pad.bg-white
-            = render partial: "home/post_showcase", locals: {showcase: @scase, header: "yes"}
-#cont-wrapper.modal.fade.padding0
+#showcase-modal.modal.fade.padding0
+  %span.pull-right.padding5.mbottom20.white-fg.weight600.font25.pon.ps-close-wrapper{ style: "z-index: 1051;", "data-dismiss" => "modal"} x
+  .modal-dialog
+    - if current_user && !@scase_modal.present?
+      = render partial: "home/post_showcase", locals: {showcase: @scase}
+#cont-wrapper.modal.fade.padding0.ptop20
 .messages

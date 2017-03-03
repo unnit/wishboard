@@ -17,8 +17,8 @@
               %h5.no-mar-pad.font11= truncate friend.name, length: 15
               %div.mtop-v-5{class: "follow-set-#{friend.id}"}
                 = link_to user_toggle_follow_path(friend), remote: true, method: :post do
-                  .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(friend) ? 'green-border' : 'blue-border'}", style: "line-height: 0px;"}
-                    %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(friend) ? 'green-fg' : 'cc-dark-fg'}"}
+                  .btn.no-mar-pad.loader-out-follow-button.follow-button{class: "#{current_user.following?(friend) ? 'green-border' : 'cc-dark-fg-border'}", style: "line-height: 0px;"}
+                    %button{class: "btn loader-button loader-in-follow-button padding0 bg-white font-medium #{current_user.following?(friend) ? 'green-fg' : 'cc-dark-fg'}"}
                       - if current_user.following?(friend)
                         Following
                         %i.fa.fa-check

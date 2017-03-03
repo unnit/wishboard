@@ -5915,7 +5915,7 @@ a.thumbnail:hover {
     bottom: 10px;
     right: 10px;
     width: auto;
-    z-index: 10000;
+    z-index: 100001;
     -webkit-transform-style: preserve-3d;
     transition: all 0.6s;
     -webkit-transition: all 0.6s;

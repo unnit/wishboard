@@ -2,7 +2,7 @@
   .pull-left.full-width.padding20.text-center No new notifications found.
 - else
   = link_to update_all_notifications_path, remote: true do
-    .col-xs-12.col-sm-12.padding5.text-right.border-bt-side
+    .col-xs-12.col-sm-12.padding5.text-right.border-bt-side.cc-dark-fg
       Mark all as read
   .col-xs-12.col-sm-12.notif-inner-strip.no-mar-pad
     = render partial: "home/notifications_content", locals: {notifications: notifications}

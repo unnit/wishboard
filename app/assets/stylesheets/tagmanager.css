@@ -24,12 +24,12 @@
   color: #000000;
   font-weight: bold;
   margin-left: 4px;
-  opacity: 0.2;
+  opacity: 0.7;
 }
 .tm-tag .tm-tag-remove:hover {
   color: #000000;
   text-decoration: none;
-  opacity: 0.4;
+  opacity: 1;
 }
 .tm-tag.tm-tag-warning {
   color: #945203;
@@ -52,13 +52,16 @@
   border-color: #5dc8f7;
 }
 .tm-tag.tm-tag-inverse {
-  color: #cccccc;
-  background-color: #555555;
-  border-color: #333333;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2) inset;
+  color: #732db0;
+  background-color: #ffffff;
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px dotted;
+  padding: 0px 2px;
+  font-size: 11px !important;
 }
 .tm-tag.tm-tag-inverse .tm-tag-remove {
-  color: #ffffff;
+  color: #732db0 !important;
 }
 .tm-tag.tm-tag-large {
   font-size: 16.25px;

@@ -2,19 +2,15 @@ $(".loader-button").show();
 $(".loader-effect").hide();
 $(".messages").html("#{j(render 'layouts/messages')}")
 - if @showcase.errors.blank?
-  $("#cont-wrapper").html("#{j render partial: 'showcases/wish_success', locals: {showcase: @showcase}}");
-  $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
-  $("#cont-wrapper").modal('show');
+  $("#showcase-modal .modal-dialog").html("#{j render partial: 'showcases/wish_success', locals: {showcase: @showcase}}");
   var new_showcase = $("#{j render partial: 'home/showcases', locals: {showcases: Array(@showcase)}}").hide();
   $(".showcase-strip").prepend(new_showcase);
   $(".showcase-ps-#{@showcase.id}").fadeIn("slow");
-  $("#new_showcase")[0].reset();
-  $(".set-2-ps, .set-3-ps").removeClass("active block-display").addClass("hide-display");
-  $(".set-1-ps").addClass("active block-display");
-  $(".arrow-left").fadeOut();
-  $(".arrow-right").fadeIn();
-  $(".arrow-wrapper").animate({left: "16.5%"});
-  $(".preview-delete, .preview, .preview-edit").hide();
-  $(".file-input-button").show();
-  $(".ps-showpiece, .ps-wish").removeClass("header-with-grad white-fg");
+  $("#new-wish").html("#{j render partial: 'home/post_showcase', locals: {showcase: @scase}}")
   $("#shareShowcaseRoundIcons").jsSocials({url: "https://www.cocociti.com/showcases/#{@showcase.id}",showLabel: false,showCount: false,shares: ["twitter", "facebook", "pinterest", "whatsapp"]});
+  var tags = new Bloodhound({datumTokenizer: function(datum) {return Bloodhound.tokenizers.whitespace(datum.value);},queryTokenizer: Bloodhound.tokenizers.whitespace,remote: {wildcard: '%QUERY',url: '/showcases/gettags?q=%QUERY',transform: function(response) {return $.map(response, function(tags) {return {value: tags};});}}});
+  blank_array = []
+  var tagApi = $(".tm-input").tagsManager({hiddenTagListName: "showcase[all_tags]",maxTags: 15,prefilled: blank_array});
+  $(".tm-input").typeahead(null, {display: 'value',source: tags,}).on('typeahead:selected', function (e, d) {tagApi.tagsManager("pushTag", d.value);$('.tm-input').typeahead('val', "");});
+  tagApi.tagsManager("empty");
+  $(".prefix-scrollbar").mCustomScrollbar({theme: "minimal-dark", setHeight: 298});

@@ -27,16 +27,11 @@ class ShowcasesController < ApplicationController
   end
 
   def create
+    @showcase = current_user.showcases.build(showcase_params)
     if params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[0]
-      @showcase = current_user.showcases.build(showpiece_params)
       @showcase.user_status = Showcase::USER_STATUS[1]
-    elsif params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[1]
-      @showcase = current_user.showcases.build(wish_params)
-      @showcase.user_status = Showcase::USER_STATUS[0]
     else
-      flash[:alert] = "Hey, Are you going to Showcase or Wishlist?"
-      render js: "location.reload()"
-      return
+      @showcase.user_status = Showcase::USER_STATUS[0]
     end
     @showcase.admin_created = false
     if params[:image].present?
@@ -58,20 +53,13 @@ class ShowcasesController < ApplicationController
   end
 
   def edit
-    @showcase.build_location if @showcase.wishlist?
+    @showcase.build_location if @showcase.location.blank?
   end
 
   def update
-    if params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[0]
-      @showcase.assign_attributes(showpiece_params)
-    elsif params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[1]
-      @showcase.assign_attributes(wish_params)
-      @showcase.user_status = params[:showcase][:user_status] unless @showcase.user_status == Showcase::USER_STATUS[1]
-    else
-      flash[:alert] = "Hey, Are you going to Showcase or Wishlist?"
-      redirect_to edit_showcase_path(@showcase)
-      return
-    end
+    @showcase.build_location if @showcase.location.blank?
+    @showcase.assign_attributes(showcase_params)
+    @showcase.user_status = params[:showcase][:user_status] unless @showcase.user_status == Showcase::USER_STATUS[1]
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -248,12 +236,8 @@ class ShowcasesController < ApplicationController
 
   private
 
-  def showpiece_params
-    params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, location_attributes: [:id, :name])
-  end
-
-  def wish_params
-    params.require(:showcase).permit(:title, :description, :showcase_type, :all_tags)
+  def showcase_params
+    params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, :wish_prefix, location_attributes: [:id, :name])
   end
 
   def get_showcase
@@ -295,7 +279,7 @@ class ShowcasesController < ApplicationController
   end
 
   def create_rewish
-    @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at"))
+    @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at", "product_id"))
     @rewish.user = current_user
     @rewish.parent = @showcase
     @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]

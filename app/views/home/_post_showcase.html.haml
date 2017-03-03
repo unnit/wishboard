@@ -1,74 +1,75 @@
-- header ||= "no"
-/
-  .col-xs-12.col-sm-12-shad.no-mar-pad.grey-fg.bg-shad.bg-light-grey{style: "border-radius: 4px;"}
-    .col-xs-4.col-sm-4.text-center.select-ps.padding10
-      Select
-    .col-xs-4.col-sm-4.text-center.upload-ps.padding10
-      Upload
-    .col-xs-4.col-sm-4.text-center.submit-ps.padding10
-      Submit
-  .col-xs-12.col-sm-12.no-mar-pad{style: "height: 12px;"}
-    .arrow-wrapper
-      .arrow
-      .arrow-z
-- if header != "yes"
-  .col-xs-12.col-sm-12.padding15.text-center.ps-click-wrapper.bg-white.mbottom10.bg-shad.mob-mtop10
-    %span.btn.btn-md.white-fg.ps-click-btn.bg-blue.transition-effect{"data-step" => "1", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>SHARE YOUR WISHES</h3>Click here to post your wishes or showcase fulfilled wishes.</span>"} Show / Wish
-    %span.pos-absolute.pos-q-ps-clk
-      %i.font20.fa.fa-question-circle-o.grey-fg{title: "<b>Show:</b> Showcase things you own or your achievements.<br><br><b>Wish:</b> Add any of your wish here and let the world know it.", "data-toggle" => "tooltip", "data-placement" => "auto", "data-html" => "true"}
-.col-xs-12.col-sm-12.no-mar-pad.bg-shad.ps-wrapper.pattern-bg.mbottom10{style: "min-height:212px;border-radius: 4px;display: #{header == "yes" ? 'block' : 'none;'}"}
-  - if header != "yes"
-    .close-sprite.pon.pos-absolute.clos-ps-wrapper
-  .col-xs-12.col-sm-12
-  .p-s-arrow.arrow-right.pon
-  .p-s-arrow.arrow-left.pon.hide-display
-  = form_for showcase, remote: true do |f|
-    - if header == "yes"
-      = hidden_field_tag :header, "yes"
-    .col-xs-12.col-sm-12.no-mar-pad.text-center.set-1-ps.active{style: "min-height:210px;"}
-      .col-xs-12.col-sm-12.text-center.padding5{style: "height: 42px;"}
-        %span.error-ps-radio.padding5.hide-display{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;"}
-          .glyphicon.glyphicon-exclamation-sign
-          Please select an option
-      .pad-v-50.pon.ps-showpiece.btn-shadow.inline-block.mob-scase-opt.img-circle{style: "width:121px;background-color:white;"}
-        Show
-        = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[0]}", required: true, class: "hidden showcase_type_0"
-      .pad-v-50.pon.ps-wish.btn-shadow.mleft10.inline-block.mob-scase-opt.img-circle{style: "width:121px;background-color:white;"}
-        Wish
-        = f.radio_button :showcase_type, "#{Showcase::SHOWCASE_VALUES[1]}", required: true, class: "hidden showcase_type_1"
-    .col-xs-12.col-sm-12.no-mar-pad.set-2-ps.ptop10.hide-display{style: "min-height:210px;"}
-      .col-xs-12.col-sm-12.text-center.padding5
-        %span.error-ps-photo.padding5.hide-display{style: "border: 1px solid #E7766A;border-radius:3px;color: #E7766A;"}
-          .glyphicon.glyphicon-exclamation-sign
-          Please upload a photo
-      .col-xs-12.col-sm-4.col-sm-offset-1.text-center.padding0.photo-upload-wrapper
-        %span.font11.col-xs-12.col-sm-12.padding0 Drag and Drop the Photo here.
-        .preview
-        .glyphicon.glyphicon-remove.preview-delete.hide-display.pon{style: "z-index: 1;"}
-        .col-xs-12.col-sm-12.no-mar-pad
-          .glyphicon.glyphicon-camera.file-input-button.grey-fg.padding20{style: "font-size: 65px;border: 1px dashed;"}
-            = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new" })
-        .col-xs-12.col-sm-12.no-mar-pad
-          .progress.progress-striped.hide-display.mbottom0.mtop5{style: "height: 10px;width:107px;"}
-            .progress-bar{style: "width: 0%;"}
-      .col-xs-12.col-sm-6
-        %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
-        %br
-        = f.text_field :all_tags, placeholder: "", class: "tm-input form-control tm-input-inverse tm-input-typeahead"
-    .col-xs-10.col-xs-offset-1.col-sm-10.col-sm-offset-1.set-3-ps.ptop10.hide-display{style: "min-height:210px;"}
-      .col-xs-12.col-sm-12.no-mar-pad
-        = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left title-gnrl", required: true, maxlength: 100
-      .col-xs-12.col-sm-12.mtop10.no-mar-pad
-        = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left des-gnrl", maxlength: 1000
-      .col-xs-4.col-sm-4.mtop10.no-mar-pad.pright5
-        = f.text_field :year, placeholder: "Year", class: "form-control coco-input-field hvr-underline-from-left year-gnrl", maxlength: 4
-      .col-xs-8.col-sm-8.mtop10.no-mar-pad.pright5
-        = f.fields_for :location do |lf|
-          = lf.text_field :name, placeholder: "Location", class: "form-control coco-input-field hvr-underline-from-left pac-input loc-gnrl", maxlength: 240
-      .col-xs-12.col-sm-12.mtop15.text-center.showcase-btn-wrapper
-        .btn.btn-social.white-fg.no-mar-pad.loader-out-button
-          = f.submit "Submit", class: "loader-button btn btn-social loader-in-button showcase-submit"
-          .loader-effect.btn.btn-social.loader-in-button{style: "display:none;"}
-            .pull-left Please Wait...
-            .ball-clip-rotate.pull-left{style: "height:22px;"}
-              %div
+= form_for showcase, remote: true, html: { class: "create-showcase" } do |f|
+  .col-xs-12.col-sm-12.ps-wrapper.padding0.mob-padding10{"data-pdate" => "#{DateTime.current}", "data-fdate" => "#{DateTime.current + 8.days}"}
+    .col-xs-12.col-sm-12.padding0.bg-white.border2.ps-sub-wrap-1.ps-box-shadow
+      .col-xs-12.col-sm-12.padding5.pbottom0.j-ps-holder.height89
+        .col-xs-12.col-sm-12.ptop5.grey-fg.height50
+          %span.type-holder.pon.pos-absolute{style: "left: 5px;top: 32px;font-size: 25px;"}
+        .prefix-holder.pon.pull-left{style: "height: 34px;border-bottom: 2px solid #732db0;padding: 6px 0px;font-size: 14px;line-height: 1.42857143;display: inline;"}
+        = text_field_tag :initial, "", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial"
+        .dropdown.type-holder-dropdown
+          .dropdown-menu.pos-relative.full-width
+            - Showcase::DISPLAY_SHOWCASE_TYPE.each do |showcase_type|
+              %li
+                %a.pon{"data-id" => "#{showcase_type[1]}", "data-text" => "#{showcase_type[2]}"}
+                  = showcase_type[0]
+        .dropdown.prefix-holder-dropdown
+          .dropdown-menu.pos-relative.prefix-scrollbar.full-width{style: "max-height: 298px;overflow:hidden !important;"}
+            - Showcase::WISH_PREFIX.each do |wish_prefix|
+              %li
+                %a.pon{"data-id" => "#{wish_prefix[1]}", "data-ptext" => "#{wish_prefix[3]}", "data-ftext" => "#{wish_prefix[4]}", "data-pplaceholder" => "#{wish_prefix[5]}", "data-fplaceholder" => "#{wish_prefix[6]}"}
+                  = wish_prefix[0]
+                  %span.grey-fg.font13
+                    &nbsp;
+                    %em= wish_prefix[2]
+        .hide-display
+          = f.text_field :showcase_type
+          = f.text_field :wish_prefix
+          = f.text_field :title
+      .col-xs-12.col-sm-12.no-mar-pad.cc-dark-fg.font16
+        %span.padding10.pon.font-medium.file-input-button.pull-left.inline-block.pos-relative.j-img-wrapper.opacity-low
+          %i.fa.fa-file-image-o.font16
+          Add Photo
+          = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new hidden file-upload-trigger" })
+        %span.padding10.pon.font-medium.pull-left.inline-block.pos-relative.j-more.opacity-low
+          More >>
+        %span.pull-right.ps-btn-wrapper.hide-display.mtop5.mright10
+          .white-fg.no-mar-pad.loader-out-showcase-button
+            = f.submit "Wish", class: "loader-button loader-in-showcase-button showcase-submit"
+            .loader-effect.loader-in-showcase-button.text-center{style: "display:none;padding-top: 4px;"}
+              .ball-clip-rotate
+                %div
+    .col-xs-12.col-sm-12.padding5.bg-white.border2.ps-sub-wrap-2.ps-box-shadow.hide-display{style: "margin-top: -130px;opacity: 0;"}
+      %span.pos-absolute.font13.pon.ps-wrap-2-close{style: "top: 0; right: 5px;z-index: 1055;"} x
+      .col-xs-9.col-sm-9.no-mar-pad
+        .col-xs-12.col-sm-12.padding5.ps-desc-wrapper{style: "height: 166px;"}
+          = f.text_area :description, placeholder: "Tell the story behind this wish?", class: "form-control coco-input-field pleft5", maxlength: 1000, rows: 1, style: "height: 156px;"
+        .col-xs-12.col-sm-12.padding5{style: "min-height: 50px;"}
+          = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-input form-control tm-input-inverse tm-input-typeahead coco-input-field", style: "height: 40px;"
+      .col-xs-3.col-sm-3.no-mar-pad
+        .col-xs-12.col-sm-12.padding5.ps-photo-wrapper{style: "height: 122px;"}
+          .col-xs-12.col-sm-12.text-center.photo-upload-wrapper
+            .preview
+            .preview-delete.hide-display.pon x
+            .col-xs-12.col-sm-12.no-mar-pad
+              .glyphicon.glyphicon-camera.file-input-button.cc-dark-fg.padding15.img-circle.mtop25{style: "font-size: 40px;border: 1px dashed;"}
+                = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new" })
+            .col-xs-12.col-sm-12.no-mar-pad
+              .progress.progress-striped.hide-display.mbottom0.mtop5{style: "height: 6px;width:100%;"}
+                .progress-bar{style: "width: 0%;"}
+        .col-xs-12.col-sm-12.padding5.pright5.ps-date-wrapper.height50
+          = f.text_field :year, placeholder: "When", class: "form-control coco-input-field pleft5 dt-of-achievement"
+          .dropdown.dt-achievement-dropdown
+            .dropdown-menu.pos-relative.full-width
+              - Showcase::INSTANT_WISH_DATE.each do |instant_wish_date|
+                %li
+                  %a.pon{"data-id" => "#{instant_wish_date[1]}"}= instant_wish_date[0]
+        .col-xs-12.col-sm-12.padding5.ps-location-wrapper.height50
+          = f.fields_for :location do |lf|
+            = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input pleft5", maxlength: 240
+      .col-xs-12.col-sm-12.padding5.text-right.ps-btn-wrapper.no-mar-pad
+        %span.pull-right.ps-btn-wrapper.hide-display
+          .white-fg.no-mar-pad.loader-out-showcase-button
+            = f.submit "Wish", class: "loader-button loader-in-showcase-button showcase-submit"
+            .loader-effect.loader-in-showcase-button.text-center{style: "display:none;padding-top: 4px;"}
+              .ball-clip-rotate
+                %div

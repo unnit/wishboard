@@ -22,27 +22,56 @@ class Showcase < ActiveRecord::Base
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
 
-  SHOWCASE_TYPE = [["Showpiece", 0], ["Wish", 1]]
-  SHOWCASE_VALUES = [0, 1]
+  WISH_PREFIX =
+  [["Visit", 0, "Places, trips, travel, tour | ex: Goa, Dubai", "I visited", "I wish to visit", "Wow! Where/What?", "Where are you planning to go?"],
+   ["Own", 1, "Things, pets, collectibles", "I own", "I wish to own", "Wow! What did you buy/own?", "What's that?"],
+   ["Eat", 2, "Foods, cuisine | ex: Pani Puri, Sushi, Italian", "I ate", "I wish to eat", "Wow! What did you have?", "What will you have?"],
+   ["Experience", 3, "An activity, events | ex: a paranormal activity, a live concert", "I experienced", "I wish to experience", "Wow! What did you experience?", "What do you wish to experience?"],
+   ["Watch", 4, "a movie , serial | ex: Titanic, Game of Thrones, a Netflix series", "I watched", "I wish to watch", "Wow! What did you watch?", "What do you wish to watch?"],
+   ["Meet", 5, "a person/celebrity | ex: Meet Michael Jackson (seriously?!), Sachin Tendulkar etc.", "I met", "I wish to meet", "Wow! Whom did you meet?", "Whom do you wish to meet?"],
+   ["Learn", 6, "a course/skills/language | ex: cooking, guitar, German", "I learned", "I wish to learn", "Wow! What did you learn?", "What do you wish to learn?"],
+   ["Read", 7, "a book | ex: Jungle Book, Twinkle, Sherlock holmes", "I read", "I wish to read", "Wow! What did you read?", "What do you wish to read?"],
+   ["Use", 8, "Rent, try, test, trial | ex: rent a bullet, test drive a BMW", "I used", "I wish to use", "Wow! What was that?", "What do you wish to use?"],
+   ["Upgrade", 9, "Gadgets, accessories, services | ex: Mobile, car, house", "I upgraded", "I wish to upgrade", "Wow! What was that?", "What do you wish to upgrade?"],
+   ["Donate", 10, "Giveaway items, charity, de-clutter | ex: books, clothes, gadgets", "I donated", "I wish to donate", "Wow! What did you donate?", "What (or to whom) do you wish to donate?"],
+   ["Change", 11, "job/school/a product/upgrade/buy/sell", "I changed", "I wish to change", "Wow! What was that?", "What do you wish to change?"],
+   ["Do", 12, "Your public to do lists, targets | ex: S=sthin , something", "I did", "I wish to do", "Wow! What was that?", "What do you wish to do?"],
+   ["Stop", 13, "a habit of yours, change a social behaviour| ex: quit smoking, stop corruption", "I stopped", "I wish to stop", "Wow! What was that?", "What do you wish to stop?"],
+   ["Achieve", 14, "anything| ex: your weekly, monthly, yearly goals", "I achieved", "I wish to achieve", "Wow! What's your achievement?", "What do you wish to achieve?"],
+   ["Support", 15, "a cause, an actor | ex: GreenPeace, Amitabh Bachan", "I supported", "I wish to support", "Wow! What did you support?", "What/whom do you wish to support?"],
+   ["Announce", 16, "milestones/revealations/swag| ex: a status update", "I announced", "I wish to announce", "Wow! What was the update?", "What do you wish to announce?"],
+   ["Confess", 17, "about something| ex: a high school or college event", "I confessed", "I wish to confess", "What was that?", "What do you wish to confess?"],
+   ["Type Your Own", 18, "Be creative & type your wish here directly | ex: anything!", "Others ", "Others", "Wow! Looks like that was a unique wish. Tell us? :)", "Wow! Looks like you have a uniques wish to share. What's that?"]]
+  WISH_PREFIX_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+  COIN_WISH_PREFIX_VALUES = [0, 1, 2, 9, 10]
+  SHOWCASE_TYPE = [["Showpiece", 0], ["Wish", 1], ["Instant", 2]]
+  SHOWCASE_VALUES = [0, 1, 2]
+  DISPLAY_SHOWCASE_TYPE = [["Future Wishes", 1, "<span class='pull-left dotted-bt-border'>You are showcasing a <span class='cc-dark-fg'>future wish (later)</span></span><i class='fa fa-angle-down angle-dwn-css'></i>"],
+  ["Momentary Wishes", 2, "<span class='pull-left dotted-bt-border'>You are showcasing a <span class='cc-dark-fg'>momentary wish (soon)</span></span><i class='fa fa-angle-down angle-dwn-css'></i>"],
+  ["Fulfilled Wishes", 0, "<span class='pull-left dotted-bt-border'>You are showcasing a <span class='cc-dark-fg'>fulfilled wish (past)</span></span><i class='fa fa-angle-down angle-dwn-css'></i>"]]
   ADMIN_STATUS_NAME = [["Active", 0], ["Inactive", 1]]
   ADMIN_STATUS = [0, 1]
   USER_STATUS_NAME = [["Started", 0], ["Completed", 1]]
   USER_STATUS = [0, 1]
   COIN_WISH_STATUS_NAME = [["Active", 0], ["Inactive", 1]]
   COIN_WISH_STATUS = [0, 1]
+  INSTANT_WISH_DATE = [["0 - 1 day", "0-1"], ["1 - 3 days", "1-3"], ["3 - 5 days", "3-5"], ["5 - 7 days", "5-7"]]
+  INSTANT_WISH_DATE_VALUES = ["0-1", "1-3", "3-5", "5-7"]
 
-  validates :title, :image, presence: true
+  validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
   validates :description, length: { maximum: 1000 }
-  validates :year, presence: true, unless: :year_blank?
-  validates :year, numericality: { only_integer: true, greater_than_or_equal_to: 1700, less_than_or_equal_to: DateTime.current.year, message: "should be between 1700 and #{DateTime.current.year}"}, unless: :year_blank?
+  validates :year, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :year_blank?
+  validates :showcase_type, inclusion: {in: SHOWCASE_VALUES, message: "not an accepted value."}
+  validates :wish_prefix, inclusion: {in: WISH_PREFIX_VALUES, message: "not an accepted value."}
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
 
   scope :wishes, -> {where showcase_type: Showcase::SHOWCASE_VALUES[1]}
   scope :showpieces, -> {where showcase_type: Showcase::SHOWCASE_VALUES[0]}
 
   HUMANIZED_ATTRIBUTES = {
-    user_status: "Achieved"
+    user_status: "Achieved",
+    showcase_type: "Wish Status"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
@@ -192,9 +221,38 @@ class Showcase < ActiveRecord::Base
     showcase_type == Showcase::SHOWCASE_VALUES[0]
   end
 
+  def instant_wishlist?
+    showcase_type == Showcase::SHOWCASE_VALUES[2]
+  end
+
+  def gift_coin_wish?
+    COIN_WISH_PREFIX_VALUES.include?(wish_prefix)
+  end
+
   def showcase_type_name
     return Showcase::SHOWCASE_TYPE[0][0] if showpiece?
     return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
+    return Showcase::SHOWCASE_TYPE[1][0] if instant_wishlist?
+  end
+
+  def showcase_type_label
+    return Showcase::DISPLAY_SHOWCASE_TYPE[0][2] if showpiece?
+    return Showcase::DISPLAY_SHOWCASE_TYPE[1][2] if wishlist?
+    return Showcase::DISPLAY_SHOWCASE_TYPE[1][2] if instant_wishlist?
+  end
+
+  def fulfilled_wish_prefix_label
+    p_label = WISH_PREFIX.detect{ |(_, n, _, _, _, _)| n == wish_prefix }
+    return p_label[3].gsub(/I/, '')
+  end
+
+  def future_wish_prefix_label
+    f_label = WISH_PREFIX.detect{ |(_, n, _, _, _, _)| n == wish_prefix }
+    return f_label[4].gsub(/I/, '')
+  end
+
+  def custom_wish_type?
+    wish_prefix == 18
   end
 
   def admin_status_name

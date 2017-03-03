@@ -4,9 +4,6 @@
     - type = "danger" if type == 'error' || type=='alert'
     - type = 'success' if type == 'notice'
     = content_tag :div, :class => "mbottom0 alert alert-#{type} alert-dismissable alert-message-div alert-mob", :role => "alert" do
-      %button.close{:type => "button", :data => {:dismiss => "alert"} }
-        %span{:aria => {:hidden => "true"} } &times;
-        %span.sr-only Close
+      %span.pull-right.pon.weight600.grey-fg.alert-close{style: "margin-right: -24px;"} x
       = msg.html_safe
-
   - flash.discard

@@ -5,7 +5,7 @@
       - unless @notifications.blank?
         %span.full-width.pull-right
           = link_to update_all_notifications_path, remote: true do
-            .col-xs-12.col-sm-12.padding5.text-right
+            .col-xs-12.col-sm-12.padding5.text-right.cc-dark-fg
               Mark all as read
         = render partial: "home/notifications_content", locals: {notifications: @notifications}
       - else

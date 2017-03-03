@@ -17,24 +17,24 @@
             .fa.fa-facebook-official.pull-left
         .col-xs-4.col-sm-4.padding5
           - if current_user
-            = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} heart-red-fg" do
+            = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} cc-dark-fg" do
               - if showcase.wowed?(current_user)
                 %i.fa.fa-heart
               - else
                 %i.fa.fa-heart-o
           - else
-            = link_to authenticate_path, class: "heart-red-fg" do
+            = link_to authenticate_path, class: "cc-dark-fg" do
               %i.fa.fa-heart-o
           .badge.font11.bg-white.pleft0.weight500.hidden-xs{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
             = showcase.active_wows.count
         .col-xs-4.col-sm-4.padding5
           - if current_user
-            = link_to showcase_path(showcase), remote: true, class: "comment-fg" do
+            = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
               %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
             .badge.font11.bg-white.pleft0.weight500{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}", "data-toggle" => "tooltip"}
               = showcase.comments.count
           - else
-            = link_to authenticate_path, class: "comment-fg" do
+            = link_to authenticate_path, class: "cc-dark-fg" do
               %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
               .badge.font11.bg-white.pleft0.weight500.hidden-xs{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
                 = showcase.comments.count

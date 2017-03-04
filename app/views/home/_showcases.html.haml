@@ -2,6 +2,9 @@
 - showcases.each do |showcase|
   .col-xs-12.col-sm-12.no-mar-pad.mbottom20.bg-white.bg-shad.no-bord-mob.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id}"}
     .col-xs-12.col-sm-12.no-mar-pad
+      %span.font11.grey-fg.pos-absolute.right15.mtop8
+        .fa.fa-clock-o
+        = time_ago_in_words(showcase.created_at)
       %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute{style: "right:0px;z-index: 1"}
       .col-xs-4.col-sm-4.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
         - unless showcase.coin_wish?
@@ -42,9 +45,6 @@
                 %span
                   = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
                     = showcase.title
-            %span.pull-right.font11.grey-fg
-              .fa.fa-clock-o
-              = time_ago_in_words(showcase.created_at)
     - if showcase.image.present?
       = link_to showcase_path(showcase), remote: true do
         .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
@@ -70,6 +70,12 @@
               = link_to toggle_achieve_wish_showcase_path(showcase), class: "padding10 pull-left white-fg achieve-bg", method: :post, remote: true, style: "border-top-right-radius:5px;border-bottom-right-radius:5px;" do
                 %span.inline-block.font16 Mark as completed?&nbsp;
                 %i.fa.fa-check-circle.font21
+    - if showcase.tags.present?
+      .col-xs-12.col-sm-12.showcase-tags.bg-white.padding10.ptpp0
+        - showcase.tags.each do |tag|
+          %span.pright5.mbottom5.pull-left.mright5.font12
+            .fa.fa-circle
+            = link_to tag.name, tag_path(tag.name), class: "black-fg"
     .col-xs-3.col-sm-2.border-two.padding10.bg-white.h40
       - if current_user
         = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
@@ -119,12 +125,6 @@
         - if showcase.description.length > 150
           %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.description)
           %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
-    - if showcase.tags.present?
-      .col-xs-12.col-sm-12.showcase-tags.bg-white.padding10.ptpp0
-        - showcase.tags.each do |tag|
-          %span.pright5.mbottom5.pull-left.mright5.font12
-            .fa.fa-circle
-            = link_to tag.name, tag_path(tag.name), class: "black-fg"
     .col-xs-12.col-sm-12.no-mar-pad.bg-white.min-height0{class: "user-comments-#{showcase.id}"}
       - if feed == "yes"
         - if showcase.comments.count > 4

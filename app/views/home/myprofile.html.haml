@@ -14,7 +14,20 @@
               .fa.fa-clock-o
               = time_ago_in_words(showcase.created_at)
             = link_to showcase_path(showcase), remote: true do
-              = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
+              - if showcase.image.present?
+                = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
+              - else
+                .white-bg.cc-dark-fg.font12.inline-block.text-center.ptop30{style: "width: 155px;height: 116px;"}
+                  - if showcase.custom_wish_type?
+                    = showcase.title.humanize
+                  - else
+                    %span
+                      - if showcase.showpiece?
+                        = showcase.fulfilled_wish_prefix_label.lstrip.humanize
+                      - else
+                        = showcase.future_wish_prefix_label.lstrip.humanize
+                    %span
+                      = showcase.title
             %h6.mbottom0.mtop5=truncate showcase.title, length: 22
     .col-xs-12.no-mar-pad.visible-xs.mbottom20
       #myCarousel.carousel.slide{data: {ride: "carousel"}}
@@ -28,7 +41,20 @@
                       .fa.fa-clock-o
                       = time_ago_in_words(showcase.created_at)
                     = link_to showcase_path(showcase), remote: true do
-                      = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
+                      - if showcase.image.present?
+                        = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
+                      - else
+                        .white-bg.cc-dark-fg.font12.inline-block.text-center.ptop30{style: "width: 155px;height: 116px;"}
+                          - if showcase.custom_wish_type?
+                            = showcase.title.humanize
+                          - else
+                            %span
+                              - if showcase.showpiece?
+                                = showcase.fulfilled_wish_prefix_label.lstrip.humanize
+                              - else
+                                = showcase.future_wish_prefix_label.lstrip.humanize
+                            %span
+                              = showcase.title
                     %h6.mbottom0.mtop5=truncate showcase.title, length: 22
     - if current_user && current_user.same_user?(@user)
       .col-xs-12.col-sm-3.mbottom20

@@ -2,12 +2,14 @@
   = link_to myprofile_url(@showcase.user.profile.slug) do
     %span= truncate @showcase.user.name.titleize, length: 50
   &nbsp;
-  %span added
+  %span= @showcase.wishlist? ? " has" : " fulfilled"
+  a new
   = link_to showcase_url(@showcase) do
-    %span= truncate @showcase.title, length: 50
-  &nbsp;
-  %span to
-  %span= @showcase.wishlist? ? "<a href='#{GLOBAL_VARIABLES[:root_url]}/#{@showcase.user.profile.slug}/wishes'> Wishlist</a>".html_safe : "<a href='#{GLOBAL_VARIABLES[:root_url]}/#{@showcase.user.profile.slug}/showpieces'> Showcase</a>".html_safe
+    %span wish
+%br
+Discover user's other
+%span= @showcase.wishlist? ? "<a href='#{GLOBAL_VARIABLES[:root_url]}/#{@showcase.user.profile.slug}/wishes'> wishes</a>".html_safe : "<a href='#{GLOBAL_VARIABLES[:root_url]}/#{@showcase.user.profile.slug}/showpieces'> fulfilled wishes</a>".html_safe
+here
 %br
 Discover more on
 %a{href: "#{GLOBAL_VARIABLES[:root_url]}"}

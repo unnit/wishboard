@@ -4,7 +4,7 @@
       %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
       %span.weight600.grey-fg= truncate notification.user.name, length: 35
       %span.font13.grey-fg
-        liked an item in your showcase
+        liked your wish
   - elsif notification.class.name == "Coin"
     = link_to update_coin_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
       %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
@@ -16,7 +16,7 @@
       %span.grey-fg= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
       %span.weight600.grey-fg= truncate notification.user.name, length: 35
       %span.font13.grey-fg
-        commented on an item in your showcase
+        commented on your wish
   - elsif notification.class.name == "Relationship"
     = link_to update_follower_checked_path(notification.follower), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
       %span= cl_image_tag notification.follower.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
@@ -29,10 +29,13 @@
       %span.weight600.grey-fg= truncate notification.showcase.user.name, length: 35
       - if notification.showcase.wishlist? && notification.showcase.coin_wish?
         %span.font13.grey-fg
-          added a new coin wish
+          has a new coin wish
       - elsif notification.showcase.wishlist?
         %span.font13.grey-fg
-          added a new wish
+          has a new wish
+      - elsif notification.showcase.instant_wishlist?
+        %span.font13.grey-fg
+          has a new momentary wish
       - else
         %span.font13.grey-fg
-          showcased an item
+          fulfilled a wish.

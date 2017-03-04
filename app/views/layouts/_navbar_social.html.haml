@@ -63,7 +63,7 @@
                     %li
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
-            %li.hidden-xs= link_to "Wish", "#", class: "btn white-fg ps-nav-btn cc-hvy-dark-bg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
+            %li.hidden-xs= link_to "Wish", "#", class: "btn white-fg ps-nav-btn cc-med-bg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
             %li.visible-xs.bg-white
               = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
                 %span.black-fg= truncate current_user.name, length: 25

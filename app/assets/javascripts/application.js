@@ -378,8 +378,8 @@ $(document).ready(function(){
   //Search bar visible in mobile
   $(document).on("click", ".search-mob", function(){
     $(".navbar-header").hide();
-    $(".feed-mob, .notif-mob, .follow-mob").removeClass("cc-xtr-dark-bg");
-    $(".search-mob").addClass("cc-xtr-dark-bg");
+    $(".feed-mob, .notif-mob, .follow-mob").removeClass("cc-med-bg");
+    $(".search-mob").addClass("cc-med-bg");
     $(".search-wrap").removeClass("hidden-xs");
     $("#query").focus();
     var x = 0;

@@ -3,11 +3,24 @@
     .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-white.pbottom0{style: "box-shadow: 0 1px 2px rgba(0,0,0,0.07);"}
       .col-xs-12.col-sm-12.no-mar-pad.text-center.h189.show-img-wrap.mob125h.hidden-overflow.tab125h
         = link_to showcase_path(showcase), remote: true do
-          .pos-absolute.show-details.hide-display.full-width.full-height.padding10.font13.text-left.grey-fg{style: "background-color: rgba(255,255,255,0.7)"}
-            %h4.mtop0= truncate showcase.title, length: 40
+          .pos-absolute.show-details.hide-display.full-width.full-height.padding10.font13.text-left.black-fg{style: "background-color: rgba(255,255,255,0.7)"}
+            %h4.mtop0= truncate showcase.title.humanize, length: 40
             - if showcase.description.present?
               %span= truncate showcase.description, length: 250
-          = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
+          - if showcase.image.present?
+            = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
+          - else
+            .white-bg.cc-dark-fg.font20.inline-block.ptop50{style: "width: 253px;height: 189px;"}
+              - if showcase.custom_wish_type?
+                = showcase.title
+              - else
+                %span
+                  - if showcase.showpiece?
+                    = showcase.fulfilled_wish_prefix_label.lstrip.humanize
+                  - else
+                    = showcase.future_wish_prefix_label.lstrip.humanize
+                %span
+                  = showcase.title
       .col-xs-12.col-sm-12.no-mar-pad
         .col-xs-4.col-sm-4.padding5.ptop8
           - if showcase.owner?(current_user)
@@ -25,19 +38,17 @@
           - else
             = link_to authenticate_path, class: "cc-dark-fg" do
               %i.fa.fa-heart-o
-          .badge.font11.bg-white.pleft0.weight500.hidden-xs{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
+          .badge.font11.pleft0.weight500.bg-white.cc-dark-fg{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}", "data-toggle" => "tooltip"}
             = showcase.active_wows.count
         .col-xs-4.col-sm-4.padding5
           - if current_user
             = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
               %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
-            .badge.font11.bg-white.pleft0.weight500{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}", "data-toggle" => "tooltip"}
-              = showcase.comments.count
           - else
             = link_to authenticate_path, class: "cc-dark-fg" do
               %i.fa.fa-comment-o{class: "comment-link-#{showcase.id}"}
-              .badge.font11.bg-white.pleft0.weight500.hidden-xs{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}"}
-                = showcase.comments.count
+          .badge.font11.pleft0.weight500.bg-white.cc-dark-fg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}", "data-toggle" => "tooltip"}
+            = showcase.comments.count
         %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop8.pon.pos-absolute.neg-right6
         .col-xs-6.col-sm-6.option-showcase.bg-shad.bg-white.text-center.bg-white.right15.bottom10
           - if showcase.owner?(current_user)

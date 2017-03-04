@@ -176,8 +176,9 @@
         .col-xs-12.col-sm-12.col-md-8.no-mar-pad.grey-fg.font12
           %span.balance-coins-sprite-grey.inline-block
           .full-width.pull-left.neg-mtop5
-            %span.inline-block Balance
-            %span.inline-block.font20= @wallet.unused_coins
+            %span.inline-block Savings
+            %span.inline-block.font20
+              = @wallet.unused_coins
         .col-xs-12.col-sm-12.col-md-4.no-mar-pad
           = link_to wallet_path do
             .btn.btn-sm.mtop15.btn-v-outline.transition-effect
@@ -229,10 +230,10 @@
         });
       }
       if(#{params[:view] == "follow"}){
-        $(".follow-mob").addClass("cc-xtr-dark-bg");
+        $(".follow-mob").addClass("cc-med-bg");
       }
       else{
-        $(".feed-mob").addClass("cc-xtr-dark-bg");
+        $(".feed-mob").addClass("cc-med-bg");
       }
       var welcome = "#{params[:welcome].blank? ? '' : params[:welcome]}"
       if(welcome == "tour" || "#{current_user.sign_in_count}" <= 2){

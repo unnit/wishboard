@@ -2,7 +2,7 @@
 - showcases.each do |showcase|
   .col-xs-12.col-sm-12.no-mar-pad.mbottom20.bg-white.bg-shad.no-bord-mob.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id}"}
     .col-xs-12.col-sm-12.no-mar-pad
-      %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute{style: "right:0px;"}
+      %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute{style: "right:0px;z-index: 1"}
       .col-xs-4.col-sm-4.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
         - unless showcase.coin_wish?
           - if showcase.owner?(current_user)
@@ -42,6 +42,9 @@
                 %span
                   = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
                     = showcase.title
+            %span.pull-right.font11.grey-fg
+              .fa.fa-clock-o
+              = time_ago_in_words(showcase.created_at)
     - if showcase.image.present?
       = link_to showcase_path(showcase), remote: true do
         .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
@@ -77,18 +80,16 @@
       - else
         = link_to authenticate_path do
           %i.fa.fa-heart-o.cc-dark-fg.pull-left
-      .badge.pull-left.wow-badge-bg{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
+      .badge.pull-left.bg-white.cc-dark-fg{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
         = showcase.active_wows.count
     .col-xs-3.col-sm-2.pon.comment-link.border-two.padding10.bg-white.h40
       - if current_user
         %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
-        .badge.pull-left.comment-badge-bg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
-          = showcase.comments.count
       - else
         = link_to authenticate_path do
           %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
-          .badge.pull-left.comment-badge-bg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
-            = showcase.comments.count
+      .badge.pull-left.bg-white.cc-dark-fg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
+        = showcase.comments.count
     .col-xs-4.col-sm-3.border-two.padding10.bg-white.h40
       - unless showcase.coin_wish?
         - if current_user
@@ -96,17 +97,15 @@
             %span.rewish-link.pon.cc-dark-fg{"data-id" => "#{showcase.id}"}
               %i.fa.fa-clone.pull-left
               %span.font11.grey-fg.pull-left.mtop2 Rewish
-            .badge.pull-left.mleft5.cc-dark-bg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
-              = showcase.children.count
         - else
           = link_to authenticate_path do
             %i.fa.fa-clone.pull-left
             %span.font11.grey-fg.pull-left.mtop2 Rewish
-          .badge.pull-left.mleft5.blue-bg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
-            = showcase.children.count
+        .badge.pull-left.mleft5.bg-white.cc-dark-fg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+          = showcase.children.count
       - else
         %span.font11.grey-fg.pull-left.mtop2{class: "badge-coin-link-#{showcase.id}"} Coins
-        .badge.wow-badge-bg.pull-left.mleft5{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
+        .badge.pull-left.mleft5.bg-white.cc-dark-fg{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
           = showcase.active_coins.count
     .col-xs-2.col-sm-5.border-two.padding10.bg-white.text-right.h40.pleft0
       - if current_user && showcase.owner?(current_user)

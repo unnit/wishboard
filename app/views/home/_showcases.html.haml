@@ -26,7 +26,7 @@
               = cl_image_tag showcase.user.avatar, class: "img-circle #{showcase.owner?(current_user) ? '' : 'hovercard'}", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face, alt: showcase.user.name
           .media-body
             - if showcase.custom_wish_type?
-              %span.full-width.inline-block.font12
+              %span.full-width.inline-block.font12.mtop5
                 %span{class: "#{showcase.owner?(current_user) ? '' : 'hovercard'}", "data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
                 posted a wish.
               %span.full-width.inline-block{class: "#{showcase.image.present? ? 'font-medium' : 'font21'}"}

@@ -50,9 +50,9 @@ class HomeController < ApplicationController
 
   def get_similar_friends
     if current_user.active_tags.present?
-      @similar_friends = current_user.similar_friends.uniq.reject{|f| f.id == current_user.id || current_user.following.map(&:id).include?(f.id)}.take(20)
+      @similar_friends = current_user.similar_friends.uniq.reject{|f| f.id == current_user.id || current_user.following.map(&:id).include?(f.id) || f.verified == false}.take(20)
     elsif current_user.referrer.present?
-      @similar_friends = current_user.referrer.following.reject{|f| current_user.following.map(&:id).include?(f.id)}.take(20)
+      @similar_friends = current_user.referrer.following.reject{|f| current_user.following.map(&:id).include?(f.id) || f.verified == false}.take(20)
     else
       @similar_friends = User.where("id in (?)", GLOBAL_VARIABLES[:top_performers])
     end

@@ -237,9 +237,9 @@
         width = $("#lhs-feed").width();
         left = $("#lhs-feed").position().left;
         top = $("#lhs-feed").position().top;
-        $(".main-feed").css({"left": width-1, "position": "relative"});
-        $("#lhs-feed").css({"width":width , "top": top, "left": left, "position": "fixed"});
-        $("#rhs-feed").css({"width": width, "top": top, "right": left, "position": "fixed"});
+        //$(".main-feed").css({"left": width-1, "position": "relative"});
+        //$("#lhs-feed").css({"width":width , "top": top, "left": left, "position": "fixed"});
+        //$("#rhs-feed").css({"width": width, "top": top, "right": left, "position": "fixed"});
       }
       var welcome = "#{params[:welcome].blank? ? '' : params[:welcome]}"
       if(welcome == "tour" || "#{current_user.sign_in_count}" <= 2){

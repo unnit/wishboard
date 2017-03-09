@@ -64,18 +64,18 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
             %li.hidden-xs= link_to "Wish", "#", class: "btn ps-nav-btn white-fg cc-med-bg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
-            %li.visible-xs.bg-white
+            %li.visible-xs.bg-white.white-bt-border
               = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
                 %span.black-fg= truncate current_user.name, length: 25
                 %br
                 %span.font11.grey-fg View Profile
-            %li.visible-xs.bg-white
+            %li.visible-xs.bg-white.white-bt-border
               = link_to settings_path, style: "white-space: normal;" do
                 %span.grey-fg Settings
-            %li.visible-xs.bg-white
+            %li.visible-xs.bg-white.white-bt-border
               = link_to invitations_path, style: "white-space: normal;" do
                 %span.grey-fg Invite friends
-            %li.visible-xs.bg-white
+            %li.visible-xs.bg-white.white-bt-border
               = link_to wallet_path, style: "white-space: normal;" do
                 %span.grey-fg Wallet
             %li.visible-xs.bg-white.border-bt-side

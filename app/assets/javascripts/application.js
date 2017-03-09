@@ -167,6 +167,8 @@ $(document).ready(function(){
       $wrap = $(this).closest(".create-showcase");
       if($wrap.find(".ps-initial").val() == ""){
         if(e.keyCode==8){
+          $wrap.find(".ps-initial").attr("placeholder", "Please select your wish category");
+          $(this).attr("readonly", true);
           $(this).css({"width": "100%"});
           $wrap.find("#showcase_wish_prefix").val("");
           $wrap.find(".prefix-holder").empty();

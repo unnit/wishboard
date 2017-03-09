@@ -111,14 +111,14 @@ $(document).ready(function(){
       $wrap.find("#showcase_showcase_type").val($(this).data("id"));
       $wrap.find("#showcase_wish_prefix").val("");
       hidePsSubmit()
-      $wrap.find(".type-holder").css({"top": "32px", "left": "5px", "font-size": "25px"});
+      $wrap.find(".type-holder").css({"top": "32px", "left": "5px", "font-size": "15px"});
       $wrap.find(".type-holder").animate({top: "5px", fontSize: "11px"}, 200);
       $wrap.find(".type-holder-dropdown").removeClass("open");
       $wrap.find(".prefix-holder-dropdown").addClass("open");
       $wrap.find(".prefix-holder").empty();
       $wrap.find(".ps-initial").css({"width": "100%"});
       $wrap.find(".dt-of-achievement").datetimepicker('remove');
-      date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-right", startDate: "", endDate: "" };
+      date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-left", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){
         date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
         $wrap.find(".dt-of-achievement").datetimepicker(date_options);
@@ -128,6 +128,12 @@ $(document).ready(function(){
         $wrap.find(".dt-of-achievement").datetimepicker(date_options);
       }
       $wrap.find(".ps-initial").attr("placeholder", "Please select your wish category");
+    })
+    $(".dt-of-achievement").on('changeDate', function(){
+      $(".showcase-submit").focus();
+    });
+    $(document).on("click", ".dt-achievement-dropdown li a", function(){
+      $(".showcase-submit").focus();
     })
     $(document).on("click", ".type-holder", function(){
       $wrap = $(this).closest(".create-showcase");
@@ -154,6 +160,7 @@ $(document).ready(function(){
       $wrap.find("#showcase_wish_prefix").val($(this).data("id"));
       $wrap.find(".prefix-holder-dropdown").removeClass("open");
       if($wrap.find(".ps-initial").val().trim() != ""){showPsSubmit()}
+      $(".ps-initial").removeAttr("readonly");
       $wrap.find(".ps-initial").focus();
     })
     $(document).on("keydown", ".ps-initial", function(e){
@@ -697,7 +704,7 @@ $(document).ready(function(){
   }
   //Close
   $(document).on("click", ".alert-close", function(){
-    $(".alert-message-div").fadeOut();
+    $(".alert-message-div").remove();
   })
   //Infinite Scroll
   if ($('#infinite-scrolling-content').length) {

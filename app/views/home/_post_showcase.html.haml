@@ -3,9 +3,9 @@
     .col-xs-12.col-sm-12.padding0.bg-white.border2.ps-sub-wrap-1.ps-box-shadow
       .col-xs-12.col-sm-12.padding5.pbottom0.j-ps-holder.height89
         .col-xs-12.col-sm-12.ptop5.grey-fg.height50
-          %span.type-holder.pon.pos-absolute{style: "left: 5px;top: 32px;font-size: 25px;"}
+          %span.type-holder.pon.pos-absolute.full-width{style: "left: 5px;top: 32px;font-size: 15px;"}
         .prefix-holder.pon.pull-left{style: "height: 34px;border-bottom: 2px solid #732db0;padding: 6px 0px;font-size: 14px;line-height: 1.42857143;display: inline;"}
-        = text_field_tag :initial, "", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial"
+        = text_field_tag :initial, "", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial bg-white", readonly: true
         .dropdown.type-holder-dropdown
           .dropdown-menu.pos-relative.full-width
             - Showcase::DISPLAY_SHOWCASE_TYPE.each do |showcase_type|
@@ -39,7 +39,7 @@
               .ball-clip-rotate
                 %div
     .col-xs-12.col-sm-12.padding5.bg-white.border2.ps-sub-wrap-2.ps-box-shadow.hide-display{style: "margin-top: -130px;opacity: 0;"}
-      %span.pos-absolute.font13.pon.ps-wrap-2-close{style: "top: 0; right: 5px;z-index: 1055;"} x
+      %span.pos-absolute.font13.pon.ps-wrap-2-close.padding5{style: "top: 0; right: 0px;z-index: 1055;"} x
       .col-xs-7.col-sm-9.no-mar-pad
         .col-xs-12.col-sm-12.padding5.ps-desc-wrapper{style: "height: 166px;"}
           = f.text_area :description, placeholder: "Tell the story behind this wish?", class: "form-control coco-input-field pleft5", maxlength: 1000, rows: 1, style: "height: 156px;"
@@ -56,16 +56,16 @@
             .col-xs-12.col-sm-12.no-mar-pad
               .progress.progress-striped.hide-display.mbottom0.mtop5{style: "height: 6px;width:100%;"}
                 .progress-bar{style: "width: 0%;"}
+        .col-xs-12.col-sm-12.padding5.ps-location-wrapper.height50
+          = f.fields_for :location do |lf|
+            = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input pleft5", maxlength: 240
         .col-xs-12.col-sm-12.padding5.pright5.ps-date-wrapper.height50
-          = f.text_field :year, placeholder: "When", class: "form-control coco-input-field pleft5 dt-of-achievement"
+          = f.text_field :year, placeholder: "When", class: "form-control coco-input-field pleft5 dt-of-achievement bg-white", readonly: true
           .dropdown.dt-achievement-dropdown
             .dropdown-menu.pos-relative.full-width
               - Showcase::INSTANT_WISH_DATE.each do |instant_wish_date|
                 %li
                   %a.pon{"data-id" => "#{instant_wish_date[1]}"}= instant_wish_date[0]
-        .col-xs-12.col-sm-12.padding5.ps-location-wrapper.height50
-          = f.fields_for :location do |lf|
-            = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input pleft5", maxlength: 240
       .col-xs-12.col-sm-12.padding5.text-right.ps-btn-wrapper.no-mar-pad
         %span.pull-right.ps-btn-wrapper.hide-display
           .white-fg.no-mar-pad.loader-out-showcase-button

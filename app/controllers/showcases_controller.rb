@@ -230,7 +230,7 @@ class ShowcasesController < ApplicationController
   def toggle_achieve_wish
     @showcase.toggle_user_status!
     @showcase.reload
-    @showcase.achieved? ? flash[:notice] = "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : flash[:notice] = "Undoed successfully."
+    @showcase.achieved? ? flash[:notice] = "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : flash[:notice] = "Undid successfully."
     respond_to :js
   end
 

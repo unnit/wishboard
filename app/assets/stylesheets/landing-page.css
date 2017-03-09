@@ -2208,6 +2208,8 @@ height:50px;
     font-size: 18px;
     color: #fff;
     font-weight: 700;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .pad-mob{
     padding-left: 5px;
@@ -2832,6 +2834,11 @@ th.headerSortDown {
   right: 0;
 }
 /******************** Feed Page CSS ********************/
+.search-query::-webkit-input-placeholder{color: #e2e2e2 !important;}
+.search-query::-moz-placeholder{color: #e2e2e2 !important;}
+.search-query:-ms-input-placeholder{color: #e2e2e2 !important;}
+.search-query:-moz-placeholder{color: #e2e2e2 !important;}
+
 .angle-dwn-css{
   float: left;
   font-size: 16px !important;

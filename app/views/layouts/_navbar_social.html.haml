@@ -2,11 +2,11 @@
   .navbar.navbar-fixed-top
     .container
       .navbar-header
-        %button.navbar-toggle{data: {toggle: "collapse", target: ".navbar-collapse"}}
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
-        %a.navbar-brand.pleft5.white-fg{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;"}
+        %button.navbar-toggle.no-border{data: {toggle: "collapse", target: ".navbar-collapse"}}
+          %span.icon-bar.bg-white
+          %span.icon-bar.bg-white
+          %span.icon-bar.bg-white
+        %a.navbar-brand.white-fg{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;"}
           Cocociti
         = yield :header_extra
       .col-xs-12.col-sm-4.no-mar-pad.hidden-xs.search-wrap{style: "margin-top: 8px;"}
@@ -63,7 +63,7 @@
                     %li
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
-            %li.hidden-xs= link_to "Wish", "#", class: "btn white-fg ps-nav-btn cc-med-bg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
+            %li.hidden-xs= link_to "Wish", "#", class: "btn ps-nav-btn white-fg cc-med-bg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
             %li.visible-xs.bg-white
               = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
                 %span.black-fg= truncate current_user.name, length: 25
@@ -83,9 +83,9 @@
                 %span.grey-fg Sign Out
           - else
             %li.hidden-xs
-              = link_to "SignUp", authenticate_path(tab: "signup"), class: "btn", style: "padding: 7px 15px;margin-top: 7px;border-radius:18px;border: 1px solid #ccc;"
+              = link_to "SignUp", authenticate_path(tab: "signup"), class: "btn white-fg border2", style: "padding: 7px 15px;margin-top: 7px;border: 1px solid #fff;"
             %li.hidden-xs
-              = link_to "Login", authenticate_path, class: "btn cc-dark-bg white-fg mleft10", style: "padding: 7px 15px;margin-top: 7px;border-radius:18px;"
+              = link_to "Login", authenticate_path, class: "btn cc-dark-fg bg-white mleft10 border2", style: "padding: 7px 15px;margin-top: 7px;"
             %li.visible-xs.bg-white
               = link_to authenticate_path, style: "white-space: normal;" do
                 %span.grey-fg Login

@@ -46,13 +46,13 @@
                         %i.fa.fa-lock.font-bit-large
                       = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
                 .form-group.clearfix.mtop20.text-center
-                  = link_to "Forgot password?", new_user_password_path, class: "font13"
+                  = link_to "Forgot password?", new_user_password_path, class: "font13 cc-dark-fg"
                 .form-group.clearfix.mbottom40
-                  .col-xs-12.col-sm-6.col-sm-offset-3.text-center
+                  .col-xs-12.col-sm-6.col-sm-offset-3.text-center.paddin
                     = f.submit "Login", class: "loader-button btn pop-up-but login-button"
-                    .loader-effect.btn.pop-up-but{style: "display:none;"}
-                      .inline-block.font12.mtop10 Please Wait...
-                      .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                    .loader-effect.btn.pop-up-but.ptop15{style: "display:none;"}
+                      .inline-block.font12.v-align-top.mtop2 Please Wait...
+                      .ball-clip-rotate.inline-block
                         %div
           #home-sign-up.tab-pane.fade{class: "#{'active in' if params[:tab] == "signup"}"}
             .col-md-12.padding0.mtop40
@@ -77,15 +77,14 @@
                         %i.fa.fa-lock.font-bit-large
                       = f.password_field :password_confirmation, :placeholder => t('password', default: "Confirm Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
                 .form-group.clearfix
-                  .col-sm-8.col-sm-offset-2
-                    %span.mleft10.textt-center.font11 By continuing, you agree to the Terms of Service
+                  .col-xs-12.col-sm-12.grey-fg.text-center
+                    %span.font11 By continuing, you agree to the Terms of Service
                 .form-group.clearfix
-                  #submit-signup.pulse-loader{style: "display:none;"} Loading...
                   .col-xs-12.col-sm-6.col-sm-offset-3.mbottom40
                     = f.submit "Sign up", class: "loader-button btn pop-up-but login-button"
-                    .loader-effect.btn.pop-up-but{style: "display:none;"}
-                      .inline-block.font12.mtop10 Please Wait...
-                      .ball-clip-rotate.pull-right{style: "height:22px;margin-top:9px;"}
+                    .loader-effect.btn.pop-up-but.ptop15{style: "display:none;"}
+                      .inline-block.font12.v-align-top.mtop2 Please Wait...
+                      .ball-clip-rotate.inline-block
                         %div
   %svg.topLeftRounded{:height => "100", :preserveaspectratio => "none", :version => "1.1", :viewbox => "50 20 50 80", :width => "100%", :xmlns => "http://www.w3.org/2000/svg"}
     %path{:d => "M0,100 C15,100 35,50 50,50 L50,50 C65,50 85,100 100,100 Z"}

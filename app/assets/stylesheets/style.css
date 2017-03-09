@@ -222,40 +222,6 @@ body{
     overflow-x: hidden;
 }
 /*************Loader Effects********************/
-@keyframes spin-rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    transform: rotate(0deg); }
-  50% {
-    -webkit-transform: rotate(180deg);
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    transform: rotate(180deg); }
-  100% {
-    -webkit-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    transform: rotate(360deg); } }
-
-.semi-circle-spin {
-  position: relative;
-  width: 35px;
-  height: 35px;
-  overflow: hidden; }
-.semi-circle-spin > div {
-  position: absolute;
-  border-width: 0px;
-  border-radius: 100%;
-  -webkit-animation: spin-rotate 0.6s 0s infinite linear;
-  -moz-animation: spin-rotate 0.6s 0s infinite linear;
-  -o-animation: spin-rotate 0.6s 0s infinite linear;
-  animation: spin-rotate 0.6s 0s infinite linear;
-  background-image: -webkit-linear-gradient(transparent 0%, transparent 70%, #fff 30%, #fff 100%);
-  background-image: linear-gradient(transparent 0%, transparent 70%, #fff 30%, #fff 100%);
-  width: 100%;
-  height: 100%; }
 
 @keyframes rotate {
   0% {
@@ -275,18 +241,92 @@ body{
     transform: rotate(360deg) scale(1); }
   }
 .ball-clip-rotate > div {
-    background-color: #fff;
-    border-radius: 100%;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-    border: 2px solid #fff;
-    border-bottom-color: transparent;
-    height: 20px;
-    width: 20px;
-    background: transparent !important;
-    display: inline-block;
-    -webkit-animation: rotate 0.6s 0s linear infinite;
-    -moz-animation: rotate 0.6s 0s linear infinite;
-    -o-animation: rotate 0.6s 0s linear infinite;
-    animation: rotate 0.6s 0s linear infinite;
+  background-color: #fff;
+  border-radius: 100%;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  border: 2px solid #fff;
+  border-bottom-color: transparent;
+  height: 20px;
+  width: 20px;
+  background: transparent !important;
+  display: inline-block;
+  -webkit-animation: rotate 0.6s 0s linear infinite;
+  -moz-animation: rotate 0.6s 0s linear infinite;
+  -o-animation: rotate 0.6s 0s linear infinite;
+  animation: rotate 0.6s 0s linear infinite;
+}
+
+.loading_dots span{
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: inset 0 0 1px rgba(115, 45, 176, 0.28);
+  display: inline-block;
+  height: 0.5em;
+  width:  0.5em;
+  -webkit-animation:  loading_dots 0.8s linear infinite;
+  -moz-animation:     loading_dots 0.8s linear infinite;
+  -ms-animation:      loading_dots 0.8s linear infinite;
+  animation:          loading_dots 0.8s linear infinite;
+  }
+.loading_dots span:nth-child(2){
+  -webkit-animation-delay:  0.2s;
+  -moz-animation-delay:     0.2s;
+  -ms-animation-delay:      0.2s;
+  animation-delay:          0.2s;
+}
+.loading_dots span:nth-child(1){
+  -webkit-animation-delay:  0.4s;
+  -moz-animation-delay:     0.4s;
+  -ms-animation-delay:      0.4s;
+  animation-delay:          0.4s;
+}
+@-webkit-keyframes loading_dots
+{
+  0% {
+    background: transparent;
+  }
+  50% {
+    background: #732db0;
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+@-moz-keyframes loading_dots
+{
+  0% {
+    background: transparent;
+  }
+  50% {
+    background: #732db0;
+  }
+  100% {
+    background: transparent;
+  }
+}
+@-ms-keyframes loading_dots
+{
+  0% {
+    background: transparent;
+  }
+  50% {
+    background: #732db0;
+  }
+  100% {
+    background: transparent;
+  }
+}
+@keyframes loading_dots
+{
+  0% {
+    background: transparent;
+  }
+  50% {
+    background: #732db0;
+  }
+  100% {
+    background: transparent;
+  }
 }

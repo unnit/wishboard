@@ -19,7 +19,14 @@
           = link_to admin_showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
             Delete as Admin...
         %span.embed-link.pon.full-width.grey-fg.pull-left.small.padding5{"data-url" => "#{showcase_url(showcase)}", "data-title" => "#{showcase.title}"}= showcase.wishlist? ? "Embed Wish".html_safe : "Embed Showpiece".html_safe
-      .col-xs-12.col-sm-12.padding10
+      %span.pos-absolute{style: "right: 5px;top: 25px;"}
+        - if showcase.achieved?
+          .achieved-wish-sprite
+        - elsif showcase.wishlist?
+          .future-wish-sprite-lg
+        - elsif showcase.instant_wishlist?
+          .momentary-wish-sprite-lg
+      .col-xs-12.col-sm-12.padding10.pright.pright40
         .media
           .media-left
             = link_to myprofile_path(showcase.user.profile.slug), class: "pull-left" do
@@ -36,12 +43,13 @@
               %span.full-width.inline-block.mtop8{class: "#{showcase.image.present? ? 'font-medium' : 'font21'}"}
                 %span{class: "#{showcase.owner?(current_user) ? '' : 'hovercard'}", "data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
                 %span
-                  - if showcase.showpiece?
-                    = showcase.fulfilled_wish_prefix_label[/(.*)\s/,1]
-                    %span.cc-dark-fg= showcase.fulfilled_wish_prefix_label.split.last.to_s
+                  - if showcase.showpiece? || showcase.achieved?
+                    = link_to showcase_path(showcase), remote: true do
+                      %span.cc-dark-fg= showcase.fulfilled_wish_prefix_label.split.last
                   - else
                     = showcase.future_wish_prefix_label[/(.*)\s/,1]
-                    %span.cc-dark-fg= showcase.future_wish_prefix_label.split.last.to_s
+                    = link_to showcase_path(showcase), remote: true do
+                      %span.cc-dark-fg= showcase.future_wish_prefix_label.split.last
                 %span
                   = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
                     = showcase.title
@@ -65,60 +73,78 @@
             - else
               = link_to authenticate_path do
                 %i.coin-sprite-o-less
-          - if current_user && (showcase.wishlist? && showcase.owner?(current_user) && !showcase.achieved?)
-            .pos-absolute{style: "bottom: 30px;left: 0px;", class: "toggle-achieve-#{showcase.id}"}
-              = link_to toggle_achieve_wish_showcase_path(showcase), class: "padding10 pull-left white-fg achieve-bg", method: :post, remote: true, style: "border-top-right-radius:5px;border-bottom-right-radius:5px;" do
-                %span.inline-block.font16 Mark as completed?&nbsp;
-                %i.fa.fa-check-circle.font21
     - if showcase.tags.present?
       .col-xs-12.col-sm-12.showcase-tags.bg-white.padding10.ptpp0
         - showcase.tags.each do |tag|
           %span.pright5.mbottom5.pull-left.mright5.font12
             .fa.fa-circle
             = link_to tag.name, tag_path(tag.name), class: "black-fg"
-    .col-xs-3.col-sm-2.border-two.padding10.bg-white.h40
+    .col-xs-12.col-sm-12.border-two.padding10.bg-white.h40
       - if current_user
-        = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
-          - if showcase.wowed?(current_user)
-            %i.fa.fa-heart.cc-dark-fg.pull-left.hvr-push
-          - else
-            %i.fa.fa-heart-o.cc-dark-fg.pull-left.hvr-push
+        .col-xs-2.col-sm-2.pleft0
+          = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
+            - if showcase.wowed?(current_user)
+              %i.fa.fa-heart.cc-dark-fg.pull-left.hvr-push
+            - else
+              %i.fa.fa-heart-o.cc-dark-fg.pull-left.hvr-push
+          .badge.pull-left.bg-white.cc-dark-fg{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
+            = showcase.active_wows.count
+        .col-xs-2.col-sm-2.pright0.pleft5
+          %i.fa.fa-comment-o.pull-left.cc-dark-fg.comment-link.pon{class: "comment-link-#{showcase.id}"}
+          .badge.pull-left.bg-white.cc-dark-fg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
+            = showcase.comments.count
       - else
-        = link_to authenticate_path do
-          %i.fa.fa-heart-o.cc-dark-fg.pull-left
-      .badge.pull-left.bg-white.cc-dark-fg{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
-        = showcase.active_wows.count
-    .col-xs-3.col-sm-2.pon.comment-link.border-two.padding10.bg-white.h40
-      - if current_user
-        %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
-      - else
-        = link_to authenticate_path do
-          %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
-      .badge.pull-left.bg-white.cc-dark-fg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
-        = showcase.comments.count
-    .col-xs-4.col-sm-3.border-two.padding10.bg-white.h40
-      - unless showcase.coin_wish?
-        - if current_user
-          - if !showcase.owner?(current_user)
-            %span.rewish-link.pon.cc-dark-fg{"data-id" => "#{showcase.id}"}
-              %i.fa.fa-clone.pull-left
-              %span.font11.grey-fg.pull-left.mtop2 Rewish
-        - else
+        .col-xs-2.col-sm-2.pleft0
           = link_to authenticate_path do
-            %i.fa.fa-clone.pull-left
-            %span.font11.grey-fg.pull-left.mtop2 Rewish
-        .badge.pull-left.mleft5.bg-white.cc-dark-fg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
-          = showcase.children.count
-      - else
-        %span.font11.grey-fg.pull-left.mtop2{class: "badge-coin-link-#{showcase.id}"} Coins
-        .badge.pull-left.mleft5.bg-white.cc-dark-fg{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
-          = showcase.active_coins.count
-    .col-xs-2.col-sm-5.border-two.padding10.bg-white.text-right.h40.pleft0
-      - if current_user && showcase.owner?(current_user)
-        = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
-          .fa.fa-plus.grey-fg.pull-right.font16{title: "Arrange Showcase"}
-      %a{href: "#{showcase_url(showcase)}", "data-image" => "#{showcase.image}", "data-title" => "#{showcase.title}", "data-desc" => "#{showcase.description}", class: "btnShare"}
-        .fa.fa-facebook-official.pull-right{title: "Share to Facebook"}
+            %i.fa.fa-heart-o.cc-dark-fg.pull-left
+            .badge.pull-left.bg-white.cc-dark-fg{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
+              = showcase.active_wows.count
+        .col-xs-2.col-sm-2.pright0.pleft5
+          = link_to authenticate_path do
+            %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
+            .badge.pull-left.bg-white.cc-dark-fg{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
+              = showcase.comments.count
+      .col-xs-6.col-sm-6.pright0.pleft5
+        - unless showcase.coin_wish?
+          - if current_user
+            - if showcase.owner?(current_user)
+              - if (!showcase.showpiece? && !showcase.achieved?)
+                %span{class: "toggle-achieve-#{showcase.id}"}
+                  = link_to toggle_achieve_wish_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
+                    %i.fa.fa-check-circle.pull-left.font20
+                    %span.pull-left.font12.mtop2.grey-fg Mark as completed?
+              - else
+                .achieved-wish-sprite.mright5
+                Achieved
+            - else
+              %span.rewish-link.pon.cc-dark-fg.pull-left{"data-id" => "#{showcase.id}"}
+                %i.fa.fa-clone.pull-left.mtop2
+                %span.font12.grey-fg.pull-left.mtop2 Wish it
+              .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+                = showcase.children.count
+              %span.done-this.pon.cc-dark-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
+                %i.fa.fa-check-circle.pull-left.font20
+                %span.font12.grey-fg.pull-left.mtop2 Done it
+          - else
+            = link_to authenticate_path do
+              %span.pon.cc-dark-fg.pull-left.pright5
+                %i.fa.fa-clone.pull-left.mtop2
+                %span.font12.grey-fg.pull-left.mtop2 Wish it
+              .badge.pull-left.mleft5.bg-white.cc-dark-fg{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+                = showcase.children.count
+              %span.pon.cc-dark-fg.pull-left.pleft-10
+                %i.fa.fa-check-circle.pull-left.font20
+                %span.font12.grey-fg.pull-left.mtop2 Done it
+        - else
+          %span.font11.grey-fg.pull-left.mtop2{class: "badge-coin-link-#{showcase.id}"} Coins
+          .badge.pull-left.mleft5.bg-white.cc-dark-fg{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
+            = showcase.active_coins.count
+      .col-xs-2.col-sm-2.pright0.pleft5
+        - if current_user && showcase.owner?(current_user)
+          = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
+            .fa.fa-folder-o.grey-fg.pull-right.font16{title: "Arrange Showcase"}
+        %a{href: "#{showcase_url(showcase)}", "data-image" => "#{showcase.image}", "data-title" => "#{showcase.title}", "data-desc" => "#{showcase.description}", class: "btnShare"}
+          .fa.fa-facebook-official.pull-right{title: "Share to Facebook"}
     - if showcase.description.present?
       .col-xs-12.col-sm-12.padding10.bg-white.padding10
         %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(showcase.description), length: 150)

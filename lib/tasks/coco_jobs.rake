@@ -12,6 +12,12 @@ namespace :coco_jobs do
   end
 
   task send_email_notifications: :environment do
+    achieved_notifications = AchievedNotification.where("active = ? and mailed = ?", true, false)
+    achieved_notifications.each do |achieved_notification|
+      ShowcaseMailer.achieved_showcase(achieved_notification.user.email, achieved_notification.showcase).deliver_now
+      achieved_notification.mailed = true
+      achieved_notification.save
+    end
     showcase_notifications = ShowcaseNotification.where("mailed = ?", false)
     showcase_notifications.each do |showcase_notification|
       ShowcaseMailer.new_showcase(showcase_notification.user.email, showcase_notification.showcase).deliver_now

@@ -1,25 +1,45 @@
 .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 1000px;"}
   .container.padding0.ptop20.pbottom70.helvetica-font
     .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
-      = form_for [:admin, @showcase] do |f|
+      = form_for [:admin, @showcase], html: {class: "create-showcase"} do |f|
         .col-xs-12.col-sm-12.text-center.padding20.photo-upload-wrapper
           %span.font11.col-xs-12.col-sm-12.padding0 Drag and Drop the Photo here.
           .preview
           .glyphicon.glyphicon-remove.preview-delete.hide-display.pon{style: "z-index: 1;"}
           .col-xs-12.col-sm-12.no-mar-pad
             .glyphicon.glyphicon-camera.file-input-button.grey-fg.padding20{style: "font-size: 65px;border: 1px dashed;"}
-              = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new" })
+              = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-new file-upload-trigger" })
           .col-xs-12.col-sm-12.no-mar-pad
             .progress.progress-striped.hide-display.mbottom0.mtop5{style: "height: 10px;width:107px;"}
               .progress-bar{style: "width: 0%;"}
-        .col-xs-12.col-sm-12
-          %span.font11 Type some tags in the input field, and separate them with enter, comma, or tab
-          %br
-          = f.text_field :all_tags, placeholder: "Tags separated with enter, comma, or tab", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead"
+        .col-xs-12.col-sm-12.ptop10.j-ps-holder.height89
+          .col-xs-12.col-sm-12.ptop5.grey-fg.height50
+            %span.type-holder.pon.pos-absolute.full-width{style: "left: 5px;top: 32px;font-size: 15px;"}
+          .prefix-holder.pon.pull-left{style: "height: 34px;border-bottom: 2px solid #732db0;padding: 6px 0px;font-size: 14px;line-height: 1.42857143;display: inline;"}
+          = text_field_tag :initial, "", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial bg-white", readonly: true
+          .dropdown.type-holder-dropdown
+            .dropdown-menu.pos-relative.full-width
+              - Showcase::DISPLAY_SHOWCASE_TYPE.each do |showcase_type|
+                %li
+                  %a.pon{"data-id" => "#{showcase_type[1]}", "data-text" => "#{showcase_type[2]}"}
+                    = showcase_type[0]
+          .dropdown.prefix-holder-dropdown
+            .dropdown-menu.pos-relative.prefix-scrollbar.full-width{style: "max-height: 298px;overflow:hidden !important;"}
+              - Showcase::WISH_PREFIX.each do |wish_prefix|
+                %li
+                  %a.pon{"data-id" => "#{wish_prefix[1]}", "data-ptext" => "#{wish_prefix[3]}", "data-ftext" => "#{wish_prefix[4]}", "data-pplaceholder" => "#{wish_prefix[5]}", "data-fplaceholder" => "#{wish_prefix[6]}"}
+                    = wish_prefix[0]
+                    %span.grey-fg.font13
+                      &nbsp;
+                      %em= wish_prefix[2]
+          .hide-display
+            = f.text_field :showcase_type
+            = f.text_field :wish_prefix
+            = f.text_field :title
         .col-xs-12.col-sm-12.text-center.ptop10
-          = f.text_field :title, placeholder: "Title", class: "form-control coco-input-field hvr-underline-from-left title-gnrl", required: true, maxlength: 100
-        .col-xs-12.col-sm-12.text-center.ptop10
-          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field hvr-underline-from-left des-gnrl", maxlength: 1000
+          = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field", maxlength: 1000
+        .col-xs-12.col-sm-12.ptop20.pbottom10
+          = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
         .col-xs-12.col-sm-3.mtop10
           %span.no-mar-pad.col-xs-12.col-sm-12
             = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}", required: true
@@ -30,5 +50,5 @@
         .col-xs-4.col-sm-3.ptop10
           = f.check_box :coin_wish
           %label.mbottom0 Coin WIsh
-        .col-xs-12.col-sm-12.mtop10.text-center.showcase-btn-wrapper
-          = f.submit "#{@showcase.wishlist? ? 'Wishlist' : 'Showcase'}", class: "btn btn-primary btn-shadow btn-social weight-bold showcase-edit-submit"
+        .col-xs-12.col-sm-12.mtop10.text-center
+          = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"

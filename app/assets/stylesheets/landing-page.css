@@ -2416,6 +2416,22 @@ height:50px;
   transition: all 0.6s;
   -webkit-transition: all 0.6s;
 }
+.achieved-wish-sprite{
+  width: 14px;
+  height: 21px;
+  background: url(images/coco-sprite.png) -969px -317px;
+  float: left;
+}
+.future-wish-sprite-lg{
+  width: 18px;
+  height: 21px;
+  background: url(images/coco-sprite.png) -947px -316px;
+}
+.momentary-wish-sprite-lg{
+  width: 21px;
+  height: 20px;
+  background: url(images/coco-sprite.png) -920px -317px;
+}
 .balance-coins-sprite-grey{
   width: 35px;
   height: 33px;

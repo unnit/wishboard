@@ -112,8 +112,9 @@ Rails.application.routes.draw do
   post "follow_all_interest", to: "home#follow_all_interest", as: :follow_all_interest
   post "unfollow_all_interest", to: "home#unfollow_all_interest", as: :unfollow_all_interest
   post "toggle_follow_interest/:id", to: "home#toggle_follow_interest", as: :user_toggle_follow_interest
-  get ":id/showpieces", to: "home#myshowpieces", as: :myshowpieces
-  get ":id/wishes", to: "home#mywishes", as: :mywishes
+  get ":id/wishes/fulfilled", to: "home#myshowpieces", as: :myshowpieces
+  get ":id/wishes/future", to: "home#mywishes", as: :mywishes
+  get ":id/wishes/momentary", to: "home#mymomentary", as: :mymomentary
   get ":id/showcases/:name", to: "home#view_collection", as: :view_collection
   get ":id/following", to: "home#following", as: :following
   get ":id/followers", to: "home#followers", as: :followers
@@ -128,6 +129,7 @@ Rails.application.routes.draw do
   get "check_comment/:id", to: "home#update_comment_checked", as: :update_comment_checked
   get "check_follower/:id", to: "home#update_follower_checked", as: :update_follower_checked
   get "check_showcase/:id", to: "home#update_showcase_checked", as: :update_showcase_checked
+  get "check_achieved/:id", to: "home#update_achieved_checked", as: :update_achieved_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
   get "fansday", to: "home#fansday"
   get ":id", to: "home#myprofile", as: :myprofile
@@ -161,6 +163,7 @@ Rails.application.routes.draw do
       post :edit_collection
       delete :delete_collection
       post :rewish
+      post :have_done_this
       post :coin
       post :toggle_achieve_wish
     end

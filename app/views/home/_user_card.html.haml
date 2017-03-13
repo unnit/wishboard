@@ -39,11 +39,15 @@
         %span.pull-left.no-mar-pad.font-medium.weight600.followers-count.inline-display{style: "line-height: 30px;"}= user.followers.count
         .followers-sprite
     .col-xs-12.col-sm-12.no-mar-pad.text-center.pattern-bg
-      .col-xs-6.col-sm-6.padding10{style: "border-right: 1px solid #d8d8d8;border-top: 1px solid #d8d8d8;"}
-        = link_to myshowpieces_path(user.profile.slug), class: "cc-dark-fg" do
-          %span.font-medium Showpieces
+      .col-xs-4.col-sm-4.padding10{style: "border-right: 1px solid #d8d8d8;border-top: 1px solid #d8d8d8;"}
+        = link_to myshowpieces_path(user.profile.slug), class: "grey-fg" do
+          %span.font-medium Fulfilled
           %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.showpieces.count
-      .col-xs-6.col-sm-6.padding10{style: "border-top: 1px solid #d8d8d8;"}
-        = link_to mywishes_path(user.profile.slug), class: "cc-dark-fg" do
-          %span.font-medium Wishes
+      .col-xs-4.col-sm-4.padding10{style: "border-right: 1px solid #d8d8d8;border-top: 1px solid #d8d8d8;"}
+        = link_to mywishes_path(user.profile.slug), class: "grey-fg" do
+          %span.font-medium Momentary
           %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.wishes.count
+      .col-xs-4.col-sm-4.padding10{style: "border-top: 1px solid #d8d8d8;"}
+        = link_to mymomentary_path(user.profile.slug), class: "grey-fg" do
+          %span.font-medium Future
+          %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.momentary.count

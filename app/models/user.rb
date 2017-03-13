@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :gift_coins, -> (id) {where("coins.active = ?", true)}, through: :showcases, source: :coins
   has_many :received_comments, -> (id) {where("comments.user_id != ?", id )}, through: :showcases, source: :comments
   has_many :showcase_notifications
+  has_many :achieved_notifications
   has_many :interests
   has_many :tags, through: :interests
   has_many :active_interests, -> {where active: true}, class_name: "Interest", foreign_key: "user_id"
@@ -243,8 +244,12 @@ class User < ActiveRecord::Base
     showcase_notifications.where(checked: false)
   end
 
+  def unchecked_achieved_notifications
+    achieved_notifications.where("achieved_notifications.checked = ? and achieved_notifications.active = ?", false, true)
+  end
+
   def unchecked_notififcations_count
-    unchecked_wows.count + unchecked_coins.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count
+    unchecked_wows.count + unchecked_coins.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count + unchecked_achieved_notifications.count
   end
 
   def interests_count

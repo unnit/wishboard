@@ -1,6 +1,7 @@
 class ShowcasesController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :coin, :toggle_achieve_wish, :add_coin_wish]
+  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish]
+  before_filter :re_eligibilty, only: [:rewish, :have_done_this]
   before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish]
   before_filter :check_coin_wish, only: [:edit, :update, :delete]
   before_filter :get_comment, only: [:edit_comment, :delete_comment]
@@ -59,7 +60,6 @@ class ShowcasesController < ApplicationController
   def update
     @showcase.build_location if @showcase.location.blank?
     @showcase.assign_attributes(showcase_params)
-    @showcase.user_status = params[:showcase][:user_status] unless @showcase.user_status == Showcase::USER_STATUS[1]
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -93,16 +93,23 @@ class ShowcasesController < ApplicationController
   end
 
   def rewish
-    unless @showcase.owner?(current_user) || @showcase.coin_wish?
-      create_rewish
-      @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
-      if @rewish.save
-        flash[:notice] = "Rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
-        redirect_to root_path
-      end
-    else
-      redirect_to root_path
-      return
+    create_rewish
+    @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1] if @showcase.showpiece?
+    @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
+    if @rewish.save
+      flash[:notice] = "Rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
+      redirect_to :back
+    end
+  end
+
+  def have_done_this
+    create_rewish
+    @rewish.showcase_type = Showcase::SHOWCASE_VALUES[0]
+    @rewish.user_status = Showcase::USER_STATUS[1]
+    @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
+    if @rewish.save
+      flash[:notice] = "Showcased a fulfilled wish. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Fulfilled Wish</a>".html_safe
+      redirect_to :back
     end
   end
 
@@ -282,15 +289,25 @@ class ShowcasesController < ApplicationController
     @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at", "product_id"))
     @rewish.user = current_user
     @rewish.parent = @showcase
-    @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1]
     @rewish.admin_created = false
     @rewish.admin_status = nil
     @rewish.user_status = Showcase::USER_STATUS[0]
     @rewish.all_tags = @showcase.all_tags
+    unless @showcase.location.blank?
+      @rewish.build_location
+      @rewish.location.name = @showcase.location.name
+    end
   end
 
   def check_coin_wish
     if @showcase.coin_wish?
+      redirect_to root_path
+      return
+    end
+  end
+
+  def re_eligibilty
+    if @showcase.owner?(current_user) || @showcase.coin_wish?
       redirect_to root_path
       return
     end

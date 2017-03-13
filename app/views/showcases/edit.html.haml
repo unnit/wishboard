@@ -59,10 +59,6 @@
               - Showcase::INSTANT_WISH_DATE.each do |instant_wish_date|
                 %li
                   %a.pon{"data-id" => "#{instant_wish_date[1]}"}= instant_wish_date[0]
-        - unless @showcase.achieved?
-          .col-xs-12.col-sm-12.ptop10.pbottom10.text-center.showcase-user-status
-            = f.check_box :user_status, {}, Showcase::USER_STATUS[1], Showcase::USER_STATUS[0]
-            %label.mbottom0 Achieved
         .col-xs-12.col-sm-12.mtop25.text-center
           = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
 

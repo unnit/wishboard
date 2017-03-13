@@ -2,8 +2,8 @@ class HomeController < ApplicationController
   skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
   skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
   before_filter :back_to_home, only: [:authenticate]
-  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers]
-  before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :view_collection, :following, :followers, :wiki]
+  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers]
+  before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :following, :followers, :wiki]
   before_filter :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
   before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
   before_filter :set_plain_layout, only: [:user_signup_confirmation, :interests]
@@ -84,12 +84,12 @@ class HomeController < ApplicationController
   end
 
   def unchecked_notifications
-    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications + current_user.unchecked_coins).sort_by{|e| e.created_at}.reverse
+    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications + current_user.unchecked_achieved_notifications + current_user.unchecked_coins).sort_by{|e| e.created_at}.reverse
     respond_to :js
   end
 
   def notifications
-    @notifications = (current_user.appreciations + current_user.gift_coins + current_user.received_comments + current_user.passive_relationships + current_user.showcase_notifications).sort_by{|e| e.created_at}.reverse
+    @notifications = (current_user.appreciations + current_user.gift_coins + current_user.received_comments + current_user.passive_relationships + current_user.showcase_notifications + current_user.unchecked_achieved_notifications).sort_by{|e| e.created_at}.reverse
     @notifications = Kaminari.paginate_array(@notifications).page(params[:notifications]).per(10)
     respond_to do |format|
       format.html
@@ -113,6 +113,9 @@ class HomeController < ApplicationController
     end
     current_user.unchecked_showcase_notifications.each do |showcase_notification|
       showcase_notification.update_column :checked, true
+    end
+    current_user.unchecked_achieved_notifications.each do |achieved_notification|
+      achieved_notification.update_column :checked, true
     end
     respond_to :js
   end
@@ -168,6 +171,16 @@ class HomeController < ApplicationController
     end
   end
 
+  def update_achieved_checked
+    achieved_notification = AchievedNotification.find_by_id params[:id]
+    unless achieved_notification.blank?
+      achieved_notification.update_column :checked, true if achieved_notification.user == current_user
+      redirect_to showcase_path(achieved_notification.showcase)
+    else
+      redirect_to root_path
+    end
+  end
+
   def toggle_follow
     @user = User.find_by_id params[:id]
     current_user.toggle_follow!(@user) unless @user == current_user
@@ -188,7 +201,7 @@ class HomeController < ApplicationController
   def myshowpieces
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
-    add_breadcrumb "Showpieces", myshowpieces_path(@profile.slug)
+    add_breadcrumb "Fulfilled", myshowpieces_path(@profile.slug)
     @showcases = @user.showcases.where("admin_created = ?", false).showpieces.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
@@ -200,8 +213,20 @@ class HomeController < ApplicationController
   def mywishes
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
-    add_breadcrumb "Wishes", mywishes_path(@profile.slug)
+    add_breadcrumb "Future", mywishes_path(@profile.slug)
     @showcases = @user.showcases.where("admin_created = ?", false).wishes.order(created_at: :desc)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
+    respond_to do |format|
+      format.html
+      format.js { render :myprofile }
+    end
+  end
+
+  def mymomentary
+    add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
+    add_breadcrumb "Showcases", myprofile_path(@profile.slug)
+    add_breadcrumb "Momentary", mymomentary_path(@profile.slug)
+    @showcases = @user.showcases.where("admin_created = ?", false).momentary.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html

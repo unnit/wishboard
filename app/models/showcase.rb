@@ -19,6 +19,7 @@ class Showcase < ActiveRecord::Base
   has_many :collection_showcases, dependent: :destroy
   has_many :collections, through: :collection_showcases
   has_many :showcase_notifications, dependent: :destroy
+  has_many :achieved_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
 
@@ -66,12 +67,14 @@ class Showcase < ActiveRecord::Base
   validates :wish_prefix, inclusion: {in: WISH_PREFIX_VALUES, message: "not an accepted value."}
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
 
-  scope :wishes, -> {where showcase_type: Showcase::SHOWCASE_VALUES[1]}
-  scope :showpieces, -> {where showcase_type: Showcase::SHOWCASE_VALUES[0]}
+  scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
+  scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
+  scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
 
   HUMANIZED_ATTRIBUTES = {
     user_status: "Achieved",
-    showcase_type: "Wish Status"
+    showcase_type: "Wish Type",
+    wish_prefix: "Wish Category"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
@@ -286,6 +289,16 @@ class Showcase < ActiveRecord::Base
 
   def toggle_user_status!
     new_status = user_status == USER_STATUS[0] ? USER_STATUS[1] : USER_STATUS[0]
+    if achieved_notifications.present?
+      achieved_notifications.each do |achieved_notification|
+        achieved_notification.active = !achieved_notification.active
+        achieved_notification.save
+      end
+    else
+      user.followers.each do |follower|
+        self.achieved_notifications.create(user_id: follower.id)
+      end
+    end
     update_column :user_status, new_status
   end
 

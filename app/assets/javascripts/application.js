@@ -217,7 +217,7 @@ $(document).ready(function(){
       e.preventDefault();
       $wrap = $(this).closest(".create-showcase");
       if($wrap.find(".ps-initial").val().trim().length > 0){
-        if($wrap.find(".preview").children().length == 0){
+        if($wrap.find(".preview, .preview-edit").children().length == 0){
           swal({
               title: "Are you sure to post your wish without a photo?",
               text: "A photo of your wish would be nice.",
@@ -368,6 +368,14 @@ $(document).ready(function(){
     $("#cont-wrapper").modal('show');
   })
   $(document).on("click", ".cancel-rewish", function(){
+    $("#cont-wrapper").modal('hide');
+  })
+  $(document).on("click", ".done-this", function(){
+    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>You are about to mark this wish as fulfilled.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/have_done_this' class='btn btn-sm bg-white cc-dark-fg full-width' data-method='post'>Proceed</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-done-this'>Not now</a></div></div></div>");
+    $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
+    $("#cont-wrapper").modal('show');
+  })
+  $(document).on("click", ".cancel-done-this", function(){
     $("#cont-wrapper").modal('hide');
   })
   //Flip effect for flash messages

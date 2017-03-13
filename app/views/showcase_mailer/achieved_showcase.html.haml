@@ -2,8 +2,8 @@
   = link_to myprofile_url(@showcase.user.profile.slug) do
     %span= truncate @showcase.user.name.titleize, length: 50
   &nbsp;
-  %span= @showcase.wishlist? ? " has" : " fulfilled"
-  a new
+  fulfilled
+  a
   = link_to showcase_url(@showcase) do
     %span wish
 %br

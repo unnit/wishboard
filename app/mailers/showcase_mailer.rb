@@ -5,6 +5,11 @@ class ShowcaseMailer < ApplicationMailer
     mail to: follower_email, subject: "#{showcase.user.name} has a new wish"
   end
 
+  def achieved_showcase(follower_email, showcase)
+    @showcase = showcase
+    mail to: follower_email, subject: "#{showcase.user.name} has fulfilled a wish"
+  end
+
   def send_showcase_owner_notification_for_comment(owner_email, commenter, showcase)
     @commenter = commenter
     @showcase = showcase

@@ -63,14 +63,20 @@
       = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           %span.scase-name-wrap.white-fg.font-medium
-            Showpieces
+            Fulfilled
             .badge.weight500= @user.showcases.showpieces.count
     .col-xs-12.col-sm-3.mbottom20
       = link_to mywishes_path(@profile.slug), style: "color: #292929" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           %span.scase-name-wrap.white-fg.font-medium
-            Wishes
+            Future
             .badge.weight500= @user.showcases.wishes.count
+    .col-xs-12.col-sm-3.mbottom20
+      = link_to mymomentary_path(@profile.slug), style: "color: #292929" do
+        .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
+          %span.scase-name-wrap.white-fg.font-medium
+            Momentary
+            .badge.weight500= @user.showcases.momentary.count
     .collection-strip
       - @user.collections.each do |collection|
         = render partial: "showcases/collection", locals: {collection: collection}

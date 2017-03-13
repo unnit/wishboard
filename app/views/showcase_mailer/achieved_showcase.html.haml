@@ -8,6 +8,8 @@
     %span wish
 %br
 Discover
+%span= truncate @showcase.user.name.titleize, length: 50
+'s&nbsp;
 = link_to myshowpieces_url(@showcase.user.profile.slug) do
   Fulfilled
 &nbsp;|&nbsp;
@@ -17,9 +19,7 @@ Discover
 = link_to mymomentary_url(@showcase.user.profile.slug) do
   Momentary
 &nbsp;
-wishes of
-%span= truncate @showcase.user.name.titleize, length: 50
-here
+wishes here
 %br
 Discover more on
 %a{href: "#{GLOBAL_VARIABLES[:root_url]}"}

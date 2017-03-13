@@ -46,8 +46,8 @@
       .col-xs-4.col-sm-4.padding10{style: "border-right: 1px solid #d8d8d8;border-top: 1px solid #d8d8d8;"}
         = link_to mymomentary_path(user.profile.slug), class: "grey-fg" do
           %span.font-medium Momentary
-          %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.wishes.count
+          %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.momentary.count
       .col-xs-4.col-sm-4.padding10{style: "border-top: 1px solid #d8d8d8;"}
         = link_to mywishes_path(user.profile.slug), class: "grey-fg" do
           %span.font-medium Future
-          %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.momentary.count
+          %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.wishes.count

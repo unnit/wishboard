@@ -2313,15 +2313,15 @@ height:50px;
   background: url('images/coco-sprite.png') -501px -215px;
 }
 .following-sprite{
-  background: url(images/coco-sprite.png) -445px -227px;
+  background: url(images/coco-sprite.png) -456px -230px;
   display: inline-block;
   width: 30px;
   height: 30px;
 }
 .followers-sprite{
-  background: url(images/coco-sprite.png) -412px -226px;
+  background: url(images/coco-sprite.png) -417px -229px;
   display: inline-block;
-  width: 30px;
+  width: 32px;
   height: 30px;
 }
 .vert-middle{
@@ -3456,13 +3456,14 @@ th.headerSortDown {
   display: inline-block !important;
 }
 .type-holder-dropdown li a, .prefix-holder-dropdown li a{
-  padding: 8px 20px !important;
+  padding: 8px 10px !important;
   display: block;
   clear: both;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.42857143;
   color: #333;
   white-space: nowrap;
+  font-family: "Open sans"
 }
 .prefix-holder-dropdown li a:focus,
 .prefix-holder-dropdown li a:hover {
@@ -3619,6 +3620,9 @@ th.headerSortDown {
   .alert-mob{
     left: 0 !important;
     width: 100% !important;
+  }
+  .mob-font12{
+    font-size: 12px;
   }
   .mob-font20{
     font-size: 20px;

@@ -13,4 +13,4 @@ $(".messages").html("#{j(render 'layouts/messages')}")
   var tagApi = $(".tm-input").tagsManager({hiddenTagListName: "showcase[all_tags]",maxTags: 15,prefilled: blank_array});
   $(".tm-input").typeahead(null, {display: 'value',source: tags,}).on('typeahead:selected', function (e, d) {tagApi.tagsManager("pushTag", d.value);$('.tm-input').typeahead('val', "");});
   tagApi.tagsManager("empty");
-  $(".prefix-scrollbar").mCustomScrollbar({theme: "minimal-dark", setHeight: 298});
+  $(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});

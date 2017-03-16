@@ -32,7 +32,7 @@
 
 $(document).ready(function(){
   //Custom scrollbar for wish type dropdown
-    $(".prefix-scrollbar").mCustomScrollbar({theme: "minimal-dark", setHeight: 298});
+    //$(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});
   //Post-Showcase functions
     $(document).on("click", "html,body", function(e){
       var container_1 = $(".ps-wrapper, .alert, .sweet-overlay, .sweet-alert, .ps-nav-btn, .pac-input")
@@ -394,10 +394,10 @@ $(document).ready(function(){
   });
   //Search bar visible in mobile
   $(document).on("click", ".search-mob", function(){
-    $(".navbar-header").hide();
     $(".feed-mob, .notif-mob, .follow-mob").removeClass("cc-med-bg");
+    $(".navbar-header").hide();
     $(".search-mob").addClass("cc-med-bg");
-    $(".search-wrap").removeClass("hidden-xs");
+    $(".search-wrap").removeClass("hide-display");
     $("#query").focus();
     var x = 0;
     var intervalID = setInterval(function () {
@@ -664,7 +664,7 @@ $(document).ready(function(){
     display: 'value',
     source: showcases,
   }).on('typeahead:selected', function (e, d) {
-      $("#header-search").submit();
+      $(this).closest("#header-search").submit();
   });
   var profiles = new Bloodhound({
     datumTokenizer: function(datum) {

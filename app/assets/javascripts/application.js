@@ -32,7 +32,7 @@
 
 $(document).ready(function(){
   //Custom scrollbar for wish type dropdown
-    //$(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});
+    $(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});
   //Post-Showcase functions
     $(document).on("click", "html,body", function(e){
       var container_1 = $(".ps-wrapper, .alert, .sweet-overlay, .sweet-alert, .ps-nav-btn, .pac-input")

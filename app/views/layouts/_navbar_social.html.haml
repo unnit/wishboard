@@ -69,9 +69,9 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
             %li.hidden-xs.pull-right
-              .fa.fa-bell-o.font20.pon.pull-right.mtop20.notif-icon.white-fg
+              .fa.fa-bell-o.font20.pon.pull-right.mtop15.notif-icon.white-fg
               - if current_user.unchecked_notififcations_count > 0
-                .badge.notif-badge.pon.pull-right.mtop8.notif-icon.bg-white.cc-dark-fg= current_user.unchecked_notififcations_count
+                .badge.notif-badge.pon.pull-right.mtop5.notif-icon.bg-white.cc-dark-fg= current_user.unchecked_notififcations_count
               .sq-rot.notif-toggle
               .notif-arrow.notif-toggle
               .notif-wrap.bx-shad.notif-toggle.helvetica-font

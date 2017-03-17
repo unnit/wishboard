@@ -14,7 +14,7 @@
         = render partial: "post_showcase", locals: {showcase: @scase}
       - if current_user.unlocked_coin_wish?
         - if @coin_wishes.present?
-          .col-xs-12.col-sm-12.no-mar-pad
+          .col-xs-12.col-sm-12.no-mar-pad.mtop10
             .col-xs-12.col-sm-12.text-center.no-mar-pad
               %span.header-text.weight500.zero-letter-spacing.font16 COIN WISHES
               %span.pos-absolute.pos-q-km-clk.font11.grey-fg.txt-underline.pon.c-w-lrn-mr
@@ -63,7 +63,7 @@
                 = hidden_field_tag :id, "", {class: "coin_wish_id"}
                 = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg", data: {confirm: "#{current_user.active_coin_wish.blank? ? '' : 'Only one coin wish can be active at a time. If you click okay and proceed, current selection will become your active coin wish. But do not worry, the old earnings will be added to your wallet without any deductions.'}"}
       - else
-        .col-xs-12.col-sm-12.no-mar-pad.mbottom10
+        .col-xs-12.col-sm-12.no-mar-pad.mbottom10.mtop10
           %span.full-width.ptop50.pbottom50.pleft-10.pright-10.text-center.bg-white.pull-left{style: "border: 2px solid #ffb900;", "data-step" => "2", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>COIN WISHES</h3>Coin Wishes help you to earn whenever your friends click on it. Click unlock and start earning.</span>"}
             = link_to unlock_coin_wish_profiles_path, class: "btn btn-outline-gold" do
               Unlock Coin Wish&nbsp;

@@ -11,14 +11,14 @@
     %meta{name: "apple-mobile-web-app-capable", content: "yes"}
     %meta{name: "apple-mobile-web-app-status-bar-style", content: "black"}
     %meta{name: "apple-mobile-web-app-title", content: "Cocociti"}
-    %link{rel: "apple-touch-icon", href: "/assets/logo/logo-152.png"}
-    %meta{name: "msapplication-TileImage", content: "/assets/logo/logo-144.png"}
-    %meta{name: "msapplication-TileColor", content: "#2F3BA2"}
+    %link{rel: "apple-touch-icon", href: "/assets/logo/logo-new-152.png"}
+    %meta{name: "msapplication-TileImage", content: "/assets/logo/logo-new-144.png"}
+    %meta{name: "msapplication-TileColor", content: "#732db0"}
     - if @social_layout.present?
       %meta{name: "theme-color", content: "#732db0"}
     - elsif @auth_layout.present?
       %meta{name: "theme-color", content: "#0891e6"}
-    %title= content_for?(:title) ? yield(:title) : "Discover showcases, wishlists and people around the world - Cocociti"
+    %title= content_for?(:title) ? yield(:title) : "Cocociti - Discover showcases, wishlists and people around the world"
 
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
     /[if lt IE 9]

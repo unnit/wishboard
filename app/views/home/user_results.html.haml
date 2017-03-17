@@ -2,7 +2,7 @@
   .container.padding0.mtop30
     .col-xs-12.col-sm-12.padding10.ptop0.user-wrapper
       - unless @users.blank?
-        = render partial: "user_card", locals: {users: @users, min_width: "282px"}
+        = render partial: "home/user", collection: @users
       - else
         %h3.text-center Sorry, No results found.
     #infinite-scrolling-content.hidden

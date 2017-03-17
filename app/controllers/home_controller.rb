@@ -254,8 +254,8 @@ class HomeController < ApplicationController
   def following
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Following", following_path(@profile.slug)
-    @following = @user.following.order(created_at: :desc)
-    @following = Kaminari.paginate_array(@following).page(params[:following]).per(12)
+    @users = @user.following.order(created_at: :desc)
+    @users = Kaminari.paginate_array(@users).page(params[:following]).per(12)
     respond_to do |format|
       format.html
       format.js
@@ -265,8 +265,8 @@ class HomeController < ApplicationController
   def followers
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Followers", followers_path(@profile.slug)
-    @followers = @user.followers.order(created_at: :desc)
-    @followers = Kaminari.paginate_array(@followers).page(params[:followers]).per(12)
+    @users = @user.followers.order(created_at: :desc)
+    @users = Kaminari.paginate_array(@users).page(params[:followers]).per(12)
     respond_to do |format|
       format.html
       format.js
@@ -307,7 +307,7 @@ class HomeController < ApplicationController
 
   def user_card
     user = User.find_by_id params[:id]
-    render json: {user: (render_to_string '_user_card', layout: false, locals: {users: Array(user), card_margin: '0px'})}
+    render json: {user: (render_to_string '_user', layout: false, locals: {user: user, card_padding: '0px', card_width: "100%"})}
   end
 
   def interests

@@ -6,13 +6,13 @@
     .col-md-12.mbottom10.no-mar-pad.pleft-10
       .ol.breadcrumb.no-mar-pad.note-font-size
         = render_breadcrumbs tag: :li, separator: "&nbsp;&nbsp;<span class='glyphicon glyphicon-menu-right extra-small-font'></span>&nbsp;&nbsp;".html_safe
-    .col-xs-12.col-sm-12.padding10.ptop0.user-wrapper
-      - if @following.present?
-        = render partial: "user_card", locals: {users: @following, max_width: "282px"}
+    .col-xs-12.col-sm-12.padding5.ptop0.user-wrapper
+      - if @users.present?
+        = render partial: "user", collection: @users
       - else
         %h3.text-center.padding20{style: "height:300px;"} “Not following anyone!”
     #infinite-scrolling-content.hidden
-      = paginate @following, param_name: "following"
+      = paginate @users, param_name: "following"
     .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
       %i.fa.fa-circle-o-notch.fa-spin.font21
       Please wait...

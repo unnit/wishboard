@@ -1,5 +1,5 @@
-- users.each do |user|
-  .col-xs-12.col-sm-12.text-center.bg-shad.bg-white{class: "user-wrapper-#{user.id} padding0", style: "max-width: #{max_width ||= '292px'};margin: #{card_margin ||= '0px 5px 10px 0px'};"}
+.col-xs-12.col-sm-3.text-center{class: "user-wrapper-#{user.id}", style: "padding: #{card_padding ||= '5px'}; width: #{card_width ||= ''};"}
+  .col-xs-12.col-sm-12.no-mar-pad.bg-white.bg-shad
     .col-xs-12.col-sm-12.inline-block.padding5.pbottom0
       - if current_user && current_user.same_user?(user)
         = link_to settings_path, class: "pull-right" do
@@ -16,7 +16,7 @@
         @#{user.profile.slug}
       - if current_user && current_user != user
         .col-xs-12.col-sm-12.no-mar-pad.mtop5{class: "follow-set-#{user.id}"}
-          = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "mleft95 pull-left" do
+          = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "inline-block" do
             .btn.no-mar-pad.loader-out-follow-button.follow-button{class: "#{current_user.following?(user) ? 'green-border' : 'cc-dark-fg-border'}", style: "line-height: 0px;"}
               %button{class: "btn loader-button loader-in-follow-button padding0 bg-white font-medium #{current_user.following?(user) ? 'green-fg' : 'cc-dark-fg'}"}
                 - if current_user.following?(user)

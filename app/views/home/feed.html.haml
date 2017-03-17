@@ -1,7 +1,7 @@
 .container-fluid.ptop50.padding0.mob-ptop100{style: "min-height: 1000px;background:#ebeced;"}
   .container.padding0.helvetica-font
     .col-sm-3.hidden-xs.no-mar-pad.ptop15#lhs-feed
-      = render partial: "user_card", locals: {users: Array(current_user), card_margin: "0px"}
+      = render partial: "user", locals: {user: current_user, card_padding: "0px", card_width: "100%"}
       .col-xs-12.col-sm-4.padding10.pleft0.mtop15{style: "min-width: 292px;"}
         %h6.no-mar-pad.font12.pleft0.text-left.weight-bold{style: "line-height: 18px;border-bottom: none;"}
           TRENDING

@@ -3,8 +3,8 @@
   "short_name": "Cocociti",
   "icons": [{
         "src": "assets/logo/logo-new-128.png",
-        "type": "image/png",
-        "sizes": "128x128"
+        "sizes": "128x128",
+        "type": "image/png"
       }, {
       "src": "assets/logo/logo-new-144.png",
       "sizes": "144x144",

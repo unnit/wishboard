@@ -1,7 +1,11 @@
 {
   "name": "Cocociti",
   "short_name": "Cocociti",
-  "icons": [{"src": "assets/logo/logo-new-128.png", "sizes": "128x128", "type": "image/png"}, { "src": "assets/logo/logo-new-144.png", "sizes": "144x144", "type": "image/png"}, {"src": "assets/logo/logo-new-152.png", "sizes": "152x152", "type": "image/png"}, {"src": "assets/logo/logo-new-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "assets/logo/logo-new-256.png", "sizes": "256x256", "type": "image/png"}],
+  "icons": [{
+      "src": "assets/logo/logo-new-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+  }],
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

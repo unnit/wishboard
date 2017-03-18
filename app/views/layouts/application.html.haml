@@ -8,7 +8,6 @@
       %meta{:name => "robots", :content => "noindex"}
     %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is where the world comes to wish & showcase. Wish it, achieve it, showcase it. Discover wishes & people with similar wishes. What is your wish?'}", :name => "description"}
     %meta{:content => "", :name => "author"}
-    %link{rel: "manifest", href: "/assets/service-worker/manifest.json"}
     %meta{name: "apple-mobile-web-app-capable", content: "yes"}
     %meta{name: "apple-mobile-web-app-status-bar-style", content: "black"}
     %meta{name: "apple-mobile-web-app-title", content: "Cocociti"}
@@ -18,13 +17,14 @@
     - if @social_layout.present?
       %meta{name: "theme-color", content: "#732db0"}
     - elsif @auth_layout.present?
-      %meta{name: "theme-color", content: "#0891e6"}
+      %meta{name: "theme-color", content: "#732db0"}
     %title= content_for?(:title) ? yield(:title) : "Cocociti - Discover showcases, wishlists and people around the world"
 
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
     /[if lt IE 9]
       = javascript_include_tag "//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js", "//oss.maxcdn.com/respond/1.4.2/respond.min.js"
     = stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans:400,600"
+    %link{rel: "manifest", href: "/assets/service-worker/manifest.json"}
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
     = render partial: "/layouts/head"

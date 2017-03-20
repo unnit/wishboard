@@ -14,10 +14,6 @@
     %link{rel: "apple-touch-icon", href: "/assets/logo/logo-new-152.png"}
     %meta{name: "msapplication-TileImage", content: "/assets/logo/logo-new-144.png"}
     %meta{name: "msapplication-TileColor", content: "#732db0"}
-    - if @social_layout.present?
-      %meta{name: "theme-color", content: "#732db0"}
-    - elsif @auth_layout.present?
-      %meta{name: "theme-color", content: "#0891e6"}
     %title= content_for?(:title) ? yield(:title) : "Cocociti - Discover showcases, wishlists and people around the world"
 
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
@@ -28,6 +24,10 @@
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
     = render partial: "/layouts/head"
+    - if @social_layout.present?
+      %meta{name: "theme-color", content: "#732db0"}
+    - elsif @auth_layout.present?
+      %meta{name: "theme-color", content: "#0891e6"}
   %body
     = render partial: "/layouts/google_analytics"
     - if @social_layout.present?

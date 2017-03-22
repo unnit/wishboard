@@ -1,5 +1,5 @@
 $('.feed-loader').hide();
-$(".showcase-strip").append("#{j render partial: "home/showcase_cards", locals: {showcases: @showcases}}")
+$(".showcase-strip").append("#{j render partial: "home/showcases", locals: {showcases: @showcases}}")
 -if @showcases.next_page
   $('#infinite-scrolling-content .pagination').replaceWith("#{j paginate @showcases, param_name: 'showcases'}");
   $(window).on('scroll', function() {var more_posts_url = $('#infinite-scrolling-content .pagination .next a').attr('href');if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 250) {$(window).off("scroll");$('.feed-loader').show();$.getScript(more_posts_url);}});

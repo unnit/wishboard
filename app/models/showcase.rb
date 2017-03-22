@@ -235,12 +235,12 @@ class Showcase < ActiveRecord::Base
   def showcase_type_name
     return Showcase::SHOWCASE_TYPE[0][0] if showpiece?
     return Showcase::SHOWCASE_TYPE[1][0] if wishlist?
-    return Showcase::SHOWCASE_TYPE[1][0] if instant_wishlist?
+    return Showcase::SHOWCASE_TYPE[2][0] if instant_wishlist?
   end
 
   def showcase_type_label
-    return Showcase::DISPLAY_SHOWCASE_TYPE[0][2] if showpiece?
-    return Showcase::DISPLAY_SHOWCASE_TYPE[1][2] if wishlist?
+    return Showcase::DISPLAY_SHOWCASE_TYPE[2][2] if showpiece?
+    return Showcase::DISPLAY_SHOWCASE_TYPE[0][2] if wishlist?
     return Showcase::DISPLAY_SHOWCASE_TYPE[1][2] if instant_wishlist?
   end
 

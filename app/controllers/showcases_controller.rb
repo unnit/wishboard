@@ -19,7 +19,7 @@ class ShowcasesController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.js{render 'home/myprofile.js'}
+      format.js{render 'home/showcase_results.js'}
     end
   end
 

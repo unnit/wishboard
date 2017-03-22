@@ -152,7 +152,7 @@ $(document).ready(function(){
         $wrap.find(".prefix-holder").html("<span class='dotted-bt-border mleft5'>"+$(this).data("ptext")+"&nbsp;<i class='fa fa-angle-down font16' aria-hidden='true'></i></span>");
       }
       else{
-        $wrap.find(".ps-initial").attr("placeholder", $(this).data("pplaceholder"));
+        $wrap.find(".ps-initial").attr("placeholder", $(this).data("fplaceholder"));
         $wrap.find(".prefix-holder").html("<span class='dotted-bt-border mleft5'>"+$(this).data("ftext")+"&nbsp;<i class='fa fa-angle-down font16' aria-hidden='true'></i></span>");
       }
       $wrap.find(".prefix-holder").css({"display": "inline-block"});

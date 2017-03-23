@@ -12,7 +12,7 @@
         = yield :header_extra
       .col-xs-12.hide-display.search-wrap.no-mar-pad.mtop8
         ~ form_tag results_path, method: :get, id: "header-search" do
-          .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query cc-med-bg cc-dark-fg-border white-fg", style: "border-radius: 20px;width: 100%;"
+          .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search Wishes", class: "form-control search-query cc-med-bg cc-dark-fg-border white-fg", style: "border-radius: 20px;width: 100%;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
               %span.glyphicon.glyphicon-search.white-fg
@@ -93,7 +93,7 @@
               = link_to authenticate_path(tab: "signup"), style: "white-space: normal;" do
                 %span.grey-fg SignUp
           ~ form_tag results_path, method: :get, id: "header-search", class: "navbar-form navbar-right hidden-xs", style: "width: 300px;" do
-            .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search", class: "form-control search-query cc-med-bg cc-dark-fg-border white-fg", style: "border-radius: 20px;width: 100%;"
+            .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search Wishes", class: "form-control search-query cc-med-bg cc-dark-fg-border white-fg", style: "border-radius: 20px;width: 100%;"
             .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
               %button.btn{type: 'submit', style: "background-color: transparent;"}
                 %span.glyphicon.glyphicon-search.white-fg

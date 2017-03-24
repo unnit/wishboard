@@ -2,7 +2,7 @@ class UserMailer < ApplicationMailer
   def invite(user, message, emails)
     @user = user
     @message = message
-    mail to: "me", subject: "Invite to join Cocociti", bcc: "#{GLOBAL_VARIABLES[:manager_email_id_1]},#{GLOBAL_VARIABLES[:manager_email_id_2]},#{emails}"
+    mail to: "me", subject: "#{user.name} invited you to join Cocociti", bcc: "#{GLOBAL_VARIABLES[:manager_email_id_1]},#{GLOBAL_VARIABLES[:manager_email_id_2]},#{emails}"
   end
 
   def welcome(user)

@@ -124,12 +124,13 @@
         - else
           .col-xs-12.col-sm-12.text-center.padding10.bg-white.mbottom40
             %h5 Ayyo! Nothing to show. Invite your friends and follow others to activate your feed.
-            %h4.weight-bold.mtop20 TOP PERFORMERS
+            %h4.weight-bold.mtop20 TOP WISHERS
             .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "7", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>BE UPDATED</h3>An empty feed is boring. Follow a minimum of our 8 most active users above to get the best out of Cocociti and to be updated.</span>"}
               - @top_performers.each do |performer|
                 .col-xs-6.col-sm-6.col-md-3.padding5
                   .col-sm-12.col-xs-12.padding5{style: "border: 1px solid #f1f1f1; height: 125px;"}
-                    = cl_image_tag performer.avatar, class: "img-circle mtop10 mbottom5", width: 40, height: 40, crop: :fill
+                    = link_to myprofile_path(performer.profile.slug) do
+                      = cl_image_tag performer.avatar, class: "img-circle mtop10 mbottom5", width: 40, height: 40, crop: :fill
                     %h5.no-mar-pad.font11= truncate performer.name, length: 15
                     %div.mtop-v-5{class: "follow-set-#{performer.id}"}
                       = link_to user_toggle_follow_path(performer), remote: true, method: :post do

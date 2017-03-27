@@ -243,7 +243,7 @@
         //$("#rhs-feed").css({"width": width, "top": top, "right": left, "position": "fixed"});
       }
       var welcome = "#{params[:welcome].blank? ? '' : params[:welcome]}"
-      if(welcome == "tour" || "#{current_user.sign_in_count}" <= 2){
+      if(welcome == "tour" || "#{current_user.sign_in_count}" <= 1){
         if($("#rhs-feed").css("z-index") == 10){
           $(this).find(".rhs-intro").removeAttr("data-step data-intro");
         }

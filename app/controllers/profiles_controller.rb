@@ -24,7 +24,7 @@ class ProfilesController < ApplicationController
         return
       end
       if @profile.valid?
-        create_wallet
+        create_wallet if current_user.wallet.blank?
         current_user.invite_code = current_user.generate_invite_code
         current_user.save
         @profile.save

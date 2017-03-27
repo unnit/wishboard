@@ -1,3 +1,4 @@
+.ps-wrapper{"data-pdate" => "#{DateTime.current}", "data-fdate" => "#{DateTime.current + 8.days}"}
 .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 1000px;"}
   .container.padding0.ptop20.pbottom70.helvetica-font
     .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
@@ -40,6 +41,16 @@
           = f.text_area :description, placeholder: "Description", class: "form-control coco-input-field", maxlength: 1000
         .col-xs-12.col-sm-12.ptop20.pbottom10
           = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
+        .col-xs-12.col-sm-7.ptop10.height50
+          = f.fields_for :location do |lf|
+            = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
+        .col-xs-12.col-sm-5.ptop10.height50
+          = f.text_field :year, placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white", readonly: true
+          .dropdown.dt-achievement-dropdown
+            .dropdown-menu.pos-relative.full-width
+              - Showcase::INSTANT_WISH_DATE.each do |instant_wish_date|
+                %li
+                  %a.pon{"data-id" => "#{instant_wish_date[1]}"}= instant_wish_date[0]
         .col-xs-12.col-sm-3.mtop10
           %span.no-mar-pad.col-xs-12.col-sm-12
             = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}", required: true

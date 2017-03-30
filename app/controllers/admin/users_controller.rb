@@ -51,7 +51,7 @@ class Admin::UsersController < AdminController
 
   def update_withdraw
     withdraw = Withdraw.find params[:id]
-    withdraw.status = params[:status]
+    withdraw.status = params[:status] unless withdraw.deactivated?
     withdraw.comment = params[:comment]
     if withdraw.save
       flash[:notice] = "Updated successfully"

@@ -7,7 +7,7 @@
         = form_tag send_to_bank_profiles_path, remote: true, class: "form-horizontal" do
           .form-group
             .col-xs-12.col-sm-4
-              Name
+              A/C Holder Name
               %span.heart-red-fg *
             .col-xs-12.col-sm-8
               = text_field_tag :name, "#{last_transaction.name unless last_transaction.blank?}", class: "form-control", required: true

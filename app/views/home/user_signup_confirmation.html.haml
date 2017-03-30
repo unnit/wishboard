@@ -1,9 +1,12 @@
 .container-fluid.ptop50.pattern-bg
+  .pos-absolute.bubble-1
+  .pos-absolute.bubble-2.hidden-xs
+  .pos-absolute.bubble-3
   .container
     .row
       %br
       %br
-      .col-xs-12.col-md-8.col-md-offset-2.bg-shad.mtop20.mbottom40.pleft15.pright15.ptop30.pbottom20.text-center.white-fg.signup-confirmation{style: "background-color: #0068AB; border-radius:3px;"}
+      .col-xs-12.col-md-8.col-md-offset-2.bg-shad.mtop20.mbottom40.pleft15.pright15.ptop30.pbottom20.text-center.white-fg.signup-confirmation.cc-dark-bg{style: "border-radius:3px;"}
         %h4 Hello, Welcome to Cocociti
         %h5 Just one more step!
         %h3.weight-bold Please check your email & click on Activate button.&nbsp;
@@ -13,13 +16,4 @@
           %a.white-fg{:href => "/users/confirmation/new", style: "border-bottom: 1px solid white;"}
             &nbsp;click here
           &nbsp;to resend.
-      .col-md-12
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
+      .col-xs-12.col-md-12{style: "min-height: 400px;"}

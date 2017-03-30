@@ -23,16 +23,23 @@ class ProfilesController < ApplicationController
         render :info
         return
       end
-      if @profile.valid?
-        create_wallet if current_user.wallet.blank?
-        current_user.invite_code = current_user.generate_invite_code
-        current_user.save
-        @profile.save
-        flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
-        redirect_to invitations_path(invite_friends: "invite")
-      else
-        flash[:alert] = @profile.errors.full_messages.join("<br/>")
+      begin
+        if @profile.valid?
+          create_wallet if current_user.wallet.blank?
+          current_user.invite_code = current_user.generate_invite_code
+          current_user.save
+          @profile.save
+          flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
+          redirect_to invitations_path(invite_friends: "invite")
+        else
+          flash[:alert] = @profile.errors.full_messages.join("<br/>")
+          render :info
+          return
+        end
+      rescue Exception => e
+        flash[:danger] = e.message
         render :info
+        return
       end
     else
       redirect_to root_path
@@ -63,14 +70,20 @@ class ProfilesController < ApplicationController
       end
     end
     @profile.slug = params[:profile][:slug].downcase
-    logger.info '****************'
-    logger.info params[:profile][:slug].downcase
-    if @profile.save
-      flash[:success] = 'Your profile has been successfully updated.'
-      redirect_to settings_path
-    else
-      flash[:danger] = @profile.errors.full_messages.join("<br/>")
+    current_user.reload
+    begin
+      if @profile.save
+        flash[:success] = 'Your profile has been successfully updated.'
+        redirect_to settings_path
+      else
+        flash[:danger] = @profile.errors.full_messages.join("<br/>")
+        render :index
+        return
+      end
+    rescue Exception => e
+      flash[:danger] = e.message
       render :index
+      return
     end
   end
 

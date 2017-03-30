@@ -1,7 +1,7 @@
 %td= link_to user.name, "#profile-#{user.profile_id}", data: {toggle: "modal" }
 %td= user.email
 %td= user.phone
-%td= user.created_at.strftime("%d %b, %Y %H:%M")
+%td= user.profile.created_at.strftime("%d %b, %Y %H:%M")
 %td= user.user_status
 %td
   = link_to "#edit-user-#{user.id}", data: {toggle: "modal", dismiss: true, email: user.email, role: user.role, id: user.id}, class: "btn btn-sm btn-primary edit-user" do

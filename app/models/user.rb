@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
         results = results.where("lower(profiles.first_name) like ? or lower(profiles.last_name) like ? or lower(profiles.phone) like ? or lower(users.email) like ? ",
                             "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%")
       end
-      results.order(created_at: :desc)
+      results.order("profiles.created_at DESC")
     end
   end
 

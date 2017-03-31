@@ -18,7 +18,36 @@
       .col-xs-12.col-sm-12.text-center
         .total-coins-sprite.inline-block
         %span.inline-block.full-width{style: "letter-spacing: 2px;"}
-          TOTAL
+          %span.inline-display TOTAL
+          .dropdown.black80-fg.zero-letter-spacing.inline-display
+            %span.pright15.pon.dropdown-toggle#dropdownMenu1{type: "button", "data-toggle" => "dropdown"}
+              %span.caret
+            %ul.dropdown-menu
+              %li.pleft-10.pright-10
+                %span
+                  Sign up Bonus:
+                  %br 2 coins
+              %li.divider
+              %li.pleft-10.pright-10
+                %span
+                  Verified Referrals:
+                  %br
+                  =@verified_referrals.count.to_i
+                  * 2 coins
+              %li.divider
+              %li.pleft-10.pright-10
+                %span
+                  Coins of Coin Wish:
+                  %br
+                  =@coins_gifted.count.to_i
+                  coin(s)
+              %li.divider
+              %li.pleft-10.pright-10
+                %span
+                  Promotional Coins:
+                  %br
+                  =@promotional_coins.count.to_i
+                  coin(s)
       %span.full-width.text-center.pull-left{style: "font-size: 58px;"}= current_user.wallet.total_coins.to_i
     .col-xs-12.col-md-3.col-sm-3.padding20{style: "background-color: #ffede5;height:200px;color: #ec827a;"}
       .col-xs-12.col-sm-12.text-center
@@ -58,6 +87,7 @@
             1.Indian residents, in INR only.
             %br
             2. Users 18 and above with a valid bank account.
+          %li One bank account can be associated with one Cocociti account
           %li Have questions? Don't worry, write to us at ayyo@cocociti.com and we'll be happy to help.
           %br
           %strong

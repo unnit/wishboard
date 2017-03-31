@@ -118,6 +118,9 @@ GEM
     execjs (2.5.2)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
+    file_validators (2.1.0)
+      activemodel (>= 3.0)
+      mime-types (>= 1.0)
     foreigner (1.7.4)
       activerecord (>= 3.0.0)
     friendly_id (5.1.0)
@@ -328,6 +331,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   countries
   devise
+  file_validators
   friendly_id
   geokit
   geokit-rails

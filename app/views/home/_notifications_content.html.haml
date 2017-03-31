@@ -1,88 +1,88 @@
 - notifications.each do |notification|
   - if notification.class.name == "Wow"
-    = link_to update_wow_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+    = link_to update_wow_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single weight600 black80-fg #{'bg-light-grey weight-normal grey-fg' if notification.checked?}" do
       .media
         .media-left
           %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600.grey-fg= truncate notification.user.name, length: 35
-          %span.font13.grey-fg
+          %span= truncate notification.user.name, length: 35
+          %span.font13
             liked your wish
           %br
-          %span.grey-fg.extra-small-font
+          %span.extra-small-font
             .fa.fa-clock-o
             = time_ago_in_words(notification.created_at)
   - elsif notification.class.name == "Coin"
-    = link_to update_coin_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+    = link_to update_coin_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single weight600 black80-fg #{'bg-light-grey weight-normal grey-fg' if notification.checked?}" do
       .media
         .media-left
           %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600.grey-fg= truncate notification.user.name, length: 35
-          %span.font13.grey-fg
+          %span= truncate notification.user.name, length: 35
+          %span.font13
             gifted you a coin
           %br
-          %span.grey-fg.extra-small-font
+          %span.extra-small-font
             .fa.fa-clock-o
             = time_ago_in_words(notification.created_at)
   - elsif notification.class.name == "Comment"
-    = link_to update_comment_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+    = link_to update_comment_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single weight600 black80-fg #{'bg-light-grey weight-normal grey-fg' if notification.checked?}" do
       .media
         .media-left
-          %span.grey-fg= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600.grey-fg= truncate notification.user.name, length: 35
-          %span.font13.grey-fg
+          %span= truncate notification.user.name, length: 35
+          %span.font13
             commented on your wish
           %br
-          %span.grey-fg.extra-small-font
+          %span.extra-small-font
             .fa.fa-clock-o
             = time_ago_in_words(notification.created_at)
   - elsif notification.class.name == "Relationship"
-    = link_to update_follower_checked_path(notification.follower), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+    = link_to update_follower_checked_path(notification.follower), class: "pull-left full-width padding10 border-bt-side notif-single weight600 black80-fg #{'bg-light-grey weight-normal grey-fg' if notification.checked?}" do
       .media
         .media-left
           %span= cl_image_tag notification.follower.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600.grey-fg= truncate notification.follower.name, length: 35
-          %span.font13.grey-fg
+          %span= truncate notification.follower.name, length: 35
+          %span.font13
             started following you
           %br
-          %span.grey-fg.extra-small-font
+          %span.extra-small-font
             .fa.fa-clock-o
             = time_ago_in_words(notification.created_at)
   - elsif notification.class.name == "ShowcaseNotification"
-    = link_to update_showcase_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+    = link_to update_showcase_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single weight600 black80-fg #{'bg-light-grey weight-normal grey-fg' if notification.checked?}" do
       .media
         .media-left
           %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600.grey-fg= truncate notification.showcase.user.name, length: 35
+          %span= truncate notification.showcase.user.name, length: 35
           - if notification.showcase.wishlist? && notification.showcase.coin_wish?
-            %span.font13.grey-fg
+            %span.font13
               has a new coin wish
           - elsif notification.showcase.wishlist?
-            %span.font13.grey-fg
+            %span.font13
               has a new wish
           - elsif notification.showcase.instant_wishlist?
-            %span.font13.grey-fg
+            %span.font13
               has a new momentary wish
           - else
-            %span.font13.grey-fg
+            %span.font13
               fulfilled a wish.
           %br
-          %span.grey-fg.extra-small-font
+          %span.extra-small-font
             .fa.fa-clock-o
             = time_ago_in_words(notification.created_at)
   - elsif notification.class.name == "AchievedNotification"
-    = link_to update_achieved_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single #{'bg-light-grey' if notification.checked?}" do
+    = link_to update_achieved_checked_path(notification), class: "pull-left full-width padding10 border-bt-side notif-single weight600 black80-fg #{'bg-light-grey weight-normal grey-fg' if notification.checked?}" do
       .media
         .media-left
           %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600.grey-fg= truncate notification.showcase.user.name, length: 35
-          %span.font13.grey-fg has fulfilled a wish
+          %span= truncate notification.showcase.user.name, length: 35
+          %span.font13 has fulfilled a wish
           %br
-          %span.grey-fg.extra-small-font
+          %span.extra-small-font
             .fa.fa-clock-o
             = time_ago_in_words(notification.created_at)

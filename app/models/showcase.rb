@@ -302,7 +302,8 @@ class Showcase < ActiveRecord::Base
     update_column :user_status, new_status
   end
 
-  after_create :create_showcase_notification
+  after_create :create_showcase_notification, :promotional_offer
+  after_destroy :verify_wallet
 
   private
   def create_showcase_notification
@@ -311,6 +312,23 @@ class Showcase < ActiveRecord::Base
         self.showcase_notifications.create(user_id: follower.id)
       end
     end
+  end
+
+  def promotional_offer
+    if self.gift_coin_wish? && (self.wishlist? || self.instant_wishlist?)
+      user.update_wallet(1)
+      self.coins.create(user_id: self.user_id, checked: true, mailed: true, promotional: true)
+    end
+  end
+
+  def verify_wallet
+    verified_referrals = self.user.verified_referrals
+    coins_gifted = self.user.coins_gifted
+    promotional_coins = self.user.coins.promotional
+    wallet = self.user.wallet
+    wallet.total_coins = 2 + verified_referrals.count + coins_gifted.count + promotional_coins.count
+    wallet.unused_coins = wallet.total_coins - wallet.used_coins
+    wallet.save
   end
 
 end

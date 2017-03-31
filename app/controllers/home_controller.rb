@@ -17,7 +17,6 @@ class HomeController < ApplicationController
       @social_layout = "yes"
       @sh_btn = 'none;'
       @scase_modal = "no"
-      @wallet = current_user.wallet
       @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
       #@user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
       @showcases = Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(created_at: :desc).page(params[:showcases]).per(5)
@@ -37,6 +36,7 @@ class HomeController < ApplicationController
       #@users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
       @top_performers = User.where("id in (?)", GLOBAL_VARIABLES[:top_performers])
       @featured_tags = Tag.featured - current_user.active_tags
+      reload_wallet
       respond_to do |format|
         format.html
         format.js

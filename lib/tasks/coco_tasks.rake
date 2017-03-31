@@ -112,4 +112,29 @@ namespace :coco_tasks do
     end
   end
 
+  task update_promotional_coins: :environment do
+    showcases = Showcase.where("wish_prefix in (?) and showcase_type in (?)", Showcase::COIN_WISH_PREFIX_VALUES, Showcase::SHOWCASE_VALUES.drop(1))
+    i = 0
+    showcases.each do |showcase|
+      showcase.coins.create(user_id: showcase.user_id, checked: true, mailed: true, promotional: true)
+      i+=1
+    end
+    puts i
+  end
+
+  task update_wallet_of_all: :environment do
+    wallets = Wallet.all
+    i = 0
+    wallets.each do |wallet|
+      verified_referrals = wallet.user.verified_referrals
+      coins_gifted = wallet.user.coins_gifted
+      promotional_coins = wallet.user.coins.promotional
+      wallet.total_coins = 2 + verified_referrals.count.to_i*2 + coins_gifted.count.to_i + promotional_coins.count.to_i
+      wallet.unused_coins = wallet.total_coins.to_i - wallet.used_coins.to_i
+      wallet.save
+      i+=1
+    end
+    puts i
+  end
+
 end

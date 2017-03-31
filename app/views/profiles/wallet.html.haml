@@ -3,11 +3,11 @@
 .container-fluid.ptop50.mob-ptop100.pattern-bg{style: "min-height: 700px;"}
   .container.mtop40.padding0
     .col-xs-12.col-sm-6.col-md-4.col-md-offset-2.padding20{style: "background-color: #ffa49d;height:200px;"}
-      .col-xs-6.col-sm-6
+      .col-xs-6.col-sm-6.no-mar-pad.pleft15
         .balance-coins-sprite.inline-block
         %span.inline-block.full-width.white-fg{style: "letter-spacing: 2px;"}
           BALANCE
-      .col-xs-6.col-sm-6
+      .col-xs-6.col-sm-6.no-mar-pad
         - if current_user.mobile_verified?
           .pull-right.wdrw-btn.send-to-bank-btn.pon SEND TO BANK
         - else

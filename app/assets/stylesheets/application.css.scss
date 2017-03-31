@@ -540,6 +540,9 @@ small{
 .weight-bold{
   font-weight: bold;
 }
+.weight-normal{
+  font-weight: normal !important;
+}
 .neg-letter-spacing{
   letter-spacing: -1px;
 }
@@ -691,6 +694,12 @@ small{
 }
 .black-fg{
   color: black;
+}
+.black80-fg{
+  color: #464646
+}
+.black80-fg:hover, .black80-fg:active, .black80-fg:focus{
+  color: #464646;
 }
 .logo-fg{
   color: #ADADAD;

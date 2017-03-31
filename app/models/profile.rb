@@ -58,6 +58,7 @@ class Profile < ActiveRecord::Base
   validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :increase_hourly_blank?
   validates :increase, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :weekend_pricing_blank?
   validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :hourly_pricing_blank?
+  validates :image, file_size: { in: 5.kilobytes..10.megabyte }, file_content_type: { allow: ['image/jpeg', 'image/png', 'image/gif'] }, unless: :image_blank?
 
   HUMANIZED_ATTRIBUTES = {
     :phone => "Mobile No",
@@ -68,6 +69,10 @@ class Profile < ActiveRecord::Base
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+
+  def image_blank?
+    image.blank?
   end
 
   def gender_blank?

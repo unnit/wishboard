@@ -40,7 +40,6 @@ class ShowcasesController < ApplicationController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.valid?
-      current_user.update_wallet(1) if @showcase.gift_coin_wish? && (@showcase.wishlist? || @showcase.instant_wishlist?)
       @showcase.save
       flash[:notice] = "#{@showcase.title} showcased."
       if params[:header].present?
@@ -129,8 +128,8 @@ class ShowcasesController < ApplicationController
 
   def add_coin_wish
     if @showcase.can_only_coin_wish?
-      active_coin_wish = current_user.active_coin_wish.first
-      if active_coin_wish.present?
+      active_coin_wishes = current_user.active_coin_wishes
+      active_coin_wishes.each do |active_coin_wish|
         active_coin_wish.coin_wish_status = Showcase::COIN_WISH_STATUS[1]
         active_coin_wish.save
       end

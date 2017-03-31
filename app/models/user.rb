@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   has_many :following, -> {where("relationships.active = ?", true)}, through: :active_relationships, source: :followed
   has_many :followers, -> {where("relationships.active = ?", true)}, through: :passive_relationships, source: :follower
   has_many :showcases
+  has_many :coins_gifted, -> {where("coins.promotional = ?", false)}, through: :showcases, source: :active_coins
   has_many :wows
   has_many :coins
   has_many :comments
@@ -59,6 +60,11 @@ class User < ActiveRecord::Base
 
   def referrals
     users = User.where("invited_code = ?", self.invite_code) unless self.invite_code.blank?
+    return users
+  end
+
+  def verified_referrals
+    users = User.joins(:profile).where("users.invited_code = ? and profiles.mobile_verified = ?", self.invite_code, true)
     return users
   end
 
@@ -160,7 +166,7 @@ class User < ActiveRecord::Base
     showcases.where("coin_wish = ? and admin_created = ?", true, false)
   end
 
-  def active_coin_wish
+  def active_coin_wishes
     showcases.where("coin_wish = ? and admin_created = ? and coin_wish_status = ?", true, false, Showcase::COIN_WISH_STATUS[0])
   end
 

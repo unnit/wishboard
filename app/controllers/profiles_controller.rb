@@ -308,6 +308,7 @@ class ProfilesController < ApplicationController
   end
 
   def wallet
+    reload_wallet
     @withdraws = current_user.withdraw_history
   end
 
@@ -316,6 +317,7 @@ class ProfilesController < ApplicationController
       render js: "window.location = '#{root_path}'"
       return
     end
+    reload_wallet
     @withdraw = Withdraw.new
     @withdraw.name = params[:name]
     @withdraw.coins = params[:coins]
@@ -383,6 +385,5 @@ class ProfilesController < ApplicationController
       wallet.used_coins = 0
       wallet.save
     end
-
 
 end

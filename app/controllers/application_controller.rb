@@ -61,6 +61,16 @@ class ApplicationController < ActionController::Base
     @user = @profile.user
   end
 
+  def reload_wallet
+    @verified_referrals = current_user.verified_referrals
+    @coins_gifted = current_user.coins_gifted
+    @promotional_coins = current_user.coins.promotional
+    wallet = current_user.wallet
+    wallet.total_coins = 2 + @verified_referrals.count.to_i*2 + @coins_gifted.count.to_i + @promotional_coins.count.to_i
+    wallet.unused_coins = wallet.total_coins.to_i - wallet.used_coins.to_i
+    wallet.save
+  end
+
   require 'rubygems'
   require 'plivo'
   def send_mobile_sms(no, msg)

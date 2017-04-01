@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   has_many :coins
   has_many :comments
   has_many :appreciations, -> (id) {where("wows.user_id != ? and wows.active = ?", id, true)}, through: :showcases, source: :wows
-  has_many :gift_coins, -> (id) {where("coins.active = ?", true)}, through: :showcases, source: :coins
+  has_many :gift_coins, -> (id) {where("coins.active = ? and promotional = ?", true, false)}, through: :showcases, source: :coins
   has_many :received_comments, -> (id) {where("comments.user_id != ?", id )}, through: :showcases, source: :comments
   has_many :showcase_notifications
   has_many :achieved_notifications
@@ -235,7 +235,7 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_coins
-    gift_coins.where("coins.checked = ? and coins.active = ?", false, true)
+    gift_coins.where("coins.checked = ? and coins.active = ? and coins.promotional = ?", false, true, false)
   end
 
   def unchecked_comments

@@ -169,7 +169,7 @@ class ShowcasesController < ApplicationController
   def coin
     if @showcase.active_coins.count <= 50 && @showcase.coin_wish? && @showcase.coin_wish_active? && !@showcase.owner?(current_user) && current_user.unlocked_coin_wish? && !@showcase.coined?(current_user)
       @showcase.add_coin!(current_user)
-      send_mobile_sms("+91#{@showcase.user.phone}", "#{current_user.name.truncate(30)} has gifted you a coin for your #{@showcase.title.truncate(30)} coin wish.")
+      send_mobile_sms("+91#{@showcase.user.phone}", "#{current_user.name.truncate(30)} gifted you a coin for your '#{@showcase.title.truncate(30)}' coin wish.")
       @showcase.reload
       flash[:notice] = "Coin gifted successfully"
       respond_to :js

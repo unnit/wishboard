@@ -89,7 +89,7 @@ class HomeController < ApplicationController
   end
 
   def notifications
-    @notifications = (current_user.appreciations + current_user.gift_coins + current_user.received_comments + current_user.passive_relationships + current_user.showcase_notifications + current_user.unchecked_achieved_notifications).sort_by{|e| e.created_at}.reverse
+    @notifications = (current_user.appreciations + current_user.coins_gifted + current_user.received_comments + current_user.current_passive_relationships + current_user.showcase_notifications + current_user.active_achieved_notifications).sort_by{|e| e.created_at}.reverse
     @notifications = Kaminari.paginate_array(@notifications).page(params[:notifications]).per(10)
     respond_to do |format|
       format.html

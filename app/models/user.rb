@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :reviews, dependent: :destroy
   has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id"
   has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id"
+  has_many :current_passive_relationships, -> {where active: true}, class_name: "Relationship", foreign_key: "followed_id"
   has_many :following, -> {where("relationships.active = ?", true)}, through: :active_relationships, source: :followed
   has_many :followers, -> {where("relationships.active = ?", true)}, through: :passive_relationships, source: :follower
   has_many :showcases
@@ -21,10 +22,10 @@ class User < ActiveRecord::Base
   has_many :coins
   has_many :comments
   has_many :appreciations, -> (id) {where("wows.user_id != ? and wows.active = ?", id, true)}, through: :showcases, source: :wows
-  has_many :gift_coins, -> (id) {where("coins.active = ? and promotional = ?", true, false)}, through: :showcases, source: :coins
   has_many :received_comments, -> (id) {where("comments.user_id != ?", id )}, through: :showcases, source: :comments
   has_many :showcase_notifications
   has_many :achieved_notifications
+  has_many :active_achieved_notifications, -> {where active: true}, class_name: "AchievedNotification", foreign_key: "user_id"
   has_many :interests
   has_many :tags, through: :interests
   has_many :active_interests, -> {where active: true}, class_name: "Interest", foreign_key: "user_id"
@@ -231,11 +232,11 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_wows
-    appreciations.where("wows.checked = ? and wows.active = ?", false, true)
+    appreciations.where("wows.checked = ?", false)
   end
 
   def unchecked_coins
-    gift_coins.where("coins.checked = ? and coins.active = ? and coins.promotional = ?", false, true, false)
+    coins_gifted.where("coins.checked = ?", false)
   end
 
   def unchecked_comments
@@ -243,7 +244,7 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_followers
-    passive_relationships.where("relationships.checked = ? and relationships.active = ?", false, true)
+    current_passive_relationships.where("relationships.checked = ?", false)
   end
 
   def unchecked_showcase_notifications
@@ -251,7 +252,7 @@ class User < ActiveRecord::Base
   end
 
   def unchecked_achieved_notifications
-    achieved_notifications.where("achieved_notifications.checked = ? and achieved_notifications.active = ?", false, true)
+    active_achieved_notifications.where("achieved_notifications.checked = ?", false)
   end
 
   def unchecked_notififcations_count

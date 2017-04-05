@@ -10,8 +10,8 @@ class Showcase < ActiveRecord::Base
   has_many :active_wows, -> {where active: true}, class_name: "Wow", foreign_key: "showcase_id"
   has_many :inactive_wows, -> {where active: false}, class_name: "Wow", foreign_key: "showcase_id"
   has_many :coins, dependent: :destroy
-  has_many :active_coins, -> {where active: true}, class_name: "Coin", foreign_key: "showcase_id"
-  has_many :inactive_coins, -> {where active: false}, class_name: "Coin", foreign_key: "showcase_id"
+  has_many :active_coins, -> {where("coins.active = ? and coins.promotional = ?", true, false)}, class_name: "Coin", foreign_key: "showcase_id"
+  has_many :inactive_coins, -> {where("coins.active = ? and promotional = ?", false, false)}, class_name: "Coin", foreign_key: "showcase_id"
   has_many :comments, dependent: :destroy
   has_many :commented_users, through: :comments, source: :user
   has_many :taggings, dependent: :destroy
@@ -315,7 +315,7 @@ class Showcase < ActiveRecord::Base
   end
 
   def promotional_offer
-    if self.gift_coin_wish? && (self.wishlist? || self.instant_wishlist?)
+    if self.gift_coin_wish? && !self.coin_wish? && self.parent.blank? && (self.wishlist? || self.instant_wishlist?)
       user.update_wallet(1)
       self.coins.create(user_id: self.user_id, checked: true, mailed: true, promotional: true)
     end

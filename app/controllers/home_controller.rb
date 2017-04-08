@@ -65,7 +65,7 @@ class HomeController < ApplicationController
       @users = profiles.map{|p| p.user}
       @users = Kaminari.paginate_array(@users).page(params[:users]).per(20)
     else
-      @profiles = Profile.all.order(created_at: :desc)
+      profiles = Profile.all.order(created_at: :desc)
       @users = profiles.map{|p| p.user}
       @users = Kaminari.paginate_array(@users).page(params[:users]).per(20)
     end

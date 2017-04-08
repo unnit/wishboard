@@ -5,4 +5,7 @@ tmp/
 log/
 #########Database.yml######
 config/database.yml
-
+####schema file###
+db/schema.rb
+###Gemfil lock##
+Gemfile.lock

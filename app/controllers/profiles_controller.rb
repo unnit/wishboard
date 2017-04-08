@@ -29,7 +29,7 @@ class ProfilesController < ApplicationController
           current_user.invite_code = current_user.generate_invite_code
           current_user.save
           @profile.save
-          flash[:notice] = "Your basic info has been created sucessfully. Please select the interests below so that we can serve you the best feed."
+          flash[:notice] = "Your basic info has been created sucessfully."
           redirect_to invitations_path(invite_friends: "invite")
         else
           flash[:alert] = @profile.errors.full_messages.join("<br/>")
@@ -70,6 +70,7 @@ class ProfilesController < ApplicationController
       end
     end
     @profile.slug = params[:profile][:slug].downcase
+    @profile.image_absent = 'yes' if params[:image].blank?
     current_user.reload
     begin
       if @profile.save

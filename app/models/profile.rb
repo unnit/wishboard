@@ -6,7 +6,7 @@ class Profile < ActiveRecord::Base
     [:slug]
   end
 
-  attr_accessor :business_fields_mandatory, :weekend_pricing, :hourly_pricing
+  attr_accessor :business_fields_mandatory, :weekend_pricing, :hourly_pricing, :image_absent
 
   GENDER = ["male", "female", "other"]
   BUSINESS_TYPE = [["Individual", 0], ["Business", 1]]
@@ -58,7 +58,7 @@ class Profile < ActiveRecord::Base
   validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :increase_hourly_blank?
   validates :increase, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :weekend_pricing_blank?
   validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :hourly_pricing_blank?
-  validates :image, file_size: { in: 5.kilobytes..10.megabyte }, file_content_type: { allow: ['image/jpeg', 'image/png', 'image/gif'] }, unless: :image_blank?
+  validates :image, file_size: { in: 5.kilobytes..10.megabyte }, file_content_type: { allow: ['image/jpeg', 'image/png', 'image/gif'] }, if: :image_absent_blank?
 
   HUMANIZED_ATTRIBUTES = {
     :phone => "Mobile No",
@@ -71,8 +71,8 @@ class Profile < ActiveRecord::Base
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
 
-  def image_blank?
-    image.blank?
+  def image_absent_blank?
+    image_absent.blank?
   end
 
   def gender_blank?

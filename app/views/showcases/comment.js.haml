@@ -1,5 +1,3 @@
-$(".comment-spinner-#{@showcase.id}").addClass("hide-display");
-$(".messages").html("#{j(render 'layouts/messages')}")
 - if @comment.errors.blank?
   - if @showcase.comments_any?
     $(".comment-link-#{@showcase.id}").next(".badge").show();
@@ -9,3 +7,5 @@ $(".messages").html("#{j(render 'layouts/messages')}")
   $(".comment-link-#{@showcase.id}").next(".badge").attr("title", "#{@showcase.commented_users_names}")
   $(".user-comments-#{@showcase.id}").append("#{j render partial: "comment", locals: {comment: @comment}}");
   $("#comment-description-#{@showcase.id}").val("");
+$(".comment-spinner-#{@showcase.id}").addClass("hide-display");
+$(".messages").html("#{j(render 'layouts/messages')}");

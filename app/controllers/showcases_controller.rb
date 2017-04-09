@@ -178,6 +178,7 @@ class ShowcasesController < ApplicationController
 
   def comment
     @comment = @showcase.comments.create(description: params[:comment][:description], user_id: current_user.id)
+    flash[:alert] = @comment.errors.full_messages.join(", ") if @comment.errors.present?
     respond_to :js
   end
 

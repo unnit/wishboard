@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   has_many :received_comments, -> (id) {where("comments.user_id != ?", id )}, through: :showcases, source: :comments
   has_many :showcase_notifications
   has_many :achieved_notifications
+  has_many :commenter_notifications
   has_many :active_achieved_notifications, -> {where active: true}, class_name: "AchievedNotification", foreign_key: "user_id"
   has_many :interests
   has_many :tags, through: :interests
@@ -255,8 +256,12 @@ class User < ActiveRecord::Base
     active_achieved_notifications.where("achieved_notifications.checked = ?", false)
   end
 
+  def unchecked_commenter_notifications
+    commenter_notifications.where(checked: false)
+  end
+
   def unchecked_notififcations_count
-    unchecked_wows.count + unchecked_coins.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count + unchecked_achieved_notifications.count
+    unchecked_wows.count + unchecked_coins.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count + unchecked_achieved_notifications.count + unchecked_commenter_notifications.count
   end
 
   def interests_count

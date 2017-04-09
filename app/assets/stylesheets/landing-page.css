@@ -3027,7 +3027,7 @@ th.headerSortDown {
   display: none;
 }
 .notif-single:hover{
-  background-color: #DCDCDC;
+  background-color: #DCDCDC !important;
 }
 .sq-rot{
   background: white;

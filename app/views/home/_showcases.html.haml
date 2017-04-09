@@ -168,5 +168,6 @@
             = link_to myprofile_path(current_user.profile.slug) do
               = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
           .media-body
-            = f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment..."
-            = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-bg mtop5 btn-shadow"
+            = f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 220
+            = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-bg mtop5 btn-shadow btn-comment-create pull-left"
+            .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}

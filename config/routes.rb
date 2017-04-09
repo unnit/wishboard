@@ -131,6 +131,7 @@ Rails.application.routes.draw do
   get "check_follower/:id", to: "home#update_follower_checked", as: :update_follower_checked
   get "check_showcase/:id", to: "home#update_showcase_checked", as: :update_showcase_checked
   get "check_achieved/:id", to: "home#update_achieved_checked", as: :update_achieved_checked
+  get "check_commenter/:id", to: "home#update_commenter_checked", as: :update_commenter_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
   get "fansday", to: "home#fansday"
   get ":id", to: "home#myprofile", as: :myprofile

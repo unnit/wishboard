@@ -84,12 +84,12 @@ class HomeController < ApplicationController
   end
 
   def unchecked_notifications
-    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications + current_user.unchecked_achieved_notifications + current_user.unchecked_coins).sort_by{|e| e.created_at}.reverse
+    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications + current_user.unchecked_achieved_notifications + current_user.unchecked_coins + current_user.unchecked_commenter_notifications).sort_by{|e| e.created_at}.reverse
     respond_to :js
   end
 
   def notifications
-    @notifications = (current_user.appreciations + current_user.coins_gifted + current_user.received_comments + current_user.current_passive_relationships + current_user.showcase_notifications + current_user.active_achieved_notifications).sort_by{|e| e.created_at}.reverse
+    @notifications = (current_user.appreciations + current_user.coins_gifted + current_user.received_comments + current_user.current_passive_relationships + current_user.showcase_notifications + current_user.active_achieved_notifications + current_user.commenter_notifications).sort_by{|e| e.created_at}.reverse
     @notifications = Kaminari.paginate_array(@notifications).page(params[:notifications]).per(10)
     respond_to do |format|
       format.html
@@ -116,6 +116,9 @@ class HomeController < ApplicationController
     end
     current_user.unchecked_achieved_notifications.each do |achieved_notification|
       achieved_notification.update_column :checked, true
+    end
+    current_user.unchecked_commenter_notifications.each do |commenter_notification|
+      commenter_notification.update_column :checked, true
     end
     respond_to :js
   end
@@ -176,6 +179,16 @@ class HomeController < ApplicationController
     unless achieved_notification.blank?
       achieved_notification.update_column :checked, true if achieved_notification.user == current_user
       redirect_to showcase_path(achieved_notification.showcase)
+    else
+      redirect_to root_path
+    end
+  end
+
+  def update_commenter_checked
+    commenter_notification = CommenterNotification.find_by_id params[:id]
+    unless commenter_notification.blank?
+      commenter_notification.update_column :checked, true if commenter_notification.user == current_user
+      redirect_to showcase_path(commenter_notification.showcase, q: "#{commenter_notification.comment.id}")
     else
       redirect_to root_path
     end
@@ -383,6 +396,7 @@ class HomeController < ApplicationController
 
   def check_email
     File.open("#{Rails.root}/lib/emails-invited.csv", "a") do |f|
+      f.puts "#{current_user.name}, #{current_user.id} invited these members"
       params[:email].each do |email|
         f.puts email
       end

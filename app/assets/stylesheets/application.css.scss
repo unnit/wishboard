@@ -572,6 +572,9 @@ small{
 .border-bt-side{
   border-bottom: 1px solid #DCDCDC !important
 }
+.border-bt-side-dark{
+  border-bottom: 1px solid #c3c3c3 !important;
+}
 .border-tp-side{
   border-top: 1px solid #DCDCDC !important
 }
@@ -617,6 +620,9 @@ small{
 }
 .bg-light-grey{
   background-color: #F1F1F1 !important;
+}
+.bg-dark-grey{
+  background-color: #DCDCDC;
 }
 .min300h{
   min-height: 300px;

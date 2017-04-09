@@ -41,11 +41,12 @@ namespace :coco_jobs do
       ShowcaseMailer.send_showcase_owner_notification_for_comment(comment.showcase.user.email, comment.user, comment.showcase).deliver_now unless comment.user == comment.showcase.user
       comment.mailed = true
       comment.save
-      members = comment.showcase.commented_users.uniq.reject{|m| m == comment.showcase.user}
-      members = members.reject{|m| m == comment.user}
-      members.each do |member|
-        ShowcaseMailer.send_showcase_member_notification_for_comment(member.email, comment.user, comment.showcase).deliver_now
-      end
+    end
+    commenter_notifications = CommenterNotification.where("mailed = ?", false)
+    commenter_notifications.each do |commenter_notification|
+      ShowcaseMailer.send_showcase_member_notification_for_comment(commenter_notification.user.email, commenter_notification.comment.user, commenter_notification.showcase).deliver_now
+      commenter_notification.mailed = true
+      commenter_notification.save
     end
     relationships = Relationship.where("mailed = ?", false)
     relationships.each do |relationship|

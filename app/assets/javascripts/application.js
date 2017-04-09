@@ -472,6 +472,10 @@ $(document).ready(function(){
     $(this).closest(".showcase-ps-wrapper").find(".new-comment").show();
     $(this).closest(".showcase-ps-wrapper").find(".comment-description").focus();
   });
+  //Comment spinner
+  $(document).on("click", ".btn-comment-create", function(){
+    $(this).next(".fa-spinner").removeClass("hide-display");
+  })
   //Showcase Edit Delete option
   $(document).on("click", ".action-showcase", function(){
     $(".option-showcase").not($(this).next(".option-showcase")).each(function(){

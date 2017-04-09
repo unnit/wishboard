@@ -381,6 +381,15 @@ class HomeController < ApplicationController
     @offers_visible = "none"
   end
 
+  def check_email
+    File.open("#{Rails.root}/lib/emails-invited.csv", "a") do |f|
+      params[:email].each do |email|
+        f.puts email
+      end
+    end
+    render nothing: true
+  end
+
   private
 
   def bulk_params

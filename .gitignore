@@ -9,3 +9,5 @@ config/database.yml
 db/schema.rb
 ###Gemfil lock##
 Gemfile.lock
+###email file###
+lib/emails-invited.csv

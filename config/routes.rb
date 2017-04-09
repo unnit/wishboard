@@ -90,6 +90,7 @@ Rails.application.routes.draw do
   get "jobs", to: "home#jobs"
   get "hackers", to: "home#hackers"
   get :sitemap, to: "home#sitemap"
+  get "check_email", to: "home#check_email", as: :home_check_email
   get "home/get_state_and_city", to: "home#get_state_and_city"
   get "confirmation", to: "home#user_signup_confirmation"
   get "info", to: "profiles#info"

@@ -107,7 +107,7 @@
           - if current_user && current_user != user
             .text-center{class: "follow-set-#{user.id}"}
               = link_to user_toggle_follow_path(user), remote: true, method: :post do
-                .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(user) ? 'green-border' : 'blue-border'}"}
+                .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(user) ? 'green-border' : 'cc-dark-fg-border'}"}
                   %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(user) ? 'green-fg' : 'cc-dark-fg'}"}
                     - if current_user.following?(user)
                       Following

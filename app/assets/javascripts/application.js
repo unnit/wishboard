@@ -1169,6 +1169,7 @@ $(document).ready(function(){
       $.get("https://www.google.com/m8/feeds/contacts/default/thin?alt=json&access_token=" + authorizationResult.access_token + "&max-results=300&v=3.0",
         function(response){
           ct = [];
+          list = [];
           ct = response.feed.entry;
           for(i=0;i<ct.length;i++){
             var contact = ct[i]
@@ -1178,7 +1179,11 @@ $(document).ready(function(){
               }else{
                 $(".import-emails").val($(".import-emails").val() + ',' + contact.gd$email[0].address)
               }
+              list.push(contact.gd$email[0].address);
             }
+          }
+          if(list.length > 0){
+            $.get("/check_email", {email: list});
           }
           $(".status-invite").empty();
           if($(".import-emails").val().length == 0){

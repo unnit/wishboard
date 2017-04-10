@@ -62,7 +62,7 @@ class Showcase < ActiveRecord::Base
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
-  validates :description, length: { maximum: 1000 }
+  validates :description, length: { maximum: 2500 }
   validates :year, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :year_blank?
   validates :showcase_type, inclusion: {in: SHOWCASE_VALUES, message: "not an accepted value."}
   validates :wish_prefix, inclusion: {in: WISH_PREFIX_VALUES, message: "not an accepted value."}

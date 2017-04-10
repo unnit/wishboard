@@ -3,7 +3,7 @@ class Comment < ActiveRecord::Base
   belongs_to :showcase
   has_many :commenter_notifications, dependent: :destroy
 
-  validates :description, presence: true, length: { maximum: 220 }
+  validates :description, presence: true, length: { maximum: 2500 }
 
   HUMANIZED_ATTRIBUTES = {
     description: "Comment"

@@ -1,4 +1,4 @@
-class Rating < ActiveRecord::Base
+class Rating < ApplicationRecord
   belongs_to :user
   belongs_to :product
   validates :product, uniqueness: {scope: :user_id}

@@ -1,5 +1,5 @@
 class Admin::ProductsController < AdminController
-  before_filter :set_product, only: [:set_featured, :toggle, :toggle_currently_available]
+  before_action :set_product, only: [:set_featured, :toggle, :toggle_currently_available]
 
   def index
     #@products = Product.search(params[:term], {hitsPerPage: 20, page: params[:page], slave: 'admin_search'})

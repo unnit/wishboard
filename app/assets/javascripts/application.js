@@ -29,6 +29,7 @@
 //= require jssocials
 //= require intro
 //= require sweetalert.min
+//= require cable
 
 $(document).ready(function(){
   //Custom scrollbar for wish type dropdown
@@ -42,6 +43,18 @@ $(document).ready(function(){
           $("#showcase-modal").removeClass("violet-bg");
           $("#showcase-modal").modal("hide");
           $(".ps-wrapper").css({"z-index": "1"});
+      }
+      var container_2 = $(".j-n-c-t-wrapper, .j-n-c-t-btn")
+      if (!container_2.is(e.target) // if the target of the click isn't the container...
+          && container_2.has(e.target).length === 0) // ... nor a descendant of the container
+      {
+          $(".j-n-c-t-wrapper").hide();
+      }
+      var container_3 = $(".j-nct-prefix-holder, #j_nct_wish_prefix");
+      if (!container_3.is(e.target) // if the target of the click isn't the container...
+          && container_3.has(e.target).length === 0) // ... nor a descendant of the container
+      {
+          container_3.removeClass("open");
       }
     });
     $("html,body").click(function(e){

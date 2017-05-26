@@ -1,0 +1,6 @@
+.col-xs-12.col-sm-12.padding15.mbottom10.bg-shad.j-ct-conv-wrap.pon{"data-chat-room-id" => "#{chat_room.id}", class: "#{'active' if i==0}"}
+  .padding10.text-center.white-fg.btn-v-outline.cc-dark-fg.transition-effect.pull-left{style: "width: 52px; height: 43px;"}
+    = chat_room.name.first.upcase
+  %span.pull-left.mleft10.mtop10{"data-toggle" => "tooltip", "data-placement" => "auto", title: "#{chat_room.name}", class: "chat-conv-card-#{chat_room.id}", "data-current-user-id" => "#{current_user.id}"}
+    %span.j-croom-name= truncate chat_room.name, length: 25
+    %span.j-chat-count.hide-display.badge.cc-dark-bg.btn-shadow 0

@@ -1,13 +1,15 @@
-#####Log Files######
+#*****Log Files*******
 *.log
-####tmp file####
+#*****tmp file******
 tmp/
 log/
-#########Database.yml######
+#******Database.yml*******
 config/database.yml
-####schema file###
+#****schema file***
 db/schema.rb
-###Gemfil lock##
+#***Gemfil lock***
 Gemfile.lock
-###email file###
+#*****rvmrc****
+.rvmrc
+#*****email file*****
 lib/emails-invited.csv

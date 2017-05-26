@@ -1,4 +1,4 @@
-class Profile < ActiveRecord::Base
+class Profile < ApplicationRecord
   searchkick autocomplete: ['first_name', 'last_name', 'slug']
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged

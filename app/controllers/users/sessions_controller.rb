@@ -1,6 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
-# before_filter :configure_sign_in_params, only: [:create]
-  skip_before_filter :check_user_status, :check_profile, :check_interests
+# before_action :configure_sign_in_params, only: [:create]
+  skip_before_action :check_user_status, :check_profile, :check_interests, raise: false
 
   # GET /resource/sign_in
   def new
@@ -18,6 +18,7 @@ class Users::SessionsController < Devise::SessionsController
       respond_to do |format|
         format.html { redirect_to root_path }
         format.js { respond_to :js }
+        format.json { render json: { :success => true, :info => "Logged in", :data => { :auth_token => current_user.id } } }
       end
     end
   end

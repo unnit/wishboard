@@ -1,9 +1,9 @@
 class ProductsController < ApplicationController
-  before_filter :authenticate_user!, only: [:new, :create, :edit, :destroy, :rate, :review, :update, :remove_image, :update_available, :update_admin_approved]
-  before_filter :set_product, only: [:show, :edit, :rate, :review, :update, :destroy, :remove_image, :update_available, :get_price, :update_admin_approved]
-  before_filter :authenticate_owner, only: [:edit, :update, :destroy, :remove_image, :update_available]
-  before_filter :check_whether_edit_page, only: [:edit, :update, :remove_image]
-  before_filter :date_check_before_search, only: [:index, :search]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :destroy, :rate, :review, :update, :remove_image, :update_available, :update_admin_approved]
+  before_action :set_product, only: [:show, :edit, :rate, :review, :update, :destroy, :remove_image, :update_available, :get_price, :update_admin_approved]
+  before_action :authenticate_owner, only: [:edit, :update, :destroy, :remove_image, :update_available]
+  before_action :check_whether_edit_page, only: [:edit, :update, :remove_image]
+  before_action :date_check_before_search, only: [:index, :search]
 
   def index
     #product_paginate

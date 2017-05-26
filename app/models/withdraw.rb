@@ -1,4 +1,4 @@
-class Withdraw < ActiveRecord::Base
+class Withdraw < ApplicationRecord
   belongs_to :user
 
   validates :name, :acc_no, :ifsccode, :coins, presence: true

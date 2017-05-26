@@ -7,7 +7,7 @@ module ApplicationHelper
   end
 
   def india_states
-    country = Country.new("IN")
+    country = ISO3166::Country.new("IN")
     country.states.map{|key, value| [value["name"], value["name"]]}
   end
 

@@ -44,17 +44,17 @@
                 %span{class: "#{showcase.owner?(current_user) ? '' : 'hovercard'}", "data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
                 %span
                   - if showcase.showpiece? || showcase.achieved?
-                    = link_to showcase_path(showcase), remote: true do
+                    = link_to showcase_path(showcase, popup: "yes"), remote: true do
                       %span.cc-dark-fg= showcase.fulfilled_wish_prefix_label.split.last
                   - else
                     = showcase.future_wish_prefix_label[/(.*)\s/,1]
-                    = link_to showcase_path(showcase), remote: true do
+                    = link_to showcase_path(showcase, popup: "yes"), remote: true do
                       %span.cc-dark-fg= showcase.future_wish_prefix_label.split.last
                 %span
-                  = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
+                  = link_to showcase_path(showcase, popup: "yes"), remote: true, class: "cc-dark-fg" do
                     = showcase.title
     - if showcase.image.present?
-      = link_to showcase_path(showcase), remote: true do
+      = link_to showcase_path(showcase, popup: "yes"), remote: true do
         .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
           = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
           .h40.pos-absolute{style: "top: 45%;left: 45%;"}

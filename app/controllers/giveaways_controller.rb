@@ -1,9 +1,9 @@
 class GiveawaysController < ApplicationController
-  before_filter :authenticate_user!, except: [:show, :index]
-  before_filter :set_giveaway, only: [:edit, :update, :destroy, :request_giveaway]
-  before_filter :check_owner, only: [:edit, :update, :destroy]
-  before_filter :set_profile_caseless, only: [:index]
-  before_filter :set_social_layout
+  before_action :authenticate_user!, except: [:show, :index]
+  before_action :set_giveaway, only: [:edit, :update, :destroy, :request_giveaway]
+  before_action :check_owner, only: [:edit, :update, :destroy]
+  before_action :set_profile_caseless, only: [:index]
+  before_action :set_social_layout
 
   def index
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)

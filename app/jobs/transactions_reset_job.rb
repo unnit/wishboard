@@ -1,4 +1,4 @@
-class TransactionsResetJob < ActiveJob::Base
+class TransactionsResetJob < ApplicationJob
   queue_as :default
 
   def perform(*args)

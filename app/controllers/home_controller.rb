@@ -1,12 +1,12 @@
 class HomeController < ApplicationController
-  skip_before_filter :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation]
-  skip_before_filter :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest]
-  before_filter :back_to_home, only: [:authenticate]
-  before_filter :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers]
-  before_filter :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :following, :followers, :wiki]
-  before_filter :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
-  before_filter :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
-  before_filter :set_plain_layout, only: [:user_signup_confirmation, :interests]
+  skip_before_action :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation], raise: false
+  skip_before_action :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest], raise: false
+  before_action :back_to_home, only: [:authenticate]
+  before_action :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers]
+  before_action :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :following, :followers, :wiki]
+  before_action :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
+  before_action :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
+  before_action :set_plain_layout, only: [:user_signup_confirmation, :interests]
 
   def index
     @adv_search = "none"
@@ -25,12 +25,14 @@ class HomeController < ApplicationController
         admin_wish_conditions[0]+=" and id not in (?) "
         admin_wish_conditions.push current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq
       end
+      logger.info '********'
       @admin_showcases = Showcase.where(admin_wish_conditions).order(created_at: :desc)
       coin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = true"]
       unless current_user.coin_wishes.map{|c| c.id}.uniq.blank?
         coin_wish_conditions[0]+=" and id not in (?) "
         coin_wish_conditions.push current_user.coin_wishes.map{|c| c.parent_id}.uniq
       end
+      logger.info '*****************'
       @coin_wishes = Showcase.where(coin_wish_conditions).order(created_at: :desc)
       #@users = User.joins(:profile).where.not(id:current_user.following.map(&:id).append(current_user.id), verified: false)
       #@users = Kaminari.paginate_array(@users).page(params[:users]).per(5)

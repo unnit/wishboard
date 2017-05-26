@@ -95,6 +95,9 @@ body{
 .mbottom10{
   margin-bottom: 10px;
 }
+.mbottom15{
+  margin-bottom: 15px;
+}
 .mbottom20{
   margin-bottom: 20px;
 }
@@ -228,6 +231,9 @@ body{
 .pbottom5{
   padding-bottom: 5px;
 }
+.pbottom15{
+  padding-bottom: 15px;
+}
 .ptop8{
   padding-top: 8px;
 }
@@ -261,6 +267,9 @@ body{
 .pbottom50{
   padding-bottom: 50px;
 }
+.pbottom40{
+  padding-bottom: 40px;
+}
 .pbottom60{
   padding-bottom: 60px;
 }
@@ -291,8 +300,14 @@ body{
 .pleft15{
   padding-left: 15px;
 }
+.pleft20{
+  padding-left: 20px;
+}
 .pright5{
   padding-right: 5px;
+}
+.pright20{
+  padding-right: 20px;
 }
 .pright30{
   padding-right: 30px !important;
@@ -683,6 +698,9 @@ small{
   color: #ff534a;
   /*color: #2d2d2d;*/
 }
+.heart-red-bg{
+  color: #ff534a;
+}
 .wow-badge-bg{
   background-color: #fb7c56;
 }
@@ -829,6 +847,9 @@ small{
 .bulge-out{
   -webkit-animation: hvr-wobble-vertical 1s infinite; /* Safari 4.0 - 8.0 */
   animation: hvr-wobble-vertical 1s infinite;
+}
+.h-z{
+  z-index: 1;
 }
 .clos-ps-wrapper{
   top: 10px;

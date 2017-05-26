@@ -1,4 +1,4 @@
-class Wiki < ActiveRecord::Base
+class Wiki < ApplicationRecord
   belongs_to :user
 
   validates :title, :description, presence: true

@@ -1,4 +1,4 @@
-class Location < ActiveRecord::Base
+class Location < ApplicationRecord
   acts_as_mappable default_units: :kms
   belongs_to :locatable, polymorphic: true
 

@@ -1,4 +1,4 @@
-class Collection < ActiveRecord::Base
+class Collection < ApplicationRecord
   belongs_to :user
   has_many :collection_showcases, dependent: :destroy
   has_many :showcases, through: :collection_showcases

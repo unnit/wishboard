@@ -1,14 +1,14 @@
 class ShowcasesController < ApplicationController
-  before_filter :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_filter :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish]
-  before_filter :re_eligibilty, only: [:rewish, :have_done_this]
-  before_filter :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish]
-  before_filter :check_coin_wish, only: [:edit, :update, :delete]
-  before_filter :get_comment, only: [:edit_comment, :delete_comment]
-  before_filter :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
-  before_filter :get_collection, only: [:edit_collection, :delete_collection]
-  before_filter :authenticate_collection_owner, only: [:edit_collection, :delete_collection]
-  before_filter :set_social_layout
+  before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
+  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish]
+  before_action :re_eligibilty, only: [:rewish, :have_done_this]
+  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish]
+  before_action :check_coin_wish, only: [:edit, :update, :delete]
+  before_action :get_comment, only: [:edit_comment, :delete_comment]
+  before_action :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
+  before_action :get_collection, only: [:edit_collection, :delete_collection]
+  before_action :authenticate_collection_owner, only: [:edit_collection, :delete_collection]
+  before_action :set_social_layout
 
   def results
     if params[:query].present?

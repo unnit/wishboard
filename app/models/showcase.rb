@@ -1,4 +1,4 @@
-class Showcase < ActiveRecord::Base
+class Showcase < ApplicationRecord
   searchkick autocomplete: ['title']
   belongs_to :user
   belongs_to :product
@@ -93,7 +93,7 @@ class Showcase < ActiveRecord::Base
 
   def self.tagged_with(name)
     tag = Tag.find_by_name(name)
-    tag.showcases unless tag.blank?
+    tag.blank? ? self.none : tag.showcases
   end
 
   def admin_creation?

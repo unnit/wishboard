@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :exception, prepend: true
 
-  skip_before_filter :check_profile, if: :devise_controller?
-  before_filter :set_timezone, :check_user_status, :check_profile, :init_showcase
-  #before_filter :check_interests
+  skip_before_action :check_profile, if: :devise_controller?, raise: false
+  before_action :set_timezone, :check_user_status, :check_profile, :init_showcase
+  #before_action :check_interests
 
   def set_timezone
     Time.zone = "Kolkata"

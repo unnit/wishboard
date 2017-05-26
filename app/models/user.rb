@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
@@ -39,11 +39,18 @@ class User < ActiveRecord::Base
   has_many :giveaway_requests
   has_many :requested_giveaways, through: :giveaway_requests, source: :giveaway
   has_many :withdraws
+  has_many :chat_messages, dependent: :destroy
+  has_many :chat_rooms, dependent: :destroy
+  has_many :messaged_chat_rooms, -> {order("chat_messages.created_at DESC")}, through: :chat_messages, source: :chat_room
 
   has_one :profile, dependent: :destroy
   has_one :wallet, dependent: :destroy
 
   validates :invited_code, format: { with: /\A[a-zA-Z0-9]*\z/ }, if: :invited_code_present?
+
+  def remember_me
+    return true
+  end
 
   def invited_code_present?
     invited_code.present?

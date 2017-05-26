@@ -1,13 +1,13 @@
 class TransactionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:callback]
-  before_filter :authenticate_user!
-  before_filter :set_transaction, only: [:accept, :deny, :checkout, :delete_non_coco, :check_status_and_save_address_of_transaction]
-  before_filter :check_product_owner, only: [:accept, :deny, :delete_non_coco]
-  before_filter :set_product, only: [:new, :create, :non_coco]
-  before_filter :check_session_value_and_past_dates_and_operator_type, only: [:new, :create]
-  before_filter :check_product_availability, only: [:new, :create]
-  before_filter :product_availability_for_accepted, only: [:checkout]
-  before_filter :basic_checks_before_checkout, only: [:checkout]
+  before_action :authenticate_user!
+  before_action :set_transaction, only: [:accept, :deny, :checkout, :delete_non_coco, :check_status_and_save_address_of_transaction]
+  before_action :check_product_owner, only: [:accept, :deny, :delete_non_coco]
+  before_action :set_product, only: [:new, :create, :non_coco]
+  before_action :check_session_value_and_past_dates_and_operator_type, only: [:new, :create]
+  before_action :check_product_availability, only: [:new, :create]
+  before_action :product_availability_for_accepted, only: [:checkout]
+  before_action :basic_checks_before_checkout, only: [:checkout]
 
   def new
     @transaction = Transaction.new

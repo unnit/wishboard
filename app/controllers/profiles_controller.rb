@@ -1,9 +1,9 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_filter :check_profile, :check_interests, only: [:info, :create, :username_available]
+  skip_before_action :check_profile, :check_interests, only: [:info, :create, :username_available], raise: false
   before_action :set_profile, only: [:index, :social, :update_social, :update, :business_profile, :update_business, :dashboard]
-  before_filter :set_social_layout, except: [:dashboard, :info, :create]
-  before_filter :set_plain_layout, only: [:info, :create]
+  before_action :set_social_layout, except: [:dashboard, :info, :create]
+  before_action :set_plain_layout, only: [:info, :create]
 
   def info
     redirect_to root_path if current_user.profile
@@ -232,7 +232,7 @@ class ProfilesController < ApplicationController
     if profile.phone != session[:mobile_no] && other_profile.blank?
       profile.otp1 = rand(100000..999999)
       profile.save
-      send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp1}. Please do not share it with anyone.")
+      send_mobile_sms("+91#{session[:mobile_no]}", "#{profile.otp1} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
     else
       @unmatch = "yes"
       flash[:alert] = "Mobile no you have entered is either associated with another account or your own verified number"
@@ -245,7 +245,7 @@ class ProfilesController < ApplicationController
       profile = current_user.profile
       profile.otp2 = rand(100000..999999)
       profile.save
-      send_mobile_sms("+91#{session[:mobile_no]}", "OTP to verify your mobile number in Cocociti is #{profile.otp2}. Please do not share it with anyone.")
+      send_mobile_sms("+91#{session[:mobile_no]}", "#{profile.otp2} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
       respond_to :js
     end
   end

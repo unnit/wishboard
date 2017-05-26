@@ -5,7 +5,7 @@ require 'openssl'
 require 'rubygems'
 require 'plivo'
 
-class Transaction < ActiveRecord::Base
+class Transaction < ApplicationRecord
   include Plivo
   AUTH_ID = PLIVO_CONFIG[:auth_id]
   AUTH_TOKEN = PLIVO_CONFIG[:auth_token]

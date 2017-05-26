@@ -1,3 +1,3 @@
-class Credential < ActiveRecord::Base
+class Credential < ApplicationRecord
   belongs_to :user
 end

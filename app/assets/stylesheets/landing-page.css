@@ -3455,7 +3455,7 @@ th.headerSortDown {
 .hidden-xs-inline{
   display: inline-block !important;
 }
-.type-holder-dropdown li a, .prefix-holder-dropdown li a{
+.type-holder-dropdown li a, .prefix-holder-dropdown li a, .j-nct-prefix-holder li a{
   padding: 8px 10px !important;
   display: block;
   clear: both;
@@ -3466,7 +3466,7 @@ th.headerSortDown {
   font-family: "Open sans"
 }
 .prefix-holder-dropdown li a:focus,
-.prefix-holder-dropdown li a:hover {
+.prefix-holder-dropdown li a:hover , .j-nct-prefix-holder li a:focus, .j-nct-prefix-holder li a:hover{
     color: #262626;
     text-decoration: none;
     background-color: #f5f5f5
@@ -3479,6 +3479,79 @@ th.headerSortDown {
 .ps-sub-wrap-2.sub-open{
   transform: rotateX(90deg);
 }*/
+/**********Chat Bubble CSS*******/
+.talk-bubble {
+  color: #232323;
+  display: inline-block;
+  position: relative;
+	width: auto;
+  max-width: 100%;
+	height: auto;
+	background-color: #f3f3f3;
+}
+.round{
+  border-radius: 15px !important;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+.tri-right.left-top:after{
+  /*content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: auto;
+  left: -10px;
+  top: 0px;
+  bottom: auto;
+  border: 12px solid;
+  border-color: #ffffff transparent transparent transparent;*/
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 0px;
+  right: auto;
+  top: -8px;
+  bottom: auto;
+  border: 8px solid;
+  border-color: transparent transparent #fff #fff;
+}
+.tri-right.right-top:after {
+  /*content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -10px;
+  top: 0px;
+  bottom: auto;
+  border: 12px solid;
+  border-color: #EBF1F7 transparent transparent transparent;*/
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -0px;
+  top: -8px;
+  bottom: auto;
+  border: 8px solid;
+  border-color: transparent #F1F6FB #F1F6FB transparent;
+}
+.talktext{
+  padding: 7px 10px;
+	text-align: left;
+  line-height: 1.2em;
+}
+.talktext p{
+  word-wrap: break-word;
+  font-size: 13px;
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+}
+.j-cm-conv-wrap .active{
+  background-color: #f3f3f3;
+}
 /*******************************/
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .tab125h{

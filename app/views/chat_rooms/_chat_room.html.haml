@@ -1,0 +1,9 @@
+.pull-left.full-width#chat_messages.ptop20.pbottom10{"data-chat-room-id" => "#{chat_room.id}", "data-current-user-id" => "#{current_user.id}", style: "overflow-y: scroll;height:90%;", class: "chat-room-#{chat_room.id}"}
+  .col-xs-12.col-sm-12.text-center.msg-loader.padding40{style: "display:none;"}
+    %i.fa.fa-circle-o-notch.fa-spin.font21
+    Please wait...
+  .full-width.pull-left.j-cm-scroll-wrap
+    = render partial: "chat_rooms/chat_messages_wrapper", locals: {chat_messages: chat_messages}
+.pull-left.full-width.j-chat-form-wrapper{style: "height: 10%;"}
+  .form-group.mbottom0.j-c-msg-wrapper{"data-chat-room-id" => "#{chat_room.id}"}
+    = text_area :chat_message, :content, class: "form-control coco-input-field chat-submit-btn", style: "border: none; border-top: 1px solid rgb(224, 224, 224);", placeholder: "Type a message..."

@@ -1,5 +1,5 @@
 class Admin::ShowcasesController < AdminController
-  before_filter :get_showcase, only: [:edit, :update, :destroy]
+  before_action :get_showcase, only: [:edit, :update, :destroy]
 
   def index
     @showcases = Showcase.where("admin_created = ?", true).order(created_at: :desc)

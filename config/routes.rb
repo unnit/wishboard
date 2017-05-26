@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  mount ActionCable.server => '/cable'
   namespace :admin do
     root 'users#index'
     resources :users, only: [:index, :update] do
@@ -134,7 +135,7 @@ Rails.application.routes.draw do
   get "check_commenter/:id", to: "home#update_commenter_checked", as: :update_commenter_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
   get "fansday", to: "home#fansday"
-  get ":id", to: "home#myprofile", as: :myprofile
+  get "conversations", to: "chat_rooms#conversations", as: :chat_messages_path
 
   resources :messages, only: [:destroy, :index, :show] do
     member do
@@ -179,6 +180,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :chat_rooms, path: "chatrooms" do
+    collection do
+      get :autocomplete
+      get :get_chat_messages
+    end
+  end
+
   resources :giveaways, except: [:index] do
     member do
       post :request_giveaway
@@ -190,5 +198,7 @@ Rails.application.routes.draw do
   get "/categories/:id", to: "products#category", as: :category
   get "/listings/:id", to: "products#show", as: :user_product
 
+  get ":id", to: "home#myprofile", as: :myprofile
   root 'home#feed'
+
 end

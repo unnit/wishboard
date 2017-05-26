@@ -1,4 +1,4 @@
-class AchievedNotification < ActiveRecord::Base
+class AchievedNotification < ApplicationRecord
   belongs_to :showcase
   belongs_to :user
 end

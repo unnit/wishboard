@@ -1,5 +1,5 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  skip_before_filter :check_profile
+  skip_before_action :check_profile, raise: false
   def facebook
     omniauth = request.env["omniauth.auth"]
     credential = Credential.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])

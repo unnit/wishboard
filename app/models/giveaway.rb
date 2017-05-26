@@ -1,4 +1,4 @@
-class Giveaway < ActiveRecord::Base
+class Giveaway < ApplicationRecord
   belongs_to :user
   has_many :giveaway_requests
   has_many :requested_users, through: :giveaway_requests, source: :user

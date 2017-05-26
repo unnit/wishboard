@@ -1,0 +1,7 @@
+$("#j-c-m-wrapper").html("#{j render partial: "chat_rooms/chat_room", locals: {chat_room: @chat_room, chat_messages: @chat_messages}}")
+$("#j-c-m-rhs").html("#{j render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @chat_room}}")
+$("#chat_messages").scrollTop($("#chat_messages").prop("scrollHeight"));
+$("#chat_message_content").val("");
+$("#chat_message_content").focus();
+$("#chat_message_content").css("height", $(".j-chat-form-wrapper").height())
+if(#{@chat_room.chat_messages.count} > 20){$("#chat_messages").on("scroll", function(){if($(this).scrollTop() == 0){$(this).off("scroll");$(".msg-loader").show();$.get("/chatrooms/get_chat_messages?room_id=#{@chat_room.id}&last_id=#{@chat_messages.first.id}");}})}

@@ -29,7 +29,6 @@
 //= require jssocials
 //= require intro
 //= require sweetalert.min
-//= require cable
 
 $(document).ready(function(){
   //Custom scrollbar for wish type dropdown with setHeight

@@ -60,6 +60,3 @@ group :production, :staging, :development do
   gem "rails_stdout_logging"
   gem 'rails_12factor'
 end
-
-#ruby '2.2.3'
-ruby '2.2.2'

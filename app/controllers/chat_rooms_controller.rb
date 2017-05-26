@@ -52,7 +52,7 @@ class ChatRoomsController < ApplicationController
 
   def conversations
     @public_chat_rooms = current_user.messaged_chat_rooms.public_rooms.to_a.uniq
-    @public_chat_messages = @public_chat_rooms.first.chat_messages.order(created_at: :desc).limit(20).reverse
+    @public_chat_messages = @public_chat_rooms.first.chat_messages.order(created_at: :desc).limit(20).reverse unless @public_chat_rooms.blank?
   end
 
   def get_chat_messages

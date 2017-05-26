@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require bootstrap-sass-official/assets/javascripts/bootstrap.min
 //= require gmap3
-//= require cable
 //= require bxslider/jquery.bxslider.min
 //= require html-table-search
 //= require bootstrap-slider.min
@@ -30,8 +29,12 @@
 //= require jssocials
 //= require intro
 //= require sweetalert.min
+//= require cable
 
 $(document).ready(function(){
+  if($.fn.cloudinary_fileupload !== undefined) {
+    $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+  }
   //Custom scrollbar for wish type dropdown with setHeight
     $(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});
   //Post-Showcase functions

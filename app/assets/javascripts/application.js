@@ -32,7 +32,7 @@
 //= require cable
 
 $(document).ready(function(){
-  //Custom scrollbar for wish type dropdown
+  //Custom scrollbar for wish type dropdown with setHeight
     $(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});
   //Post-Showcase functions
     $(document).on("click", "html,body", function(e){

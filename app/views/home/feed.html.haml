@@ -162,15 +162,6 @@
         = link_to invitations_path do
           .btn.btn-md.btn-v-outline.transition-effect
             Invite Friends
-      .col-xs-12.col-sm-12.padding10.follow-wrapper.bg-shad.bg-white.hide-display
-        .col-xs-12.col-sm-12.no-mar-pad.follow-strip
-          =# render partial: "follow", locals: {users: @users}
-        .col-xs-12.col-sm-12.text-center.feed-loader.padding20{style: "display:none;"}
-          %i.fa.fa-circle-o-notch.fa-spin.font21
-          Please wait...
-        #infinite-scrolling-follow.hidden
-          =# paginate @users, param_name: "users"
-        =# hidden_field_tag :prev_user, @users.current_page - 1
       .col-xs-12.col-sm-12.hidden-xs.padding10.bg-shad.bg-white.text-center.mbottom10#sim-wrapper{style: "min-height: 183px;"}
         .fa.fa-spinner.fa-spin.sim-frnds-spinner.mtop70
       .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro.mbottom10{"data-step" => "6", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>CHECK YOUR EARNINGS</h3>Did you know that we add ₹1 for all your wishes & ₹2 to your wallet whenever your friends join Cocociti? Check your earnings status here.</span>"}

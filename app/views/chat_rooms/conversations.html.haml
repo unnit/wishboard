@@ -1,17 +1,22 @@
 .container-fluid.bg-white.padding0.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@public_chat_rooms.map{|c| c.id}.join(',')}"}
-  .col-xs-12.col-sm-3.ptop50.mob-ptop100.btn-shadow.full-height.pleft20.pright20.h-z.j-cm-conv-wrap
-    .col-xs-12.col-sm-12.padding0.mbottom20.mtop20
-      = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2", style: "height: 46px;", placeholder: "Search room.."
-      .fa.fa-search.font20.pull-left{style: "margin-left: -28px;margin-top: 11px; color: #d8d8d8;"}
-    - @public_chat_rooms.each_with_index do |chat_room, i|
-      = render partial: "chat_rooms/chat_room_conv_card", locals: {chat_room: chat_room, i: i}
-  .col-sm-6.hidden-xs#j-c-m-wrapper.ptop50.mob-ptop100.pleft0.pright0.full-height
-    = render partial: "chat_rooms/chat_room", locals: {chat_room: @public_chat_rooms.first, chat_messages: @public_chat_messages}
-  .col-xs-3.hidden-xs#j-c-m-rhs.ptop50.mob-ptop100.no-mar-pad.btn-shadow.full-height.h-z
-    = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @public_chat_rooms.first}
-  .j-scroll-params
-    = hidden_field_tag :last_id, @msg_id
-    = hidden_field_tag :room_id, @room_id
+  - if @public_chat_rooms.blank?
+    .col-xs-12.col-sm-12.ptop50.mob-ptop100
+      %h3.mbottom0 TRENDING CHAT ROOMS
+      %hr.mtop5.mbottom10
+      .col-xs-12.col-sm-12.no-mar-pad
+        - @trending_chat_rooms.each do |chat_room|
+          = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
+  - else
+    .col-xs-12.col-sm-3.ptop50.mob-ptop100.btn-shadow.full-height.pleft20.pright20.h-z.j-cm-conv-wrap
+      .col-xs-12.col-sm-12.padding0.mbottom20.mtop20
+        = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2", style: "height: 46px;", placeholder: "Search room.."
+        .fa.fa-search.font20.pull-left{style: "margin-left: -28px;margin-top: 11px; color: #d8d8d8;"}
+      - @public_chat_rooms.each_with_index do |chat_room, i|
+        = render partial: "chat_rooms/chat_room_conv_card", locals: {chat_room: chat_room, i: i}
+    .col-sm-6.hidden-xs#j-c-m-wrapper.ptop50.mob-ptop100.pleft0.pright0.full-height
+      = render partial: "chat_rooms/chat_room", locals: {chat_room: @public_chat_rooms.first, chat_messages: @public_chat_messages}
+    .col-xs-3.hidden-xs#j-c-m-rhs.ptop50.mob-ptop100.no-mar-pad.btn-shadow.full-height.h-z
+      = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @public_chat_rooms.first}
 
 = content_for :extra_js do
   :javascript
@@ -27,12 +32,12 @@
         $("#j-c-m-wrapper").html("<span class='full-width inline-block text-center'><i class='fa fa-spinner fa-spin font25 cc-dark-fg' style='margin-top: 40%'></i></span>")
         $.ajax({url: "/chatrooms/"+$(this).data("chat-room-id")});
       })
-      if(#{@public_chat_rooms.first.chat_messages.count} > 20){
+      if(#{@public_chat_rooms.present? ? @public_chat_rooms.first.chat_messages.count : 0} > 20){
         $("#chat_messages").on("scroll", function(){
           if($(this).scrollTop() == 0){
             $(this).off("scroll");
             $(".msg-loader").show();
-            $.get("/chatrooms/get_chat_messages?room_id=#{@public_chat_rooms.first.id}&last_id=#{@public_chat_messages.first.id}");
+            $.get("/chatrooms/get_chat_messages?room_id=#{@public_chat_rooms.present? ? @public_chat_rooms.first.id: ''}&last_id=#{@public_chat_messages.present? ? @public_chat_messages.first.id: ''}");
           }
         })
       }

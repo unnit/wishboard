@@ -6,7 +6,7 @@ class ChatRoomsController < ApplicationController
 
   def index
     @chat_room = ChatRoom.new
-    @trending_chat_rooms = ChatRoom.where("id in (?) and room_type = ?", ChatMessage.select(:chat_room_id).group(:chat_room_id).order('count(chat_room_id) DESC'), ChatRoom::CHAT_ROOM_TYPES[0][0])
+    get_trending_rooms
   end
 
   def new
@@ -16,10 +16,11 @@ class ChatRoomsController < ApplicationController
     @chat_room = current_user.chat_rooms.new(chat_room_params)
     if @chat_room.save
       flash[:notice] = "#{@chat_room.name} created successfully"
+      respond_to :js
     else
       flash[:alert] = @chat_room.errors.full_messages.join(", ")
+      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}/chatrooms/#{@chat_room.id}'"
     end
-    respond_to :js
   end
 
   def edit
@@ -52,7 +53,11 @@ class ChatRoomsController < ApplicationController
 
   def conversations
     @public_chat_rooms = current_user.messaged_chat_rooms.public_rooms.to_a.uniq
-    @public_chat_messages = @public_chat_rooms.first.chat_messages.order(created_at: :desc).limit(20).reverse unless @public_chat_rooms.blank?
+    if @public_chat_rooms.blank?
+      get_trending_rooms
+    else
+      @public_chat_messages = @public_chat_rooms.first.chat_messages.order(created_at: :desc).limit(20).reverse
+    end
   end
 
   def get_chat_messages
@@ -77,6 +82,10 @@ class ChatRoomsController < ApplicationController
 
   def get_chat_room
     @chat_room = ChatRoom.find_by_id params[:room_id]
+  end
+
+  def get_trending_rooms
+    @trending_chat_rooms = ChatRoom.where("id in (?) and room_type = ?", ChatMessage.select(:chat_room_id).group(:chat_room_id).order('count(chat_room_id) DESC'), ChatRoom::CHAT_ROOM_TYPES[0][0])
   end
 
 end

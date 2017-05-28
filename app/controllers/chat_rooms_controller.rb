@@ -16,10 +16,10 @@ class ChatRoomsController < ApplicationController
     @chat_room = current_user.chat_rooms.new(chat_room_params)
     if @chat_room.save
       flash[:notice] = "#{@chat_room.name} created successfully"
-      respond_to :js
+      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}/chatrooms/#{@chat_room.id}'"
     else
       flash[:alert] = @chat_room.errors.full_messages.join(", ")
-      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}/chatrooms/#{@chat_room.id}'"
+      respond_to :js
     end
   end
 

@@ -3540,7 +3540,6 @@ th.headerSortDown {
 }
 .talktext{
   padding: 7px 10px;
-	text-align: left;
   line-height: 1.2em;
 }
 .talktext p{
@@ -3606,6 +3605,9 @@ th.headerSortDown {
   }
   .mob-padding10{
     padding: 10px !important;
+  }
+  .mob-padding5{
+    padding: 5px !important;
   }
   .padding-mob0{
     padding: 0px !important;

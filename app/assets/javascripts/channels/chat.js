@@ -16,7 +16,12 @@ $(document).ready(function(){
               $(".chat-usr-name-"+data['chat_id']).removeClass("text-left").addClass("text-right");
             }
             $(".chat-"+data['chat_id']).show();
-            messages_to_bottom();
+            //if(false){
+            //  $(".scroll-bt-msg-count").show();
+            //  $(".scroll-bt-msg-count").html(parseInt($(".scroll-bt-msg-count").html()) + 1)
+            //}else{
+              messages_to_bottom();
+            //}
           }
           else{
             if($(".chat-conv-card-"+data['chat_room_id']).data('current-user-id') != data['owner_id']){
@@ -31,13 +36,25 @@ $(document).ready(function(){
         }
     });
   }
-  $(document).on("keypress", ".chat-submit-btn", function(e) {
+  function send_message(val, room){
+    App.chat.save_message(val, room);
+  }
+  $(document).on("keypress", "#chat_message_content", function(e) {
     if (e.keyCode == 13 && !e.shiftKey){
       e.preventDefault();
       if ($.trim($(this).val()).length >= 1) {
-        App.chat.save_message($(this).val(), $(this).closest(".j-c-msg-wrapper").data("chat-room-id"));
+        send_message($(this).val(), $(this).closest(".j-c-msg-wrapper").data("chat-room-id"))
         $(this).val('');
       }
     }
   });
+  $(document).on("click", ".j-btn-wrap", function(){
+    send_message($(this).closest(".j-c-msg-wrapper").find("#chat_message_content").val(), $(this).closest(".j-c-msg-wrapper").data("chat-room-id"));
+    $(this).closest(".j-c-msg-wrapper").find("#chat_message_content").val('');
+  })
+  $(document).on("click", ".scroll-bt-msg-count", function(){
+    $(this).hide();
+    $(this).text("0");
+    messages_to_bottom();
+  })
 })

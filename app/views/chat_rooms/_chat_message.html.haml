@@ -1,7 +1,8 @@
 .col-xs-12.col-sm-12.ptop5.pbottom10.pleft-10.pright-10{class: "chat-#{chat_message.id}"}
-  = cl_image_tag chat_message.user.avatar, class: "img-circle chat-photo-#{chat_message.id} #{chat_message.user == current_user ? 'pull-right' : 'pull-left'}", width: 30, height: 30, crop: :fill, "data-toggle" => "tooltip", "data-placement" => "auto", title: "#{chat_message.user.name} #{chat_message.created_at.strftime("%d %^b %Y %H %M")}"
+  = cl_image_tag chat_message.user.avatar, class: "img-circle chat-photo-#{chat_message.id} #{chat_message.user == current_user ? 'pull-right' : 'pull-left'}", "data-toggle" => "tooltip", "data-placement" => "auto", title: "#{chat_message.user.name} #{chat_message.created_at.strftime('%d %^b %Y %H %M')}", width: 30, height: 30, crop: :fill
   .talk-bubble.round.bg-shad{class: "chat-txt-#{chat_message.id} #{chat_message.user == current_user ? 'pull-right right-top mright5' : 'pull-left left-top bg-white mleft5'}", style: "max-width: 80%;"}
     .talktext
-      %span.weight600.font13.inline-block{class: "chat-usr-name-#{chat_message.id} #{chat_message.user == current_user ? 'text-right' : 'text-left'}", style: "color: #732db0;"}
-        = chat_message.user.name
+      %span.weight600.font13.inline-block.full-width.cc-dark-fg{class: "chat-usr-name-#{chat_message.id} #{chat_message.user == current_user ? 'text-right' : 'text-left'}"}
+        %span= chat_message.user.name
       %p= simple_format chat_message.content
+      %span.grey70-fg.full-width.inline-block{style: "font-size:8px;", class: "chat-usr-name-#{chat_message.id} #{chat_message.user == current_user ? 'text-right' : 'text-left'}"}= chat_message.created_at.strftime('%d %^b %H %M')

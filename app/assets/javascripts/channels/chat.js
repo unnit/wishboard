@@ -9,19 +9,20 @@ $(document).ready(function(){
       {
         received: function(data) {
           if($(".chat-room-"+data['chat_room_id']).length > 0){
-            $(".chat-room-"+data['chat_room_id']).append($(data['message']).hide());
+            $(".chat-room-"+data['chat_room_id']+" .j-cm-scroll-wrap").append($(data['message']).hide());
             if($(".chat-room-"+data['chat_room_id']).data('current-user-id') == data['owner_id']){
               $(".chat-txt-"+data['chat_id']).removeClass("pull-left left-top bg-white mleft5").addClass("pull-right right-top mright5");
               $(".chat-photo-"+data['chat_id']).removeClass("pull-left").addClass("pull-right");
               $(".chat-usr-name-"+data['chat_id']).removeClass("text-left").addClass("text-right");
             }
+            //alert($("#chat_messages").scrollTop()+"..."+$("#chat_messages .j-cm-scroll-wrap").height()+"..."+$("#chat_messages").height())
             $(".chat-"+data['chat_id']).show();
-            //if(false){
-            //  $(".scroll-bt-msg-count").show();
-            //  $(".scroll-bt-msg-count").html(parseInt($(".scroll-bt-msg-count").html()) + 1)
-            //}else{
+            if($("#chat_messages").scrollTop() < $("#chat_messages .j-cm-scroll-wrap").height() - ($("#chat_messages").height() * 2)){
+              $(".scroll-bt-msg-count").show();
+              $(".scroll-bt-msg-count").html(parseInt($(".scroll-bt-msg-count").html()) + 1)
+            }else{
               messages_to_bottom();
-            //}
+            }
           }
           else{
             if($(".chat-conv-card-"+data['chat_room_id']).data('current-user-id') != data['owner_id']){

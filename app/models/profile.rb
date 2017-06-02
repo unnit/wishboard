@@ -58,7 +58,7 @@ class Profile < ApplicationRecord
   validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :increase_hourly_blank?
   validates :increase, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :weekend_pricing_blank?
   validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :hourly_pricing_blank?
-  validates :image, file_size: { in: 5.kilobytes..10.megabyte }, file_content_type: { allow: ['image/jpeg', 'image/png', 'image/gif'] }, if: :image_absent_blank?
+  #validates :image, file_size: { in: 5.kilobytes..10.megabyte }, file_content_type: { allow: ['image/jpeg', 'image/png', 'image/gif'] }, if: :image_absent_blank?
 
   HUMANIZED_ATTRIBUTES = {
     :phone => "Mobile No",

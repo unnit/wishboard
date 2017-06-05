@@ -23,7 +23,8 @@ class Showcase < ApplicationRecord
   has_many :commenter_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
-
+  
+  DEFAULT_AFTER_RATING = 4.0
   WISH_PREFIX =
   [["Visit", 0, "Places, trips, travel, tour | ex: Goa, Dubai", "I visited", "I wish to visit", "Wow! Where/What?", "Where are you planning to go?"],
    ["Own", 1, "Things, pets, collectibles", "I own", "I wish to own", "Wow! What did you buy/own?", "What's that?"],
@@ -67,6 +68,8 @@ class Showcase < ApplicationRecord
   validates :showcase_type, inclusion: {in: SHOWCASE_VALUES, message: "not an accepted value."}
   validates :wish_prefix, inclusion: {in: WISH_PREFIX_VALUES, message: "not an accepted value."}
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
+  validates :achieved_description, length: { maximum: 2500 }
+  validates :date_of_achievement, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :date_of_achievement_blank?
 
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
@@ -216,6 +219,9 @@ class Showcase < ApplicationRecord
   def year_blank?
     year.blank?
   end
+  def date_of_achievement_blank?
+    date_of_achievement.blank?
+  end
 
   def wishlist?
     showcase_type == Showcase::SHOWCASE_VALUES[1]
@@ -306,6 +312,9 @@ class Showcase < ApplicationRecord
   after_create :create_showcase_notification, :promotional_offer
   after_destroy :verify_wallet
 
+  def get_rating
+     after_rating ? after_rating : DEFAULT_AFTER_RATING
+  end
   private
   def create_showcase_notification
     unless self.admin_created?

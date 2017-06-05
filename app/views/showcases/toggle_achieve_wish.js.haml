@@ -1,5 +1,11 @@
 $(".messages").html("#{j(render partial: 'layouts/messages')}")
-- if @showcase.achieved?
-  $(".toggle-achieve-#{@showcase.id}").html("<div class='achieved-wish-sprite mright5'></div><span class='grey-fg font12'>Achieved</span>");
-- else
-  $(".toggle-achieve-#{@showcase.id}").html("<a class='cc-dark-fg' data-remote='true' rel='nofollow' data-method='post' href='/showcases/#{@showcase.id}/toggle_achieve_wish'><i class='fa fa-check-circle pull-left font20'></i><span class='pull-left font12 mtop2 grey-fg'>Mark as completed?</span></a>");
+$(".loader-button").show();
+$(".loader-effect").hide();
+$("#showcase-fullfilled-modal").removeClass("violet-bg");
+$("#showcase-fullfilled-modal").modal("hide");
+$(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}").promise().done(function(){refresh_twenty_twenty_div(".showcase-ps-#{@showcase.id}");});
+
+/ - if @showcase.achieved?
+/   $(".toggle-achieve-#{@showcase.id}").html("<div class='achieved-wish-sprite mright5'></div><span class='grey-fg font12'>Achieved</span>");
+/ - else
+/   $(".toggle-achieve-#{@showcase.id}").html("<i class='fa fa-check-circle pull-left font20'></i><span class='pull-left font12 mtop2 grey-fg'>Mark as completed?</span>");

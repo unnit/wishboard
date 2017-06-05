@@ -1,0 +1,51 @@
+<%= form_for showcase, :url => toggle_achieve_wish_showcase_path(showcase), :method => :post, remote: true, html: { class: "fullfill-showcase", id: "mark-as-fullied-form" , "data-model": "showcase"} do |f| %>
+<div class="col-xs-12 col-sm-12 padding5 bg-white border2 fs-sub-wrap-2 fs-box-shadow">
+  <div class="col-xs-7 col-sm-7 no-mar-pad">
+    <div class="col-xs-12 col-sm-12 padding5" style="height: 166px;">
+      <%= f.text_area :achieved_description, placeholder: "Tell the story of fullfillment of this wish?", class: "form-control coco-input-field pleft5", maxlength: 2500, rows: 1, style: "height: 156px;" %>
+    </div>
+  </div>
+  <div class="col-xs-5 col-sm-5 no-mar-pad">
+    <div class="col-xs-12 col-sm-12 padding5 fs-photo-wrapper" style="height: 122px;">
+      <div class="col-xs-12 col-sm-12 text-center photo-upload-wrapper">
+        <div class="preview"></div>
+        <div class="preview-delete hide-display pon">x</div>
+        <div class="col-xs-12 col-sm-12 no-mar-pad">
+          <div class="glyphicon glyphicon-camera file-input-button cc-dark-fg padding15 img-circle mtop25" style="font-size: 40px;border: 1px dashed;">
+            <%= cl_image_upload_tag(:fullfilled_image, html: { class: "cloudinary-fileupload-new" }) %>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 no-mar-pad">
+          <div class="progress progress-striped hide-display mbottom0 mtop5" style="height: 6px;width:100%;">
+            <div class="progress-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 padding5 pright5 fs-date-wrapper height50">
+      <%= f.text_field :date_of_achievement, placeholder: "When", class: "form-control coco-input-field pleft5 date-of-achievement bg-white" %>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 padding5 no-mar-pad">
+   
+  </div>
+  <div class="col-xs-12 col-sm-12 padding5 text-right fs-btn-wrapper no-mar-pad">
+    <span class="pull-right">
+      <%= f.hidden_field :after_rating %>
+      <span id="star_rating" class="star_rating" data-rateyo-rating="<%=showcase.get_rating%>" data-input-field="#showcase_after_rating" data-display-rating=".ratingvalue"></span>
+      <span class="mright20" style="margin-right: 20px" >Rating: <span class="ratingvalue">4</span> </span>
+
+    <span fs-btn-wrapper">
+      <div class="white-fg no-mar-pad loader-out-showcase-fullfill-button">
+        <%= f.submit "Mark as fullfilled", class: "loader-button loader-in-showcase-fullfill-button showcase-fullfillment-submit" %>
+        <div class="loader-effect loader-in-showcase-fullfill-button text-center" style="display:none;padding-top: 4px;">
+          <div class="ball-clip-rotate">
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<% end %>

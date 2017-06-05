@@ -1,2 +1,5 @@
 .container.mtop30.padding0{style: "max-width:637px;"}
-  = render partial: "home/showcases", locals: {showcases: Array(showcase), feed: "no"}
+  - feed = "no"
+  - Array(showcase).each do |showcase|
+    .col-xs-12.col-sm-12.no-mar-pad.mbottom20.bg-white.bg-shad.no-bord-mob.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id}"}
+      = render partial: "home/showcase", locals: {showcase: showcase, feed: "no"}

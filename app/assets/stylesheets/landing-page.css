@@ -2781,8 +2781,22 @@ th.headerSortDown {
   border-radius: 2px;
   outline: none !important;
 }
+.loader-in-showcase-fullfill-button{
+  width: 150px;
+  height: 28px;
+  border: none;
+  background-color: #732db0;
+  font-size: 14px;
+  border-radius: 2px;
+  outline: none !important;
+}
 .loader-out-showcase-button{
   width: 80px;
+  height: 28px;
+  border-radius: 2px;
+}
+.loader-out-showcase-fullfill-button{
+  width: 150px;
   height: 28px;
   border-radius: 2px;
 }

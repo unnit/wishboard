@@ -168,7 +168,9 @@ Rails.application.routes.draw do
       post :rewish
       post :have_done_this
       post :coin
+      put :toggle_achieve_wish
       post :toggle_achieve_wish
+      get :fullfillment_details
     end
     collection do
       get :gettags

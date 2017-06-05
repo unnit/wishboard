@@ -26,6 +26,8 @@
  *= require jssocials-theme-flat
  *= require introjs
  *= require sweetalert
+ *= require twentytwenty
+ *= require jquery.rateyo
  */
 
 /*@font-face {
@@ -917,4 +919,16 @@ small{
 }
 .opacity-low{
   opacity: 0.3;
+}
+
+#showcaseDescriptionTab .nav li a{
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+#showcaseDescriptionTab .nav-tabs li.active a, .nav-tabs li.active a:focus, .nav-tabs li.active a:hover{
+  color: #000;
+  background-color: rgba(128, 128, 128, 0.41);
+}
+#showcase-fullfilled-modal.modal{
+  z-index: 1051;
 }

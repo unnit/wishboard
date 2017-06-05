@@ -30,6 +30,9 @@
 //= require intro
 //= require sweetalert.min
 //= require cable
+//= require jquery.event.move
+//= require jquery.twentytwenty
+//= require jquery.rateyo
 
 $(document).ready(function(){
   if($.fn.cloudinary_fileupload !== undefined) {
@@ -228,6 +231,43 @@ $(document).ready(function(){
       $wrap.find("#showcase_year").val($(this).data("id"));
       $wrap.find(".dt-achievement-dropdown").removeClass("open");
     })
+      //Error notifications after showcase-fullfillment-submit
+    $(document).on("click", ".showcase-fullfillment-submit", function(e){
+      e.preventDefault();
+      $wrap = $(this).closest(".fullfill-showcase");
+        if($wrap.find(".preview, .preview-edit").children().length == 0){
+          swal({
+              title: "Are you sure to post your fullfillment/achievement of your wish without a photo?",
+              text: "A photo would be nice.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#ffffff",
+              confirmButtonText: "Yes, Proceed",
+              cancelButtonText: "Upload Photo",
+              allowOutsideClick: true,
+              allowEscapeKey: false,
+              closeOnConfirm: true,
+              closeOnCancel: true,
+              animation: "slide-from-top"
+            },
+            function(isConfirm){
+              if (isConfirm){
+                $wrap.submit();
+                $wrap.find(".loader-button").hide();
+                $wrap.find(".loader-effect").show();
+              }
+              else{
+                $wrap.find(".file-upload-trigger").trigger('click');
+              }
+          });
+        }
+        else{
+          $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
+          $wrap.submit();
+          $wrap.find(".loader-button").hide();
+          $wrap.find(".loader-effect").show();
+        }
+    })
     //Error notifications after showcase-submit
     $(document).on("click", ".showcase-submit", function(e){
       e.preventDefault();
@@ -276,13 +316,13 @@ $(document).ready(function(){
     $(".ps-sub-wrap-2").fadeIn(50, function(){
       $(".ps-sub-wrap-2").animate({"opacity": "1", "margin-left": "10px", "margin-top": "-120px"}, 150);
     });
-    $wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper")
+    $wrap = $(this).closest("form").find(".photo-upload-wrapper")
     $wrap.find('.progress').css("display", "inline-block");
     console.log(data.loaded);
     $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
   $('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {
-    $wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper")
+    $wrap = $(this).closest("form").find(".photo-upload-wrapper")
     $wrap.find(".file-input-button, .progress").hide();
     $wrap.find(".preview").show();
     $wrap.find('.preview').html(
@@ -295,8 +335,8 @@ $(document).ready(function(){
     $wrap.find(".error-ps-photo").fadeOut();
     return true;
   });
-  $(".preview-delete").click(function(){
-    $wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper")
+  $(".preview-delete").on("click", function(){
+    $wrap = $(this).closest("form").find(".photo-upload-wrapper")
     $wrap.find(".preview").empty();
     $wrap.find(".preview-delete, .preview").hide();
     $wrap.find(".file-input-button").show();
@@ -1356,4 +1396,62 @@ $(document).ready(function(){
     $oldWord.removeClass('is-visible').addClass('is-hidden');
     $newWord.removeClass('is-hidden').addClass('is-visible');
   }
+  $(document).on("click", ".mark-as-fullfilled", function(e){
+    $wrap = $(".fullfill-showcase");
+    $fullfilledmodal = $("#showcase-fullfilled-modal")
+    var fullfilledform = $("#mark-as-fullied-form");
+    $fullfilledmodal.addClass("violet-bg").modal("show");
+    $("#mark-as-fullied-form").attr("action", "showcases/"+$(this).attr('data-showcase-id')+ "/toggle_achieve_wish")
+    replace_content($(this),$fullfilledmodal,fullfilledform);
+  })
+ $(".date-of-achievement").datetimepicker({minView: 2, format:"dd-mm-yyyy", timepicker:false, autoclose: true, onShow:function(ct){this.setOptions({formatDate:"dd-mm-yyyy"}) } }); 
+ $(".twentytwenty-container").twentytwenty();
+
+
+
+
+ var default_rating = 4.0;
+ $rateYo = $(".star_rating").rateYo({ numStars: 5, precision: 20, fullStar: true, starWidth: "20px", spacing: "5px",
+  onInit: function (rating,rateyo) {  $(this).rateYo("option", "ratedFill",customRatingColor(rating)); $($(this).attr('data-display-rating')).html(rating);},
+  onSet: function (rating, rateyo) {color = customRatingColor(rating); $(this).rateYo("option", "ratedFill", customRatingColor(rating)); $($(this).attr('data-input-field')).val(rating); $($(this).attr('data-display-rating')).html(rating);},
+  onChange: function (rating, rateyo) {color = customRatingColor(rating); $(this).rateYo("option", "ratedFill", customRatingColor(rating)); $($(this).attr('data-input-field')).val(rating); $($(this).attr('data-display-rating')).html(rating);}
+})
+
+
+
+
+
 });
+
+function setRatingColor(){}
+function customRatingColor(givenrating){
+  colors = {"red":"#ff0000", "light_red": "#ac3636", "green": "#008000", "light_green": "#90EE90", "yellow": "#FFFF00"}
+  // color_rating_mapping = {"less_than_one": "red", "up_to_two": "light_red", up_to_three: yellow, upto_four: }
+  if (givenrating <= 1) {
+   return colors['red']
+ }else if (givenrating > 1 && givenrating <= 2){
+   return colors['light_red']
+ } else if (givenrating > 2 && givenrating <= 3 ) {
+   return colors['yellow']
+ } else if (givenrating > 3 && givenrating < 4 ) {
+     return colors['yellow']
+ } else if (givenrating >= 4) {
+   return colors['green']
+ }else{
+  return colors['red']
+ }
+}
+
+function replace_content(element, modal, form){
+  form.find("#showcase_date_of_achievement").val(element.attr('data-date_of_acheivement'));
+  form.find("#showcase_achieved_description").val(element.attr('data-showcase_achieved_description'))
+}
+
+function refresh_twenty_twenty_div(wrapper_div){
+var imgs = $(wrapper_div+" .twentytwenty-container img");
+images = wrapper_div+" .twentytwenty-container img"
+var loadedImgNum = 0;
+imgs.on('load', function(){loadedImgNum += 1; if (loadedImgNum == imgs.length){setTimeout(function () {$(wrapper_div+" .twentytwenty-container").twentytwenty(); $(window).trigger("resize.twentytwenty"); }, 500); } }); 
+}
+
+

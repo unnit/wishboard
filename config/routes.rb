@@ -135,7 +135,7 @@ Rails.application.routes.draw do
   get "check_commenter/:id", to: "home#update_commenter_checked", as: :update_commenter_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
   get "fansday", to: "home#fansday"
-  get "conversations", to: "chat_rooms#conversations", as: :chat_messages_path
+  get "conversations", to: "chat_rooms#conversations", as: :chat_messages
 
   resources :messages, only: [:destroy, :index, :show] do
     member do

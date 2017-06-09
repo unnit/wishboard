@@ -56,4 +56,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => 'https://localhost:443' }
 
+  config.action_cable.allowed_request_origins = ['https://localhost']
+
 end

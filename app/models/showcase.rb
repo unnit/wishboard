@@ -70,7 +70,7 @@ class Showcase < ApplicationRecord
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
   validates :achieved_description, length: { maximum: 2500 }
   validates :date_of_achievement, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :date_of_achievement_blank?
-  validates :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
+  validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
   scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
@@ -222,7 +222,7 @@ class Showcase < ApplicationRecord
   def date_of_achievement_blank?
     date_of_achievement.blank?
   end
-  def date_of_achievement_not_in_future?
+  def date_of_achievement_not_in_future
       self.errors.add(:date_of_achievement, "Date of achievement shoud not be in future")  if date_of_achievement_blank? && Date.strftime("dd-mm-yyyy", date_of_achievement) > Time.zone.today
   end
 

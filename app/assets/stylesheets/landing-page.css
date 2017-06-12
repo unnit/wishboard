@@ -2782,7 +2782,7 @@ th.headerSortDown {
   outline: none !important;
 }
 .loader-in-showcase-fullfill-button{
-  width: 150px;
+  width: 100px;
   height: 28px;
   border: none;
   background-color: #732db0;
@@ -3083,7 +3083,7 @@ th.headerSortDown {
 .pac-container{
   z-index: 2000;
 }
-.preview-delete-edit{
+.preview-delete-edit,.preview-delete-fullfill{
   top: 0;
   right: 0;
   line-height: 12px;

@@ -23,7 +23,8 @@ class Showcase < ApplicationRecord
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
   
-  DEFAULT_AFTER_RATING = 4.0
+  DEFAULT_AFTER_RATING = 0
+  BACKSTORY_POSSIBLE_WISH_VALUES = [6, 8, 9, 11]
   WISH_PREFIX =
   [["Visit", 0, "Places, trips, travel, tour | ex: Goa, Dubai", "I visited", "I wish to visit", "Wow! Where/What?", "Where are you planning to go?"],
    ["Own", 1, "Things, pets, collectibles", "I own", "I wish to own", "Wow! What did you buy/own?", "What's that?"],
@@ -69,7 +70,7 @@ class Showcase < ApplicationRecord
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
   validates :achieved_description, length: { maximum: 2500 }
   validates :date_of_achievement, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :date_of_achievement_blank?
-
+  validates :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
   scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
@@ -221,6 +222,9 @@ class Showcase < ApplicationRecord
   def date_of_achievement_blank?
     date_of_achievement.blank?
   end
+  def date_of_achievement_not_in_future?
+      self.errors.add(:date_of_achievement, "Date of achievement shoud not be in future")  if date_of_achievement_blank? && Date.strftime("dd-mm-yyyy", date_of_achievement) > Time.zone.today
+  end
 
   def wishlist?
     showcase_type == Showcase::SHOWCASE_VALUES[1]
@@ -293,18 +297,34 @@ class Showcase < ApplicationRecord
     active_coins.map{|c| c.user.name}.join(", ")
   end
 
+  def mark_as_achieved!
+    new_status = USER_STATUS[1]
+    user.followers.each do |follower|
+      self.achieved_notifications.where(user_id: follower.id).first_or_create
+    end
+    update_column :user_status, new_status
+  end
+
   def toggle_user_status!
     new_status = user_status == USER_STATUS[0] ? USER_STATUS[1] : USER_STATUS[0]
-    if achieved_notifications.present?
+    if user_status == USER_STATUS[0]
       achieved_notifications.each do |achieved_notification|
         achieved_notification.active = !achieved_notification.active
         achieved_notification.save
       end
     else
-      user.followers.each do |follower|
-        self.achieved_notifications.create(user_id: follower.id)
-      end
+      mark_as_achieved!
     end
+    # if achieved_notifications.present?
+    #   achieved_notifications.each do |achieved_notification|
+    #     achieved_notification.active = !achieved_notification.active
+    #     achieved_notification.save
+    #   end
+    # else
+    #   user.followers.each do |follower|
+    #     self.achieved_notifications.create(user_id: follower.id)
+    #   end
+    # end
     update_column :user_status, new_status
   end
 
@@ -314,6 +334,13 @@ class Showcase < ApplicationRecord
   def get_rating
      after_rating ? after_rating : DEFAULT_AFTER_RATING
   end
+  def backstory_possible?
+    showpiece? && achieved? && BACKSTORY_POSSIBLE_WISH_VALUES.include?(wish_prefix)
+  end
+  def backstory_added?
+    backstory_possible? && (backstory_description.present? || backstory_image.present?)
+  end
+
   private
   def create_showcase_notification
     unless self.admin_created?

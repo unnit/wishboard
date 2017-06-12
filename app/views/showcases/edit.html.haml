@@ -2,73 +2,31 @@
   .container.padding0.ptop20.pbottom70.helvetica-font
     .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
       = form_for @showcase, html: { class: "create-showcase" } do |f|
-        #showcaseFormTab.ptop10
-          %ul.nav.nav-tabs.nav-justified
-            %li.active
-              %a{"data-toggle" => "tab", :href => "#before_#{@showcase.id}"} Before
-            %li
-              %a{"data-toggle" => "tab", :href => "#after_#{@showcase.id}"} After
-          .tab-content.ptop10.mleft15.mright15
-            .tab-pane.fade.in.active{:id => "before_#{@showcase.id}"}
-              .col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-edit-wrapper{style: "overflow: hidden;max-height:480px;height: auto;"}
-                .preview-edit
-                  - if @showcase.image.present?
-                    = cl_image_tag @showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
-                .preview-delete-edit.bg-white.pon.pos-absolute.font16{class: "#{@showcase.image.blank? ? 'hide-display' : 'block-display'}"} x
-                .col-xs-12.col-sm-12.no-mar-pad
-                  .glyphicon.glyphicon-camera.file-input-button-edit.mtop20.padding20.cc-dark-fg.dotted-border{style: "font-size: 65px;display: #{@showcase.image.present? ? 'none': 'inline-block'};"}
-                    = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-edit file-upload-trigger" })
-                .col-xs-12.col-sm-12.no-mar-pad
-                  .progress.progress-striped.progress-edit.mbottom0{style: "display: none;height: 6px;width:107px;"}
-                    .progress-bar.progress-bar-edit{style: "width: 0%;"}
-              .col-xs-12.col-sm-12.text-center.j-ps-holder.ptop5.mtop20.height89
-                .col-xs-12.col-sm-12.ptop5.height50
-                  %span.type-holder.pon.pos-absolute{style: "left: 5px;top: 5px;font-size: 11px;"}
-                .prefix-holder.pon.pull-left{style: "height: 34px;border-bottom: 2px solid #732db0;padding: 6px 0px;font-size: 14px;line-height: 1.42857143;display: inline-block;#{@showcase.custom_wish_type?}"}
-                  - if !@showcase.custom_wish_type? && @showcase.wish_prefix.present?
-                    %span.cc-dark-fg-dotted-border.mleft5
-                      - if @showcase.showpiece?
-                        = Showcase::WISH_PREFIX[@showcase.wish_prefix][3]
-                      - else
-                        = Showcase::WISH_PREFIX[@showcase.wish_prefix][4]
-                      &nbsp;
-                      %i.fa.fa-angle-down.font16
-                = text_field_tag :initial, "#{@showcase.title}", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial", style: "width: auto;"
-                .dropdown.type-holder-dropdown
-                  .dropdown-menu.full-width.pos-relative
-                    - Showcase::DISPLAY_SHOWCASE_TYPE.each do |showcase_type|
-                      %li
-                        %a.pon{"data-id" => "#{showcase_type[1]}", "data-text" => "#{showcase_type[2]}"}
-                          = showcase_type[0]
-                .dropdown.prefix-holder-dropdown
-                  .dropdown-menu.prefix-scrollbar.full-width.pos-relative
-                    - Showcase::WISH_PREFIX.each do |wish_prefix|
-                      %li
-                        %a.pon{"data-id" => "#{wish_prefix[1]}", "data-ptext" => "#{wish_prefix[3]}", "data-ftext" => "#{wish_prefix[4]}", "data-pplaceholder" => "#{wish_prefix[5]}", "data-fplaceholder" => "#{wish_prefix[6]}"}
-                          = wish_prefix[0]
-                          %span.grey-fg.font13.mob-font12.weight500
-                            &nbsp;
-                            %em= wish_prefix[2]
-                .hide-display
-                  = f.text_field :showcase_type
-                  = f.text_field :wish_prefix
-                  = f.text_field :title
-              .col-xs-12.col-sm-12.text-center.ptop10
-                = f.text_area :description, placeholder: "Tell the story behind this wish?", class: "form-control coco-input-field", maxlength: 2500
-              .col-xs-12.col-sm-12.ptop20.pbottom10
-                = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
-              .col-xs-12.col-sm-7.ptop10.height50
-                = f.fields_for :location do |lf|
-                  = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
-              .col-xs-12.col-sm-5.ptop10.height50
-                = f.text_field :year, placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white", readonly: true
-                .dropdown.dt-achievement-dropdown
-                  .dropdown-menu.pos-relative.full-width
-                    - Showcase::INSTANT_WISH_DATE.each do |instant_wish_date|
-                      %li
-                        %a.pon{"data-id" => "#{instant_wish_date[1]}"}= instant_wish_date[0]
-            .tab-pane.fade.text-justify{:id => "after_#{@showcase.id}"}
-              = render partial: "showcases/after_fullfill_form_fields", locals: {f: f, showcase: @showcase}
+        - if @showcase.achieved? && ((!@showcase.showpiece?) || (@showcase.backstory_possible?))
+          #showcaseFormTab.ptop10
+            %ul.nav.nav-tabs.nav-justified
+              -if @showcase.achieved? && (!@showcase.showpiece?)
+                %li.active
+                  %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
+                %li
+                  %a{"data-toggle" => "tab", :href => "#after_#{@showcase.id}"} After
+              -elsif @showcase.backstory_possible?
+                %li.active
+                  %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
+                %li
+                  %a{"data-toggle" => "tab", :href => "#backstory_#{@showcase.id}"} Backstory
+              -else
+                %li.active
+                  %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
+            .tab-content.padding10
+              .tab-pane.fade.in.active{:id => "normal_#{@showcase.id}"}
+                = render partial: "showcases/showcase_form_fields", locals: {f: f, showcase: @showcase}
+              .tab-pane.fade.text-justify{:id => "after_#{@showcase.id}"}
+                = render partial: "showcases/after_fullfill_form_fields", locals: {f: f, showcase: @showcase}
+              .tab-pane.fade.text-justify{:id => "backstory_#{@showcase.id}"}
+                = render partial: "showcases/backstory_form_fields", locals: {f: f, showcase: @showcase}
+        -else
+          = render partial: "showcases/showcase_form_fields", locals: {f: f, showcase: @showcase}
         .col-xs-12.col-sm-12.mtop25.text-center
           = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
 
@@ -90,11 +48,12 @@
       $editwrap.find(".ps-initial").animate({"width": $editwrap.find(".j-ps-holder").width() - $editwrap.find(".prefix-holder").width() - 5}, 200);
       var places_input_1= $('.pac-input')[1];
       google.maps.event.addDomListener(window, 'load', function () {
-          var autocomplete = new google.maps.places.Autocomplete(places_input_1);
-          google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
-            if (e.keyCode == 13 && $('.pac-container:visible').length) {
-              e.preventDefault();
-            }
+              var autocomplete = new google.maps.places.Autocomplete(places_input_1);
+              google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
+                if (e.keyCode == 13 && $('.pac-container:visible').length) {
+                  e.preventDefault();
+                }
+              });
           });
-      });
+      reatch_cloundinary('.cloudinary-fileupload-fullfill');
     })

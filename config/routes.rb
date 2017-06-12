@@ -170,7 +170,12 @@ Rails.application.routes.draw do
       post :coin
       put :toggle_achieve_wish
       post :toggle_achieve_wish
-      get :fullfillment_details
+      post :fullfillment_form
+      post :update_fullfilment_details
+      put :update_fullfilment_details
+      post :save_rating
+      post :backstory_form
+      post :update_backstory
     end
     collection do
       get :gettags

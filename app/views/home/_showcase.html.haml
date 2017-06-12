@@ -54,9 +54,13 @@
   = link_to showcase_path(showcase), remote: true do
     .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
       - if showcase.achieved? && showcase.fullfilled_image.present?
-        .twentytwenty-container{style: "min-height: 200px"}
+        .twentytwenty-container{style: "min-height: 200px", "data-before-label-content": "Backstory", "data-after-label": "After"}
           = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
           = cl_image_tag showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
+      -elsif showcase.backstory_possible? && showcase.backstory_image.present?
+        .twentytwenty-container{style: "min-height: 200px", "data-before-label": "Backstory", "data-after-label": "After"}
+          = cl_image_tag showcase.backstory_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
+          = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
       - else
         = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
       .h40.pos-absolute{style: "top: 45%;left: 45%;"}
@@ -106,37 +110,44 @@
         %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
           = showcase.comments.count
-  .col-xs-6.col-sm-6.pright0.pleft5
-    - unless showcase.coin_wish?
-      - if current_user
-        - if showcase.owner?(current_user)
-          - if (!showcase.showpiece? && !showcase.achieved?)
-            %span{class: "toggle-achieve-#{showcase.id} mark-as-fullfilled", "data-showcase-id": "#{showcase.id}", "data-showcase_achieved_description": "#{showcase.achieved_description}", "data-showcase_date_of_achievement": "#{showcase.date_of_achievement}", "data-showcase_fullfilled_image": "#{ showcase.fullfilled_image? ? cl_image_path(showcase.fullfilled_image) : ''}"}
-              %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
-              %span.pull-left.font12.mtop2.grey-fg Mark as completed?
-          - else
-            .achieved-wish-sprite.mright5
-            %span.grey-fg.font12 Achieved
+  .col-xs-4.col-sm-4.pright0.pleft5
+    - if current_user
+      - if showcase.owner?(current_user)
+        - if (!showcase.showpiece? && !showcase.achieved?)
+          = link_to fullfillment_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
+            %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
+            %span.pull-left.font12.mtop2.grey-fg Mark as completed?
+          / %span{class: "toggle-achieve-#{showcase.id} mark-as-fullfilled", "data-showcase-id": "#{showcase.id}", "data-showcase_achieved_description": "#{showcase.achieved_description}", "data-showcase_date_of_achievement": "#{showcase.date_of_achievement}", "data-showcase_fullfilled_image": "#{ showcase.fullfilled_image? ? cl_image_path(showcase.fullfilled_image) : ''}"}
+          /   %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
+          /   %span.pull-left.font12.mtop2.grey-fg Mark as completed?
+        - elsif showcase.backstory_possible?
+          = link_to backstory_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
+            %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
+            %span.pull-left.font12.mtop2.grey-fg Have Before Story?
         - else
-          %span.rewish-link.pon.cc-dark-fg.pull-left{"data-id" => "#{showcase.id}"}
-            %i.fa.fa-clone.pull-left.mtop2
-            %span.font12.grey-fg.pull-left.mtop2 Wish?
-          .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
-            = showcase.children.count
-          %span.done-this.pon.cc-dark-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
-            %i.fa.fa-check-square-o.pull-left.font17.mtop2
-            %span.font12.grey-fg.pull-left.mtop2 Done?
+          .achieved-wish-sprite.mright5
+          %span.grey-fg.font12 Achieved
       - else
-        = link_to authenticate_path do
-          %span.pon.cc-dark-fg.pull-left.pright5
-            %i.fa.fa-clone.pull-left.mtop2
-            %span.font12.grey-fg.pull-left.mtop2 Wish?
-          .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
-            = showcase.children.count
-          %span.pon.cc-dark-fg.pull-left.pleft-10
-            %i.fa.fa-check-square-o.pull-left.font17.mtop2
-            %span.font12.grey-fg.pull-left.mtop2 Done?
+        %span.rewish-link.pon.cc-dark-fg.pull-left{"data-id" => "#{showcase.id}"}
+          %i.fa.fa-clone.pull-left.mtop2
+          %span.font12.grey-fg.pull-left.mtop2 Wish?
+        .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+          = showcase.children.count
+        %span.done-this.pon.cc-dark-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
+          %i.fa.fa-check-square-o.pull-left.font17.mtop2
+          %span.font12.grey-fg.pull-left.mtop2 Done?
     - else
+      = link_to authenticate_path do
+        %span.pon.cc-dark-fg.pull-left.pright5
+          %i.fa.fa-clone.pull-left.mtop2
+          %span.font12.grey-fg.pull-left.mtop2 Wish?
+        .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+          = showcase.children.count
+        %span.pon.cc-dark-fg.pull-left.pleft-10
+          %i.fa.fa-check-square-o.pull-left.font17.mtop2
+          %span.font12.grey-fg.pull-left.mtop2 Done?
+  .col-xs-2.col-sm-2.pright0.pleft5
+    - if showcase.coin_wish?
       %span.font11.grey-fg.pull-left.mtop2{class: "badge-coin-link-#{showcase.id}"} Coins
       .badge.pull-left.mleft5.bg-white.cc-dark-fg{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
         = showcase.active_coins.count
@@ -147,12 +158,6 @@
     %a{href: "#{showcase_url(showcase)}", "data-image" => "#{showcase.image}", "data-title" => "#{showcase.title}", "data-desc" => "#{showcase.description}", class: "btnShare"}
       .fa.fa-facebook-official.pull-right{title: "Share to Facebook"}
 = render partial: "showcases/description_tabs", locals: {showcase: showcase}
-/ - if showcase.description.present?
-/   .col-xs-12.col-sm-12.padding10.bg-white.padding10
-/     %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(showcase.description), length: 150)
-/     - if showcase.description.length > 150
-/       %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.description)
-/       %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
 .col-xs-12.col-sm-12.no-mar-pad.bg-white.min-height0{class: "user-comments-#{showcase.id}"}
   - if feed == "yes"
     - if showcase.comments.count > 4

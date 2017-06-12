@@ -16,5 +16,6 @@
   .col-xs-12.col-sm-5.no-mar-pad.height50
     = f.text_field :date_of_achievement, placeholder: "When", class: "form-control coco-input-field pleft5 date-of-achievement bg-white"
 .col-xs-12.col-sm-12.padding5
-  = f.hidden_field :after_rating
-  %span#star_rating.star_rating{"data-display-rating" => ".ratingvalue", "data-input-field" => "#showcase_after_rating", "data-rateyo-rating" => "#{showcase.get_rating}"}
+  = f.hidden_field :after_rating, class: "showcase_after_rating"
+  #star_rating.star_rating.text-center.inline-block{"data-display-rating" => "#ratingvalue", "data-input-field" => ".showcase_after_rating", "data-rateyo-rating" => "#{showcase.get_rating}", "data-rateyo-spacing" => "10px", "data-rateyo-star-width" => "40px", "data-showcase-id" => "#{showcase.id}" , "data-display-rating-map"=>".display_rating"}
+  %span.display_rating

@@ -1,8 +1,8 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish, :fullfillment_details]
+  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
-  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish, :fullfillment_details]
+  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form]
   before_action :check_coin_wish, only: [:edit, :update, :delete]
   before_action :get_comment, only: [:edit_comment, :delete_comment]
   before_action :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
@@ -36,8 +36,8 @@ class ShowcasesController < ApplicationController
     end
     @showcase.admin_created = false
     if params[:image].present?
-     preloaded = Cloudinary::PreloadedFile.new(params[:image])
-     @showcase.image = preloaded.identifier unless preloaded.blank?
+      preloaded = Cloudinary::PreloadedFile.new(params[:image])
+      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.valid?
       @showcase.save
@@ -61,12 +61,12 @@ class ShowcasesController < ApplicationController
     @showcase.assign_attributes(showcase_params)
     @showcase.assign_attributes(fullfillment_params)
     if params[:image].present?
-     preloaded = Cloudinary::PreloadedFile.new(params[:image])
-     @showcase.image = preloaded.identifier unless preloaded.blank?
+      preloaded = Cloudinary::PreloadedFile.new(params[:image])
+      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if params[:fullfilled_image].present?
-     preloaded = Cloudinary::PreloadedFile.new(params[:fullfilled_image])
-     @showcase.fullfilled_image = preloaded.identifier unless preloaded.blank?
+      preloaded = Cloudinary::PreloadedFile.new(params[:fullfilled_image])
+      @showcase.fullfilled_image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
       flash[:notice] = "#{@showcase.title} updated."
@@ -239,24 +239,57 @@ class ShowcasesController < ApplicationController
     flash[:notice] = "Showcases arranged successfully."
     respond_to :js
   end
-  def toggle_achieve_wish
-    @showcase.toggle_user_status!
+  def backstory_form
+    respond_to :js
+  end
+  def update_backstory
+    @showcase.assign_attributes(backstory_params)
+    if params[:backstory_image].present?
+      preloaded = Cloudinary::PreloadedFile.new(params[:backstory_image])
+      @showcase.backstory_image = preloaded.identifier unless preloaded.blank?
+    end
+    @showcase.save
+    flash[:notice] =   @showcase.errors.any? ? "#{@showcase.errors.full_messages.join(',')}" : "Backstory added to #{@showcase.title} successfully"
+    respond_to :js
+  end
+  def fullfillment_form
+    respond_to :js
+  end
+  def update_rating
+    @showcase.mark_as_achieved!
+    @showcase.assign_attributes(fullfillment_params)
+    @showcase.save
+    flash[:notice] =  @showcase.achieved? ? "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : "Unable to mark as achieved."
+    flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
+    respond_to :js
+  end
+  def update_fullfilment_details
+    @showcase.mark_as_achieved!
     @showcase.reload
     @showcase.assign_attributes(fullfillment_params)
     if params[:fullfilled_image].present?
-     preloaded = Cloudinary::PreloadedFile.new(params[:fullfilled_image])
-     @showcase.fullfilled_image = preloaded.identifier unless preloaded.blank?
-   end
-   @showcase.save
-   @showcase.achieved? ? flash[:notice] = "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : flash[:notice] = "Undid successfully."
-   flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
-   respond_to :js
- end
+      preloaded = Cloudinary::PreloadedFile.new(params[:fullfilled_image])
+      @showcase.fullfilled_image = preloaded.identifier unless preloaded.blank?
+    end
+    @showcase.save
+    flash[:notice] =  @showcase.achieved? ? "#{@showcase.title} marked as achieved successfully"  : "Unable to mark as achieved."
+    flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
+    respond_to :js
+  end
+  def toggle_achieve_wish
+    @showcase.toggle_user_status!
+    @showcase.achieved? ? flash[:notice] = "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : flash[:notice] = "Undid successfully."
+    flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
+    respond_to :js
+  end
 
   private
-def fullfillment_params
-  params.require(:showcase).permit(:achieved_description, :date_of_achievement, :after_rating).reject{|_, v| v.blank?}
-end
+  def backstory_params
+    params.require(:showcase).permit(:backstory_image, :backstory_description).reject{|_, v| v.blank?}
+  end
+  def fullfillment_params
+    params.require(:showcase).permit(:achieved_description, :date_of_achievement, :after_rating).reject{|_, v| v.blank?}
+  end
   def showcase_params
     params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, :wish_prefix, location_attributes: [:id, :name])
   end

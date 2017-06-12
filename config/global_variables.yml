@@ -40,6 +40,49 @@ development:
   top_performers: [1, 2, 7, 3, 19, 56, 9, 3]
   slug_exceptions: ["settings", "dashboard", "about", "terms", "privacy", "contact", "goodness-and-open-source", "jobs", "hackers", "sitemap", "confirmation", "info", "interests", "rent", "people", "authenticate", "bulk_bookings", "offers", "feed", "results", "wallet", "profiles", "user_autocomplete", "unchecked_notifications", "notifications", "update_all_notifications", "fansday", "get_similar_friends", "conversations", "chatrooms"]
 
+staging:
+  time_out: 15
+  root_url: "https://localhost"
+  transaction_return_url: "https://localhost/transactions/callback"
+  admin_mail: "ayyo@cocociti.com"
+  notification_mail: "cocogeeks@gmail.com"
+  manager_email_id_1: "t@cocociti.com"
+  manager_email_id_2: "j@cocociti.com"
+  buffer_time_of_transaction: 1
+  #default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/profile-pic.png"
+  default_profile_pic: "https://res.cloudinary.com/cocociti/image/upload/v1458216157/default_images/profile-pic.png"
+  watermark: "default_images:watermark"
+  default_product_image: "https://res.cloudinary.com/cocociti/image/upload/v1449832783/default_images/default_product.png"
+  extra_discount: 10
+  #-----For Date Suggesstion in search page -------
+  bike_two_wheelers: 1
+  fashion_and_dress: 39
+  bike_start_time: "08:30"
+  bike_end_time: "19:00"
+  fashion_start_time: "11:00"
+  fashion_end_time: "18:00"
+  sunday: 0
+  bike_start_hour: 8
+  bike_start_minute: 30
+  bike_end_hour: 19
+  bike_end_minute: 00
+  dress_start_hour: 11
+  dress_start_minute: 00
+  dress_end_hour: 18
+  dress_end_minute: 00
+  #----------------------
+  offer_product: 7
+  feed_users: [1, 2, 19, 7, 10, 11, 17, 89, 95, 91, 100]
+  manager_mobile_nos: ["+919037267357", "+919008888522", "+919037334459"]
+  google_client_id: "866179074557-htrj6huurf5c1q51j0i7ubiljde2oe4h.apps.googleusercontent.com"
+  google_api_key: "AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank"
+  super_admin_ids: [1, 2, 7]
+  hacker_relative_path: "/hackers"
+  featured_wishes: [279, 284, 290, 291, 295, 289, 281, 282]
+  top_performers: [1, 2, 7, 3, 19, 56, 9, 3]
+  slug_exceptions: ["settings", "dashboard", "about", "terms", "privacy", "contact", "goodness-and-open-source", "jobs", "hackers", "sitemap", "confirmation", "info", "interests", "rent", "people", "authenticate", "bulk_bookings", "offers", "feed", "results", "wallet", "profiles", "user_autocomplete", "unchecked_notifications", "notifications", "update_all_notifications", "fansday", "get_similar_friends", "conversations", "chatrooms"]
+
+
 production:
   time_out: 15
   root_url: "https://www.cocociti.com"

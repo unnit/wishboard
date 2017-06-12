@@ -1,0 +1,57 @@
+.col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-edit-wrapper{style: "overflow: hidden;max-height:480px;height: auto;"}
+  .preview-edit
+    - if @showcase.image.present?
+      = cl_image_tag @showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
+  .preview-delete-edit.bg-white.pon.pos-absolute.font16{class: "#{@showcase.image.blank? ? 'hide-display' : 'block-display'}"} x
+  .col-xs-12.col-sm-12.no-mar-pad
+    .glyphicon.glyphicon-camera.file-input-button-edit.mtop20.padding20.cc-dark-fg.dotted-border{style: "font-size: 65px;display: #{@showcase.image.present? ? 'none': 'inline-block'};"}
+      = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-edit file-upload-trigger" })
+  .col-xs-12.col-sm-12.no-mar-pad
+    .progress.progress-striped.progress-edit.mbottom0{style: "display: none;height: 6px;width:107px;"}
+      .progress-bar.progress-bar-edit{style: "width: 0%;"}
+.col-xs-12.col-sm-12.text-center.j-ps-holder.ptop5.mtop20.height89
+  .col-xs-12.col-sm-12.ptop5.height50
+    %span.type-holder.pon.pos-absolute{style: "left: 5px;top: 5px;font-size: 11px;"}
+  .prefix-holder.pon.pull-left{style: "height: 34px;border-bottom: 2px solid #732db0;padding: 6px 0px;font-size: 14px;line-height: 1.42857143;display: inline-block;#{@showcase.custom_wish_type?}"}
+    - if !@showcase.custom_wish_type? && @showcase.wish_prefix.present?
+      %span.cc-dark-fg-dotted-border.mleft5
+        - if @showcase.showpiece?
+          = Showcase::WISH_PREFIX[@showcase.wish_prefix][3]
+        - else
+          = Showcase::WISH_PREFIX[@showcase.wish_prefix][4]
+        &nbsp;
+        %i.fa.fa-angle-down.font16
+  = text_field_tag :initial, "#{@showcase.title}", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial", style: "width: auto;"
+  .dropdown.type-holder-dropdown
+    .dropdown-menu.full-width.pos-relative
+      - Showcase::DISPLAY_SHOWCASE_TYPE.each do |showcase_type|
+        %li
+          %a.pon{"data-id" => "#{showcase_type[1]}", "data-text" => "#{showcase_type[2]}"}
+            = showcase_type[0]
+  .dropdown.prefix-holder-dropdown
+    .dropdown-menu.prefix-scrollbar.full-width.pos-relative
+      - Showcase::WISH_PREFIX.each do |wish_prefix|
+        %li
+          %a.pon{"data-id" => "#{wish_prefix[1]}", "data-ptext" => "#{wish_prefix[3]}", "data-ftext" => "#{wish_prefix[4]}", "data-pplaceholder" => "#{wish_prefix[5]}", "data-fplaceholder" => "#{wish_prefix[6]}"}
+            = wish_prefix[0]
+            %span.grey-fg.font13.mob-font12.weight500
+              &nbsp;
+              %em= wish_prefix[2]
+  .hide-display
+    = f.text_field :showcase_type
+    = f.text_field :wish_prefix
+    = f.text_field :title
+.col-xs-12.col-sm-12.text-center.ptop10
+  = f.text_area :description, placeholder: "Tell the story behind this wish?", class: "form-control coco-input-field", maxlength: 2500
+.col-xs-12.col-sm-12.ptop20.pbottom10
+  = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
+.col-xs-12.col-sm-7.ptop10.height50
+  = f.fields_for :location do |lf|
+    = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
+.col-xs-12.col-sm-5.ptop10.height50
+  = f.text_field :year, placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white", readonly: true
+  .dropdown.dt-achievement-dropdown
+    .dropdown-menu.pos-relative.full-width
+      - Showcase::INSTANT_WISH_DATE.each do |instant_wish_date|
+        %li
+          %a.pon{"data-id" => "#{instant_wish_date[1]}"}= instant_wish_date[0]

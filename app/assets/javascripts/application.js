@@ -30,6 +30,9 @@
 //= require intro
 //= require sweetalert.min
 //= require cable
+//= require jquery.event.move
+//= require jquery.twentytwenty
+//= require jquery.rateyo
 
 $(document).ready(function(){
   if($.fn.cloudinary_fileupload !== undefined) {
@@ -228,6 +231,83 @@ $(document).ready(function(){
       $wrap.find("#showcase_year").val($(this).data("id"));
       $wrap.find(".dt-achievement-dropdown").removeClass("open");
     })
+    
+      //Error notifications after showcase-fullfillment-submit
+    $(document).on("click", ".showcase-backstory-submit", function(e){
+      e.preventDefault();
+      $wrap = $(this).closest(".backstory-showcase");
+        if($wrap.find(".preview, .preview-edit").children().length == 0){
+          swal({
+              title: "Are you sure to submit backstory without a photo?",
+              text: "A photo would be nice.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#ffffff",
+              confirmButtonText: "Yes, Proceed",
+              cancelButtonText: "Upload Photo",
+              allowOutsideClick: true,
+              allowEscapeKey: false,
+              closeOnConfirm: true,
+              closeOnCancel: true,
+              animation: "slide-from-top"
+            },
+            function(isConfirm){
+              if (isConfirm){
+                $wrap.submit();
+                $wrap.find(".loader-button").hide();
+                $wrap.find(".loader-effect").show();
+              }
+              else{
+                $wrap.find(".file-upload-trigger").trigger('click');
+              }
+          });
+        }
+        else{
+          $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
+          $wrap.submit();
+          $wrap.find(".loader-button").hide();
+          $wrap.find(".loader-effect").show();
+        }
+    })
+
+
+      //Error notifications after showcase-fullfillment-submit
+    $(document).on("click", ".showcase-fullfillment-submit", function(e){
+      e.preventDefault();
+      $wrap = $(this).closest(".fullfill-showcase");
+        if($wrap.find(".preview, .preview-edit").children().length == 0){
+          swal({
+              title: "Are you sure to post your fullfillment/achievement of your wish without a photo?",
+              text: "A photo would be nice.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#ffffff",
+              confirmButtonText: "Yes, Proceed",
+              cancelButtonText: "Upload Photo",
+              allowOutsideClick: true,
+              allowEscapeKey: false,
+              closeOnConfirm: true,
+              closeOnCancel: true,
+              animation: "slide-from-top"
+            },
+            function(isConfirm){
+              if (isConfirm){
+                $wrap.submit();
+                $wrap.find(".loader-button").hide();
+                $wrap.find(".loader-effect").show();
+              }
+              else{
+                $wrap.find(".file-upload-trigger").trigger('click');
+              }
+          });
+        }
+        else{
+          $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
+          $wrap.submit();
+          $wrap.find(".loader-button").hide();
+          $wrap.find(".loader-effect").show();
+        }
+    })
     //Error notifications after showcase-submit
     $(document).on("click", ".showcase-submit", function(e){
       e.preventDefault();
@@ -276,13 +356,13 @@ $(document).ready(function(){
     $(".ps-sub-wrap-2").fadeIn(50, function(){
       $(".ps-sub-wrap-2").animate({"opacity": "1", "margin-left": "10px", "margin-top": "-120px"}, 150);
     });
-    $wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper")
+    $wrap = $(this).closest("form").find(".photo-upload-wrapper")
     $wrap.find('.progress').css("display", "inline-block");
     console.log(data.loaded);
     $wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
   });
   $('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {
-    $wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper")
+    $wrap = $(this).closest("form").find(".photo-upload-wrapper")
     $wrap.find(".file-input-button, .progress").hide();
     $wrap.find(".preview").show();
     $wrap.find('.preview').html(
@@ -295,8 +375,8 @@ $(document).ready(function(){
     $wrap.find(".error-ps-photo").fadeOut();
     return true;
   });
-  $(".preview-delete").click(function(){
-    $wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper")
+  $(".preview-delete").on("click", function(){
+    $wrap = $(this).closest("form").find(".photo-upload-wrapper")
     $wrap.find(".preview").empty();
     $wrap.find(".preview-delete, .preview").hide();
     $wrap.find(".file-input-button").show();
@@ -328,12 +408,13 @@ $(document).ready(function(){
     $wrap.find(".preview-delete-edit").show();
     return true;
   });
-  $(".preview-delete-edit").click(function(){
+  $(".preview-delete-edit").on("click", function(){
     $wrap = $(this).closest(".photo-edit-wrapper")
     $wrap.find(".preview-edit").empty();
     $wrap.find(".preview-delete-edit, .preview-edit").hide();
     $wrap.find(".file-input-button-edit").show();
   })
+
   //Coin Wishes - Learn More
   $(document).on("click", ".c-w-lrn-mr", function(){
     $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font16'><h3 class='full-width mbottom20 text-center txt-underline'>Know more about Coin Wishes</h3><ul><li class='mbottom10'>Coin wishes help you earn for each click you get on your coin wish, simple.</li><li class='mbottom10'>Wherever you see a coin icon above your friend's post, click on it to gift him/her a coin</li><li class='mbottom10'>1 click on a coin icon = ₹ 1 rupee (For your wishes & while gifting)</li><li class='mbottom10'>You can withdraw the coins earned to your bank account any time at the intervals of 10, 20, 50, 100 & in multiples of 200 thereafter</li><li class='mbottom10'>Also, for each friend you invite to Cocociti you get 2 coins.</li><li class='mbottom10'>Remember, 1 coin = ₹ 1 rupee. No coupons or complications, earn WHITE MONEY at your convenience, just by clicking.</li><strong>P.S:</strong> Coins are applicable to coin wishes and your personal wishes (Not if you rewish or select from popular wishes)<br><br><strong>Happy Wishing.</strong></ul></div>")
@@ -1356,4 +1437,124 @@ $(document).ready(function(){
     $oldWord.removeClass('is-visible').addClass('is-hidden');
     $newWord.removeClass('is-hidden').addClass('is-visible');
   }
+
+  $(".twentytwenty-container").twentytwenty();
+  starRating('.star_rating');
 });
+
+
+function starRating(elementselector){
+ $rateYo = $(elementselector).rateYo({ numStars: 5, precision: 20, fullStar: true, starWidth: "20px", spacing: "5px",
+  onInit: function (rating,rateyo) {$(this).rateYo("option", "ratedFill",customRatingColor(rating)); $($(this).attr('data-display-rating')).html(rating);},
+  onSet: function (rating, rateyo) {color = customRatingColor(rating); $(this).rateYo("option", "ratedFill", customRatingColor(rating));
+  $(this).closest('form').find($(this).attr('data-input-field')).val(rating);
+  $($(this).attr('data-display-rating')).html(rating);
+   $(this).closest('form').find($(this).attr('data-display-rating-map')).html(ratingMapWord(rating));
+  if ($(this).data('save-rating')){save_rating($(this), rating ); }
+},
+  onChange: function (rating, rateyo) {color = customRatingColor(rating); $(this).rateYo("option", "ratedFill", customRatingColor(rating)); $($(this).attr('data-input-field')).val(rating); $($(this).attr('data-display-rating')).html(rating);}
+})
+}
+
+function ratingMapWord(givenrating){
+   ratingmap = {"worst": "Worst", "bad": "Bad","average":"Average", "good": "Good", "best": "Best"  }
+    if (givenrating <= 1) {
+     return ratingmap['worst']
+   }else if (givenrating > 1 && givenrating <= 2){
+     return  ratingmap['bad']
+   } else if (givenrating > 2 && givenrating <= 3 ) {
+     return  ratingmap['good']
+   } else if (givenrating > 3 && givenrating < 4 ) {
+     return  ratingmap['average']
+   } else if (givenrating >= 4) {
+     return  ratingmap['best']
+   }else{
+    return  ratingmap['average']
+  }
+}
+
+function customRatingColor(givenrating){
+  colors = {"red":"#ff0000", "light_red": "#ac3636", "green": "#008000", "light_green": "#90EE90", "yellow": "#FFFF00"}
+  if (givenrating <= 1) {
+   return colors['red']
+ }else if (givenrating > 1 && givenrating <= 2){
+   return colors['light_red']
+ } else if (givenrating > 2 && givenrating <= 3 ) {
+   return colors['yellow']
+ } else if (givenrating > 3 && givenrating < 4 ) {
+   return colors['yellow']
+ } else if (givenrating >= 4) {
+   return colors['green']
+ }else{
+  return colors['red']
+}
+}
+
+function replace_content(element, modal, form){
+  form.find("#showcase_date_of_achievement").val(element.attr('data-date_of_acheivement'));
+  form.find("#showcase_achieved_description").val(element.attr('data-showcase_achieved_description'))
+}
+
+function refresh_twenty_twenty_div(wrapper_div){
+var imgs = $(wrapper_div+" .twentytwenty-container img");
+images = wrapper_div+" .twentytwenty-container img";
+var loadedImgNum = 0;
+imgs.on('load', function(){loadedImgNum += 1; if (loadedImgNum == imgs.length){setTimeout(function () {$(wrapper_div+" .twentytwenty-container").twentytwenty(); $(window).trigger("resize.twentytwenty"); }, 500); } }); 
+}
+function prependModalClose(elementselector){
+var close_modal_button = "<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>";
+$(elementselector).prepend(close_modal_button);
+}
+function save_rating(element, rating){
+   var data = {showcase: {after_rating: rating, }, };
+   $.ajax({
+    type: 'POST',
+    data: data,
+    url: "/showcases/"+(element.data('showcase-id')) + "/update_fullfilment_details",
+    success: function(data) {},
+    error: function(data) {},
+  });
+}
+
+function reatch_cloundinary(elementselector){
+  $(elementselector).on('fileuploadprogress', function(e, data) {
+    $wrap = $(this).closest('.photo-wrapper');
+    $progress =  $wrap.find('.progress');
+    $progressBar = $wrap.find('.progress-bar');
+    $progress.css("display", "inline-block");
+    $progressBar.css('width', Math.round((data.loaded * 100.0) / data.total) + '%');
+  });
+  $(elementselector).on('cloudinarydone', function(e, data) {
+    $wrap = $(this).closest('.photo-wrapper');
+    $preview = $wrap.find('.preview');
+    $fileinputbutton = $wrap.find('.file-input-button');
+    $progress =  $wrap.find('.progress');
+    $progressBar = $wrap.find('.progress-bar');
+    $previewDeleteButton = $wrap.find('.preview-delete-fullfill');
+    $fileinputbutton.hide();
+    $progress.hide();
+    $preview.show();
+    if($preview.data("source") == "showcase"){
+      $preview.html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', width: $(this).data('width'), height: $(this).data('height'), class: 'img-responsive inline-display' })
+        );
+    }else{
+      $preview.html(
+        $.cloudinary.image(data.result.public_id,
+          { format: data.result.format, version: data.result.version,
+            crop: 'fill', height: $(this).data('height-non-source'), class: 'img-responsive inline-display' })
+        );
+    }
+    $progressBar.css('width', '0%');
+    $previewDeleteButton.show();
+    return true;
+  });
+  $(".preview-delete-fullfill").on("click", function(){
+    $wrap = $(this).closest(".photo-wrapper");
+    $wrap.find(".preview").empty();
+    $wrap.find(".preview-delete-fullfill, .preview").hide();
+    $wrap.find(".file-input-button").show();
+  })
+}

@@ -1,0 +1,5 @@
+  / $(".messages").html("#{j(render partial: 'layouts/messages')}")
+- if @showcase.achieved?
+  $(".toggle-achieve-#{@showcase.id}").html("<div class='achieved-wish-sprite mright5'></div><span class='grey-fg font12'>Achieved</span>");
+- else
+  $(".toggle-achieve-#{@showcase.id}").html("<a class='cc-dark-fg' data-remote='true' rel='nofollow' data-method='post' href='/showcases/#{@showcase.id}/toggle_achieve_wish'><i class='fa fa-check-circle pull-left font20'></i><span class='pull-left font12 mtop2 grey-fg'>Mark as completed?</span></a>");

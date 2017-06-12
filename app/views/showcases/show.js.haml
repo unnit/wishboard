@@ -2,5 +2,12 @@
   $("#cont-wrapper").html("#{j render partial: "home/move_showcase", locals: {showcase: @showcase, collection_id: @collection_id }}");
 - else
   $("#cont-wrapper").html("#{j render partial: "home/pop_showcase", locals: {showcase: @showcase}}");
-$("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>")
-$("#cont-wrapper").modal('show');
+  $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
+  $("#cont-wrapper").modal('show');
+
+  $(document).ready(function(){  
+  var imgs = $("#cont-wrapper .twentytwenty-container img");
+  var loadedImgNum = 0;
+  imgs.on('load', function(){loadedImgNum += 1; if (loadedImgNum == imgs.length){setTimeout(function () {$("#cont-wrapper .twentytwenty-container").twentytwenty(); $(window).trigger("resize.twentytwenty"); }, 500); } }); 
+  });
+ 

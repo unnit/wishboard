@@ -168,7 +168,14 @@ Rails.application.routes.draw do
       post :rewish
       post :have_done_this
       post :coin
+      put :toggle_achieve_wish
       post :toggle_achieve_wish
+      post :fullfillment_form
+      post :update_fullfilment_details
+      put :update_fullfilment_details
+      post :save_rating
+      post :backstory_form
+      post :update_backstory
     end
     collection do
       get :gettags
@@ -198,7 +205,7 @@ Rails.application.routes.draw do
   get "/categories/:id", to: "products#category", as: :category
   get "/listings/:id", to: "products#show", as: :user_product
 
-  get ":id", to: "home#myprofile", as: :myprofile
+  get "home:id", to: "home#myprofile", as: :myprofile
   root 'home#feed'
 
 end

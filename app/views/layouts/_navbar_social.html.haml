@@ -119,10 +119,6 @@
       .col-xs-6.padding10
         = link_to authenticate_path do
           .btn.btn-sm.full-width.white-fg.light-border Login
-#showcase-fullfilled-modal.modal.fade.padding0
-  %span.pull-right.padding5.mbottom20.white-fg.weight600.font25.pon.ps-close-wrapper{ style: "z-index: 1052;", "data-dismiss" => "modal"} x
-  .modal-dialog
-    = render partial: "showcases/fullfiled_showcase", locals: {showcase: Showcase.last}
 #showcase-modal.modal.fade.padding0
   %span.pull-right.padding5.mbottom20.white-fg.weight600.font25.pon.ps-close-wrapper{ style: "z-index: 1051;", "data-dismiss" => "modal"} x
   .modal-dialog

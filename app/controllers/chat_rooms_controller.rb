@@ -44,6 +44,8 @@ class ChatRoomsController < ApplicationController
       redirect_to root_path
       return
     end
+    current_user.join_chat_room(@chat_room) unless current_user.joined_chat_room?(@chat_room)
+    @count = @chat_room.online_count
     @chat_messages = @chat_room.chat_messages.order(created_at: :desc).limit(20).reverse
     respond_to do |format|
       format.js {respond_to :js}
@@ -56,6 +58,7 @@ class ChatRoomsController < ApplicationController
     if @public_chat_rooms.blank?
       get_trending_rooms
     else
+      @count = @public_chat_rooms.first.online_count
       @public_chat_messages = @public_chat_rooms.first.chat_messages.order(created_at: :desc).limit(20).reverse
     end
   end

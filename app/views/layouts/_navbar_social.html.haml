@@ -69,9 +69,9 @@
                       = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
                         %span.grey-fg Sign Out
             %li.hidden-xs.pull-right
-              .fa.fa-bell-o.font20.pon.pull-right.mtop15.notif-icon.white-fg
+              .fa.fa-bell-o.pon.pull-right.notif-icon.white-fg{style: "font-size: 22px;margin-top:18px;"}
               - if current_user.unchecked_notififcations_count > 0
-                .badge.notif-badge.pon.pull-right.mtop5.notif-icon.bg-white.cc-dark-fg= current_user.unchecked_notififcations_count
+                .badge.notif-badge.pon.pull-right.mtop8.notif-icon.bg-white.cc-dark-fg= current_user.unchecked_notififcations_count
               .sq-rot.notif-toggle
               .notif-arrow.notif-toggle
               .notif-wrap.bx-shad.notif-toggle.helvetica-font
@@ -83,8 +83,13 @@
                   .col-xs-12.col-sm-12.padding5.text-center.bg-light-grey.weight600
                     See All
             %li.hidden-xs.pull-right
-              = link_to chat_messages_path do
-                .fa.fa-comments-o.font25.pon.pull-right.white-fg{style: "margin-top: -4px;"}
+              = link_to chat_messages_path, style: "padding: 0px;", class: "j-conv-messages" do
+                .fa.fa-comments-o.font25.pon.pull-right.white-fg{style: "padding: 15px 20px 0px 0px;"}
+                - if current_user.unread_chat_messages_count > 0
+                  .badge.bg-white.cc-dark-fg.pon.notif-badge.mtop8= current_user.unread_chat_messages_count
+            %li.hidden-xs.pull-right
+              = link_to chat_rooms_path, style: "padding: 16px 15px 0px 5px; font-size: 25px; font-weight:bold;color: white;" do
+                \#
           - else
             %li.hidden-xs
               = link_to "SignUp", authenticate_path(tab: "signup"), class: "btn white-fg border2", style: "padding: 7px 15px;margin-top: 7px;border: 1px solid #fff;"

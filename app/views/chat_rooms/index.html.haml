@@ -33,7 +33,7 @@
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
           wildcard: '%QUERY',
-          url: '/chat_rooms/autocomplete?q=%QUERY',
+          url: '/chatrooms/autocomplete?q=%QUERY',
           transform: function(response) {
             // Map the remote source JSON array to a JavaScript object array
             return $.map(response, function(showcases) {

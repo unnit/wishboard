@@ -19,16 +19,18 @@
     .col-sm-6.hidden-xs#j-c-m-wrapper.ptop50.mob-ptop100.pleft0.pright0.full-height
       = render partial: "chat_rooms/chat_room", locals: {chat_room: @public_chat_rooms.first, chat_messages: @public_chat_messages}
     .col-xs-3.hidden-xs#j-c-m-rhs.ptop50.mob-ptop100.no-mar-pad.btn-shadow.full-height.h-z.text-center
-      = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @public_chat_rooms.first}
+      = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @public_chat_rooms.first, count: @count}
       %span.font11 α Alpha mode (Testing)
 
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      $(".j-conv-messages .badge").hide().text("0");
+      $(".j-ct-conv-wrap.active .badge").hide().text("0")
       $('footer').css("display", "none");
       $("#chat_message_content").focus();
       $("#chat_message_content, .j-btn-wrap").css("height", $(".j-chat-form-wrapper").height())
-      $(".j-btn-wrap").css("margin-top", ($(".j-chat-form-wrapper").height() - 25)/2);
+      $(".j-btn-wrap").css("padding-top", ($(".j-chat-form-wrapper").height() - 25)/2);
       $(document).on("click", ".j-ct-conv-wrap", function(){
         $(this).closest(".j-cm-conv-wrap").find(".active").removeClass("active");
         $(this).addClass("active");

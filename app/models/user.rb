@@ -41,6 +41,8 @@ class User < ApplicationRecord
   has_many :withdraws
   has_many :chat_messages, dependent: :destroy
   has_many :chat_rooms, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :joined_chat_rooms, through: :memberships
   has_many :messaged_chat_rooms, -> {order("chat_messages.created_at DESC")}, through: :chat_messages, source: :chat_room
 
   has_one :profile, dependent: :destroy
@@ -167,6 +169,10 @@ class User < ApplicationRecord
     transactions.paid.where(product_id: product.id).count > 0
   end
 
+  def joined_chat_room?(chat_room)
+    self.get_membership(chat_room).present?
+  end
+
   def withdraw_history
     withdraws.where("status = ? or status = ? or status = ?", Withdraw::STATUS[0], Withdraw::STATUS[1], Withdraw::STATUS[2])
   end
@@ -191,8 +197,25 @@ class User < ApplicationRecord
     return self.profile.first_name[0..4].gsub(/[^a-z]/i, '').upcase + SecureRandom.hex(2).upcase
   end
 
+  def get_membership(chat_room)
+    return self.memberships.where("chat_room_id = ?", chat_room.id).first
+  end
+
   def update_wallet(no_of_coins)
     self.wallet.update(:total_coins => (self.wallet.total_coins.to_i + no_of_coins.to_i), :unused_coins => (self.wallet.unused_coins.to_i + no_of_coins.to_i))
+  end
+
+  def join_chat_room(chat_room)
+    self.memberships.create(chat_room_id: chat_room.id)
+  end
+
+  def unread_chat_messages_count
+    count = 0;
+    self.memberships.each do |memebership|
+      unread_count = memebership.chat_room.chat_messages.where("chat_messages.created_at > ? and chat_messages.user_id != ?", memebership.last_seen, self.id).count
+      count = count + unread_count
+    end
+    return count
   end
 
   def avatar

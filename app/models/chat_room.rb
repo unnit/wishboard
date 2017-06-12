@@ -2,7 +2,8 @@ class ChatRoom < ApplicationRecord
   searchkick autocomplete: ['name']
   belongs_to :user
   has_many :chat_messages, dependent: :destroy
-  has_many :chat_users, -> { distinct }, through: :chat_messages, source: :user
+  has_many :memberships, dependent: :destroy
+  has_many :users, through: :memberships
 
   CHAT_ROOM_TYPES = [[0, "Public"], [1, "Private"]]
 
@@ -25,6 +26,14 @@ class ChatRoom < ApplicationRecord
 
   def private_chat?
     room_type == CHAT_ROOM_TYPES[1][0]
+  end
+
+  def online_count
+    memberships.where(online: true).count
+  end
+
+  def unread_messages_count(user)
+    return self.chat_messages.where("chat_messages.created_at > ? and chat_messages.user_id != ?", user.get_membership(self).last_seen, user.id).count
   end
 
   def chat_room_present

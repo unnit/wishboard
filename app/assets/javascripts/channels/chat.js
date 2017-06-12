@@ -8,6 +8,7 @@ $(document).ready(function(){
     App.chat = App.cable.subscriptions.create({channel: "ChatChannel", chat_room_id: values[i]},
       {
         received: function(data) {
+          $(".online-count").text(data['count']);
           if($(".chat-room-"+data['chat_room_id']).length > 0){
             $(".chat-room-"+data['chat_room_id']+" .j-cm-scroll-wrap").append($(data['message']).hide());
             if($(".chat-room-"+data['chat_room_id']).data('current-user-id') == data['owner_id']){

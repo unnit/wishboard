@@ -5,7 +5,7 @@
   .col-xs-12.col-sm-6.col-sm-offset-3.btn-shadow.padding0.full-height#j-c-m-wrapper
     = render partial: "chat_rooms/chat_room", locals: {chat_room: @chat_room, chat_messages: @chat_messages}
   .col-xs-3.hidden-xs.text-center
-    = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @chat_room}
+    = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @chat_room, count: @count}
     %span.font11 α Alpha mode (Testing)
 
 = content_for :extra_js do

@@ -81,12 +81,12 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :address        => "smtp.sendgrid.net",
-    :port           => "2525",
+    :port           => "587",
     :authentication => :plain,
     :user_name      => 'cocociti',#"app37675653@heroku.com",
     :password       => 'FighterFire1@',#"r3pzc9eu1065",
-    :domain         => 'www.cocociti.com'
+    :domain         => 'https://dev1fmtchtyrzp2sdk4ozfh96fny7nz2gy4y.cocociti.com'
   }
 
-  config.action_mailer.default_url_options = { :host => 'https://www.cocociti.com' }
+  config.action_mailer.default_url_options = { :host => 'https://dev1fmtchtyrzp2sdk4ozfh96fny7nz2gy4y.cocociti.com' }
 end

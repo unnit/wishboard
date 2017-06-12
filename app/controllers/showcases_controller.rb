@@ -272,7 +272,7 @@ class ShowcasesController < ApplicationController
       @showcase.fullfilled_image = preloaded.identifier unless preloaded.blank?
     end
     @showcase.save
-    flash[:notice] =  @showcase.achieved? ? "#{@showcase.title} marked as achieved successfully"  : "Unable to mark as achieved."
+    flash[:notice] =  @showcase.achieved? ? "#{@showcase.title} marked as achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>"  : "Unable to mark as achieved."
     flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
     respond_to :js
   end

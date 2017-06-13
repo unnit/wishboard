@@ -89,4 +89,8 @@ Rails.application.configure do
   }
 
   config.action_mailer.default_url_options = { :host => 'https://www.cocociti.com' }
+  Raven.configure do |config|
+    config.dsn = 'https://2be68211d1984d398e3961437df39945:2862153fbd61472db76717d8fa099feb@sentry.io/173077'
+    config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
+  end
 end

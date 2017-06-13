@@ -1,4 +1,4 @@
-- if Rails.env.production? || Rails.env.staging? || Rails.env.development?
+- if Rails.env.production? || Rails.env.staging?
   = javascript_include_tag "//cdn.ravenjs.com/3.16.0/raven.min.js"
   - if Rails.env.production?
     :javascript
@@ -16,6 +16,6 @@
       /https?:\/\/(www\.)?getsentry\.com/
       ]
       }).install();
-  -elsif Rails.env.staging? || Rails.env.development?
+  -elsif Rails.env.staging?
     :javascript
       Raven.config('https://820d834e87e14ebd94a0792c4ce43c40@sentry.io/178636').install();

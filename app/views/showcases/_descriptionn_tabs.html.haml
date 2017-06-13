@@ -1,0 +1,30 @@
+- if showcase.achieved? && ((!showcase.showpiece? && showcase.achieved_description.present?) || (showcase.backstory_possible? && showcase.backstory_description.present?))
+  #showcaseDescriptionTab.ptop10
+    %ul.nav.nav-tabs.text-center
+      - if !showcase.showpiece? && showcase.achieved?
+        %li
+          %a{"data-toggle" => "tab", href: "#before_description_#{showcase.id}"} Before
+        %li.active
+          %a{"data-toggle" => "tab", href: "#after_description_#{showcase.id}"} After
+      -elsif showcase.backstory_possible?
+        %li
+          %a{"data-toggle" => "tab", href: "#backstory_description_#{showcase.id}"} Backstory
+        %li.active
+          %a{"data-toggle" => "tab", href: "#before_description_#{showcase.id}"} Story 
+    .tab-content.ptop10.mleft15.mright15
+      .tab-pane.fade.in.active{ id: "before_description_#{showcase.id}"}
+        .small.grey-fg.excerpt-desc 
+          = showcase.description
+      .tab-pane.fade.text-justify{id: "after_description_#{showcase.id}"}
+        .small.grey-fg.excerpt-desc
+          = showcase.achieved_description
+      .tab-pane.fade.text-justify{id: "backstory_description_#{showcase.id}"}
+        .small.grey-fg.excerpt-desc
+          = showcase.backstory_description
+-else
+  - if showcase.description.present?
+    .col-xs-12.col-sm-12.padding10.bg-white.padding10
+      %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(showcase.description), length: 150)
+      - if showcase.description.length > 150
+        %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.description)
+        %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More

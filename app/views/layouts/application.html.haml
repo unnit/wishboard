@@ -43,6 +43,7 @@
     = render partial: "layouts/messages"
     = yield
     = render partial: "layouts/footer"
+    = render partial: "layouts/sentry_config"
     - if Rails.env.production?
       = javascript_include_tag "//maps.googleapis.com/maps/api/js?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&libraries=places"
     - else

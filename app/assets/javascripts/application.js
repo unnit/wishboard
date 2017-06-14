@@ -1510,7 +1510,7 @@ function save_rating(element, rating){
    $.ajax({
     type: 'POST',
     data: data,
-    url: "/showcases/"+(element.data('showcase-id')) + "/update_rating",
+    url: "/showcases/"+(element.data('showcase-id')) + "/update_fullfilment_details",
     success: function(data) {},
     error: function(data) {},
   });

@@ -1,8 +1,8 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form]
+  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
-  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form]
+  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
   before_action :check_coin_wish, only: [:edit, :update, :delete]
   before_action :get_comment, only: [:edit_comment, :delete_comment]
   before_action :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
@@ -239,7 +239,7 @@ class ShowcasesController < ApplicationController
     flash[:notice] = "Showcases arranged successfully."
     respond_to :js
   end
-  
+
   def backstory_form
     respond_to :js
   end

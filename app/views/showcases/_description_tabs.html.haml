@@ -1,17 +1,18 @@
 .col-xs-12.col-sm-12.no-mar-pad.bg-white
   - if showcase.description.present? && showcase.achieved? && ((!showcase.showpiece? && showcase.achieved_description.present?) || (showcase.backstory_possible? && showcase.backstory_description.present?))
+    - data_slide_titles = !showcase.showpiece? && showcase.achieved? ? ["Main", "After"]  : ["Backstory", "Main"]
     .carousel.slide.description_carousel{id: "descriptionCarousel_#{showcase.id}", "data-interval": false}
       %ol.carousel-indicators
-        %li.active{"data-slide-to" => "0", "data-target" => "#descriptionCarousel_#{showcase.id}"}
+        %li.active{"data-slide-to" => "0", "data-target": "#descriptionCarousel_#{showcase.id}"}
           .ring-container
             .ringring
-            .circle
-        %li{"data-slide-to" => "1", "data-target" => "#descriptionCarousel_#{showcase.id}"}
+            .circle{"data-toggle": "tooltip", "title": data_slide_titles[0]}
+        %li{"data-slide-to" => "1", "data-target": "#descriptionCarousel_#{showcase.id}"}
           .ring-container
             .ringring
-            .circle
+            .circle{"data-toggle": "tooltip", "title": data_slide_titles[1]}
       .carousel-inner.padding10
-        - if !showcase.showpiece? && showcase.achieved?   
+        - if !showcase.showpiece? && showcase.achieved?
           .item.active
             .small.grey-fg.excerpt-desc
               = showcase.description
@@ -21,10 +22,10 @@
         -elsif showcase.backstory_possible?
           .item.active
           .small.grey-fg.excerpt-desc
-            = showcase.description
+            = showcase.backstory_description
         .item
           .small.grey-fg.excerpt-desc
-            = showcase.backstory_description
+            = showcase.description
   -else
     -description = showcase.description.present? ? showcase.description : (showcase.achieved_description.present? ? showcase.achieved_description : showcase.backstory_description)
     -description_type = showcase.description.present? ? "Wish Description" : (showcase.achieved_description.present? ? "Achieved Description" : "Backstory")

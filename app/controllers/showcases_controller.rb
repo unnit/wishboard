@@ -261,7 +261,7 @@ class ShowcasesController < ApplicationController
 
   def update_rating
     @showcase.mark_as_achieved!
-    @showcase.update_attributes(:after_rating: params[:showcase][:after_rating])
+    @showcase.update_attributes(after_rating: params[:showcase][:after_rating])
     flash[:notice] =  @showcase.achieved? ? "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : "Unable to mark as achieved."
     flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
     respond_to :js

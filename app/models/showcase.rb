@@ -335,7 +335,7 @@ class Showcase < ApplicationRecord
      after_rating ? after_rating : DEFAULT_AFTER_RATING
   end
   def backstory_possible?
-    showpiece? && achieved? && BACKSTORY_POSSIBLE_WISH_VALUES.include?(wish_prefix)
+    showpiece? && achieved? && WISH_PREFIX_VALUES.include?(wish_prefix)
   end
   def backstory_added?
     backstory_possible? && (backstory_description.present? || backstory_image.present?)

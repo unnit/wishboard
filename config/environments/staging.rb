@@ -85,8 +85,12 @@ Rails.application.configure do
     :authentication => :plain,
     :user_name      => 'cocociti',#"app37675653@heroku.com",
     :password       => 'FighterFire1@',#"r3pzc9eu1065",
-    :domain         => 'www.cocociti.com'
+    :domain         => 'www.dev1fmtchtyrzp2sdk4ozfh96fny7nz2gy4y.cocociti.com'
   }
 
-  config.action_mailer.default_url_options = { :host => 'https://www.cocociti.com' }
+  config.action_mailer.default_url_options = { :host => 'https://dev1fmtchtyrzp2sdk4ozfh96fny7nz2gy4y.cocociti.com' }
+  Raven.configure do |config|
+    config.dsn = 'https://820d834e87e14ebd94a0792c4ce43c40:bfd0ef3666924c83a3bd93c00edcd010@sentry.io/178636'
+    config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
+  end
 end

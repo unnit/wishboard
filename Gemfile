@@ -60,3 +60,4 @@ group :production, :staging, :development do
   gem "rails_stdout_logging"
   gem 'rails_12factor'
 end
+gem "sentry-raven"

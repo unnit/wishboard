@@ -1,8 +1,8 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form]
+  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :toggle_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
-  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form]
+  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :toggle_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
   before_action :check_coin_wish, only: [:edit, :update, :delete]
   before_action :get_comment, only: [:edit_comment, :delete_comment]
   before_action :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
@@ -239,9 +239,11 @@ class ShowcasesController < ApplicationController
     flash[:notice] = "Showcases arranged successfully."
     respond_to :js
   end
+
   def backstory_form
     respond_to :js
   end
+
   def update_backstory
     @showcase.assign_attributes(backstory_params)
     if params[:backstory_image].present?
@@ -252,17 +254,19 @@ class ShowcasesController < ApplicationController
     flash[:notice] =   @showcase.errors.any? ? "#{@showcase.errors.full_messages.join(',')}" : "Backstory added to #{@showcase.title} successfully"
     respond_to :js
   end
+
   def fullfillment_form
     respond_to :js
   end
+
   def update_rating
     @showcase.mark_as_achieved!
-    @showcase.assign_attributes(fullfillment_params)
-    @showcase.save
+    @showcase.update_attributes(after_rating: params[:showcase][:after_rating])
     flash[:notice] =  @showcase.achieved? ? "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : "Unable to mark as achieved."
     flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
     respond_to :js
   end
+
   def update_fullfilment_details
     @showcase.mark_as_achieved!
     @showcase.reload
@@ -276,6 +280,7 @@ class ShowcasesController < ApplicationController
     flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
     respond_to :js
   end
+
   def toggle_achieve_wish
     @showcase.toggle_user_status!
     @showcase.achieved? ? flash[:notice] = "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe : flash[:notice] = "Undid successfully."

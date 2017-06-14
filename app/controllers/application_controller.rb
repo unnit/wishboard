@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   skip_before_action :check_profile, if: :devise_controller?, raise: false
   before_action :set_timezone, :check_user_status, :check_profile, :init_showcase
+  before_action :set_raven_context
   #before_action :check_interests
 
   def set_timezone
@@ -38,6 +39,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_raven_context
+   Raven.user_context(id: session[:current_user_id]) # or anything else in session
+   Raven.extra_context(params: params.to_unsafe_h, url: request.url)
+ end
 
   def set_social_layout
     @social_layout = "yes"

@@ -1,6 +1,5 @@
 $(".loader-button").show();
 $(".loader-effect").hide();
 $(".messages").html("#{j(render partial: 'layouts/messages')}")
-$addtional_fileds = $('#cont-wrapper').find("form").find('.addtional_fullfillment_fields');
-if($addtional_fileds.hasClass('hidden')){$addtional_fileds.hide().removeClass('hidden').slideDown(); }
 $(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}").promise().done(function(){refresh_twenty_twenty_div(".showcase-ps-#{@showcase.id}");});
+$("#cont-wrapper").modal("hide").html("");

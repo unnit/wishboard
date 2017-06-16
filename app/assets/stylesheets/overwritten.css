@@ -1,0 +1,15 @@
+.emojionearea .emojionearea-button {
+	left: 3px;
+}
+.emojionearea .emojionearea-picker.emojionearea-picker-position-top {
+	left: -14px;
+}
+.emojionearea .emojionearea-editor {
+	padding: 7px 22px 6px 34px;
+}
+.emojionearea .emojionearea-picker{
+	width: 100%;
+}
+.emojionearea .emojionearea-picker .emojionearea-wrapper {
+	width: 100%;
+}

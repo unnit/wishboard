@@ -117,11 +117,11 @@ class Showcase < ApplicationRecord
   end
 
   def activate_wow(user)
-    wows.find_by(user_id: user.id).update_column :active, true
+    wows.find_by(user_id: user.id).update_columns active: true, updated_at: Time.now.utc, created_at: Time.now.utc
   end
 
   def deactivate_wow(user)
-    wows.find_by(user_id: user.id).update_column :active, false
+    wows.find_by(user_id: user.id).update_columns active: false, updated_at: Time.now.utc, created_at: Time.now.utc
   end
 
   def wowed?(user)
@@ -303,6 +303,7 @@ class Showcase < ApplicationRecord
       self.achieved_notifications.where(user_id: follower.id).first_or_create
     end
     update_column :user_status, new_status
+    deactivate_coin_wish if coin_wish?
   end
 
   def toggle_user_status!
@@ -339,6 +340,9 @@ class Showcase < ApplicationRecord
   end
   def backstory_added?
     backstory_possible? && (backstory_description.present? || backstory_image.present?)
+  end
+  def deactivate_coin_wish
+    update_column :coin_wish_status, COIN_WISH_STATUS[1]
   end
 
   private

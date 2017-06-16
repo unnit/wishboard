@@ -1,0 +1,313 @@
+chatroom_sub_category name,chatroom_parent_category_id
+Aviation,1
+Cars,1
+Electric,1
+Motorcycles,1
+Trains,1
+Trucks & Heavy Vehicles,1
+Water Transport,1
+Vintage,1
+Others,1
+Actor,2
+Artist,2
+Athlete,2
+Author,2
+Band,2
+Blogger,2
+Character,2
+Chef,2
+Coach,2
+Comedian,2
+Dancer,2
+Entrepreneur,2
+Fashion Model,2
+Film Director,2
+Fitness Model,2
+Government Official,2
+Journalist,2
+Motivational Speaker,2
+Movie Character,2
+Musician,2
+News Personality,2
+Pet,2
+Photographer,2
+Politician,2
+Producer,2
+Public Figure,2
+Scientist,2
+Teacher,2
+Writer,2
+Others,2
+Agriculture,3
+Automobile,3
+Aviation,3
+Business,3
+Cause,3
+Construction,3
+Community Organization,3
+Consulting,3
+Cultural & Recreation,3
+Education,3
+Finance,3
+Food & Beverage,3
+Government,3
+Health,3
+Hospitality & Travel,3
+Internet,3
+Legal,3
+Logistics & Transportation,3
+Manufacturing,3
+Media & News,3
+Non-Governmental Organization (NGO) | Non-Profit,3
+Political,3
+Professional,3
+Real Estate,3
+Religious,3
+Restaurant,3
+Retail,3
+Science,3
+Services,3
+Technology,3
+Telecommunications,3
+Travel,3
+University,3
+Others,3
+Dating,4
+Family,4
+Fatherhood,4
+Friendship,4
+Marriage,4
+Motherhood,4
+Parenting,4
+Weddings,4
+Others,4
+Cooking,5
+Cuisine,5
+Drinks,5
+Food,5
+Restaurants,5
+Others,5
+Activities,6
+Beauty,6
+Cosmetics,6
+Dieting,6
+Fitness,6
+Meditation,6
+Nutrition,6
+Others,6
+Advertising/Marketing Service,7
+Agriculture,7
+Apparel,7
+Arts & Entertainment,7
+Automotive,7
+Bar,7
+Beauty,7
+Book Store,7
+Business,7
+Casino & Gaming,7
+Design,7
+Doctor,7
+Environmental Service,7
+Event Planning Service,7
+Fashion,7
+Finance,7
+Grocery Store,7
+Home Service,7
+Hospital/Clinic,7
+Hotel & Lodging,7
+Landmark & Historical Place,7
+Legal,7
+Library,7
+Marine,7
+Medical & Health,7
+Movie Theater,7
+Outdoor & Sporting Goods Company,7
+Performance & Sports Venue,7
+Pet Service,7
+Public Services & Government,7
+Real Estate,7
+Recreation & Fitness,7
+Religious Organization,7
+Restaurant,7
+Service,7
+School,7
+Shopping/Retail,7
+"Stadium, Arena & Sports Venue",7
+Transport,7
+Tours Agency,7
+University ,7
+Website,7
+Others,7
+Action movies,8
+Animated movies,8
+Anime movies,8
+Bollywood movies,8
+Comedy ,8
+Characters,8
+Documentaries,8
+Drama,8
+Fantasy ,8
+Fan club,8
+Horror movies,8
+Musical theater,8
+Science fiction movies,8
+Thriller movies,8
+Others,8
+Alternate ,9
+Artist,9
+Bands,9
+Classical music,9
+Composer,9
+Country music,9
+Electronic music,9
+Folk,9
+Hip hop music,9
+Indian,9
+Jazz music,9
+Music videos,9
+Pop music,9
+Regional,9
+Rock music,9
+Others,9
+Books,10
+Comics,10
+Digital,10
+Literature,10
+Library,10
+Magazines,10
+Mystery fiction,10
+Newspapers,10
+Publisher,10
+Others,10
+Online Shopping,11
+Subscriptions,11
+Appliances & accessories,11
+Arts and crafts,11
+Baby products,11
+Beauty accessories,11
+Books,11
+Brands,11
+Budget Shopping,11
+Children's apparel,11
+Collectibles,11
+Computers & Laptops,11
+Cosmetics,11
+Discounts & Offers,11
+Electronics,11
+Footwear,11
+Gadgets,11
+Gifts,11
+Home Decor & Furnishing,11
+IOT,11
+Jewelry,11
+Luxury,11
+Men’s Products,11
+Music and videos,11
+Mobile Phones,11
+Office,11
+Restaurant,11
+Senior products,11
+Shoes,11
+Software,11
+Specialty foods,11
+Sports and outdoors,11
+Tools & Machinery,11
+Toys,11
+Travel,11
+Women’s Products,11
+Others,11
+Athletics,12
+Board Games,12
+Card Games,12
+Coach,12
+Cricket,12
+Extreme Sports,12
+Event,12
+Football,12
+League,12
+Motor Sports,12
+Matches & Tournaments,12
+Online Games,12
+Professional Team,12
+"Stadium, Arena & Venue",12
+Tennis,12
+Team,12
+Video Games,12
+Mobile Games,12
+Others,12
+Adventure travel,13
+Air travel,13
+Backpacking,13
+Beaches,13
+Car rentals,13
+Camping,13
+Climbing,13
+Cruises,13
+Ecotourism,13
+Forestry,13
+Hippies,13
+Hotels,13
+Lakes,13
+Mountains,13
+Nature,13
+Outdoors,13
+Road Trips,13
+Scouting,13
+Survivalist,13
+Theme parks,13
+Tourism,13
+Travel Jobs,13
+Unexplored,13
+Unconventional,13
+Vacations,13
+Water/Voyage,13
+Others,13
+Amazon Prime,14
+Netflix,14
+YouTube,14
+TV Series/Serials,14
+TV Shows,14
+Character,14
+TV Channel,14
+TV Award,14
+Others,14
+Academics,15
+Art,15
+Craft,15
+Design,15
+Economics,15
+Education,15
+Entertainment,15
+Entrepreneurship,15
+Finance,15
+Fun,15
+Gadgets,15
+Gigs,15
+Higher Education,15
+Hobbies,15
+History,15
+Ideas,15
+India,15
+Interesting products,15
+Investing,15
+IT/Software,15
+Jobs,15
+Marketing,15
+Medicine and Healthcare,15
+Mobile Phones,15
+Money,15
+Nutrition,15
+Pets & Animals,15
+Places,15
+Philosophy,15
+Photography,15
+Psychology,15
+Physics,15
+Regional,15
+Science,15
+Software Engineering,15
+Startups,15
+Swag,15
+Technology,15
+World,15
+Others,15

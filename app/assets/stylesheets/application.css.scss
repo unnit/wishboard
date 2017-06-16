@@ -807,6 +807,20 @@ small{
 .border2{
   border-radius: 2px;
 }
+.pull-none{
+  float: none !important;
+}
+.coco-plain-input-field{
+  background-color: #f9f9f9 !important;
+  border: 2px solid #f5f5f5 !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+  padding: 10px 5px !important;
+  height: 45px ;
+}
+.coco-plain-input-field:focus, .coco-plain-input-field:active{
+  border: 2px solid #eaeaea !important;
+}
 .btn-gold{
   background-color: #a3681b;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFE9A041', endColorstr='#FF7C4907');
@@ -919,71 +933,4 @@ small{
 }
 .opacity-low{
   opacity: 0.3;
-}
-
-#showcaseDescriptionTab .nav li
-{
-  display: inline-block;
-  a{
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-}
-#showcaseDescriptionTab .nav-tabs li{
-  float: none;
-  .active a, .nav-tabs li.active a:focus, .nav-tabs li.active a:hover{
-  font-size: 13px;
-  color: #000;
-  background-color: rgba(128, 128, 128, 0.41);
-  }
-  #showcase-fullfilled-modal.modal{
-  z-index: 1051;
-}
-}
-
-.description_carousel{
-  min-height: 50px;
-  .carousel-indicators{
-    bottom: 5px;
-    li{
-      background: none;
-      border-bottom: 0px;
-      color: none;
-      .ring-container {
-        position: relative;
-      }
-      .circle {
-        width: 5px;
-        height: 5px;
-        background-color: #62bd19;
-        border-radius: 50%;
-        position: absolute;
-        top: 23px;
-        left: 23px;
-      }
-      .ringring {
-        border: 3px solid #62bd19;
-        -webkit-border-radius: 30px;
-        height: 10px;
-        width: 10px;
-        position: absolute;
-        left: 20px;
-        top: 20px;
-        -webkit-animation: pulsate 1s ease-out;
-        -webkit-animation-iteration-count: infinite;
-        opacity: 0.0
-      }
-      @-webkit-keyframes pulsate {
-        0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
-        50% {opacity: 1.0;}
-        100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
-      }
-    }
-    li.active{
-      .ringring {
-        -webkit-animation: none;
-        -webkit-animation-iteration-count: none;
-      }
-    }
-  }
 }

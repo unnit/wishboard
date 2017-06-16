@@ -1,36 +1,28 @@
-.col-xs-12.col-sm-12.no-mar-pad.bg-white
-  - if showcase.description.present? && showcase.achieved? && ((!showcase.showpiece? && showcase.achieved_description.present?) || (showcase.backstory_possible? && showcase.backstory_description.present?))
+.col-xs-12.col-sm-12.padding0.min-height0
+  - if showcase.description.present? && showcase.achieved? && (showcase.achieved_description.present? || showcase.backstory_description.present?)
     .carousel.slide.description_carousel{id: "descriptionCarousel_#{showcase.id}", "data-interval": false}
       %ol.carousel-indicators
         %li.active{"data-slide-to" => "0", "data-target" => "#descriptionCarousel_#{showcase.id}"}
-          .ring-container
-            .ringring
-            .circle
         %li{"data-slide-to" => "1", "data-target" => "#descriptionCarousel_#{showcase.id}"}
-          .ring-container
-            .ringring
-            .circle
-      .carousel-inner.padding10
-        - if !showcase.showpiece? && showcase.achieved?   
-          .item.active
+      .carousel-inner
+        - if showcase.backstory_description.present?
+          .item.padding10{class: "#{showcase.backstory_description.present? ? 'active' : ''}"}
             .small.grey-fg.excerpt-desc
-              = showcase.description
-          .item
-            .small.grey-fg.excerpt-desc
-              = showcase.achieved_description
-        -elsif showcase.backstory_possible?
-          .item.active
+              %span.weight600.black80-fg Backstory:
+              = showcase.backstory_description
+        .item.padding10{class: "#{showcase.achieved_description.present? ? 'active' : ''}"}
           .small.grey-fg.excerpt-desc
+            %span.weight600.black80-fg Story:
             = showcase.description
-        .item
-          .small.grey-fg.excerpt-desc
-            = showcase.backstory_description
+        - if showcase.achieved_description.present?
+          .item.padding10
+            .small.grey-fg.excerpt-desc
+              %span.weight600.black80-fg Story of fulfillment:
+              = showcase.achieved_description
   -else
-    -description = showcase.description.present? ? showcase.description : (showcase.achieved_description.present? ? showcase.achieved_description : showcase.backstory_description)
-    -description_type = showcase.description.present? ? "Wish Description" : (showcase.achieved_description.present? ? "Achieved Description" : "Backstory")
-    - if description
-      .col-xs-12.col-sm-12.padding10.bg-white.padding10
-        %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(description), length: 150)
-        - if showcase.description.length > 150
-          %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(description)
-          %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+    - description = showcase.description || showcase.achieved_description || showcase.backstory_description
+    .col-xs-12.col-sm-12.bg-white.min-height0
+      %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(description), length: 150)
+      - if description.try(:length).to_i > 150
+        %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(description)
+        %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More

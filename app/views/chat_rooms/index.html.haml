@@ -1,51 +1,11 @@
 .container.ptop50.mob-ptop100.padding0{style: "min-height: 100%;"}
   .row
     .col-xs-12.col-sm-12.mtop20.h-z
-      .fa.fa-plus-square-o.cc-dark-fg.j-n-c-t-btn.pull-right.pon{style: "font-size: 40px;"}
-      .pos-absolute.hide-display.j-n-c-t-wrapper.col-xs-12.col-sm-4.bg-shad.padding10.bg-white{style: "right: 0px;top: 48px;"}
-        = render partial: "chat_rooms/new_chat_room", locals: { chat_room: @chat_room }
+      = link_to new_chat_room_path do
+        .fa.fa-plus-square-o.cc-dark-fg.j-n-c-t-btn.pull-right.pon{style: "font-size: 40px;"}
     .col-xs-12.col-sm-12.padding0
       %h3.mbottom0{style: "margin-top: -30px;"} TRENDING CHAT ROOMS
       %hr.mtop5.mbottom10
       .col-xs-12.col-sm-12.no-mar-pad
         - @trending_chat_rooms.each do |chat_room|
           = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
-
-= content_for :extra_js do
-  :javascript
-    $(document).ready(function(){
-      $(document).on("click", ".j-n-c-t-btn", function(){
-        $(".j-n-c-t-wrapper").toggle();
-      })
-      $(document).on("click", "#j_nct_wish_prefix", function(){
-        $(".j-nct-prefix-holder").addClass("open");
-      })
-      $(document).on("click", ".j-nct-prefix-holder li a", function(){
-        $wrap = $(this).closest("#new_chat_room");
-        $wrap.find("#j_nct_wish_prefix").val($(this).data("text"));
-        $wrap.find("#chat_room_wish_prefix").val($(this).data("id"));
-        $(".j-nct-prefix-holder").removeClass("open");
-      })
-      var showcases = new Bloodhound({
-        datumTokenizer: function(datum) {
-          return Bloodhound.tokenizers.whitespace(datum.value);
-        },
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-          wildcard: '%QUERY',
-          url: '/chatrooms/autocomplete?q=%QUERY',
-          transform: function(response) {
-            // Map the remote source JSON array to a JavaScript object array
-            return $.map(response, function(showcases) {
-              return {
-                value: showcases
-              };
-            });
-          }
-        }
-      });
-      $("#chat_room_name").typeahead(null, {
-        display: 'value',
-        source: showcases,
-      })
-    });

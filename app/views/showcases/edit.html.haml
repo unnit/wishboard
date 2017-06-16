@@ -1,34 +1,31 @@
 .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0
   .container.padding0.ptop20.pbottom70.helvetica-font
     .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
-      = form_for @showcase, html: { class: "create-showcase" } do |f|
-        - if @showcase.achieved? && ((!@showcase.showpiece?) || (@showcase.backstory_possible?))
-          #showcaseFormTab.ptop10
-            %ul.nav.nav-tabs.nav-justified
-              -if @showcase.achieved? && (!@showcase.showpiece?)
-                %li.active
-                  %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
-                %li
-                  %a{"data-toggle" => "tab", :href => "#after_#{@showcase.id}"} After
-              -elsif @showcase.backstory_possible?
-                %li.active
-                  %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
-                %li
-                  %a{"data-toggle" => "tab", :href => "#backstory_#{@showcase.id}"} Backstory
-              -else
-                %li.active
-                  %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
-            .tab-content.padding10
-              .tab-pane.fade.in.active{:id => "normal_#{@showcase.id}"}
-                = render partial: "showcases/showcase_form_fields", locals: {f: f, showcase: @showcase}
-              .tab-pane.fade.text-justify{:id => "after_#{@showcase.id}"}
-                = render partial: "showcases/after_fullfill_form_fields", locals: {f: f, showcase: @showcase}
-              .tab-pane.fade.text-justify{:id => "backstory_#{@showcase.id}"}
-                = render partial: "showcases/backstory_form_fields", locals: {f: f, showcase: @showcase}
-        -else
-          = render partial: "showcases/showcase_form_fields", locals: {f: f, showcase: @showcase}
-        .col-xs-12.col-sm-12.mtop25.text-center
-          = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
+      - if @showcase.achieved? && ((!@showcase.showpiece?) || (@showcase.backstory_possible?))
+        #showcaseFormTab.ptop10
+          %ul.nav.nav-tabs.col-xs-12.col-sm-12.text-center
+            -if @showcase.achieved? && (!@showcase.showpiece?)
+              %li.active.inline-block.pull-none
+                %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
+              %li.inline-block.pull-none
+                %a{"data-toggle" => "tab", :href => "#after_#{@showcase.id}"} After
+            -elsif @showcase.backstory_possible?
+              %li.inline-block.pull-none
+                %a{"data-toggle" => "tab", :href => "#backstory_#{@showcase.id}"} Backstory
+              %li.active.inline-block.pull-none
+                %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Story
+            -else
+              %li.active.inline-block.pull-none
+                %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
+          .tab-content
+            .tab-pane.fade.in.active{:id => "normal_#{@showcase.id}"}
+              = render partial: "showcases/showcase_form_fields", locals: {showcase: @showcase}
+            .tab-pane.fade.text-justify{:id => "after_#{@showcase.id}"}
+              = render partial: "showcases/after_fullfill_form_fields", locals: {showcase: @showcase}
+            .tab-pane.fade.text-justify{:id => "backstory_#{@showcase.id}"}
+              = render partial: "showcases/edit_backstory_form_fields", locals: {showcase: @showcase}
+      -else
+        = render partial: "showcases/showcase_form_fields", locals: {showcase: @showcase}
 
 = content_for :extra_js do
   :javascript
@@ -44,6 +41,9 @@
         date_options["startDate"] = new Date($(".ps-wrapper").data("fdate"));
         $wrap.find(".dt-of-achievement").datetimepicker(date_options);
       }
+      date_options["startDate"] = "";
+      date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+      $(".after-date-of-achievement").datetimepicker(date_options)
       $editwrap =   $("#edit_showcase_"+#{@showcase.id})
       $editwrap.find(".ps-initial").animate({"width": $editwrap.find(".j-ps-holder").width() - $editwrap.find(".prefix-holder").width() - 5}, 200);
       var places_input_1= $('.pac-input')[1];
@@ -55,5 +55,4 @@
                 }
               });
           });
-      reatch_cloundinary('.cloudinary-fileupload-fullfill');
     })

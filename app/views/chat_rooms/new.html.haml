@@ -1,0 +1,46 @@
+.container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 100%;"}
+  .container.padding0.ptop20.pbottom70.helvetica-font
+    .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.mtop20.padding0
+      .panel.panel-default.mbottom0.bg-shad
+        .panel-heading
+          %h4.mtop-v-5 New Chat Room
+        .panel-body
+          = form_for @chat_room do |f|
+            .form-group
+              = f.select :main_category_id, MainCategory.all.map{|m| [m.name, m.id]}, {include_blank: "Select"}, class: "form-control coco-select-box"
+            .form-group.j-sub-categories
+              = f.select :sub_category_id, "", {include_blank: "Select"}, class: "form-control coco-select-box"
+            .form-group
+              = f.text_field :name, placeholder: "Name of chat room", class: "coco-input-field form-control height50"
+            .form-group.mbottom0
+              = f.submit "Create", class: "btn btn-md cc-dark-bg white-fg j-nct-submit"
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $("#chat_room_main_category_id").on("change", function(){
+        $.get("/chatrooms/"+$(this).val()+"/get_sub_categories")
+      })
+      var showcases = new Bloodhound({
+        datumTokenizer: function(datum) {
+          return Bloodhound.tokenizers.whitespace(datum.value);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+          wildcard: '%QUERY',
+          url: '/chatrooms/autocomplete?q=%QUERY',
+          transform: function(response) {
+            // Map the remote source JSON array to a JavaScript object array
+            return $.map(response, function(showcases) {
+              return {
+                value: showcases
+              };
+            });
+          }
+        }
+      });
+      $("#chat_room_name").typeahead(null, {
+        display: 'value',
+        source: showcases,
+      })
+    });

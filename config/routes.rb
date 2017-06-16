@@ -186,6 +186,9 @@ Rails.application.routes.draw do
   end
 
   resources :chat_rooms, path: "chatrooms" do
+    member do
+      get :get_sub_categories
+    end
     collection do
       get :autocomplete
       get :get_chat_messages

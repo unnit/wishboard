@@ -22,7 +22,7 @@ class Showcase < ApplicationRecord
   has_many :commenter_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
   accepts_nested_attributes_for :location
-  
+
   DEFAULT_AFTER_RATING = 0
   BACKSTORY_POSSIBLE_WISH_VALUES = [6, 8, 9, 11]
   WISH_PREFIX =
@@ -68,7 +68,7 @@ class Showcase < ApplicationRecord
   validates :showcase_type, inclusion: {in: SHOWCASE_VALUES, message: "not an accepted value."}
   validates :wish_prefix, inclusion: {in: WISH_PREFIX_VALUES, message: "not an accepted value."}
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
-  validates :achieved_description, length: { maximum: 2500 }
+  validates :achieved_description, :backstory_description, length: { maximum: 2500 }
   validates :date_of_achievement, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :date_of_achievement_blank?
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
@@ -315,31 +315,23 @@ class Showcase < ApplicationRecord
     else
       mark_as_achieved!
     end
-    # if achieved_notifications.present?
-    #   achieved_notifications.each do |achieved_notification|
-    #     achieved_notification.active = !achieved_notification.active
-    #     achieved_notification.save
-    #   end
-    # else
-    #   user.followers.each do |follower|
-    #     self.achieved_notifications.create(user_id: follower.id)
-    #   end
-    # end
     update_column :user_status, new_status
   end
-
-  after_create :create_showcase_notification, :promotional_offer
-  after_destroy :verify_wallet
 
   def get_rating
      after_rating ? after_rating : DEFAULT_AFTER_RATING
   end
+
   def backstory_possible?
     showpiece? && achieved? && WISH_PREFIX_VALUES.include?(wish_prefix)
   end
+
   def backstory_added?
     backstory_possible? && (backstory_description.present? || backstory_image.present?)
   end
+
+  after_create :create_showcase_notification, :promotional_offer
+  after_destroy :verify_wallet
 
   private
   def create_showcase_notification

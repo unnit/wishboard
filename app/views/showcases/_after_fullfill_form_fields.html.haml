@@ -1,21 +1,24 @@
-.col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-edit-wrapper{style: "overflow: hidden;max-height:480px;height: auto;"}
-  .preview-edit
-    - if @showcase.fullfilled_image.present?
-      = cl_image_tag @showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
-  .preview-delete-edit.bg-white.pon.pos-absolute.font16{class: "#{@showcase.fullfilled_image.blank? ? 'hide-display' : 'block-display'}"} x
-  .col-xs-12.col-sm-12.no-mar-pad
-    .glyphicon.glyphicon-camera.file-input-button-edit.mtop20.padding20.cc-dark-fg.dotted-border{style: "font-size: 65px;display: #{@showcase.fullfilled_image.present? ? 'none': 'inline-block'};"}
-      = cl_image_upload_tag(:fullfilled_image, html: { class: "cloudinary-fileupload-edit file-upload-trigger" })
-  .col-xs-12.col-sm-12.no-mar-pad
-    .progress.progress-striped.progress-edit.mbottom0{style: "display: none;height: 6px;width:107px;"}
-      .progress-bar.progress-bar-edit{style: "width: 0%;"}
-.col-xs-12.col-sm-12.text-center.ptop10
-  .col-xs-12.col-sm-12.padding5{:style => "height: 166px;"}
-    = f.text_area :achieved_description, placeholder: "Tell the story of fullfillment of this wish?", class: "form-control coco-input-field pleft5", maxlength: 2500, rows: 1, style: "height: 156px;"
-.col-xs-12.col-sm-12.text-center.ptop10
-  .col-xs-12.col-sm-5.no-mar-pad.height50
-    = f.text_field :date_of_achievement, placeholder: "When", class: "form-control coco-input-field pleft5 date-of-achievement bg-white"
-.col-xs-12.col-sm-12.padding5
-  = f.hidden_field :after_rating, class: "showcase_after_rating"
-  #star_rating.star_rating.text-center.inline-block{"data-display-rating" => "#ratingvalue", "data-input-field" => ".showcase_after_rating", "data-rateyo-rating" => "#{showcase.get_rating}", "data-rateyo-spacing" => "10px", "data-rateyo-star-width" => "40px", "data-showcase-id" => "#{showcase.id}" , "data-display-rating-map"=>".display_rating"}
-  %span.display_rating
+= form_for showcase, url: update_fullfilment_details_showcase_path(showcase), method: :post do |f|
+  .col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-edit-wrapper{style: "overflow: hidden;max-height:480px;height: auto;"}
+    .preview-edit
+      - if @showcase.fullfilled_image.present?
+        = cl_image_tag @showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
+    .preview-delete-edit.bg-white.pon.pos-absolute.font16{class: "#{@showcase.fullfilled_image.blank? ? 'hide-display' : 'block-display'}"} x
+    .col-xs-12.col-sm-12.no-mar-pad
+      .glyphicon.glyphicon-camera.file-input-button-edit.mtop20.padding20.cc-dark-fg.dotted-border{style: "font-size: 65px;display: #{@showcase.fullfilled_image.present? ? 'none': 'inline-block'};"}
+        = cl_image_upload_tag(:fullfilled_image, html: { class: "cloudinary-fileupload-edit file-upload-trigger" })
+    .col-xs-12.col-sm-12.no-mar-pad
+      .progress.progress-striped.progress-edit.mbottom0{style: "display: none;height: 6px;width:107px;"}
+        .progress-bar.progress-bar-edit{style: "width: 0%;"}
+  .col-xs-12.col-sm-12.text-center
+    .col-xs-12.col-sm-12.padding5
+      ~ f.text_area :achieved_description, placeholder: "Tell the story of fullfillment of this wish?", class: "form-control coco-input-field pleft5", maxlength: 2500, rows: 1, style: "height: 100px;"
+  .col-xs-12.col-sm-6.ptop20
+    .col-xs-12.col-sm-12.no-mar-pad.height50
+      = f.text_field :date_of_achievement, placeholder: "When", class: "form-control coco-input-field pleft5 after-date-of-achievement bg-white"
+  .col-xs-12.col-sm-6.padding5.ptop20
+    = f.hidden_field :after_rating, class: "showcase_after_rating"
+    #star_rating.star_rating.text-center.inline-block{"data-display-rating" => "#ratingvalue", "data-input-field" => ".showcase_after_rating", "data-rateyo-rating" => "#{showcase.get_rating}", "data-rateyo-spacing" => "10px", "data-rateyo-star-width" => "40px", "data-showcase-id" => "#{showcase.id}" , "data-display-rating-map"=>".display_rating"}
+    %span.display_rating
+  .col-xs-12.col-sm-12.mtop20.text-center
+    = f.submit "Update Details", class: "btn cc-dark-bg white-fg weight-bold"

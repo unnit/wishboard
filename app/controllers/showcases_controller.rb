@@ -59,7 +59,6 @@ class ShowcasesController < ApplicationController
   def update
     @showcase.build_location if @showcase.location.blank?
     @showcase.assign_attributes(showcase_params)
-    @showcase.assign_attributes(fullfillment_params)
     if params[:image].present?
       preloaded = Cloudinary::PreloadedFile.new(params[:image])
       @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -252,7 +251,10 @@ class ShowcasesController < ApplicationController
     end
     @showcase.save
     flash[:notice] =   @showcase.errors.any? ? "#{@showcase.errors.full_messages.join(',')}" : "Backstory added to #{@showcase.title} successfully"
-    respond_to :js
+    respond_to do |format|
+      format.js { respond_to :js }
+      format.html { redirect_to showcase_path(@showcase) }
+    end
   end
 
   def fullfillment_form
@@ -276,9 +278,17 @@ class ShowcasesController < ApplicationController
       @showcase.fullfilled_image = preloaded.identifier unless preloaded.blank?
     end
     @showcase.save
-    flash[:notice] =  @showcase.achieved? ? "#{@showcase.title} marked as achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>"  : "Unable to mark as achieved."
     flash[:notice] = "#{@showcase.errors.full_messages.join(',')}" if @showcase.errors.any?
-    respond_to :js
+    respond_to do |format|
+      format.js {
+        respond_to :js
+        flash[:notice] =  @showcase.achieved? ? "#{@showcase.title} marked as achieved successfully <a href='/showcases/#{@showcase.id}/toggle_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>"  : "Unable to mark as achieved."
+      }
+      format.html {
+        redirect_to showcase_path(@showcase)
+        flash[:notice] = "Details updated successfully"
+      }
+    end
   end
 
   def toggle_achieve_wish

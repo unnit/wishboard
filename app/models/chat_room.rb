@@ -1,6 +1,8 @@
 class ChatRoom < ApplicationRecord
   searchkick autocomplete: ['name']
   belongs_to :user
+  belongs_to :main_category
+  belongs_to :sub_category
   has_many :chat_messages, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
@@ -8,7 +10,9 @@ class ChatRoom < ApplicationRecord
   CHAT_ROOM_TYPES = [[0, "Public"], [1, "Private"]]
 
   validates :name, presence: true, length: { maximum: 150 }
-  validates :wish_prefix, inclusion: {in: Showcase::WISH_PREFIX_VALUES, message: "not an accepted value."}, presence: true
+  #validates :wish_prefix, inclusion: {in: Showcase::WISH_PREFIX_VALUES, message: "not an accepted value."}, presence: true
+  validates :main_category_id, inclusion: {in: MainCategory.all.map(&:id), message: "not an accepted value"}, presence: true
+  validates :sub_category_id, inclusion: {in: SubCategory.all.map(&:id), message: "not an accepted value"}, presence: true
   validate :chat_room_present
 
   HUMANIZED_ATTRIBUTES = {
@@ -37,7 +41,7 @@ class ChatRoom < ApplicationRecord
   end
 
   def chat_room_present
-    unless ChatRoom.where("lower(name) like ? and wish_prefix = ?", self.name.downcase, self.wish_prefix).blank?
+    unless ChatRoom.where("lower(name) like ? and main_category_id = ? and sub_category_id = ?", self.name.downcase, self.main_category_id, self.sub_category_id).blank?
       errors.add(:base, "Chatroom already present.")
     end
   end

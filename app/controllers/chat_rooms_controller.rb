@@ -9,14 +9,21 @@ class ChatRoomsController < ApplicationController
     get_trending_rooms
   end
 
+  def get_sub_categories
+    category = MainCategory.find_by_id params[:id]
+    @sub_categories = category.sub_categories
+    respond_to :js
+  end
+
   def new
+    @chat_room = ChatRoom.new
   end
 
   def create
     @chat_room = current_user.chat_rooms.new(chat_room_params)
     if @chat_room.save
       flash[:notice] = "#{@chat_room.name} created successfully"
-      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}/chatrooms/#{@chat_room.id}'"
+      redirect_to chat_room_path(@chat_room)
     else
       flash[:alert] = @chat_room.errors.full_messages.join(", ")
       respond_to :js
@@ -76,7 +83,7 @@ class ChatRoomsController < ApplicationController
   private
 
   def chat_room_params
-    params.require(:chat_room).permit(:name, :wish_prefix)
+    params.require(:chat_room).permit(:name, :main_category_id, :sub_category_id)
   end
 
   def find_and_check_chat_room

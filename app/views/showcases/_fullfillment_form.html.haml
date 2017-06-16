@@ -1,15 +1,10 @@
-.col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.pbottom20
-  = form_for showcase, :url => update_fullfilment_details_showcase_path(showcase), :method => :post, remote: true, html: { class: "fullfill-showcase", id: "mark-as-fullied-form" , "data-model": "showcase"} do |f|
-    .col-xs-12.col-sm-12.text-center{:style => "overflow: hidden;"}
+.col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding10.pbottom20
+  = form_for showcase, url: update_fullfilment_details_showcase_path(showcase), method: :post, remote: true, html: { class: "fullfill-showcase" } do |f|
+    .col-xs-12.col-sm-12.text-center.padding5.border2.hidden-overflow
+      %h5.mtop0.mbottom5= showcase.title
       = f.hidden_field :after_rating, class: "showcase_after_rating"
       #star_rating.star_rating.text-center.inline-block{"data-display-rating" => "#ratingvalue", "data-display-rating-map" => ".display_rating", "data-input-field" => ".showcase_after_rating", "data-rateyo-rating" => "#{showcase.get_rating}", "data-rateyo-spacing" => "10px", "data-rateyo-star-width" => "40px", "data-save-rating" => "true", "data-showcase-id" => "#{showcase.id}"}
-      %span.display_rating
-    .addtional_fullfillment_fields.hidden
+      %span.display_rating.inline-block.mtop15{style: "vertical-align: top;"}
+    .additional_fulfillment_fields.hidden
       .col-xs-12.col-sm-12.no-mar-pad
         = render partial: "showcases/fullfillment_form_fields", locals: {f: f, showcase: showcase}
-      .col-xs-12.col-sm-12.text-center.padding5.fs-btn-wrapper.no-mar-pad
-        .white-fg.no-mar-pad.loader-out-showcase-fullfill-button.inline-block
-          = f.submit " Add details", class: "loader-button loader-in-showcase-fullfill-button showcase-fullfillment-submit"
-          .loader-effect.loader-in-showcase-fullfill-button.text-center{:style => "display:none;padding-top: 4px;"}
-            .ball-clip-rotate
-              %div

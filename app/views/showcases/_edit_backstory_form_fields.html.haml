@@ -1,0 +1,17 @@
+= form_for showcase, url: update_backstory_showcase_path(showcase), method: :post, html: { class: "backstory-showcase"} do |f|
+  .col-xs-12.col-sm-12.no-mar-pad.photo-wrapper.text-center
+    .preview
+      - if @showcase.backstory_image.present?
+        = cl_image_tag @showcase.backstory_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
+    .preview-delete-fullfill.bg-white.pon.pos-absolute.font16{class: "#{@showcase.backstory_image.blank? ? 'hide-display' : 'block-display'}"} x
+    .col-xs-12.col-sm-12.no-mar-pad
+      .glyphicon.glyphicon-camera.file-input-button.mtop20.padding20.cc-dark-fg.dotted-border{style: "font-size: 65px;display: #{@showcase.backstory_image.present? ? 'none': 'inline-block'};"}
+        = cl_image_upload_tag(:backstory_image, html: { class: "cloudinary-fileupload-fullfill file-upload-trigger", "data-height": "150", "data-width": "100", "data-height-non-source": "150"  })
+    .col-xs-12.col-sm-12.no-mar-pad
+      .progress.progress-striped.progress.mbottom0{style: "display: none;height: 6px;width:107px;"}
+        .progress-bar.progress-bar{style: "width: 0%;"}
+  .col-xs-12.col-sm-12.padding10
+    .col-xs-12.col-sm-12.paddong0
+      ~ f.text_area :backstory_description, placeholder: "Tell the story of fullfillment of this wish?", class: "form-control coco-input-field pleft5", maxlength: 2500, rows: 1, style: "height: 130px;"
+  .col-xs-12.col-sm-12.text-center.mtop10
+    = f.submit "Update Backstory", class: "btn cc-dark-bg white-fg weight-bold"

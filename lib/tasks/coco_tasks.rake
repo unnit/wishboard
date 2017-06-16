@@ -9,6 +9,24 @@ namespace :coco_tasks do
     end
   end
 
+  task add_categories: :environment do
+    filename = "#{Rails.root}/lib/parent-categories.csv"
+    CSV.foreach(filename, headers: true) do |row|
+      MainCategory.create(name: row[0])
+    end
+  end
+
+  task add_sub_categories: :environment do
+    filename = "#{Rails.root}/lib/sub-categories.csv"
+    CSV.foreach(filename, headers: true) do |row|
+      c = MainCategory.find_by_id row[1]
+      s = SubCategory.new
+      s.name = row[0]
+      s.main_category = c
+      s.save
+    end
+  end
+
   task add_pickup_address: :environment do
     user_ids = Address.uniq.pluck(:user_id)
     user_ids.each do |id|

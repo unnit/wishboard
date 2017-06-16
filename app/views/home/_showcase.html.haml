@@ -117,13 +117,10 @@
           = link_to fullfillment_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
             %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
             %span.pull-left.font12.mtop2.grey-fg Mark as completed?
-          / %span{class: "toggle-achieve-#{showcase.id} mark-as-fullfilled", "data-showcase-id": "#{showcase.id}", "data-showcase_achieved_description": "#{showcase.achieved_description}", "data-showcase_date_of_achievement": "#{showcase.date_of_achievement}", "data-showcase_fullfilled_image": "#{ showcase.fullfilled_image? ? cl_image_path(showcase.fullfilled_image) : ''}"}
-          /   %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
-          /   %span.pull-left.font12.mtop2.grey-fg Mark as completed?
         - elsif showcase.backstory_possible?
           = link_to backstory_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
             %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
-            %span.pull-left.font12.mtop2.grey-fg Have Before Story?
+            %span.pull-left.font12.mtop2.grey-fg Backstory?
         - else
           .achieved-wish-sprite.mright5
           %span.grey-fg.font12 Achieved
@@ -175,6 +172,6 @@
         = link_to myprofile_path(current_user.profile.slug) do
           = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
       .media-body
-        = f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 2500
+        ~ f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 2500
         = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-bg mtop5 btn-shadow btn-comment-create pull-left"
         .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}

@@ -1,4 +1,6 @@
 $(".loader-button").show();
 $(".loader-effect").hide();
 $(".messages").html("#{j(render partial: 'layouts/messages')}")
-$(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}").promise().done(function(){refresh_twenty_twenty_div(".showcase-ps-#{@showcase.id}");});
+- if @showcase.errors.blank?
+  $(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}").promise().done(function(){refresh_twenty_twenty_div(".showcase-ps-#{@showcase.id}");});
+  $("#cont-wrapper").modal("hide").html("");

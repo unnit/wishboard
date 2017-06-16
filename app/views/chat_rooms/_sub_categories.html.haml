@@ -1,0 +1,1 @@
+= select :chat_room, :sub_category_id, sub_categories.map{|s| [s.name, s.id]}, {include_blank: "Select"}, class: "form-control coco-select-box"

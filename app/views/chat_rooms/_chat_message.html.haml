@@ -5,5 +5,5 @@
       %span.weight600.font13.inline-block.full-width.cc-dark-fg{class: "chat-usr-name-#{chat_message.id} #{chat_message.user == current_user ? 'text-right' : 'text-left'}"}
         %span= chat_message.user.name
       .j-chat_content_data.hidden
-        %p=simple_format chat_message.content.gsub("\n", "<br />")
+        %p=simple_format Obscenity.sanitize(chat_message.content).gsub("\n", "<br />")
       %span.grey70-fg.full-width.inline-block{style: "font-size:8px;", class: "chat-usr-name-#{chat_message.id} #{chat_message.user == current_user ? 'text-right' : 'text-left'}"}= chat_message.created_at.strftime('%d %^b %H %M')

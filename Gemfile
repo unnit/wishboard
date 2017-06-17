@@ -61,3 +61,8 @@ group :production, :staging, :development do
   gem 'rails_12factor'
 end
 gem "sentry-raven"
+gem 'obscenity'
+group :staging do
+  gem 'pg'
+end
+

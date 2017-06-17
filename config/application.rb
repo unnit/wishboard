@@ -32,5 +32,9 @@ module Cocociti
     config.to_prepare do
       ActionMailer::Base.helper "application"
     end
+    Obscenity.configure do |config|
+      config.blacklist   = "#{Rails.root}/config/blacklist.yml"
+      config.replacement = :stars
+    end
   end
 end

@@ -1,0 +1,47 @@
+.talktext .emojione{
+    font-size: inherit;
+    height: 2ex;
+    width: 2.1ex;
+    min-height: 20px;
+    min-width: 20px;
+    display: inline-block;
+    margin: -.2ex .15em .2ex;
+    line-height: normal;
+    vertical-align: middle;
+    max-width: 100%;
+    top: 0;
+}
+.emojionearea .emojionearea-editor {
+  min-height: 0px !important;
+  height: 100%;
+  max-height: 100%;
+}
+.emojionearea{
+  height: 100%;
+  max-height: 100%;
+}
+.emojionearea.focused {
+  border-color: #a5a5a5;
+  outline: 0;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(144, 144, 144, 0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(144, 144, 144, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(144, 144, 144, 0.6);
+}
+.emojionearea .emojionearea-button {
+	left: 3px;
+}
+.emojionearea .emojionearea-picker.emojionearea-picker-position-top {
+	left: 0px;
+}
+.emojionearea .emojionearea-editor {
+	padding: 7px 22px 6px 34px;
+}
+.emojionearea .emojionearea-picker{
+	width: 100%;
+}
+.emojionearea .emojionearea-picker .emojionearea-wrapper {
+	width: 100%;
+}
+.emojionearea .emojionearea-picker.emojionearea-picker-position-top .emojionearea-wrapper:after{
+  left: 20px !important;
+}

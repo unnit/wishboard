@@ -6,11 +6,11 @@
           %h4.mtop-v-5 New Chat Room
         .panel-body
           = form_for @chat_room do |f|
-            .form-group
-              = f.select :main_category_id, MainCategory.all.map{|m| [m.name, m.id]}, {include_blank: "Select"}, class: "form-control coco-select-box"
-            .form-group.j-sub-categories
-              = f.select :sub_category_id, "", {include_blank: "Select"}, class: "form-control coco-select-box"
-            .form-group
+            .form-group.mbottom30.mtop20
+              = f.select :main_category_id, MainCategory.all.map{|m| [m.name, m.id]}, {include_blank: "Select Main Category"}, class: "form-control coco-select-box"
+            .form-group.j-sub-categories.mbottom30
+              = f.select :sub_category_id, "", {include_blank: "Select Subcategory"}, class: "form-control coco-select-box"
+            .form-group.mbottom30
               = f.text_field :name, placeholder: "Name of chat room", class: "coco-input-field form-control height50"
             .form-group.mbottom0
               = f.submit "Create", class: "btn btn-md cc-dark-bg white-fg j-nct-submit"
@@ -19,8 +19,9 @@
   :javascript
     $(document).ready(function(){
       $("#chat_room_main_category_id").on("change", function(){
-        $.get("/chatrooms/"+$(this).val()+"/get_sub_categories")
+        $.get("/chatrooms/"+$(this).val()+"/get_sub_categories");
       })
+      $.get("/chatrooms/"+$(this).val()+"/get_sub_categories");
       var showcases = new Bloodhound({
         datumTokenizer: function(datum) {
           return Bloodhound.tokenizers.whitespace(datum.value);

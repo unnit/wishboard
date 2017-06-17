@@ -3,7 +3,9 @@
   %span.block-display{style: "font-size: 8px;"} α Alpha mode (Testing)
 .container-fluid.padding-mob0.ptop50.mob-ptop100.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@chat_room.id}"}
   .col-xs-12.col-sm-6.col-sm-offset-3.btn-shadow.padding0.full-height#j-c-m-wrapper
-    = render partial: "chat_rooms/chat_room", locals: {chat_room: @chat_room, chat_messages: @chat_messages}
+    #chat_messages_wrapper.pull-left.full-width{style: "height:88%;"}
+      = render partial: "chat_rooms/chat_room", locals: {chat_room: @chat_room, chat_messages: @chat_messages}
+    = render partial: "chat_rooms/chat_submit_form", locals: {chat_room: @chat_room}
   .col-xs-3.hidden-xs.text-center
     = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @chat_room, count: @count}
     %span.font11 α Alpha mode (Testing)
@@ -13,8 +15,7 @@
     $(document).ready(function(){
       $('footer').css("display", "none");
       $("#chat_message_content").focus();
-      $("#chat_message_content").css("height", $(".j-chat-form-wrapper").height());
-      $(".j-btn-wrap").css("margin-top", ($(".j-chat-form-wrapper").height() - 25)/2);
+      $(".j-btn-wrap").css("padding-top", ($(".j-chat-form-wrapper").height() - 25)/2);
       if(#{@chat_room.chat_messages.count} > 20){
         $("#chat_messages").on("scroll", function(){
           if($(this).scrollTop() == 0){

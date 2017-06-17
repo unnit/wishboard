@@ -110,13 +110,13 @@
         %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
           = showcase.comments.count
-  .col-xs-4.col-sm-4.pright0.pleft5
+  .col-xs-6.col-sm-6.pright0.pleft5
     - if current_user
       - if showcase.owner?(current_user)
         - if (!showcase.showpiece? && !showcase.achieved?)
           = link_to fullfillment_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
             %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
-            %span.pull-left.font12.mtop2.grey-fg Mark as completed?
+            %span.pull-left.font12.mtop2.grey-fg.mright10 Mark as completed?
         - elsif showcase.backstory_possible?
           = link_to backstory_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
             %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
@@ -125,14 +125,19 @@
           .achieved-wish-sprite.mright5
           %span.grey-fg.font12 Achieved
       - else
-        %span.rewish-link.pon.cc-dark-fg.pull-left{"data-id" => "#{showcase.id}"}
-          %i.fa.fa-clone.pull-left.mtop2
-          %span.font12.grey-fg.pull-left.mtop2 Wish?
-        .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
-          = showcase.children.count
-        %span.done-this.pon.cc-dark-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
-          %i.fa.fa-check-square-o.pull-left.font17.mtop2
-          %span.font12.grey-fg.pull-left.mtop2 Done?
+        - unless showcase.coin_wish?
+          %span.rewish-link.pon.cc-dark-fg.pull-left{"data-id" => "#{showcase.id}"}
+            %i.fa.fa-clone.pull-left.mtop2
+            %span.font12.grey-fg.pull-left.mtop2 Wish?
+          .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
+            = showcase.children.count
+          %span.done-this.pon.cc-dark-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
+            %i.fa.fa-check-square-o.pull-left.font17.mtop2
+            %span.font12.grey-fg.pull-left.mtop2 Done?
+      - if showcase.coin_wish?
+        %i.fa.fa-inr.pull-left.cc-dark-fg.mtop2
+        .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{title: "#{showcase.coined_users}"}
+          = showcase.active_coins.count
     - else
       = link_to authenticate_path do
         %span.pon.cc-dark-fg.pull-left.pright5
@@ -143,11 +148,6 @@
         %span.pon.cc-dark-fg.pull-left.pleft-10
           %i.fa.fa-check-square-o.pull-left.font17.mtop2
           %span.font12.grey-fg.pull-left.mtop2 Done?
-  .col-xs-2.col-sm-2.pright0.pleft5
-    - if showcase.coin_wish?
-      %span.font11.grey-fg.pull-left.mtop2{class: "badge-coin-link-#{showcase.id}"} Coins
-      .badge.pull-left.mleft5.bg-white.cc-dark-fg{style: "display: #{showcase.coins_any? ? 'inline-block' : 'none'}", title: "#{showcase.coined_users}"}
-        = showcase.active_coins.count
   .col-xs-2.col-sm-2.pright0.pleft5
     - if current_user && showcase.owner?(current_user)
       = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do

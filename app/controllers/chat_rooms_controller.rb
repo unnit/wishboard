@@ -26,7 +26,7 @@ class ChatRoomsController < ApplicationController
       redirect_to chat_room_path(@chat_room)
     else
       flash[:alert] = @chat_room.errors.full_messages.join(", ")
-      respond_to :js
+      render :new
     end
   end
 

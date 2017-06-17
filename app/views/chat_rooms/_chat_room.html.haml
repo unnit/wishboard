@@ -1,12 +1,7 @@
-.pull-left.full-width#chat_messages.ptop20.pbottom10{"data-chat-room-id" => "#{chat_room.id}", "data-current-user-id" => "#{current_user.id}", style: "overflow-y: scroll;height:88%;", class: "chat-room-#{chat_room.id}"}
+.pull-left.full-width#chat_messages.ptop20.pbottom10.full-height{"data-chat-room-id" => "#{chat_room.id}", "data-current-user-id" => "#{current_user.id}", class: "chat-room-#{chat_room.id}", style: "overflow-y: scroll;"}
   .col-xs-12.col-sm-12.text-center.msg-loader.padding40{style: "display:none;"}
     %i.fa.fa-circle-o-notch.fa-spin.font21
     Please wait...
   .full-width.pull-left.j-cm-scroll-wrap
     = render partial: "chat_rooms/chat_messages_wrapper", locals: {chat_messages: chat_messages}
 .pos-absolute.right15.cc-dark-bg.badge.white-fg.font13.scroll-bt-msg-count.hide-display.pon{style: "bottom: 15%"} 0
-.pull-left.full-width.j-chat-form-wrapper.padding10.bg-chat-grey.pright0.mob-padding5{style: "height: 12%;border-top: 1px solid rgb(224, 224, 224);"}
-  .form-group.mbottom0.j-c-msg-wrapper{"data-chat-room-id" => "#{chat_room.id}"}
-    = text_area :chat_message, :content, class: "bg-white form-control pull-left coco-input-field no-border padding0 pleft5", style: "width: 90%;", placeholder: "Type a message..."
-    .pull-left.text-center.j-btn-wrap.pon{style: "width: 10%;"}
-      .fa.fa-paper-plane-o.cc-dark-fg.font25.mob-font20

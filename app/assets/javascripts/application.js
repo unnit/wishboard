@@ -29,10 +29,12 @@
 //= require jssocials
 //= require intro
 //= require sweetalert.min
-//= require cable
 //= require jquery.event.move
 //= require jquery.twentytwenty
 //= require jquery.rateyo
+//= require emojione
+//= require emojionearea
+//= require cable
 
 $(document).ready(function(){
   if($.fn.cloudinary_fileupload !== undefined) {
@@ -1431,6 +1433,9 @@ $(document).ready(function(){
   $(document).on("click", ".j-doa-trigger", function(){
     $(".j-doa-wrap").fadeIn();
   })
+  customUnicodeToHtml(".j-chat_content_data");
+  messages_to_bottom();
+  $(".emojionearea").removeClass("hidden");
 });
 $(window).on("load", function(){
   $(".twentytwenty-container").twentytwenty();
@@ -1508,7 +1513,6 @@ function save_rating(element, rating){
     error: function(data) {},
   });
 }
-
 function reatch_cloundinary(elementselector){
   $(elementselector).on('fileuploadprogress', function(e, data) {
     $wrap = $(this).closest("form").find('.photo-wrapper');
@@ -1552,3 +1556,13 @@ function reatch_cloundinary(elementselector){
     $wrap.find(".file-input-button").show();
   })
 }
+function customUnicodeToHtml(element_selector){
+  $(element_selector+":not([data-emojioneadded])").each(function() {
+       $(this).attr("emojioneadded","");
+       $(this).html(emojione.unicodeToImage($(this).html()));
+       $(this).removeClass("hidden");
+  });
+}
+var messages_to_bottom = function() {
+  return $("#chat_messages").scrollTop($("#chat_messages").prop("scrollHeight"));
+};

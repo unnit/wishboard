@@ -21,8 +21,9 @@
               = showcase.achieved_description
   -else
     - description = showcase.description || showcase.achieved_description || showcase.backstory_description
-    .col-xs-12.col-sm-12.bg-white.min-height0
-      %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(description), length: 150)
-      - if description.try(:length).to_i > 150
-        %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(description)
-        %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+    - if description.present?
+      .col-xs-12.col-sm-12.bg-white.padding10
+        %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(description), length: 150)
+        - if description.try(:length).to_i > 150
+          %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(description)
+          %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More

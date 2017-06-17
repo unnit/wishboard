@@ -17,7 +17,9 @@
       - @public_chat_rooms.each do |chat_room|
         = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
     .col-sm-6.hidden-xs#j-c-m-wrapper.ptop50.mob-ptop100.pleft0.pright0.full-height
-      = render partial: "chat_rooms/chat_room", locals: {chat_room: @public_chat_rooms.first, chat_messages: @public_chat_messages}
+      #chat_messages_wrapper.pull-left.full-width{style: "height:88%;"}
+        = render partial: "chat_rooms/chat_room", locals: {chat_room: @public_chat_rooms.first, chat_messages: @public_chat_messages}
+      = render partial: "chat_rooms/chat_submit_form", locals: {chat_room: @public_chat_rooms.first}
     .col-xs-3.hidden-xs#j-c-m-rhs.ptop50.mob-ptop100.no-mar-pad.btn-shadow.full-height.h-z.text-center
       = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @public_chat_rooms.first, count: @count}
       %span.font11 α Alpha mode (Testing)
@@ -25,18 +27,17 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      $('footer').css("display", "none");
       $(".j-conv-messages .badge").hide().text("0");
       $(".j-ct-conv-wrap.active .badge").hide().text("0")
-      $('footer').css("display", "none");
       $("#chat_message_content").focus();
-      $("#chat_message_content, .j-btn-wrap").css("height", $(".j-chat-form-wrapper").height())
       $(".j-btn-wrap").css("padding-top", ($(".j-chat-form-wrapper").height() - 25)/2);
       $(document).on("click", ".j-ct-conv-wrap", function(){
         $(this).closest(".j-cm-conv-wrap").find(".active").removeClass("active");
         $(this).addClass("active");
         $(this).find(".badge").hide();
         $(this).find(".badge").text("0");
-        $("#j-c-m-wrapper").html("<span class='full-width inline-block text-center'><i class='fa fa-spinner fa-spin font25 cc-dark-fg' style='margin-top: 40%'></i></span>")
+        $("#chat_messages_wrapper").html("<span class='full-width inline-block text-center'><i class='fa fa-spinner fa-spin font25 cc-dark-fg' style='margin-top: 40%'></i></span>")
         $.ajax({url: "/chatrooms/"+$(this).data("chat-room-id")});
       })
       if(#{@public_chat_rooms.present? ? @public_chat_rooms.first.chat_messages.count : 0} > 20){
@@ -49,9 +50,9 @@
         })
       }
       $(document).on("keyup", "#search_chat", function(){
-        var value = $(this).val();
+        var value = $(this).val().toLowerCase();
         $(".j-croom-name").each(function(){
-          var name = $(this).text();
+          var name = $(this).text().toLowerCase();
           if(name.indexOf(value) < 0){
             $(this).closest(".j-ct-conv-wrap").hide();
           }else{

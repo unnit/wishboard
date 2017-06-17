@@ -3555,7 +3555,7 @@ th.headerSortDown {
 }
 .description_carousel .carousel-indicators{
   margin-bottom: 0px !important;
-  bottom: 0px !important;
+  bottom: -2px !important;
 }
 .description_carousel .carousel-indicators li{
   border: 1px solid #737373 !important;
@@ -3567,6 +3567,15 @@ th.headerSortDown {
   background-color: #737373 !important;
   -webkit-animation: pulsate 1s ease-out;
   -webkit-animation-iteration-count: infinite;
+}
+.pulsate{
+  -webkit-animation: pulsate 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+}
+.pulsate-dot{
+  background-color: #ff4a14;
+  width: 8px;
+  height: 8px;
 }
 @-webkit-keyframes pulsate {
   0% {-webkit-transform: scale(1, 1);}

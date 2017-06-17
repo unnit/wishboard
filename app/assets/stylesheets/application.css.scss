@@ -28,6 +28,10 @@
  *= require sweetalert
  *= require twentytwenty
  *= require jquery.rateyo
+ *= require emojionearea
+ *= require custom_emojione
+ *= require emojionearea
+ *= require custom_emojione
  */
 
 /*@font-face {
@@ -575,6 +579,7 @@ small{
 .coco-input-field:hover, .coco-input-field:focus, .coco-input-field:active{
   box-shadow: none;
   border-color: #732db0;
+  outline: none !important;
 }
 .border-two{
   border-top: 1px solid #DCDCDC !important;

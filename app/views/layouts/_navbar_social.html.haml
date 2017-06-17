@@ -89,7 +89,8 @@
                   .badge.bg-white.cc-dark-fg.pon.notif-badge.mtop8= current_user.unread_chat_messages_count
             %li.hidden-xs.pull-right
               = link_to chat_rooms_path, style: "padding: 16px 15px 0px 5px; font-size: 25px; font-weight:bold;color: white;" do
-                \#
+                %span.pulsate.wow-badge-bg.pull-right.img-circle.pulsate-dot
+                %span.pull-right #
           - else
             %li.hidden-xs
               = link_to "SignUp", authenticate_path(tab: "signup"), class: "btn white-fg border2", style: "padding: 7px 15px;margin-top: 7px;border: 1px solid #fff;"

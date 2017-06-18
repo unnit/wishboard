@@ -4,13 +4,13 @@
       = link_to new_chat_room_path do
         .fa.fa-plus-square-o.cc-dark-fg.j-n-c-t-btn.pull-right.pon{style: "font-size: 40px;"}
     .col-xs-12.col-sm-12.padding0
-      %h3.mbottom0{style: "margin-top: -30px;"} TRENDING CHAT ROOMS
+      %h4.mbottom0{style: "margin-top: -30px;"} TRENDING CHAT ROOMS
       %hr.mtop5.mbottom10
       .col-xs-12.col-sm-12.no-mar-pad
         - @trending_chat_rooms.each do |chat_room|
           = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
     .col-xs-12.col-sm-12.padding0
-      %h3.mbottom0 ALL CHAT ROOMS
+      %h4.mbottom0 ALL CHAT ROOMS
       %hr.mtop5.mbottom10
       .col-xs-12.col-sm-12.no-mar-pad
         - MainCategory.all.each do |main_category|
@@ -30,3 +30,9 @@
         %br
         %strong Sanity, Decency & conduct:
         Cocociti is an open, unmonitored platform. Therefore it will be full of as many predators and nefarious characters as it will be interesting people. We believe moderation isn't good for the internet; so you need to be aware of who is out there and what they want from you. A great way to use chat rooms is to find the most relevant chatroom based on your wishes. Invite your friends to Cocociti to a particular chatroom by sharing the link or using the invite friends option from the profile menu. If you find yourself in trouble or want to check out the chat room & Cocociti rules; visit our terms page. Please feel free to write us to ayyo[at]cocociti.com  Happy wishing & happy chatting.
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".chat-room-mobile").addClass("cc-med-bg");
+    });

@@ -206,7 +206,7 @@ Rails.application.routes.draw do
   get "/categories/:id", to: "products#category", as: :category
   get "/listings/:id", to: "products#show", as: :user_product
 
-  get "home:id", to: "home#myprofile", as: :myprofile
+  get ":id", to: "home#myprofile", as: :myprofile
   root 'home#feed'
 
 end

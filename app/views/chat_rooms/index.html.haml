@@ -9,6 +9,15 @@
       .col-xs-12.col-sm-12.no-mar-pad
         - @trending_chat_rooms.each do |chat_room|
           = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
+    .col-xs-12.col-sm-12.padding0
+      %h3.mbottom0 ALL CHAT ROOMS
+      %hr.mtop5.mbottom10
+      .col-xs-12.col-sm-12.no-mar-pad
+        - MainCategory.all.each do |main_category|
+          %h4.pull-left.full-width.mbottom0= main_category.name
+          %hr.pull-left.full-width.mtop5.mbottom10
+          - main_category.chat_rooms.order(:name).each do |chat_room|
+            = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
     .col-xs-12.col-sm-12.padding10
       .col-xs-12.col-sm-12.no-mar-pad.text-center.mbottom20
         %span.header-text CHAT ROOMS

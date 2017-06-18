@@ -22,7 +22,7 @@
       = render partial: "chat_rooms/chat_submit_form", locals: {chat_room: @public_chat_rooms.first}
     .col-xs-3.hidden-xs#j-c-m-rhs.ptop50.mob-ptop100.no-mar-pad.btn-shadow.full-height.h-z.text-center
       = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @public_chat_rooms.first, count: @count}
-      %span.font11 α Alpha mode (Testing)
+      %span.font11 α Alpha mode
 
 = content_for :extra_js do
   :javascript

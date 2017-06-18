@@ -1,6 +1,7 @@
 class ChatRoomsController < ApplicationController
 
-  before_action :authenticate_user!, :set_social_layout
+  before_action :authenticate_user!, except: [:index]
+  before_action :set_social_layout
   before_action :find_and_check_chat_room, only: [:edit, :update, :destroy]
   before_action :get_chat_room, only: [:get_chat_messages]
 

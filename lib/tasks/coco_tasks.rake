@@ -29,7 +29,7 @@ namespace :coco_tasks do
 
   task add_chat_rooms: :environment do
     filename = "#{Rails.root}/lib/Chatrooms.csv"
-    CSV.foreach(filename, header: true) do |row|
+    CSV.foreach(filename, headers: true) do |row|
         c = MainCategory.find_by_id row[2]
         s = SubCategory.find_by_id row[0]
         chatroom = ChatRoom.new

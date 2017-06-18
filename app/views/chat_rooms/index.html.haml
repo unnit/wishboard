@@ -1,35 +1,34 @@
-.container.ptop50.mob-ptop100.padding0{style: "min-height: 100%;"}
-  .row
-    .col-xs-12.col-sm-12.mtop20.h-z
-      = link_to new_chat_room_path do
-        .fa.fa-plus-square-o.cc-dark-fg.j-n-c-t-btn.pull-right.pon{style: "font-size: 40px;"}
-    .col-xs-12.col-sm-12.padding0
-      %h4.mbottom0{style: "margin-top: -30px;"} TRENDING CHAT ROOMS
-      %hr.mtop5.mbottom10
-      .col-xs-12.col-sm-12.no-mar-pad
-        - @trending_chat_rooms.each do |chat_room|
+.container.ptop50.mob-ptop100.padding10{style: "min-height: 100%;"}
+  .col-xs-12.col-sm-12.mtop20.h-z
+    = link_to new_chat_room_path do
+      .fa.fa-plus-square-o.cc-dark-fg.j-n-c-t-btn.pull-right.pon{style: "font-size: 40px;"}
+  .col-xs-12.col-sm-12.padding0
+    %h4.mbottom0{style: "margin-top: -30px;"} TRENDING CHAT ROOMS
+    %hr.mtop5.mbottom10
+    .col-xs-12.col-sm-12.no-mar-pad
+      - @trending_chat_rooms.each do |chat_room|
+        = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
+  .col-xs-12.col-sm-12.padding0
+    %h4.mbottom0 ALL CHAT ROOMS
+    %hr.mtop5.mbottom10
+    .col-xs-12.col-sm-12.no-mar-pad
+      - MainCategory.all.each do |main_category|
+        %h4.pull-left.full-width.mbottom0= main_category.name
+        %hr.pull-left.full-width.mtop5.mbottom10
+        - main_category.chat_rooms.order(:name).each do |chat_room|
           = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
-    .col-xs-12.col-sm-12.padding0
-      %h4.mbottom0 ALL CHAT ROOMS
-      %hr.mtop5.mbottom10
-      .col-xs-12.col-sm-12.no-mar-pad
-        - MainCategory.all.each do |main_category|
-          %h4.pull-left.full-width.mbottom0= main_category.name
-          %hr.pull-left.full-width.mtop5.mbottom10
-          - main_category.chat_rooms.order(:name).each do |chat_room|
-            = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
-    .col-xs-12.col-sm-12.padding10
-      .col-xs-12.col-sm-12.no-mar-pad.text-center.mbottom20
-        %span.header-text CHAT ROOMS
-      %p.font-medium{style: "text-align: justify"}
-        Chat rooms are an integral part of Cocociti; A great place to meet people with similar wishes and to talk about those, seeking advice and exploring fulfillment options for your wishes. With that in mind, here is to find the best Cocociti chat rooms. Cocociti chat rooms are your primary place of connecting to people in relation with your wishes. Essentially, chat rooms are group chats instigated based on interests, by any user related to a particular wish or someone who likes to talk to lots of other people. We have got quite an interesting lists of main wish categories & subcategories for you to engage with. Oh, here is the best part; if you cannot find what you’re looking for, you can always create your own!
-        %br
-        %br
-        Public chatrooms (groups) are the easiest ways for you to meet friends that have the same interests as you! Interested in Fifth Harmony? There's a group! Want to talk about your Favorite group? Just search for PokemonGo or Cricket. Think of them like a Cocociti username but for groups. Public Groups are searchable to anybody with the most recent version of Cocociti and as long as there's room in the group, anyone can join. Public Groups must comply with our Community Standards. If you or the group you're in doesn't comply with these standards, action may be taken against you or the group. If you're repeatedly banned from a group multiple times, you may be banned from joining Public Groups altogether.
-        %br
-        %br
-        %strong Sanity, Decency & conduct:
-        Cocociti is an open, unmonitored platform. Therefore it will be full of as many predators and nefarious characters as it will be interesting people. We believe moderation isn't good for the internet; so you need to be aware of who is out there and what they want from you. A great way to use chat rooms is to find the most relevant chatroom based on your wishes. Invite your friends to Cocociti to a particular chatroom by sharing the link or using the invite friends option from the profile menu. If you find yourself in trouble or want to check out the chat room & Cocociti rules; visit our terms page. Please feel free to write us to ayyo[at]cocociti.com  Happy wishing & happy chatting.
+  .col-xs-12.col-sm-12.padding10
+    .col-xs-12.col-sm-12.no-mar-pad.text-center.mbottom20
+      %span.header-text CHAT ROOMS
+    %p.font-medium{style: "text-align: justify"}
+      Chat rooms are an integral part of Cocociti; A great place to meet people with similar wishes and to talk about those, seeking advice and exploring fulfillment options for your wishes. With that in mind, here is to find the best Cocociti chat rooms. Cocociti chat rooms are your primary place of connecting to people in relation with your wishes. Essentially, chat rooms are group chats instigated based on interests, by any user related to a particular wish or someone who likes to talk to lots of other people. We have got quite an interesting lists of main wish categories & subcategories for you to engage with. Oh, here is the best part; if you cannot find what you’re looking for, you can always create your own!
+      %br
+      %br
+      Public chatrooms (groups) are the easiest ways for you to meet friends that have the same interests as you! Interested in Fifth Harmony? There's a group! Want to talk about your Favorite group? Just search for PokemonGo or Cricket. Think of them like a Cocociti username but for groups. Public Groups are searchable to anybody with the most recent version of Cocociti and as long as there's room in the group, anyone can join. Public Groups must comply with our Community Standards. If you or the group you're in doesn't comply with these standards, action may be taken against you or the group. If you're repeatedly banned from a group multiple times, you may be banned from joining Public Groups altogether.
+      %br
+      %br
+      %strong Sanity, Decency & conduct:
+      Cocociti is an open, unmonitored platform. Therefore it will be full of as many predators and nefarious characters as it will be interesting people. We believe moderation isn't good for the internet; so you need to be aware of who is out there and what they want from you. A great way to use chat rooms is to find the most relevant chatroom based on your wishes. Invite your friends to Cocociti to a particular chatroom by sharing the link or using the invite friends option from the profile menu. If you find yourself in trouble or want to check out the chat room & Cocociti rules; visit our terms page. Please feel free to write us to ayyo[at]cocociti.com  Happy wishing & happy chatting.
 
 = content_for :extra_js do
   :javascript

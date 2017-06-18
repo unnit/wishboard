@@ -28,7 +28,7 @@
       %meta{name: "theme-color", content: "#732db0"}
     - elsif @auth_layout.present?
       %meta{name: "theme-color", content: "#0891e6"}
-  %body
+  %body{"data-root-url" => "#{GLOBAL_VARIABLES[:root_url]}"}
     = render partial: "/layouts/google_analytics"
     - if @social_layout.present?
       = render partial: "/layouts/navbar_social"

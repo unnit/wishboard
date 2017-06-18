@@ -42,7 +42,7 @@ development:
 
 staging:
   time_out: 15
-  root_url: "https://localhost"
+  root_url: "https://dev1fmtchtyrzp2sdk4ozfh96fny7nz2gy4y.cocociti.com/"
   transaction_return_url: "https://localhost/transactions/callback"
   admin_mail: "ayyo@cocociti.com"
   notification_mail: "cocogeeks@gmail.com"

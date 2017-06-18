@@ -1097,7 +1097,7 @@ document = window.document || {};
     var emojioneVersion = window.emojioneVersion || '2.1.4';
     var cdn = {
         // defaultBase: "https://cdnjs.cloudflare.com/ajax/libs/emojione/",
-        defaultBase: "https://localhost",
+        defaultBase: $("body").data("root-url"),
         base: null,
         isLoading: false
     };

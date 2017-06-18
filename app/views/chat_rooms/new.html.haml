@@ -21,7 +21,6 @@
       $("#chat_room_main_category_id").on("change", function(){
         $.get("/chatrooms/"+$(this).val()+"/get_sub_categories");
       })
-      $.get("/chatrooms/"+$(this).val()+"/get_sub_categories");
       var showcases = new Bloodhound({
         datumTokenizer: function(datum) {
           return Bloodhound.tokenizers.whitespace(datum.value);

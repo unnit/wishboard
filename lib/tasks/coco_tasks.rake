@@ -27,6 +27,19 @@ namespace :coco_tasks do
     end
   end
 
+  task add_chat_rooms: :environment do
+    filename = "#{Rails.root}/lib/Chatrooms.csv"
+    CSV.foreach(filename, header: true) do |row|
+        c = MainCategory.find_by_id row[2]
+        s = SubCategory.find_by_id row[0]
+        chatroom = ChatRoom.new
+        chatroom.main_category = c
+        chatroom.sub_category = s
+        chatroom.name = row[3]
+        chatroom.save
+    end
+  end
+
   task add_pickup_address: :environment do
     user_ids = Address.uniq.pluck(:user_id)
     user_ids.each do |id|

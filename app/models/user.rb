@@ -42,7 +42,7 @@ class User < ApplicationRecord
   has_many :chat_messages, dependent: :destroy
   has_many :chat_rooms, dependent: :destroy
   has_many :memberships, dependent: :destroy
-  has_many :joined_chat_rooms, through: :memberships
+  has_many :joined_chat_rooms, through: :memberships, source: :chat_room
   has_many :messaged_chat_rooms, -> {order("chat_messages.created_at DESC")}, through: :chat_messages, source: :chat_room
 
   has_one :profile, dependent: :destroy

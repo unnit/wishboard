@@ -302,21 +302,25 @@ class Showcase < ApplicationRecord
     user.followers.each do |follower|
       self.achieved_notifications.where(user_id: follower.id).first_or_create
     end
-    update_column :user_status, new_status
+    update_columns user_status: new_status, achieved_at: Time.now.utc, updated_at: Time.now.utc
     deactivate_coin_wish if coin_wish?
   end
 
+  def undo_achieved!
+    new_status = USER_STATUS[0]
+    achieved_notifications.each do |achieved_notification|
+      achieved_notification.active = !achieved_notification.active
+      achieved_notification.save
+    end
+    update_columns user_status: new_status, achieved_at: created_at, updated_at: Time.now.utc
+  end
+
   def toggle_user_status!
-    new_status = user_status == USER_STATUS[0] ? USER_STATUS[1] : USER_STATUS[0]
-    if user_status == USER_STATUS[0]
-      achieved_notifications.each do |achieved_notification|
-        achieved_notification.active = !achieved_notification.active
-        achieved_notification.save
-      end
+    if user_status == USER_STATUS[1]
+      undo_achieved!
     else
       mark_as_achieved!
     end
-    update_column :user_status, new_status
   end
 
   def get_rating
@@ -335,10 +339,14 @@ class Showcase < ApplicationRecord
     update_column :coin_wish_status, COIN_WISH_STATUS[1]
   end
 
-  after_create :create_showcase_notification, :promotional_offer
+  after_create :create_showcase_notification, :promotional_offer, :set_achieved
   after_destroy :verify_wallet
 
   private
+  def set_achieved
+    update_column :achieved_at, created_at
+  end
+
   def create_showcase_notification
     unless self.admin_created?
       user.followers.each do |follower|

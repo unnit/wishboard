@@ -96,7 +96,7 @@ class ChatRoomsController < ApplicationController
   end
 
   def get_trending_rooms
-    @trending_chat_rooms = ChatRoom.where("id in (?) and room_type = ?", ChatMessage.select(:chat_room_id).group(:chat_room_id).order('count(chat_room_id) DESC'), ChatRoom::CHAT_ROOM_TYPES[0][0])
+    @trending_chat_rooms = ChatRoom.where("id in (?) and room_type = ?", ChatMessage.select(:chat_room_id).group(:chat_room_id).order('count(chat_room_id) DESC'), ChatRoom::CHAT_ROOM_TYPES[0][0]).limit(12)
   end
 
 end

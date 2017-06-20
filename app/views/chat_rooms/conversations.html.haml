@@ -7,12 +7,13 @@
         - @trending_chat_rooms.each do |chat_room|
           = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
   - else
-    .col-xs-12.col-sm-3.ptop50.mob-ptop100.btn-shadow.full-height.pleft20.pright20.h-z.j-cm-conv-wrap.hidden-xs
-      .col-xs-12.col-sm-12.padding0.mbottom20.mtop20
+    .col-xs-12.col-sm-3.ptop50.mob-ptop100.btn-shadow.full-height.pleft0.pright0.h-z.j-cm-conv-wrap.hidden-xs
+      .col-xs-12.col-sm-3.padding15.pos-fixed
         = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2", style: "height: 46px;", placeholder: "Search room.."
         .fa.fa-search.font20.pull-left{style: "margin-left: -28px;margin-top: 11px; color: #d8d8d8;"}
-      - @public_chat_rooms.each_with_index do |chat_room, i|
-        = render partial: "chat_rooms/chat_room_conv_card", locals: {chat_room: chat_room, i: i}
+      .pos-relative.full-height.padding15#chat-card-scroll{style: "padding-top: 76px;"}
+        - @public_chat_rooms.each_with_index do |chat_room, i|
+          = render partial: "chat_rooms/chat_room_conv_card", locals: {chat_room: chat_room, i: i}
     .col-xs-12.no-mar-pad.visible-xs.ptop50.mob-ptop100.btn-shadow.full-height.h-z
       - @public_chat_rooms.each do |chat_room|
         = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
@@ -28,6 +29,7 @@
   :javascript
     $(document).ready(function(){
       $('footer').css("display", "none");
+      $("#chat-card-scroll").mCustomScrollbar({theme:"minimal-dark"});
       $(".j-conv-messages .badge").hide().text("0");
       $(".j-ct-conv-wrap.active .badge").hide().text("0")
       $("#chat_message_content").focus();
@@ -45,7 +47,7 @@
           if($(this).scrollTop() == 0){
             $(this).off("scroll");
             $(".msg-loader").show();
-            $.get("/chatrooms/get_chat_messages?room_id=#{@public_chat_rooms.present? ? @public_chat_rooms.first.id: ''}&last_id=#{@public_chat_messages.present? ? @public_chat_messages.first.id: ''}");
+            $.get("/chatrooms/get_chat_messages?room_id=#{@public_chat_rooms.first.try(:id)}&last_id=#{@public_chat_messages.first.try(:id)}");
           }
         })
       }

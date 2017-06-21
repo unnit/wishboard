@@ -9,6 +9,17 @@ namespace :coco_tasks do
     end
   end
 
+  task add_achieved_at: :environment do
+    showcases = Showcase.where(achieved_at: nil)
+    showcases.each do |showcase|
+      if showcase.user_status == Showcase::USER_STATUS[1] && !showcase.showpiece?
+        showcase.update_column :achieved_at, showcase.updated_at
+      else
+        showcase.update_column :achieved_at, showcase.created_at
+      end
+    end
+  end
+
   task add_categories: :environment do
     filename = "#{Rails.root}/lib/parent-categories.csv"
     CSV.foreach(filename, headers: true) do |row|

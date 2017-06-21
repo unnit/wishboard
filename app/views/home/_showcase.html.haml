@@ -1,6 +1,6 @@
 .col-xs-12.col-sm-12.no-mar-pad
   %span.font11.grey-fg.pos-absolute.right15.mtop8
-    = time_ago_in_words(showcase.created_at)
+    = time_ago_in_words(showcase.achieved_at)
   %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute{style: "right:0px;z-index: 1"}
   .col-xs-4.col-sm-4.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
     - unless showcase.coin_wish?

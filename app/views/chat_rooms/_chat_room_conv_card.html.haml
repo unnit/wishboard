@@ -3,4 +3,4 @@
     = chat_room.name.first.upcase
   %span.pull-left.mleft10.mtop10{"data-toggle" => "tooltip", "data-placement" => "auto", title: "#{chat_room.name}", class: "chat-conv-card-#{chat_room.id}", "data-current-user-id" => "#{current_user.id}"}
     %span.j-croom-name= truncate chat_room.name, length: 25
-    %span.j-chat-count.badge.cc-dark-bg.btn-shadow{class: "#{chat_room.unread_messages_count(current_user) > 0 ? '' : 'hide-display'}"}= chat_room.unread_messages_count(current_user)
+    %span.j-chat-count.badge.btn-shadow{class: "#{chat_room.unread_messages_count(current_user) > 0 ? '' : 'hide-display'} #{i.present? ? 'cc-dark-bg' : 'bg-light-grey grey-fg'}"}= chat_room.unread_messages_count(current_user)

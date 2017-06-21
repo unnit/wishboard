@@ -1,4 +1,4 @@
-.container-fluid.bg-white.padding0.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@public_chat_rooms.map{|c| c.id}.join(',')}"}
+.container-fluid.bg-white.padding0.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@joined_chat_rooms.map{|c| c.id}.join(',')}"}
   - if @public_chat_rooms.blank?
     .col-xs-12.col-sm-12.ptop50.mob-ptop100
       %h3.mbottom0 TRENDING CHAT ROOMS
@@ -8,12 +8,15 @@
           = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
   - else
     .col-xs-12.col-sm-3.ptop50.mob-ptop100.btn-shadow.full-height.pleft0.pright0.h-z.j-cm-conv-wrap.hidden-xs
-      .col-xs-12.col-sm-3.padding15.pos-fixed
+      .col-xs-12.col-sm-3.padding15.pos-fixed.h-z
         = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2", style: "height: 46px;", placeholder: "Search room.."
         .fa.fa-search.font20.pull-left{style: "margin-left: -28px;margin-top: 11px; color: #d8d8d8;"}
       .pos-relative.full-height.padding15#chat-card-scroll{style: "padding-top: 76px;"}
         - @public_chat_rooms.each_with_index do |chat_room, i|
           = render partial: "chat_rooms/chat_room_conv_card", locals: {chat_room: chat_room, i: i}
+        %h4.pull-left.mbottom20.mtop20.dull-color-italic.font12 Recently visited chatrooms
+        - @inactive_chatrooms.each do |chat_room|
+          = render partial: "chat_rooms/chat_room_conv_card", locals: {chat_room: chat_room, i: nil}
     .col-xs-12.no-mar-pad.visible-xs.ptop50.mob-ptop100.btn-shadow.full-height.h-z
       - @public_chat_rooms.each do |chat_room|
         = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }

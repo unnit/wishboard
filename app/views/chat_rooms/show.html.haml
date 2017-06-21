@@ -1,3 +1,5 @@
+= content_for :title do
+  - title = "#{@chat_room.name} | Cocociti"
 .pos-fixed.full-width.text-center.ptop10.pbottom10.mtop5.bg-white.bg-shad.visible-xs{style: "top: 50px;z-index: 100001;"}
   %h1.font25.mtop0.mbottom0.inline-block= truncate @chat_room.name, length: 25
   %span.block-display{style: "font-size: 8px;"} α Alpha mode

@@ -19,8 +19,8 @@
             .small.grey-fg.excerpt-desc
               %span.weight600.black80-fg Story of fulfillment:
               = showcase.achieved_description
-  -else
-    - description = showcase.description || showcase.achieved_description || showcase.backstory_description
+  - else
+    - description = (showcase.description.blank? ? nil : showcase.description) || (showcase.achieved_description.blank? ? nil : showcase.achieved_description) || (showcase.backstory_description.blank? ? nil : showcase.backstory_description)
     - if description.present?
       .col-xs-12.col-sm-12.bg-white.padding10
         %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(description), length: 150)

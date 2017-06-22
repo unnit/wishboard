@@ -168,7 +168,7 @@ Rails.application.routes.draw do
       post :rewish
       post :have_done_this
       post :coin
-      post :toggle_achieve_wish
+      post :undo_achieve_wish
       post :fullfillment_form
       post :update_fullfilment_details
       post :update_rating

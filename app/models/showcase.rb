@@ -70,6 +70,7 @@ class Showcase < ApplicationRecord
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
   validates :achieved_description, :backstory_description, length: { maximum: 2500 }
   validates :date_of_achievement, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :date_of_achievement_blank?
+  validates :after_rating, numericality: { only_integer: true, less_than_or_equal_to: 5, greater_than: 1, message: "Please provide a valid rating." }, unless: :after_rating_blank?
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
@@ -219,6 +220,11 @@ class Showcase < ApplicationRecord
   def year_blank?
     year.blank?
   end
+
+  def after_rating_blank?
+    after_rating.blank?
+  end
+
   def date_of_achievement_blank?
     date_of_achievement.blank?
   end
@@ -312,15 +318,7 @@ class Showcase < ApplicationRecord
       achieved_notification.active = !achieved_notification.active
       achieved_notification.save
     end
-    update_columns user_status: new_status, achieved_at: created_at, updated_at: Time.now.utc
-  end
-
-  def toggle_user_status!
-    if user_status == USER_STATUS[1]
-      undo_achieved!
-    else
-      mark_as_achieved!
-    end
+    update_columns user_status: new_status, achieved_at: created_at, updated_at: Time.now.utc, after_rating: nil
   end
 
   def get_rating
@@ -334,7 +332,7 @@ class Showcase < ApplicationRecord
   def backstory_added?
     backstory_possible? && (backstory_description.present? || backstory_image.present?)
   end
-  
+
   def deactivate_coin_wish
     update_column :coin_wish_status, COIN_WISH_STATUS[1]
   end

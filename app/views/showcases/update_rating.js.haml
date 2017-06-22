@@ -1,4 +1,5 @@
 $(".messages").html("#{j(render partial: 'layouts/messages')}")
-$additional_fields = $('#cont-wrapper').find("form").find('.additional_fulfillment_fields');
-if($additional_fields.hasClass('hidden')){$additional_fields.removeClass('hidden').slideDown(); }
-$(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}").promise().done(function(){refresh_twenty_twenty_div(".showcase-ps-#{@showcase.id}");});
+- unless @showcase.errors.any?
+  $additional_fields = $('#cont-wrapper').find("form").find('.additional_fulfillment_fields');
+  if($additional_fields.hasClass('hidden')){$additional_fields.removeClass('hidden').slideDown(); }
+  $(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}").promise().done(function(){refresh_twenty_twenty_div(".showcase-ps-#{@showcase.id}");});

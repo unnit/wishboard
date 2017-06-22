@@ -54,11 +54,11 @@
   = link_to showcase_path(showcase), remote: true do
     .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
       - if showcase.achieved? && showcase.fullfilled_image.present?
-        .twentytwenty-container{style: "min-height: 200px", "data-before-label-content": "Backstory", "data-after-label": "After"}
+        .twentytwenty-container{style: "min-height: 200px", "data-before-label": "", "data-after-label": ""}
           = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
           = cl_image_tag showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
       -elsif showcase.backstory_possible? && showcase.backstory_image.present?
-        .twentytwenty-container{style: "min-height: 200px", "data-before-label": "Backstory", "data-after-label": "After"}
+        .twentytwenty-container{style: "min-height: 200px", "data-before-label": "", "data-after-label": ""}
           = cl_image_tag showcase.backstory_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
           = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
       - else

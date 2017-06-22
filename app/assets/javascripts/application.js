@@ -1011,7 +1011,13 @@ $(document).ready(function(){
     $(this).parents(".btn-group").find('.selection').val($(this).text());
   });
 
-
+  //
+  $(".login-form, .signup-form").submit(function(e){
+    e.preventDefault();
+    $(".login-email").val($(".login-email").val().toLowerCase());
+    $(".signup-email").val($(".signup-email").val().toLowerCase());
+    $(this).submit();
+  })
   //Searching
   $(".search-form").submit(function(){
     $(this).find("#start_date_time").val($('#start_date_time_header').val());

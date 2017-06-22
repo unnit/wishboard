@@ -1,4 +1,5 @@
 class Showcase < ApplicationRecord
+  searchkick autocomplete: ['title']
   belongs_to :user
   belongs_to :product
   belongs_to :parent, class_name: "Showcase"

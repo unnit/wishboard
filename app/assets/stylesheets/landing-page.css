@@ -3541,7 +3541,7 @@ th.headerSortDown {
   padding: 7px 10px;
   line-height: 1.2em;
 }
-.talktext p{
+.talktext .cm-content{
   word-wrap: break-word;
   font-size: 13px;
   -webkit-margin-before: 0em;

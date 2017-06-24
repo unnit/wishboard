@@ -68,8 +68,10 @@ class ChatRoomsController < ApplicationController
     @joined_chat_rooms = current_user.joined_chat_rooms
     get_trending_rooms if @joined_chat_rooms.blank?
     if @public_chat_rooms.present?
-      @count = @public_chat_rooms.first.online_count
-      @public_chat_messages = @public_chat_rooms.first.chat_messages.order(created_at: :desc).limit(20).reverse
+      @first_room = @public_chat_rooms.first
+      @count = @first_room.online_count
+      @public_chat_messages = @first_room.chat_messages.order(created_at: :desc).limit(20).reverse
+      @first_message = @public_chat_messages.first
     end
   end
 

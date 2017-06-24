@@ -2,20 +2,7 @@
   = javascript_include_tag "//cdn.ravenjs.com/3.16.0/raven.min.js"
   - if Rails.env.production?
     :javascript
-      Raven.config(https://2be68211d1984d398e3961437df39945@sentry.io/173077, {
-      logger: 'my-logger',
-      whitelistUrls: [
-      /disqus\.com/,
-      /getsentry\.com/
-      ],
-      ignoreErrors: [
-      'fb_xd_fragment',
-      /ReferenceError:.*/
-      ],
-      includePaths: [
-      /https?:\/\/(www\.)?getsentry\.com/
-      ]
-      }).install();
+      Raven.config('https://2be68211d1984d398e3961437df39945@sentry.io/173077').install();
   -elsif Rails.env.staging?
     :javascript
       Raven.config('https://820d834e87e14ebd94a0792c4ce43c40@sentry.io/178636').install();

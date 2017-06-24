@@ -1,5 +1,5 @@
 .container-fluid.bg-white.padding0.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@joined_chat_rooms.map{|c| c.id}.join(',')}"}
-  - if @public_chat_rooms.blank?
+  - if @joined_chat_rooms.blank?
     .container.ptop50.mob-ptop100
       .col-xs-12.col-sm-12.no-mar-pad.mtop20
         = link_to new_chat_room_path do

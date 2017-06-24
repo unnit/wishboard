@@ -66,9 +66,8 @@ class ChatRoomsController < ApplicationController
     @public_chat_rooms = ChatRoom.joins(:memberships).where("memberships.user_id = ?", current_user.id).public_rooms.includes(:chat_messages).where("chat_messages.user_id = ?", current_user.id).order("chat_messages.created_at DESC")
     @inactive_chatrooms = current_user.joined_chat_rooms.where("chat_rooms.id not in (?)", current_user.chat_messages.select("DISTINCT chat_room_id"))
     @joined_chat_rooms = current_user.joined_chat_rooms
-    if @joined_chat_rooms.blank?
-      get_trending_rooms
-    else
+    get_trending_rooms if @joined_chat_rooms.blank?
+    if @public_chat_rooms.present?
       @count = @public_chat_rooms.first.online_count
       @public_chat_messages = @public_chat_rooms.first.chat_messages.order(created_at: :desc).limit(20).reverse
     end

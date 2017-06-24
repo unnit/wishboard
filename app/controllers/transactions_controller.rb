@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  before_action :redirect_to_home
   skip_before_action :verify_authenticity_token, only: [:callback]
   before_action :authenticate_user!
   before_action :set_transaction, only: [:accept, :deny, :checkout, :delete_non_coco, :check_status_and_save_address_of_transaction]

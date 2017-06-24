@@ -44,6 +44,8 @@ $(document).ready(function(){
   function send_message(val, room){
     App.chat.save_message(val, room);
   }
+  emojione.greedyMatch = true;
+  emojione.riskyMatchAscii = false;
   $("#chat_message_content").emojioneArea({
   	container: "#chat_text_div",
   	autocomplete: false,

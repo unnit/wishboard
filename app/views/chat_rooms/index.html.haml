@@ -1,28 +1,29 @@
 = content_for :title do
   - title = "Cocociti | Chatrooms"
 .container.ptop50.mob-ptop100.padding10{style: "min-height: 100%;"}
-  .col-xs-12.col-sm-12.mtop20.h-z
+  .col-xs-12.col-sm-12.padding0.mtop20.mbottom10
+    = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2 search-croom-index", style: "height: 46px;width: 256px;", placeholder: "Search room.."
     = link_to new_chat_room_path do
-      .fa.fa-plus-square-o.cc-dark-fg.j-n-c-t-btn.pull-right.pon{style: "font-size: 40px;"}
+      .fa.fa-plus-square-o.cc-dark-fg.pull-right.pon{style: "font-size: 40px;"}
   .col-xs-12.col-sm-12.padding0
-    %h4.mbottom0{style: "margin-top: -30px;"} TRENDING CHAT ROOMS
+    %h4.mbottom0 TRENDING CHAT ROOMS
     %hr.mtop5.mbottom10
     .col-xs-12.col-sm-12.no-mar-pad
       - @trending_chat_rooms.each do |chat_room|
-        = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
+        = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room, i: nil }
   .col-xs-12.col-sm-12.padding0
     %h4.mbottom0 ALL CHAT ROOMS
     %hr.mtop5.mbottom10
     .col-xs-12.col-sm-12.no-mar-pad
       - MainCategory.all.each do |main_category|
-        %h4.pull-left.full-width.mbottom0= main_category.name
-        %hr.pull-left.full-width.mtop5.mbottom10
+        %h4.pull-left.full-width.mbottom0.j-croom-main-cat= main_category.name
+        %hr.pull-left.full-width.mtop5.mbottom10.j-croom-main-hr
         - main_category.chat_rooms.order(:name).each do |chat_room|
-          = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
+          = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room, i: nil }
   .col-xs-12.col-sm-12.padding10
     .col-xs-12.col-sm-12.no-mar-pad.text-center.mbottom20
       %span.header-text CHAT ROOMS
-    %p.font-medium{style: "text-align: justify"}
+    %p.font-medium{style: "text-align: justify;"}
       Chat rooms are an integral part of Cocociti; A great place to meet people with similar wishes and to talk about those, seeking advice and exploring fulfillment options for your wishes. With that in mind, here is to find the best Cocociti chat rooms. Cocociti chat rooms are your primary place of connecting to people in relation with your wishes. Essentially, chat rooms are group chats instigated based on interests, by any user related to a particular wish or someone who likes to talk to lots of other people. We have got quite an interesting lists of main wish categories & subcategories for you to engage with. Oh, here is the best part; if you cannot find what you’re looking for, you can always create your own!
       %br
       %br
@@ -36,4 +37,21 @@
   :javascript
     $(document).ready(function(){
       $(".chat-room-mobile").addClass("cc-med-bg");
+      $(document).on("keyup", ".search-croom-index", function(){
+        var value = $(this).val().toLowerCase();
+        if(value.length == 0){
+          $(".j-croom-main-cat, .j-croom-main-hr").show();
+        }
+        else{
+          $(".j-croom-main-cat, .j-croom-main-hr").hide();
+        }
+        $(".container").find(".j-croom-name").each(function(){
+          var name = $(this).text().toLowerCase();
+          if(name.indexOf(value) < 0){
+            $(this).closest(".j-ct-card-wrap").hide();
+          }else{
+            $(this).closest(".j-ct-card-wrap").show();
+          }
+        })
+      })
     });

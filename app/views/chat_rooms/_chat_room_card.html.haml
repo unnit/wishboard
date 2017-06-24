@@ -1,7 +1,8 @@
 = link_to chat_room_path(chat_room) do
-  .col-xs-12.col-sm-3.padding10
-    .col-xs-12.col-sm-12.padding15.mbottom10.bg-shad
+  .col-xs-12.col-sm-3.padding10.j-ct-card-wrap
+    .col-xs-12.col-sm-12.padding15.mbottom10.bg-shad.pon
       .padding10.text-center.white-fg.btn-v-outline.cc-dark-fg.transition-effect.pull-left{style: "width: 52px; height: 43px;"}
         = chat_room.name.first.upcase
       %span.pull-left.mleft10.mtop10.black80-fg{"data-toggle" => "tooltip", "data-placement" => "auto", title: "#{chat_room.name}"}
-        = truncate chat_room.name, length: 20
+        %span.j-croom-name= truncate chat_room.name, length: 20
+        %span.j-chat-count.badge.btn-shadow{class: "#{chat_room.unread_messages_count(current_user) > 0 ? '' : 'hide-display'} #{i.present? ? 'cc-dark-bg' : 'bg-light-grey grey-fg'}"}= chat_room.unread_messages_count(current_user)

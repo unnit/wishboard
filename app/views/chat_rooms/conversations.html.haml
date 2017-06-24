@@ -9,7 +9,7 @@
   - else
     .col-xs-12.col-sm-3.ptop50.mob-ptop100.btn-shadow.full-height.pleft0.pright0.h-z.j-cm-conv-wrap.hidden-xs
       .col-xs-12.col-sm-3.padding15.pos-fixed.h-z
-        = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2", style: "height: 46px;", placeholder: "Search room.."
+        = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2 search-croom-md", style: "height: 46px;", placeholder: "Search room.."
         .fa.fa-search.font20.pull-left{style: "margin-left: -28px;margin-top: 11px; color: #d8d8d8;"}
       .pos-relative.full-height.padding15#chat-card-scroll{style: "padding-top: 76px;"}
         - @public_chat_rooms.each_with_index do |chat_room, i|
@@ -17,9 +17,15 @@
         %h4.pull-left.mbottom20.mtop20.dull-color-italic.font12 Recently visited chatrooms
         - @inactive_chatrooms.each do |chat_room|
           = render partial: "chat_rooms/chat_room_conv_card", locals: {chat_room: chat_room, i: nil}
-    .col-xs-12.no-mar-pad.visible-xs.ptop50.mob-ptop100.btn-shadow.full-height.h-z
+    .col-xs-12.no-mar-pad.visible-xs.ptop50.mob-ptop100.full-height.h-z.j-cm-conv-wrap
+      .col-xs-12.padding10
+        = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2 search-croom-mob", style: "height: 46px;", placeholder: "Search room.."
+        .fa.fa-search.font20.pull-left{style: "margin-left: -28px;margin-top: 11px; color: #d8d8d8;"}
       - @public_chat_rooms.each do |chat_room|
-        = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room }
+        = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room, i: -1 }
+      %h4.pull-left.mleft10.mbottom20.mtop20.dull-color-italic.font12 Recently visited chatrooms
+      - @inactive_chatrooms.each do |chat_room|
+        = render partial: "chat_rooms/chat_room_card", locals: {chat_room: chat_room, i: nil}
     .col-sm-6.hidden-xs#j-c-m-wrapper.ptop50.mob-ptop100.pleft0.pright0.full-height
       #chat_messages_wrapper.pull-left.full-width{style: "height:88%;"}
         = render partial: "chat_rooms/chat_room", locals: {chat_room: @public_chat_rooms.first, chat_messages: @public_chat_messages}
@@ -54,16 +60,18 @@
           }
         })
       }
-      $(document).on("keyup", "#search_chat", function(){
-        var value = $(this).val().toLowerCase();
-        $(".j-croom-name").each(function(){
+      $(document).on("keyup", ".search-croom-md", function(){roomSearch(".search-croom-md", ".j-ct-conv-wrap")});
+      $(document).on("keyup", ".search-croom-mob", function(){roomSearch(".search-croom-mob", ".j-ct-card-wrap")});
+      function roomSearch(trigger, wrapper){
+        var value = $(trigger).val().toLowerCase();
+        $(trigger).closest(".j-cm-conv-wrap").find(".j-croom-name").each(function(){
           var name = $(this).text().toLowerCase();
           if(name.indexOf(value) < 0){
-            $(this).closest(".j-ct-conv-wrap").hide();
+            $(this).closest(wrapper).hide();
           }else{
-            $(this).closest(".j-ct-conv-wrap").show();
+            $(this).closest(wrapper).show();
           }
         })
-      })
+      }
       $(".conv-mobile").addClass("cc-med-bg");
     })

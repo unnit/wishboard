@@ -15,17 +15,17 @@
     %meta{name: "msapplication-TileImage", content: "/assets/logo/logo-new-144.png"}
     %meta{name: "msapplication-TileColor", content: "#732db0"}
     %meta{name: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
-    %meta{itemprop: "name", content: "Cocociti | Find everyone's wishes & share yours"}
-    %meta{itemprop: "description", content: "Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes."}
+    %meta{itemprop: "name", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Find everyone's wishes & share yours"}"}
+    %meta{itemprop: "description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes.'}"}
     %meta{itemprop: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
     %meta{name: "twitter:card", content: "summary"}
-    %meta{name: "twitter:title", content: "Cocociti | Find everyone's wishes & share yours"}
-    %meta{name: "twitter:description", content: "Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes."}
+    %meta{name: "twitter:title", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Find everyone's wishes & share yours"}"}
+    %meta{name: "twitter:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes.'}"}
     %meta{name: "twitter:site", content: "@cocociti"}
     %meta{name: "twitter:creator", content: "twitter:creator"}
     %meta{name: "twitter:image:src", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
-    %meta{name: "og:title", content: "Cocociti | Find everyone's wishes & share yours"}
-    %meta{name: "og:description", content: "Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes."}
+    %meta{name: "og:title", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Find everyone's wishes & share yours"}"}
+    %meta{name: "og:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes.'}"}
     %meta{name: "og:image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
     %meta{name: "og:url", content: "#{GLOBAL_VARIABLES[:root_url]}"}
     %meta{name: "og:site_name", content: "Cocociti"}

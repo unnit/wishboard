@@ -1,3 +1,10 @@
+= content_for :title do
+  - title = "#{@user.name}'s Wiki (@#{@profile.slug}) | Cocociti"
+= content_for :meta_content do
+  - if @user.wikis.present?
+    - meta_content = "#{truncate @user.wikis.first.description, length: 160}"
+  - else
+    - meta_content = "Read Wiki of #{@user.name}"
 .container-fluid.ptop50.mob-ptop100.bg-shad.pbottom50.padding0.helvetica-font.bg-light-grey{style: "min-height:1000px;"}
   = render partial: "profile", locals: {user: @user}
   .container.padding0

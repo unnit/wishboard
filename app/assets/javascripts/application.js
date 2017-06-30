@@ -533,7 +533,7 @@ $(document).ready(function(){
     }
   })
   $("html,body").click(function(e){
-    var container = $(".notif-icon")
+    var container = $(".notif-icon, #mCSB_2_scrollbar_vertical")
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {

@@ -1,5 +1,12 @@
 = content_for :title do
   - title = "#{@user.name} (@#{@profile.slug}) | Cocociti"
+= content_for :meta_content do
+  - if @profile.about.present?
+    = content_for :meta_content do
+      - meta_content = "#{@profile.about}"
+  - else
+    = content_for :meta_content do
+      - meta_content = "Discover wishes and achievements of #{user.name}"
 .container-fluid.ptop50.mob-ptop100.bg-shad.pbottom50.padding0.helvetica-font.bg-light-grey{style: "min-height:1000px;"}
   = render partial: "profile", locals: {user: @user}
   .container.padding0
@@ -17,7 +24,7 @@
               - if showcase.image.present?
                 = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
               - else
-                .white-bg.cc-dark-fg.font12.inline-block.text-center.ptop30{style: "width: 155px;height: 116px;"}
+                .white-bg.cc-dark-fg.font12.inline-block.text-center.ptop30.full-width{style: "height: 116px;"}
                   - if showcase.custom_wish_type?
                     = showcase.title.humanize
                   - else
@@ -44,7 +51,7 @@
                       - if showcase.image.present?
                         = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
                       - else
-                        .white-bg.cc-dark-fg.font12.inline-block.text-center.ptop30{style: "width: 155px;height: 116px;"}
+                        .white-bg.cc-dark-fg.font12.inline-block.text-center.ptop30.full-width{style: "height: 116px;"}
                           - if showcase.custom_wish_type?
                             = showcase.title.humanize
                           - else

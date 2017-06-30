@@ -1,4 +1,4 @@
-.pull-left.full-width#chat_messages.ptop20.pbottom10.full-height{"data-chat-room-id" => "#{chat_room.id}", "data-current-user-id" => "#{current_user.id}", class: "chat-room-#{chat_room.id}", style: "overflow-y: auto;"}
+.pull-left.full-width#chat_messages.ptop20.pbottom10.full-height{"data-chat-room-id" => "#{chat_room.id}", "data-current-user-id" => "#{current_user.id if current_user}", class: "chat-room-#{chat_room.id}", style: "overflow-y: auto;"}
   .col-xs-12.col-sm-12.text-center.msg-loader.padding40{style: "display:none;"}
     %i.fa.fa-circle-o-notch.fa-spin.font21
     Please wait...

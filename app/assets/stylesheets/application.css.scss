@@ -44,6 +44,7 @@
   font-style: normal;
 
 }
+*/
 @font-face {
   font-family: 'ProximaNova';
   src: url('/assets/fonts/ProximaNovaAlt-Light.eot');
@@ -65,11 +66,11 @@
   font-weight: bold;
   font-style: normal;
 }
-*/
 
 body{
-  font-family: 'Open Sans', sans-serif;
-  /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+  /*font-family: 'Open Sans', sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+  font-family: 'ProximaNova','Helvetica Neue', Helvetica, 'Open Sans' ;
 }
 
 #gmap{
@@ -176,6 +177,9 @@ body{
 }
 .mtop70{
   margin-top: 70px;
+}
+.mtop100{
+  margin-top: 100px;
 }
 .mtop-v-5
 {
@@ -331,7 +335,6 @@ body{
 .pad-v-10{
   padding: 10px 0;
 }
-
 .pad-v-20{
   padding: 20px 0;
 }
@@ -684,7 +687,6 @@ small{
   color: #333333 !important;
 }
 .btn-v-outline{
-  /*color: #595cea;*/
   color: #732db0;
   border: 1px solid #732db0;
 }
@@ -704,7 +706,6 @@ small{
 }
 .heart-red-fg{
   color: #ff534a;
-  /*color: #2d2d2d;*/
 }
 .heart-red-bg{
   color: #ff534a;
@@ -784,7 +785,8 @@ small{
   padding-bottom: 6px;
 }
 .helvetica-font{
-  font-family: helvetica;
+  /*font-family: helvetica;*/
+  font-family: 'ProximaNova';
 }
 .pos-absolute{
   position: absolute;
@@ -902,7 +904,6 @@ small{
   background-color: #732db0  !important;
 }
 .cc-dark-fg{
-  /*color: #41a6e4 !important;*/
   color: #732db0 !important;
 }
 .cc-dark-fg-border{
@@ -915,7 +916,6 @@ small{
   background-color: #572286 !important;
 }
 .cc-med-bg{
-  /*background-color: #E8F4F9 !important;*/
   background-color: rgb(154, 64, 232) !important;
 }
 .cc-light-bg{

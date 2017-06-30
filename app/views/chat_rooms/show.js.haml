@@ -4,4 +4,5 @@ customUnicodeToHtml(".j-chat_content_data");
 $("#j-c-m-rhs").html("#{j render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @chat_room, count: @count}}")
 messages_to_bottom();
 $(".j-c-msg-wrapper").data("chat-room-id", "#{@chat_room.id}");
+$(".emojionearea-editor").focus();
 if(#{@chat_room.chat_messages.count} > 20){$("#chat_messages").on("scroll", function(){if($(this).scrollTop() == 0){$(this).off("scroll");$(".msg-loader").show();$.get("/chatrooms/get_chat_messages?room_id=#{@chat_room.id}&last_id=#{@chat_messages.first.try(:id)}");}})}

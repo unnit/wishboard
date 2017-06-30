@@ -3,7 +3,8 @@
   .talk-bubble.round.bg-shad{class: "chat-txt-#{chat_message.id} #{chat_message.user == current_user ? 'pull-right right-top mright5' : 'pull-left left-top bg-white mleft5'}", style: "max-width: 80%;"}
     .talktext
       %span.weight600.font13.inline-block.full-width.cc-dark-fg{class: "chat-usr-name-#{chat_message.id} #{chat_message.user == current_user ? 'text-right' : 'text-left'}"}
-        %span= chat_message.user.name
+        = link_to myprofile_path(chat_message.user.profile.slug), target: "_blank" do
+          %span.cc-dark-fg= chat_message.user.name
       .j-chat_content_data.hidden.cm-content
         = sanitize Obscenity.sanitize(chat_message.content).gsub("\n", "<br />")
       %span.grey70-fg.full-width.inline-block{style: "font-size:8px;", class: "chat-usr-name-#{chat_message.id} #{chat_message.user == current_user ? 'text-right' : 'text-left'}"}= chat_message.created_at.strftime('%d %^b %H %M')

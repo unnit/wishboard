@@ -7,23 +7,29 @@
       .carousel-inner
         - if showcase.backstory_description.present?
           .item.padding10{class: "#{showcase.backstory_description.present? ? 'active' : ''}"}
-            .small.grey-fg.excerpt-desc
-              %span.weight600.black80-fg Backstory:
-              = showcase.backstory_description
+            %span.weight600.black80-fg Backstory:
+            %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(showcase.backstory_description), length: 150)
+            - if showcase.backstory_description.length > 150
+              %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.backstory_description)
+              %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
         .item.padding10{class: "#{showcase.achieved_description.present? ? 'active' : ''}"}
-          .small.grey-fg.excerpt-desc
-            %span.weight600.black80-fg Story:
-            = showcase.description
+          %span.weight600.black80-fg Story:
+          %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(showcase.description), length: 150)
+          - if showcase.description.length > 150
+            %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.description)
+            %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
         - if showcase.achieved_description.present?
           .item.padding10
-            .small.grey-fg.excerpt-desc
-              %span.weight600.black80-fg Story of fulfillment:
-              = showcase.achieved_description
+            %span.weight600.black80-fg Story of fulfillment:
+            %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(showcase.achieved_description), length: 150)
+            - if showcase.achieved_description.length > 150
+              %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(showcase.achieved_description)
+              %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
   - else
     - description = (showcase.description.blank? ? nil : showcase.description) || (showcase.achieved_description.blank? ? nil : showcase.achieved_description) || (showcase.backstory_description.blank? ? nil : showcase.backstory_description)
     - if description.present?
       .col-xs-12.col-sm-12.bg-white.padding10
         %span.pull-left.small.grey-fg.excerpt-desc= truncate(raw(description), length: 150)
-        - if description.try(:length).to_i > 150
+        - if description.length > 150
           %span.pull-left.small.grey-fg.full-desc{style: "display: none;"}= simple_format(description)
           %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More

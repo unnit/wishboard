@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  before_action :redirect_to_home, only: [:index, :bulk_bookings, :offers, :fansday]
   skip_before_action :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation], raise: false
   skip_before_action :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest], raise: false
   before_action :back_to_home, only: [:authenticate]
@@ -7,6 +8,7 @@ class HomeController < ApplicationController
   before_action :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
   before_action :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
   before_action :set_plain_layout, only: [:user_signup_confirmation, :interests]
+  before_action :remove_footer, only: [:feed]
 
   def index
     @adv_search = "none"

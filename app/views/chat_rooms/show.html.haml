@@ -3,7 +3,7 @@
 .pos-fixed.full-width.text-center.ptop10.pbottom10.mtop5.bg-white.bg-shad.visible-xs{style: "top: 50px;z-index: 100001;"}
   %h1.font25.mtop0.mbottom0.inline-block= truncate @chat_room.name, length: 25
   %span.block-display{style: "font-size: 8px;"} α Alpha mode
-.container-fluid.padding-mob0.ptop50.mob-ptop100.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@chat_room.id}"}
+.container-fluid.padding-mob0.ptop50.mob-ptop100.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@chat_room.id}", "data-logged-in-id" => "#{current_user.present? ? current_user.id : ''}"}
   .col-xs-12.col-sm-6.col-sm-offset-3.btn-shadow.padding0.full-height#j-c-m-wrapper
     #chat_messages_wrapper.pull-left.full-width{style: "height:88%;"}
       = render partial: "chat_rooms/chat_room", locals: {chat_room: @chat_room, chat_messages: @chat_messages}
@@ -15,10 +15,9 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
-      $('footer').css("display", "none");
       $("#chat_message_content").focus();
       $(".j-btn-wrap").css("padding-top", ($(".j-chat-form-wrapper").height() - 25)/2);
-      if(#{@chat_room.chat_messages.count} > 20){
+      if(#{@chat_room.chat_messages.count} > 20 && logged_id != ""){
         $("#chat_messages").on("scroll", function(){
           if($(this).scrollTop() == 0){
             $(this).off("scroll");

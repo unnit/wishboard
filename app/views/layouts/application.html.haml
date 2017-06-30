@@ -6,7 +6,7 @@
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
     - if Rails.env.development? || request.fullpath == GLOBAL_VARIABLES[:hacker_relative_path]
       %meta{:name => "robots", :content => "noindex"}
-    %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is where the world comes to wish & showcase. Wish it, achieve it, showcase it. Discover wishes & people with similar wishes. What is your wish?'}", :name => "description"}
+    %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes.'}", :name => "description"}
     %meta{:content => "", :name => "author"}
     %meta{name: "apple-mobile-web-app-capable", content: "yes"}
     %meta{name: "apple-mobile-web-app-status-bar-style", content: "black"}
@@ -14,12 +14,30 @@
     %link{rel: "apple-touch-icon", href: "/assets/logo/logo-new-152.png"}
     %meta{name: "msapplication-TileImage", content: "/assets/logo/logo-new-144.png"}
     %meta{name: "msapplication-TileColor", content: "#732db0"}
-    %title= content_for?(:title) ? yield(:title) : "Cocociti - Discover showcases, wishlists and people around the world"
+    %meta{name: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
+    %meta{itemprop: "name", content: "Cocociti | Find everyone's wishes & share yours"}
+    %meta{itemprop: "description", content: "Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes."}
+    %meta{itemprop: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
+    %meta{name: "twitter:card", content: "summary"}
+    %meta{name: "twitter:title", content: "Cocociti | Find everyone's wishes & share yours"}
+    %meta{name: "twitter:description", content: "Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes."}
+    %meta{name: "twitter:site", content: "@cocociti"}
+    %meta{name: "twitter:creator", content: "twitter:creator"}
+    %meta{name: "twitter:image:src", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
+    %meta{name: "og:title", content: "Cocociti | Find everyone's wishes & share yours"}
+    %meta{name: "og:description", content: "Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes."}
+    %meta{name: "og:image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
+    %meta{name: "og:url", content: "#{GLOBAL_VARIABLES[:root_url]}"}
+    %meta{name: "og:site_name", content: "Cocociti"}
+    %meta{name: "fb:admins", content: "cocociti"}
+    %meta{name: "fb:app_id", content: "363051183844429"}
+    %meta{name: "og:type", content: "website"}
+    %title= content_for?(:title) ? yield(:title) : "Cocociti | Find everyone's wishes & share yours"
 
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
     /[if lt IE 9]
       = javascript_include_tag "//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js", "//oss.maxcdn.com/respond/1.4.2/respond.min.js"
-    = stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans:400,600"
+    =# stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans:400,600"
     %link{rel: "manifest", href: "/assets/service-worker/manifest.json"}
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
@@ -42,7 +60,8 @@
       = render partial: "/layouts/navbar_rent"
     = render partial: "layouts/messages"
     = yield
-    = render partial: "layouts/footer"
+    - if @remove_footer.blank?
+      = render partial: "layouts/footer"
     = render partial: "layouts/sentry_config"
     - if Rails.env.production?
       = javascript_include_tag "//maps.googleapis.com/maps/api/js?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&libraries=places"

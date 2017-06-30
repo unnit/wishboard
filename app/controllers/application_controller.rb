@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
 
   def redirect_to_home
     redirect_to root_path
+    return
   end
 
   def set_raven_context
@@ -55,6 +56,10 @@ class ApplicationController < ActionController::Base
 
   def set_plain_layout
     @plain_layout = "yes"
+  end
+
+  def remove_footer
+    @remove_footer = "yes"
   end
 
   def authenticate_user!(options={})

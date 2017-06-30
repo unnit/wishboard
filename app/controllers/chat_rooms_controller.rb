@@ -1,7 +1,8 @@
 class ChatRoomsController < ApplicationController
 
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_social_layout
+  before_action :remove_footer, only: [:show, :conversations]
   before_action :find_and_check_chat_room, only: [:edit, :update, :destroy]
   before_action :get_chat_room, only: [:get_chat_messages]
 
@@ -52,7 +53,9 @@ class ChatRoomsController < ApplicationController
       redirect_to root_path
       return
     end
-    current_user.join_chat_room(@chat_room) unless current_user.joined_chat_room?(@chat_room)
+    if current_user
+      current_user.join_chat_room(@chat_room) unless current_user.joined_chat_room?(@chat_room)
+    end
     @count = @chat_room.online_count
     @chat_messages = @chat_room.chat_messages.order(created_at: :desc).limit(20).reverse
     respond_to do |format|
@@ -62,20 +65,22 @@ class ChatRoomsController < ApplicationController
   end
 
   def conversations
-    #@public_chat_rooms = current_user.messaged_chat_rooms.public_rooms.to_a.uniq
-    @public_chat_rooms = ChatRoom.joins(:memberships).where("memberships.user_id = ?", current_user.id).public_rooms.includes(:chat_messages).where("chat_messages.user_id = ?", current_user.id).order("chat_messages.created_at DESC")
+    #@messaged_chat_rooms = current_user.messaged_chat_rooms.public_rooms.to_a.uniq
+    #@messaged_chat_rooms = ChatRoom.joins(:memberships).where("memberships.user_id = ?", current_user.id).public_rooms.includes(:chat_messages).where("chat_messages.user_id in ", 0).order("chat_messages.created_at DESC")
+    @messaged_chat_rooms = current_user.joined_chat_rooms.where("chat_rooms.id in (?)", current_user.chat_messages.select("DISTINCT chat_room_id")).public_rooms.includes(:chat_messages).order("chat_messages.created_at DESC")
     @inactive_chatrooms = current_user.joined_chat_rooms.where("chat_rooms.id not in (?)", current_user.chat_messages.select("DISTINCT chat_room_id"))
     @joined_chat_rooms = current_user.joined_chat_rooms
-    get_trending_rooms if @joined_chat_rooms.blank?
-    if @public_chat_rooms.present?
-      @first_room = @public_chat_rooms.first
-    elsif @inactive_chatrooms.present?
-      @first_room = @inactive_chatrooms.first
-    end
-    if @first_room.present?
+    if @joined_chat_rooms.blank?
+      get_trending_rooms
+    else
+      if @messaged_chat_rooms.present?
+        @first_room = @messaged_chat_rooms.first
+      elsif @inactive_chatrooms.present?
+        @first_room = @inactive_chatrooms.first
+      end
       @count = @first_room.online_count
-      @public_chat_messages = @first_room.chat_messages.order(created_at: :desc).limit(20).reverse
-      @first_message = @public_chat_messages.first
+      @messaged_chat_room_messages = @first_room.chat_messages.order(created_at: :desc).limit(20).reverse
+      @first_message = @messaged_chat_room_messages.first
     end
   end
 
@@ -104,7 +109,7 @@ class ChatRoomsController < ApplicationController
   end
 
   def get_trending_rooms
-    @trending_chat_rooms = ChatRoom.where("id in (?) and room_type = ?", ChatMessage.select(:chat_room_id).group(:chat_room_id).order('count(chat_room_id) DESC'), ChatRoom::CHAT_ROOM_TYPES[0][0]).limit(12)
+    @trending_chat_rooms = ChatRoom.joins(:chat_messages).order('count(chat_messages.chat_room_id) DESC').group('chat_rooms.id').limit(12)
   end
 
 end

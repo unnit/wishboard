@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
   body {
-    background-color: #E85242;
+    background-color: #732db0;
     color: #fff;
     text-align: center;
     font-family: arial, sans-serif;
@@ -16,19 +16,43 @@
 
   div.dialog {
     width: 95%;
-    margin: 4em auto 0;
+    margin: 2em auto 0;
   }
   .navbar{
     position: relative;
-    top:0;
-    width:100%;
-    margin:0 auto;
-    height: 54px;
-    background-color: white;
+    top: 0;
+    width: 100%;
+    margin: 0 auto;
+    display: inline-block;
+    height: auto;
+  }
+  h1,h2{
+    font-weight: normal;
   }
   .logo{
     padding: 10px;
     float: left;
+  }
+  .box-with-shad{
+    display: inline-block;
+    width: auto;
+    padding: 13px;
+    background-color: white;
+    border-radius: 4px;
+    color: #732db0;
+    font-size: 18px;
+    box-shadow: 0 2px 10px #300e4e;
+  }
+  .box-with-shad a{
+    text-decoration: none;
+  }
+  .nav-span{
+    float: left;
+    margin-top: 21px;
+    margin-left: 5px;
+    color: white;
+    font-size: 20px;
+    letter-spacing: 2px;
   }
   </style>
 </head>
@@ -36,14 +60,24 @@
 <body>
   <div class="navbar">
     <a class="logo" href="/">
-      <img class="img-responsive" src="/assets/coc.png" alt="Coc">
+      <img src="/assets/images/logo.svg" alt="Cocociti" style="width: 50px;float: left;">
+      <span class="nav-span">Cocociti</span>
     </a>
   </div>
   <div class="dialog">
     <div>
-      <h1>The page you were looking for doesn't exist.</h1>
+      <h1>¯\_(ツ)_/¯</h1>
+      <h1>Error code: 404</h1>
+      <h2>Oops! The page you were looking for doesn't exist.</h2>
       <p>Either you have mistyped the address or the page have moved.</p>
     </div>
+    <div class="box-with-shad">
+      <a href="/">Home</a>
+    </div>
+    <div class="box-with-shad">
+      <a href="/chatrooms">Chatrooms</a>
+    </div>
+    <p style="margin-top: 80px;">Problem? Write to us at ayyo@cocociti.com</p>
   </div>
 </body>
 </html>

@@ -1,11 +1,12 @@
 $(document).ready(function(){
   if($(".chat-ids-holder").length > 0){
     var values = String($(".chat-ids-holder").data("chat-room-ids")).split(",");
+    var logged_id = $(".chat-ids-holder").data("logged-in-id");
   }
   else{
     var values = []
   }
-  if(values.length > 0){
+  if(values.length > 0 && logged_id != ""){
     for(i=0; i<values.length; i++){
       App.chat = App.cable.subscriptions.create({channel: "ChatChannel", chat_room_id: values[i]},
         {
@@ -59,22 +60,36 @@ $(document).ready(function(){
   		keydown: function (editor, e) {
   			if (e.keyCode == 13 && !e.shiftKey){
   				e.preventDefault();
-  				if ($.trim(this.getText()).length >= 1) {
-            this.hidePicker();
-  					send_message(this.getText(), editor.closest(".j-c-msg-wrapper").data("chat-room-id"))
-  					editor.html("");
-            $(this).closest(".j-c-msg-wrapper").find("#chat_message_content").val("");
-  				}
+          if(logged_id != ""){
+            if ($.trim(this.getText()).length >= 1) {
+              this.hidePicker();
+    					send_message(this.getText(), editor.closest(".j-c-msg-wrapper").data("chat-room-id"))
+    					editor.html("");
+              $(this).closest(".j-c-msg-wrapper").find("#chat_message_content").val("");
+    				}
+          }
+          else{
+            $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop100 violet-bg white-fg padding20 border5 font16'><h4 class='full-width mbottom20 text-center'>Sign in/up to be part of chatrooms</h4><div class='col-xs-6 col-sm-6 no-mar-pad text-right'><a class='btn white-fg border2' style='padding: 7px 15px;border: 1px solid #fff;' href='/authenticate?tab=signup'>SignUp</a></div><div class='col-xs-6 col-sm-6'><a class='btn cc-dark-fg bg-white border2' style='padding: 7px 15px;' href='/authenticate'>Login</a></div></div>");
+            prependModalClose("#cont-wrapper");
+            $("#cont-wrapper").modal("show");
+          }
   			}
   		},
   	}
   });
   $(document).on("click", ".j-btn-wrap", function(){
-    var $wrap = $(this).closest(".j-c-msg-wrapper").find("#chat_message_content").data("emojioneArea");
-    if($wrap.getText().length > 0){
-      send_message($wrap.getText(), $(this).closest(".j-c-msg-wrapper").data("chat-room-id"));
-      $wrap.setText("");
-      $(this).closest(".j-c-msg-wrapper").find("#chat_message_content").val("");
+    if(logged_id != ""){
+      var $wrap = $(this).closest(".j-c-msg-wrapper").find("#chat_message_content").data("emojioneArea");
+      if($wrap.getText().length > 0){
+        send_message($wrap.getText(), $(this).closest(".j-c-msg-wrapper").data("chat-room-id"));
+        $wrap.setText("");
+        $(this).closest(".j-c-msg-wrapper").find("#chat_message_content").val("");
+      }
+    }
+    else {
+      $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop100 violet-bg white-fg padding20 border5 font16'><h4 class='full-width mbottom20 text-center'>Sign in/up to be part of chatrooms</h4><div class='col-xs-6 col-sm-6 no-mar-pad text-right'><a class='btn white-fg border2' style='padding: 7px 15px;border: 1px solid #fff;' href='/authenticate?tab=signup'>SignUp</a></div><div class='col-xs-6 col-sm-6'><a class='btn cc-dark-fg bg-white border2' style='padding: 7px 15px;' href='/authenticate'>Login</a></div></div>");
+      prependModalClose("#cont-wrapper");
+      $("#cont-wrapper").modal("show");
     }
   })
   $(document).on("click", ".scroll-bt-msg-count", function(){

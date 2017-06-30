@@ -10,7 +10,7 @@ Rails.application.configure do
   config.eager_load = false
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local       = false
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
@@ -56,6 +56,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => 'https://localhost:443' }
 
-  config.action_cable.allowed_request_origins = ['https://localhost']
+  #config.action_cable.allowed_request_origins = ['https://localhost']
 
 end

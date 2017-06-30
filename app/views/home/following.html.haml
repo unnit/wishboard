@@ -1,5 +1,7 @@
 = content_for :title do
   - title = "People followed by #{@user.name} (@#{@profile.slug}) | Cocociti"
+= content_for :meta_content do
+  - meta_content = "Discover people followed by #{@user.name}"
 .container-fluid.ptop50.mob-ptop100.bg-shad.padding0.helvetica-font.bg-light-grey
   = render partial: "profile", locals: {user: @user}
   .container.padding0

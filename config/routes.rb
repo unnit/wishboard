@@ -136,6 +136,7 @@ Rails.application.routes.draw do
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
   get "fansday", to: "home#fansday"
   get "conversations", to: "chat_rooms#conversations", as: :chat_messages
+  get "home/get_wishes", to: "home#get_showcases", as: :get_showcases
 
   resources :messages, only: [:destroy, :index, :show] do
     member do

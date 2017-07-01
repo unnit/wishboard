@@ -1,0 +1,11 @@
+$('.feed-loader').hide();
+$(".showcase-strip").append("#{j render partial: "showcases", locals: {showcases: @showcases}}")
+- if @remaining_count > 0
+  :plain
+    $(window).on('scroll', function (){
+      if ($(window).scrollTop() > $(document).height() - $(window).height() - 250) {
+        $(window).off("scroll");
+        $('.feed-loader').show();
+        $.get("/home/get_wishes?last_value=#{@showcases.last.achieved_at.utc}")
+      }
+    });

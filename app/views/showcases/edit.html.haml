@@ -44,8 +44,6 @@
       date_options["startDate"] = "";
       date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
       $(".after-date-of-achievement").datetimepicker(date_options)
-      $editwrap =   $("#edit_showcase_"+#{@showcase.id})
-      $editwrap.find(".ps-initial").animate({"width": $editwrap.find(".j-ps-holder").width() - $editwrap.find(".prefix-holder").width() - 5}, 200);
       var places_input_1= $('.pac-input')[1];
       google.maps.event.addDomListener(window, 'load', function () {
               var autocomplete = new google.maps.places.Autocomplete(places_input_1);

@@ -13,7 +13,7 @@
       .form-group
         = f.text_field :title, class: "form-control coco-input-field bg-light-grey", required: true, placeholder: "Title", maxlength: 200
       .form-group
-        = f.text_area :description, class: "form-control coco-input-field bg-light-grey", rows: 4, required: true, placeholder: "Description", maxlength: 6000
+        ~ f.text_area :description, class: "form-control coco-input-field bg-light-grey", rows: 4, required: true, placeholder: "Description", maxlength: 6000
       .form-group.text-center
         .btn.violet-bg.white-fg.no-mar-pad.loader-out-button
           = f.submit "Save", class: "loader-button btn violet-bg loader-in-button"

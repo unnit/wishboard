@@ -44,7 +44,7 @@
   font-style: normal;
 
 }
-*/
+
 @font-face {
   font-family: 'ProximaNova';
   src: url('/assets/fonts/ProximaNovaAlt-Light.eot');
@@ -66,11 +66,12 @@
   font-weight: bold;
   font-style: normal;
 }
+*/
 
 body{
   /*font-family: 'Open Sans', sans-serif;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-  font-family: 'ProximaNova','Helvetica Neue', Helvetica, 'Open Sans' ;
+  font-family: 'Lato','Helvetica Neue', Helvetica, 'Open Sans' ;
 }
 
 #gmap{
@@ -785,8 +786,8 @@ small{
   padding-bottom: 6px;
 }
 .helvetica-font{
-  /*font-family: helvetica;*/
-  font-family: 'ProximaNova';
+  font-family: "Lato";
+  /*font-family: 'ProximaNova';*/
 }
 .pos-absolute{
   position: absolute;

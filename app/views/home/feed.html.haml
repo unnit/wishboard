@@ -134,7 +134,7 @@
                     %h5.no-mar-pad.font11= truncate performer.name, length: 15
                     %div.mtop-v-5{class: "follow-set-#{performer.id}"}
                       = link_to user_toggle_follow_path(performer), remote: true, method: :post do
-                        .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(performer) ? 'green-border' : 'blue-border'}", style: "line-height: 0px;"}
+                        .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(performer) ? 'green-border' : 'cc-dark-fg-border'}", style: "line-height: 0px;"}
                           %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(performer) ? 'green-fg' : 'cc-dark-fg'}"}
                             - if current_user.following?(performer)
                               Following
@@ -148,9 +148,6 @@
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
         %i.fa.fa-circle-o-notch.fa-spin.font21
         Please wait...
-      #infinite-scrolling-posts.hidden
-        = paginate @showcases, param_name: "showcases"
-        = hidden_field_tag :prev_showcase, @showcases.current_page - 1
     .col-sm-3.col-xs-12.no-mar-pad.ptop15.check-mobile#rhs-feed{class: "#{'hidden-xs' unless params[:view] == "follow"}"}
       .col-xs-12.col-sm-12.padding10.bg-white.rhs-intro{style: "border-bottom: none;", "data-step" => "4", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>SEARCH FRIENDS</h3>Feeling lonely? Type names and search for your friends here.</span>"}
         ~ form_tag user_results_path, method: :get, id: "profile-search-form" do
@@ -211,13 +208,12 @@
                 }
               }
     	});
-      if ($('#infinite-scrolling-posts').length) {
+      if (#{@count} > 8) {
         $(window).on('scroll', function (){
-          var more_posts_url = $('#infinite-scrolling-posts .pagination .next a').attr('href');
-          if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 250) {
+          if ($(window).scrollTop() > $(document).height() - $(window).height() - 250) {
             $(window).off("scroll");
             $('.feed-loader').show();
-            $.getScript(more_posts_url+'&prev_showcase_page='+$("#prev_showcase").val()+'&prev_user_page='+$("#prev_user").val());
+            $.get("/home/get_wishes?last_value=#{@showcases.last.achieved_at.utc if @showcases.present?}")
           }
         });
       }

@@ -19,9 +19,8 @@ class HomeController < ApplicationController
       @social_layout = "yes"
       @sh_btn = 'none;'
       @scase_modal = "no"
-      @showcase_updated = true if (params[:showcases].to_i || 0) > (params[:prev_showcase_page].to_i || 0)
-      #@user_updated = true if (params[:users].to_i || 0) > (params[:prev_user_page].to_i || 0)
-      @showcases = Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc).page(params[:showcases]).per(5)
+      @count = Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc).count
+      @showcases = Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc).limit(8)
       admin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = false"]
       unless current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq.blank?
         admin_wish_conditions[0]+=" and id not in (?) "
@@ -48,6 +47,12 @@ class HomeController < ApplicationController
       @showcases = Showcase.where('id in (?)', GLOBAL_VARIABLES[:featured_wishes])
       render :authenticate
     end
+  end
+
+  def get_showcases
+    @showcases = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), params[:last_value]).order(achieved_at: :desc).limit(8)
+    @showcases.present? ? @remaining_count = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), @showcases.last.achieved_at).count : @remaining_count = 0
+    respond_to :js
   end
 
   def get_similar_friends

@@ -16,9 +16,9 @@
       .fa.fa-clock-o
       = time_ago_in_words(comment.created_at)
     .view-comment-showcase{class: "view-comment-#{comment.id}"}
-      %span.small.grey-fg.excerpt-comment-desc= simple_format(truncate_html(comment.description.gsub("\r\n", "<br>"), 150))
+      %span.small.grey-fg.excerpt-comment-desc= sanitize(match_url(truncate_html(comment.description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
       - if comment.description.length > 150
-        %span.small.grey-fg.full-comment-desc{style: "display: none;"}= simple_format(comment.description.gsub("\r\n", "<br>"))
+        %span.small.grey-fg.full-comment-desc{style: "display: none;"}= sanitize(match_url(comment.description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
         %a.small.grey-fg.see-more-comment.pon{style: "color: blue !important;"} See More
     - if comment.owner?(current_user)
       = form_for comment, url: edit_comment_showcase_path(comment), remote: true, method: :post, html: {class: "form-comment-showcase form-comment-#{comment.id}"} do |f|

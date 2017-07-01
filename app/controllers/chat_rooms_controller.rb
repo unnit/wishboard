@@ -65,8 +65,6 @@ class ChatRoomsController < ApplicationController
   end
 
   def conversations
-    #@messaged_chat_rooms = current_user.messaged_chat_rooms.public_rooms.to_a.uniq
-    #@messaged_chat_rooms = ChatRoom.joins(:memberships).where("memberships.user_id = ?", current_user.id).public_rooms.includes(:chat_messages).where("chat_messages.user_id in ", 0).order("chat_messages.created_at DESC")
     @messaged_chat_rooms = current_user.joined_chat_rooms.where("chat_rooms.id in (?)", current_user.chat_messages.select("DISTINCT chat_room_id")).public_rooms.includes(:chat_messages).order("chat_messages.created_at DESC")
     @inactive_chatrooms = current_user.joined_chat_rooms.where("chat_rooms.id not in (?)", current_user.chat_messages.select("DISTINCT chat_room_id"))
     @joined_chat_rooms = current_user.joined_chat_rooms

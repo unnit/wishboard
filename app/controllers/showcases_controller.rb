@@ -296,10 +296,10 @@ class ShowcasesController < ApplicationController
 
   private
   def backstory_params
-    params.require(:showcase).permit(:backstory_image, :backstory_description).reject{|_, v| v.blank?}
+    params.require(:showcase).permit(:backstory_image, :backstory_description)
   end
   def fullfillment_params
-    params.require(:showcase).permit(:achieved_description, :date_of_achievement, :after_rating).reject{|_, v| v.blank?}
+    params.require(:showcase).permit(:achieved_description, :date_of_achievement, :after_rating)
   end
   def showcase_params
     params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, :wish_prefix, location_attributes: [:id, :name])

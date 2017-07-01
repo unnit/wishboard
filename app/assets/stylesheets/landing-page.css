@@ -719,7 +719,6 @@ xcustom form elements
 .cd-filter-block .radio-label::before,
 .cd-filter-block .checkbox-label::before {
   /* shared style for input elements */
-  font-family: "Open Sans", sans-serif;
   border-radius: 0;
   background-color: #ffffff;
   border: 2px solid #e6e6e6;
@@ -3462,7 +3461,6 @@ th.headerSortDown {
   line-height: 1.42857143;
   color: #333;
   white-space: nowrap;
-  font-family: "Open sans"
 }
 .prefix-holder-dropdown li a:focus,
 .prefix-holder-dropdown li a:hover , .j-nct-prefix-holder li a:focus, .j-nct-prefix-holder li a:hover{
@@ -3565,8 +3563,6 @@ th.headerSortDown {
 }
 .description_carousel .carousel-indicators .active{
   background-color: #737373 !important;
-  -webkit-animation: pulsate 1s ease-out;
-  -webkit-animation-iteration-count: infinite;
 }
 .pulsate{
   -webkit-animation: pulsate 1s ease-out;

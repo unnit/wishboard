@@ -30,4 +30,10 @@ module ApplicationHelper
     image_tag attachments[image].url, **options
   end
 
+  def match_url(text)
+    regexp = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/?)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s\`!()\[\]{};:\'\".,<>?«»“”‘’]))/i
+    converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
+    return converted
+  end
+
 end

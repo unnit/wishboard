@@ -70,8 +70,7 @@
                         %span.grey-fg Sign Out
             %li.hidden-xs.pull-right
               .fa.fa-bell-o.pon.pull-right.notif-icon.white-fg{style: "font-size: 22px;margin-top:18px;"}
-              - if current_user.unchecked_notififcations_count > 0
-                .badge.notif-badge.badge-notif-count.pon.pull-right.mtop8.notif-icon.bg-white.cc-dark-fg= current_user.unchecked_notififcations_count
+              .badge.notif-badge.badge-notif-countpon.pull-right.mtop8.notif-icon.bg-white.cc-dark-fg.j-notification-count{class: "#{current_user.unchecked_notififcations_count > 0 ? '': 'hidden'}"}= current_user.unchecked_notififcations_count
               .sq-rot.notif-toggle
               .notif-arrow.notif-toggle
               .notif-wrap.bx-shad.notif-toggle.helvetica-font
@@ -85,8 +84,7 @@
             %li.hidden-xs.pull-right
               = link_to chat_messages_path, style: "padding: 0px;", class: "j-conv-messages" do
                 .fa.fa-comments-o.font25.pon.pull-right.white-fg{style: "padding: 15px 20px 0px 0px;"}
-                - if current_user.unread_chat_messages_count > 0
-                  .badge.bg-white.cc-dark-fg.pon.notif-badge.mtop8= current_user.unread_chat_messages_count
+                .badge.bg-white.cc-dark-fg.pon.notif-badge.mtop8.j-chat-message-count{class: "#{(current_user.unread_chat_messages_count > 0) ? '': 'hidden'}"}= current_user.unread_chat_messages_count
             %li.hidden-xs.pull-right
               = link_to chat_rooms_path, style: "padding: 16px 15px 0px 5px; font-size: 25px; font-weight:bold;color: white;" do
                 %span.pulsate.pull-right.img-circle.pulsate-dot
@@ -113,16 +111,14 @@
           .fa.fa-newspaper-o.white-fg.ptop8
       = link_to notifications_path do
         .col-xs-2.padding10.notif-mob.height50
-          - if current_user.unchecked_notififcations_count > 0
-            .badge.notif-badge.notif-icon.bg-white.cc-dark-fg.inline-block{style: "top: -13px;"}= current_user.unchecked_notififcations_count
+          .badge.notif-badge.notif-icon.bg-white.cc-dark-fg.inline-block.j-notification-count{class: "#{(current_user.unchecked_notififcations_count > 0) ? '': 'hidden'}", style: "top: -13px;"}= current_user.unchecked_notififcations_count
           .fa.fa-bell-o.white-fg.pos-relative{style: "top: 3px;"}
       .col-xs-2.padding10.follow-mob.height50
         = link_to root_path(view: "follow") do
           .fa.fa-group.white-fg{style: "padding-top: 7px;"}
       = link_to chat_messages_path, class: "j-conv-messages" do
         .col-xs-2.padding10.conv-mobile.height50
-          - if current_user.unread_chat_messages_count > 0
-            .badge.bg-white.cc-dark-fg.inline-block.notif-badge{style: "top: -13px;"}= current_user.unread_chat_messages_count
+          .badge.bg-white.cc-dark-fg.inline-block.notif-badge.j-chat-message-count{class: "#{(current_user.unread_chat_messages_count > 0) ? '': 'hidden'}", style: "top: -13px;"}= current_user.unread_chat_messages_count
           .fa.fa-comments-o.font25.white-fg.pos-relative{style: "top: 4px;"}
       .col-xs-2.padding10.chat-room-mobile.height50
         = link_to chat_rooms_path, class: "weight600 white-fg font25" do

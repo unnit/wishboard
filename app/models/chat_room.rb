@@ -6,6 +6,7 @@ class ChatRoom < ApplicationRecord
   has_many :chat_messages, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
+  # has_many :online_members, -> {where(memberships: {online: true}) }, through: :memberships, source: :user
 
   CHAT_ROOM_TYPES = [[0, "Public"], [1, "Private"]]
 

@@ -3734,3 +3734,10 @@ th.headerSortDown {
     .jssocials-share-whatsapp .jssocials-share-link:hover {
       background: #1f7d1e; display: block !important; }
 }
+.show_new_wishes{
+  position: fixed;
+  z-index: 2;
+  top: 0px;
+  overflow-x: hidden;
+  width: 100%;
+}

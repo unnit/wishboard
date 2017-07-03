@@ -77,7 +77,7 @@
   :javascript
     $(document).ready(function(){
       $wrap = $("#edit_showcase_"+#{@showcase.id});
-      $wrap.find(".type-holder").html("#{@showcase.showcase_type_label}");
+      $wrap.find(".type-holder").html("#{@showcase.showcase_type_label.html_safe}");
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-right", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){
         date_options["endDate"] = new Date($(".admin-showcase-edit").data("pdate"));

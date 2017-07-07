@@ -1,4 +1,5 @@
 - feed ||= "yes"
+- hide_on_load_class ||= ''
 - showcases.each do |showcase|
-  .col-xs-12.col-sm-12.no-mar-pad.mbottom20.bg-white.bg-shad.no-bord-mob.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id}"}
+  .col-xs-12.col-sm-12.no-mar-pad.mbottom20.bg-white.bg-shad.no-bord-mob.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id} #{hide_on_load_class}"}
     = render partial: "home/showcase", locals: {showcase: showcase, feed: feed}

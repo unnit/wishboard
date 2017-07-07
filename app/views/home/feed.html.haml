@@ -1,3 +1,12 @@
+.j-show_new_wishes.show_new_wishes.hidden
+  .container-fluid.ptop50.padding0.mob-ptop100
+    .container.padding0.helvetica-font
+      .col-sm-3.hidden-xs.no-mar-pad.ptop
+      .col-xs-12.col-sm-6.ptop15.padding-mob0{class: "#{'hide-display' if params[:view] == "follow"}"}
+        .col-xs-12.col-sm-12.no-mar-pad
+          .col-xs-12.col-sm-12.text-center.padding5.mbottom10.bg-dark-grey
+            %h4.weight-bold.mtop20.inline-block New Wishes
+            %span.j-new_wishes_count.weight-bold{"data-new-wishes-count": 0} (0)
 .container-fluid.ptop50.padding0.mob-ptop100{style: "min-height: 1000px;background:#ebeced;"}
   .container.padding0.helvetica-font
     .col-sm-3.hidden-xs.no-mar-pad.ptop15#lhs-feed

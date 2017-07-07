@@ -343,6 +343,7 @@ class Showcase < ApplicationRecord
   end
 
   after_create :create_showcase_notification, :promotional_offer, :set_achieved
+  after_create_commit :send_new_wish
   after_destroy :verify_wallet
 
   private
@@ -373,6 +374,11 @@ class Showcase < ApplicationRecord
     wallet.total_coins = 2 + verified_referrals.count + coins_gifted.count + promotional_coins.count
     wallet.unused_coins = wallet.total_coins - wallet.used_coins
     wallet.save
+  end
+
+  def send_new_wish
+    @follower_ids = self.user.followers.pluck(:id)
+    ShowcaseBroadcastJob.perform_later(self.id, @follower_ids )
   end
 
 end

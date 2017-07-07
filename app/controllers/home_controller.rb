@@ -9,6 +9,7 @@ class HomeController < ApplicationController
   before_action :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
   before_action :set_plain_layout, only: [:user_signup_confirmation, :interests]
   before_action :remove_footer, only: [:feed]
+  after_action  :broadcast_notification_count, only: [:update_all_notifications, :update_wow_checked, :update_coin_checked, :update_comment_checked, :update_follower_checked, :update_showcase_checked, :update_commenter_checked, :update_achieved_checked]
 
   def index
     @adv_search = "none"
@@ -446,6 +447,10 @@ class HomeController < ApplicationController
       return
     end
   end
+  
+  def broadcast_notification_count
+   NotificationBroadcastJob.perform_later(current_user) 
+  end
 
   def feed_wishes
     return Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc)
@@ -465,3 +470,4 @@ class HomeController < ApplicationController
   end
 
 end
+

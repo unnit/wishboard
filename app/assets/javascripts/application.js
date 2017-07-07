@@ -10,12 +10,13 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//Paste after third require for bxslider,table search,gmap
+// require gmap3
+// require bxslider/jquery.bxslider.min
+// require html-table-search
 //= require jquery/dist/jquery
 //= require jquery_ujs
 //= require bootstrap-sass-official/assets/javascripts/bootstrap.min
-//= require gmap3
-//= require bxslider/jquery.bxslider.min
-//= require html-table-search
 //= require bootstrap-slider.min
 //= require bootstrap-select
 //= require jquery.remotipart
@@ -29,12 +30,11 @@
 //= require jssocials
 //= require intro
 //= require sweetalert.min
-//= require jquery.event.move
-//= require jquery.twentytwenty
 //= require jquery.rateyo
 //= require emojione
 //= require emojionearea
 //= require cable
+//= require jquery.mobile.custom.min
 
 $(document).ready(function(){
   if($.fn.cloudinary_fileupload !== undefined) {
@@ -239,7 +239,7 @@ $(document).ready(function(){
               allowEscapeKey: false,
               closeOnConfirm: true,
               closeOnCancel: true,
-              animation: "slide-from-top"
+              animation: "pop"
             },
             function(isConfirm){
               if (isConfirm){
@@ -278,7 +278,7 @@ $(document).ready(function(){
               allowEscapeKey: false,
               closeOnConfirm: true,
               closeOnCancel: true,
-              animation: "slide-from-top"
+              animation: "pop"
             },
             function(isConfirm){
               if (isConfirm){
@@ -316,7 +316,7 @@ $(document).ready(function(){
               allowEscapeKey: false,
               closeOnConfirm: true,
               closeOnCancel: true,
-              animation: "slide-from-top"
+              animation: "pop"
             },
             function(isConfirm){
               if (isConfirm){
@@ -411,10 +411,6 @@ $(document).ready(function(){
     $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
     $("#cont-wrapper").modal("show");
   })
-  //Setting footer proper for mac devices
-  if($(document).height() <= $(window).height()){
-    setTimeout(function(){$("footer").css({"position": "absolute", "bottom": "0"});}, 3000);
-  }
   //Admin Wishes button effect
   $(document).on("click", ".brd-box", function(){
     $(this).removeClass("brd-box").addClass("fild-box");
@@ -927,7 +923,7 @@ $(document).ready(function(){
     $("#start_date_time_header").focus();
   })
 
-  //Map
+  /*//Map
   if($("#gmap").length){
     values = [];
     zoom = 6;
@@ -989,7 +985,7 @@ $(document).ready(function(){
         }
       }
     });
-  }//END MAP
+  }//END MAP*/
 
   //panels toggle
   $(document).on('click', '.panel-heading span.clickable', function (e) {
@@ -1246,9 +1242,7 @@ $(document).ready(function(){
   //-----Table Sorter
   $("#admin-products, #admin-transactions").tablesorter();
   $("#booking_requests_table, #my_listings_table, #my_orders_table, #upcoming_bookings_table, #non_coco_bookings_table, #delete_non_coco_bookings_table").tablesorter();
-  $("table#booking_requests_table, table#my_listings_table, table#my_orders_table, table#upcoming_bookings_table, table#non_coco_bookings_table, table#delete_non_coco_bookings_table").tableSearch({
-		searchPlaceHolder:'Please search here...',
-	});
+  //$("table#booking_requests_table, table#my_listings_table, table#my_orders_table, table#upcoming_bookings_table, table#non_coco_bookings_table, table#delete_non_coco_bookings_table").tableSearch({searchPlaceHolder:'Please search here...',});
   //Import Google Contacts
   var clientId = $("#google_client_id").data("client-id");
   var apiKey = $("#google_api_key").data("api-key");
@@ -1442,9 +1436,48 @@ $(document).ready(function(){
   customUnicodeToHtml(".j-chat_content_data");
   messages_to_bottom();
   $(".emojionearea").removeClass("hidden");
+  //Remove content of cont-wrapper on close
+  $("html,body").click(function(e){
+    var container_1 = $(".showcase-ps-wrapper")
+    if (!container_1.is(e.target) // if the target of the click isn't the container...
+        && container_1.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+      if($("#cont-wrapper").find(".showcase-ps-wrapper").length > 0){
+        $("#cont-wrapper").empty();
+        $("#cont-wrapper").modal("hide");
+      }
+    }
+  });
+  //Count change in carousel slider
+  $(document).on("click", ".image_carousel .carousel-indicators li", function(){
+    if($(this).parent().children().index(this) == 0){
+      $(this).closest(".image_carousel").find(".j-change-count").text("1");
+    }
+    else if($(this).parent().children().index(this) == 1) {
+      $(this).closest(".image_carousel").find(".j-change-count").text("2");
+    }
+  })
+  $(document).on("click", ".image_carousel .carousel-control", function(){
+    $wrap = $(this).closest(".image_carousel").find(".j-change-count")
+    $wrap.text($wrap.text() === "1" ? "2" : "1");
+  })
+  //Bootsrap carouse slider mobile swipe
+  $(document).on("swiperight", "#myCarousel, #myMobileCarousel, #myCoinCarousel, #myCoinMobileCarousel, .description_carousel, .image_carousel", function() {
+    $(this).carousel('prev');
+    $(this).find(".j-change-count").text($(this).find(".j-change-count").text() === "1" ? "2" : "1");
+    $(".j-change-info").addClass("hidden-xs-inline");
+  });
+  $(document).on("swipeleft", "#myCarousel, #myMobileCarousel, #myCoinCarousel, #myCoinMobileCarousel, .description_carousel, .image_carousel", function() {
+    $(this).carousel('next');
+    $(this).find(".j-change-count").text($(this).find(".j-change-count").text() === "1" ? "2" : "1");
+    $(".j-change-info").addClass("hidden-xs-inline")
+  });
 });
 $(window).on("load", function(){
-  $(".twentytwenty-container").twentytwenty();
+  //Setting footer proper for mac devices
+  if($(document).height() <= $(window).height()){
+    setTimeout(function(){$("footer").css({"position": "absolute", "bottom": "0"});}, 3000);
+  }
 })
 
 function starRating(elementselector){
@@ -1497,13 +1530,6 @@ function customRatingColor(givenrating){
 function replace_content(element, modal, form){
   form.find("#showcase_date_of_achievement").val(element.attr('data-date_of_acheivement'));
   form.find("#showcase_achieved_description").val(element.attr('data-showcase_achieved_description'))
-}
-
-function refresh_twenty_twenty_div(wrapper_div){
-  var imgs = $(wrapper_div+" .twentytwenty-container img");
-  images = wrapper_div+" .twentytwenty-container img";
-  var loadedImgNum = 0;
-  imgs.on('load', function(){loadedImgNum += 1; if (loadedImgNum == imgs.length){setTimeout(function () {$(wrapper_div+" .twentytwenty-container").twentytwenty(); $(window).trigger("resize.twentytwenty"); }, 500); } });
 }
 function prependModalClose(elementselector){
   var close_modal_button = "<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>";

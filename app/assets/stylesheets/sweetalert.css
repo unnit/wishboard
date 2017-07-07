@@ -25,9 +25,9 @@ body.stop-scrolling {
   text-align: center;
   position: fixed;
   left: 50%;
-  top: 50%;
+  top: 30px;
   margin-left: -256px;
-  margin-top: -200px;
+  margin-top: 0px !important;
   overflow: hidden;
   display: none;
   z-index: 99999; }
@@ -40,18 +40,18 @@ body.stop-scrolling {
       right: 15px; } }
   .sweet-alert h2 {
     color: #575757;
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
     font-weight: 600;
     text-transform: none;
     position: relative;
-    margin: 25px 0;
+    margin: 10px 0;
     padding: 0;
     line-height: 40px;
     display: block; }
   .sweet-alert p {
     color: #797979;
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
     font-weight: 300;
     position: relative;
@@ -176,12 +176,12 @@ body.stop-scrolling {
     color: #732db0;
     border: 1px solid;
     box-shadow: none !important;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     -webkit-border-radius: 4px;
     border-radius: 5px;
-    padding: 10px 32px;
-    margin: 26px 5px 0 5px;
+    padding: 7px 20px;
+    margin: 15px 5px 0 5px;
     cursor: pointer;
     transition: all 0.4s ease;
     outline: none;}

@@ -118,12 +118,17 @@
               ~ form_tag multiple_rewish_showcases_path do
                 = hidden_field_tag :showcase_ids
                 = submit_tag "Add to Wishlist", class: "btn btn-md wow-badge-bg white-fg"
-      .col-xs-12.col-sm-12.no-mar-pad.showcase-strip.mtop30
+      .col-xs-12.col-sm-12.no-mar-pad.mtop15.j-feed-tab-wrap.text-center.bg-white.bg-shad
+        .col-xs-6.col-sm-6.j-feed-tab.feed-active.j-feed-strip-1.padding15.pon
+          My Feed
+        .col-xs-6.col-sm-6.j-feed-tab.j-feed-strip-2.padding15.pon
+          All wishes
+      .col-xs-12.col-sm-12.no-mar-pad.showcase-strip
         - unless @showcases.blank?
           = render partial: "home/showcases", locals: {showcases: @showcases}
         - else
           .col-xs-12.col-sm-12.text-center.padding10.bg-white.mbottom40
-            %h5 Ayyo! Nothing to show. Invite your friends and follow others to activate your feed.
+            %h5 Ayyo! Nothing to show in your feed. Invite your friends or discover fellow 'wish'ers on Cocociti.
             %h4.weight-bold.mtop20 TOP WISHERS
             .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "7", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>BE UPDATED</h3>An empty feed is boring. Follow a minimum of our 8 most active users above to get the best out of Cocociti and to be updated.</span>"}
               - @top_performers.each do |performer|
@@ -145,6 +150,11 @@
                           .loader-effect.btn.loader-in-follow-button{style: "display:none;padding-top: 3px;"}
                             .ball-clip-rotate{style: "height:22px;"}
                               %div.blue-border ...
+      .col-xs-12.col-sm-12.no-mar-pad.showcase-all-strip.hide-display
+        - unless @all_showcases.empty?
+          = render partial: "home/showcases", locals: {showcases: @all_showcases}
+        - else
+          %h3.text-center Wow (·_·). You have followed everyone.
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}
         %i.fa.fa-circle-o-notch.fa-spin.font21
         Please wait...
@@ -208,15 +218,20 @@
                 }
               }
     	});
-      if (#{@count} > 8) {
-        $(window).on('scroll', function (){
-          if ($(window).scrollTop() > $(document).height() - $(window).height() - 250) {
+      $(window).on('scroll', function (){
+        if ($(window).scrollTop() > $(document).height() - $(window).height() - 250) {
+          if($(".showcase-strip").css("display") == "block" && #{@count} > 8){
             $(window).off("scroll");
             $('.feed-loader').show();
-            $.get("/home/get_wishes?last_value=#{@showcases.last.achieved_at.utc if @showcases.present?}")
+            $.get("/home/get-wishes?last_value=#{@showcases.last.achieved_at.utc if @showcases.present?}&last_all_value=#{@all_showcases.last.achieved_at.utc if @all_showcases.present?}&all_count=#{@all_count - 8}")
           }
-        });
-      }
+          else if($(".showcase-all-strip").css("display") == "block" && #{@all_count} > 8){
+            $(window).off("scroll");
+            $('.feed-loader').show();
+            $.get("/home/get-all-wishes?last_value=#{@showcases.last.achieved_at.utc if @showcases.present?}&last_all_value=#{@all_showcases.last.achieved_at.utc if @all_showcases.present?}&count=#{@count - 8}")
+          }
+        }
+      });
       if(#{params[:view] == "follow"}){
         $(".follow-mob").addClass("cc-med-bg");
       }
@@ -236,5 +251,17 @@
         }
         introJs().start();
       }
+      $(document).on("click", ".j-feed-tab", function(){
+        $(this).closest(".j-feed-tab-wrap").find(".feed-active").removeClass("feed-active");
+        $(this).addClass("feed-active");
+        if($(this).hasClass("j-feed-strip-1")){
+          $(".showcase-all-strip").hide();
+          $(".showcase-strip").show();
+        }
+        else{
+          $(".showcase-all-strip").show();
+          $(".showcase-strip").hide();
+        }
+      })
       $.get("/get_similar_friends");
     });

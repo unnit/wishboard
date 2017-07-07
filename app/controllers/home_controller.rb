@@ -19,8 +19,10 @@ class HomeController < ApplicationController
       @social_layout = "yes"
       @sh_btn = 'none;'
       @scase_modal = "no"
-      @count = Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc).count
-      @showcases = Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc).limit(8)
+      @count = feed_wishes.count
+      @showcases = feed_wishes.limit(8)
+      @all_count = all_wishes(nil).count
+      @all_showcases = all_wishes(nil).limit(8)
       admin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = false"]
       unless current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq.blank?
         admin_wish_conditions[0]+=" and id not in (?) "
@@ -44,14 +46,30 @@ class HomeController < ApplicationController
       end
     else
       @auth_layout = "yes"
+      @remove_footer = nil
       @showcases = Showcase.where('id in (?)', GLOBAL_VARIABLES[:featured_wishes])
       render :authenticate
     end
   end
 
   def get_showcases
+    @last_all_value = params[:last_all_value]
+    @all_count = params[:all_count]
     @showcases = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), params[:last_value]).order(achieved_at: :desc).limit(8)
-    @showcases.present? ? @remaining_count = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), @showcases.last.achieved_at).count : @remaining_count = 0
+    @showcases.present? ? @count = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), @showcases.last.achieved_at).count : @count = 0
+    logger.info '*************'
+    logger.info @count
+    respond_to :js
+  end
+
+  def get_all_showcases
+    @last_value = params[:last_value]
+    @count = params[:count]
+    @all_showcases = all_wishes(params[:last_all_value]).limit(8)
+    @all_showcases.present? ? @all_count = all_wishes(@all_showcases.last.achieved_at).count : @all_count = 0
+    logger.info '*************'
+    logger.info @count
+    logger.info @all_count
     respond_to :js
   end
 
@@ -427,6 +445,23 @@ class HomeController < ApplicationController
       redirect_to root_path
       return
     end
+  end
+
+  def feed_wishes
+    return Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc)
+  end
+
+  def all_wishes(last_all_value)
+    conditions = ["admin_created = false"]
+    unless feed_wishes.blank?
+      conditions[0]+=" and id not in (?)"
+      conditions.push feed_wishes.map(&:id)
+    end
+    unless last_all_value.blank?
+      conditions[0]+=" and achieved_at < ?"
+      conditions.push last_all_value
+    end
+    return Showcase.where(conditions).order(achieved_at: :desc)
   end
 
 end

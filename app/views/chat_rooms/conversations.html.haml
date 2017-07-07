@@ -43,8 +43,7 @@
     $(document).ready(function(){
       $("#chat-card-scroll").mCustomScrollbar({theme:"minimal-dark"});
       $(".j-conv-messages .badge").hide().text("0");
-      $(".j-ct-conv-wrap.active .badge").hide().text("0")
-      $("#chat_message_content").focus();
+      setTimeout(function(){$(".j-ct-conv-wrap.active .badge").hide().text("0");}, 10000);
       $(".j-btn-wrap").css("padding-top", ($(".j-chat-form-wrapper").height() - 25)/2);
       $(document).on("click", ".j-ct-conv-wrap", function(){
         $(this).closest(".j-cm-conv-wrap").find(".active").removeClass("active");

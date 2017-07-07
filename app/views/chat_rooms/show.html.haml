@@ -16,7 +16,7 @@
   :javascript
     $(document).ready(function(){
       var logged_id = $(".chat-ids-holder").data("logged-in-id");
-      $("#chat_message_content").focus();
+      $(".emojionearea-editor").focus();
       $(".j-btn-wrap").css("padding-top", ($(".j-chat-form-wrapper").height() - 25)/2);
       if(#{@chat_room.chat_messages.count} > 20 && logged_id != ""){
         $("#chat_messages").on("scroll", function(){

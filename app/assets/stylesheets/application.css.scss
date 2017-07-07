@@ -9,11 +9,12 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
+ Add this after font-awesome for bxlsider
+ require bxslider/jquery.bxslider
  *= require bootstrap.min
  *= require landing-page
  *= require style
  *= require font-awesome
- *= require bxslider/jquery.bxslider
  *= require bootstrap-slider.min
  *= require_self
  *= require bootstrap-select
@@ -26,7 +27,6 @@
  *= require jssocials-theme-flat
  *= require introjs
  *= require sweetalert
- *= require twentytwenty
  *= require jquery.rateyo
  *= require emojionearea
  *= require custom_emojione
@@ -141,6 +141,9 @@ body{
 }
 .neg-mtop5{
   margin-top: -5px;
+}
+.neg-mtop10{
+  margin-top: -10px;
 }
 .mtop5{
   margin-top: 5px;
@@ -355,6 +358,9 @@ body{
 }
 .min-height0{
   min-height: 0px;
+}
+.min-height1000{
+  min-height: 1000px;
 }
 .height100{
   height: 100px;
@@ -778,7 +784,7 @@ small{
   display: inline-block !important;
 }
 .inline-display{
-  display: inline;
+  display: inline !important;
 }
 .active-link{
   border-bottom: 4px solid #81A9CC;
@@ -923,12 +929,36 @@ small{
 .violet-bg{
   background-color: #732db0;
 }
+.transparent-bg-image{
+  background-image: none !important;
+}
 /*** End  **/
+.top5{
+  top: 5px;
+}
+.top50percent{
+  top: 50%;
+}
+.right0{
+  right: 0px;
+}
+.right10{
+  right: 10px;
+}
 .right15{
   right: 15px;
 }
+.bottom0{
+  bottom: 0px;
+}
+.bottom5{
+  bottom: 5px;
+}
 .bottom10{
   bottom: 10px;
+}
+.left10{
+  left: 10px;
 }
 .neg-right6{
   right: -6px;

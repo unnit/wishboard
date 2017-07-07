@@ -3564,6 +3564,23 @@ th.headerSortDown {
 .description_carousel .carousel-indicators .active{
   background-color: #737373 !important;
 }
+.image_carousel .carousel-indicators{
+  bottom: 0px !important;
+}
+.image_carousel .carousel-indicators li{
+  width: 8px !important;
+  height: 8px !important;
+}
+.image_carousel .carousel-indicators li.active{
+  width: 10px !important;
+  height: 10px !important;
+}
+.car-info-style{
+  right: 5px;
+  background-color: rgba(0,0,0,0.4);
+  padding: 3px 9px;
+  border-radius: 15px;
+}
 .pulsate{
   -webkit-animation: pulsate 1s ease-out;
   -webkit-animation-iteration-count: infinite;
@@ -3577,6 +3594,9 @@ th.headerSortDown {
   0% {-webkit-transform: scale(1, 1);}
   50% {-webkit-transform: scale(1.4, 1.4);}
   100% {-webkit-transform: scale(1, 1);}
+}
+.feed-active{
+  border-bottom: 2px solid #732db0 !important;
 }
 /*******************************/
 @media only screen and (min-width: 768px) and (max-width: 991px) {

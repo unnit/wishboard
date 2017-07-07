@@ -1,7 +1,7 @@
 .col-xs-12.col-sm-12.no-mar-pad
   %span.font11.grey-fg.pos-absolute.right15.mtop8
     = time_ago_in_words(showcase.achieved_at)
-  %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute{style: "right:0px;z-index: 1"}
+  %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute.h-z.right0
   .col-xs-4.col-sm-4.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
     - unless showcase.coin_wish?
       - if showcase.owner?(current_user)
@@ -50,19 +50,37 @@
             %span
               = link_to showcase_path(showcase, popup: "yes"), remote: true, class: "cc-dark-fg" do
                 = showcase.title
-- if showcase.image.present?
-  = link_to showcase_path(showcase), remote: true do
+  - if showcase.any_image?
     .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
-      - if showcase.achieved? && showcase.fullfilled_image.present?
-        .twentytwenty-container{style: "min-height: 200px", "data-before-label": "", "data-after-label": ""}
-          = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
-          = cl_image_tag showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
-      -elsif showcase.backstory_possible? && showcase.backstory_image.present?
-        .twentytwenty-container{style: "min-height: 200px", "data-before-label": "", "data-after-label": ""}
-          = cl_image_tag showcase.backstory_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
-          = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
-      - else
-        = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
+      .carousel.slide.image_carousel{id: "image_carousel_#{showcase.id}", "data-interval": false}
+        - if showcase.image.present? && showcase.achieved? && ((showcase.fullfilled_image.present? && !showcase.showpiece?) || (showcase.backstory_image.present? && showcase.showpiece?))
+          .pos-absolute.h-z.font12.white-fg.car-info-style.top5
+            %span.pull-left.mtop2.j-change-count 1
+            %span.pull-left.mtop2 /2
+          .pos-absolute.h-z.font12.white-fg.car-info-style.j-change-info.bottom5.visible-xs
+            Swipe to see next
+          %a.left.carousel-control.h-z.transparent-bg-image{href: "#image_carousel_#{showcase.id}", role: "button", "data-slide" => "prev"}
+            %span.fa.fa-chevron-circle-left.pos-absolute.light-grey-fg.neg-mtop10.top50percent.left10{"aria-hidden" => true}
+            %span.sr-only Previous
+          %a.right.carousel-control.h-z.transparent-bg-image{href: "#image_carousel_#{showcase.id}", role: "button", "data-slide" => "next"}
+            %span.fa.fa-chevron-circle-right.pos-absolute.light-grey-fg.neg-mtop10.top50percent.right10{"aria-hidden" => true}
+            %span.sr-only Next
+          %ol.carousel-indicators
+            %li.active{"data-slide-to" => "0", "data-target" => "#image_carousel_#{showcase.id}"}
+            %li{"data-slide-to" => "1", "data-target" => "#image_carousel_#{showcase.id}"}
+        .carousel-inner
+          - if showcase.backstory_image.present? && showcase.showpiece?
+            .item.active
+              = link_to showcase_path(showcase), remote: true do
+                = cl_image_tag showcase.backstory_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
+          - if showcase.image.present?
+            .item{class: "#{showcase.backstory_image.blank? || !showcase.showpiece? ? 'active' : '' }"}
+              = link_to showcase_path(showcase), remote: true do
+                = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
+          - if showcase.fullfilled_image.present? && !showcase.showpiece? && showcase.achieved?
+            .item{class: "#{showcase.image.blank? && !showcase.showpiece? ? 'active' : '' }"}
+              = link_to showcase_path(showcase), remote: true do
+                = cl_image_tag showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
       .h40.pos-absolute{style: "top: 45%;left: 45%;"}
         - if current_user
           - if !showcase.owner?(current_user) && showcase.active_coins.count <= 50 && showcase.coin_wish? && showcase.coin_wish_active?

@@ -1,6 +1,6 @@
 = content_for :title do
   -title = "Forgot Password"
-.container.head-mar
+.container.head-mar.full-height
   .row
     .col-md-12
       %h2 Forgot your password?
@@ -11,6 +11,6 @@
         .form-group
           .col-md-6.no-mar-pad
             = f.text_field :email, autofocus: true, class: "form-control"
-        .form-group{style: "margin-bottom: 100px;"}
+        .form-group
           .col-md-12.no-mar-pad
-            = f.submit "Send me reset password instructions", class: "btn btn-info save-button", style: "width:auto;"
+            = f.submit "Send me reset password instructions", class: "btn btn-info save-button mtop20 violet-bg border2", style: "width:auto;"

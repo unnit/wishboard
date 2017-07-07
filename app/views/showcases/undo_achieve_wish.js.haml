@@ -1,6 +1,6 @@
 $(".messages").html("#{j(render partial: 'layouts/messages')}")
 $(".loader-button").show();
 $(".loader-effect").hide();
-$(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}").promise().done(function(){refresh_twenty_twenty_div(".showcase-ps-#{@showcase.id}");});
+$(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}")
 - unless @showcase.achieved?
   $("#cont-wrapper").modal("hide").html("");

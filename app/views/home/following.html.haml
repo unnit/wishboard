@@ -2,7 +2,7 @@
   - title = "People followed by #{@user.name} (@#{@profile.slug}) | Cocociti"
 = content_for :meta_content do
   - meta_content = "Discover people followed by #{@user.name}"
-.container-fluid.ptop50.mob-ptop100.bg-shad.padding0.helvetica-font.bg-light-grey
+.container-fluid.ptop50.mob-ptop100.padding0.helvetica-font.min-height1000
   = render partial: "profile", locals: {user: @user}
   .container.padding0
     .col-md-12.mbottom10.no-mar-pad.pleft-10
@@ -12,7 +12,7 @@
       - if @users.present?
         = render partial: "user", collection: @users
       - else
-        %h3.text-center.padding20{style: "height:300px;"} “Not following anyone!”
+        %h3.text-center.padding20 “Not following anyone!”
     #infinite-scrolling-content.hidden
       = paginate @users, param_name: "following"
     .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}

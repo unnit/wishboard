@@ -334,6 +334,10 @@ class Showcase < ApplicationRecord
     backstory_possible? && (backstory_description.present? || backstory_image.present?)
   end
 
+  def any_image?
+    image.present? || backstory_image.present? || fullfilled_image.present?
+  end
+
   def deactivate_coin_wish
     update_column :coin_wish_status, COIN_WISH_STATUS[1]
   end

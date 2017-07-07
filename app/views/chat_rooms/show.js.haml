@@ -1,4 +1,3 @@
-
 $("#chat_messages_wrapper").html("#{j render partial: "chat_rooms/chat_room", locals: {chat_room: @chat_room, chat_messages: @chat_messages}}");
 customUnicodeToHtml(".j-chat_content_data");
 $("#j-c-m-rhs").html("#{j render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @chat_room, count: @count}}")

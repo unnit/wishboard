@@ -1,17 +1,17 @@
 $('.feed-loader').hide();
-$(".showcase-strip").append("#{j render partial: "showcases", locals: {showcases: @showcases}}");
+$(".showcase-all-strip").append("#{j render partial: "showcases", locals: {showcases: @all_showcases}}");
 :plain
   $(window).on('scroll', function (){
     if ($(window).scrollTop() > $(document).height() - $(window).height() - 250) {
       if($(".showcase-strip").css("display") == "block" && #{@count} > 0){
         $(window).off("scroll");
         $('.feed-loader').show();
-        $.get("/home/get-wishes?last_value=#{@showcases.last.achieved_at.utc if @showcases.present?}&last_all_value=#{@last_all_value}&all_count=#{@all_count}")
+        $.get("/home/get-wishes?last_value=#{@last_value}&last_all_value=#{@all_showcases.last.achieved_at.utc if @all_showcases.present?}&all_count=#{@all_count}")
       }
       else if($(".showcase-all-strip").css("display") == "block" && #{@all_count} > 0){
         $(window).off("scroll");
         $('.feed-loader').show();
-        $.get("/home/get-all-wishes?last_value=#{@showcases.last.achieved_at.utc if @showcases.present?}&last_all_value=#{@last_all_value}&count=#{@count}")
+        $.get("/home/get-all-wishes?last_value=#{@last_value}&last_all_value=#{@all_showcases.last.achieved_at.utc if @all_showcases.present?}&count=#{@count}")
       }
     }
   });

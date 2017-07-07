@@ -2,7 +2,7 @@
   - title = "Momentary Wishes by #{@user.name} (@#{@profile.slug}) | Cocociti"
 = content_for :meta_content do
   - meta_content = "Discover momentary wishes of #{@user.name}"
-.container-fluid.ptop50.mob-ptop100.bg-shad.pbottom50.padding0.helvetica-font{style: "background-color: #F7F7F7;"}
+.container-fluid.ptop50.mob-ptop100.pbottom50.padding0.helvetica-font.min-height1000
   = render partial: "profile", locals: {user: @user}
   .container.padding0
     .col-md-12.mbottom10.no-mar-pad.pleft-10
@@ -17,9 +17,9 @@
           - if current_user && current_user.same_user?(@user)
             %h3.text-center.padding20 “Sometimes things become possible if we want them bad enough.” - T.S. Eliot
             .col-xs-12.col-md-12.text-center
-              = link_to "Wish", "#showcase-modal", data: {toggle: "modal", dismiss: "modal"}, class: "btn black80-bg white-fg", style: "padding: 7px 12px;;border: 1px solid #ccc;border-radius:18px;"
+              = link_to "Wish", "#", class: "btn ps-nav-btn white-fg cc-med-bg", style: "padding: 7px 12px;border-radius:18px;"
           - else
-            %h3.text-center.padding20{style: "height:300px;"} “Ayyo...Momentary Wishlist is empty!”
+            %h3.text-center.padding20 “Ayyo...Momentary Wishlist is empty!”
       #infinite-scrolling-content.hidden
         = paginate @showcases, param_name: "showcases"
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}

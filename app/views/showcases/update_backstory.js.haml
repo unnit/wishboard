@@ -2,5 +2,5 @@ $(".loader-button").show();
 $(".loader-effect").hide();
 $(".messages").html("#{j(render partial: 'layouts/messages')}")
 - if @showcase.errors.blank?
-  $(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}").promise().done(function(){refresh_twenty_twenty_div(".showcase-ps-#{@showcase.id}");});
+  $(".showcase-ps-#{@showcase.id}").html("#{j render partial: "home/showcase", locals: {showcase: @showcase, feed: 'yes'}}")
   $("#cont-wrapper").modal("hide").html("");

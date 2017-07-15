@@ -34,6 +34,7 @@
 //= require emojione
 //= require emojionearea
 //= require cable
+//= require local_time
 //= require jquery.mobile.custom.min
 
 $(document).ready(function(){
@@ -524,9 +525,7 @@ $(document).ready(function(){
   // Notification Icon
   $(document).on("click", ".notif-icon", function(){
     $(".notif-toggle").toggle();
-    if($(".notif-content").is(":empty")){
-      $.get("/unchecked_notifications")
-    }
+    $.get("/unchecked_notifications")
   })
   $("html,body").click(function(e){
     var container = $(".notif-icon, #mCSB_2_scrollbar_vertical")
@@ -1008,11 +1007,11 @@ $(document).ready(function(){
   });
 
   //
-  $(".login-form, .signup-form").submit(function(e){
+  $(document).on("click", ".login-button, .signup-button", function(e){
     e.preventDefault();
     $(".login-email").val($(".login-email").val().toLowerCase());
     $(".signup-email").val($(".signup-email").val().toLowerCase());
-    $(this).submit();
+    $(this).closest("form").submit();
   })
   //Searching
   $(".search-form").submit(function(){
@@ -1472,6 +1471,21 @@ $(document).ready(function(){
     $(this).find(".j-change-count").text($(this).find(".j-change-count").text() === "1" ? "2" : "1");
     $(".j-change-info").addClass("hidden-xs-inline")
   });
+  //scroll up icon at bottom
+  $(document).on("scroll", function(){
+    if($(".showcase-strip").prop("scrollHeight") > 1000){
+      $(".j-page-scroll-up").fadeIn();
+    }
+  })
+  $(document).on("click", ".j-page-scroll-up", function(){
+    $("html, body").animate({scrollTop: 0});
+  })
+  $(document).on("click", ".j-close-live", function(){
+    $(this).closest(".j-notif-single").remove();
+  })
+  $(document).on("click", ".j-notif-single", function(){
+    $(this).remove();
+  })
 });
 $(window).on("load", function(){
   //Setting footer proper for mac devices

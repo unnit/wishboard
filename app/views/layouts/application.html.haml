@@ -6,7 +6,7 @@
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
     - if Rails.env.development? || request.fullpath == GLOBAL_VARIABLES[:hacker_relative_path]
       %meta{:name => "robots", :content => "noindex"}
-    %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes.'}", :name => "description"}
+    %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}", :name => "description"}
     %meta{:content => "", :name => "author"}
     %meta{name: "apple-mobile-web-app-capable", content: "yes"}
     %meta{name: "apple-mobile-web-app-status-bar-style", content: "black"}
@@ -15,24 +15,24 @@
     %meta{name: "msapplication-TileImage", content: "/assets/logo/logo-new-144.png"}
     %meta{name: "msapplication-TileColor", content: "#732db0"}
     %meta{name: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
-    %meta{itemprop: "name", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Find everyone's wishes & share yours"}"}
-    %meta{itemprop: "description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes.'}"}
+    %meta{itemprop: "name", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Share, find, fund & fulfill your wishes."}"}
+    %meta{itemprop: "description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}"}
     %meta{itemprop: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
     %meta{name: "twitter:card", content: "summary"}
-    %meta{name: "twitter:title", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Find everyone's wishes & share yours"}"}
-    %meta{name: "twitter:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes.'}"}
+    %meta{name: "twitter:title", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Share, find, fund & fulfill your wishes."}"}
+    %meta{name: "twitter:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}"}
     %meta{name: "twitter:site", content: "@cocociti"}
     %meta{name: "twitter:creator", content: "twitter:creator"}
     %meta{name: "twitter:image:src", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
-    %meta{name: "og:title", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Find everyone's wishes & share yours"}"}
-    %meta{name: "og:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network to wish, share, & fulfill. Make new friends, get free gifts, join chatrooms and fulfill your wishes.'}"}
+    %meta{name: "og:title", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Share, find, fund & fulfill your wishes."}"}
+    %meta{name: "og:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}"}
     %meta{name: "og:image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
     %meta{name: "og:url", content: "#{GLOBAL_VARIABLES[:root_url]}"}
     %meta{name: "og:site_name", content: "Cocociti"}
     %meta{name: "fb:admins", content: "cocociti"}
     %meta{name: "fb:app_id", content: "363051183844429"}
     %meta{name: "og:type", content: "website"}
-    %title= content_for?(:title) ? yield(:title) : "Cocociti | Find everyone's wishes & share yours"
+    %title= content_for?(:title) ? yield(:title) : "Cocociti | Share, find, fund & fulfill your wishes."
 
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
     /[if lt IE 9]
@@ -57,7 +57,7 @@
     - elsif @special_layout.present?
       = render partial: "/layouts/navbar_special"
     - else
-      = render partial: "/layouts/navbar_rent"
+      = render partial: "/layouts/navbar_social"
     = render partial: "layouts/messages"
     = yield
     - if @remove_footer.blank?

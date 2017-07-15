@@ -1,0 +1,121 @@
+- notifications.each do |notification|
+  - if notification.class.name == "Wow"
+    .col-xs-12.padding10.ptop15.pbottom15.j-notif-single.hide-display.mtop10.mbottom10.cc-very-light{class: "live-notification-Wow-#{notification.id}"}
+      .pos-absolute.top5.right5.font13.j-close-live.pon x
+      = link_to update_wow_checked_path(notification), target: "_blank", class: "col-sm-12 padding0 black80-fg" do
+        .media.mtop0
+          .media-left
+            %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          .media-body
+            %span.weight600= truncate notification.user.name, length: 35
+            %span.font13
+              liked your wish -
+            %span.weight600= truncate notification.showcase.title, length: 35
+            %br
+            %span.extra-small-font
+              .fa.fa-clock-o
+              = time_ago_in_words(notification.created_at)
+  - elsif notification.class.name == "Coin"
+    .col-xs-12.padding10.ptop15.pbottom15.j-notif-single.hide-display.mtop10.mbottom10.cc-very-light{class: "live-notification-Coin-#{notification.id}"}
+      .pos-absolute.top5.right5.font13.j-close-live.pon x
+      = link_to update_coin_checked_path(notification), target: "_blank", class: "col-sm-12 padding0 black80-fg" do
+        .media.mtop0
+          .media-left
+            %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          .media-body
+            %span.weight600= truncate notification.user.name, length: 35
+            %span.font13
+              gifted a coin for wish -
+            %span.weight600= truncate notification.showcase.title, length: 35
+            %br
+            %span.extra-small-font
+              .fa.fa-clock-o
+              = time_ago_in_words(notification.created_at)
+  - elsif notification.class.name == "Comment"
+    .col-xs-12.padding10.ptop15.pbottom15.j-notif-single.hide-display.mtop10.mbottom10.cc-very-light{class: "live-notification-Comment-#{notification.id}"}
+      .pos-absolute.top5.right5.font13.j-close-live.pon x
+      = link_to update_comment_checked_path(notification), target: "_blank", class: "col-sm-12 padding0 black80-fg" do
+        .media.mtop0
+          .media-left
+            %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          .media-body
+            %span.weight600= truncate notification.user.name, length: 35
+            %span.font13
+              commented on your wish -
+            %span.weight600= truncate notification.showcase.title, length: 35
+            %br
+            %span.extra-small-font
+              .fa.fa-clock-o
+              = time_ago_in_words(notification.created_at)
+  - elsif notification.class.name == "Relationship"
+    .col-xs-12.padding10.ptop15.pbottom15.j-notif-single.hide-display.mtop10.mbottom10.cc-very-light{class: "live-notification-Relationship-#{notification.id}"}
+      .pos-absolute.top5.right5.font13.j-close-live.pon x
+      = link_to update_follower_checked_path(notification.follower), target: "_blank", class: "col-sm-12 padding0 black80-fg" do
+        .media.mtop0
+          .media-left
+            %span= cl_image_tag notification.follower.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          .media-body
+            %span.weight600= truncate notification.follower.name, length: 35
+            %span.font13
+              started following you
+            %br
+            %span.extra-small-font
+              .fa.fa-clock-o
+              = time_ago_in_words(notification.created_at)
+  - elsif notification.class.name == "ShowcaseNotification"
+    .col-xs-12.padding10.ptop15.pbottom15.j-notif-single.hide-display.mtop10.mbottom10.cc-very-light{class: "live-notification-ShowcaseNotification-#{notification.id}"}
+      .pos-absolute.top5.right5.font13.j-close-live.pon x
+      = link_to update_showcase_checked_path(notification), target: "_blank", class: "col-sm-12 padding0 black80-fg" do
+        .media.mtop0
+          .media-left
+            %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          .media-body
+            %span.weight600= truncate notification.showcase.user.name, length: 35
+            - if notification.showcase.wishlist? && notification.showcase.coin_wish?
+              %span.font13
+                has a new coin wish -
+            - elsif notification.showcase.wishlist?
+              %span.font13
+                has a new wish -
+            - elsif notification.showcase.instant_wishlist?
+              %span.font13
+                has a new momentary wish -
+            - else
+              %span.font13
+                fulfilled a wish -
+            %span.weight600= truncate notification.showcase.title, length: 35
+            %br
+            %span.extra-small-font
+              .fa.fa-clock-o
+              = time_ago_in_words(notification.created_at)
+  - elsif notification.class.name == "AchievedNotification"
+    .col-xs-12.padding10.ptop15.pbottom15.j-notif-single.hide-display.mtop10.mbottom10.cc-very-light{class: "live-notification-AchievedNotification-#{notification.id}"}
+      .pos-absolute.top5.right5.font13.j-close-live.pon x
+      = link_to update_achieved_checked_path(notification), target: "_blank", class: "col-sm-12 padding0 black80-fg" do
+        .media.mtop0
+          .media-left
+            %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          .media-body
+            %span.weight600= truncate notification.showcase.user.name, length: 35
+            %span.font13 completed
+            %span.weight600= truncate notification.showcase.title, length: 35
+            %span from wishlist.
+            %br
+            %span.extra-small-font
+              .fa.fa-clock-o
+              = time_ago_in_words(notification.created_at)
+  - elsif notification.class.name == "CommenterNotification"
+    .col-xs-12.padding10.ptop15.pbottom15.j-notif-single.hide-display.mtop10.mbottom10.cc-very-light{class: "live-notification-CommenterNotification-#{notification.id}"}
+      .pos-absolute.top5.right5.font13.j-close-live.pon x
+      = link_to update_commenter_checked_path(notification), target: "_blank", class: "col-sm-12 padding0 black80-fg" do
+        .media.mtop0
+          .media-left
+            %span= cl_image_tag notification.comment.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          .media-body
+            %span.weight600= truncate notification.comment.user.name, length: 35
+            %span.font13 also commented on
+            %span.weight600= truncate notification.showcase.title, length: 35
+            %br
+            %span.extra-small-font
+              .fa.fa-clock-o
+              = time_ago_in_words(notification.created_at)

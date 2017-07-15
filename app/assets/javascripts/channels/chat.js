@@ -35,6 +35,7 @@ $(document).ready(function(){
                 count.fadeIn();
               }
             }
+            LocalTime.run();
           },
           save_message: function(content, chat_room_id){
             return this.perform('save_message', { content: content, chat_room_id: chat_room_id });

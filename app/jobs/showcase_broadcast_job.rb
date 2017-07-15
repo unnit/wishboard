@@ -3,10 +3,10 @@ class ShowcaseBroadcastJob < ApplicationJob
   queue_as :default
   rescue_from(StandardError) do |e|
     logger.error "*********************************"
-   logger.error e.message
-   logger.error "*********************************"
-   e.backtrace.each { |line| logger.error line }
- end
+    logger.error e.message
+    logger.error "*********************************"
+    e.backtrace.each { |line| logger.error line }
+  end
 
   def perform(showcaseid, user_ids)
   	@showcase = Showcase.find(showcaseid)
@@ -19,7 +19,7 @@ class ShowcaseBroadcastJob < ApplicationJob
   private
 
   def render_showcase_partial(showcase, user)
-    renderer = ApplicationController.renderer.new  
+    renderer = ApplicationController.renderer.new
     renderer_env = renderer.instance_eval { @env }
     warden = ::Warden::Proxy.new(renderer_env, ::Warden::Manager.new(Rails.application))
     renderer_env["warden"] = warden

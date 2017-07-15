@@ -38,6 +38,8 @@ class ChatRoom < ApplicationRecord
   end
 
   def unread_messages_count(user)
+    logger.info '**************'
+    logger.info user.get_membership(self).try(:last_seen)
     return self.chat_messages.where("chat_messages.created_at > ? and chat_messages.user_id != ?", user.get_membership(self).try(:last_seen), user.id).count
   end
 

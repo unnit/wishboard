@@ -920,6 +920,11 @@ small{
 .cc-hvy-dark-bg{
   background-color: #572286 !important;
 }
+.cc-very-light{
+  border: 1px solid #d8aaff;
+  background-color: #edd9ff;
+  box-shadow: 0px 0px 9px 1px #d8aaff;
+}
 .cc-med-bg{
   background-color: rgb(154, 64, 232) !important;
 }
@@ -941,6 +946,9 @@ small{
 }
 .right0{
   right: 0px;
+}
+.right5{
+  right: 5px;
 }
 .right10{
   right: 10px;

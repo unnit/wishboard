@@ -153,7 +153,7 @@
             %i.fa.fa-check-square-o.pull-left.font17.mtop2
             %span.font12.grey-fg.pull-left.mtop2 Done?
       - if showcase.coin_wish?
-        %i.fa.fa-inr.pull-left.cc-dark-fg.mtop2
+        %i.fa.fa-inr.pull-left.cc-dark-fg.mtop2{class: "badge-coin-link-#{showcase.id}"}
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{title: "#{showcase.coined_users}"}
           = showcase.active_coins.count
     - else

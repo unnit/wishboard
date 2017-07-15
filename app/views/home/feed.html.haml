@@ -1,12 +1,10 @@
+.pos-fixed.bottom10.right10.padding5.pleft-10.pright-10.hide-display.j-page-scroll-up.pon.img-circle{style: "border: 2px solid #732db0;"}
+  .fa.fa-angle-up.font20.cc-dark-fg
 .j-show_new_wishes.show_new_wishes.hidden
-  .container-fluid.ptop50.padding0.mob-ptop100
-    .container.padding0.helvetica-font
-      .col-sm-3.hidden-xs.no-mar-pad.ptop
-      .col-xs-12.col-sm-6.ptop15.padding-mob0{class: "#{'hide-display' if params[:view] == "follow"}"}
-        .col-xs-12.col-sm-12.no-mar-pad
-          .col-xs-12.col-sm-12.text-center.padding5.mbottom10.bg-dark-grey
-            %h4.weight-bold.mtop20.inline-block New Wishes
-            %span.j-new_wishes_count.weight-bold{"data-new-wishes-count": 0} (0)
+  .container.ptop50.mob-ptop100.helvetica-font
+    .col-xs-12.col-sm-6.col-sm-offset-3.bg-white.text-center.pon.ptop5.pbottom5.live-new-wish-ind{class: "#{'hide-display' if params[:view] == "follow"}", style: ""}
+      %h5.inline-block New Wishes
+      %span.j-new_wishes_count.font-medium{"data-new-wishes-count": 0} (0)
 .container-fluid.ptop50.padding0.mob-ptop100{style: "min-height: 1000px;background:#ebeced;"}
   .container.padding0.helvetica-font
     .col-sm-3.hidden-xs.no-mar-pad.ptop15#lhs-feed
@@ -84,7 +82,7 @@
         .col-xs-12.col-sm-12.no-mar-pad{"data-step" => "3", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>ONE CLICK WISHES</h3>Feling lazy? Start by adding popular wishes to your wishlist just with a single click.</span>"}
           .col-xs-12.col-sm-12.no-mar-pad
             .col-xs-12.col-sm-12.text-center.no-mar-pad
-              %span.header-text.weight500.zero-letter-spacing.font16 POPULAR NEW YEAR WISHES
+              %span.header-text.weight500.zero-letter-spacing.font16 POPULAR WISHES
           .col-xs-12.col-sm-12.no-mar-pad.mbottom10
             #myCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}}
               .carousel-inner{role: "listbox"}

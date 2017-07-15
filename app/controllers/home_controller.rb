@@ -58,8 +58,6 @@ class HomeController < ApplicationController
     @all_count = params[:all_count]
     @showcases = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), params[:last_value]).order(achieved_at: :desc).limit(8)
     @showcases.present? ? @count = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), @showcases.last.achieved_at).count : @count = 0
-    logger.info '*************'
-    logger.info @count
     respond_to :js
   end
 
@@ -68,9 +66,6 @@ class HomeController < ApplicationController
     @count = params[:count]
     @all_showcases = all_wishes(params[:last_all_value]).limit(8)
     @all_showcases.present? ? @all_count = all_wishes(@all_showcases.last.achieved_at).count : @all_count = 0
-    logger.info '*************'
-    logger.info @count
-    logger.info @all_count
     respond_to :js
   end
 
@@ -447,9 +442,9 @@ class HomeController < ApplicationController
       return
     end
   end
-  
+
   def broadcast_notification_count
-   NotificationBroadcastJob.perform_later(current_user) 
+   CountBroadcastJob.perform_later(current_user)
   end
 
   def feed_wishes
@@ -470,4 +465,3 @@ class HomeController < ApplicationController
   end
 
 end
-

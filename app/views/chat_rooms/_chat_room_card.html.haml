@@ -7,7 +7,8 @@
         %span.hidden.j-croom-name= chat_room.name
         %span= truncate chat_room.name, length: 20
         - if current_user
-          %span.j-chat-count.badge.btn-shadow{class: "#{chat_room.unread_messages_count(current_user) > 0 ? '' : 'hide-display'} #{i.present? ? 'cc-dark-bg' : 'bg-light-grey grey-fg'}"}= chat_room.unread_messages_count(current_user)
+          /
+            %span.j-chat-count.badge.btn-shadow{class: "#{chat_room.unread_messages_count(current_user) > 0 ? '' : 'hide-display'} #{i.present? ? 'cc-dark-bg' : 'bg-light-grey grey-fg'}"}= chat_room.unread_messages_count(current_user)
 .pull-left.pright0.pleft0.mtop5.ptop30.h-z.pos-relative.j-online-users-full-ct-wrap{class: "chat-room-online-#{chat_room.id} #{chat_room.online_count == 0 ? 'hidden' : ''}", style: "margin-left: -55px;"}
   .online-count-wrap.img-circle.inline-block.text-center.black80-fg
     = chat_room.online_count if chat_room.online_count > 0

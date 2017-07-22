@@ -211,8 +211,8 @@ class User < ApplicationRecord
 
   def unread_chat_messages_count
     count = 0;
-    self.memberships.each do |memebership|
-      unread_count = memebership.chat_room.chat_messages.where("chat_messages.created_at > ? and chat_messages.user_id != ?", memebership.last_seen, self.id).count
+    self.memberships.each do |membership|
+      unread_count = membership.chat_room.chat_messages.where("chat_messages.created_at > ? and chat_messages.user_id != ?", membership.last_seen, self.id).count
       count = count + unread_count
     end
     return count

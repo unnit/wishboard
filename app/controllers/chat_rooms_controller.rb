@@ -54,7 +54,7 @@ class ChatRoomsController < ApplicationController
     end
     if current_user
       current_user.join_chat_room(@chat_room) unless current_user.joined_chat_room?(@chat_room)
-      current_user.get_membership(@chat_room).update_attribute(:last_seen, Time.now.utc.strftime("%Y-%m-%d %H:%M:%S.%6N")) #Need callback to function
+      current_user.get_membership(@chat_room).update_attribute(:last_seen, Time.now.utc) #Need callback to function
     end
     @count = @chat_room.online_count
     @chat_messages = @chat_room.chat_messages.order(created_at: :desc).limit(20).reverse
@@ -76,7 +76,7 @@ class ChatRoomsController < ApplicationController
       elsif @inactive_chatrooms.present?
         @first_room = @inactive_chatrooms.first
       end
-      current_user.get_membership(@first_room).update_attribute(:last_seen, Time.now.utc.strftime("%Y-%m-%d %H:%M:%S.%6N"))
+      current_user.get_membership(@first_room).update_attribute(:last_seen, Time.now.utc)
       @count = @first_room.online_count
       @messaged_chat_room_messages = @first_room.chat_messages.order(created_at: :desc).limit(20).reverse
       @first_message = @messaged_chat_room_messages.first

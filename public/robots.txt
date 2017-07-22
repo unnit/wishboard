@@ -7,4 +7,5 @@ Disallow: /terms
 Disallow: /privacy
 Disallow: /rent
 Disallow: /hackers
+Disallow: /users/passwords/new
 Disallow: /categories/bikes-two-wheelers

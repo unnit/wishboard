@@ -1,4 +1,6 @@
-.container-fluid.bg-white.padding0.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@joined_chat_rooms.map{|c| c.id}.join(',')}", "data-logged-in-id" => "#{current_user.id}"}
+= content_for :title do
+  - title = "Conversations | Cocociti"
+.container-fluid.bg-white.padding0.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@joined_chat_rooms.map{|c| c.id}.join(',')}"}
   - if @joined_chat_rooms.blank?
     .container.ptop50.mob-ptop100
       .col-xs-12.col-sm-12.no-mar-pad.mtop20
@@ -34,15 +36,13 @@
       #chat_messages_wrapper.pull-left.full-width{style: "height:88%;"}
         = render partial: "chat_rooms/chat_room", locals: {chat_room: @first_room, chat_messages: @messaged_chat_room_messages}
       = render partial: "chat_rooms/chat_submit_form", locals: {chat_room: @first_room}
-    .col-xs-3.hidden-xs#j-c-m-rhs.ptop50.mob-ptop100.no-mar-pad.btn-shadow.full-height.h-z.text-center
+    .col-xs-3.hidden-xs#j-c-m-rhs.ptop50.mob-ptop100.btn-shadow.full-height.h-z.text-center
       = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @first_room, count: @count}
-      %span.font11 α Alpha mode
 
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
       $("#chat-card-scroll").mCustomScrollbar({theme:"minimal-dark"});
-      $(".j-conv-messages .badge").addClass("hidden").text("0");
       setTimeout(function(){$(".j-ct-conv-wrap.active .badge").hide().text("0");}, 10000);
       $(".j-btn-wrap").css("padding-top", ($(".j-chat-form-wrapper").height() - 25)/2);
       $(document).on("click", ".j-ct-conv-wrap", function(){
@@ -52,26 +52,28 @@
         $(this).find(".badge").text("0");
         $("#chat_messages_wrapper").html("<span class='full-width inline-block text-center'><i class='fa fa-spinner fa-spin font25 cc-dark-fg' style='margin-top: 40%'></i></span>")
         $.ajax({url: "/chatrooms/"+$(this).data("chat-room-id")});
-      })
+      });
       if(#{@first_room.present? ? @first_room.chat_messages.count : 0} > 20){
         $("#chat_messages").on("scroll", function(){
           if($(this).scrollTop() == 0){
             $(this).off("scroll");
             $(".msg-loader").show();
-            $.get("/chatrooms/get_chat_messages?room_id=#{@first_room.try(:id)}&last_id=#{@first_message.try(:id)}");
+            $.get("/chatrooms/#{@first_room.try(:id)}/get_chat_messages?last_id=#{@first_message.try(:id)}");
           }
         })
       }
-      $(document).on("keyup", ".search-croom-md", function(){roomSearch(".search-croom-md", ".j-ct-conv-wrap")});
-      $(document).on("keyup", ".search-croom-mob", function(){roomSearch(".search-croom-mob", ".j-ct-card-wrap")});
-      function roomSearch(trigger, wrapper){
+      $(document).on("keyup", ".search-croom-md", function(){roomSearch(".search-croom-md", ".j-ct-conv-wrap", ".j-online-users-full-wrap")});
+      $(document).on("keyup", ".search-croom-mob", function(){roomSearch(".search-croom-mob", ".j-ct-card-wrap", ".j-online-users-full-ct-wrap")});
+      function roomSearch(trigger, wrapper, onlinewrapper){
         var value = $(trigger).val().toLowerCase();
         $(trigger).closest(".j-cm-conv-wrap").find(".j-croom-name").each(function(){
           var name = $(this).text().toLowerCase();
           if(name.indexOf(value) < 0){
             $(this).closest(wrapper).hide();
+            $(this).closest(wrapper).next(onlinewrapper).hide();
           }else{
             $(this).closest(wrapper).show();
+            $(this).closest(wrapper).next(onlinewrapper).show();
           }
         })
       }

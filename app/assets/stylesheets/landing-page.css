@@ -3603,6 +3603,19 @@ th.headerSortDown {
   border: 1px solid #ffb900;
   border-top: none;color: #ffb900;
 }
+.online-users-wrap{
+  left: 0;
+  right: 0;
+  width: 160px;
+  background-color: rgba(0,0,0,0.72);
+  margin: 0 auto;
+}
+.online-conv-users-wrap{
+  right: 0;
+  width: 160px;
+  background-color: rgba(0,0,0,0.72);
+  margin: 0 auto;
+}
 @-webkit-keyframes pulsate {
   0% {-webkit-transform: scale(1, 1);}
   50% {-webkit-transform: scale(1.4, 1.4);}
@@ -3610,6 +3623,12 @@ th.headerSortDown {
 }
 .feed-active{
   border-bottom: 2px solid #732db0 !important;
+}
+.online-count-wrap{
+  border: 2px solid #01c100;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
 }
 /*******************************/
 @media only screen and (min-width: 768px) and (max-width: 991px) {

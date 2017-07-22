@@ -73,6 +73,13 @@ $(document).ready(function(){
       {
           $(".dt-achievement-dropdown").removeClass("open");
       }
+      var container_3 = $(".j-online-users")
+      if (!container_3.is(e.target) // if the target of the click isn't the container...
+          && container_3.has(e.target).length === 0) // ... nor a descendant of the container
+      {
+          container_3.next(".j-online-users-wrap").hide();
+          container_3.removeClass("fa-angle-up").addClass("fa-angle-down");
+      }
     });
     $(document).on("click", ".ps-nav-btn", function(){
       $(".ps-wrapper").trigger("click");
@@ -447,17 +454,25 @@ $(document).ready(function(){
   });
   //Rewish Popup
   $(document).on("click", ".rewish-link", function(){
-    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>Awesome! This will appear in your wishlist. You can edit the content after rewishing.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/rewish' class='btn btn-sm bg-white cc-dark-fg full-width' data-method='post'>Rewish</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-rewish'>Not now</a></div></div></div>");
+    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>Awesome! This will appear in your wishlist. You can edit the content after rewishing.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/rewish' class='btn btn-sm bg-white cc-dark-fg full-width post-rewish' data-method='post'>Rewish</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-rewish'>Not now</a></div></div></div>");
     $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
     $("#cont-wrapper").modal('show');
+  })
+  $(document).on("click", ".post-rewish", function(){
+    $(this).removeAttr("href data-method");
+    $(this).text("Rewishing");
   })
   $(document).on("click", ".cancel-rewish", function(){
     $("#cont-wrapper").modal('hide');
   })
   $(document).on("click", ".done-this", function(){
-    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>You are about to mark this wish as fulfilled.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/have_done_this' class='btn btn-sm bg-white cc-dark-fg full-width' data-method='post'>Proceed</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-done-this'>Not now</a></div></div></div>");
+    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>You are about to mark this wish as fulfilled.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/have_done_this' class='btn btn-sm bg-white cc-dark-fg full-width post-have-done' data-method='post'>Proceed</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-done-this'>Not now</a></div></div></div>");
     $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
     $("#cont-wrapper").modal('show');
+  })
+  $(document).on("click", ".post-have-done", function(){
+    $(this).removeAttr("href data-method");
+    $(this).text("Proceeding");
   })
   $(document).on("click", ".cancel-done-this", function(){
     $("#cont-wrapper").modal('hide');
@@ -1473,8 +1488,11 @@ $(document).ready(function(){
   });
   //scroll up icon at bottom
   $(document).on("scroll", function(){
-    if($(".showcase-strip").prop("scrollHeight") > 1000){
+    if($(document).scrollTop() > 800){
       $(".j-page-scroll-up").fadeIn();
+    }
+    else{
+      $(".j-page-scroll-up").fadeOut();
     }
   })
   $(document).on("click", ".j-page-scroll-up", function(){
@@ -1486,6 +1504,15 @@ $(document).ready(function(){
   $(document).on("click", ".j-notif-single", function(){
     $(this).remove();
   })
+  $(document).on("click", ".j-online-users", function(){
+    if($(this).hasClass("fa-angle-down")){
+      $(this).removeClass("fa-angle-down").addClass("fa-angle-up");
+    }else{
+      $(this).removeClass("fa-angle-up").addClass("fa-angle-down");
+    }
+    $(this).next(".j-online-users-wrap").toggle();
+  });
+  $("#j-chat-room-members-scroll").mCustomScrollbar({theme:"minimal-dark"});
 });
 $(window).on("load", function(){
   //Setting footer proper for mac devices

@@ -190,10 +190,10 @@ Rails.application.routes.draw do
   resources :chat_rooms, path: "chatrooms" do
     member do
       get :get_sub_categories
+      get :get_chat_messages
     end
     collection do
       get :autocomplete
-      get :get_chat_messages
     end
   end
 

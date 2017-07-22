@@ -1,17 +1,16 @@
 $(document).ready(function(){
   if($(".chat-ids-holder").length > 0){
     var values = String($(".chat-ids-holder").data("chat-room-ids")).split(",");
-    var logged_id = $(".chat-ids-holder").data("logged-in-id");
   }
   else{
     var values = []
   }
+  var logged_id = $("body").data("logged-in-id");
   if(values.length > 0 && logged_id != ""){
     for(i=0; i<values.length; i++){
       App.chat = App.cable.subscriptions.create({channel: "ChatChannel", chat_room_id: values[i]},
         {
           received: function(data) {
-            $(".online-count").text(data['count']);
             if($(".chat-room-"+data['chat_room_id']).length > 0){
               $(".chat-room-"+data['chat_room_id']).append($(emojione.unicodeToImage(data['message'])).hide());
               $(".chat-room-"+data['chat_room_id']+" .j-chat_content_data").removeClass("hidden");
@@ -21,12 +20,14 @@ $(document).ready(function(){
                 $(".chat-usr-name-"+data['chat_id']).removeClass("text-left").addClass("text-right");
               }
               $(".chat-"+data['chat_id']).show();
+              LocalTime.run();
               if($("#chat_messages").scrollTop() < $("#chat_messages .j-cm-scroll-wrap").height() - ($("#chat_messages").height() * 2)){
                 $(".scroll-bt-msg-count").show();
                 $(".scroll-bt-msg-count").html(parseInt($(".scroll-bt-msg-count").html()) + 1)
               }else{
                 messages_to_bottom();
               }
+              return this.update_last_seen(data['chat_room_id']);
             }
             else{
               if($(".chat-conv-card-"+data['chat_room_id']).data('current-user-id') != data['owner_id']){
@@ -35,10 +36,12 @@ $(document).ready(function(){
                 count.fadeIn();
               }
             }
-            LocalTime.run();
           },
           save_message: function(content, chat_room_id){
             return this.perform('save_message', { content: content, chat_room_id: chat_room_id });
+          },
+          update_last_seen: function(chat_room_id){
+            return this.perform('update_last_seen', {chat_room_id: chat_room_id})
           }
       });
     }

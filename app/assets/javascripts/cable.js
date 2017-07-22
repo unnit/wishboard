@@ -3,7 +3,9 @@
 //
 //= require action_cable
 //= require_self
-//= require_tree ./channels
+//= require ./channels/global
+//= require ./channels/chat
+//= require ./channels/user
 
 (function() {
   this.App || (this.App = {});

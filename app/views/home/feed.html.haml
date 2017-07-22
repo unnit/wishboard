@@ -1,5 +1,7 @@
-.pos-fixed.bottom10.right10.padding5.pleft-10.pright-10.hide-display.j-page-scroll-up.pon.img-circle{style: "border: 2px solid #732db0;"}
-  .fa.fa-angle-up.font20.cc-dark-fg
+= content_for :title do
+  - title = "● Cocociti - Home"
+.pos-fixed.bottom10.right10.padding5.pleft-10.pright-10.hide-display.j-page-scroll-up.pon.img-circle.grey-bg{style: "z-index: 1000;"}
+  .fa.fa-angle-up.font20.grey-fg
 .j-show_new_wishes.show_new_wishes.hidden
   .container.ptop50.mob-ptop100.helvetica-font
     .col-xs-12.col-sm-6.col-sm-offset-3.bg-white.text-center.pon.ptop5.pbottom5.live-new-wish-ind{class: "#{'hide-display' if params[:view] == "follow"}", style: ""}

@@ -9,6 +9,29 @@ namespace :coco_tasks do
     end
   end
 
+  task update_last_seen_to_date: :environment do
+    memberships = Membership.all
+    memberships.each do |membership|
+      seen = membership.last_seen.to_datetime.strftime("%Y-%m-%d %H:%M:%S.%6N")
+      membership.update_columns(last_seen: seen)
+    end
+  end
+
+  task update_active_achieved_notifications: :environment do
+    showcases = Showcase.where("showcase_type in (?) and user_status = ?", [Showcase::SHOWCASE_VALUES[1], Showcase::SHOWCASE_VALUES[2]], Showcase::USER_STATUS[1])
+    showcases.each do |showcase|
+      showcase.achieved_notifications.each do |achieved_notification|
+        achieved_notification.update_columns(active: true)
+      end
+    end
+    showcases = Showcase.where("showcase_type in (?) and user_status = ?", [Showcase::SHOWCASE_VALUES[1], Showcase::SHOWCASE_VALUES[2]], Showcase::USER_STATUS[0])
+    showcases.each do |showcase|
+      showcase.achieved_notifications.each do |achieved_notification|
+        achieved_notification.update_columns(active: false)
+      end
+    end
+  end
+
   task add_achieved_at: :environment do
     showcases = Showcase.where(achieved_at: nil)
     showcases.each do |showcase|

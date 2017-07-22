@@ -85,6 +85,9 @@ body{
 .v-align-top{
   vertical-align: top !important;
 }
+.v-align-bottom{
+  vertical-align: bottom;
+}
 .mtop0{
   margin-top: 0px;
 }
@@ -781,10 +784,10 @@ small{
   background-color: #dc8131;
 }
 .inline-block{
-  display: inline-block !important;
+  display: inline-block;
 }
 .inline-display{
-  display: inline !important;
+  display: inline;
 }
 .active-link{
   border-bottom: 4px solid #81A9CC;

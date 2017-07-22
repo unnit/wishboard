@@ -41,13 +41,14 @@
     %link{rel: "manifest", href: "/assets/service-worker/manifest.json"}
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
-    = render partial: "/layouts/head"
     - if @social_layout.present?
       %meta{name: "theme-color", content: "#732db0"}
     - elsif @auth_layout.present?
       %meta{name: "theme-color", content: "#0891e6"}
-  %body{"data-root-url" => "#{GLOBAL_VARIABLES[:root_url]}"}
-    = render partial: "/layouts/google_analytics"
+  %body{"data-root-url" => "#{GLOBAL_VARIABLES[:root_url]}", "data-logged-in-id" => "#{current_user.present? ? current_user.id : ''}"}
+    - if Rails.env.production?
+      = render partial: "/layouts/head"
+      = render partial: "/layouts/google_analytics"
     - if @social_layout.present?
       = render partial: "/layouts/navbar_social"
     - elsif @plain_layout.present?
@@ -62,7 +63,8 @@
     = yield
     - if @remove_footer.blank?
       = render partial: "layouts/footer"
-    = render partial: "layouts/sentry_config"
+    - if Rails.env.production? || Rails.env.staging?
+      = render partial: "layouts/sentry_config"
     - if Rails.env.production?
       = javascript_include_tag "//maps.googleapis.com/maps/api/js?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&libraries=places"
     - else

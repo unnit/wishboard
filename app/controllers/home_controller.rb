@@ -422,7 +422,7 @@ class HomeController < ApplicationController
         f.puts email
       end
     end
-    render nothing: true
+    head :ok
   end
 
   private

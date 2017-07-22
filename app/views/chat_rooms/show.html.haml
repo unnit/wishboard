@@ -1,16 +1,21 @@
 = content_for :title do
   - title = "#{@chat_room.name} chatroom - Discuss & Chat | #{@chat_room.sub_category.name}, #{@chat_room.main_category.name} | Cocociti"
-.pos-fixed.full-width.text-center.ptop10.pbottom10.mtop5.bg-white.bg-shad.visible-xs{style: "top: 50px;z-index: 100001;"}
-  %h1.font25.mtop0.mbottom0.inline-block= truncate @chat_room.name, length: 25
-  %span.block-display{style: "font-size: 8px;"} α Alpha mode
-.container-fluid.padding-mob0.ptop50.mob-ptop100.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@chat_room.id}", "data-logged-in-id" => "#{current_user.present? ? current_user.id : ''}"}
+.pos-fixed.full-width.text-center.ptop10.pbottom10.bg-white.bg-shad.visible-xs{style: "top: 50px;z-index: 1029;"}
+  %h1.font25.mtop0.mbottom0= truncate @chat_room.name, length: 25
+  %div.inline-block{class: "chat-room-online-#{@chat_room.id} #{@chat_room.online_count == 0 ? 'hidden' : ''}"}
+    .online-count-wrap.img-circle.inline-block
+      = @chat_room.online_count if @chat_room.online_count > 0
+    .fa.fa-angle-down.j-online-users.pos-relative.v-align-bottom.pon
+    .online-users-wrap.hide-display.inline-block.j-online-users-wrap.pos-absolute.mtop5.padding5.border5.font12.white-fg.text-center
+      = @chat_room.online_users_name
+  %span.block-display.mtop5{style: "font-size: 8px;"} α Alpha mode
+.container-fluid.padding-mob0.ptop50.mob-ptop100.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@chat_room.id}"}
   .col-xs-12.col-sm-6.col-sm-offset-3.btn-shadow.padding0.full-height#j-c-m-wrapper
     #chat_messages_wrapper.pull-left.full-width{style: "height:88%;"}
       = render partial: "chat_rooms/chat_room", locals: {chat_room: @chat_room, chat_messages: @chat_messages}
     = render partial: "chat_rooms/chat_submit_form", locals: {chat_room: @chat_room}
   .col-xs-3.hidden-xs.text-center
     = render partial: "chat_rooms/chat_conv_rhs", locals: {chat_room: @chat_room, count: @count}
-    %span.font11 α Alpha mode
 
 = content_for :extra_js do
   :javascript
@@ -23,7 +28,7 @@
           if($(this).scrollTop() == 0){
             $(this).off("scroll");
             $(".msg-loader").show();
-            $.get("/chatrooms/get_chat_messages?room_id=#{@chat_room.id}&last_id=#{@chat_messages.present? ? @chat_messages.first.id: ''}");
+            $.get("/chatrooms/#{@chat_room.id}/get_chat_messages?last_id=#{@chat_messages.present? ? @chat_messages.first.id: ''}");
           }
         })
       }

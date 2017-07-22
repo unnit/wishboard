@@ -322,7 +322,7 @@ class ProfilesController < ApplicationController
     reload_wallet
     @withdraw = Withdraw.new
     @withdraw.name = params[:name]
-    @withdraw.coins = params[:coins]
+    @withdraw.coins = params[:coins].to_i.abs
     @withdraw.acc_no = params[:acc_no]
     @withdraw.ifsccode = params[:ifsccode]
     @withdraw.mmid = params[:mmid]

@@ -1,6 +1,21 @@
 .pull-left.full-width.text-center.ptop40.pbottom40.border-bt-side-dark
   %span.font20.weight600.full-width.pull-left= chat_room.name.upcase
-  %span.inline-block
-    .img-circle.pulsate-dot.bg-green{class: "chat-room-online-status#{chat_room.id} #{chat_room.online_count == 0 ? 'hidden' : ''}"}
-    %span{class: "extra-small-font grey-fg chat-room-online-count#{chat_room.id}"}
-      = chat_room.online_count if chat_room.online_count >  0
+  %div.inline-block{class: "chat-room-online-#{chat_room.id} #{chat_room.online_count == 0 ? 'hidden' : ''}"}
+    .online-count-wrap.img-circle.inline-block
+      = chat_room.online_count if chat_room.online_count > 0
+    .fa.fa-angle-down.j-online-users.pos-relative.v-align-bottom.pon
+    .online-users-wrap.hide-display.inline-block.j-online-users-wrap.pos-absolute.mtop5.padding5.border5.font12.white-fg.text-center
+      = chat_room.online_users_name
+.pull-left.full-width.padding5
+  %span.full-width.pull-left.text-center.font11.mbottom10
+    %span α Alpha mode
+  .pos-relative.pull-left#j-chat-room-members-scroll
+    - chat_room.memberships.where.not(user_id: current_user.id).each do |membership|
+      .col-sm-12.ptop10.pbottom5.mbottom10.pleft5
+        .media.padding5.mtop0
+          .media-left
+            = link_to myprofile_path(membership.user.profile.slug) do
+              = cl_image_tag membership.user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
+          .media-body.font-medium
+            %span.pull-left.full-width.text-left= membership.user.name
+            %span.cc-dark-fg.v-align-top.font13.pull-left{style: "text-decoration: underline;"}= myprofile_url(membership.user.profile.slug)

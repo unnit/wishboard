@@ -1,5 +1,5 @@
 = content_for :title do
-  - title = "Cocociti | Chatrooms"
+  - title = "Chat rooms - Cocociti | India chat, Regional & International chat rooms"
 .container.ptop50.mob-ptop100.padding10{style: "min-height: 100%;"}
   .col-xs-12.col-sm-12.padding0.mtop20.mbottom10
     = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2 search-croom-index", style: "height: 46px;width: 256px;", placeholder: "Search room.."
@@ -49,8 +49,10 @@
           var name = $(this).text().toLowerCase();
           if(name.indexOf(value) < 0){
             $(this).closest(".j-ct-card-wrap").hide();
+            $(this).closest(".j-ct-card-wrap").next(".j-online-users-full-ct-wrap").hide();
           }else{
             $(this).closest(".j-ct-card-wrap").show();
+            $(this).closest(".j-ct-card-wrap").next(".j-online-users-full-ct-wrap").show();
           }
         })
       })

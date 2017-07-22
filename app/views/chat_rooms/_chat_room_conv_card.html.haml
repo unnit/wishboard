@@ -4,8 +4,11 @@
   %span.pull-left.mleft10.mtop10{"data-toggle" => "tooltip", "data-placement" => "auto", title: "#{chat_room.name}", class: "chat-conv-card-#{chat_room.id}", "data-current-user-id" => "#{current_user.id}"}
     %span.hidden.j-croom-name= chat_room.name
     %span= truncate chat_room.name, length: 20
-    %span.j-chat-count.badge.btn-shadow{class: "#{chat_room.unread_messages_count(current_user) > 0 ? '' : 'hide-display'} #{i.present? ? 'cc-dark-bg' : 'bg-light-grey grey-fg'}"}= chat_room.unread_messages_count(current_user)
-  %span.pull-right.mtop10
-    .img-circle.pulsate-dot.bg-green{class: "chat-room-online-status#{chat_room.id} #{chat_room.online_count == 0 ? 'hidden' : ''}"}
-    %span.extra-small-font.grey-fg.block-display.text-center{class: "chat-room-online-count#{chat_room.id}"}
-      = chat_room.online_count if chat_room.online_count >  0
+    - if current_user
+      %span.j-chat-count.badge.btn-shadow{class: "#{chat_room.unread_messages_count(current_user) > 0 ? '' : 'hide-display'} #{i.present? ? 'cc-dark-bg' : 'bg-light-grey grey-fg'}"}= chat_room.unread_messages_count(current_user)
+.pull-right.pright15.ptop30.h-z.pos-relative.j-online-users-full-wrap{class: "chat-room-online-#{chat_room.id} #{chat_room.online_count == 0 ? 'hidden' : ''}", style: "margin-top: -90px;"}
+  .online-count-wrap.img-circle.inline-block.text-center.black80-fg
+    = chat_room.online_count if chat_room.online_count > 0
+  .fa.fa-angle-down.j-online-users.pos-relative.v-align-bottom.pon
+  .online-conv-users-wrap.hide-display.inline-block.j-online-users-wrap.pos-absolute.mtop5.padding5.border5.font12.white-fg.text-center
+    = chat_room.online_users_name

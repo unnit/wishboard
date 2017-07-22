@@ -306,19 +306,14 @@ class Showcase < ApplicationRecord
 
   def mark_as_achieved!
     new_status = USER_STATUS[1]
-    user.followers.each do |follower|
-      self.achieved_notifications.where(user_id: follower.id).first_or_create
-    end
     update_columns user_status: new_status, achieved_at: Time.now.utc, updated_at: Time.now.utc
     deactivate_coin_wish if coin_wish?
+    CostlyJob.perform_later(user, self)
   end
 
   def undo_achieved!
     new_status = USER_STATUS[0]
-    achieved_notifications.each do |achieved_notification|
-      achieved_notification.active = !achieved_notification.active
-      achieved_notification.save
-    end
+    AchievedNotification.where(showcase_id: self.id).update_all(active: false, updated_at: Time.now.utc)
     update_columns user_status: new_status, achieved_at: created_at, updated_at: Time.now.utc, after_rating: nil
   end
 

@@ -6,7 +6,7 @@ class ChatRoom < ApplicationRecord
   has_many :chat_messages, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
-  # has_many :online_members, -> {where(memberships: {online: true}) }, through: :memberships, source: :user
+  has_many :online_users, -> {where(memberships: {online: true})}, through: :memberships, source: :user
 
   CHAT_ROOM_TYPES = [[0, "Public"], [1, "Private"]]
 
@@ -37,9 +37,11 @@ class ChatRoom < ApplicationRecord
     memberships.where(online: true).count
   end
 
+  def online_users_name
+    online_users.map{|u| u.name}.join(", ")
+  end
+
   def unread_messages_count(user)
-    logger.info '**************'
-    logger.info user.get_membership(self).try(:last_seen)
     return self.chat_messages.where("chat_messages.created_at > ? and chat_messages.user_id != ?", user.get_membership(self).try(:last_seen), user.id).count
   end
 

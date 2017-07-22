@@ -3,7 +3,7 @@ class Withdraw < ApplicationRecord
 
   validates :name, :acc_no, :ifsccode, :coins, presence: true
   validates :name, :acc_no, :ifsccode, :mmid, length: {maximum: 100}
-  validates :coins, numericality: {only_integer: true, less_than_or_equal_to: 1000}
+  validates :coins, numericality: {only_integer: true, less_than_or_equal_to: 1000, greater_than: 0, message: "should be between 0 and 1000"}
   validate :max_coin_withdraw
 
   STATUS = [0, 1, 2, 3]

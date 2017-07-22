@@ -70,7 +70,7 @@
                         %span.grey-fg Sign Out
             %li.hidden-xs.pull-right
               .fa.fa-bell-o.pon.pull-right.notif-icon.white-fg{style: "font-size: 22px;margin-top:18px;"}
-              .badge.notif-badge.badge-notif-countpon.pull-right.mtop8.notif-icon.bg-white.cc-dark-fg.j-notification-count.pon{class: "#{current_user.unchecked_notififcations_count > 0 ? '': 'hidden'}"}= current_user.unchecked_notififcations_count
+              .badge.notif-badge.pull-right.mtop8.notif-icon.bg-white.cc-dark-fg.j-notification-count.pon{class: "#{current_user.unchecked_notififcations_count > 0 ? '': 'hidden'}"}= current_user.unchecked_notififcations_count
               .sq-rot.notif-toggle
               .notif-arrow.notif-toggle
               .notif-wrap.bx-shad.notif-toggle.helvetica-font
@@ -104,35 +104,35 @@
             .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
               %button.btn{type: 'submit', style: "background-color: transparent;"}
                 %span.glyphicon.glyphicon-search.white-fg
-  .full-width.visible-xs.cc-dark-bg.font20.pos-fixed.text-center{style: "top: 50px;"}
-    - if current_user
-      = link_to root_path do
-        .col-xs-2.padding10.feed-mob.height50
-          .fa.fa-newspaper-o.white-fg.ptop8
-      = link_to notifications_path do
-        .col-xs-2.padding10.notif-mob.height50
-          .badge.notif-badge.notif-icon.bg-white.cc-dark-fg.inline-block.j-notification-count{class: "#{(current_user.unchecked_notififcations_count > 0) ? '': 'hidden'}", style: "top: -13px;"}= current_user.unchecked_notififcations_count
-          .fa.fa-bell-o.white-fg.pos-relative{style: "top: 3px;"}
-      .col-xs-2.padding10.follow-mob.height50
-        = link_to root_path(view: "follow") do
-          .fa.fa-group.white-fg{style: "padding-top: 7px;"}
-      = link_to chat_messages_path, class: "j-conv-messages" do
-        .col-xs-2.padding10.conv-mobile.height50
-          .badge.bg-white.cc-dark-fg.inline-block.notif-badge.j-chat-message-count{class: "#{(current_user.unread_chat_messages_count > 0) ? '': 'hidden'}", style: "top: -13px;"}= current_user.unread_chat_messages_count
-          .fa.fa-comments-o.font25.white-fg.pos-relative{style: "top: 4px;"}
-      .col-xs-2.padding10.chat-room-mobile.height50
-        = link_to chat_rooms_path, class: "weight600 white-fg font25" do
-          %span.pulsate.img-circle.pulsate-dot.inline-block.pos-relative{style: "top: -15px;left: 10px;"}
-          %span.inline-block.pos-relative #
-      .col-xs-2.padding10.search-mob.height50
-        .fa.fa-search.white-fg.ptop8
-    - else
-      .col-xs-6.padding10
-        = link_to authenticate_path(tab: "signup") do
-          .btn.btn-sm.bg-white.cc-dark-fg.full-width Join
-      .col-xs-6.padding10
-        = link_to authenticate_path do
-          .btn.btn-sm.full-width.white-fg.light-border Login
+.full-width.visible-xs.cc-dark-bg.font20.pos-fixed.text-center{style: "top: 50px;z-index:1028;"}
+  - if current_user
+    = link_to root_path do
+      .col-xs-2.padding10.feed-mob.height50
+        .fa.fa-newspaper-o.white-fg.ptop8
+    = link_to notifications_path do
+      .col-xs-2.padding10.notif-mob.height50
+        .badge.notif-badge.bg-white.cc-dark-fg.j-notification-count{class: "#{(current_user.unchecked_notififcations_count > 0) ? '': 'hidden'}", style: "top: -12px;"}= current_user.unchecked_notififcations_count
+        .fa.fa-bell-o.white-fg.pos-relative{style: "top: 4px;"}
+    .col-xs-2.padding10.follow-mob.height50
+      = link_to root_path(view: "follow") do
+        .fa.fa-group.white-fg{style: "padding-top: 7px;"}
+    = link_to chat_messages_path, class: "j-conv-messages" do
+      .col-xs-2.padding10.conv-mobile.height50
+        .badge.bg-white.cc-dark-fg.notif-badge.j-chat-message-count{class: "#{(current_user.unread_chat_messages_count > 0) ? '': 'hidden'}", style: "top: -12px;"}= current_user.unread_chat_messages_count
+        .fa.fa-comments-o.font25.white-fg.pos-relative{style: "top: 5px;"}
+    .col-xs-2.padding10.chat-room-mobile.height50
+      = link_to chat_rooms_path, class: "weight600 white-fg font25" do
+        %span.pulsate.img-circle.pulsate-dot.inline-block.pos-relative{style: "top: -15px;left: 10px;"}
+        %span.inline-block.pos-relative #
+    .col-xs-2.padding10.search-mob.height50
+      .fa.fa-search.white-fg.ptop8
+  - else
+    .col-xs-6.padding10
+      = link_to authenticate_path(tab: "signup") do
+        .btn.btn-sm.bg-white.cc-dark-fg.full-width Join
+    .col-xs-6.padding10
+      = link_to authenticate_path do
+        .btn.btn-sm.full-width.white-fg.light-border Login
 #showcase-modal.modal.fade.padding0
   %span.pull-right.padding5.mbottom20.white-fg.weight600.font25.pon.ps-close-wrapper{ style: "z-index: 1051;", "data-dismiss" => "modal"} x
   .modal-dialog

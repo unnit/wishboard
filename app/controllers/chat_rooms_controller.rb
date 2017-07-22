@@ -4,7 +4,7 @@ class ChatRoomsController < ApplicationController
   before_action :set_social_layout
   before_action :remove_footer, only: [:show, :conversations]
   before_action :find_and_check_chat_room, only: [:edit, :update, :destroy]
-  before_action :get_chat_room, only: [:get_chat_messages]
+  before_action :get_chat_room, only: [:show, :get_chat_messages]
 
   def index
     @chat_room = ChatRoom.new
@@ -48,13 +48,13 @@ class ChatRoomsController < ApplicationController
   end
 
   def show
-    @chat_room = ChatRoom.includes(:chat_messages).find_by_id params[:id]
     if @chat_room.blank?
       redirect_to root_path
       return
     end
     if current_user
       current_user.join_chat_room(@chat_room) unless current_user.joined_chat_room?(@chat_room)
+      current_user.get_membership(@chat_room).update_attribute(:last_seen, Time.now.utc.strftime("%Y-%m-%d %H:%M:%S.%6N")) #Need callback to function
     end
     @count = @chat_room.online_count
     @chat_messages = @chat_room.chat_messages.order(created_at: :desc).limit(20).reverse
@@ -76,6 +76,7 @@ class ChatRoomsController < ApplicationController
       elsif @inactive_chatrooms.present?
         @first_room = @inactive_chatrooms.first
       end
+      current_user.get_membership(@first_room).update_attribute(:last_seen, Time.now.utc.strftime("%Y-%m-%d %H:%M:%S.%6N"))
       @count = @first_room.online_count
       @messaged_chat_room_messages = @first_room.chat_messages.order(created_at: :desc).limit(20).reverse
       @first_message = @messaged_chat_room_messages.first
@@ -99,11 +100,11 @@ class ChatRoomsController < ApplicationController
   end
 
   def find_and_check_chat_room
-    current_user.chat_room_params.find_by_id params[:id]
+    current_user.chat_rooms.find_by_id params[:id]
   end
 
   def get_chat_room
-    @chat_room = ChatRoom.find_by_id params[:room_id]
+    @chat_room = ChatRoom.find_by_id params[:id]
   end
 
   def get_trending_rooms

@@ -12,8 +12,10 @@ namespace :coco_tasks do
   task update_last_seen_to_date: :environment do
     memberships = Membership.all
     memberships.each do |membership|
-      seen = membership.last_seen.to_datetime.strftime("%Y-%m-%d %H:%M:%S.%6N")
-      membership.update_columns(last_seen: seen)
+      if membership.last_seen.present?
+        seen = membership.last_seen.to_datetime.strftime("%Y-%m-%d %H:%M:%S.%6N") if membership.last_seen.present?
+        membership.update_columns(last_seen: seen)
+      end
     end
   end
 

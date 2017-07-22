@@ -22,14 +22,14 @@ $(document).ready(function(){
 						setTimeout(function(){$(".live-notification-"+data['live_class']+"-"+data['live_id']).remove()}, 30000)
 					}
 				}
-
-				if(data['live_notification_count'] === 0){
-					$(".j-notification-count").html(data['live_notification_count']);
-					$(".j-notification-count").addClass('hidden');
-				}
-				else{
-					$(".j-notification-count").html(data['live_notification_count']);
-					$(".j-notification-count").removeClass('hidden');
+				if(data['live_notification_count'] || data['live_notification_count'] === 0){
+					if(data['live_notification_count'] > 0){
+						$(".j-notification-count").html(data['live_notification_count']);
+						$(".j-notification-count").removeClass('hidden');
+					}else{
+						$(".j-notification-count").html(data['live_notification_count']);
+						$(".j-notification-count").addClass('hidden');
+					}
 				}
 
 				if(data['chat_message_count'] || data['chat_message_count'] === 0 ){

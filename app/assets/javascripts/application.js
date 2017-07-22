@@ -1512,7 +1512,7 @@ $(document).ready(function(){
     }
     $(this).next(".j-online-users-wrap").toggle();
   });
-  $("#j-chat-room-members-scroll").mCustomScrollbar({theme:"minimal-dark"});
+  $("#j-chat-room-members-scroll").mCustomScrollbar();
 });
 $(window).on("load", function(){
   //Setting footer proper for mac devices

@@ -19,7 +19,7 @@ class ChatChannel < ApplicationCable::Channel
   def update_last_seen(chat_room_id)
     chat_room = ChatRoom.find_by_id params[:chat_room_id]
     unless chat_room.blank?
-      current_user.get_membership(chat_room).update_attribute(:last_seen, Time.now.utc.strftime("%Y-%m-%d %H:%M:%S.%6N"))
+      current_user.get_membership(chat_room).update_attribute(:last_seen, Time.now.utc)
     end
   end
 

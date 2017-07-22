@@ -17,5 +17,8 @@
             = link_to myprofile_path(membership.user.profile.slug) do
               = cl_image_tag membership.user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
           .media-body.font-medium
-            %span.pull-left.full-width.text-left= membership.user.name
-            %span.cc-dark-fg.v-align-top.font13.pull-left{style: "text-decoration: underline;"}= myprofile_url(membership.user.profile.slug)
+            = link_to myprofile_path(membership.user.profile.slug) do
+              %span.pull-left.full-width.text-left.black80-fg= membership.user.name
+              %span.cc-dark-fg.v-align-top.font13.pull-left
+                %span.pull-left{style: "text-decoration: underline;"} cocociti.com/
+                %span.pull-left{style: "text-decoration: underline;"}= membership.user.profile.slug

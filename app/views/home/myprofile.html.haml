@@ -60,7 +60,7 @@
                                 = showcase.fulfilled_wish_prefix_label.lstrip.humanize
                               - else
                                 = showcase.future_wish_prefix_label.lstrip.humanize
-                            %span
+                            %span{style: "word-break: break-word;"}
                               = showcase.title
                     %h6.mbottom0.mtop5=truncate showcase.title, length: 22
     - if current_user && current_user.same_user?(@user)

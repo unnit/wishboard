@@ -5,17 +5,17 @@
         #showcaseFormTab.ptop10
           %ul.nav.nav-tabs.col-xs-12.col-sm-12.text-center
             -if @showcase.achieved? && (!@showcase.showpiece?)
-              %li.active.inline-block.pull-none
+              %li.active.inline-block-imp.pull-none
                 %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
-              %li.inline-block.pull-none
+              %li.inline-block-imp.pull-none
                 %a{"data-toggle" => "tab", :href => "#after_#{@showcase.id}"} After
             -elsif @showcase.backstory_possible?
-              %li.inline-block.pull-none
+              %li.inline-block-imp.pull-none
                 %a{"data-toggle" => "tab", :href => "#backstory_#{@showcase.id}"} Backstory
-              %li.active.inline-block.pull-none
+              %li.active.inline-block-imp.pull-none
                 %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Story
             -else
-              %li.active.inline-block.pull-none
+              %li.active.inline-block-imp.pull-none
                 %a{"data-toggle" => "tab", :href => "#normal_#{@showcase.id}"} Before
           .tab-content
             .tab-pane.fade.in.active{:id => "normal_#{@showcase.id}"}

@@ -61,8 +61,6 @@ class ShowcasesController < ApplicationController
     @showcase.assign_attributes(showcase_params)
     if params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[0]
       @showcase.user_status = Showcase::USER_STATUS[1]
-    else
-      @showcase.user_status = Showcase::USER_STATUS[0]
     end
     if params[:image].present?
       preloaded = Cloudinary::PreloadedFile.new(params[:image])

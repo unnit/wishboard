@@ -14,10 +14,10 @@
       .col-sm-12.ptop10.pbottom5.mbottom10.pleft5
         .media.padding5.mtop0
           .media-left
-            = link_to myprofile_path(membership.user.profile.slug) do
+            = link_to myprofile_path(membership.user.profile.slug), target: "_blank" do
               = cl_image_tag membership.user.avatar, class: "img-circle media-object mtop5", width: 30, height: 30, crop: :fill, gravity: :face
           .media-body.font-medium
-            = link_to myprofile_path(membership.user.profile.slug) do
+            = link_to myprofile_path(membership.user.profile.slug), target: "_blank" do
               %span.pull-left.full-width.text-left.black80-fg= membership.user.name
               %span.cc-dark-fg.v-align-top.font13.pull-left
                 %span.pull-left{style: "text-decoration: underline;"} cocociti.com/

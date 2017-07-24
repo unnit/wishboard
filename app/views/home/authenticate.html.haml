@@ -27,9 +27,9 @@
         .pos-absolute.bubble-1
         .pos-absolute.bubble-3
         %ul.nav.nav-tabs.inline-block.full-width.text-center{style: "border-bottom: none;"}
-          %li.inline-block{class: "#{'active' unless params[:tab] == "signup"}", style: "float: none;"}
+          %li.inline-block-imp{class: "#{'active' unless params[:tab] == "signup"}", style: "float: none;"}
             %a{"data-toggle" => "tab", :href => "#home-login", style: "border: none;padding: 12px 15px;"} Login
-          %li.inline-block{class: "#{'active' if params[:tab] == "signup"}", style: "float: none;"}
+          %li.inline-block-imp{class: "#{'active' if params[:tab] == "signup"}", style: "float: none;"}
             %a{"data-toggle" => "tab", :href => "#home-sign-up", style: "border: none;padding: 12px 15px;"} Sign Up
         .tab-content.ptop10
           #home-login.tab-pane.fade{class: "#{'active in' unless params[:tab] == "signup"}"}

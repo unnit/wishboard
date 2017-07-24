@@ -784,10 +784,13 @@ small{
   background-color: #dc8131;
 }
 .inline-block{
-  display: inline-block !important;
+  display: inline-block;
 }
 .inline-display{
   display: inline !important;
+}
+.inline-block-imp{
+  display: inline-block !important;
 }
 .active-link{
   border-bottom: 4px solid #81A9CC;

@@ -42,14 +42,6 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
-      if($("#j-c-m-wrapper").css("display") == "none"){
-        $("#j-c-m-wrapper").remove();
-        $(".j-cm-conv-wrap")[0].remove();
-      }else{
-        $.post("/chatrooms/#{@first_room.try(:id)}/update_last_seen", function(result){
-          if(result){$(".j-ct-conv-wrap.active .badge").hide().text("0");}
-        });
-      }
       $("#chat-card-scroll").mCustomScrollbar({theme:"minimal-dark"});
       $(".j-btn-wrap").css("padding-top", ($(".j-chat-form-wrapper").height() - 25)/2);
       $(document).on("click", ".j-ct-conv-wrap", function(){
@@ -86,4 +78,15 @@
       }
       $(".conv-mobile").addClass("cc-med-bg");
       $(".emojionearea-editor").focus();
+    });
+    $(window).on("load", function(){
+      if($("#j-c-m-wrapper").css("display") == "none"){
+        $("#j-c-m-wrapper").remove();
+        $(".j-cm-conv-wrap")[0].remove();
+      }else{
+        setTimeout(function(){$.post("/chatrooms/#{@first_room.try(:id)}/update_last_seen", function(result){
+          if(result){$(".j-ct-conv-wrap.active .badge").hide().text("0");}
+          });
+        }, 4000)
+      }
     })

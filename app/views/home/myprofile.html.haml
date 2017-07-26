@@ -19,7 +19,7 @@
           .col-sm-12.padding5.bg-white.text-right
             %span.font11.grey-fg.full-width.pull-left
               .fa.fa-clock-o
-              = time_ago_in_words(showcase.created_at)
+              = time_ago_in_words(showcase.achieved_at)
             = link_to showcase_path(showcase), remote: true do
               - if showcase.image.present?
                 = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title
@@ -46,7 +46,7 @@
                   .col-xs-12.padding5.bg-white.text-center
                     %span.font11.grey-fg.full-width.text-right.pull-left
                       .fa.fa-clock-o
-                      = time_ago_in_words(showcase.created_at)
+                      = time_ago_in_words(showcase.achieved_at)
                     = link_to showcase_path(showcase), remote: true do
                       - if showcase.image.present?
                         = cl_image_tag showcase.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: showcase.title

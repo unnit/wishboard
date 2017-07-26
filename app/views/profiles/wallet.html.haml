@@ -11,7 +11,7 @@
         - if current_user.mobile_verified?
           .pull-right.wdrw-btn.send-to-bank-btn.pon SEND TO BANK
         - else
-          = link_to verify_profile_profiles_path do
+          = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
             .pull-right.send-to-bank-btn.pon SEND TO BANK
       %span.full-width.text-center.pull-left.white-fg{style: "font-size: 58px;"}= current_user.wallet.unused_coins.to_i
     .col-xs-12.col-md-3.col-sm-3.padding20{style: "background-color: #ffdac5;height:200px;color: #ec827a;"}
@@ -67,7 +67,7 @@
             = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
             &nbsp;&nbsp;
             - if withdraw.open?
-              = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" } do
+              = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" }, class: "j-loader-trigger-link" do
                 Delete Request
             - elsif withdraw.closed?
               Completed

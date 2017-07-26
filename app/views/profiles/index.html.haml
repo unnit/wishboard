@@ -97,8 +97,8 @@
                       = f.file_field :image, class: "fileupload"
                       %span= render partial: "/profiles/avatar"
                   .form-group
-                    .col-sm-12.text-center
-                      %button.btn.save-button.violet-bg.border2.white-fg Save
+                    .col-xs-12.col-sm-12.text-center
+                      = submit_tag "Save", class: "btn save-button mtop10 white-fg violet-bg border2 j-loader-trigger-link"
 
 
 = content_for :extra_js do

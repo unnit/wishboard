@@ -1,4 +1,4 @@
-= form_for showcase, url: update_backstory_showcase_path(showcase), method: :post, html: { class: "backstory-showcase"} do |f|
+= form_for showcase, url: update_backstory_showcase_path(showcase), method: :post do |f|
   .col-xs-12.col-sm-12.no-mar-pad.photo-wrapper.text-center
     .preview
       - if @showcase.backstory_image.present?
@@ -14,4 +14,4 @@
     .col-xs-12.col-sm-12.paddong0
       ~ f.text_area :backstory_description, placeholder: "Tell the story of fullfillment of this wish?", class: "form-control coco-input-field pleft5", maxlength: 2500, rows: 1, style: "height: 130px;"
   .col-xs-12.col-sm-12.text-center.mtop10
-    = f.submit "Update Backstory", class: "btn cc-dark-bg white-fg weight-bold"
+    = f.submit "Update Backstory", class: "btn cc-dark-bg white-fg weight-bold j-loader-trigger-link"

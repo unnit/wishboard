@@ -1,22 +1,22 @@
 = content_for :title do
   - title = "Chat rooms - Cocociti | India chat, Regional & International chat rooms"
-.container.ptop50.mob-ptop100.padding10{style: "min-height: 100%;"}
-  .col-xs-12.col-sm-12.padding0.mtop20.mbottom10
+.container.ptop50.mob-ptop100.padding0{style: "min-height: 100%;"}
+  .col-xs-12.col-sm-12.pleft-10.pright-10.mtop20.mbottom10
     = text_field_tag :search_chat, "", class: "pull-left form-control padding5 pleft-10 border2 search-croom-index", style: "height: 46px;width: 256px;", placeholder: "Search room.."
-    = link_to new_chat_room_path do
+    = link_to new_chat_room_path, class: "j-loader-trigger-link" do
       .fa.fa-plus-square-o.cc-dark-fg.pull-right.pon{style: "font-size: 40px;"}
   .col-xs-12.col-sm-12.padding0
-    %h4.mbottom0 TRENDING CHAT ROOMS
+    %h4.pleft-10.mbottom0 TRENDING CHAT ROOMS
     %hr.mtop5.mbottom10
     .col-xs-12.col-sm-12.no-mar-pad
       - @trending_chat_rooms.each do |chat_room|
         = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room, i: nil }
   .col-xs-12.col-sm-12.padding0
-    %h4.mbottom0 ALL CHAT ROOMS
+    %h4.pleft-10.mbottom0 ALL CHAT ROOMS
     %hr.mtop5.mbottom10
     .col-xs-12.col-sm-12.no-mar-pad
       - MainCategory.all.each do |main_category|
-        %h4.pull-left.full-width.mbottom0.j-croom-main-cat= main_category.name
+        %h4.pleft-10.pull-left.full-width.mbottom0.j-croom-main-cat= main_category.name
         %hr.pull-left.full-width.mtop5.mbottom10.j-croom-main-hr
         - main_category.chat_rooms.order(:name).each do |chat_room|
           = render partial: "chat_rooms/chat_room_card", locals: { chat_room: chat_room, i: nil }

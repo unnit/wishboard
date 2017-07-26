@@ -2,21 +2,21 @@
   .container.padding0
     %ul.mbottom0.padding0
       %li.inline-block.mright20
-        = link_to myprofile_path(@profile.slug) do
+        = link_to myprofile_path(@profile.slug), class: "j-loader-trigger-link" do
           %span.black-fg.collections-count= user.collections.count + 3
           %span.grey-fg Showcases
       %li.inline-block.mright20
-        = link_to following_path(@profile.slug) do
+        = link_to following_path(@profile.slug), class: "j-loader-trigger-link" do
           %span.black-fg.prof-following-count= user.following.count
           %span.grey-fg.hidden-xs Following
           .following-sprite.visible-xs-inline.pos-relative{style: "top: 6px;"}
       %li.inline-block.mright20
-        = link_to followers_path(@profile.slug) do
+        = link_to followers_path(@profile.slug), class: "j-loader-trigger-link" do
           %span.black-fg.prof-followers-count= user.followers.count
           %span.grey-fg.hidden-xs Followers
           .followers-sprite.visible-xs-inline.pos-relative{style: "top: 6px;"}
       %li.inline-block.mright20
-        = link_to wiki_path(@profile.slug) do
+        = link_to wiki_path(@profile.slug), class: "j-loader-trigger-link" do
           %span.grey-fg Wiki
       /
         %li.inline-block.mright20
@@ -25,7 +25,7 @@
               Give Away
       %li.hidden-xs-inline.pull-right
         - if current_user && current_user.same_user?(user)
-          = link_to settings_path do
+          = link_to settings_path, class: "j-loader-trigger-link" do
             .btn.grey-fg.prof-sett
               %span.glyphicon.glyphicon-cog.pull-left
       %li.hidden-xs-inline.pull-right
@@ -51,44 +51,44 @@
       .img-circle.inline-block.pos-relative.mob-mtop10.tab-mtop10{style: "width: 100px;height: 100px;margin-top: -45px;overflow:hidden;"}
         = cl_image_tag user.avatar, class: "img-circle main-prof-pic", width: 100, height: 100, crop: :fill, gravity: :face, alt: "#{user.name}"
         - if current_user && current_user.same_user?(user)
-          = link_to settings_path(change: "profilepic") do
+          = link_to settings_path(change: "profilepic"), class: "j-loader-trigger-link" do
             .pos-absolute.font25.grey-fg.hide-display#edit-prof-pic{style: "top:45px;width: 100px;height:55px;background-color:rgba(0,0,0,0.5);"}
               .fa.fa-pencil.white-fg.mtop10
       .col-xs-12.col-sm-12.col-md-4.col-md-offset-8.padding0.mbottom10.text-right.text-center-mob.font-bit-large.mob-mtop0.tab-mtop0.text-center-tab{style: "margin-top: -52px;"}
         - if @profile.facebook.present?
-          = link_to "https://facebook.com/#{@profile.facebook.split('/').last}", target: "_blank" do
+          = link_to "https://facebook.com/#{@profile.facebook.split('/').last}", target: "_blank", class: "j-loader-trigger-link" do
             .fa.fa-facebook-official.grey-fg.mright5
         - if @profile.twitter.present?
-          = link_to "https://twitter.com/#{@profile.twitter.split('/').last}", target: "_blank" do
+          = link_to "https://twitter.com/#{@profile.twitter.split('/').last}", target: "_blank", class: "j-loader-trigger-link" do
             .fa.fa-twitter-square.grey-fg.mright5
         - if @profile.instagram.present?
-          = link_to "https://instagram.com/#{@profile.instagram.split('/').last}", target: "_blank" do
+          = link_to "https://instagram.com/#{@profile.instagram.split('/').last}", target: "_blank", class: "j-loader-trigger-link" do
             .fa.fa-instagram.grey-fg.mright5
         - if @profile.linkedin.present?
-          = link_to "https://linkedin.com/in/#{@profile.linkedin.split('/').last}", target: "_blank" do
+          = link_to "https://linkedin.com/in/#{@profile.linkedin.split('/').last}", target: "_blank", class: "j-loader-trigger-link" do
             .fa.fa-linkedin-square.grey-fg.mright5
         - if @profile.google_plus.present?
-          = link_to "https://plus.google.com/#{@profile.google_plus.split('/').last}", target: "_blank" do
+          = link_to "https://plus.google.com/#{@profile.google_plus.split('/').last}", target: "_blank", class: "j-loader-trigger-link" do
             .fa.fa-google-plus-square.grey-fg.mright5
         - if @profile.website.present?
           - if @profile.website.split('/').first == "https:" || @profile.website.split('/').first == "http:"
-            = link_to @profile.website, target: "_blank" do
+            = link_to @profile.website, target: "_blank", class: "j-loader-trigger-link" do
               .fa.fa-globe.grey-fg.mright5
           - elsif @profile.website.split(".").first == "www"
-            = link_to "http://#{@profile.website}", target: "_blank" do
+            = link_to "http://#{@profile.website}", target: "_blank", class: "j-loader-trigger-link" do
               .fa.fa-globe.grey-fg.mright5
           - else
-            = link_to "http://www.#{@profile.website}", target: "_blank" do
+            = link_to "http://www.#{@profile.website}", target: "_blank", class: "j-loader-trigger-link" do
               .fa.fa-globe.grey-fg.mright5
         - if @profile.other_url.present?
           - if @profile.other_url.split('/').first == "https:" || @profile.other_url.split('/').first == "http:"
-            = link_to @profile.other_url, target: "_blank" do
+            = link_to @profile.other_url, target: "_blank", class: "j-loader-trigger-link" do
               .fa.fa-link.grey-fg
           - elsif @profile.other_url.split(".").first == "www"
-            = link_to "http://#{@profile.other_url}", target: "_blank" do
+            = link_to "http://#{@profile.other_url}", target: "_blank", class: "j-loader-trigger-link" do
               .fa.fa-link.grey-fg
           - else
-            = link_to "http://www.#{@profile.other_url}", target: "_blank" do
+            = link_to "http://www.#{@profile.other_url}", target: "_blank", class: "j-loader-trigger-link" do
               .fa.fa-link.grey-fg
       %h4.font21.mtop0= (truncate user.name, length: 40)
       %h6.grey-fg
@@ -114,6 +114,6 @@
                       %div.blue-border ...
         %li.inline-block
           - if current_user && current_user.same_user?(user)
-            = link_to settings_path do
+            = link_to settings_path, class: "j-loader-trigger-link" do
               .btn.grey-fg.prof-sett
                 %span.glyphicon.glyphicon-cog.pull-left

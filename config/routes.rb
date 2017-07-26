@@ -191,6 +191,7 @@ Rails.application.routes.draw do
     member do
       get :get_sub_categories
       get :get_chat_messages
+      post :update_last_seen
     end
     collection do
       get :autocomplete

@@ -34,4 +34,5 @@
             .col-xs-12.col-sm-8
               = text_field_tag :mmid, "#{last_transaction.mmid unless last_transaction.blank?}", class: "form-control"
           .form-group.text-center
-            = submit_tag "Submit", class: "btn btn-gold"
+            .col-xs-12.col-sm-12.text-center
+              = submit_tag "Save", class: "btn save-button mtop10 white-fg violet-bg border2 j-loader-trigger-link"

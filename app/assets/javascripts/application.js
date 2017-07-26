@@ -154,6 +154,7 @@ $(document).ready(function(){
     })
     $(document).on("click", ".type-holder", function(){
       $wrap = $(this).closest(".create-showcase");
+      $wrap.find(".ps-initial").attr("placeholder", "Please select your wish type");
       $wrap.find(".prefix-holder-dropdown").removeClass("open");
       $wrap.find(".type-holder-dropdown").addClass("open");
     })
@@ -493,7 +494,7 @@ $(document).ready(function(){
   });
   //Search bar visible in mobile
   $(document).on("click", ".search-mob", function(){
-    $(".feed-mob, .notif-mob, .follow-mob").removeClass("cc-med-bg");
+    $(".feed-mob, .notif-mob, .follow-mob, .conv-mobile, .chat-room-mobile").removeClass("cc-med-bg");
     $(".navbar-header").hide();
     $(".search-mob").addClass("cc-med-bg");
     $(".search-wrap").removeClass("hide-display");
@@ -598,7 +599,7 @@ $(document).ready(function(){
   //Move-Showcase page add btn
   $(document).on("click", ".add-move-showc", function(){
     $(".move-showc-wrapper").hide();
-    $(".move-create-coll-wrapper,.create-collect").show();
+    $(this).closest(".move-show-main-wrapper").find(".move-create-coll-wrapper,.create-collect").show();
   })
   $(document).on("click", ".clos-add-mov", function(){
     $(".move-create-coll-wrapper").hide();
@@ -765,6 +766,7 @@ $(document).ready(function(){
     display: 'value',
     source: showcases,
   }).on('typeahead:selected', function (e, d) {
+      topLoaderShow();
       $(this).closest("#header-search").submit();
   });
   var profiles = new Bloodhound({
@@ -789,6 +791,7 @@ $(document).ready(function(){
     display: 'value',
     source: profiles,
   }).on('typeahead:selected', function (e, d) {
+      topLoaderShow();
       $("#profile-search-form").submit();
   });
 
@@ -1513,6 +1516,12 @@ $(document).ready(function(){
     $(this).next(".j-online-users-wrap").toggle();
   });
   $("#j-chat-room-members-scroll").mCustomScrollbar();
+  $(document).on("click", ".j-loader-trigger-link", function(){
+    topLoaderShow();
+  })
+  function topLoaderShow(){
+    $("#j-overlay-wrapper, #j-page-loader").css("display", "block");
+  }
 });
 $(window).on("load", function(){
   //Setting footer proper for mac devices

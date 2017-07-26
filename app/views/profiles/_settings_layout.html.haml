@@ -2,15 +2,15 @@
   = render partial: "home/user", locals: {user: current_user, card_padding: "0px", card_width: "100%"}
   .col-sm-12.no-mar-pad.mtop15
     .list-group
-      = link_to settings_path, class: "list-group-item acc-sett" do
+      = link_to settings_path, class: "list-group-item acc-sett j-loader-trigger-link" do
         Settings
         %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
-      = link_to settings_password_path, class: "list-group-item pass-sett" do
+      = link_to settings_password_path, class: "list-group-item pass-sett j-loader-trigger-link" do
         Password
         %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
-      = link_to settings_social_path, class: "list-group-item soc-sett" do
+      = link_to settings_social_path, class: "list-group-item soc-sett j-loader-trigger-link" do
         Social
         %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
-      = link_to settings_addressbook_path, class: "list-group-item addr-sett" do
+      = link_to settings_addressbook_path, class: "list-group-item addr-sett j-loader-trigger-link" do
         Address Book
         %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}

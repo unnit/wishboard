@@ -225,7 +225,7 @@ class HomeController < ApplicationController
   def myprofile
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
-    @showcases = @user.showcases.where("admin_created = ?", false).order(created_at: :desc).limit(6)
+    @showcases = @user.showcases.where("admin_created = ?", false).order(achieved_at: :desc).limit(6)
     respond_to do |format|
       format.html
       format.js
@@ -236,7 +236,7 @@ class HomeController < ApplicationController
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Fulfilled", myshowpieces_path(@profile.slug)
-    @showcases = @user.showcases.where("admin_created = ?", false).showpieces.order(created_at: :desc)
+    @showcases = @user.showcases.where("admin_created = ?", false).showpieces.order(achieved_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html
@@ -248,7 +248,7 @@ class HomeController < ApplicationController
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Future", mywishes_path(@profile.slug)
-    @showcases = @user.showcases.where("admin_created = ?", false).wishes.order(created_at: :desc)
+    @showcases = @user.showcases.where("admin_created = ?", false).wishes.order(achieved_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html
@@ -260,7 +260,7 @@ class HomeController < ApplicationController
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Momentary", mymomentary_path(@profile.slug)
-    @showcases = @user.showcases.where("admin_created = ?", false).momentary.order(created_at: :desc)
+    @showcases = @user.showcases.where("admin_created = ?", false).momentary.order(achieved_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html

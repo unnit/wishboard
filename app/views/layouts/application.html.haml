@@ -46,6 +46,8 @@
     - elsif @auth_layout.present?
       %meta{name: "theme-color", content: "#0891e6"}
   %body{"data-root-url" => "#{GLOBAL_VARIABLES[:root_url]}", "data-logged-in-id" => "#{current_user.present? ? current_user.id : ''}"}
+    #j-overlay-wrapper.overlay-wrapper.visible-xs{style: "display: none !important;"}
+    #j-page-loader.top-page-loader{style: "display: none !important;"}
     - if Rails.env.production?
       = render partial: "/layouts/head"
       = render partial: "/layouts/google_analytics"

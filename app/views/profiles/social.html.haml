@@ -31,8 +31,8 @@
                   %label.col-sm-3.control-label Other
                   .col-sm-8= f.text_field :other_url, class: "form-control", placeholder: "Any other profiles full URL, eg: https://www.cocociti.com", maxlength: 220
                 .form-group
-                  .col-sm-7.text-center
-                    %button.btn.save-button.violet-bg.border2.white-fg Save
+                  .col-xs-12.col-sm-12.text-center
+                    = submit_tag "Save", class: "btn save-button mtop10 white-fg violet-bg border2 j-loader-trigger-link"
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){

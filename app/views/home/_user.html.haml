@@ -7,7 +7,7 @@
       - else
         %span.full-width.pull-left{style: "height: 21px;"}
     .col-xs-12.col-sm-12.inline-block
-      = link_to myprofile_path(user.profile.slug) do
+      = link_to myprofile_path(user.profile.slug), class: "j-loader-trigger-link" do
         = cl_image_tag user.avatar, class: "img-circle", width: 100, height: 100, crop: :fill, gravity: :face, style: "border: 4px solid #732db0;"
     .col-xs-12.col-sm-12.padding5
       %span.full-width.pull-left.weight500.font17.black-fg{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "auto"}
@@ -31,23 +31,23 @@
                   %span
                   %span
     .col-xs-6.col-sm-6.padding5.text-right{title: "Following", "data-toggle" => "tooltip", "data-placement" => "auto"}
-      = link_to following_path(user.profile.slug), class: "grey-fg" do
+      = link_to following_path(user.profile.slug), class: "grey-fg j-loader-trigger-link" do
         .following-sprite
         %span.pull-right.no-mar-pad.font-medium.weight600.following-count{style: "line-height: 30px;"}= user.following.count
     .col-xs-6.col-sm-6.padding5.text-left{title: "Followers", "data-toggle" => "tooltip", "data-placement" => "auto"}
-      = link_to followers_path(user.profile.slug), class: "grey-fg" do
+      = link_to followers_path(user.profile.slug), class: "grey-fg j-loader-trigger-link" do
         %span.pull-left.no-mar-pad.font-medium.weight600.followers-count.inline-display{style: "line-height: 30px;"}= user.followers.count
         .followers-sprite
     .col-xs-12.col-sm-12.no-mar-pad.text-center.pattern-bg
       .col-xs-4.col-sm-4.padding10{style: "border-right: 1px solid #d8d8d8;border-top: 1px solid #d8d8d8;"}
-        = link_to myshowpieces_path(user.profile.slug), class: "grey-fg" do
+        = link_to myshowpieces_path(user.profile.slug), class: "grey-fg j-loader-trigger-link" do
           %span.font-medium Fulfilled
           %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.showpieces.count
       .col-xs-4.col-sm-4.padding10{style: "border-right: 1px solid #d8d8d8;border-top: 1px solid #d8d8d8;"}
-        = link_to mymomentary_path(user.profile.slug), class: "grey-fg" do
+        = link_to mymomentary_path(user.profile.slug), class: "grey-fg j-loader-trigger-link" do
           %span.font-medium Momentary
           %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.momentary.count
       .col-xs-4.col-sm-4.padding10{style: "border-top: 1px solid #d8d8d8;"}
-        = link_to mywishes_path(user.profile.slug), class: "grey-fg" do
+        = link_to mywishes_path(user.profile.slug), class: "grey-fg j-loader-trigger-link" do
           %span.font-medium Future
           %span.pull-left.full-width.no-mar-pad.font16.weight600= user.showcases.wishes.count

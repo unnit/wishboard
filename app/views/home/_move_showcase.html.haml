@@ -1,8 +1,8 @@
-.container.padding0{style: "max-width:450px;margin-top: 10%;"}
+.container.padding0.move-show-main-wrapper{style: "max-width:450px;margin-top: 10%;"}
   .col-xs-12.col-sm-12.bg-white.padding20.border5.move-create-coll-wrapper{class: "#{current_user.collections.blank? ? 'block-display' : 'hide-display'}"}
     .col-xs-12.col-sm-12.no-mar-pad.text-center.full-height.border-medium.border5
       = form_tag create_collection_showcases_path, remote: true, class: "form-horizontal create-collect col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1" do
-        .close-sprite.pon.clos-add-mov.pos-absolute{style: "left: -10px;opacity: 0.5;top: 10px;"}
+        .close-sprite.pon.clos-add-mov.pos-absolute{style: "left: -10px;opacity: 0.5;top: 10px;", class: "#{current_user.collections.blank? ? 'hide-display' : 'block-display'}"}
         .form-group{style: "margin-top: 35.5px;"}
           %label Name
           = text_field_tag :name, params[:name], class: "form-control grey-bg cc-field", required: true, maxlength: 100

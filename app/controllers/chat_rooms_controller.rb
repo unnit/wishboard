@@ -4,7 +4,7 @@ class ChatRoomsController < ApplicationController
   before_action :set_social_layout
   before_action :remove_footer, only: [:show, :conversations]
   before_action :find_and_check_chat_room, only: [:edit, :update, :destroy]
-  before_action :get_chat_room, only: [:show, :get_chat_messages]
+  before_action :get_chat_room, only: [:show, :get_chat_messages, :update_last_seen]
 
   def index
     @chat_room = ChatRoom.new
@@ -76,10 +76,21 @@ class ChatRoomsController < ApplicationController
       elsif @inactive_chatrooms.present?
         @first_room = @inactive_chatrooms.first
       end
-      current_user.get_membership(@first_room).update_attribute(:last_seen, Time.now.utc)
       @count = @first_room.online_count
       @messaged_chat_room_messages = @first_room.chat_messages.order(created_at: :desc).limit(20).reverse
       @first_message = @messaged_chat_room_messages.first
+    end
+  end
+
+  def update_last_seen
+    if @chat_room.present?
+      if current_user.get_membership(@chat_room).update_attribute(:last_seen, Time.now.utc)
+        render json: {success: true}
+      else
+        render json: {success: false}
+      end
+    else
+      render json: {success: false}
     end
   end
 

@@ -6,7 +6,7 @@
           %span.icon-bar.bg-white
           %span.icon-bar.bg-white
           %span.icon-bar.bg-white
-        %a.navbar-brand.white-fg.ptop0{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;"}
+        %a.navbar-brand.white-fg.ptop0.j-loader-trigger-link{href: "/", style: "font-size: 1.6em;letter-spacing: 1px;"}
           %img.pull-left{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo.svg", style: "width: 40px;"}
           %span.pull-left.ptop15.pleft5 Cocociti
         = yield :header_extra
@@ -15,26 +15,26 @@
           .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search Wishes", class: "form-control search-query cc-med-bg cc-dark-fg-border white-fg", style: "border-radius: 20px;width: 100%;"
           .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
             %button.btn{type: 'submit', style: "background-color: transparent;"}
-              %span.glyphicon.glyphicon-search.white-fg
+              %span.glyphicon.glyphicon-search.white-fg.j-loader-trigger-link
       .navbar-collapse.collapse
         %ul.nav.navbar-nav.navbar-right.mtop0
           - if current_user
             %li.visible-xs.bg-white.white-border
-              = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
+              = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;", class: "j-loader-trigger-link" do
                 %span.black-fg= truncate current_user.name, length: 25
                 %br
                 %span.font11.grey-fg View Profile
             %li.visible-xs.bg-white.white-border
-              = link_to settings_path, style: "white-space: normal;" do
+              = link_to settings_path, style: "white-space: normal;", class: "j-loader-trigger-link" do
                 %span.grey-fg Settings
             %li.visible-xs.bg-white.white-border
-              = link_to invitations_path, style: "white-space: normal;" do
+              = link_to invitations_path, style: "white-space: normal;", class: "j-loader-trigger-link" do
                 %span.grey-fg Invite friends
             %li.visible-xs.bg-white.white-border
-              = link_to wallet_path, style: "white-space: normal;" do
+              = link_to wallet_path, style: "white-space: normal;", class: "j-loader-trigger-link" do
                 %span.grey-fg Wallet
             %li.visible-xs.bg-white.border-bt-side
-              = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
+              = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;", class: "j-loader-trigger-link" do
                 %span.grey-fg Sign Out
             %li.hidden-xs.pull-right= link_to "Wish", "#", class: "btn ps-nav-btn white-fg cc-med-bg", style: "padding: 7px 12px;margin-top:7px;border-radius:18px;display: #{@sh_btn || 'block;'}"
             %li.hidden-xs.pull-right
@@ -48,25 +48,25 @@
                       .arrow-nav
                       .arrow-z-nav
                     %li
-                      = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;" do
+                      = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;", class: "j-loader-trigger-link" do
                         %span.black-fg= truncate current_user.name, length: 25
                         %br
                         %span.font11.grey-fg View Profile
                     %li.divider{style: "overflow: visible"}
                     %li
-                      = link_to settings_path, style: "white-space: normal;" do
+                      = link_to settings_path, style: "white-space: normal;", class: "j-loader-trigger-link" do
                         %span.grey-fg Settings
                     %li.divider{style: "overflow: visible"}
                     %li
-                      = link_to invitations_path, style: "white-space: normal;" do
+                      = link_to invitations_path, style: "white-space: normal;", class: "j-loader-trigger-link" do
                         %span.grey-fg Invite friends
                     %li.divider{style: "overflow: visible"}
                     %li
-                      = link_to wallet_path, style: "white-space: normal;" do
+                      = link_to wallet_path, style: "white-space: normal;", class: "j-loader-trigger-link" do
                         %span.grey-fg Wallet
                     %li.divider{style: "overflow: visible"}
                     %li
-                      = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;" do
+                      = link_to destroy_user_session_path, method: :delete, style: "white-space: normal;", class: "j-loader-trigger-link" do
                         %span.grey-fg Sign Out
             %li.hidden-xs.pull-right
               .fa.fa-bell-o.pon.pull-right.notif-icon.white-fg{style: "font-size: 22px;margin-top:18px;"}
@@ -82,56 +82,56 @@
                   .col-xs-12.col-sm-12.padding5.text-center.bg-light-grey.weight600
                     See All
             %li.hidden-xs.pull-right
-              = link_to chat_messages_path, style: "padding: 0px;", class: "j-conv-messages" do
+              = link_to chat_messages_path, style: "padding: 0px;", class: "j-conv-messages j-loader-trigger-link" do
                 .fa.fa-comments-o.font25.pon.pull-right.white-fg{style: "padding: 15px 20px 0px 0px;"}
                 .badge.bg-white.cc-dark-fg.pon.notif-badge.mtop8.j-chat-message-count{class: "#{(current_user.unread_chat_messages_count > 0) ? '': 'hidden'}"}= current_user.unread_chat_messages_count
             %li.hidden-xs.pull-right
-              = link_to chat_rooms_path, style: "padding: 16px 15px 0px 5px; font-size: 25px; font-weight:bold;color: white;" do
+              = link_to chat_rooms_path, style: "padding: 16px 15px 0px 5px; font-size: 25px;", class: "j-loader-trigger-link white-fg weight600" do
                 %span.pulsate.pull-right.img-circle.pulsate-dot
                 %span.pull-right #
           - else
             %li.hidden-xs
-              = link_to "SignUp", authenticate_path(tab: "signup"), class: "btn white-fg border2", style: "padding: 7px 15px;margin-top: 7px;border: 1px solid #fff;"
+              = link_to "SignUp", authenticate_path(tab: "signup"), class: "btn white-fg border2 j-loader-trigger-link", style: "padding: 7px 15px;margin-top: 7px;border: 1px solid #fff;"
             %li.hidden-xs
-              = link_to "Login", authenticate_path, class: "btn cc-dark-fg bg-white mleft10 border2", style: "padding: 7px 15px;margin-top: 7px;"
+              = link_to "Login", authenticate_path, class: "btn cc-dark-fg bg-white mleft10 border2 j-loader-trigger-link", style: "padding: 7px 15px;margin-top: 7px;"
             %li.visible-xs.bg-white
-              = link_to authenticate_path, style: "white-space: normal;" do
+              = link_to authenticate_path, style: "white-space: normal;", class: "j-loader-trigger-link" do
                 %span.grey-fg Login
-              = link_to authenticate_path(tab: "signup"), style: "white-space: normal;" do
+              = link_to authenticate_path(tab: "signup"), style: "white-space: normal;", class: "j-loader-trigger-link" do
                 %span.grey-fg SignUp
           ~ form_tag results_path, method: :get, id: "header-search", class: "navbar-form navbar-right hidden-xs", style: "width: 300px;" do
             .col-xs-12.col-sm-12.no-mar-pad= text_field_tag :query, params[:query], placeholder: "Search Wishes", class: "form-control search-query cc-med-bg cc-dark-fg-border white-fg", style: "border-radius: 20px;width: 100%;"
             .col-xs-1.col-sm-1.no-mar-pad{style: "margin-left: -41px;"}
               %button.btn{type: 'submit', style: "background-color: transparent;"}
-                %span.glyphicon.glyphicon-search.white-fg
+                %span.glyphicon.glyphicon-search.white-fg.j-loader-trigger-link
 .full-width.visible-xs.cc-dark-bg.font20.pos-fixed.text-center{style: "top: 50px;z-index:1028;"}
   - if current_user
-    = link_to root_path do
+    = link_to root_path, class: "j-loader-trigger-link" do
       .col-xs-2.padding10.feed-mob.height50
         .fa.fa-newspaper-o.white-fg.ptop8
-    = link_to notifications_path do
+    = link_to notifications_path, class: "j-loader-trigger-link" do
       .col-xs-2.padding10.notif-mob.height50
         .badge.notif-badge.bg-white.cc-dark-fg.j-notification-count{class: "#{(current_user.unchecked_notififcations_count > 0) ? '': 'hidden'}", style: "top: -12px;"}= current_user.unchecked_notififcations_count
         .fa.fa-bell-o.white-fg.pos-relative{style: "top: 4px;"}
     .col-xs-2.padding10.follow-mob.height50
-      = link_to root_path(view: "follow") do
+      = link_to root_path(view: "follow"), class: "j-loader-trigger-link" do
         .fa.fa-group.white-fg{style: "padding-top: 7px;"}
-    = link_to chat_messages_path, class: "j-conv-messages" do
+    = link_to chat_messages_path, class: "j-conv-messages j-loader-trigger-link" do
       .col-xs-2.padding10.conv-mobile.height50
         .badge.bg-white.cc-dark-fg.notif-badge.j-chat-message-count{class: "#{(current_user.unread_chat_messages_count > 0) ? '': 'hidden'}", style: "top: -12px;"}= current_user.unread_chat_messages_count
         .fa.fa-comments-o.font25.white-fg.pos-relative{style: "top: 5px;"}
     .col-xs-2.padding10.chat-room-mobile.height50
-      = link_to chat_rooms_path, class: "weight600 white-fg font25" do
+      = link_to chat_rooms_path, class: "weight600 white-fg font25 j-loader-trigger-link" do
         %span.pulsate.img-circle.pulsate-dot.inline-block.pos-relative{style: "top: -15px;left: 10px;"}
         %span.inline-block.pos-relative #
     .col-xs-2.padding10.search-mob.height50
       .fa.fa-search.white-fg.ptop8
   - else
     .col-xs-6.padding10
-      = link_to authenticate_path(tab: "signup") do
+      = link_to authenticate_path(tab: "signup"), class: "j-loader-trigger-link" do
         .btn.btn-sm.bg-white.cc-dark-fg.full-width Join
     .col-xs-6.padding10
-      = link_to authenticate_path do
+      = link_to authenticate_path, class: "j-loader-trigger-link" do
         .btn.btn-sm.full-width.white-fg.light-border Login
 #showcase-modal.modal.fade.padding0
   %span.pull-right.padding5.mbottom20.white-fg.weight600.font25.pon.ps-close-wrapper{ style: "z-index: 1051;", "data-dismiss" => "modal"} x

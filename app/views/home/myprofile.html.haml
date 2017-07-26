@@ -67,19 +67,19 @@
       .col-xs-12.col-sm-3.mbottom20
         = render partial: "showcases/create_collection"
     .col-xs-12.col-sm-3.mbottom20
-      = link_to myshowpieces_path(@profile.slug), style: "color: #292929" do
+      = link_to myshowpieces_path(@profile.slug), style: "color: #292929", class: "j-loader-trigger-link" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           %span.scase-name-wrap.white-fg.font-medium
             Fulfilled
             .badge.weight500= @user.showcases.showpieces.count
     .col-xs-12.col-sm-3.mbottom20
-      = link_to mywishes_path(@profile.slug), style: "color: #292929" do
+      = link_to mywishes_path(@profile.slug), style: "color: #292929", class: "j-loader-trigger-link" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           %span.scase-name-wrap.white-fg.font-medium
             Future
             .badge.weight500= @user.showcases.wishes.count
     .col-xs-12.col-sm-3.mbottom20
-      = link_to mymomentary_path(@profile.slug), style: "color: #292929" do
+      = link_to mymomentary_path(@profile.slug), style: "color: #292929", class: "j-loader-trigger-link" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           %span.scase-name-wrap.white-fg.font-medium
             Momentary

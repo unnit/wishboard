@@ -3630,6 +3630,42 @@ th.headerSortDown {
   height: 18px;
   font-size: 10px;
 }
+.top-page-loader{
+  height: 4px;
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+  z-index: 10000;
+}
+.top-page-loader:before{
+  display: block;
+  position: absolute;
+  content: "";
+  left: -200px;
+  width: 200px;
+  height: 4px;
+  background-color: #00ff5a;
+  -webkit-animation: loading 2s linear infinite;
+  animation: loading 1s linear infinite;
+  border-radius: 5px;
+}
+@keyframes loading {
+  from {left: -200px; width: 30%;}
+  50% {width: 30%;}
+  70% {width: 70%;}
+  80% { left: 50%;}
+  95% {left: 120%;}
+  to {left: 100%;}
+}
+.overlay-wrapper{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10000;
+  background-color: rgba(0,0,0,0.4);
+}
 /*******************************/
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .tab125h{

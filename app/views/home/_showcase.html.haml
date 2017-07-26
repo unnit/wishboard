@@ -5,14 +5,14 @@
   .col-xs-4.col-sm-4.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
     - unless showcase.coin_wish?
       - if showcase.owner?(current_user)
-        = link_to edit_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5" do
+        = link_to edit_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
           Edit...
-        = link_to showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
+        = link_to showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
           Delete...
     - if current_user && current_user.admin?
-      = link_to edit_admin_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5" do
+      = link_to edit_admin_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
         Edit as Admin...
-      = link_to admin_showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
+      = link_to admin_showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
         Delete as Admin...
     %span.embed-link.pon.full-width.grey-fg.pull-left.small.padding5{"data-url" => "#{showcase_url(showcase)}", "data-title" => "#{showcase.title}"}= showcase.wishlist? ? "Embed Wish".html_safe : "Embed Showpiece".html_safe
   %span.pos-absolute{style: "right: 5px;top: 25px;"}
@@ -21,7 +21,7 @@
   .col-xs-12.col-sm-12.padding10.pright.pright40
     .media
       .media-left
-        = link_to myprofile_path(showcase.user.profile.slug), class: "pull-left" do
+        = link_to myprofile_path(showcase.user.profile.slug), class: "pull-left j-loader-trigger-link" do
           = cl_image_tag showcase.user.avatar, class: "img-circle #{showcase.owner?(current_user) ? '' : 'hovercard'}", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face, alt: showcase.user.name
       .media-body
         - if showcase.custom_wish_type?
@@ -119,12 +119,12 @@
         = showcase.comments.count
   - else
     .col-xs-2.col-sm-2.pleft0
-      = link_to authenticate_path do
+      = link_to authenticate_path, class: "j-loader-trigger-link" do
         %i.fa.fa-heart-o.cc-dark-fg.pull-left
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
           = showcase.active_wows.count
     .col-xs-2.col-sm-2.pright0.pleft5
-      = link_to authenticate_path do
+      = link_to authenticate_path, class: "j-loader-trigger-link" do
         %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
           = showcase.comments.count
@@ -157,7 +157,7 @@
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{title: "#{showcase.coined_users}"}
           = showcase.active_coins.count
     - else
-      = link_to authenticate_path do
+      = link_to authenticate_path, class: "j-loader-trigger-link" do
         %span.pon.cc-dark-fg.pull-left.pright5
           %i.fa.fa-clone.pull-left.mtop2
           %span.font12.grey-fg.pull-left.mtop2 Wish?

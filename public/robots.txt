@@ -8,4 +8,5 @@ Disallow: /privacy
 Disallow: /rent
 Disallow: /hackers
 Disallow: /users/passwords/new
+Disallow: /refund
 Disallow: /categories/bikes-two-wheelers

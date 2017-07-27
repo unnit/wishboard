@@ -38,11 +38,16 @@
         %ul.text-center.mbottom0.mtop5.pleft0
           %li.inline-block.mright20
             %span.pull-left.cards-footer-sprite
-      .col-md-12.text-center.mtop5
+      .col-md-12.text-center.mtop5.no-mar-pad
         %ul.text-center.mbottom0.pleft0
           %li.inline-block
             %span.text-muted.small.fot-res Copyright &copy; #{Time.now.in_time_zone("Kolkata").strftime('%Y')} Cocociti Online Solutions Pvt Ltd. All items &copy; their respective owners.
           %li.inline-block= link_to "Terms", "/terms", class: "small fot-res text-muted hvr-underline-from-center", rel: "no-follow"
           %li.inline-block= link_to "Privacy", "/privacy", class: "small fot-res text-muted hvr-underline-from-center", rel: "no-follow"
+      .col-xs-12.text-center.visible-xs
+        %a{href: "https://play.google.com/store/apps/details?id=com.cocociti.cocociti&utm_source=website footer/landingpage/mobile page /play badge & icon&utm_campaign=For cocociti users on website&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"}
+          %img{alt: "Get it on Google Play", src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png", style: "width: 150px;margin-bottom: -10px;"}
   = link_to "#" do
     %span.fot-up-img.up-sprite.pull-right
+  %a.hidden-xs{href: "https://play.google.com/store/apps/details?id=com.cocociti.cocociti&utm_source=website footer/landingpage/mobile page /play badge & icon&utm_campaign=For cocociti users on website&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"}
+    %img{alt: "Get it on Google Play", src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png", style: "width: 150px;margin-top: -50px;", class: "pull-right"}

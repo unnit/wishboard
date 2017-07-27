@@ -3636,6 +3636,7 @@ th.headerSortDown {
   position: fixed;
   overflow: hidden;
   z-index: 10000;
+  top: 0;
 }
 .top-page-loader:before{
   display: block;

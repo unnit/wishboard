@@ -138,6 +138,9 @@ Rails.application.routes.draw do
   get "conversations", to: "chat_rooms#conversations", as: :chat_messages
   get "home/get-wishes", to: "home#get_showcases", as: :get_showcases
   get "home/get-all-wishes", to: "home#get_all_showcases", as: :get_all_showcases
+  get "cocopay", to: "home#cocopay"
+  get "refund", to: "home#refund"
+  get "mobile", to: "home#mobile"
 
   resources :messages, only: [:destroy, :index, :show] do
     member do

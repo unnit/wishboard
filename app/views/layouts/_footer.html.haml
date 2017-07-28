@@ -1,5 +1,5 @@
 %footer.col-md-12.white-fg{style: "display: #{@footer_visible || 'block'}"}
-  .container
+  .container-fluid
     .row
       .col-md-12.no-mar-pad
         %ul.text-center.pleft0.mbottom5
@@ -45,9 +45,9 @@
           %li.inline-block= link_to "Terms", "/terms", class: "small fot-res text-muted hvr-underline-from-center", rel: "no-follow"
           %li.inline-block= link_to "Privacy", "/privacy", class: "small fot-res text-muted hvr-underline-from-center", rel: "no-follow"
       .col-xs-12.text-center.visible-xs
-        %a{href: "https://play.google.com/store/apps/details?id=com.cocociti.cocociti&utm_source=website footer/landingpage/mobile page /play badge & icon&utm_campaign=For cocociti users on website&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"}
+        %a{href: "https://goo.gl/Hk8Jdn"}
           %img{alt: "Get it on Google Play", src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png", style: "width: 150px;margin-bottom: -10px;"}
-  = link_to "#" do
-    %span.fot-up-img.up-sprite.pull-right
-  %a.hidden-xs{href: "https://play.google.com/store/apps/details?id=com.cocociti.cocociti&utm_source=website footer/landingpage/mobile page /play badge & icon&utm_campaign=For cocociti users on website&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"}
-    %img{alt: "Get it on Google Play", src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png", style: "width: 150px;margin-top: -50px;", class: "pull-right"}
+      = link_to "#" do
+        %span.fot-up-img.up-sprite.pull-right.horz.pos-relative
+      %a.hidden-xs.pull-right.pos-relative.h-z{href: "https://goo.gl/Hk8Jdn", style: "margin-top: -50px;width: 150px;"}
+        %img{alt: "Get it on Google Play", src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png", style: "width: 150px;"}

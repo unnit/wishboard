@@ -31,6 +31,11 @@
   :javascript
     $(document).ready(function(){
       $wrap = $("#edit_showcase_"+#{@showcase.id});
+      $(document).on("click", ".showcase-update-submit", function(e){
+        e.preventDefault();
+        $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
+        $wrap.submit();
+      });
       $wrap.find(".type-holder").html("#{@showcase.showcase_type_label.html_safe}");
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-right", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){

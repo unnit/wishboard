@@ -23,6 +23,11 @@
               = Showcase::WISH_PREFIX[@showcase.wish_prefix][4]
             &nbsp;
             %i.fa.fa-angle-down.font16
+        - else
+          %span.cc-dark-fg-dotted-border.mleft5
+            = Showcase::WISH_PREFIX[18][3]
+            &nbsp;
+            %i.fa.fa-angle-down.font16
       = text_field_tag :initial, "#{@showcase.title}", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial", style: "width: auto;border-bottom: none;"
     .dropdown.type-holder-dropdown
       .dropdown-menu.full-width.pos-relative
@@ -59,4 +64,4 @@
             %li
               %a.pon{"data-id" => "#{instant_wish_date[1]}"}= instant_wish_date[0]
   .col-xs-12.col-sm-12.mtop20.text-center
-    = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold j-loader-trigger-link"
+    = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold j-loader-trigger-link showcase-update-submit"

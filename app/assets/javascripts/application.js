@@ -1336,7 +1336,8 @@ $(document).ready(function(){
           ct = response.feed.entry;
           for(i=0;i<ct.length;i++){
             var contact = ct[i]
-            if(contact.gd$email && contact.gd$email.length > 0)
+            if(contact.gd$email && contact.gd$email.length > 0){
+              if($(".import-emails").val().length == 0){
                 $(".import-emails").val(contact.gd$email[0].address)
               }else{
                 $(".import-emails").val($(".import-emails").val() + ',' + contact.gd$email[0].address)
@@ -1576,7 +1577,6 @@ $(document).ready(function(){
   function topLoaderShow(){
     $("#j-overlay-wrapper, #j-page-loader").css("display", "block");
   }
-});
 
   var firebaseconfig = {
     apiKey: "AIzaSyC9oNThcW2fBJkQ7T5zKBm1m2Z8oKwjaS0",

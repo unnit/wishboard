@@ -4,6 +4,7 @@ class HomeController < ApplicationController
   skip_before_action :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest], raise: false
   before_action :back_to_home, only: [:authenticate]
   before_action :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers, :cocopay, :refund, :mobile, :save_firebase_token]
+  before_action :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :following, :followers, :wiki]
   before_action :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
   before_action :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
   before_action :set_plain_layout, only: [:user_signup_confirmation, :interests]

@@ -1586,7 +1586,7 @@ $(document).ready(function(){
     storageBucket: "",
     messagingSenderId: "686099248172"
   };
-  // firebase.initializeApp(firebaseconfig);
+  firebase.initializeApp(firebaseconfig);
   checkNotificationStatus();
   $(document).on("click", "a.j-enable-notification", function(){askPermission(); })
   $(document).on("click", ".alert-close-notification", function(){$(".j-enable-web_notification, .j-how-to-enable-notifications").addClass('hidden'); })

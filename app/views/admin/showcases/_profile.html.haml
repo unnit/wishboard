@@ -1,0 +1,29 @@
+- if profile
+  .modal.profile-modal.fade{id: "profile-#{profile.id}"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
+          %h2 User Profile
+        .modal-body
+          .col-sm-3.mbottom20
+            = image_tag profile.image_url
+          .col-sm-9
+            .col-sm-12.no-mar-pad
+              %label.col-sm-4 Full Name
+              .col-sm-8= profile.name
+            .col-sm-12.no-mar-pad
+              %label.col-sm-4 Phone
+              .col-sm-8= profile.phone
+            .col-sm-12.no-mar-pad
+              %label.col-sm-4 Email
+              .col-sm-8= profile.user.email
+            .col-sm-12.no-mar-pad
+              %label.col-sm-4 Address
+              .col-sm-8= profile.address
+          .col-sm-12
+            %label About
+          .col-sm-12= simple_format profile.about
+        .clearfix
+        .modal-footer
+          = link_to "Close", "javascript:;", class: "btn btn-danger pull right", data: {dismiss: "modal"}

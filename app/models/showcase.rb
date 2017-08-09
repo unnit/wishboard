@@ -22,6 +22,10 @@ class Showcase < ApplicationRecord
   has_many :achieved_notifications, dependent: :destroy
   has_many :commenter_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
+  has_many :cocotransfers, dependent: :destroy
+  has_many :fullfillment_contributers, through: :cocotransfers, primary_key: "from_user_id", class_name: "User"
+  has_many :withdraws
+  belongs_to :fundcategory
   accepts_nested_attributes_for :location
 
   DEFAULT_AFTER_RATING = 0
@@ -61,6 +65,8 @@ class Showcase < ApplicationRecord
   COIN_WISH_STATUS = [0, 1]
   INSTANT_WISH_DATE = [["0 - 1 day", "0-1"], ["1 - 3 days", "1-3"], ["3 - 5 days", "3-5"], ["5 - 7 days", "5-7"]]
   INSTANT_WISH_DATE_VALUES = ["0-1", "1-3", "3-5", "5-7"]
+  RAISING_FOR = [1, 2]
+  RAISING_FOR_VALUES = [[1, 'Self'] ,[2, 'Others']]
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
@@ -73,11 +79,19 @@ class Showcase < ApplicationRecord
   validates :date_of_achievement, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :date_of_achievement_blank?
   validates :after_rating, numericality: { only_integer: true, less_than_or_equal_to: 5, greater_than: 1, message: "Please provide a valid rating." }, unless: :after_rating_blank?
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
+  validates :goal_amount, :fundcategory, presence: true, if: :is_for_raising_fund?
+  validates :fundcategory, presence: true, if: :is_for_raising_fund?
+  validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 100000, greater_than: 0, message: "should be between 0 and 100000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
+  validate :accept_fund_option_should_not_change, if: :already_raised_some_amount
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
   scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
+  scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
+  scope :user_coin_wishesh, -> {where(["admin_created = false and coin_wish = true"])}
+  scope :not_admin_disbled, -> {where(admin_status: [0, nil] )}
 
   HUMANIZED_ATTRIBUTES = {
+    fundcategory_id: "Category",
     user_status: "Achieved",
     showcase_type: "Wish Type",
     wish_prefix: "Wish Category"
@@ -95,6 +109,29 @@ class Showcase < ApplicationRecord
   def all_tags
     self.tags.map(&:name).join(",")
   end
+  
+  def accept_fund_is_editable?
+    Showcase.find_by_id(self.id).try(:accept_fund) ? !already_raised_some_amount : true
+  end
+
+  def accept_fund_option_should_not_change
+    if !self.accept_fund && Showcase.find(self.id).accept_fund
+      errors.add(:accept_fund, "Wish already received some funds")
+    end
+  end
+
+  def already_raised_some_amount
+    return !self.new_record? && raised_amount > 0
+  end
+
+  def is_for_raising_fund?
+    self.accept_fund && self.accept_fund == true
+  end
+
+  def is_goal_amount_not_blank? 
+    return true
+     !(goal_amount.blank?)
+  end
 
   def self.tagged_with(name)
     tag = Tag.find_by_name(name)
@@ -103,6 +140,10 @@ class Showcase < ApplicationRecord
 
   def admin_creation?
     admin_created == true
+  end
+
+  def truncated_title
+    ActionController::Base.helpers.truncate self.title, length: 35
   end
 
   def can_only_rewish?
@@ -337,9 +378,45 @@ class Showcase < ApplicationRecord
     update_column :coin_wish_status, COIN_WISH_STATUS[1]
   end
 
+  def can_be_withdrawn
+    if  accept_fund && raised_amount > 0
+      return true
+    else
+      return false
+    end
+  end
+
+  def available_withdraw_amount
+    return cocotransfers.complete.sum(:amount).to_i - withdraws.active.sum(:coins).to_i
+  end
+
+  def raised_amount
+    return cocotransfers.complete.sum(:amount).to_i
+  end
+
+  def remaing_amount
+    (goal_amount.to_f - raised_amount.to_f) > 0 ? (goal_amount.to_f - raised_amount.to_f) : 0
+  end
+
+  def percentage_raised
+   percentage = ( raised_amount.to_f/goal_amount.to_f) * 100
+   percentage <= 100 ? percentage : 100
+  end
+  def no_of_contributers
+    cocotransfers.complete.non_anonymous.pluck(:from_user_id).uniq.count +  cocotransfers.complete.anonymous.pluck(:from_user_id).count
+  end
+
   after_create :create_showcase_notification, :promotional_offer, :set_achieved
   after_create_commit :send_new_wish
   after_destroy :verify_wallet
+
+  def default_min_amount
+    1
+  end
+
+  def min_amount_alloweded
+     default_min_amount
+  end
 
   private
   def set_achieved

@@ -350,6 +350,45 @@ $(document).ready(function(){
         swal("Sorry", "Please complete your wish", "error");
       }
     })
+
+    $(document).on("click", ".showcase-raise-update-submit", function(e){
+      e.preventDefault();
+      $wrap = $(this).closest(".update-raise-showcase");
+      if($wrap.find(".preview").children().length == 0){
+        swal({
+          title: "Are you sure to post your wish without a photo?",
+          text: "A photo of your wish would be nice.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#ffffff",
+          confirmButtonText: "Yes, Proceed",
+          cancelButtonText: "Upload Photo",
+          allowOutsideClick: true,
+          allowEscapeKey: false,
+          closeOnConfirm: true,
+          closeOnCancel: true,
+          animation: "pop"
+        },
+        function(isConfirm){
+          if (isConfirm){
+            $wrap.submit();
+            $wrap.find(".loader-button").hide();
+            $wrap.find(".loader-effect").show();
+          }
+          else{
+            $wrap.find(".file-upload-trigger").trigger('click');
+          }
+        });
+      }
+      else{
+        $wrap.submit();
+        $wrap.find(".loader-button").hide();
+        $wrap.find(".loader-effect").show();
+      }
+    })
+
+
+
   //Image loading bar effect
   $('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {
     $(".ps-sub-wrap-2").fadeIn(50, function(){
@@ -574,6 +613,22 @@ $(document).ready(function(){
   $(document).on("click", ".btn-comment-create", function(){
     $(this).next(".fa-spinner").removeClass("hide-display");
   })
+  $(document).on("click", ".share_popup_icon", function(){
+    $(".share_popup").not($(this).next(".share_popup")).each(function(){
+      $(this).hide();
+    });
+    $(".shareShowcaseRoundIcons").jsSocials({url: "https://www.cocociti.com/showcases/"+$(this).attr('data-showcase-id'),showLabel: false,showCount: false,shares: ["twitter", "facebook", "pinterest", "whatsapp"]});
+    $(this).next(".share_popup").fadeToggle(100);
+  })
+  $("html,body").click(function(e){
+    var container = $(".share_popup_icon")
+    if (!container.is(e.target) // if the target of the click isn't the container...
+      && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+      $(".share_popup").hide();
+    }
+  });
+
   //Showcase Edit Delete option
   $(document).on("click", ".action-showcase", function(){
     $(".option-showcase").not($(this).next(".option-showcase")).each(function(){
@@ -1248,12 +1303,12 @@ $(document).ready(function(){
   if($('.pac-input').length){
     var places_input= $('.pac-input')[0];
     google.maps.event.addDomListener(window, 'load', function () {
-        var autocomplete = new google.maps.places.Autocomplete(places_input);
-        google.maps.event.addDomListener(places_input, 'keydown', function(e) {
-          if (e.keyCode == 13 && $('.pac-container:visible').length) {
-            e.preventDefault();
-          }
-        });
+       var autocomplete = new google.maps.places.Autocomplete(places_input);
+       google.maps.event.addDomListener(places_input, 'keydown', function(e) {
+         if (e.keyCode == 13 && $('.pac-container:visible').length) {
+          e.preventDefault();
+        }
+      });
     });
   }
   //-----Table Sorter
@@ -1281,8 +1336,7 @@ $(document).ready(function(){
           ct = response.feed.entry;
           for(i=0;i<ct.length;i++){
             var contact = ct[i]
-            if(contact.gd$email && contact.gd$email.length > 0){
-              if($(".import-emails").val().length == 0){
+            if(contact.gd$email && contact.gd$email.length > 0)
                 $(".import-emails").val(contact.gd$email[0].address)
               }else{
                 $(".import-emails").val($(".import-emails").val() + ',' + contact.gd$email[0].address)
@@ -1523,12 +1577,54 @@ $(document).ready(function(){
     $("#j-overlay-wrapper, #j-page-loader").css("display", "block");
   }
 });
+
+  var firebaseconfig = {
+    apiKey: "AIzaSyC9oNThcW2fBJkQ7T5zKBm1m2Z8oKwjaS0",
+    authDomain: "cocociti-firebase-cns.firebaseapp.com",
+    databaseURL: "https://cocociti-firebase-cns.firebaseio.com",
+    projectId: "cocociti-firebase-cns",
+    storageBucket: "",
+    messagingSenderId: "686099248172"
+  };
+  // firebase.initializeApp(firebaseconfig);
+  checkNotificationStatus();
+  $(document).on("click", "a.j-enable-notification", function(){askPermission(); })
+  $(document).on("click", ".alert-close-notification", function(){$(".j-enable-web_notification, .j-how-to-enable-notifications").addClass('hidden'); })
+  $(document).on("click", "a.j-enable-notification-instructions", function(){
+   $(".j-enable-web_notification, .j-how-to-enable-notifications").addClass('hidden');
+   content = "<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font11'> <h3 class='full-width mbottom10 text-center txt-underline font16'>Allow or block browser notifications Chrome</h3> <ul> <li class='mbottom5'>At the top right, click More More and then Settings.</li> <li class='mbottom5'>At the bottom, click Advanced.</li> <li class='mbottom5'>Under 'Privacy and security,' click Content settings.</li> <li class='mbottom5'>Click Notifications.</li> <li class='mbottom5'>Search 'https://www.cocociti.com' & choose to block or allow notifications: </li> </ul> <h3 class='full-width mbottom10 text-center txt-underline font16'>Allow or block browser notifications FireFox</h3> <ul> <li class='mbottom5'>Go to the Firefox menu and select Preferences.</li> <li class='mbottom5'>Select the Content panel and click the Choose… button under Notifications.</li> <li class='mbottom5'>Select 'https://www.cocociti.com'. </li> <li class='mbottom5'>Click Remove Site.</li> </ul> <br><br> <strong>P.S:</strong> If you’re browsing in Incognito mode, you won’t get notifications. <br><br><strong>Keep Wishing.</strong> </div>"
+   display_cont_wrapper(content);
+  })
+  
+  $('form#admin_send_firebase_notifications').on('ajax:success', function(e, data, status, xhr){
+    alert("Application sending Notifications in background");
+    reEnableSubmitButton('admin_send_firebase_notifications_submit');
+  }).on('ajax:error',function(e, xhr, status, error){
+    alert("something went wrong");
+    reEnableSubmitButton('admin_send_firebase_notifications_submit');
+  });
+
+  $(document).on('change', '.showcase_form_accept_fund', function() {
+      if(this.checked) {
+        $('.raising_fund_hidden').removeClass('hidden');
+      }else{
+         $('.raising_fund_hidden').addClass('hidden');
+      }
+  })
+
+});// eof document ready
 $(window).on("load", function(){
   //Setting footer proper for mac devices
   if($(document).height() <= $(window).height()){
     setTimeout(function(){$("footer").css({"position": "absolute", "bottom": "0"});}, 3000);
   }
 })
+
+function reEnableSubmitButton(element_id){
+  $formsubmitbutton = $(element_id);
+  $.rails.enableElement($formsubmitbutton);
+  $formsubmitbutton.removeAttr('disabled');
+}
 
 function starRating(elementselector){
  $rateYo = $(elementselector).rateYo({ numStars: 5, precision: 20, fullStar: true, starWidth: "20px", spacing: "5px",
@@ -1648,3 +1744,94 @@ function customUnicodeToHtml(element_selector){
 var messages_to_bottom = function() {
   return $("#chat_messages").scrollTop($("#chat_messages").prop("scrollHeight"));
 };
+
+var showEnableNotification = function(){
+  return $('.j-enable-web_notification').removeClass('hidden');
+}
+var showNotificationEnableInstructions = function(){
+ return $('.j-how-to-enable-notifications').removeClass('hidden');
+}
+function checkNotificationStatus() {
+  if (!("Notification" in window)) {console.log("This browser does not support desktop notification");}
+  else if (Notification.permission === "granted") {askPermission();}
+  else if ( Notification.permission === "default") {showEnableNotification();}
+  else if (Notification.permission === 'denied') {showNotificationEnableInstructions();}
+  else{console.log(Notification.permission);}
+}
+
+var informServerAboutBlock = function(currentToken){
+  $.ajax({type: 'POST', data: {token: currentToken}, url: "/home/save_firebase_token_status",
+    success: function(data) { 
+      if(data.saved) setTokenSentToServer(true);
+      $("a.j-signout-link").each(function() {
+        var $this = $(this);       
+        var _href = $this.attr("href"); 
+        $this.attr("href", _href + '?firebasetoken='+currentToken);
+      });
+    },
+    error: function(data) {},
+  });
+}
+function sendTokenToServer(currentToken){
+  $.ajax({type: 'POST', data: {token: currentToken}, url: "/home/save_firebase_token",
+    success: function(data) { 
+      if(data.saved) setTokenSentToServer(true);
+      $("a.j-signout-link").each(function() {
+        var $this = $(this);       
+        var _href = $this.attr("href"); 
+        $this.attr("href", _href + '?firebasetoken='+currentToken);
+      });
+    },
+    error: function(data) {},
+  });
+}
+function isTokenSentToServer() {return window.localStorage.getItem('sentToServer') == 1; }
+function setTokenSentToServer(sent) {window.localStorage.setItem('sentToServer', sent ? 1 : 0); }
+function askPermission(){
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/assets/service-worker/sw.js')
+    .then(function(registration) { 
+      const messaging = firebase.messaging();
+      if (!firebase.messaging().registrationToUse_){messaging.useServiceWorker(registration);}
+      messaging.requestPermission().then(function() {
+       console.log('Notification permission granted.');
+       messaging.getToken().then(function(currentToken) {
+         if (currentToken) {
+           sendTokenToServer(currentToken);
+         } else {
+          showNotificationEnableInstructions();
+          setTokenSentToServer(false);
+        }
+      })
+       .catch(function(err) {
+         setTokenSentToServer(false);
+       });
+     })
+      .catch(function(err) {
+        if (err.code === "messaging/permission-blocked"){
+          showNotificationEnableInstructions();
+        }
+      });
+
+      messaging.onTokenRefresh(function() {
+       messaging.getToken()
+       .then(function(refreshedToken) {
+         setTokenSentToServer(false);
+         sendTokenToServer(refreshedToken);
+       })
+       .catch(function(err) {
+         console.log('Unable to retrieve refreshed token ', err);
+       });
+     });
+      messaging.onMessage(function(payload) {
+       console.log("Message received. ", payload);
+     });
+      console.log("Notfication Worker Registered"); 
+    });
+  }
+}
+function display_cont_wrapper(content){
+  $("#cont-wrapper").html(content);
+  $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
+  $("#cont-wrapper").modal("show");
+}

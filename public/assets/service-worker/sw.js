@@ -60,3 +60,38 @@ self.addEventListener('fetch', function(event) {
     )
   );
 });
+
+importScripts('https://www.gstatic.com/firebasejs/4.1.3/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/4.1.3/firebase-messaging.js');
+
+   var config = {
+    apiKey: "AIzaSyC9oNThcW2fBJkQ7T5zKBm1m2Z8oKwjaS0",
+    authDomain: "cocociti-firebase-cns.firebaseapp.com",
+    databaseURL: "https://cocociti-firebase-cns.firebaseio.com",
+    projectId: "cocociti-firebase-cns",
+    storageBucket: "",
+    messagingSenderId: "686099248172"
+  };
+ 
+
+firebase.initializeApp(config);
+const messaging = firebase.messaging();
+messaging.setBackgroundMessageHandler(function(payload) {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  const notificationTitle = payload.data.title;
+  const notificationOptions = {
+    body: payload.data.body,
+    icon: payload.data.image,
+     silent: false,
+    data: {url: payload.data.url}
+};
+return self.registration.showNotification(notificationTitle,
+    notificationOptions);
+});
+
+self.addEventListener("notificationclick", function (event)
+{
+   var urlToRedirect = event.notification.data.url;
+    event.notification.close();
+    event.waitUntil(self.clients.openWindow(urlToRedirect));
+});

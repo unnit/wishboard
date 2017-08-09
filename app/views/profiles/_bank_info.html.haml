@@ -5,6 +5,7 @@
         %h4.mtop-v-5 Your Bank Details
       .panel-body
         = form_tag send_to_bank_profiles_path, remote: true, class: "form-horizontal" do
+          = hidden_field_tag :showcase_id, @showcase.try(:id), id: 'withdraw_showcase_id'
           .form-group
             .col-xs-12.col-sm-4
               A/C Holder Name
@@ -13,10 +14,10 @@
               = text_field_tag :name, "#{last_transaction.name unless last_transaction.blank?}", class: "form-control", required: true
           .form-group
             .col-xs-12.col-sm-4
-              Coins
+              = @showcase ? "Amount" : "Coins"
               %span.heart-red-fg *
             .col-xs-12.col-sm-8
-              = text_field_tag :coins, "#{current_user.wallet.unused_coins.to_i}", class: "form-control", required: true
+              = text_field_tag :coins, "#{@showcase ? @showcase.available_withdraw_amount : current_user.wallet.unused_coins.to_i}", class: "form-control", required: true, id: 'withdraw_coins'
           .form-group
             .col-xs-12.col-sm-4
               Account No

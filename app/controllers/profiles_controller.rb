@@ -233,7 +233,7 @@ class ProfilesController < ApplicationController
     if profile.phone != session[:mobile_no] && other_profile.blank?
       profile.otp1 = rand(100000..999999)
       profile.save
-      send_mobile_sms("+91#{session[:mobile_no]}", "#{profile.otp1} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
+      send_mobile_sms("+#{profile.phonecode}#{session[:mobile_no]}", "#{profile.otp1} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
     else
       @unmatch = "yes"
       flash[:alert] = "Mobile no you have entered is either associated with another account or your own verified number"
@@ -246,7 +246,7 @@ class ProfilesController < ApplicationController
       profile = current_user.profile
       profile.otp2 = rand(100000..999999)
       profile.save
-      send_mobile_sms("+91#{session[:mobile_no]}", "#{profile.otp2} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
+      send_mobile_sms("+#{profile.phonecode}#{session[:mobile_no]}", "#{profile.otp2} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
       respond_to :js
     end
   end
@@ -314,13 +314,23 @@ class ProfilesController < ApplicationController
     @withdraws = current_user.withdraw_history
   end
 
+  def send_to_bank_form
+    @showcase = Showcase.find_by_id(params[:showcase_id])
+    @withdraws = current_user.withdraw_history
+    respond_to :js
+  end
+
   def send_to_bank
-    unless current_user.can_withdraw?
+
+    @showcase = Showcase.find_by_id(params[:showcase_id])
+    unless current_user.can_withdraw? || @showcase
       render js: "window.location = '#{root_path}'"
       return
     end
     reload_wallet
     @withdraw = Withdraw.new
+    @withdraw.showcase_id = @showcase.try(:id)
+    @withdraw.withdraw_type = @showcase? Withdraw::WITHDRAW_TYPE[1] : Withdraw::WITHDRAW_TYPE[0]
     @withdraw.name = params[:name]
     @withdraw.coins = params[:coins].to_i.abs
     @withdraw.acc_no = params[:acc_no]
@@ -328,11 +338,15 @@ class ProfilesController < ApplicationController
     @withdraw.mmid = params[:mmid]
     @withdraw.user = current_user
     @withdraw.status = Withdraw::STATUS[0]
+
     if @withdraw.save
-      wallet = current_user.wallet
-      wallet.unused_coins = wallet.unused_coins.to_i - params[:coins].to_i
-      wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
-      wallet.save
+      if @withdraw.showcase
+      else
+        wallet = current_user.wallet
+        wallet.unused_coins = wallet.unused_coins.to_i - params[:coins].to_i
+        wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
+        wallet.save
+      end
       flash[:notice] = "You have successfully initiated the withdrawal procedure. We will verify the details and update your account"
     else
       flash[:alert] = @withdraw.errors.full_messages.join(", ")
@@ -345,10 +359,12 @@ class ProfilesController < ApplicationController
     if @withdraw && @withdraw.user == current_user
       @withdraw.status = Withdraw::STATUS[3]
       if @withdraw.save
-        wallet = current_user.wallet
-        wallet.unused_coins = wallet.unused_coins.to_i + @withdraw.coins.to_i
-        wallet.used_coins = wallet.used_coins.to_i - @withdraw.coins.to_i
-        wallet.save
+        if @withdraw.coin_withdraw?
+          wallet = current_user.wallet
+          wallet.unused_coins = wallet.unused_coins.to_i + @withdraw.coins.to_i
+          wallet.used_coins = wallet.used_coins.to_i - @withdraw.coins.to_i
+          wallet.save
+        end
         flash[:notice] = "Withdraw request deleted successfully"
       end
     else

@@ -1,0 +1,18 @@
+.ps-wrapper{"data-pdate" => "#{DateTime.current}", "data-fdate" => "#{DateTime.current + 8.days}"}
+.container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 1000px; margin-top:110px;"}
+  .container.padding0.ptop20.pbottom70.helvetica-font
+    .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
+      = form_tag(admin_send_new_firebase_notifications_path, remote: true,id: 'admin_send_firebase_notifications') do
+        .col-xs-12.col-sm-12.text-center.ptop10
+          = text_area :firebase_notification, :notification_title, cols: 40, rows: 2, class: 'notification_field', placeholder: "Enter notification title  here...'"
+        .col-xs-12.col-sm-12.text-center.ptop10
+          = text_area :firebase_notification, :notification_text, cols: 40, rows: 2, class: 'notification_field', placeholder: 'Enter notification body here...'
+        .col-xs-12.col-sm-12.ptop20.pbottom10
+          = text_area :firebase_notification, :notification_image_url, cols: 40, rows: 2, class: 'notification_field', placeholder: 'Enter image url here...'
+        .col-xs-12.col-sm-12.ptop20.pbottom20
+          = submit_tag 'Send Notifications' , class: "btn btn-success", id: 'admin_send_firebase_notifications_submit'
+:css
+  .notification_field 
+  {
+    width: 100%;
+  }

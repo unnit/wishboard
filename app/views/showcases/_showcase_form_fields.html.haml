@@ -63,5 +63,20 @@
           - Showcase::INSTANT_WISH_DATE.each do |instant_wish_date|
             %li
               %a.pon{"data-id" => "#{instant_wish_date[1]}"}= instant_wish_date[0]
+    - rasing_fund_fields = showcase.is_for_raising_fund? ? "" : "hidden"
+    .col-xs-12.col-sm-12.ptop10.height50
+      Accept Fund:
+      - if showcase.accept_fund_is_editable? 
+        = f.check_box :accept_fund, class: "showcase_form_accept_fund"
+      - else
+        = f.check_box :accept_fund, class: "showcase_form_accept_fund",  disabled: "disabled"
+    .col-xs-12.col-sm-12.ptop10.height50.raising_fund_hidden.goal_amount_row{ class: "#{rasing_fund_fields}"}
+      = f.text_field :goal_amount, placeholder: "Goal Amount", class: "form-control coco-input-field pac-input", maxlength: 200
+    .col-xs-12.col-sm-6.ptop10.height50.raising_fund_hidden.raising_for_row{ class: "#{rasing_fund_fields}"}
+      Raising for:
+      = f.collection_radio_buttons :raising_for, Showcase::RAISING_FOR_VALUES,:first, :last do |b|
+        = b.radio_button + b.label(:class => "collection_radio_buttons coco-radio-label")
+    .col-xs-12.col-sm-12.ptop10.height50.raising_fund_hidden.video_link_row{ class: "#{rasing_fund_fields}"}
+      = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 200
   .col-xs-12.col-sm-12.mtop20.text-center
     = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold j-loader-trigger-link showcase-update-submit"

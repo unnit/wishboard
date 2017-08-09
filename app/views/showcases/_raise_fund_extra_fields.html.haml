@@ -1,0 +1,43 @@
+= form_for @showcase, html: { class: "update-raise-showcase" } do |f|
+  .col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-wrapper.hidden-overflow{style: "max-height:480px;min-height: 150px;height: auto;"}
+    .preview
+      - if @showcase.image.present?
+        = cl_image_tag @showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
+    .preview-delete-fullfill.bg-white.pon.pos-absolute.font16{class: "#{@showcase.image.blank? ? 'hide-display' : 'block-display'}"} x
+    .col-xs-12.col-sm-12.no-mar-pad
+      .glyphicon.glyphicon-camera.file-input-button.mtop20.padding20.cc-dark-fg.dotted-border{style: "font-size: 65px;display: #{@showcase.image.present? ? 'none': 'inline-block'};"}
+
+        = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-raise-edit file-upload-trigger", "data-height": "480", "data-width": "480", "data-height-non-source": "480"  })
+    .col-xs-12.col-sm-12.no-mar-pad
+      .progress.progress-striped.progress-edit.mbottom0{style: "display: none;height: 6px;width:107px;"}
+        .progress-bar.progress-bar{style: "width: 0%;"}
+  .col-xs-12.col-sm-12.text-center.ptop10
+    ~ f.text_area :description, placeholder: "Tell the story behind this wish?", class: "form-control coco-input-field", maxlength: 2500
+  .col-xs-12.col-sm-12.ptop20.pbottom10
+    = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
+  .col-xs-12.col-sm-6.ptop10.height50
+    = f.fields_for :location do |lf|
+      = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
+  .col-xs-12.col-sm-6.ptop10.height50
+    Raising for:
+    %br 
+    = f.collection_radio_buttons :raising_for, Showcase::RAISING_FOR_VALUES,:first, :last do |b|
+      = b.radio_button + b.label(:class => "collection_radio_buttons coco-radio-label")
+  .col-xs-12.col-sm-12.ptop10.height50
+    = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 100
+  .col-xs-12.col-sm-12.mtop20.text-center
+    = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold showcase-raise-update-submit"
+:css
+  .coco-radio-label{
+    padding-left: 3px;
+    padding-right: 5px;
+    font-size: 14px;
+    font-family:"Open Sans", sans-serif;
+    font-size: 14px ;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant-caps: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-weight: normal;
+  }

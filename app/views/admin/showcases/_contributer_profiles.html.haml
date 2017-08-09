@@ -1,0 +1,3 @@
+- showcase.cocotransfers.each do |cocotransfer|
+  - donor = cocotransfer.fullfillment_contributer
+  = render partial: "admin/showcases/profile", locals: {donor: donor, profile: donor.try(:profile)}

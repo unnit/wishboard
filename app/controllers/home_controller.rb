@@ -3,14 +3,13 @@ class HomeController < ApplicationController
   skip_before_action :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation], raise: false
   skip_before_action :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest], raise: false
   before_action :back_to_home, only: [:authenticate]
-  before_action :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers, :cocopay, :refund, :mobile]
-  before_action :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :following, :followers, :wiki]
+  before_action :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers, :cocopay, :refund, :mobile, :save_firebase_token]
   before_action :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
   before_action :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
   before_action :set_plain_layout, only: [:user_signup_confirmation, :interests]
   before_action :remove_footer, only: [:feed]
   after_action  :broadcast_notification_count, only: [:update_all_notifications, :update_wow_checked, :update_coin_checked, :update_comment_checked, :update_follower_checked, :update_showcase_checked, :update_commenter_checked, :update_achieved_checked]
-
+  skip_before_action :verify_authenticity_token, only: [:save_firebase_token]
   def index
     @adv_search = "none"
   end
@@ -105,12 +104,12 @@ class HomeController < ApplicationController
   end
 
   def unchecked_notifications
-    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications + current_user.unchecked_achieved_notifications + current_user.unchecked_coins + current_user.unchecked_commenter_notifications).sort_by{|e| e.created_at}.reverse
+    @unchecked = (current_user.unchecked_wows + current_user.unchecked_comments + current_user.unchecked_followers + current_user.unchecked_showcase_notifications + current_user.unchecked_achieved_notifications + current_user.unchecked_coins + current_user.unchecked_commenter_notifications + current_user.unchecked_fundreceived_notifications).sort_by{|e| e.created_at}.reverse
     respond_to :js
   end
 
   def notifications
-    @notifications = (current_user.appreciations + current_user.coins_gifted + current_user.received_comments + current_user.current_passive_relationships + current_user.showcase_notifications + current_user.active_achieved_notifications + current_user.commenter_notifications).sort_by{|e| e.created_at}.reverse
+    @notifications = (current_user.appreciations + current_user.coins_gifted + current_user.received_comments + current_user.current_passive_relationships + current_user.showcase_notifications + current_user.active_achieved_notifications + current_user.commenter_notifications + current_user.fundreceived_notifications).sort_by{|e| e.created_at}.reverse
     @notifications = Kaminari.paginate_array(@notifications).page(params[:notifications]).per(10)
     respond_to do |format|
       format.html
@@ -140,6 +139,9 @@ class HomeController < ApplicationController
     end
     current_user.unchecked_commenter_notifications.each do |commenter_notification|
       commenter_notification.update_column :checked, true
+    end
+    current_user.unchecked_fundreceived_notifications.each do |fundreceived_notification|
+      fundreceived_notification.update_column :checked, true
     end
     respond_to :js
   end
@@ -210,6 +212,16 @@ class HomeController < ApplicationController
     unless commenter_notification.blank?
       commenter_notification.update_column :checked, true if commenter_notification.user == current_user
       redirect_to showcase_path(commenter_notification.showcase, q: "#{commenter_notification.comment.id}")
+    else
+      redirect_to root_path
+    end
+  end
+
+  def update_fundreceived_checked
+    fundreceived_notification = FundreceivedNotification.find_by_id params[:id]
+    unless fundreceived_notification.blank?
+      fundreceived_notification.update_column :checked, true if fundreceived_notification.user == current_user
+      redirect_to showcase_path(fundreceived_notification.cocotransfer.showcase)
     else
       redirect_to root_path
     end
@@ -423,6 +435,13 @@ class HomeController < ApplicationController
       end
     end
     head :ok
+  end
+
+  def save_firebase_token
+   @firebasetoken =   FirebaseToken.where(token: params[:token], user_id: current_user.try(:id)).first_or_create   if current_user
+   @firebasetoken.update_attributes(active: true)  if @firebasetoken
+   FirebaseToken.where(token: params[:token]).where.not(user_id: current_user.id).update_all(active: false)   if @firebasetoken && current_user
+   render json: {saved:  @firebasetoken ? true : false}
   end
 
   private

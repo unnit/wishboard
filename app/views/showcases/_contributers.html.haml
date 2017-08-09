@@ -1,0 +1,24 @@
+.col-xs-12.col-sm-12.mtop10
+  .font20 #{showcase.no_of_contributers} contributers
+  - @displayed_user_ids = []
+  - showcase.cocotransfers.complete.order(created_at: :desc).limit(10).each do |cocotransfer|
+    - donor = cocotransfer.fullfillment_contributer
+    - if cocotransfer.is_anonymous? || !@displayed_user_ids.include?(donor.id)
+      .col-xs-12.col-sm-12.mtop10.ptop10.bg-shad{style: "min-height: 50px;"}
+        .col-xs-3.col-sm-3
+          -if donor && donor.avatar
+            = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
+          -else
+            = cl_image_tag "", class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
+
+        .col-xs-9.col-sm-9
+          - if cocotransfer.is_anonymous?
+            = cocotransfer.display_donor_name 
+          - else
+            = link_to myprofile_path(donor.profile.slug) do
+              = cocotransfer.display_donor_name
+    - @displayed_user_ids.push donor.try(:id) if !cocotransfer.is_anonymous?
+  - if showcase.cocotransfers.complete.count > 5
+    .col-xs-12.col-sm-12.mtop10
+      = link_to "Show All", "#cocotransfers-#{showcase.id}", data: {toggle: "modal" }
+      = render partial: "showcases/raise_funds/contributers", locals: {showcase: showcase}

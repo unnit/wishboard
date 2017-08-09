@@ -1,3 +1,4 @@
+- show_case_link_params = showcase.is_for_raising_fund? ? {target: :_blank} : {remote: true}
 .col-xs-12.col-sm-12.no-mar-pad
   %span.font11.grey-fg.pos-absolute.right15.mtop8
     = time_ago_in_words(showcase.achieved_at)
@@ -34,21 +35,21 @@
             - elsif showcase.instant_wishlist?
               posted a momentary wish.
           %span.full-width.inline-block{class: "#{showcase.image.present? ? 'font-medium' : 'font21'}"}
-            = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
+            = link_to showcase_path(showcase), show_case_link_params, class: "cc-dark-fg" do
               = showcase.title
         - else
           %span.full-width.inline-block.mtop10{class: "#{showcase.image.present? ? 'font-medium' : 'font21'}"}
             %span{class: "#{showcase.owner?(current_user) ? '' : 'hovercard'}", "data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
             %span
               - if showcase.showpiece? || showcase.achieved?
-                = link_to showcase_path(showcase, popup: "yes"), remote: true do
+                = link_to showcase_path(showcase, popup: "yes"), show_case_link_params do
                   %span.cc-dark-fg= showcase.fulfilled_wish_prefix_label.split.last
               - else
                 = showcase.future_wish_prefix_label[/(.*)\s/,1]
-                = link_to showcase_path(showcase, popup: "yes"), remote: true do
+                = link_to showcase_path(showcase, popup: "yes"), show_case_link_params do
                   %span.cc-dark-fg= showcase.future_wish_prefix_label.split.last
             %span
-              = link_to showcase_path(showcase, popup: "yes"), remote: true, class: "cc-dark-fg" do
+              = link_to showcase_path(showcase, popup: "yes"), show_case_link_params, class: "cc-dark-fg" do
                 = showcase.title
   - if showcase.any_image?
     .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
@@ -71,15 +72,15 @@
         .carousel-inner
           - if showcase.backstory_image.present? && showcase.showpiece?
             .item.active
-              = link_to showcase_path(showcase), remote: true do
+              = link_to showcase_path(showcase),show_case_link_params do
                 = cl_image_tag showcase.backstory_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
           - if showcase.image.present?
             .item{class: "#{showcase.backstory_image.blank? || !showcase.showpiece? ? 'active' : '' }"}
-              = link_to showcase_path(showcase), remote: true do
+              = link_to showcase_path(showcase), show_case_link_params do
                 = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
           - if showcase.fullfilled_image.present? && !showcase.showpiece? && showcase.achieved?
             .item{class: "#{showcase.image.blank? && !showcase.showpiece? ? 'active' : '' }"}
-              = link_to showcase_path(showcase), remote: true do
+              = link_to showcase_path(showcase), show_case_link_params do
                 = cl_image_tag showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
       .h40.pos-absolute{style: "top: 45%;left: 45%;"}
         - if current_user
@@ -170,8 +171,9 @@
     - if current_user && showcase.owner?(current_user)
       = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
         .fa.fa-folder-o.grey-fg.pull-right.font16{title: "Arrange Showcase"}
-    %a{href: "#{showcase_url(showcase)}", "data-image" => "#{showcase.image}", "data-title" => "#{showcase.title}", "data-desc" => "#{showcase.description}", class: "btnShare"}
-      .fa.fa-facebook-official.pull-right{title: "Share to Facebook"}
+    %i.fa.fa-share-alt-square.pull-left.share_popup_icon{"aria-hidden" => "true","data-showcase-id": "#{showcase.id}", title: "Share"}
+    %div.share_popup
+      .shareShowcaseRoundIcons{"data-id" => "#{showcase.id}", "data-showcase-id": "#{showcase.id}"}
 = render partial: "showcases/description_tabs", locals: {showcase: showcase}
 .col-xs-12.col-sm-12.no-mar-pad.bg-white.min-height0{class: "user-comments-#{showcase.id}"}
   - if feed == "yes"
@@ -193,3 +195,26 @@
         ~ f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 2500
         = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-bg mtop5 btn-shadow btn-comment-create pull-left"
         .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}
+:css
+  .custom_share_container{
+    min-width: 400px;
+  }
+  .share_popup{
+    display: none;
+    border: 1px solid black;
+    border-radius: 15px;
+    position: absolute;
+    bottom: 20px;
+    left: -120px;
+    z-index: 1060;
+    display: none;
+    padding: 2px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: left;
+    white-space: normal;
+    background-color: #fff;
+  }

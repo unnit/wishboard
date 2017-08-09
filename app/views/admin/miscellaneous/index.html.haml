@@ -1,0 +1,84 @@
+.container
+  .text-center.stat-columns.font18
+    .col-xs-12.col-sm-12.col-md-12{style: "margin-top: 110px;"}
+    .col-xs-12.col-sm-12.col-md-12
+      .col-xs-12.col-sm-12.col-md-12
+        .padding5
+          %h2
+            Stats
+      .col-xs-12.col-xs-12.col-md-4.mtop10
+        .padding20.bg-shad.mleft5
+          %p.font20 Showcases
+          %p Total: #{@showcases.count}
+          %P Fullfilled: #{@showcases.showpieces.count}
+          %P Momentry: #{@showcases.momentary.count}
+          %P Future: #{@showcases.wishes.count}
+          %p Coin Wishesh: #{@coin_wishesh.count}
+          %p Before/after: #{""}
+          %p Rewishesh: #{Showcase.where.not(parent_id: nil).count}
+          %P Collections : #{Collection.all.count}
+          %p Atleast one comment : #{Comment.pluck(:showcase_id).uniq.count}
+          %p Number of links:
+          %p Profiles with dp:
+          %p with About info:
+          %p W with tags:
+          %p with date:
+          %p with location:
+          %p with description
+          %p atleast one comment
+      .col-xs-12.col-xs-12.col-md-4.mtop10
+        .padding20.bg-shad.mleft5
+          %p.font20 Users
+          %p Total: #{@users.count}
+          %p Email unverified: #{User.where(inactive: true).count}
+          %p Mobile verified: #{Profile.phone_verified.count}
+          %p Follow min 5: #{User.joins(:following).select('users.id').group('users.id').having('count(relationships.follower_id)> 5').to_a.count}
+          %p Min 5 follower: #{User.joins(:following).select('users.id').group('users.id').having('count(relationships.followed_id)> 5').to_a.count}
+          %p Cross-connections: #{Relationship.active_connections.count}
+          %p Wiki content: #{Wiki.pluck(:user_id).uniq.count}
+
+      .col-xs-12.col-xs-12.col-md-4.mtop10
+        .padding20.bg-shad
+          %p.font20 Cround funding 
+          %p Number of Wishesh: #{@cround_funding_wishesh.count}
+          %p Total Raised Amount: Rs.#{@cocotransfers.sum(:amount)}
+          %p Total Transactions: #{Cocotransfer.all.count} (#{Cocotransfer.complete.count} / #{Cocotransfer.all.count - Cocotransfer.complete.count})
+    .col-xs-12.col-sm-12.col-md-12
+      .col-xs-12.col-xs-12.col-md-4.mtop10
+        .padding20.bg-shad
+          %p.font20 Cround funding 
+          %p Total amout: 
+          %p amount withdrawn: Withdraw.where()
+          %p People requested withdrawn: Withdraw.pluck(:user_id).uniq.count
+      .col-xs-12.col-xs-12.col-md-4.mtop10
+        .padding20.bg-shad
+          %p.font20 ChatRooms
+          %p Chatrooms: #{ChatRoom.all.count}
+          %P Messages: #{ChatMessage.all.count}
+          %p{id: 'no_of_emojis_used'}No of emojis used: XX
+
+      .col-xs-12.col-xs-12.col-md-4.mtop10
+        .padding20.bg-shad
+          %p.font20 Misc
+          %p Comments #{Comment.all.count}
+          %P Likes: #{Wow.all.count}
+          %P Tags: #{Tag.all.count}
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+    function fetch_no_of_emojis_used(){
+       $.ajax({
+        type: 'GET',
+        url: "#{admin_miscellaneous_no_of_emojis_path}",
+        success: function(data) {$('#no_of_emojis_used').html("No of emojis used:"+data.count);},
+        error: function(data) {},
+      });
+    }
+    fetch_no_of_emojis_used();
+
+    })
+
+
+
+        

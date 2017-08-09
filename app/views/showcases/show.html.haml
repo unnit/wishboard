@@ -2,19 +2,27 @@
   - meta_content = @showcase.description
 = content_for :title do
   - title = @showcase.title
-#cont-wrapper.modal.fade.padding0
-.messages
-.container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 100%;"}
-  .container.ptop10.helvetica-font.padding0
-    - unless current_user
-      .col-xs-12.col-sm-3.pull-right.white-fg.text-center.mbottom40.pright0.padding-mob0
-        .col-xs-12.col-sm-12.no-mar-pad.cc-dark-bg
-          %h3 New to Cocociti?
-          %h5.mbottom20.mtop20 Discover people, showcases and wishlists around the world
-          .col-xs-12.col-sm-12
-            = link_to "Sign Up", authenticate_path(tab: "signup"), class: "btn bg-white full-width cc-dark-fg mtop20 mbottom20"
-    .col-xs-12.col-sm-10.col-sm-offset-1.col-md-6.col-md-offset-3.padding0
-      = render partial: "home/showcases", locals: {showcases: Array(@showcase), feed: "no"}
+- if @showcase.accept_fund
+  #cont-wrapper.modal.fade.padding0
+  .messages
+  .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 100%;"}
+    .container.ptop10.helvetica-font.padding0
+      .col-xs-12.col-sm-10.col-md-12.padding0
+        = render partial: "home/raisefund_showcase.html", locals: {showcase: @showcase, feed: "no"}
+- else
+  #cont-wrapper.modal.fade.padding0
+  .messages
+  .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 100%;"}
+    .container.ptop10.helvetica-font.padding0
+      - unless current_user
+        .col-xs-12.col-sm-3.pull-right.white-fg.text-center.mbottom40.pright0.padding-mob0
+          .col-xs-12.col-sm-12.no-mar-pad.cc-dark-bg
+            %h3 New to Cocociti?
+            %h5.mbottom20.mtop20 Discover people, showcases and wishlists around the world
+            .col-xs-12.col-sm-12
+              = link_to "Sign Up", authenticate_path(tab: "signup"), class: "btn bg-white full-width cc-dark-fg mtop20 mbottom20"
+      .col-xs-12.col-sm-10.col-sm-offset-1.col-md-6.col-md-offset-3.padding0
+        = render partial: "home/showcases", locals: {showcases: Array(@showcase), feed: "no"}
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){

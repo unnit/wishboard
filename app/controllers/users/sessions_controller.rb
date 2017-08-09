@@ -37,6 +37,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # DELETE /resource/sign_out
   def destroy
+    @firebasetoken = FirebaseToken.where(token: params[:firebasetoken], user_id: current_user.try(:id)).update_all(active: false)
     ActionCable.server.remote_connections.where(current_user: current_user).disconnect
     super
   end

@@ -1,0 +1,154 @@
+= wicked_pdf_stylesheet_link_tag "bootstrap.min"
+%section
+  .container.text-center{:style => "width: 85%;"}
+    .row.no-mar-pad
+      .col-xs-6.no-mar-pad
+        = wicked_pdf_image_tag('logo_pdf.png', options = { :width => 300, :height => 250, :class => 'img-responsive pfd_img'})
+      .col-xs-5.no-mar-pad{:align => "justify", :style => " margin-top: 40px; margin-left: 20px; "}
+        .row.no-mar-pad
+          .col-xs-offset-2.col-xs-5.no-mar-pad{:align => "right"}
+            %p Invoice No
+          .col-xs-1.no-mar-pad{:align => "center"} :
+          .col-xs-4.no-mar-pad{:align => "left"}
+            %p= "XXXXXXXXX"
+        .row.no-mar-pad
+          .col-xs-offset-2.col-xs-5.no-mar-pad{:align => "right"}
+            %p Date
+          .col-xs-1.no-mar-pad{:align => "center"} :
+          .col-xs-4.no-mar-pad{:align => "left"}
+            %p= Time.now.strftime("%d %b %Y")
+        .row.no-mar-pad
+          .col-xs-offset-2.col-xs-5.no-mar-pad{:align => "right"}
+            %p City
+          .col-xs-1.no-mar-pad{:align => "center"} :
+          .col-xs-4.no-mar-pad{:align => "left"}
+            %p Bangalore
+    %hr/
+    %h3.transaction_id
+      Transaction ID: #{@cocotransfer.txnid}
+  #second_cont.container
+    %h2.pdf_heads Details:
+    .row.no-mar-pad
+      .col-xs-5.no-mar-pad{:align => "right"}
+        %h5.pdf_tags_left Name
+      .col-xs-1.no-mar-pad{:align => "center"}
+        %h5.is_to :
+      .col-xs-6.no-mar-pad{:align => "left"}
+        %h5.pdf_tags_right= @cocotransfer.user.try(:name)
+    .row.no-mar-pad
+      .col-xs-5.no-mar-pad{:align => "right"}
+        %h5.pdf_tags_left Phone No
+      .col-xs-1.no-mar-pad{:align => "center"}
+        %h5.is_to :
+      .col-xs-6.no-mar-pad{:align => "left"}
+        %h5.pdf_tags_right= @cocotransfer.inform_phone
+    %hr/
+    %h2.pdf_heads Receiver Details:
+    .row.no-mar-pad
+      .col-xs-5.no-mar-pad{:align => "right"}
+        %h5.pdf_tags_left Name
+      .col-xs-1.no-mar-pad{:align => "center"}
+        %h5.is_to :
+      .col-xs-6.no-mar-pad{:align => "left"}
+        %h5.pdf_tags_right= @cocotransfer.showcase.user.profile.first_name
+    .row.no-mar-pad
+      .col-xs-5.no-mar-pad{:align => "right"}
+        %h5.pdf_tags_left Wish name
+      .col-xs-1.no-mar-pad{:align => "center"}
+        %h5.is_to :
+      .col-xs-6.no-mar-pad{:align => "left"}
+        %h5.pdf_tags_right= @cocotransfer.showcase.title
+    %hr/
+    %h2.pdf_heads Payment Details:
+    .row.no-mar-pad
+      .col-xs-5.no-mar-pad{:align => "right"}
+        %h5.pdf_tags_left Payment
+      .col-xs-1.no-mar-pad{:align => "center"}
+        %h5.is_to :
+      .col-xs-6.no-mar-pad{:align => "left"}
+        %h5.pdf_tags_right
+          %span &#8377;
+          = @cocotransfer.amount
+    .row.no-mar-pad
+      .col-xs-5.no-mar-pad{:align => "right"}
+        %h5.pdf_tags_left Total Amount(Rounded)
+      .col-xs-1.no-mar-pad{:align => "center"}
+        %h5.is_to :
+      .col-xs-6.no-mar-pad{:align => "left"}
+        %h5.pdf_tags_right
+          %span &#8377;
+          = @cocotransfer.amount
+  #third_cont.container
+    %p *Service tax rate levied @4.5%. Service Tax Registration No. AADCIXXXXXXXXXXX
+    %p.only_blue For any query or feedback please contact at 96 8686 0303 or ayyo@cocociti.com.
+  %hr/
+  #fourth_cont.Container
+    %h4 Cocociti Online Solutions Pvt Ltd
+    %p
+      %b (CIN Uxxxxxxxxxxxxeeeeeeede3w)
+    %p Cocociti Online Solutions Pvt Ltd, BMP No.15, 4th Cross, Marappa Layout, C V Raman Nagar, Near Bagmane Tech Park, Bangalore, India - 560093
+    %p 96 8686 0303 ; ayyo@cocociti.com, www.cocociti.com
+:css
+  .no-mar-pad{
+    padding: 0;
+    margin: 0;
+  }
+
+  .transaction_id {
+    font-size: 19px;
+    font-weight: 700;
+    margin-top: 25px;
+  }
+  #second_cont #third_cont {
+    padding: 0px 50px;
+    text-align: center;
+  }
+  #second_cont {
+    width: 80%;
+    text-align: center;
+    border: 2px solid #3E7210;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  hr {
+    border-bottom: 2px solid #3E7210;
+    margin : 10px 0px 0px 0px;
+
+  }
+  #second_cont h5 {
+    margin: 7px 0px;
+    font-weight: 400;
+  }
+  .pdf_heads {
+    font-weight: 700;
+    margin: 10px 0px;
+    font-size: 23px
+  }
+
+  h5.pdf_tags_left {
+    font-size: 17px;
+    font-weight: 400;  
+    color: #051AF2;
+  }
+  h5.is_to {
+    font-weight: 900;
+    color: #051AF2;
+  }
+  h5.pdf_tags_right {
+    font-size: 17px;
+    color: #333;
+    font-weight: 400;
+  }
+  #third_cont p.only_blue {
+    color: #051AF2;
+  }
+  #fourth_cont {
+    margin-top: 15px;
+    text-align: center;
+  }
+  #fourth_cont h4 {
+    font-weight: 700;
+  }
+  .pfd_img {
+    margin-top: 18px; 
+  }

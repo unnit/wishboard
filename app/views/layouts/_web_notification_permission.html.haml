@@ -1,0 +1,20 @@
+.web-notifications
+  -if current_user
+    .mbottom0.alert.alert-success.alert-dismissable.alert-mob.j-enable-web_notification.hidden{:role => "alert"}
+      %span.pull-right.pon.weight600.grey-fg.alert-close-notification{:style => "margin-right: -24px;"} x
+      = "Never miss updates: Get desktop Notifications"
+      %a.btn.btn-outline-edit.j-enable-notification{:href => "#"} Enable Notifications
+    .j-how-to-enable-notifications.hidden
+      .mbottom0.alert.alert-success.alert-dismissable.alert-mob{:role => "alert"}
+        %span.pull-right.pon.weight600.grey-fg.alert-close-notification{:style => "margin-right: -24px;"} x
+        = "Browser notifications are blocked.You will not get any notifications. To check how to Enable/Disable Browser notifications"
+        %a.btn.btn-outline-edit.j-enable-notification-instructions{:href => "#"} How TO Enable Notifications
+:css
+  .web-notifications .alert {
+     top: 10px;
+     left: 10px;
+     bottom: auto;
+      right: auto;
+   }
+
+

@@ -1,11 +1,31 @@
-.container.padding0.mtop50.wish-success-wrapper{style: "max-width:600px;"}
-  .col-xs-12.col-sm-12.padding20.border2.text-center.white-fg.cc-hvy-dark-bg
-    - if (showcase.wishlist? || showcase.instant_wishlist?) && showcase.gift_coin_wish?
-      %span.full-width.mbottom20
-        %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/piggybank.gif", class: "img-responsive inline-block"}
-        %h4 Yay! First savings towards this wish is from our side.
-    %span.full-width
-      %h5
-        Let the world know. Share it with your friends
-    %span.full-width
-      #shareShowcaseRoundIcons{"data-id" => "#{showcase.id}"}
+- if showcase.accept_fund
+  .col-xs-12.col-sm-12.padding0.mob-padding10.wish-success-wrapper
+    .col-xs-12.col-sm-12.padding0.bg-white.border2.ps-sub-wrap-1.ps-box-shadow
+      .col-xs-12.col-sm-6.mtop10.mbottom10
+        = render partial: "showcases/raise_fund_extra_fields", locals: {showcase: showcase}
+      .col-xs-12.col-sm-6.mtop10.mbottom10
+        .col-xs-12.col-sm-12.padding20.border2.text-center.white-fg.cc-hvy-dark-bg
+          %span.full-width
+            %h5
+              Let the world know. Share it with your friends
+          %span.full-width
+            #shareShowcaseRoundIcons{"data-id" => "#{showcase.id}"}
+        .col-xs-12.col-sm-12.padding20.border2.text-center.white-fg.cc-hvy-dark-bg
+          %span.full-width
+            %h5
+              Create A chat Room
+          %span.full-width
+            = link_to new_chat_room_path, target: :_blank do
+              .fa.fa-plus-square-o.pon{style: "font-size: 40px;"}
+- else
+  .col-xs-12.col-sm-12.padding0.mob-padding10.wish-success-wrapper
+    .col-xs-12.col-sm-12.padding20.border2.text-center.white-fg.cc-hvy-dark-bg
+      - if (showcase.wishlist? || showcase.instant_wishlist?) && showcase.gift_coin_wish?
+        %span.full-width.mbottom20
+          %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/piggybank.gif", class: "img-responsive inline-block"}
+          %h4 Yay! First savings towards this wish is from our side.
+      %span.full-width
+        %h5
+          Let the world know. Share it with your friends
+      %span.full-width
+        #shareShowcaseRoundIcons{"data-id" => "#{showcase.id}"}

@@ -1,0 +1,31 @@
+.modal.profile-modal.fade{id: "cocotransfers-#{showcase.id}"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
+        %h2 Cocotransfers
+      .modal-body
+        .col-xs-12.col-sm-12.mtop10
+          .font20 #{showcase.no_of_contributers} contributers
+          - @displayed_user_ids = []
+          - showcase.cocotransfers.each do |cocotransfer|
+            - donor = cocotransfer.fullfillment_contributer
+            - if cocotransfer.is_anonymous? || !@displayed_user_ids.include?(donor.id)
+              .col-xs-12.col-sm-12.mtop10.ptop10.bg-shad{style: "min-height: 50px;"}
+                .col-xs-3.col-sm-3
+                  -if donor && donor.avatar
+                    = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
+                  -else
+                    = cl_image_tag "", class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
+                .col-xs-9.col-sm-9
+                  - if cocotransfer.is_anonymous?
+                    = cocotransfer.display_donor_name 
+                  - else
+                    = link_to myprofile_path(donor.profile.slug) do
+                      = cocotransfer.display_donor_name
+            - @displayed_user_ids.push donor.try(:id) if !cocotransfer.is_anonymous?
+      .clearfix
+      .modal-footer
+        = link_to "Close", "javascript:;", class: "btn btn-danger pull right", data: {dismiss: "modal"}
+
+

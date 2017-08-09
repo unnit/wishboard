@@ -1,0 +1,105 @@
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  Your booking is successful. Thank you #{@transaction.user.name}, for using Cocociti.
+
+%span{style: "float:left;margin-bottom:20px;width:100%;font-size:14px;"}
+  Amount Paid:
+  %strong{style: "font-size:24px;"}
+    &#8377;
+    = @transaction.amount
+
+%span{style: "font-size:14px;float:left;margin-bottom:30px;width:100%;"}
+  Refundable Security Deposit:
+  - if @transaction.product.collect_security_deposit?
+    %strong{style: "font-size:16px;"}
+      &#8377;&nbsp;
+      = @transaction.refundable_security_deposit
+  -else
+    %strong{style: "font-size:16px;"}
+      &#8377;&nbsp;
+      = @transaction.product.security_deposit
+    %br
+    Note: Refundable Security Deposit will be collected while you pick up the item.
+    %br    
+
+%span{style: "width: 100%;float:left;margin-bottom:30px;text-align:center;"}
+  %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+    Booking ID:
+    %strong{style:"padding:0px;"}
+      = @transaction.coco_transaction_id
+
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  = cl_image_tag @transaction.product.image.filename, class: "img-responsive img-style-new", alt: "#{@transaction.product.title}-#{@transaction.product.category_name}", width: 253, height: 190, crop: :fill
+
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  Pick up Date:
+  %span{style: "width:100% !important;padding: 5px;background-color: #2D2D2D;color: white;font-weight:bold;"}
+    #{@transaction.startdate.strftime('%H:%M, %d-%b-%Y, %a')}
+  %br
+  %br
+  Drop off Date:
+  %span{style: "width:100% !important;padding: 5px;background-color: #2D2D2D;color: white;font-weight:bold;"}
+    #{@transaction.enddate.strftime('%H:%M, %d-%b-%Y, %a')}
+
+%span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;"}
+  %strong
+    Booking Details
+  %br
+  %br
+  - if @transaction.days > 0
+    Daily Rent:
+    &#8377;
+    = @transaction.daily_rent
+    %br
+    No of Days:
+    = @transaction.days
+    %br
+  -if @transaction.hours > 0
+    Hourly Rent:
+    &#8377;
+    = @transaction.hourly_rent
+    %br
+    No of Hours:
+    = @transaction.hours
+    %br
+  - if @transaction.weekend_days > 0
+    Premium Rent (Daily):
+    &#8377;
+    = @transaction.weekend_daily_rent
+    %br
+    No. of Premium Days:
+    = @transaction.weekend_days
+    %br
+  - if @transaction.weekend_hours > 0
+    Premium Rent (Hourly):
+    &#8377;
+    = @transaction.weekend_hourly_rent
+    %br
+    No. of Premium Hours:
+    = @transaction.weekend_hours
+    %br
+  - if @transaction.operator_price > 0
+    Operator/Driver Charge:
+    = @transaction.operator_price
+    %br
+  Total Rent:
+  &#8377;
+  = @transaction.rent_without_discount
+  %br
+  Discounts:
+  &#8377;
+  = @transaction.discounts
+  %br
+  Total Rent after Discount:
+  &#8377;
+  = @transaction.rent_with_discount
+  %br
+  Tax:
+  &#8377;
+  = @transaction.tax
+  %br
+
+
+%span{style: "font-size:16px;float:left;margin-bottom:20px;width:100%;"}
+  We wish you a wonderful renting experience!!!
+%span{style: "font-size:16px;float:left;margin-bottom:20px;width:100%;"}
+  For further assistance with your booking, please email us at hello@cocociti.com or call us at 96 8686 0303.

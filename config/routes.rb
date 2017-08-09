@@ -1,8 +1,21 @@
 Rails.application.routes.draw do
 
+  resources :cocotransfers,only: [:create, :new, :update] do
+    member do
+      get :checkout
+    end
+    collection do 
+      post :callback
+    end
+  end
+
   mount ActionCable.server => '/cable'
   namespace :admin do
-    root 'users#index'
+    get 'miscellaneous/no_of_emojis'
+    get 'miscellaneous/index'
+    get "users/admin_firebasenotifications", to: "users#admin_firebasenotifications", as: :admin_firebasenotifications
+    post "users/send_new_firebase_notifications", to: "users#send_new_firebase_notification", as: :send_new_firebase_notifications
+    root 'miscellaneous#index'
     resources :users, only: [:index, :update] do
       collection do
         get :messages
@@ -25,7 +38,11 @@ Rails.application.routes.draw do
       end
     end
     resources :transactions, only: [:index]
-    resources :showcases
+    resources :showcases do 
+      collection do
+        get :croudfunding
+      end
+    end
   end
 
   devise_for :users, :controllers => {
@@ -65,6 +82,7 @@ Rails.application.routes.draw do
       patch :resend_otp
       patch :verify_otp
       post :send_to_bank
+      post :send_to_bank_form
       get :unlock_coin_wish
       get :verify_profile
     end
@@ -133,6 +151,7 @@ Rails.application.routes.draw do
   get "check_showcase/:id", to: "home#update_showcase_checked", as: :update_showcase_checked
   get "check_achieved/:id", to: "home#update_achieved_checked", as: :update_achieved_checked
   get "check_commenter/:id", to: "home#update_commenter_checked", as: :update_commenter_checked
+  get "check_fundreceived/:id", to: "home#update_fundreceived_checked", as: :update_fundreceived_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
   get "fansday", to: "home#fansday"
   get "conversations", to: "chat_rooms#conversations", as: :chat_messages
@@ -141,6 +160,7 @@ Rails.application.routes.draw do
   get "cocopay", to: "home#cocopay"
   get "refund", to: "home#refund"
   get "mobile", to: "home#mobile"
+  post "home/save_firebase_token", to: "home#save_firebase_token", as: :save_firebase_token
 
   resources :messages, only: [:destroy, :index, :show] do
     member do
@@ -162,7 +182,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :showcases, only: [:edit, :create, :update, :destroy, :show] do
+  resources :showcases,path: 'wish', only: [:edit, :create, :update, :destroy, :show] do
     member do
       post :wow
       post :comment
@@ -179,6 +199,7 @@ Rails.application.routes.draw do
       post :update_rating
       post :backstory_form
       post :update_backstory
+      post :accept_fund
     end
     collection do
       get :gettags

@@ -15,7 +15,7 @@
       %span.full-width.pull-left.grey-fg.font11
         @#{user.profile.slug}
       - if current_user && current_user != user
-        .col-xs-12.col-sm-12.no-mar-pad.mtop5{class: "follow-set-#{user.id}"}
+        .col-xs-12.col-sm-12.no-mar-pad.mtop5.mbottom10{class: "follow-set-#{user.id}"}
           = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "inline-block" do
             .btn.no-mar-pad.loader-out-follow-button.follow-button{class: "#{current_user.following?(user) ? 'green-border' : 'cc-dark-fg-border'}", style: "line-height: 0px;"}
               %button{class: "btn loader-button loader-in-follow-button padding0 bg-white font-medium #{current_user.following?(user) ? 'green-fg' : 'cc-dark-fg'}"}

@@ -1,0 +1,21 @@
+.modal.cocotransfers-modal.fade{id: "cocotransfers-#{showcase.id}"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
+        %h2 Cocotransfers
+      .modal-body
+        - showcase.cocotransfers.complete.each do |cocotransfer|
+          - donor = cocotransfer.fullfillment_contributer
+          .col-sm-3.mbottom20
+            = cocotransfer.amount
+          .col-sm-3.mbottom20
+            - if !cocotransfer.is_anonymous? && donor
+              = link_to donor.name, "#profile-#{donor.profile_id}", data: {toggle: "modal" }
+            -else
+              = cocotransfer.display_donor_name
+          .col-sm-6.mbottom20
+            = cocotransfer.created_at
+      .clearfix
+      .modal-footer
+        = link_to "Close", "javascript:;", class: "btn btn-danger pull right", data: {dismiss: "modal"}

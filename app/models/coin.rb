@@ -4,6 +4,28 @@ class Coin < ApplicationRecord
 
   scope :promotional, -> {where promotional: true}
   after_create_commit :send_gift_coin_notification 
+  after_create_commit :deliver_firebase_notification
+
+  def notification_image_url
+    self.user.profile_image_url
+  end
+
+  def notification_url
+    Rails.application.routes.url_helpers.update_coin_checked_url(self, :host => "#{GLOBAL_VARIABLES[:root_url]}")
+  end
+
+  def notification_title
+    self.user.name
+  end
+
+  def notification_text
+    self.user.truncated_name + " gifted a coin for wish - " + 	self.showcase.truncated_title
+  end
+
+  def deliver_firebase_notification
+    FirebasenotificationBroadcastJob.perform_later(self.notification_title, self.notification_text, self.notification_url, self.notification_image_url,  self.user.id)
+  end
+  
   private
   def send_gift_coin_notification
   	NotificationBroadcastJob.perform_later(self.user) unless promotional

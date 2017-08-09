@@ -1,0 +1,9 @@
+= content_for :title do
+  -title = "Gift(Cocotransfer) - Cocociti"
+.container.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 600px;"}
+  .col-sm-7.mtop20.payment_block
+    .col-md-12
+      = render partial: 'form' , locals: {cocotransfer: @cocotransfer, remote: false, submit_name: "Gift"}
+  .col-sm-5.text-center
+    .col-md-12.mtop20.no-mar-pad.mbottom20
+      = render partial: "cocotransfers/showcase_details", locals: {showcase: @cocotransfer.showcase, cocotransfer: @cocotransfer}

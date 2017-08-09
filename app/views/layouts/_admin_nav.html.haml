@@ -13,13 +13,31 @@
     #navbar.collapse.navbar-collapse
       %ul.nav.navbar-nav
         %li{class: "#{'active' if controller_name=='users'}"}= link_to "Users", admin_users_path
-        %li{class: "#{'active' if controller_name=='categories'}"}= link_to "Categories", admin_categories_path
-        %li{class: "#{'active' if controller_name=='categories'}"}= link_to "Products", admin_products_path
-        %li{class: "#{'active' if controller_name=='transactions'}"}= link_to "Transactions", admin_transactions_path
         %li{class: "#{'active' if controller_name=='users'}"}= link_to "Messaging", messages_admin_users_path
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Showcase", admin_showcases_path
+        %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "croudfunding", croudfunding_admin_showcases_path
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Withdraws", withdraws_admin_users_path
+        %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Notification", admin_admin_firebasenotifications_path
+        %li{class: "dropdown"}
+          =link_to "More", "#"
+          .dropdown-content
+            = link_to "Categories", admin_categories_path
+            = link_to "Products", admin_products_path
+            = link_to "Transactions", admin_transactions_path
         %li
           = link_to destroy_user_session_path, method: :delete do
             %span Sign out
             %span.glyphicon.glyphicon-log-out
+:css
+  .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      padding: 12px 16px;
+      z-index: 1;
+  }
+  .dropdown:hover .dropdown-content {
+      display: block;
+  }

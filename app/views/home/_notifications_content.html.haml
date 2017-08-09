@@ -105,3 +105,17 @@
           %span.extra-small-font
             .fa.fa-clock-o
             = time_ago_in_words(notification.created_at)
+  - elsif notification.class.name == "FundreceivedNotification"
+    = link_to update_fundreceived_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
+      .media
+        .media-left
+          %span= cl_image_tag notification.notification_image, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+        .media-body
+          %span.weight600= truncate notification.cocotransfer.display_donor_name, length: 35
+          %span.font13 gifted you fresh funds for wish
+          %span.weight600= truncate notification.cocotransfer.showcase.title, length: 35
+          %br
+          %span.extra-small-font
+            .fa.fa-clock-o
+            = time_ago_in_words(notification.created_at)
+

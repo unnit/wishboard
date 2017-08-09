@@ -1,0 +1,63 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tx_status: MyString
+  tx_id: MyString
+  tx_ref_no: MyString
+  pg_txn_no: MyString
+  pg_resp_code: MyString
+  tx_msg: MyString
+  amount: MyString
+  auth_id_code: MyString
+  issuer_ref_no: MyString
+  signature: MyString
+  transaction_id: MyString
+  payment_mode: MyString
+  tx_gateway: MyString
+  currency: MyString
+  issuer_code: MyString
+  first_name: MyString
+  last_name: MyString
+  email: MyString
+  address_street1: MyString
+  address_street2: MyString
+  address_city: MyString
+  address_state: MyString
+  address_country: MyString
+  address_zip: MyString
+  mobile_no: MyString
+  is_cod: MyString
+  txn_date_time: MyString
+  imps_mmid: MyString
+  imps_mobile_number: MyString
+
+two:
+  tx_status: MyString
+  tx_id: MyString
+  tx_ref_no: MyString
+  pg_txn_no: MyString
+  pg_resp_code: MyString
+  tx_msg: MyString
+  amount: MyString
+  auth_id_code: MyString
+  issuer_ref_no: MyString
+  signature: MyString
+  transaction_id: MyString
+  payment_mode: MyString
+  tx_gateway: MyString
+  currency: MyString
+  issuer_code: MyString
+  first_name: MyString
+  last_name: MyString
+  email: MyString
+  address_street1: MyString
+  address_street2: MyString
+  address_city: MyString
+  address_state: MyString
+  address_country: MyString
+  address_zip: MyString
+  mobile_no: MyString
+  is_cod: MyString
+  txn_date_time: MyString
+  imps_mmid: MyString
+  imps_mobile_number: MyString

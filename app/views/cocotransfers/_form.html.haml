@@ -1,0 +1,41 @@
+.col-xs-12.col-sm-12.no-mar-pad.bg-white.min-height0.ptop10.mtop10.font14{class: "donate-form-block-#{cocotransfer.showcase.id}"}
+  = hidden_field_tag :cocotransfer_id, value: cocotransfer.id
+  = form_for cocotransfer, remote: remote, html:{id: "cocotranfer_form"} do |f|
+    = f.hidden_field :showcase_id, value: cocotransfer.showcase.id
+    .col-xs-12.col-sm-12.mbottom10
+      .col-xs-12.col-sm-12.col-md-3.pull-left
+        %i.fa.fa-inr
+        %span (Amount):
+      .col-xs-12.col-sm-12.col-md-9
+        = f.text_field :amount, placeholder: "Gift amount", class: "form-control bg-white"
+    .col-xs-12.col-sm-12.mbottom10
+      .col-xs-12.col-sm-12.col-md-3.pull-left
+        %i.fa.fa-envelope-o
+        %span (Email):
+      .col-xs-12.col-sm-12.col-md-9
+        = f.email_field :email, placeholder: "Email", class: "form-control bg-white"
+    .col-xs-12.col-sm-12.mbottom10
+      .col-xs-12.col-sm-12.col-md-3.pull-left
+        %i.fa.fa-user 
+        %span (Name):
+        %span.font10{style: "font-size: 10px;"} (optional)
+      .col-xs-12.col-sm-12.col-md-9
+        = f.text_field :donor_name, placeholder: "Name", class: "form-control bg-white"
+    .col-xs-12.col-sm-12.mbottom10
+      .col-xs-12.col-sm-12.col-md-3.pull-left
+        %i.fa.fa-eye-slash
+        %span (Stay anonymous):
+      .col-xs-12.col-sm-12.col-md-9
+        = f.check_box :hide_identity
+    .col-xs-12.col-sm-12.mbottom10
+      .col-xs-12.col-sm-12.col-md-3.pull-left
+        %i.fa.fa-mobile 
+        %span (Mobile): 
+        %span.font10{style: "font-size: 10px;"} (optional)
+      .col-xs-12.col-sm-12.col-md-2.pull-left
+        = select("profile", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control user-phone-prefix"})
+      .col-xs-8.col-sm-7
+        = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
+
+    .col-xs-12.col-sm-12.text-center
+      = f.submit "#{submit_name}", class: "btn btn-lg cc-dark-bg white-fg weight-bold donate_btn"

@@ -1,6 +1,6 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
-  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
+  before_action :get_showcase, only: [:accept_fund, :wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
   before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :undo_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
   before_action :check_coin_wish, only: [:edit, :update, :delete]
@@ -74,6 +74,7 @@ class ShowcasesController < ApplicationController
       flash[:notice] = "#{@showcase.title} updated."
       redirect_to showcase_path(@showcase)
     else
+      @showcase.accept_fund = Showcase.find_by_id(@showcase.id).try(:accept_fund)
       flash[:alert] = @showcase.errors.full_messages.join(", ")
       render :edit
     end
@@ -86,6 +87,7 @@ class ShowcasesController < ApplicationController
   end
 
   def show
+    @cocotransfer = Cocotransfer.new
     if !@showcase || @showcase.admin_created?
       redirect_to root_path
       return
@@ -176,7 +178,7 @@ class ShowcasesController < ApplicationController
   def coin
     if @showcase.active_coins.count <= 50 && @showcase.coin_wish? && @showcase.coin_wish_active? && !@showcase.owner?(current_user) && current_user.unlocked_coin_wish? && !@showcase.coined?(current_user)
       @showcase.add_coin!(current_user)
-      send_mobile_sms("+91#{@showcase.user.phone}", "#{current_user.name.truncate(30)} gifted you a coin for your '#{@showcase.title.truncate(30)}' coin wish.")
+      send_mobile_sms("+#{profile.phonecode}#{@showcase.user.phone}", "#{current_user.name.truncate(30)} gifted you a coin for your '#{@showcase.title.truncate(30)}' coin wish.")
       @showcase.reload
       flash[:notice] = "Coin gifted successfully"
       respond_to :js
@@ -305,7 +307,7 @@ class ShowcasesController < ApplicationController
     params.require(:showcase).permit(:achieved_description, :date_of_achievement, :after_rating)
   end
   def showcase_params
-    params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, :wish_prefix, location_attributes: [:id, :name])
+    params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :fundcategory_id, location_attributes: [:id, :name])
   end
 
   def get_showcase
@@ -347,7 +349,7 @@ class ShowcasesController < ApplicationController
   end
 
   def create_rewish
-    @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at", "product_id"))
+    @rewish = Showcase.new(@showcase.attributes.except("id", "created_at", "updated_at", "product_id", "accept_fund", "goal_amount"))
     @rewish.user = current_user
     @rewish.parent = @showcase
     @rewish.admin_created = false

@@ -60,6 +60,7 @@ class Profile < ApplicationRecord
   validates :increase_hourly, numericality: { greater_than: 0, message: "should be greater than zero" }, unless: :hourly_pricing_blank?
   #validates :image, file_size: { in: 5.kilobytes..10.megabyte }, file_content_type: { allow: ['image/jpeg', 'image/png', 'image/gif'] }, if: :image_absent_blank?
 
+  scope :phone_verified, -> {where(mobile_verified: true)}
   HUMANIZED_ATTRIBUTES = {
     :phone => "Mobile No",
     :increase => "Rent Increase in % - Weekend/Seasonal,",

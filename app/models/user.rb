@@ -1,10 +1,12 @@
 class User < ApplicationRecord
+  require "cloudinary"
+  include CloudinaryHelper
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable
   acts_as_messageable
-
+  has_many :firebase_tokens
   has_many :addresses, dependent: :destroy
   has_many :credentials, dependent: :destroy
   has_many :transactions, dependent: :destroy
@@ -26,6 +28,7 @@ class User < ApplicationRecord
   has_many :showcase_notifications
   has_many :achieved_notifications
   has_many :commenter_notifications
+  has_many :fundreceived_notifications
   has_many :active_achieved_notifications, -> {where active: true}, class_name: "AchievedNotification", foreign_key: "user_id"
   has_many :interests
   has_many :tags, through: :interests
@@ -129,9 +132,28 @@ class User < ApplicationRecord
     self == user
   end
 
+  # def can_withdraw_showcase_raised_amount?(showcase)
+  #   showcase.
+  # end
+  def total_showcase_raised_amount
+    total_amt = 0
+    showcases.active_rasing_funds.each do |s|
+     total_amt+=s.raised_amount
+   end
+   return total_amt.to_i
+ end
+
+  def total_showcase_withdraw_available_amount
+    total_amt = 0
+    showcases.active_rasing_funds.each do |s|
+     total_amt+=s.available_withdraw_amount
+   end
+   return total_amt.to_i
+ end
+
   def can_withdraw?
     unused_coins = wallet.unused_coins.to_i
-    count = withdraws.count
+    count = withdraws.coin_withdraws.active.count
     if mobile_verified?
       if count == 0
         unused_coins >= 10 ? true : false
@@ -290,8 +312,12 @@ class User < ApplicationRecord
     commenter_notifications.where(checked: false)
   end
 
+  def unchecked_fundreceived_notifications
+    fundreceived_notifications.where(checked: false)
+  end
+
   def unchecked_notififcations_count
-    unchecked_wows.count + unchecked_coins.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count + unchecked_achieved_notifications.count + unchecked_commenter_notifications.count
+    unchecked_wows.count + unchecked_coins.count + unchecked_comments.count + unchecked_followers.count + unchecked_showcase_notifications.count + unchecked_achieved_notifications.count + unchecked_commenter_notifications.count + unchecked_fundreceived_notifications.count
   end
 
   def interests_count
@@ -384,6 +410,14 @@ class User < ApplicationRecord
     active_interests.each do |interest|
       deactivate_interest(interest.tag)
     end
+  end
+
+  def truncated_name
+    ActionController::Base.helpers.truncate(self.name, length: 35)
+  end
+
+  def profile_image_url
+    cl_image_path self.avatar
   end
 
   # create methods like [somebody_sends_me_a_message?, I_receive_a_new_payment?, ...]

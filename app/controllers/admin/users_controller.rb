@@ -1,6 +1,15 @@
 class Admin::UsersController < AdminController
   before_action :set_user, only: [:update, :lock, :unlock, :update_verified]
 
+  def admin_firebasenotifications
+  end
+
+  def send_new_firebase_notification
+   @notification = { notification_title: params[:firebase_notification][:notification_title],notification_text: params[:firebase_notification][:notification_text], notification_image_url: params[:firebase_notification][:notification_image_url] }
+    FirebasenotificationBroadcastJob.perform_later(@notification[:notification_title].to_s, @notification[:notification_text].to_s, @notification[:notification_url].to_s, @notification[:notification_image_url].to_s, User.all.pluck(:id))
+   render json: {status: "SENDING"} and return
+ end
+
   def index
     @users = User.admin_search(params[:term]).page(params[:page]).per(40)
   end
@@ -39,7 +48,7 @@ class Admin::UsersController < AdminController
       nos << no
     end
     nos.each do |no|
-      send_mobile_sms("+91#{no}", params[:message])
+      send_mobile_sms("#{no}", params[:message])
     end
     flash[:notice] = "Message sent successfully"
     redirect_to messages_admin_users_path

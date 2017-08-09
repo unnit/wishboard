@@ -62,9 +62,6 @@ group :production, :staging, :development do
 end
 gem "sentry-raven"
 gem 'obscenity'
-group :staging do
-  gem 'pg'
-end
 gem 'fcm'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'

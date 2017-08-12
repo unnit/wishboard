@@ -71,7 +71,6 @@ class Showcase < ApplicationRecord
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
   validates :description, length: { maximum: 2500 }
-  validates :year, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :year_blank?
   validates :showcase_type, inclusion: {in: SHOWCASE_VALUES, message: "not an accepted value."}
   validates :wish_prefix, inclusion: {in: WISH_PREFIX_VALUES, message: "not an accepted value."}
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?
@@ -79,10 +78,10 @@ class Showcase < ApplicationRecord
   validates :date_of_achievement, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :date_of_achievement_blank?
   validates :after_rating, numericality: { only_integer: true, less_than_or_equal_to: 5, greater_than: 1, message: "Please provide a valid rating." }, unless: :after_rating_blank?
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
-  validates :goal_amount, :fundcategory, presence: true, if: :is_for_raising_fund?
-  validates :fundcategory, presence: true, if: :is_for_raising_fund?
+  validates :goal_amount, :fundcategory, :target_date, presence: true, if: :is_for_raising_fund?
   validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 100000, greater_than: 0, message: "should be between 0 and 100000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
   validate :accept_fund_option_should_not_change, if: :already_raised_some_amount
+
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
   scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
@@ -109,7 +108,7 @@ class Showcase < ApplicationRecord
   def all_tags
     self.tags.map(&:name).join(",")
   end
-  
+
   def accept_fund_is_editable?
     Showcase.find_by_id(self.id).try(:accept_fund) ? !already_raised_some_amount : true
   end
@@ -128,7 +127,7 @@ class Showcase < ApplicationRecord
     self.accept_fund && self.accept_fund == true
   end
 
-  def is_goal_amount_not_blank? 
+  def is_goal_amount_not_blank?
     return true
      !(goal_amount.blank?)
   end

@@ -3,7 +3,8 @@
 .container-fluid.padding0.ptop50.mob-ptop100.bg-white.mbottom40{style: "min-height:700px;"}
   .container.padding0
     %h3.pleft-10 Your notifications
-    .col-xs-12.col-sm-12.notif-full-content.no-mar-pad.mtop10.light-border
+    .col-xs-12.col-sm-12.notif-full-content.no-mar-pad.mtop10
+      = render partial: "layouts/web_notification_permission"
       - unless @notifications.blank?
         %span.full-width.pull-right
           = link_to update_all_notifications_path, remote: true do

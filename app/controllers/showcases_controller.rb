@@ -307,7 +307,7 @@ class ShowcasesController < ApplicationController
     params.require(:showcase).permit(:achieved_description, :date_of_achievement, :after_rating)
   end
   def showcase_params
-    params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :fundcategory_id, location_attributes: [:id, :name])
+    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :all_tags, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :fundcategory_id, location_attributes: [:id, :name])
   end
 
   def get_showcase

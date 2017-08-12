@@ -74,10 +74,11 @@
                       Mobile
                       %br
                       %span.grey-fg.font11 *Not visible to others
-                    .col-sm-3
-                      = select("profile", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control user-phone-prefix"})
+                    .col-sm-1.no-mar-pad.pleft15
+                      = select("profile", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control"})
+                    .col-sm-4
                       = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
-                    .col-sm-7.mob-otp-verify.padding10.pbottom0.grey-fg
+                    .col-sm-5.mob-otp-verify.padding0.grey-fg
                       - if @profile.mobile_verified
                         Verified&nbsp;
                         %i{class: "fa fa-check-circle green-fg font17"}
@@ -100,12 +101,6 @@
                   .form-group
                     .col-xs-12.col-sm-12.text-center
                       = submit_tag "Save", class: "btn save-button mtop10 white-fg violet-bg border2 j-loader-trigger-link"
-:css
-  .form-control.user-phone-prefix{
-    width: 52%;
-    padding: 6px 0px;
-  }
-
 
 = content_for :extra_js do
   :javascript

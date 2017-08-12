@@ -3667,6 +3667,50 @@ th.headerSortDown {
   z-index: 10000;
   background-color: rgba(0,0,0,0.4);
 }
+.web-notifications {
+  background-color: rgba(115, 45, 176, 0.86);
+  z-index: 1030;
+}
+#showcase-modal2 .modal-dialog{
+  width: 70%;
+}
+.raise-toggle-switch input {
+  position: absolute;
+  opacity: 0;
+}
+.raise-toggle-switch {
+  display: inline-block;
+  font-size: 20px;
+  height: 16px;
+  width: 32px;
+  background-color: #d8d8d8;
+  border-radius: 8px;
+
+}
+.raise-toggle-switch div {
+  height: 16px;
+  width: 16px;
+  border-radius: 0.5em;
+  background: #737171;
+  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.3);
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  transition: all 300ms;
+}
+.raise-toggle-switch div::before{
+  font-size: 10px;
+  / content: "No fund"
+}
+.raise-toggle-switch input:checked + div {
+  -webkit-transform: translate3d(100%, 0, 0);
+  -moz-transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
+  background: #732db0;
+}
+.raise-toggle-switch input:checked + div::before{
+  font-size: 10px;
+  / content: "Accept funds"
+}
 /*******************************/
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .tab125h{

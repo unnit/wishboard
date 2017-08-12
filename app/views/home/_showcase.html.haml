@@ -1,4 +1,4 @@
-- show_case_link_params = showcase.is_for_raising_fund? ? {target: :_blank} : {remote: true}
+- show_case_link_params = showcase.is_for_raising_fund? ? {target: :_blank, class: "cc-dark-fg"} : {remote: true, class: "cc-dark-fg"}
 .col-xs-12.col-sm-12.no-mar-pad
   %span.font11.grey-fg.pos-absolute.right15.mtop8
     = time_ago_in_words(showcase.achieved_at)
@@ -35,7 +35,7 @@
             - elsif showcase.instant_wishlist?
               posted a momentary wish.
           %span.full-width.inline-block{class: "#{showcase.image.present? ? 'font-medium' : 'font21'}"}
-            = link_to showcase_path(showcase), show_case_link_params, class: "cc-dark-fg" do
+            = link_to showcase_path(showcase), show_case_link_params do
               = showcase.title
         - else
           %span.full-width.inline-block.mtop10{class: "#{showcase.image.present? ? 'font-medium' : 'font21'}"}
@@ -49,7 +49,7 @@
                 = link_to showcase_path(showcase, popup: "yes"), show_case_link_params do
                   %span.cc-dark-fg= showcase.future_wish_prefix_label.split.last
             %span
-              = link_to showcase_path(showcase, popup: "yes"), show_case_link_params, class: "cc-dark-fg" do
+              = link_to showcase_path(showcase, popup: "yes"), show_case_link_params do
                 = showcase.title
   - if showcase.any_image?
     .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}

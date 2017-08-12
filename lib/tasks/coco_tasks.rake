@@ -8,8 +8,8 @@ namespace :coco_tasks do
       product.update_column :internal_id, row[2]
     end
   end
-  
-  task add_phonecode_to_old_users: :enviroment do
+
+  task add_phonecode_to_old_users: :environment do
     Profile.where(phonecode: nil).update_all(phonecode: "91")
   end
 
@@ -271,9 +271,57 @@ namespace :coco_tasks do
         country_list.each do |c|
              Country.create(iso: c[1], name: c[2], nicename: c[3], iso3:c[4], numcode: c[5], phonecode: c[6])
        end
-       
   end
 
+  task update_year_value: :environment do
+    showcases = Showcase.all
+    i = 0
+    showcases.each do |showcase|
+      if showcase.year.present?
+        begin
+          new_year = showcase.year.to_datetime.strftime("%Y-%m-%d %H:%M:%S.%6N")
+          showcase.update_columns(target_date: new_year)
+        rescue Exception => e
+          if showcase.year == "0-1"
+            new_year = showcase.created_at + 1.day
+          elsif showcase.year == "1-3"
+            new_year = showcase.created_at + 3.days
+          elsif showcase.year == "3-5"
+            new_year = showcase.created_at + 5.days
+          elsif showcase.year == "5-7"
+            new_year = showcase.created_at + 7.days
+          else
+            new_year = "01-01-#{showcase.year}".to_datetime.strftime("%Y-%m-%d %H:%M:%S.%6N")
+          end
+          showcase.update_columns(target_date: new_year)
+        end
+        i+=1
+      end
+    end
+    puts i
+  end
+
+  task update_date_of_achievement: :environment do
+    showcases = Showcase.all
+    i = 0
+    showcases.each do |showcase|
+      if showcase.date_of_achievement.present?
+        achievement = showcase.date_of_achievement.to_datetime.strftime("%Y-%m-%d %H:%M:%S.%6N")
+        showcase.update_columns(date_of_achievement_back_up: achievement)
+        i+=1
+      end
+    end
+    puts i
+  end
+
+  task add_crowd_wish_categories: :environment do
+    categories = ["Personal", "Animals", "Arts & Media", "Business", "Children", "Community", "Creative", "Education", "Elderly", "Emergencies", "Environment", "Entertainment", "Food & Hunger", "Health", "Human Rights", "Hobbies", "Medical", "Memorials", "Rural Development", "Social Entrepreneurship", "Sports, Technology", "Travel", "Women", "Others"]
+    categories.each do |category|
+      fc = Fundcategory.new
+      fc.name = category
+      fc.save
+    end
+  end
 
   task update_last_seen_to_date: :environment do
     memberships = Membership.all

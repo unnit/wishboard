@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     member do
       get :checkout
     end
-    collection do 
+    collection do
       post :callback
     end
   end
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
       end
     end
     resources :transactions, only: [:index]
-    resources :showcases do 
+    resources :showcases do
       collection do
         get :croudfunding
       end
@@ -216,6 +216,7 @@ Rails.application.routes.draw do
       get :get_sub_categories
       get :get_chat_messages
       post :update_last_seen
+      get :new_crowd_fund
     end
     collection do
       get :autocomplete

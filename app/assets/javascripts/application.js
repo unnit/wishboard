@@ -67,12 +67,6 @@ $(document).ready(function(){
       {
           $(".prefix-holder-dropdown").removeClass("open");
       }
-      var container_2 = $(".dt-achievement-dropdown")
-      if (!container_2.is(e.target) // if the target of the click isn't the container...
-          && container_2.has(e.target).length === 0) // ... nor a descendant of the container
-      {
-          $(".dt-achievement-dropdown").removeClass("open");
-      }
       var container_3 = $(".j-online-users")
       if (!container_3.is(e.target) // if the target of the click isn't the container...
           && container_3.has(e.target).length === 0) // ... nor a descendant of the container
@@ -81,6 +75,22 @@ $(document).ready(function(){
           container_3.removeClass("fa-angle-up").addClass("fa-angle-down");
       }
     });
+    $(document).on('change', '#showcase_accept_fund', function() {
+      $wrap = $(this).closest(".create-showcase");
+      if($(this).is(":checked")){
+        $wrap.find(".j-more, .j-img-wrapper").hide();
+        $wrap.find(".showcase-submit").val("Next");
+        $wrap.find(".goal-target-date").removeAttr("disabled").attr("readonly", true);
+        $wrap.find(".more-target-date").hide().removeAttr("readonly").attr("disabled", true);
+        $wrap.find('.raise_fund_fields').removeClass('hidden');
+      }else{
+        $wrap.find(".j-more, .j-img-wrapper").show();
+        $wrap.find(".showcase-submit").val("Wish");
+        $wrap.find(".goal-target-date").removeAttr("readonly").attr("disabled", true);
+        $wrap.find(".more-target-date").show().removeAttr("disabled").attr("readonly", true);
+        $wrap.find('.raise_fund_fields').addClass('hidden');
+      }
+    })
     $(document).on("click", ".ps-nav-btn", function(){
       $(".ps-wrapper").trigger("click");
     })
@@ -110,11 +120,22 @@ $(document).ready(function(){
         $wrap.find(".prefix-holder-dropdown").addClass("open");
       }
     })
+    function showPsNext(){
+      if($wrap.find("#showcase_goal_amount").val().trim() != "" && $wrap.find("#showcase_target_date").val().trim() != "" && $wrap.find("#showcase_fundcategory_id").val().trim() != "" && $wrap.find(".ps-initial").val().trim() != ""){
+        $wrap.find(".ps-btn-wrapper").fadeIn();
+      }else{
+        $wrap.find(".ps-btn-wrapper").fadeOut();
+      }
+    }
     function showPsSubmit(){
       $wrap.find(".j-more").addClass("j-ps-more");
       $wrap.find(".j-img-wrapper, .j-more").removeClass("opacity-low");
       $wrap.find(".cloudinary-fileupload-new").removeClass("hidden");
-      $wrap.find(".ps-btn-wrapper").fadeIn();
+      if($wrap.find("#showcase_accept_fund").is(":checked")){
+        showPsNext();
+      }else{
+        $wrap.find(".ps-btn-wrapper").fadeIn();
+      }
     }
     function hidePsSubmit(){
       $wrap.find(".j-more").removeClass("j-ps-more");
@@ -134,24 +155,32 @@ $(document).ready(function(){
       $wrap.find(".prefix-holder-dropdown").addClass("open");
       $wrap.find(".prefix-holder").empty();
       $wrap.find(".ps-initial").css({"width": "100%"});
-      $wrap.find(".dt-of-achievement").datetimepicker('remove');
+      $wrap.find(".dt-of-achievement").val("").datetimepicker('remove');
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-left", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){
-        date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
-        $wrap.find(".dt-of-achievement").datetimepicker(date_options);
+        if($wrap.find("#showcase_accept_fund").is(":checked")){
+          date_options["startDate"] = new Date($(".ps-wrapper").data("fdate"));
+        }else{
+          date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+        }
       }
       else if($wrap.find("#showcase_showcase_type").val() == 1){
         date_options["startDate"] = new Date($(".ps-wrapper").data("fdate"));
-        $wrap.find(".dt-of-achievement").datetimepicker(date_options);
       }
+      else if($wrap.find("#showcase_showcase_type").val() == 2){
+        date_options["endDate"] = new Date($(".ps-wrapper").data("fdate"));
+        date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+      }
+      $wrap.find(".dt-of-achievement").datetimepicker(date_options).on('changeDate', function(){
+        if($wrap.find("#showcase_accept_fund").is(":checked")){
+          showPsNext();
+        }
+      });
       $wrap.find(".ps-initial").attr("placeholder", "Please select your wish category");
     })
-    $(".dt-of-achievement").on('changeDate', function(){
+    $(".more-target-date").on('changeDate', function(){
       $(".showcase-submit").focus();
     });
-    $(document).on("click", ".dt-achievement-dropdown li a", function(){
-      $(".showcase-submit").focus();
-    })
     $(document).on("click", ".type-holder", function(){
       $wrap = $(this).closest(".create-showcase");
       $wrap.find(".ps-initial").attr("placeholder", "Please select your wish type");
@@ -174,7 +203,7 @@ $(document).ready(function(){
         $wrap.find(".prefix-holder").html("<span class='dotted-bt-border mleft5'>"+$(this).data("ftext")+"&nbsp;<i class='fa fa-angle-down font16' aria-hidden='true'></i></span>");
       }
       $wrap.find(".prefix-holder").css({"display": "inline-block"});
-      $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 5});
+      $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 3});
       $wrap.find("#showcase_wish_prefix").val($(this).data("id"));
       $wrap.find(".prefix-holder-dropdown").removeClass("open");
       if($wrap.find(".ps-initial").val().trim() != ""){showPsSubmit()}
@@ -203,7 +232,16 @@ $(document).ready(function(){
       }else{
         hidePsSubmit()
       }
-    })
+    });
+    $(document).on("keyup", "#showcase_goal_amount", function(e){
+      $wrap = $(this).closest(".create-showcase");
+      $(this).val($(this).val().replace(/[^0-9]/g,''));
+      showPsNext();
+    });
+    $(document).on("change", "#showcase_fundcategory_id", function(e){
+      $wrap = $(this).closest(".create-showcase");
+      showPsNext();
+    });
     $(document).on("click", ".j-ps-more", function(){
       $wrap = $(this).closest(".create-showcase");
       $wrap.find(".ps-sub-wrap-2").fadeIn(50, function(){
@@ -219,131 +257,69 @@ $(document).ready(function(){
           });
       }
     });
-    $(document).on("click", ".dt-of-achievement", function(){
-      $wrap = $(this).closest(".create-showcase");
-      if($wrap.find("#showcase_showcase_type").val() == 2){
-        $wrap.find(".dt-achievement-dropdown").addClass("open");
-      }
-    })
-    $(document).on("click", ".dt-achievement-dropdown li a", function(){
-      $wrap = $(this).closest(".create-showcase");
-      $wrap.find("#showcase_year").val($(this).data("id"));
-      $wrap.find(".dt-achievement-dropdown").removeClass("open");
-    })
 
+    function psSubmit(title){
+      if($wrap.find(".preview, .preview-edit").children().length == 0){
+        swal({
+            title: title,
+            text: "A photo would be nice.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#ffffff",
+            confirmButtonText: "Yes, Proceed",
+            cancelButtonText: "Upload Photo",
+            allowOutsideClick: true,
+            allowEscapeKey: false,
+            closeOnConfirm: true,
+            closeOnCancel: true,
+            animation: "pop"
+          },
+          function(isConfirm){
+            if (isConfirm){
+              $wrap.submit();
+              $wrap.find(".loader-button").hide();
+              $wrap.find(".loader-effect").show();
+            }
+            else{
+              $wrap.find(".file-upload-trigger").trigger('click');
+            }
+        });
+      }
+      else{
+        $wrap.submit();
+        $wrap.find(".loader-button").hide();
+        $wrap.find(".loader-effect").show();
+      }
+    }
       //Error notifications after showcase-fullfillment-submit
     $(document).on("click", ".showcase-backstory-submit", function(e){
       e.preventDefault();
       $wrap = $(this).closest(".backstory-showcase");
-        if($wrap.find(".preview, .preview-edit").children().length == 0){
-          swal({
-              title: "Are you sure to submit backstory without a photo?",
-              text: "A photo would be nice.",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#ffffff",
-              confirmButtonText: "Yes, Proceed",
-              cancelButtonText: "Upload Photo",
-              allowOutsideClick: true,
-              allowEscapeKey: false,
-              closeOnConfirm: true,
-              closeOnCancel: true,
-              animation: "pop"
-            },
-            function(isConfirm){
-              if (isConfirm){
-                $wrap.submit();
-                $wrap.find(".loader-button").hide();
-                $wrap.find(".loader-effect").show();
-              }
-              else{
-                $wrap.find(".file-upload-trigger").trigger('click');
-              }
-          });
-        }
-        else{
-          $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
-          $wrap.submit();
-          $wrap.find(".loader-button").hide();
-          $wrap.find(".loader-effect").show();
-        }
+      psSubmit("Are you sure to submit backstory without a photo?");
     })
-
 
       //Error notifications after showcase-fullfillment-submit
     $(document).on("click", ".showcase-fullfillment-submit", function(e){
       e.preventDefault();
       $wrap = $(this).closest(".fullfill-showcase");
-        if($wrap.find(".preview, .preview-edit").children().length == 0){
-          swal({
-              title: "Are you sure to post your fullfillment/achievement of your wish without a photo?",
-              text: "A photo would be nice.",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#ffffff",
-              confirmButtonText: "Yes, Proceed",
-              cancelButtonText: "Upload Photo",
-              allowOutsideClick: true,
-              allowEscapeKey: false,
-              closeOnConfirm: true,
-              closeOnCancel: true,
-              animation: "pop"
-            },
-            function(isConfirm){
-              if (isConfirm){
-                $wrap.submit();
-                $wrap.find(".loader-button").hide();
-                $wrap.find(".loader-effect").show();
-              }
-              else{
-                $wrap.find(".file-upload-trigger").trigger('click');
-              }
-          });
-        }
-        else{
-          $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
-          $wrap.submit();
-          $wrap.find(".loader-button").hide();
-          $wrap.find(".loader-effect").show();
-        }
+      psSubmit("Are you sure to post your fullfillment/achievement of your wish without a photo?");
     })
     //Error notifications after showcase-submit
     $(document).on("click", ".showcase-submit", function(e){
       e.preventDefault();
       $wrap = $(this).closest(".create-showcase");
+      $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
       if($wrap.find(".ps-initial").val().trim().length > 0){
-        if($wrap.find(".preview, .preview-edit").children().length == 0){
-          swal({
-              title: "Are you sure to post your wish without a photo?",
-              text: "A photo of your wish would be nice.",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#ffffff",
-              confirmButtonText: "Yes, Proceed",
-              cancelButtonText: "Upload Photo",
-              allowOutsideClick: true,
-              allowEscapeKey: false,
-              closeOnConfirm: true,
-              closeOnCancel: true,
-              animation: "pop"
-            },
-            function(isConfirm){
-              if (isConfirm){
-                $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
-                $wrap.submit();
-                $wrap.find(".loader-button").hide();
-                $wrap.find(".loader-effect").show();
-              }
-              else{
-                $wrap.find(".file-upload-trigger").trigger('click');
-              }
-          });
-        }
-        else{
-          $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
-          $wrap.submit();
-          $wrap.find(".loader-button").hide();
-          $wrap.find(".loader-effect").show();
+        if($wrap.find("#showcase_accept_fund").is(":checked")){
+          if($wrap.find("#showcase_goal_amount").val().trim() != "" && $wrap.find("#showcase_target_date").val().trim() != "" && $wrap.find("#showcase_fundcategory_id").val().trim() != ""){
+            $wrap.submit();
+            $wrap.find(".loader-button").hide();
+            $wrap.find(".loader-effect").show();
+          }else{
+            swal("Sorry", "Please complete your wish", "error");
+          }
+        }else{
+          psSubmit("Are you sure to post your wish without a photo?");
         }
       }
       else{
@@ -354,37 +330,7 @@ $(document).ready(function(){
     $(document).on("click", ".showcase-raise-update-submit", function(e){
       e.preventDefault();
       $wrap = $(this).closest(".update-raise-showcase");
-      if($wrap.find(".preview").children().length == 0){
-        swal({
-          title: "Are you sure to post your wish without a photo?",
-          text: "A photo of your wish would be nice.",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#ffffff",
-          confirmButtonText: "Yes, Proceed",
-          cancelButtonText: "Upload Photo",
-          allowOutsideClick: true,
-          allowEscapeKey: false,
-          closeOnConfirm: true,
-          closeOnCancel: true,
-          animation: "pop"
-        },
-        function(isConfirm){
-          if (isConfirm){
-            $wrap.submit();
-            $wrap.find(".loader-button").hide();
-            $wrap.find(".loader-effect").show();
-          }
-          else{
-            $wrap.find(".file-upload-trigger").trigger('click');
-          }
-        });
-      }
-      else{
-        $wrap.submit();
-        $wrap.find(".loader-button").hide();
-        $wrap.find(".loader-effect").show();
-      }
+      psSubmit("Are you sure to post your wish without a photo?");
     })
 
 
@@ -580,10 +526,10 @@ $(document).ready(function(){
   // Notification Icon
   $(document).on("click", ".notif-icon", function(){
     $(".notif-toggle").toggle();
-    $.get("/unchecked_notifications")
+    $.get("/unchecked_notifications");
   })
   $("html,body").click(function(e){
-    var container = $(".notif-icon, #mCSB_2_scrollbar_vertical")
+    var container = $(".notif-icon, #mCSB_2_scrollbar_vertical, .web-notifications")
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0) // ... nor a descendant of the container
     {
@@ -1589,13 +1535,13 @@ $(document).ready(function(){
   firebase.initializeApp(firebaseconfig);
   checkNotificationStatus();
   $(document).on("click", "a.j-enable-notification", function(){askPermission(); })
-  $(document).on("click", ".alert-close-notification", function(){$(".j-enable-web_notification, .j-how-to-enable-notifications").addClass('hidden'); })
+  $(document).on("click", ".alert-close-notification", function(){$(this).closest(".j-enable-web_notification, .j-how-to-enable-notifications").addClass('hidden'); })
   $(document).on("click", "a.j-enable-notification-instructions", function(){
    $(".j-enable-web_notification, .j-how-to-enable-notifications").addClass('hidden');
    content = "<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font11'> <h3 class='full-width mbottom10 text-center txt-underline font16'>Allow or block browser notifications Chrome</h3> <ul> <li class='mbottom5'>At the top right, click More More and then Settings.</li> <li class='mbottom5'>At the bottom, click Advanced.</li> <li class='mbottom5'>Under 'Privacy and security,' click Content settings.</li> <li class='mbottom5'>Click Notifications.</li> <li class='mbottom5'>Search 'https://www.cocociti.com' & choose to block or allow notifications: </li> </ul> <h3 class='full-width mbottom10 text-center txt-underline font16'>Allow or block browser notifications FireFox</h3> <ul> <li class='mbottom5'>Go to the Firefox menu and select Preferences.</li> <li class='mbottom5'>Select the Content panel and click the Choose… button under Notifications.</li> <li class='mbottom5'>Select 'https://www.cocociti.com'. </li> <li class='mbottom5'>Click Remove Site.</li> </ul> <br><br> <strong>P.S:</strong> If you’re browsing in Incognito mode, you won’t get notifications. <br><br><strong>Keep Wishing.</strong> </div>"
    display_cont_wrapper(content);
   })
-  
+
   $('form#admin_send_firebase_notifications').on('ajax:success', function(e, data, status, xhr){
     alert("Application sending Notifications in background");
     reEnableSubmitButton('admin_send_firebase_notifications_submit');
@@ -1603,14 +1549,6 @@ $(document).ready(function(){
     alert("something went wrong");
     reEnableSubmitButton('admin_send_firebase_notifications_submit');
   });
-
-  $(document).on('change', '.showcase_form_accept_fund', function() {
-      if(this.checked) {
-        $('.raising_fund_hidden').removeClass('hidden');
-      }else{
-         $('.raising_fund_hidden').addClass('hidden');
-      }
-  })
 
 });// eof document ready
 $(window).on("load", function(){
@@ -1761,11 +1699,11 @@ function checkNotificationStatus() {
 
 var informServerAboutBlock = function(currentToken){
   $.ajax({type: 'POST', data: {token: currentToken}, url: "/home/save_firebase_token_status",
-    success: function(data) { 
+    success: function(data) {
       if(data.saved) setTokenSentToServer(true);
       $("a.j-signout-link").each(function() {
-        var $this = $(this);       
-        var _href = $this.attr("href"); 
+        var $this = $(this);
+        var _href = $this.attr("href");
         $this.attr("href", _href + '?firebasetoken='+currentToken);
       });
     },
@@ -1774,11 +1712,11 @@ var informServerAboutBlock = function(currentToken){
 }
 function sendTokenToServer(currentToken){
   $.ajax({type: 'POST', data: {token: currentToken}, url: "/home/save_firebase_token",
-    success: function(data) { 
+    success: function(data) {
       if(data.saved) setTokenSentToServer(true);
       $("a.j-signout-link").each(function() {
-        var $this = $(this);       
-        var _href = $this.attr("href"); 
+        var $this = $(this);
+        var _href = $this.attr("href");
         $this.attr("href", _href + '?firebasetoken='+currentToken);
       });
     },
@@ -1790,7 +1728,7 @@ function setTokenSentToServer(sent) {window.localStorage.setItem('sentToServer',
 function askPermission(){
   if('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/assets/service-worker/sw.js')
-    .then(function(registration) { 
+    .then(function(registration) {
       const messaging = firebase.messaging();
       if (!firebase.messaging().registrationToUse_){messaging.useServiceWorker(registration);}
       messaging.requestPermission().then(function() {
@@ -1826,7 +1764,7 @@ function askPermission(){
       messaging.onMessage(function(payload) {
        console.log("Message received. ", payload);
      });
-      console.log("Notfication Worker Registered"); 
+      console.log("Notfication Worker Registered");
     });
   }
 }

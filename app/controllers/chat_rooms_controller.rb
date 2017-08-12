@@ -100,6 +100,20 @@ class ChatRoomsController < ApplicationController
     respond_to :js
   end
 
+  def new_crowd_fund
+    showcase = Showcase.find_by_id params[:id]
+    if showcase.owner?(current_user)
+      chat_room = ChatRoom.new
+      chat_room.name = showcase.title
+      chat_room.main_category_id =
+      chat_room.sub_category_id =
+      chat_room.save
+      render js: "$('.messages').html(#{j(render 'layouts/messages')})"
+    else
+      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}'"
+    end
+  end
+
   def autocomplete
     render json: ChatRoom.search(params[:q], autocomplete: true, limit: 20).map(&:name)
   end

@@ -1,3 +1,4 @@
 $(".notif-loader").hide();
 $(".notif-content").empty().append("#{j render partial: "home/notifications", locals: {notifications: @unchecked}}")
+checkNotificationStatus();
 $(".notif-inner-strip").mCustomScrollbar({theme:"minimal-dark",advanced:{ updateOnContentResize: true }});

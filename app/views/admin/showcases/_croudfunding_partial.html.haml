@@ -6,7 +6,11 @@
     %td
       = link_to edit_admin_showcase_path(showcase), target: "_blank" do
         %span= truncate showcase.title, length: 35
-    %td= showcase.admin_status_name
+    %td
+      = form_for showcase, url: update_admin_status_admin_showcase_path(showcase), remote: true, method: :post do |f|
+        = select_tag :admin_status, options_for_select(Showcase::ADMIN_STATUS_NAME, showcase.admin_status), class: "withdraw-status-#{showcase.id}"
+        = f.submit "update status"
+
     %td= showcase.created_at.strftime("%d %b, %Y %H:%M")
     %td= showcase.goal_amount
     %td= showcase.raised_amount

@@ -137,6 +137,37 @@ class Showcase < ApplicationRecord
     tag.blank? ? self.none : tag.showcases
   end
 
+  before_save :remove_croundfunding_attributes
+  def remove_croundfunding_attributes
+    unless self.accept_fund
+      self.goal_amount = nil
+     self.fundcategory_id = nil
+     self.raising_for = nil
+     self.video_link = nil
+   end
+ end
+
+  def  default_gift_amount
+    if !self.new_record? && is_for_raising_fund?
+      if goal_amount.between?(1, 10000)
+        (goal_amount/10.0) > 100 ? (goal_amount/10.0).round(-2) : (goal_amount/10.0).round(-1)
+      elsif goal_amount.between?(10000, 50000)
+        2000
+      elsif goal_amount.between?(50000, 1000000)
+        3000
+      else
+        3000
+      end
+    else
+      return 3000
+    end
+  end
+
+  
+  def is_admin_disabled?
+     self.admin_status == ADMIN_STATUS_NAME[1][1]
+  end
+
   def admin_creation?
     admin_created == true
   end
@@ -316,7 +347,7 @@ class Showcase < ApplicationRecord
   end
 
   def admin_status_name
-    return Showcase::ADMIN_STATUS_NAME[0][0] if admin_status == ADMIN_STATUS[0]
+    return Showcase::ADMIN_STATUS_NAME[0][0] if admin_status == ADMIN_STATUS[0] || admin_status.nil?
     return Showcase::ADMIN_STATUS_NAME[1][0] if admin_status == ADMIN_STATUS[1]
   end
 
@@ -386,7 +417,7 @@ class Showcase < ApplicationRecord
   end
 
   def available_withdraw_amount
-    return cocotransfers.complete.sum(:amount).to_i - withdraws.active.sum(:coins).to_i
+    return cocotransfers.complete.sum(:amount).to_i - withdraws.complete_withdraws.sum(:coins).to_i
   end
 
   def raised_amount

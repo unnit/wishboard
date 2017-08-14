@@ -26,6 +26,12 @@
               = text_field_tag :acc_no, "#{last_transaction.acc_no unless last_transaction.blank?}", class: "form-control", required: true
           .form-group
             .col-xs-12.col-sm-4
+              Confirm Account No
+              %span.heart-red-fg *
+            .col-xs-12.col-sm-8
+              = text_field_tag :confirm_acc_no, "", class: "form-control", required: true, :onpaste=>"return false;"
+          .form-group
+            .col-xs-12.col-sm-4
               IFSC Code
               %span.heart-red-fg *
             .col-xs-12.col-sm-8
@@ -37,3 +43,4 @@
           .form-group.text-center
             .col-xs-12.col-sm-12.text-center
               = submit_tag "Save", class: "btn save-button mtop10 white-fg violet-bg border2 j-loader-trigger-link"
+

@@ -13,9 +13,15 @@
     #navbar.collapse.navbar-collapse
       %ul.nav.navbar-nav
         %li{class: "#{'active' if controller_name=='users'}"}= link_to "Users", admin_users_path
+        %li= link_to "Stats", admin_miscellaneous_index_path
         %li{class: "#{'active' if controller_name=='users'}"}= link_to "Messaging", messages_admin_users_path
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Showcase", admin_showcases_path
-        %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "croudfunding", croudfunding_admin_showcases_path
+        %li{class: "dropdown"}
+          =link_to "Croudfunding", "#"
+          .dropdown-content
+            %div= link_to  "Wishesh", croudfunding_admin_showcases_path, {class: "internallink"}
+            %div= link_to "cocotransfers", admin_cocotransfers_path,  {class: "internallink"}
+            %div= link_to "Withdraws", croudfunding_withdraws_admin_users_path
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Withdraws", withdraws_admin_users_path
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Notification", admin_admin_firebasenotifications_path
         %li{class: "dropdown"}
@@ -40,4 +46,8 @@
   }
   .dropdown:hover .dropdown-content {
       display: block;
+  }
+  .internallink{
+    width: 100%;
+    height: 30px;
   }

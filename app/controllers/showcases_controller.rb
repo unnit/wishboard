@@ -88,7 +88,7 @@ class ShowcasesController < ApplicationController
 
   def show
     @cocotransfer = Cocotransfer.new
-    if !@showcase || @showcase.admin_created?
+    if !@showcase || @showcase.admin_created? || @showcase.is_admin_disabled?
       redirect_to root_path
       return
     end
@@ -105,7 +105,7 @@ class ShowcasesController < ApplicationController
     @rewish.showcase_type = Showcase::SHOWCASE_VALUES[1] if @showcase.showpiece?
     @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
     if @rewish.save
-      flash[:notice] = "Rewished successfully. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
+      flash[:notice] = "Rewished successfully. <a href='/wish/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Rewish</a>".html_safe
       redirect_to :back
     end
   end
@@ -116,7 +116,7 @@ class ShowcasesController < ApplicationController
     @rewish.user_status = Showcase::USER_STATUS[1]
     @showcase.grandparent.present? ? @rewish.grandparent = @showcase.grandparent : @rewish.grandparent = @showcase
     if @rewish.save
-      flash[:notice] = "Showcased a fulfilled wish. <a href='/showcases/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Fulfilled Wish</a>".html_safe
+      flash[:notice] = "Showcased a fulfilled wish. <a href='/wish/#{@rewish.id}/edit' class='btn btn-outline-edit'>Edit Your Fulfilled Wish</a>".html_safe
       redirect_to :back
     end
   end
@@ -269,7 +269,7 @@ class ShowcasesController < ApplicationController
   def update_rating
     if @showcase.update_attributes(after_rating: params[:showcase][:after_rating])
       @showcase.mark_as_achieved!
-      flash[:notice] = "#{@showcase.title} achieved successfully <a href='/showcases/#{@showcase.id}/undo_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe
+      flash[:notice] = "#{@showcase.title} achieved successfully <a href='/wish/#{@showcase.id}/undo_achieve_wish' class='btn btn-outline-edit' data-method='post' data-remote='true'>Undo</a>".html_safe
     else
       flash[:alert] = "#{@showcase.errors.full_messages.join(', ')}"
     end

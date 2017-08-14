@@ -3,6 +3,8 @@ class Location < ApplicationRecord
   belongs_to :locatable, polymorphic: true
 
   scope :for_product, -> {where(locatable_type: "Product")}
+  scope :for_showcase, -> {where(locatable_type: "Showcase")}
+
 
   validates :name, presence: true, unless: :profile_or_showcase_type?
   validates :name, length: { maximum: 240 }

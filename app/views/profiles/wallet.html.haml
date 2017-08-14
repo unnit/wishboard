@@ -2,78 +2,95 @@
   -title = "Wallet - Cocociti"
 .container-fluid.ptop50.mob-ptop100.pattern-bg{style: "min-height: 700px;"}
   .container.mtop40.padding0
-    .col-xs-12.col-sm-6.col-md-4.col-md-offset-2.padding20{style: "background-color: #ffa49d;height:200px;"}
-      .col-xs-6.col-sm-6.no-mar-pad.pleft15
-        .balance-coins-sprite.inline-block
+    .col-xs-12.col-sm-12.col-md-6.text-center{style: "background-color: #ff958d;min-height:200px;"}
+      .col-xs-12.col-sm-12.white-fg
+        .mtop10{style:"height:55px;"}
+          %i.fa.fa-gift{style: "font-size: 50px;"}
         %span.inline-block.full-width.white-fg{style: "letter-spacing: 2px;"}
-          BALANCE
-      .col-xs-6.col-sm-6.no-mar-pad
-        - if current_user.mobile_verified?
-          .pull-right.wdrw-btn.send-to-bank-btn.pon SEND TO BANK
-        - else
-          = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
-            .pull-right.send-to-bank-btn.pon SEND TO BANK
-      %span.full-width.text-center.pull-left.white-fg{style: "font-size: 35px;"}
-        ="#{current_user.wallet.unused_coins.to_i}"
-        %span{:style => "font-size: 20px;"} (coins earned)
-        %br/
-        ="#{current_user.total_showcase_withdraw_available_amount}"
-        %span{:style => "font-size: 20px;"} (raised amount)
-    .col-xs-12.col-md-3.col-sm-3.padding20{style: "background-color: #ffdac5;height:200px;color: #ec827a;"}
+          SHOWCASE GIFTING
+      .col-xs-12.col-sm-12.white-fg.font20
+        .col-xs-12.col-sm-4.no-mar-pad
+          .col-xs-12.col-sm-12.no-mar-pad
+            Balance
+          .col-xs-12.col-sm-12.no-mar-pad
+            %i.fa.fa-inr
+            #{current_user.total_showcase_withdraw_available_amount}
+        .col-xs-12.col-sm-4.no-mar-pad
+          .col-xs-12.col-sm-12.no-mar-pad
+            Total
+          .col-xs-12.col-sm-12.no-mar-pad
+            %i.fa.fa-inr
+            #{current_user.total_showcase_raised_amount}
+        .col-xs-12.col-sm-4.no-mar-pad
+          .col-xs-12.col-sm-12.no-mar-pad
+            Withdrawn
+          .col-xs-12.col-sm-12.no-mar-pad
+            %i.fa.fa-inr
+            #{current_user.withdraws.showcase_withdraws.complete_withdraws.sum(:coins).to_i}
+
+    / .col-xs-12.col-sm-12.col-md-6.padding10{style: "background-color: #ffa49d;height:200px;"}
+    /   .col-xs-12.col-sm-12.text-center{style:"color: #ec827a;"}
+    /     .total-coins-sprite.inline-block
+    .col-xs-12.col-sm-12.col-md-6.text-center{style: "background-color: #ffcbae;min-height:200px"}
       .col-xs-12.col-sm-12.text-center
-        .total-coins-sprite.inline-block
-        %span.inline-block.full-width{style: "letter-spacing: 2px;"}
-          %span.inline-display TOTAL
-          .dropdown.black80-fg.zero-letter-spacing.inline-display
-            %span.pright15.pon.dropdown-toggle#dropdownMenu1{type: "button", "data-toggle" => "dropdown"}
-              %span.caret
-            %ul.dropdown-menu
-              %li.pleft-10.pright-10
-                %span
-                  Sign up Bonus:
-                  %br 2 coins
-              %li.divider
-              %li.pleft-10.pright-10
-                %span
-                  Verified Referrals:
-                  %br
-                  =@verified_referrals.count.to_i
-                  * 2 coins
-              %li.divider
-              %li.pleft-10.pright-10
-                %span
-                  Coins of Coin Wish:
-                  %br
-                  =@coins_gifted.count.to_i
-                  coin(s)
-              %li.divider
-              %li.pleft-10.pright-10
-                %span
-                  Promotional Coins:
-                  %br
-                  =@promotional_coins.count.to_i
-                  coin(s)
-              -current_user.showcases.active_rasing_funds.each do |showcase|
-                %li.divider
-                %li.pleft-10.pright-10
-                  %span
-                    Wish raise amount (#{showcase.title}):
-                    %br
-                    =showcase.available_withdraw_amount
-                    coin(s)
-      %span.full-width.text-center.pull-left{style: "font-size: 35px;"}
-        = current_user.wallet.total_coins.to_i + current_user.total_showcase_raised_amount
-        %br/
-        ="#{current_user.wallet.total_coins.to_i}"
-        %span{:style => "font-size: 20px;"} (coins)
-        ="#{current_user.total_showcase_raised_amount}"
-        %span{:style => "font-size: 20px;"} (raised amount)              
-    .col-xs-12.col-md-3.col-sm-3.padding20{style: "background-color: #ffede5;height:200px;color: #ec827a;"}
-      .col-xs-12.col-sm-12.text-center
-        .used-coins-sprite.inline-block
-        %span.inline-block.full-width{style: "letter-spacing: 2px;"}
-          USED
-      %span.full-width.text-center.pull-left{style: "font-size: 58px;"}= current_user.wallet.used_coins.to_i + current_user.withdraws.showcase_withdraws.active.sum(:coins).to_i
+        .mtop10{style:"height:55px;"}
+          .no-mar-pad.inline-block
+            .total-coins-sprite.inline-block{style: "float: left;"}
+            - if current_user.mobile_verified?
+              .wdrw-btn.send-to-bank-btn.pon.font16.mtop5.inline-block{style: "margin-left: 10px; display: inline-block"} Withdraw Coins
+            - else
+              = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
+                .wdrw-btn.send-to-bank-btn.pon.font16.inline-display.mtop5 Withdraw Coins
+        %span.inline-block.full-width.white-fg{style: "letter-spacing: 2px;"}
+          COINS
+      .col-xs-12.col-sm-12.no-mar-pad.text-center.white-fg.font20
+        .col-xs-12.col-sm-12
+          .col-xs-12.col-sm-4.no-mar-pad
+            .col-xs-12.col-sm-12.no-mar-pad
+              Balance
+            .col-xs-12.col-sm-12.no-mar-pad
+              ="#{current_user.wallet.unused_coins.to_i}"
+            
+          .col-xs-12.col-sm-4.no-mar-pad
+            .col-xs-12.col-sm-12.no-mar-pad
+              Total
+            .col-xs-12.col-sm-12.no-mar-pad
+              %span.inline-block.full-width{style: "letter-spacing: 2px;"}
+                %span.inline-display="#{current_user.wallet.total_coins.to_i}"
+                .dropdown.black80-fg.zero-letter-spacing.inline-display
+                  %span.pright15.pon.dropdown-toggle#dropdownMenu1{type: "button", "data-toggle" => "dropdown"}
+                    %span.caret
+                  %ul.dropdown-menu
+                    %li.pleft-10.pright-10
+                      %span
+                        Sign up Bonus:
+                        %br 2 coins
+                    %li.divider
+                    %li.pleft-10.pright-10
+                      %span
+                        Verified Referrals:
+                        %br
+                        =@verified_referrals.count.to_i
+                        * 2 coins
+                    %li.divider
+                    %li.pleft-10.pright-10
+                      %span
+                        Coins of Coin Wish:
+                        %br
+                        =@coins_gifted.count.to_i
+                        coin(s)
+                    %li.divider
+                    %li.pleft-10.pright-10
+                      %span
+                        Promotional Coins:
+                        %br
+                        =@promotional_coins.count.to_i
+                        coin(s)
+          .col-xs-12.col-sm-4.no-mar-pad
+            .col-xs-12.col-sm-12.no-mar-pad
+              Withdrawn
+            .col-xs-12.col-sm-12.no-mar-pad
+              ="#{current_user.wallet.used_coins.to_i}"
     .col-xs-12.col-sm-4.padding10.ptop0.mtop30
       %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad WITHDRAW
       .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}
@@ -87,14 +104,29 @@
             .col-xs-4.col-sm-4.no-mar-pad
               .btn.btn-primary.wdrw-btn{class: "#{ (showcase.available_withdraw_amount > 0) ? '' : 'disabled' }","data-amount" => "#{showcase.available_withdraw_amount}", "data-showcase-id" => "#{showcase.id}"} Withdraw
     .col-xs-12.col-sm-4.padding10.ptop0.mtop30
-      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad WITHDRAWAL HISTORY
+      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad CROUDFUNDING WITHDRAWAL HISTORY
       .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}
-        - @withdraws.each do |withdraw|
+        - @showcase_withdraws.each do |withdraw|
           %h5.no-mar-pad.padding10.border5.bg-shad.light-border
-            -if withdraw.coin_withdraw?
-              Coins withdrawn -
-            -else
-              Amount(#{withdraw.showcase.title}) withdrawn -
+            Amount(for #{withdraw.showcase.title}) withdrawn -
+            Rs.#{withdraw.coins}
+            &nbsp;&nbsp;
+            Date -
+            = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
+            &nbsp;&nbsp;
+            - if withdraw.open?
+              = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" }, class: "j-loader-trigger-link" do
+                Delete Request
+            - elsif withdraw.closed?
+              Completed
+            -elsif withdraw.rejected?
+              Rejected
+    .col-xs-12.col-sm-4.padding10.ptop0.mtop30
+      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad COIN WITHDRAWAL HISTORY
+      .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}
+        - @coin_withdraws.each do |withdraw|
+          %h5.no-mar-pad.padding10.border5.bg-shad.light-border
+            Coins withdrawn -
             = withdraw.coins
             &nbsp;&nbsp;
             Date -
@@ -107,7 +139,7 @@
               Completed
             -elsif withdraw.rejected?
               Rejected
-    .col-xs-12.col-sm-4.padding10.ptop0.border-lt-side.mtop30{style: "min-height: 250px;"}
+    .col-xs-12.col-sm-12.padding10.ptop0.border-lt-side.mtop30{style: "min-height: 250px;"}
       %h4.no-mar-pad.padding10.full-width.text-center.border5.bg-shad.light-border RULES
       .col-xs-12.col-sm-12.no-mar-pad.mtop10
         %ul
@@ -147,5 +179,6 @@
         LoadtransferForm($(this).attr('data-showcase-id'))
       })
     })
+    
 
 

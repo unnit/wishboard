@@ -8,9 +8,13 @@ class CocotransfersController < ApplicationController
 
   def new
     @showcase = Showcase.find_by_id(params[:showcase_id])
-    @cocotransfer = Cocotransfer.new
-    @cocotransfer.showcase = @showcase
-    assign_coco_attributes
+    if @showcase.is_for_raising_fund? && !@showcase.is_admin_disabled?
+      @cocotransfer = Cocotransfer.new
+      @cocotransfer.showcase = @showcase
+      assign_coco_attributes
+    else
+      redirect_to root_path
+    end
   end
 
   def show
@@ -18,10 +22,13 @@ class CocotransfersController < ApplicationController
 
   def checkout
     return initiate_new_checkout  if @cocotransfer.paid?
+    @cocotransfer.generate_txnid!
+    # render 'checkoutsimple' and return
   end
 
   def update
     @cocotransfer = Cocotransfer.find_by_id(params[:id])
+    unless @cocotransfer.paid?
     if @cocotransfer.update_attributes(cocotransfer_params)
       @cocotransfer.generate_txnid!
       render json: {cocotransfer: @cocotransfer, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url, success: true}
@@ -29,10 +36,12 @@ class CocotransfersController < ApplicationController
       error_messages = @cocotransfer.errors.full_messages.join(", ")
       render json: {cocotransfer: @cocotransfer, success: false, error_messages: error_messages }
     end
+     end
   end
 
   def create
     @cocotransfer = Cocotransfer.new(cocotransfer_params)
+    @cocotransfer.transaction_status = Transaction::TRANSACTION_STATUS[1][1]
     if @cocotransfer.save
       @cocotransfer.generate_txnid!
       return redirect_to checkout_cocotransfer_path(@cocotransfer)
@@ -118,14 +127,17 @@ class CocotransfersController < ApplicationController
 
   def initiate_new_checkout
     @old_coco_transfer =  @cocotransfer
+    @old_coco_transfer = Cocotransfer.last
     @cocotransfer = Cocotransfer.new
     @cocotransfer.attributes = @old_coco_transfer.attributes.symbolize_keys.slice(:showcase_id, :amount, :email, :donor_name, :phonecode, :phone)
+    @cocotransfer.showcase_id = 644
+    @cocotransfer.amount = 4000
     @cocotransfer.save
     redirect_to checkout_cocotransfer_path(@cocotransfer)
   end
 
   def assign_coco_attributes
-    @cocotransfer.amount = !params[:amount].blank? ? params[:amount] : ''
+    @cocotransfer.amount = !params[:amount].blank? ? params[:amount] : @showcase.try(:default_gift_amount).to_i
     @cocotransfer.donor_name = !params[:donor_name].blank? ?  params[:donor_name] : current_user.try(:name)
     @cocotransfer.email = !params[:email].blank? ?  params[:email] : current_user.try(:email)
     @cocotransfer.phonecode = params[:phonecode].blank? ?  params[:phonecode] : current_user.try(:profile).try(:phonecode)

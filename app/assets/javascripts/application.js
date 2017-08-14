@@ -440,7 +440,7 @@ $(document).ready(function(){
   });
   //Rewish Popup
   $(document).on("click", ".rewish-link", function(){
-    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>Awesome! This will appear in your wishlist. You can edit the content after rewishing.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/rewish' class='btn btn-sm bg-white cc-dark-fg full-width post-rewish' data-method='post'>Rewish</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-rewish'>Not now</a></div></div></div>");
+    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>Awesome! This will appear in your wishlist. You can edit the content after rewishing.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/wish/"+$(this).data('id')+"/rewish' class='btn btn-sm bg-white cc-dark-fg full-width post-rewish' data-method='post'>Rewish</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-rewish'>Not now</a></div></div></div>");
     $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
     $("#cont-wrapper").modal('show');
   })
@@ -452,7 +452,7 @@ $(document).ready(function(){
     $("#cont-wrapper").modal('hide');
   })
   $(document).on("click", ".done-this", function(){
-    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>You are about to mark this wish as fulfilled.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/showcases/"+$(this).data('id')+"/have_done_this' class='btn btn-sm bg-white cc-dark-fg full-width post-have-done' data-method='post'>Proceed</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-done-this'>Not now</a></div></div></div>");
+    $("#cont-wrapper").html("<div class='container padding0 font17' style='max-width:450px;margin-top: 10%;'><div class='col-xs-12 col-sm-12 bg-white padding20 border5 cc-dark-bg white-fg'><span class='full-width pull-left mbottom30'>You are about to mark this wish as fulfilled.</span><div class='col-xs-6 col-sm-3 col-sm-offset-6 padding10'><a href='/wish/"+$(this).data('id')+"/have_done_this' class='btn btn-sm bg-white cc-dark-fg full-width post-have-done' data-method='post'>Proceed</a></div><div class='col-xs-6 col-sm-3 padding10'><a class='btn btn-sm full-width white-fg light-border cancel-done-this'>Not now</a></div></div></div>");
     $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
     $("#cont-wrapper").modal('show');
   })
@@ -563,7 +563,7 @@ $(document).ready(function(){
     $(".share_popup").not($(this).next(".share_popup")).each(function(){
       $(this).hide();
     });
-    $(".shareShowcaseRoundIcons").jsSocials({url: "https://www.cocociti.com/showcases/"+$(this).attr('data-showcase-id'),showLabel: false,showCount: false,shares: ["twitter", "facebook", "pinterest", "whatsapp"]});
+    $(".shareShowcaseRoundIcons").jsSocials({url: "https://www.cocociti.com/wish/"+$(this).attr('data-showcase-id'),showLabel: false,showCount: false,shares: ["twitter", "facebook", "pinterest", "whatsapp"]});
     $(this).next(".share_popup").fadeToggle(100);
   })
   $("html,body").click(function(e){
@@ -697,7 +697,7 @@ $(document).ready(function(){
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
       wildcard: '%QUERY',
-      url: '/showcases/gettags?q=%QUERY',
+      url: '/wish/gettags?q=%QUERY',
       transform: function(response) {
         // Map the remote source JSON array to a JavaScript object array
         return $.map(response, function(tags) {
@@ -752,7 +752,7 @@ $(document).ready(function(){
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
       wildcard: '%QUERY',
-      url: '/showcases/autocomplete?q=%QUERY',
+      url: '/wish/autocomplete?q=%QUERY',
       transform: function(response) {
         // Map the remote source JSON array to a JavaScript object array
         return $.map(response, function(showcases) {
@@ -1246,17 +1246,17 @@ $(document).ready(function(){
       });
   }
   //Google Places
-  if($('.pac-input').length){
-    var places_input= $('.pac-input')[0];
-    google.maps.event.addDomListener(window, 'load', function () {
-       var autocomplete = new google.maps.places.Autocomplete(places_input);
-       google.maps.event.addDomListener(places_input, 'keydown', function(e) {
-         if (e.keyCode == 13 && $('.pac-container:visible').length) {
-          e.preventDefault();
-        }
-      });
-    });
-  }
+  // if($('.pac-input').length){
+  //   var places_input= $('.pac-input')[0];
+  //   google.maps.event.addDomListener(window, 'load', function () {
+  //      var autocomplete = new google.maps.places.Autocomplete(places_input);
+  //      google.maps.event.addDomListener(places_input, 'keydown', function(e) {
+  //        if (e.keyCode == 13 && $('.pac-container:visible').length) {
+  //         e.preventDefault();
+  //       }
+  //     });
+  //   });
+  // }
   //-----Table Sorter
   $("#admin-products, #admin-transactions").tablesorter();
   $("#booking_requests_table, #my_listings_table, #my_orders_table, #upcoming_bookings_table, #non_coco_bookings_table, #delete_non_coco_bookings_table").tablesorter();
@@ -1624,7 +1624,7 @@ function save_rating(element, rating){
    $.ajax({
     type: 'POST',
     data: data,
-    url: "/showcases/"+(element.data('showcase-id')) + "/update_rating",
+    url: "/wish/"+(element.data('showcase-id')) + "/update_rating",
     success: function(data) {},
     error: function(data) {},
   });

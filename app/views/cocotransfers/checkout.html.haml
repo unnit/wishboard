@@ -10,12 +10,16 @@
     .col-md-12
       #error.col-md-12.text-danger.bg-white.mtop10{style: "font-weight: bold; margin-left: 5px;"}
     .col-md-12.mtop20.no-mar-pad.mbottom20
-      = hidden_field_tag :amount, @cocotransfer.test_citrious_amount, id: "citrusAmount"
-      = hidden_field_tag :coco_transaction_id, @cocotransfer.txnid, id: "citrusMerchantTxnId"
-      = hidden_field_tag :signature, @cocotransfer.security_signature, id: "citrusSignature"
-      = hidden_field_tag :return_url, @cocotransfer.return_url, id: "citrusReturnUrl"
-      = hidden_field_tag :email, "mailmemahesh91@gmail.com", id:"citrusEmail"
-      = hidden_field_tag :phone, "9591779317", id:"citrusMobile"
+      = hidden_field_tag :amount, @cocotransfer.amount, id: "amount"
+      = hidden_field_tag :coco_transaction_id, @cocotransfer.txnid, id: "merchantTxnId"
+      = hidden_field_tag :signature, @cocotransfer.security_signature, id: "requestSignature"
+      = hidden_field_tag :vanityUrl, "cococitiospvtltd", id: "vanityUrl"
+      = hidden_field_tag :notify_url, @cocotransfer.return_url, id: "notifyUrl"
+      = hidden_field_tag :return_url, @cocotransfer.return_url, id: "returnUrl"
+      = hidden_field_tag :merchantAccessKey,"#{CITRUS_CONFIG[:merchant_access_key]}", id: "merchantAccessKey"
+      = hidden_field_tag :email, "mailmemahesh91@gmail.com", id:"email"
+      = hidden_field_tag :phone, "9591779317", id:"mobileNo"
+      %input#mode{type: "hidden", value: "dropOut"}
       %ul.nav.nav-tabs
         %li.active
           %a{"data-toggle" => "tab", :href => "#credit_card"} Card
@@ -28,31 +32,28 @@
           .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Card Type*
             .col-md-4
-              %select.coco-select-box#citrusCardType
+              %select.coco-select-box#cardType
                 %option{:selected => "selected", :value => "credit"} Credit
                 %option{:value => "debit"} Debit
           .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Card Number*
             .col-md-6
-              %input.form-control#citrusNumber{type: "text", value: "", autocomplete: "false"}/
-            .col-md-2.col-xs-6
-              %input.form-control.padding5.text-center.bg-white#checkout_page_card_type{readonly: true, style: "text-transform: uppercase;font-weight: bold;font-size:9px;"}
-              %input.form-control.hidden#citrusScheme{readonly: true}
+              #cardNumber
           .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Card Holder Name*
             .col-md-6
-              %input.form-control#citrusCardHolder{type: "text", value: "", autocomplete: "false"}/
+              %input.form-control#cardHolderName{type: "text", value: "Mahesh", autocomplete: "false"}/
           .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Expiry*
             .col-md-3
-              %input.form-control#citrusExpiry{type: "text", value: "", placeholder: "mm/yyyy", autocomplete: "false"}/
+              #expiry
             %label.col-md-2{style: "text-align: right;"} CVV/CVC*
             .col-md-3
-              %input.form-control#citrusCvv{type: "password", value: "", autocomplete: "false", placeholder: "CVV/CVC"}/
+              #cvv
           .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
             By continuing, you agree to the Terms and Policies of Cocociti.
           .col-md-12.text-center
-            %input.btn.btn-info.save-button.mtop10#citrusCardPayButton{type: "button", value: "Pay Now"}/
+            %input.btn.btn-info.save-button.mtop10#cardPayButton{type: "button", value: "Pay Now"}/
           .col-md-12.pbottom50.mtop20.mleft20.hidden-xs
             %span.pull-left.cards-sprite
         #net_banking.tab-pane.fade
@@ -60,141 +61,215 @@
             .col-md-3
               %label Select Your Bank*
             .col-md-6
-              %select.coco-select-box#citrusAvailableOptions
+              %select.coco-select-box#netbankingBanks.form-control.select-another
+                %option{:value => ""} Select Another Bank
           .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
             By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
           .col-md-12.text-center.pbottom50
-            %input.btn.btn-info.save-button.mtop10#citrusNetbankingButton{type: "button", value: "Pay Now"}
+            %input.btn.btn-info.save-button.mtop10#netbankingButton{type: "button", value: "Pay Now"}
   .col-sm-5.text-center
     .col-md-12.mtop20.no-mar-pad.mbottom20
       = render partial: "cocotransfers/showcase_details", locals: {showcase: @cocotransfer.showcase, cocotransfer: @cocotransfer}
-- if Rails.env.development?
-  = content_for :extra_js do
-    = javascript_include_tag "//icp.citruspay.com/js/citrus.js"
-    = javascript_include_tag "//icp.citruspay.com/js/jquery.payment.min.js"
-    %script#context{:src => "https://sboxcheckout-static.citruspay.com/kiwi/app-js/icp.js", :type => "text/javascript"}
-
-- elsif Rails.env.production?
-  = content_for :extra_js do
-    = javascript_include_tag "//www.citruspay.com/resources/pg/js/webjs/citrus.js"
-    = javascript_include_tag "//www.citruspay.com/resources/pg/js/webjs/jquery.payment.js"
-
 = content_for :extra_js do
   :javascript
-    configObj = {
-      eventHandler: function(cbObj) {
-        if (cbObj.event === 'icpLaunched') {
-          console.log('Overlay is launched');
-          // Place to understand when overlay is launched on your website
-        } else if (cbObj.event === 'icpClosed') {
-          // Place to understand when overlay is closed on your website. 
-            // This might be closure of the overlay or completion of the order with successful payment.
-            // Hence capturing message object is important to know exact status of the order
-          console.log(JSON.stringify(cbObj.message));
-          console.log('Overlay is closed');
-        }
-      }
+    $(document).ready(function(){
+    citrus.setConfig({
+    env : "#{Rails.env.production? ? 'prod': 'sandbox'}",
+    merchantAccessKey : '#{CITRUS_CONFIG[:merchant_access_key]}',
+    vanityUrl : 'cococitiospvtltd',
+    });
+
+    $(function(){
+    citrus.cards.getPaymentDetails({
+    vanityUrl: $('#vanityUrl').val()
+    }, function (err, pgSettingData) {
+    if(err){
+    console.log('got error while calling getPaymentDetails',err);
+    return;
+    }else{
+    console.log("success");
+    console.log(pgSettingData);
+    }
+    pgSettingData.netBanking.forEach(function (bank) {
+    $('#netbankingBanks').append($("<option />").val(bank.issuerCode).text(bank.bankName));
+    });
+    });
+    });
+
+
+
+
+
+
+    $(function(){
+    $("#netbankingButton").on("click", function () {
+    $(this).prop('disabled', true);
+    $("#cardPayButton").prop('disabled', true);
+    var data = getPaymentData();
+    data.paymentDetails = {
+    "paymentMode" : "netBanking",
+    "bankCode" : $('#netbankingBanks').val()
     };
-    function show_upi_payment(){
-    var dataObj = {
-    orderAmount: $("#citrusAmount").val(),
-    currency: "INR",
-    email: $('#citrusEmail').val(),
-    phoneNumber: $('#citrusMobile').val(),
-    merchantTxnId: $("#citrusMerchantTxnId").val(),
-    returnUrl: $("#citrusReturnUrl").val(),
-    vanityUrl: "cococitiospvtltd",
-    secSignature: $("#citrusSignature").val(),
-    firstName: "Rahul",
-    lastName: "Seth",
-    addressStreet1: "Connaught Place",
-    addressStreet2: "Street Number 20",
-    addressCity: "Delhi",
-    addressState: "Delhi",
-    addressCountry: "India",
-    addressZip: "400605",
-    notifyUrl: "https://www.abc.com/notify-me",
-    mode: "dropIn"
+    citrus.payment.makePayment(data);            
+    });
+    });
+
+
+
+
+    function getPaymentData(){
+
+    var data = {
+    "mode": $('#mode').val(),
+
+    "merchantTxnId": $('#merchantTxnId').val(),
+
+    "amount": $('#amount').val(),
+
+    "userDetails": {
+
+    "email": $('#email').val(),//"sumittest@mailinator.com",
+
+    "firstName": $('#firstName').val(),//"nagama",
+
+    "lastName": $('#lastName').val(), //"inamdar",
+
+    "address": {
+
+    "street1": $('#street1').val(),//"City Garden",
+
+    "street2": $('#street2').val(), //"Link Road",
+
+    "city": $('#city').val(), // "Pune",
+
+    "state": $('#state').val(), //"Maharashtra",
+
+    "country": $('#country').val(),//"India",
+
+    "zip": $('#zip').val() //"412345"
+
+    },
+
+    "mobileNo": $('#mobileNo').val()//"9876543210"
+
+    },
+
+    "returnUrl": $('#returnUrl').val(),
+
+    "notifyUrl": $('#notifyUrl').val(),
+
+    "requestSignature": $("#requestSignature").val(),
+
     };
-    citrusICP.launchIcp(dataObj, configObj);
-    }
-    CitrusPay.Merchant.Config = {
-          // Merchant details
-          Merchant: {
-              accessKey: '#{CITRUS_CONFIG[:merchant_access_key]}', //Replace with your access key
-              vanityUrl: 'cococitiospvtltd'  //Replace with your vanity URL
-          }
-      };
 
-    fetchPaymentOptions();
+    return data;
 
-    function handleCitrusPaymentOptions(citrusPaymentOptions) {
-        if (citrusPaymentOptions.netBanking != null)
-            for (i = 0; i < citrusPaymentOptions.netBanking.length; i++) {
-                var obj = document.getElementById("citrusAvailableOptions");
-                var option = document.createElement("option");
-                option.text = citrusPaymentOptions.netBanking[i].bankName;
-                option.value = citrusPaymentOptions.netBanking[i].issuerCode;
-                obj.add(option);
-            }
     }
 
-    function citrusServerErrorMsg(errorResponse) {
-        alert(errorResponse);
-        console.log(errorResponse);
-    }
-    function citrusClientErrMsg(errorResponse) {
-        alert(errorResponse);
-        console.log(errorResponse);
-    }
+
+    $(function(){
+    $("#cardPayButton").on("click", function () {
+    console.log("click pay");
+    var data = getPaymentData();
+    data.paymentDetails = {
+    paymentMode: "card",
+    holder:$('#cardHolderName').val(),
+    type: "debit"
+    };
+    citrus.payment.makePayment(data);
+    });
+    });
+
+
 
     function replace_html(data, cocotransfer){
-      $("#citrusAmount").val(cocotransfer.amount);
-      $(".cocotransfer_display_amount").html(cocotransfer.c)
-      $("#citrusMerchantTxnId").val(cocotransfer.txnid);
-      $("#citrusSignature").val(data.security_signature);
-      $("#citrusReturnUrl").val(data.return_url);
-      $("#citrusEmail").val(cocotransfer.email);
+    $("#amount").val(cocotransfer.amount);
+    $(".cocotransfer_display_amount").html(cocotransfer.amount)
+    $("#merchantTxnId").val(cocotransfer.txnid);
+    $("#requestSignature").val(data.security_signature);
+    $("#returnUrl").val(data.return_url);
+    $("#email").val(cocotransfer.email);
     }
-    $(document).ready(function(){
-      $('#cocotranfer_form').on('ajax:success', function(e, data, status, xhr){
-      if(data.success ){replace_html(data, data.cocotransfer);  $("#edit_details").collapse('hide');
-      }else{$("#error").html(data.error_messages).show();
-            setTimeout(function(){$("#error").hide();}, 5000);
-      }
-      });
-      $("#citrusCvv,#citrusExpiry").val("");
-      $('#citrusNetbankingButton,#citrusCardPayButton').on("click", function () {
-        button_id = $(this).attr("id");
-        if(button_id == "citrusNetbankingButton"){
-           makePayment("netbanking");
-        }
-        else if(button_id == "citrusCardPayButton"){
-          makePayment("card");
-        }
-      });
-      var timeout_seconds = #{GLOBAL_VARIABLES[:time_out]*60*1000}
-      setTimeout(function(){window.location.href = "#{root_url}";}, timeout_seconds);
-      $("button.close").click(function(){
-        $(".errors ul").empty();
-        $(".errors").hide();
-        })
-        jQuery.support.cors = true;
 
-     // setup card inputs;
-     jQuery('#citrusExpiry').payment('formatCardExpiry');
-     jQuery('#citrusCvv').payment('formatCardCVC');
-     jQuery('#citrusNumber').keyup(function() {
-      var cardNum = jQuery('#citrusNumber').val().replace(/\s+/g, '');
-       var type = jQuery.payment.cardType(cardNum);
-       if(type!='amex')
-         jQuery("#citrusCvv").attr("maxlength","3");
-       else
-         jQuery("#citrusCvv").attr("maxlength","4");
-       jQuery('#citrusNumber').payment('formatCardNumber');
-       jQuery("#citrusScheme").val(type);
-       jQuery("#checkout_page_card_type").val(type);
-     });
+
+
+
+    citrus.registerHandlers("errorHandler", function (error) {
+    console.log(error);
+    console.log("error in client code")
+    $('#cardPayButton').prop('disabled', false);
+    $('#netbankingButton').prop('disabled', false);
+    });
+
+
+
+
+
+    citrus.registerHandlers("serverErrorHandler", function (error){
+    console.log("Error from server");
+    console.log(JSON.stringify(error));
+    $('#cardPayButton').prop('disabled', false);
+    $('#netbankingButton').prop('disabled', false);
+    });
+
+
+
+
+    citrus.registerHandlers("transactionHandler", function(resp){
+    alert(JSON.stringify(resp));
+    $('#cardPayButton').prop('disabled', false);
+    $('#netbankingButton').prop('disabled', false);
+    console.log(JSON.stringify(resp));
+    });
+
+
+    citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
+    if(cardValidationResult.isValid){
+    console.log('field type '+hostedField.fieldType + ' is valid.');
+    }
+    else {
+    console.log('field type invalid');
+    console.log('field type '+hostedField.fieldType + ' is invalid, message '+cardValidationResult.txMsg);
+    }
+    });
+
+
+
+
+
+
+     $(function(){
+    citrus.hostedFields.create({setupType : "card",hostedFields:[
+    {
+    fieldType:'cvv',
+    selector:'#cvv',
+    placeholder:'111'
+    },
+    {
+    fieldType:'expiry',
+    selector:'#expiry'
+    },
+    {
+    fieldType:'number',
+    selector:'#cardNumber'
+    }
+    ],style : {
+    'input.valid': {
+    color:'black'
+    },
+    'input.invalid':
+    {
+    color:'black'
+    }
+    }});
+    });
+
+    $('#cocotranfer_form').on('ajax:success', function(e, data, status, xhr){
+    if(data.success ){replace_html(data, data.cocotransfer);  $("#edit_details").collapse('hide');
+    }else{$("#error").html(data.error_messages).show();
+    setTimeout(function(){$("#error").hide();}, 5000);
+    }
+    });
     });
 :css
   .showcase_deetails_block{
@@ -207,4 +282,26 @@
   .edit_details_collapser{
     width: 100%;
     border: 1px solid black;
+  }
+  #cardNumber,#cvv,#expiry{
+  width: 100%;
+  height: 34px;
+  }
+  .citrus-hosted-field {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   }

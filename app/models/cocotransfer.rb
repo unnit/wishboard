@@ -14,21 +14,35 @@ class Cocotransfer < ApplicationRecord
   belongs_to :fullfillment_contributer, class_name: "User", :foreign_key => :from_user_id
   belongs_to :user, class_name: "User", :foreign_key => :user_id
   belongs_to :showcase
-  validates :amount, :email, presence: true
+
+  validates :amount, :email, :showcase,  presence: true
+  validate :is_valid_showcase, if: :showcase_not_blank
   validates :amount, numericality: { only_integer: true }
   validate :amount_should_not_less_than_or_greater_than
 
   scope :anonymous, -> {where(hide_identity: true)}
   scope :non_anonymous, -> {where(hide_identity: [false, nil])}
-  scope :complete, -> {where(transaction_status: Transaction::TRANSACTION_STATUS[2][1])}
-  scope :successfully_paid, -> {where(transaction_status: Transaction::TRANSACTION_STATUS[2][1])}
-  
+  scope :complete, -> {where(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i)}
+  scope :successfully_paid, -> {where(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i)}
+
 
   HUMANIZED_ATTRIBUTES = {
     donor_name: "Name"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
+
+  def showcase_not_blank
+    self.showcase
+  end
+
+  def is_valid_showcase
+    if showcase.is_admin_disabled?
+      errors.add(:showcase, "disabled by admin")
+    elsif !showcase.is_for_raising_fund?
+      errors.add(:showcase, "not for receiving fund")
+    end
   end
 
   def amount_should_not_less_than_or_greater_than
@@ -77,46 +91,42 @@ class Cocotransfer < ApplicationRecord
 
 
   def security_signature
+    # return icp_security_signature
     @access_key = CITRUS_CONFIG[:merchant_access_key]
     @secret_key  = CITRUS_CONFIG[:secret_key]
     @txn_id = self.txnid
     @amount = self.amount
     @data_string="merchantAccessKey=#{@access_key}&transactionId=#{@txn_id}&amount=#{@amount}"
     @securitySignature= hmac_sha1(@data_string,@secret_key) # signature generated
-    # return @securitySignature
-    @vanityUrl = "cococitiospvtltd"
-     @currency = "INR";
-     @txamount = @amount.to_s
-       @icp_string=@vanityUrl + @txamount + @txn_id + @currency
-       @securitySignature = hmac_sha1(@icp_string,@secret_key)
     return @securitySignature
   end
 
 
   def paid!(transaction_id, tamount)
     # update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1], amount: tamount, txnid: transaction_id
-    update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1], amount: tamount
-    FundreceivedNotification.create(user_id: cocotransfer.showcase.user_id, )
+    update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: tamount
+    FundreceivedNotification.create(user_id: self.showcase.user_id, cocotransfer: self )
     # inform_success_to_donor
     # inform_success_showcase_owner
     # inform_success_admin
   end
 
   def inform_success_to_donor
-     msg_customer = "You've gifted Rs #{self.amount} to #{self.showcase.user.profile.first_name}'s #{showcase.title}! Transaction ID is #{self.txnid}."
+    msg_customer = I18n.t('sms.cocotransfer.success.to_donor', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: showcase.title, txnid: self.txnid )
     # SmsService.send_sms(self.phone_with_prefix, msg_customer) if self.phone_with_prefix
   end
 
   def inform_success_showcase_owner
-    msg_to_showcase_owner = "You've got fresh funds gifted by #{self.display_donor_name}! Your account  has been credited with Rs #{self.amount}"
+    msg_to_showcase_owner = I18n.t('sms.cocotransfer.success.to_fundraiser', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid )
     # SmsService.send_sms(self.showcase.user.profile.phone_with_prefix, msg_to_showcase_owner)
   end
 
   def inform_success_admin
-    msg_coco_manager = "#{self.display_donor_name}! gifted Rs #{self.amount} to #{self.showcase.user.profile.first_name}"
+    msg_coco_manager =      I18n.t('sms.cocotransfer.success.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid )
     GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
       # SmsService.send_sms(number, msg_coco_manager)
     end
+    msg_coco_manager
   end
 
 
@@ -126,14 +136,15 @@ class Cocotransfer < ApplicationRecord
     # TransactionMailer.fail(@cocotransfer, params["TxMsg"]).deliver_now
   end
   def failed_msg_to_customer(msg)
-    msg_customer = "Sorry, Your payment failed. #{msg}. ID: #{self.txnid}"
+    msg_customer =  I18n.t('sms.cocotransfer.failed.to_donor', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )
     # SmsService.send_sms(self.phone_with_prefix,msg_customer) if self.phone_with_prefix
   end
   def failed_msg_to_admin(msg)
-    msg_coco_manager = "#{@cocotransfer.showcase.title}- Payment failed #{msg}. Name: #{@cocotransfer.fullfillment_contributer.try(:name)} ID: #{@cocotransfer.txnid} Mobile: #{@cocotransfer.phone}"
+    msg_coco_manager =  I18n.t('sms.cocotransfer.failed.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )
     GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
       # SmsService.send_sms(number,msg_coco_manager)
     end
+    msg_coco_manager
   end
   def deliver_signature_verification_failed
     # email_message = "Signaure Verification failed. Please try again."
@@ -152,13 +163,13 @@ class Cocotransfer < ApplicationRecord
 
 
   def transaction_status_name
-    return Transaction::TRANSACTION_STATUS[0][0] if transaction_status == Transaction::TRANSACTION_STATUS[0][1]
-    return Transaction::TRANSACTION_STATUS[1][0] if transaction_status == Transaction::TRANSACTION_STATUS[1][1]
-    return Transaction::TRANSACTION_STATUS[2][0] if transaction_status == Transaction::TRANSACTION_STATUS[2][1]
-    return Transaction::TRANSACTION_STATUS[3][0] if transaction_status == Transaction::TRANSACTION_STATUS[3][1]
-    return Transaction::TRANSACTION_STATUS[4][0] if transaction_status == Transaction::TRANSACTION_STATUS[4][1]
-    return Transaction::TRANSACTION_STATUS[5][0] if transaction_status == Transaction::TRANSACTION_STATUS[5][1]
-    return Transaction::TRANSACTION_STATUS[6][0] if transaction_status == Transaction::TRANSACTION_STATUS[6][1]
+    return Transaction::TRANSACTION_STATUS[0][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[0][1]
+    return Transaction::TRANSACTION_STATUS[1][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[1][1]
+    return Transaction::TRANSACTION_STATUS[2][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[2][1]
+    return Transaction::TRANSACTION_STATUS[3][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[3][1]
+    return Transaction::TRANSACTION_STATUS[4][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[4][1]
+    return Transaction::TRANSACTION_STATUS[5][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[5][1]
+    return Transaction::TRANSACTION_STATUS[6][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[6][1]
   end
 
   def display_status
@@ -166,27 +177,27 @@ class Cocotransfer < ApplicationRecord
   end
 
   def accepted?
-    transaction_status == Transaction::TRANSACTION_STATUS[6][1]
+    transaction_status.to_s == Transaction::TRANSACTION_STATUS[6][1]
   end
 
   def paid?
-    transaction_status == Transaction::TRANSACTION_STATUS[2][1]
+    transaction_status.to_s == Transaction::TRANSACTION_STATUS[2][1]
   end
 
   def requesting?
-    transaction_status == Transaction::TRANSACTION_STATUS[0][1]
+    transaction_status.to_s == Transaction::TRANSACTION_STATUS[0][1]
   end
 
   def timed_out?
-    transaction_status == Transaction::TRANSACTION_STATUS[4][1]
+    transaction_status.to_s == Transaction::TRANSACTION_STATUS[4][1]
   end
 
   def non_coco_booking?
-    transaction_status == Transaction::TRANSACTION_STATUS[5][1]
+    transaction_status.to_s == Transaction::TRANSACTION_STATUS[5][1]
   end
 
   def denied?
-    transaction_status == Transaction::TRANSACTION_STATUS[3][1]
+    transaction_status.to_s == Transaction::TRANSACTION_STATUS[3][1]
   end
 
   def send_payment_mail

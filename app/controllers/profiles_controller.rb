@@ -311,7 +311,9 @@ class ProfilesController < ApplicationController
 
   def wallet
     reload_wallet
-    @withdraws = current_user.withdraw_history
+    @showcase_withdraws = current_user.withdraws.showcase_withdraws.valid_withdraws
+    @coin_withdraws = current_user.withdraws.coin_withdraws.valid_withdraws
+    # @withdraws = current_user.withdraw_history
   end
 
   def send_to_bank_form
@@ -366,6 +368,8 @@ class ProfilesController < ApplicationController
           wallet.save
         end
         flash[:notice] = "Withdraw request deleted successfully"
+      else
+        flash[:alert] = @withdraw.errors.full_messages.join(", ")
       end
     else
       redirect_to root_path

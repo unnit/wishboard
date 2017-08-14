@@ -16,11 +16,13 @@ Rails.application.routes.draw do
     get "users/admin_firebasenotifications", to: "users#admin_firebasenotifications", as: :admin_firebasenotifications
     post "users/send_new_firebase_notifications", to: "users#send_new_firebase_notification", as: :send_new_firebase_notifications
     root 'miscellaneous#index'
+    resources :cocotransfers, only: [:index]
     resources :users, only: [:index, :update] do
       collection do
         get :messages
         post :send_message
         get :withdraws
+        get :croudfunding_withdraws
       end
       member do
         post :lock
@@ -38,7 +40,10 @@ Rails.application.routes.draw do
       end
     end
     resources :transactions, only: [:index]
-    resources :showcases do
+    resources :showcases do 
+      member do
+        post :update_admin_status
+      end
       collection do
         get :croudfunding
       end
@@ -181,8 +186,8 @@ Rails.application.routes.draw do
       post :callback
     end
   end
-
-  resources :showcases,path: 'wish', only: [:edit, :create, :update, :destroy, :show] do
+  match 'showcases/:id', to: 'showcases#show', via: 'get'
+  resources :showcases, path: "wish", only: [:edit, :create, :update, :destroy, :show] do
     member do
       post :wow
       post :comment

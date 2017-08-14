@@ -1,5 +1,5 @@
 class FundreceivedNotification < ApplicationRecord
-	belongs_to :cocotransfer
+	belongs_to :cocotransfer, dependent: :destroy
 	belongs_to :user
 	after_create_commit {NotificationBroadcastJob.perform_later(self.user)}
 	after_create_commit :deliver_firebase_notification

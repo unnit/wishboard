@@ -1,5 +1,5 @@
 class Admin::ShowcasesController < AdminController
-  before_action :get_showcase, only: [:edit, :update, :destroy]
+  before_action :get_showcase, only: [:edit, :update, :destroy, :update_admin_status]
 
   def croudfunding
     @showcases = Showcase.where("accept_fund = ?", true).order(created_at: :desc)
@@ -8,6 +8,16 @@ class Admin::ShowcasesController < AdminController
       format.html
       format.js
     end
+  end
+
+  def update_admin_status
+    @showcase.admin_status = params[:admin_status]
+    if @showcase.save
+      flash[:notice] = "Updated successfully"
+    else
+      flash[:alert] = @showcase.errors.join.(", ")
+    end
+    respond_to :js
   end
 
   def index

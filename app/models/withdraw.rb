@@ -8,10 +8,13 @@ class Withdraw < ApplicationRecord
   # validate :max_coin_withdraw
   validates :coins, numericality: {only_integer: true, less_than_or_equal_to: 100000, greater_than: 0, message: "between 0 and 100000"}, if: :showcase_raised_withdraw?
   validate :max_amount
+  validate :can_not_delete_if_completed,  if: :already_closed_withdraw
   scope :active, ->{where(status: STATUS[0])}
   scope :coin_withdraws, ->{where(withdraw_type: WITHDRAW_TYPE[0])}
   scope :showcase_withdraws, ->{where(withdraw_type: WITHDRAW_TYPE[1])}
-
+  scope :valid_withdraws, -> {where("status = ? or status = ? or status = ?", Withdraw::STATUS[0], Withdraw::STATUS[1], Withdraw::STATUS[2])}
+  scope :complete_withdraws, -> {where("status = ? or status = ?", Withdraw::STATUS[0], Withdraw::STATUS[1])}
+ 
   STATUS = [0, 1, 2, 3]
   STATUS_NAME = [["Open", 0], ["Closed", 1], ["Rejected", 2], ["Deactivated", 3]]
   WITHDRAW_TYPE = [0, 1]
@@ -27,6 +30,14 @@ class Withdraw < ApplicationRecord
 
   def max_coin_withdraw
     errors.add(:base, "Max no of coins that can be withdrawn is #{user.wallet.unused_coins}") if status == STATUS[0] && coins > user.wallet.unused_coins.to_i
+  end
+
+  def can_not_delete_if_completed
+    errors.add(:base, "Cannot delete already completed transaction")  if status == STATUS[3]
+  end
+
+  def already_closed_withdraw
+   !new_record? && Withdraw.find_by_id(self.id).status == STATUS[1]
   end
 
   def open?

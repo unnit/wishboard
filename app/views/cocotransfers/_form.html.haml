@@ -14,7 +14,7 @@
         %span (Email):
       .col-xs-12.col-sm-12.col-md-9
         = f.email_field :email, placeholder: "Email", class: "form-control bg-white"
-    .col-xs-12.col-sm-12.mbottom10
+    .col-xs-12.col-sm-12
       .col-xs-12.col-sm-12.col-md-3.pull-left
         %i.fa.fa-user 
         %span (Name):
@@ -22,11 +22,11 @@
       .col-xs-12.col-sm-12.col-md-9
         = f.text_field :donor_name, placeholder: "Name", class: "form-control bg-white"
     .col-xs-12.col-sm-12.mbottom10
-      .col-xs-12.col-sm-12.col-md-3.pull-left
-        %i.fa.fa-eye-slash
-        %span (Stay anonymous):
-      .col-xs-12.col-sm-12.col-md-9
+      .col-md-offset-3.col-xs-12.col-sm-12.col-md-9.extra-small-font
         = f.check_box :hide_identity
+        %i.fa.fa-eye-slash
+        %span (Stay anonymous)
+       
     .col-xs-12.col-sm-12.mbottom10
       .col-xs-12.col-sm-12.col-md-3.pull-left
         %i.fa.fa-mobile 

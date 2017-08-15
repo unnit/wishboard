@@ -1569,6 +1569,13 @@ $(document).ready(function(){
     reEnableSubmitButton('admin_send_firebase_notifications_submit');
   });
 
+  $(document).on("click", ".show-video-iframe", function(e){
+    videodiv_element = $(this).attr('data-video-frame-div');
+    $(this).hide();
+    $(videodiv_element).removeClass('hidden');
+  })
+
+
 });// eof document ready
 $(window).on("load", function(){
   //Setting footer proper for mac devices

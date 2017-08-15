@@ -41,6 +41,7 @@ gem 'hpricot', '~> 0.8.6'
 gem 'file_validators'
 gem 'pg'
 gem 'local_time', '~> 1.0', '>= 1.0.3'
+gem 'link-preview'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -65,5 +66,4 @@ gem 'obscenity'
 gem 'fcm'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
-# gem 'puma'
 

@@ -204,6 +204,14 @@
             ~ f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 2500
             = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-bg mtop5 btn-shadow btn-comment-create pull-left"
             .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}
+    .col-xs-12.col-sm-12.no-mar-pad.bg-white.min-height0{class: "showcase-video-#{showcase.id}"}
+      Video:
+      .col-xs-12.col-sm-12.no-mar-pad.show-video-iframe{"data-video-frame-div": "#video-link-#{showcase.id}" }
+        %a{target:'_blank', href:"#{showcase.video_link}"}
+          #{showcase.video_link}
+        = link_preview_content(showcase.video_link).html_safe
+      .hidden.no-mar-pad{id: "video-link-#{showcase.id}"}
+        = showcase.youtube_iframe.html_safe
   .col-xs-12.col-sm-10.col-md-4.padding10
     .col-xs-12.col-sm-12.no-mar-pad.bg-white.bg-shad.min-height0.mtop10.ptop10{class: "raise-progress-#{showcase.id}"}
       .col-xs-12.col-sm-12.col-md-12.raise-progress-block
@@ -282,3 +290,11 @@
     white-space: normal;
     background-color: #fff;
   }
+= content_for :extra_js do
+  :javascript
+    $(document).on("click", ".show-video-iframe", function(e){
+      videodiv_element = $(this).attr('data-video-frame-div');
+      $(this).hide();
+      $(videodiv_element).removeClass('hidden');
+      console.log($(videodiv_element));
+    })

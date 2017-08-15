@@ -32,8 +32,32 @@ module ApplicationHelper
 
   def match_url(text)
     regexp = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-][^\.\.]+[.][a-z]{2,4}\/?)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s\`!()\[\]{};:\'\".,<>?«»“”‘’]))/i
-    converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
+    converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>" + link_preview_content(url).html_safe
+     }
     return converted
   end
+
+  def link_preview_content(url)
+    require 'link_preview'
+    page = LinkPreview::Page.new(url)
+    page.parse!
+    if page.valid?
+    <<-EOS
+      <div class="col-md-12" style="background-color:rgba(202, 230, 243, 0.42);">
+        <div class="col-md-3 pull-left">
+          <img src="#{page.favicon}" width="100%">
+        </div>
+        <div class="col-md-9">
+          <div class="font16"> #{page.title}</div>
+          <div style="font-size: 10px;"> #{page.description}</div>
+        </div>
+      </div>
+     EOS
+   else
+    ""
+   end
+  end
+
+ 
 
 end

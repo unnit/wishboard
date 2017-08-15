@@ -95,6 +95,11 @@ class Showcase < ApplicationRecord
     showcase_type: "Wish Type",
     wish_prefix: "Wish Category"
   }
+  def youtube_iframe
+    require 'video_service'
+    VideoService.new.get_youtube_iframe(video_link)
+  end
+
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end

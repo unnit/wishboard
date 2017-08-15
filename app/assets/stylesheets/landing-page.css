@@ -3711,6 +3711,10 @@ th.headerSortDown {
   font-size: 10px;
   / content: "Accept funds"
 }
+.settings-group .list-group-item.active, .settings-group .list-group-item.active:focus, .settings-group .list-group-item.active:hover{
+  background-color: #732db0 !important;
+  border-color: #732db0 !important;
+}
 /*******************************/
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .tab125h{
@@ -3788,6 +3792,9 @@ th.headerSortDown {
   .mob-mtop10{
     margin-top: 10px !important;
   }
+  .mob-ptop15{
+    padding-top: 15px !important;
+  }
   .mob-height{
     height: auto;
     background: white;
@@ -3801,7 +3808,7 @@ th.headerSortDown {
     border: none !important;
   }
   .mar-des-page{
-      padding-top: 85px !important;
+    padding-top: 85px !important;
   }
   .search-bread-crumbs{
     margin-top: 45px;

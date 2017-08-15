@@ -3,9 +3,14 @@
     .col-xs-12.col-sm-12.padding0.bg-white.border2.ps-sub-wrap-1.ps-box-shadow
       .col-xs-12.col-sm-12.padding5.pbottom0.j-ps-holder.height89
         .col-xs-12.col-sm-12.no-mar-pad.ptop5.grey-fg.height50
-          %label.pull-right.raise-toggle-switch.pon
-            = f.check_box :accept_fund
-            %div
+          - if current_user.mobile_verified?
+            %label.pull-right.raise-toggle-switch.pon
+              = f.check_box :accept_fund
+              %div
+          - else
+            = link_to unlock_crowd_funding_profiles_path, class: "j-loader-trigger-link" do
+              %label.pull-right.raise-toggle-switch.pon
+                %div
           %i.fa.fa-inr.pull-right.mright5.font16
           %span.type-holder.pon.pos-absolute{style: "left: 5px;top: 32px;font-size: 15px;"}
         .prefix-holder.pon.pull-left{style: "height: 34px;border-bottom: 2px solid #732db0;padding: 6px 0px;font-size: 14px;line-height: 1.42857143;display: inline;"}
@@ -25,13 +30,24 @@
                   %span.grey-fg.font13.mob-font12.weight500
                     &nbsp;
                     %em= wish_prefix[2]
-      .col-xs-12.col-sm-12.pleft5.pright5.ptop15.pbottom5.raise_fund_fields.hidden
-        .col-xs-6.col-sm-4.pleft0.pright5.padding-mob0
+      .col-xs-12.col-sm-12.pleft5.pright5.ptop15.pbottom5.raise-funds-fields.hidden
+        .col-xs-6.col-sm-6.pleft0.pright5
           = f.text_field :goal_amount, class: "form-control coco-input-field", placeholder: "Goal Amount*"
-        .col-xs-6.col-sm-4.pleft5.pright5.padding-mob0
+        .col-xs-6.col-sm-6.pleft5.pright0
           = f.text_field :target_date, class: "form-control coco-input-field goal-target-date dt-of-achievement bg-white", placeholder: "Goal Date*", disabled: true
-        .col-xs-12.col-sm-4.pleft5.pright0.padding-mob0
-          = f.select :fundcategory_id, Fundcategory.all.map{|m| [m.name, m.id]}, {include_blank: 'Select category*'}, class: "form-control coco-select-box", style: "border-radius: 0px !important;"
+        .col-xs-12.col-sm-12.pleft0.pright0.ptop15
+          .col-xs-4.col-sm-3.pleft0
+            %label{for: "showcase_fundcategory_id"} Category
+          .col-xs-8.col-sm-9.padding0
+            = f.select :fundcategory_id, Fundcategory.all.map{|m| [m.name, m.id]}, {include_blank: 'Select category*'}, class: "form-control coco-select-box", style: "border-radius: 0px !important;"
+        .col-xs-12.col-sm-12.pleft0.pright0.ptop15
+          .col-xs-4.col-sm-3.pleft0.ptop10
+            %label Raising for:&nbsp;
+          .col-xs-8.col-sm-4.pleft0.pright10.ptop10
+            = f.collection_radio_buttons :raising_for, Showcase::RAISING_FOR, :first, :last do |b|
+              = b.radio_button(class: "pull-left", style: "margin-left: 6px;") + b.label(class: "pull-left mbottom0 mleft5")
+          .col-xs-8.col-xs-offset-4.col-sm-offset-0.col-sm-5.pleft0.pright0
+            = f.text_field :beneficiary, class: "form-control coco-input-field hidden", placeholder: "Beneficiary name*"
         .hide-display
           = f.text_field :showcase_type
           = f.text_field :wish_prefix

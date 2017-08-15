@@ -1,5 +1,5 @@
 - if @unmatch.blank?
-  $(".container-fluid").prepend("#{j render partial: "profiles/enter_otp"}")
+  $(".j-settings-wrap").prepend("#{j render partial: "profiles/enter_otp"}")
   $("form.profile_form .errors").html("<%= j(render 'layouts/messages') %>")
 - else
   location.reload();

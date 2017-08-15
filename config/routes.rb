@@ -90,6 +90,7 @@ Rails.application.routes.draw do
       post :send_to_bank_form
       get :unlock_coin_wish
       get :verify_profile
+      get :unlock_crowd_funding
     end
     member do
       post :delete_withdraw_request
@@ -221,7 +222,7 @@ Rails.application.routes.draw do
       get :get_sub_categories
       get :get_chat_messages
       post :update_last_seen
-      get :new_crowd_fund
+      get :new_chat_for_crowd_fund
     end
     collection do
       get :autocomplete

@@ -47,8 +47,8 @@ class Cocotransfer < ApplicationRecord
   end
 
   def amount_should_not_less_than_or_greater_than
-    if self.amount && showcase.try(:min_amount_alloweded).to_i > self.amount
-      errors.add(:amount, "allowed minimum is #{showcase.try(:min_amount_alloweded).to_i} ")
+    if self.amount && showcase.try(:min_amount_allowed).to_i > self.amount
+      errors.add(:amount, "allowed minimum is #{showcase.try(:min_amount_allowed).to_i} ")
     end
   end
 

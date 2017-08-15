@@ -323,6 +323,17 @@ namespace :coco_tasks do
     end
   end
 
+  task add_crowd_funding_category: :environment do
+    categories = ["Personal", "Animals", "Arts & Media", "Business", "Children", "Community", "Creative", "Education", "Elderly", "Emergencies", "Environment", "Entertainment", "Food & Hunger", "Health", "Human Rights", "Hobbies", "Medical", "Memorials", "Rural Development", "Social Entrepreneurship", "Sports, Technology", "Travel", "Women", "Others"]
+    main_category = MainCategory.create(name: "Crowdfunding")
+    categories.each do |category|
+      sub_category = SubCategory.new
+      sub_category.name = category
+      sub_category.main_category = main_category
+      sub_category.save
+    end
+  end
+
   task update_last_seen_to_date: :environment do
     memberships = Membership.all
     memberships.each do |membership|

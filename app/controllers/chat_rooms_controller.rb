@@ -100,15 +100,16 @@ class ChatRoomsController < ApplicationController
     respond_to :js
   end
 
-  def new_crowd_fund
+  def new_chat_for_crowd_fund
     showcase = Showcase.find_by_id params[:id]
-    if showcase.owner?(current_user)
+    if showcase.owner?(current_user) && showcase.chat_room.blank?
       chat_room = ChatRoom.new
       chat_room.name = showcase.title
-      chat_room.main_category_id =
-      chat_room.sub_category_id =
+      chat_room.main_category_id = ChatRoom::CROWDFUNDING_ID
+      chat_room.sub_category_id = SubCategory.where("name = ?", showcase.fundcategory.name).first.id
+      chat_room.showcase_id = showcase.id
       chat_room.save
-      render js: "$('.messages').html(#{j(render 'layouts/messages')})"
+      respond_to :js
     else
       render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}'"
     end

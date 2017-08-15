@@ -49,6 +49,12 @@ class ProfilesController < ApplicationController
 
   def index
     @profile.build_location unless @profile.location
+    if params[:unlock].blank? && params[:verify].blank?
+      session.delete(:listing_id)
+      session.delete(:unlock_coin_wish)
+      session.delete(:verify_profile)
+      session.delete(:unlock_crowd_funding)
+    end
   end
 
   def settings
@@ -228,6 +234,8 @@ class ProfilesController < ApplicationController
   end
 
   def get_otp
+    logger.info '*************'
+    logger.info session[:unlock_crowd_funding]
     profile = current_user.profile
     other_profile = Profile.where("phone = ?", session[:mobile_no])
     if profile.phone != session[:mobile_no] && other_profile.blank?
@@ -277,6 +285,9 @@ class ProfilesController < ApplicationController
         flash[:notice] = "You have successfully verified your profile."
         render js: "window.location = '#{wallet_url}'"
         return
+      elsif session[:unlock_crowd_funding].present?
+        flash[:notice] = "You have successfully unlocked crowdfunding."
+        render js: "window.location = '#{session.delete(:unlock_crowd_funding)}?initiate=wish'"
       end
     else
       if session[:otp_entered].blank?
@@ -303,6 +314,15 @@ class ProfilesController < ApplicationController
   def verify_profile
     unless current_user.mobile_verified?
       session[:verify_profile] = "yes"
+      redirect_to settings_path(verify: "mobile")
+    else
+      redirect_to root_path
+    end
+  end
+
+  def unlock_crowd_funding
+    unless current_user.mobile_verified?
+      session[:unlock_crowd_funding] = "#{request.referrer}"
       redirect_to settings_path(verify: "mobile")
     else
       redirect_to root_path

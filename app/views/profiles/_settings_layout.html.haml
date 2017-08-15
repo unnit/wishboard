@@ -1,6 +1,6 @@
 .col-md-3.hidden-xs.hidden-sm.no-mar-pad
   = render partial: "home/user", locals: {user: current_user, card_padding: "0px", card_width: "100%"}
-  .col-sm-12.no-mar-pad.mtop15
+  .col-sm-12.no-mar-pad.mtop15.settings-group
     .list-group
       = link_to settings_path, class: "list-group-item acc-sett j-loader-trigger-link" do
         Settings

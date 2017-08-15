@@ -81,14 +81,14 @@ $(document).ready(function(){
         $wrap.find(".j-more, .j-img-wrapper").hide();
         $wrap.find(".showcase-submit").val("Next");
         $wrap.find(".goal-target-date").removeAttr("disabled").attr("readonly", true);
-        $wrap.find(".more-target-date").hide().removeAttr("readonly").attr("disabled", true);
-        $wrap.find('.raise_fund_fields').removeClass('hidden');
+        $wrap.find(".more-target-date").addClass("hidden").removeAttr("readonly").attr("disabled", true);
+        $wrap.find('.raise-funds-fields').removeClass('hidden');
       }else{
         $wrap.find(".j-more, .j-img-wrapper").show();
         $wrap.find(".showcase-submit").val("Wish");
         $wrap.find(".goal-target-date").removeAttr("readonly").attr("disabled", true);
-        $wrap.find(".more-target-date").show().removeAttr("disabled").attr("readonly", true);
-        $wrap.find('.raise_fund_fields').addClass('hidden');
+        $wrap.find(".more-target-date").removeClass("hidden").removeAttr("disabled").attr("readonly", true);
+        $wrap.find('.raise-funds-fields').addClass('hidden');
       }
     })
     $(document).on("click", ".ps-nav-btn", function(){
@@ -109,6 +109,10 @@ $(document).ready(function(){
         $wrap.find(".prefix-holder-dropdown").addClass("open");
       }
     })
+    if($(".j-topnav").data("initiate") == "wish"){
+      $(".ps-wrapper").find("#showcase_accept_fund").prop("checked", true).trigger("change");
+      $(".ps-wrapper").trigger("click");
+    }
     $(document).on("click", ".ps-initial", function(e){
       $wrap = $(this).closest(".create-showcase");
       if($wrap.find(".type-holder").children().length == 0 && $wrap.find(".prefix-holder").children().length == 0){
@@ -121,7 +125,8 @@ $(document).ready(function(){
       }
     })
     function showPsNext(){
-      if($wrap.find("#showcase_goal_amount").val().trim() != "" && $wrap.find("#showcase_target_date").val().trim() != "" && $wrap.find("#showcase_fundcategory_id").val().trim() != "" && $wrap.find(".ps-initial").val().trim() != ""){
+      if($wrap.find("#showcase_goal_amount").val().trim() != "" && $wrap.find("#showcase_target_date").val().trim() != "" && $wrap.find("#showcase_fundcategory_id").val().trim() != "" && $wrap.find(".ps-initial").val().trim() != ""
+      && (($("input[name='showcase[raising_for]']:checked").val() == 2 && $("#showcase_beneficiary").val().trim() != "") || ($("input[name='showcase[raising_for]']:checked").val() == 1))){
         $wrap.find(".ps-btn-wrapper").fadeIn();
       }else{
         $wrap.find(".ps-btn-wrapper").fadeOut();
@@ -239,6 +244,20 @@ $(document).ready(function(){
       showPsNext();
     });
     $(document).on("change", "#showcase_fundcategory_id", function(e){
+      $wrap = $(this).closest(".create-showcase");
+      showPsNext();
+    });
+    $(document).on("click", "input[name='showcase[raising_for]']", function(){
+      $wrap = $(this).closest(".create-showcase");
+      if($wrap.find("#showcase_raising_for_2").prop("checked")){
+        $wrap.find("#showcase_beneficiary").removeClass("hidden");
+        showPsNext();
+      }else{
+        showPsNext();
+        $wrap.find("#showcase_beneficiary").addClass("hidden");
+      }
+    })
+    $(document).on("keyup", "#showcase_beneficiary", function(e){
       $wrap = $(this).closest(".create-showcase");
       showPsNext();
     });

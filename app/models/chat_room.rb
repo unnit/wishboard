@@ -10,6 +10,8 @@ class ChatRoom < ApplicationRecord
 
   CHAT_ROOM_TYPES = [[0, "Public"], [1, "Private"]]
 
+  CROWDFUNDING_ID = 16
+
   validates :name, presence: true, length: { maximum: 150 }
   #validates :wish_prefix, inclusion: {in: Showcase::WISH_PREFIX_VALUES, message: "not an accepted value."}, presence: true
   validates :main_category_id, inclusion: {in: MainCategory.all.map(&:id), message: "not an accepted value"}, presence: true
@@ -33,6 +35,10 @@ class ChatRoom < ApplicationRecord
     room_type == CHAT_ROOM_TYPES[1][0]
   end
 
+  def crowd_fund_chat?
+    main_category_id == CROWDFUNDING_ID
+  end
+
   def online_count
     memberships.where(online: true).count
   end
@@ -46,7 +52,8 @@ class ChatRoom < ApplicationRecord
   end
 
   def chat_room_present
-    unless ChatRoom.where("lower(name) like ? and main_category_id = ? and sub_category_id = ?", self.name.downcase, self.main_category_id, self.sub_category_id).blank?
+    chat_room = ChatRoom.where("lower(name) like ? and main_category_id = ? and sub_category_id = ?", self.name.downcase, self.main_category_id, self.sub_category_id).first
+    if chat_room.present? && !chat_room.crowd_fund_chat?
       errors.add(:base, "Chatroom already present.")
     end
   end

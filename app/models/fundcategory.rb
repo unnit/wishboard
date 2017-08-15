@@ -1,3 +1,3 @@
 class Fundcategory < ApplicationRecord
-	has_many  :showcases
+	has_many :showcases
 end

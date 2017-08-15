@@ -4,6 +4,8 @@ class Showcase < ApplicationRecord
   belongs_to :product
   belongs_to :parent, class_name: "Showcase"
   belongs_to :grandparent, class_name: "Showcase"
+  belongs_to :fundcategory
+  has_one :chat_room
   has_many :children, class_name: "Showcase", foreign_key: "parent_id"
   has_many :grandchildren, class_name: "Showcase", foreign_key: "parent_id"
   has_many :wows, dependent: :destroy
@@ -25,7 +27,6 @@ class Showcase < ApplicationRecord
   has_many :cocotransfers, dependent: :destroy
   has_many :fullfillment_contributers, through: :cocotransfers, primary_key: "from_user_id", class_name: "User"
   has_many :withdraws
-  belongs_to :fundcategory
   accepts_nested_attributes_for :location
 
   DEFAULT_AFTER_RATING = 0
@@ -65,8 +66,8 @@ class Showcase < ApplicationRecord
   COIN_WISH_STATUS = [0, 1]
   INSTANT_WISH_DATE = [["0 - 1 day", "0-1"], ["1 - 3 days", "1-3"], ["3 - 5 days", "3-5"], ["5 - 7 days", "5-7"]]
   INSTANT_WISH_DATE_VALUES = ["0-1", "1-3", "3-5", "5-7"]
-  RAISING_FOR = [1, 2]
-  RAISING_FOR_VALUES = [[1, 'Self'] ,[2, 'Others']]
+  RAISING_FOR = [[1, 'Self'] ,[2, 'Others']]
+  RAISING_FOR_VALUES = [1, 2]
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
@@ -77,10 +78,13 @@ class Showcase < ApplicationRecord
   validates :achieved_description, :backstory_description, length: { maximum: 2500 }
   validates :date_of_achievement, format: { with: /\A[0-9\-\ ]*\z/, message: "only allows numbers and hyphen" }, unless: :date_of_achievement_blank?
   validates :after_rating, numericality: { only_integer: true, less_than_or_equal_to: 5, greater_than: 1, message: "Please provide a valid rating." }, unless: :after_rating_blank?
-  validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
-  validates :goal_amount, :fundcategory, :target_date, presence: true, if: :is_for_raising_fund?
-  validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 100000, greater_than: 0, message: "should be between 0 and 100000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
+  validates :goal_amount, :fundcategory, :target_date, :raising_for, presence: true, if: :is_for_raising_fund?
+  validates :raising_for, inclusion: {in: RAISING_FOR_VALUES, message: "not an accepted value."}, if: :is_for_raising_fund?
+  validates :beneficiary, length: {maximum: 200}, if: :is_for_raising_fund?
+  validates :video_link, length: {maximum: 300}, if: :is_for_raising_fund?
+  validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 1000000, greater_than: 10, message: "should be between 0 and 1000000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
   validate :accept_fund_option_should_not_change, if: :already_raised_some_amount
+  validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
 
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
@@ -168,7 +172,7 @@ class Showcase < ApplicationRecord
     end
   end
 
-  
+
   def is_admin_disabled?
      self.admin_status == ADMIN_STATUS_NAME[1][1]
   end
@@ -449,7 +453,7 @@ class Showcase < ApplicationRecord
     1
   end
 
-  def min_amount_alloweded
+  def min_amount_allowed
      default_min_amount
   end
 

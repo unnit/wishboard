@@ -8,7 +8,7 @@ class Users::PasswordsController < Devise::PasswordsController
 
   # POST /resource/password
   def create
-      @user = User.find_by_email params[:user][:email]
+      @user = User.find_by_email params[:user][:email].downcase
       unless @user.blank?
         reset_token = @user.generate_reset_password_token
         @user.reset_password_token = reset_token

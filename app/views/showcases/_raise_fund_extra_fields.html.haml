@@ -1,41 +1,21 @@
 = form_for @showcase, html: { class: "update-raise-showcase" } do |f|
-  .col-xs-12.col-sm-6.no-mar-pad.mbottom10.text-center.photo-wrapper.hidden-overflow{style: "height: 200px;"}
-    .preview
-      - if @showcase.image.present?
-        = cl_image_tag @showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
-    .preview-delete-fullfill.bg-white.pon.pos-absolute.font16{class: "#{@showcase.image.blank? ? 'hide-display' : 'block-display'}"} x
+  .col-xs-12.col-sm-6.no-mar-pad.text-center.photo-wrapper.hidden-overflow{style: "height: 200px;"}
+    .preview{"data-source": "showcase"}
+    .preview-delete-fullfill.bg-white.pon.pos-absolute.font16.hide-display x
     .col-xs-12.col-sm-12.no-mar-pad
-      .glyphicon.glyphicon-camera.file-input-button.mtop40.padding20.cc-dark-fg.dotted-border{style: "font-size: 65px;display: #{@showcase.image.present? ? 'none': 'inline-block'};"}
-        = cl_image_upload_tag(:image, html: { class: "cloudinary-fileupload-raise-edit file-upload-trigger", "data-height": "100", "data-width": "100", "data-source": "showcase"  })
+      .glyphicon.glyphicon-camera.file-input-button.mtop40.padding20.cc-dark-fg.dotted-border{style: "font-size: 65px;display: inline-block;"}
+        = cl_image_upload_tag(:image, html: {class: "cloudinary-fileupload-raise-edit file-upload-trigger", "data-height": "100", "data-width": "100"})
     .col-xs-12.col-sm-12.no-mar-pad
       .progress.progress-striped.progress-edit.mbottom0{style: "display: none;height: 6px;width:107px;"}
         .progress-bar.progress-bar{style: "width: 0%;"}
   .col-xs-12.col-sm-6.text-center.ptop10{style: "height: 200px;"}
     ~ f.text_area :description, placeholder: "Tell the story behind this wish?", class: "form-control coco-input-field", maxlength: 2500, style: "height: 189px;"
   .col-xs-12.col-sm-6.ptop20.pbottom10
-    = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
+    = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
   .col-xs-12.col-sm-6.ptop20
     = f.fields_for :location do |lf|
       = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
-  .col-xs-12.col-sm-6.ptop20
+  .col-xs-12.col-sm-12.ptop20
     = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 100
-  .col-xs-12.col-sm-6{style: "padding-top: 38px;"}
-    Raising for:&nbsp;
-    = f.collection_radio_buttons :raising_for, Showcase::RAISING_FOR_VALUES,:first, :last do |b|
-      = b.radio_button + b.label(:class => "collection_radio_buttons coco-radio-label")
   .col-xs-12.col-sm-12.mtop20.mbottom20.text-center
     = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold showcase-raise-update-submit"
-:css
-  .coco-radio-label{
-    padding-left: 3px;
-    padding-right: 5px;
-    font-size: 14px;
-    font-family:"Open Sans", sans-serif;
-    font-size: 14px ;
-    font-stretch: normal;
-    font-style: normal;
-    font-variant-caps: normal;
-    font-variant-ligatures: normal;
-    font-variant-numeric: normal;
-    font-weight: normal;
-  }

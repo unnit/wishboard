@@ -42,6 +42,7 @@ class CocotransfersController < ApplicationController
   def create
     @cocotransfer = Cocotransfer.new(cocotransfer_params)
     @cocotransfer.transaction_status = Transaction::TRANSACTION_STATUS[1][1]
+    @cocotransfer.fullfillment_contributer = current_user
     if @cocotransfer.save
       @cocotransfer.generate_txnid!
       return redirect_to checkout_cocotransfer_path(@cocotransfer)

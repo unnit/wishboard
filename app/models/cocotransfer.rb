@@ -15,10 +15,11 @@ class Cocotransfer < ApplicationRecord
   belongs_to :user, class_name: "User", :foreign_key => :user_id
   belongs_to :showcase
 
-  validates :amount, :email, :showcase,  presence: true
+  validates :amount, :email, :phone, :phonecode, :showcase,  presence: true
   validate :is_valid_showcase, if: :showcase_not_blank
   validates :amount, numericality: { only_integer: true }
   validate :amount_should_not_less_than_or_greater_than
+
 
   scope :anonymous, -> {where(hide_identity: true)}
   scope :non_anonymous, -> {where(hide_identity: [false, nil])}
@@ -103,55 +104,57 @@ class Cocotransfer < ApplicationRecord
 
 
   def paid!(transaction_id, tamount)
-    # update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1], amount: tamount, txnid: transaction_id
     update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: tamount
     FundreceivedNotification.create(user_id: self.showcase.user_id, cocotransfer: self )
-    # inform_success_to_donor
-    # inform_success_showcase_owner
-    # inform_success_admin
+    inform_success_to_donor
+    inform_success_showcase_owner
+    inform_success_admin
+    CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
+    CocotransferMailer.fund_reception_donor(self, self.showcase.user.email).deliver_now
   end
 
   def inform_success_to_donor
     msg_customer = I18n.t('sms.cocotransfer.success.to_donor', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: showcase.title, txnid: self.txnid )
-    # SmsService.send_sms(self.phone_with_prefix, msg_customer) if self.phone_with_prefix
+    SmsService.send_sms(self.phone_with_prefix, msg_customer) if self.phone_with_prefix
   end
 
   def inform_success_showcase_owner
     msg_to_showcase_owner = I18n.t('sms.cocotransfer.success.to_fundraiser', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid )
-    # SmsService.send_sms(self.showcase.user.profile.phone_with_prefix, msg_to_showcase_owner)
+    SmsService.send_sms(self.showcase.user.profile.phone_with_prefix, msg_to_showcase_owner)
   end
 
   def inform_success_admin
     msg_coco_manager =      I18n.t('sms.cocotransfer.success.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid )
     GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
-      # SmsService.send_sms(number, msg_coco_manager)
+    SmsService.send_sms(number, msg_coco_manager)
     end
     msg_coco_manager
   end
 
 
   def deliver_failed_transaction(msg)
-    # failed_msg_to_customer(msg)
-    # failed_msg_to_admin(msg)
-    # TransactionMailer.fail(@cocotransfer, params["TxMsg"]).deliver_now
+    TransactionMailer.fail(@cocotransfer, params["TxMsg"]).deliver_now
+    failed_msg_to_customer(msg)
+    failed_msg_to_admin(msg)
+    TransactionMailer.fail(@cocotransfer, params["TxMsg"]).deliver_now
   end
   def failed_msg_to_customer(msg)
     msg_customer =  I18n.t('sms.cocotransfer.failed.to_donor', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )
-    # SmsService.send_sms(self.phone_with_prefix,msg_customer) if self.phone_with_prefix
+     SmsService.send_sms(self.phone_with_prefix,msg_customer) if self.phone_with_prefix
   end
   def failed_msg_to_admin(msg)
     msg_coco_manager =  I18n.t('sms.cocotransfer.failed.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )
     GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
-      # SmsService.send_sms(number,msg_coco_manager)
+      SmsService.send_sms(number,msg_coco_manager)
     end
     msg_coco_manager
   end
   def deliver_signature_verification_failed
-    # email_message = "Signaure Verification failed. Please try again."
-    # # TransactionMailer.fail(@cocotransfer, email_message).deliver_now
+    email_message = "Your payment failed. Please try again."
+    CocotransferMailer.fail(self, email_message).deliver_now
     # msg = "Sorry, Your payment failed as signaure verification failed. Please try again. ID: #{@cocotransfer.txnid}"
-    # msg_coco_manager = "#{@cocotransfer.product.title}- Payment failed as signature verification failed. Name: #{@cocotransfer.fullfillment_contributer.try(:name)} ID: #{@cocotransfer.txnid}. Mobile: #{@cocotransfer.phone}"
-    # SmsService.send_sms(self.phone, msg)  if self.phone
+    # msg_coco_manager = "#{@cocotransfer.showcase.title}- Payment failed as signature verification failed. Name: #{@cocotransfer.fullfillment_contributer.try(:name)} ID: #{@cocotransfer.txnid}. Mobile: #{@cocotransfer.phone}"
+    # SmsService.send_sms(self.phone_with_prefix, msg)  if self.phone
     # GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
     #   SmsService.send_sms(number,msg_coco_manager)
     # end
@@ -199,16 +202,4 @@ class Cocotransfer < ApplicationRecord
   def denied?
     transaction_status.to_s == Transaction::TRANSACTION_STATUS[3][1]
   end
-
-  def send_payment_mail
-    CocotransferMailer.success_inovoice(self, inform_email).deliver_now
-  end
-
-  def inform_email
-    return "mailmemahesh91@gmail.com"
-  end
-  def inform_phone
-  end
-
-
 end

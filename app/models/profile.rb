@@ -177,4 +177,8 @@ class Profile < ApplicationRecord
   def init_availability
     update_columns avail_days: ["1","2","3","4","5"], open_time: "08:00", close_time: "17:00"
   end
+
+  def phone_with_prefix
+    (self.phone && self.phonecode && mobile_verified) ? (self.phonecode + self.phone) : nil
+  end
 end

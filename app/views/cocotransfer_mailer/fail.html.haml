@@ -1,0 +1,14 @@
+Ayyo!
+%p
+  Your payment of Rs. #{@cocotransfer.amount} for #{@cocotransfer.showcase.try(:truncated_title)} was unsuccessful
+  %br
+  %br
+  #{@message}
+  %br
+  %br
+  Transaction ID: "#{@cocotransfer.txnid}"
+  %br
+  %br
+  = link_to "#{checkout_cocotransfer_url(@cocotransfer)}", style: "text-decoration: none" do
+    %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
+      Try Again

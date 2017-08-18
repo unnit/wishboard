@@ -171,7 +171,7 @@
     - if current_user && showcase.owner?(current_user)
       = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
         .fa.fa-folder-o.grey-fg.pull-right.font16{title: "Arrange Showcase"}
-    %i.fa.fa-share-alt-square.pull-left.share_popup_icon{"aria-hidden" => "true","data-showcase-id": "#{showcase.id}", title: "Share"}
+    %i.fa.fa-share-alt-square.pull-right.pon.share_popup_icon.grey-fg{"aria-hidden" => "true", "data-showcase-id": "#{showcase.id}", title: "Share"}
     %div.share_popup
       .shareShowcaseRoundIcons{"data-id" => "#{showcase.id}", "data-showcase-id": "#{showcase.id}"}
 = render partial: "showcases/description_tabs", locals: {showcase: showcase}
@@ -195,26 +195,3 @@
         ~ f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 2500
         = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-bg mtop5 btn-shadow btn-comment-create pull-left"
         .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}
-:css
-  .custom_share_container{
-    min-width: 400px;
-  }
-  .share_popup{
-    display: none;
-    border: 1px solid black;
-    border-radius: 15px;
-    position: absolute;
-    bottom: 20px;
-    left: -120px;
-    z-index: 1060;
-    display: none;
-    padding: 2px;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    text-align: left;
-    white-space: normal;
-    background-color: #fff;
-  }

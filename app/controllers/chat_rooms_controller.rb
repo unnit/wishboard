@@ -109,6 +109,7 @@ class ChatRoomsController < ApplicationController
       chat_room.sub_category_id = SubCategory.where("name = ?", showcase.fundcategory.name).first.id
       chat_room.showcase_id = showcase.id
       chat_room.save
+      flash[:notice] = "Chatroom created successfully"
       respond_to :js
     else
       render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}'"

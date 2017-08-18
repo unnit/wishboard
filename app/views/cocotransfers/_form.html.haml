@@ -16,7 +16,7 @@
         = f.email_field :email, placeholder: "Email", class: "form-control bg-white"
     .col-xs-12.col-sm-12
       .col-xs-12.col-sm-12.col-md-3.pull-left
-        %i.fa.fa-user 
+        %i.fa.fa-user
         %span (Name):
         %span.font10{style: "font-size: 10px;"} (optional)
       .col-xs-12.col-sm-12.col-md-9
@@ -26,11 +26,11 @@
         = f.check_box :hide_identity
         %i.fa.fa-eye-slash
         %span (Stay anonymous)
-       
+
     .col-xs-12.col-sm-12.mbottom10
       .col-xs-12.col-sm-12.col-md-3.pull-left
-        %i.fa.fa-mobile 
-        %span (Mobile): 
+        %i.fa.fa-mobile
+        %span (Mobile):
         %span.font10{style: "font-size: 10px;"} (optional)
       .col-xs-12.col-sm-12.col-md-2.pull-left
         = select("profile", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control user-phone-prefix"})
@@ -38,4 +38,4 @@
         = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
 
     .col-xs-12.col-sm-12.text-center
-      = f.submit "#{submit_name}", class: "btn btn-lg cc-dark-bg white-fg weight-bold donate_btn"
+      = f.submit "#{submit_name}", class: "btn btn-lg cc-dark-bg white-fg weight-bold full-width"

@@ -80,6 +80,8 @@
         .col-xs-8.col-sm-4.pleft0.pright10.ptop10
           = f.collection_radio_buttons :raising_for, Showcase::RAISING_FOR, :first, :last do |b|
             = b.radio_button(class: "pull-left", style: "margin-left: 6px;") + b.label(class: "pull-left mbottom0 mleft5")
+        .col-xs-8.col-xs-offset-4.col-sm-offset-0.col-sm-5.pleft0.pright0
+          = f.text_field :beneficiary, class: "form-control coco-input-field hidden", placeholder: "Beneficiary name*"
       .col-xs-12.col-sm-12.height50.padding0.ptop10
         = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 200
   .col-xs-12.col-sm-12.mtop20.text-center

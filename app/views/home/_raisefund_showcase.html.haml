@@ -1,15 +1,11 @@
 - feed ||= "yes"
 - hide_on_load_class ||= ''
-.col-xs-12.col-sm-12.no-mar-pad.mbottom10.no-bord-mob.donate_share_btns
-  .col-xs-6.col-sm-6.col-md-2
-    = link_to new_cocotransfer_path(@cocotransfer, :showcase_id => showcase.id) do
-      .btn.btn-primary.button-lg.donate_btn Gift Now
-.col-xs-12.col-sm-12.no-mar-pad.mbottom20.bg-white.bg-shad.no-bord-mob.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id} #{hide_on_load_class}"}
+.col-xs-12.col-sm-12.no-mar-pad.mbottom20.bg-white.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id} #{hide_on_load_class}"}
   .col-xs-12.col-sm-12.no-mar-pad
     %span.font11.grey-fg.pos-absolute.right15.mtop8
       = time_ago_in_words(showcase.achieved_at)
     %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute.h-z.right0
-    .col-xs-4.col-sm-4.option-showcase.bg-shad.bg-white.text-center.bg-white.right15
+    .col-xs-4.col-sm-3.option-showcase.bg-shad.text-center.right15.bg-white
       - unless showcase.coin_wish?
         - if showcase.owner?(current_user)
           = link_to edit_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5" do
@@ -25,7 +21,7 @@
     %span.pos-absolute{style: "right: 5px;top: 25px;"}
       - if showcase.achieved?
         .achieved-wish-sprite
-    .col-xs-12.col-sm-12.padding10.pright.pright40
+    .col-xs-12.col-sm-12.padding10.pleft0.pright40
       .media
         .media-left
           = link_to myprofile_path(showcase.user.profile.slug), class: "pull-left" do
@@ -40,11 +36,11 @@
                 posted a future wish.
               - elsif showcase.instant_wishlist?
                 posted a momentary wish.
-            %span.full-width.inline-block{class: "#{showcase.image.present? ? 'font-medium' : 'font21'}"}
+            %span.full-width.inline-block{class: "#{showcase.image.present? ? 'font-medium' : 'font25'}"}
               = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
                 = showcase.title
           - else
-            %span.full-width.inline-block.mtop10{class: "#{showcase.image.present? ? 'font-medium' : 'font21'}"}
+            %span.full-width.inline-block{class: "#{showcase.image.present? ? 'font-medium' : 'font25'}"}
               %span{class: "#{showcase.owner?(current_user) ? '' : 'hovercard'}", "data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
               %span
                 - if showcase.showpiece? || showcase.achieved?
@@ -57,7 +53,7 @@
               %span
                 = link_to showcase_path(showcase, popup: "yes"), remote: true, class: "cc-dark-fg" do
                   = showcase.title
-  .col-xs-12.col-sm-10.col-md-8.padding0{style: "border-right: 1px solid #dcdcdc;"}
+  .col-xs-12.col-sm-8.col-md-8.padding0
     - if showcase.any_image?
       .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
         .carousel.slide.image_carousel{id: "image_carousel_#{showcase.id}", "data-interval": false}
@@ -89,30 +85,19 @@
               .item{class: "#{showcase.image.blank? && !showcase.showpiece? ? 'active' : '' }"}
                 = link_to showcase_path(showcase), remote: true do
                   = cl_image_tag showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
-        .h40.pos-absolute{style: "top: 45%;left: 45%;"}
-          - if current_user
-            - if !showcase.owner?(current_user) && showcase.active_coins.count <= 50 && showcase.coin_wish? && showcase.coin_wish_active?
-              - if current_user.unlocked_coin_wish?
-                - if showcase.coined?(current_user)
-                  .coin-sprite-o-full.pos-relative.flipped-horz
-                - else
-                  %div{class: "coin-link-#{showcase.id}"}
-                    = link_to coin_showcase_path(showcase), remote: true, method: :post, data: {confirm: "You are about to gift 1 coin to your friend. We will credit 1 rupee on your behalf to the owner of this coin wish and this can't be undone, yay! Happy gifting"} do
-                      .coin-sprite-o-less.pos-relative.flipped-horz
-              - else
-                = link_to settings_path(unlock: "coin_wish") do
-                  .coin-sprite-o-less.pos-relative.flipped-horz
-          - else
-            = link_to authenticate_path do
-              %i.coin-sprite-o-less
+    - else
+      %div.full-width.text-center.light-border.border2{style: "padding: 100px 20px"}
+        %i.fa.fa-picture-o.grey-fg{style: "font-size: 100px;"}
+        %br
+        %span.weight600.light-grey-fg No Image
     - if showcase.tags.present?
-      .col-xs-12.col-sm-12.showcase-tags.bg-white.padding10.ptpp0
+      .col-xs-12.col-sm-12.showcase-tags.padding10.ptpp0
         - showcase.tags.each do |tag|
           %span.pright5.mbottom5.pull-left.mright5.font12
             .fa.fa-circle
             = link_to tag.name, tag_path(tag.name), class: "black-fg"
-
-    .col-xs-12.col-sm-12.border-two.padding10.bg-white.h40
+    = render partial: "showcases/description_tabs", locals: {showcase: showcase}
+    .col-xs-12.col-sm-12.padding10.h40
       - if current_user
         .col-xs-2.col-sm-2.pleft0
           = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
@@ -161,10 +146,6 @@
               %span.done-this.pon.cc-dark-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
                 %i.fa.fa-check-square-o.pull-left.font17.mtop2
                 %span.font12.grey-fg.pull-left.mtop2 Done?
-          - if showcase.coin_wish?
-            %i.fa.fa-inr.pull-left.cc-dark-fg.mtop2{class: "badge-coin-link-#{showcase.id}"}
-            .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{title: "#{showcase.coined_users}"}
-              = showcase.active_coins.count
         - else
           = link_to authenticate_path do
             %span.pon.cc-dark-fg.pull-left.pright5
@@ -179,12 +160,7 @@
         - if current_user && showcase.owner?(current_user)
           = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
             .fa.fa-folder-o.grey-fg.pull-right.font16{title: "Arrange Showcase"}
-        %i.fa.fa-share-alt-square.pull-left.share_popup_icon{"aria-hidden" => "true","data-showcase-id": "#{showcase.id}", title: "Share"}
-        %div.share_popup
-          .shareShowcaseRoundIcons{"data-id" => "#{showcase.id}", "data-showcase-id": "#{showcase.id}"}
-    = render partial: "showcases/description_tabs", locals: {showcase: showcase}
-
-    .col-xs-12.col-sm-12.no-mar-pad.bg-white.min-height0{class: "user-comments-#{showcase.id}"}
+    .col-xs-12.col-sm-12.no-mar-pad.min-height0{class: "user-comments-#{showcase.id}"}
       - if feed == "yes"
         - if showcase.comments.count > 4
           = link_to showcase_path(showcase), target: "_blank", class: "padding10 pbottom0 font12", style: "text-decoration: underline;" do
@@ -202,99 +178,59 @@
               = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
           .media-body
             ~ f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 2500
-            = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-bg mtop5 btn-shadow btn-comment-create pull-left"
+            = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-fg cc-dark-fg-border bg-white mtop5 btn-comment-create pull-left"
             .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}
-    - if showcase.video_link
-      .col-xs-12.col-sm-12.bg-white{class: "showcase-video-#{showcase.id}"}
+    - if showcase.video_link.present?
+      .col-xs-12.col-sm-12{class: "showcase-video-#{showcase.id}"}
         Video:
         .col-xs-12.col-sm-12.no-mar-pad.show-video-iframe{"data-video-frame-div": "#video-link-#{showcase.id}" }
           %a{target:'_blank', href:"#{showcase.video_link}"}
             #{showcase.video_link}
           = link_preview_content(showcase.video_link).html_safe
         .embed-responsive.embed-responsive-16by9{id: "video-link-#{showcase.id}"}
-          = showcase.video_iframe.html_safe      
-  .col-xs-12.col-sm-10.col-md-4.padding10
-    .col-xs-12.col-sm-12.no-mar-pad.bg-white.bg-shad.min-height0.mtop10.ptop10{class: "raise-progress-#{showcase.id}"}
-      .col-xs-12.col-sm-12.col-md-12.raise-progress-block
-        .font16.mbottom10
-          Raised
-          %i.fa.fa-inr.font20{"aria-hidden" => "true"}
-          #{showcase.raised_amount} of Total
-          %i.fa.fa-inr{"aria-hidden" => "true"}
-          #{showcase.goal_amount}
-        - if showcase.percentage_raised.to_i > 15
-          .progress
-            .progress-bar{:style => "width: #{showcase.percentage_raised.to_i}%;"}
-              #{showcase.percentage_raised.to_i}%
-        - else
-          .progress
-            #{showcase.percentage_raised.to_i}%
-            .progress-bar{:style => "width: #{showcase.percentage_raised.to_i}%;"}
-        .col-xs-12.col-sm-12.col-md-6
-          %span
-            %span.font20 
-              %i.fa.fa-inr{"aria-hidden" => "true"} #{showcase.remaing_amount} 
-            %span.font16.inline-block remaining
-        .col-xs-12.col-sm-12.col-md-6
-          %span.font20 Contributers : #{showcase.no_of_contributers}
-    .col-xs-12.col-sm-12.no-mar-pad.bg-white.bg-shad.min-height0.mtop10.donate-form-block.padding10{class: "donate-form-block-#{showcase.id}"}
-      = form_for @cocotransfer, url: cocotransfers_path(@cocotransfer), method: :post do |f|
-        = f.hidden_field :showcase_id, value: showcase.id
-        .col-xs-12.col-sm-12.mbottom10
-          .col-xs-2.col-sm-2
-            %i.fa.fa-inr{"aria-hidden" => "true"}
-          .col-xs-10.col-sm-10
-            = f.text_field :amount, value: 100,  placeholder: "", class: "form-control bg-white"
-        .col-xs-12.col-sm-12
-        .col-xs-12.col-sm-12
-          = f.submit "Gift", class: "btn cc-dark-bg white-fg weight-bold donate_btn"
-    .col-xs-12.col-sm-12.no-mar-pad.bg-white.bg-shad.min-height0.mtop20.text-center.padding10{class: "owner_details-#{showcase.id}"}
+          = showcase.video_iframe.html_safe
+  .col-xs-12.col-sm-12.col-md-4.padding00.ptop0.no-bord-mob
+    .col-xs-12.col-sm-12.col-md-12.padding10.bg-shad
+      %span.pull-left.full-width.cc-dark-fg.font25.weight600
+        Rs.#{showcase.raised_amount}
+      %span.pull-left.full-width.font11
+        raised of Rs.#{showcase.goal_amount} goal
+      %div.full-width.pull-left
+        .progress.mbottom0{style: "height: 8px;"}
+          .progress-bar.cc-dark-bg{:style => "width: #{showcase.percentage_raised.to_i}%;"}
+      .col-xs-12.col-sm-12.col-md-6.hidden
+        %span
+          %span.font20
+            %i.fa.fa-inr{"aria-hidden" => "true"} #{showcase.remaining_amount}
+          %span.font16.inline-block remaining
+      .col-xs-12.col-sm-12.padding0.ptop15
+        %span.pull-left.full-width.font12 FROM
+        %span.pull-left.full-width.font16.weight600 #{showcase.no_of_contributers} Contributers
+      .col-xs-12.col-sm-12.padding0.ptop15
+        %span.pull-left.full-width.font12 TIME LEFT
+        %span.pull-left.full-width.font16.weight600 #{showcase.remaining_days} #{showcase.remaining_days > 1 ? 'days' : 'day'} to go
+      .col-xs-12.col-sm-12.no-mar-pad.mtop15.donate-form-block.padding10
+        = form_for @cocotransfer, url: cocotransfers_path(@cocotransfer), method: :post do |f|
+          = f.hidden_field :showcase_id, value: showcase.id
+          .col-xs-12.col-sm-12.mbottom10.padding0
+            .col-xs-2.col-sm-2.text-center.padding0
+              %span.full-width.full-height.pull-left.mtop2.font20 Rs.
+            .col-xs-10.col-sm-10.padding0
+              = f.text_field :amount, value: 100,  placeholder: "", class: "form-control bg-white cc-dark-fg-border"
+          .col-xs-12.col-sm-12.no-mar-pad
+            = f.submit "Gift", class: "btn cc-dark-bg white-fg weight600 full-width font20", style: "height: 45px;"
+    .col-xs-12.col-sm-12.padding5.text-center.bg-shad.mtop20
+      .shareShowcaseRoundIcons{"data-id" => "#{showcase.id}", "data-showcase-id": "#{showcase.id}"}
+    .col-xs-12.col-sm-12.padding0.mtop20
       = render partial: "showcases/owner_details", locals: {showcase: showcase}
-    .col-xs-12.col-sm-12.no-mar-pad.bg-white.bg-shad.min-height0.mtop10.contributers-list.padding10{class: "contributers-list-#{showcase.id}"}
+    .col-xs-12.col-sm-12.mtop20.contributers-list.padding10
       = render partial: "showcases/contributers", locals: {showcase: showcase}
-     
-         
-
-
-
-      
-:css
-  .raise-progress-block {
-   / border: 1px solid #732db0;
-  }
-  .raise-progress-block .progress .progress-bar{
-   background-color: #732db0;
-  }
-  .donate-form-block{
-   
-  }
-  .donate_btn{
-     width: 100%;
-     background-color: #732db0;
-  }
-  .share_popup{
-    display: none;
-    border: 1px solid black;
-    border-radius: 15px;
-    position: absolute;
-    bottom: 20px;
-    left: -120px;
-    z-index: 1060;
-    display: none;
-    padding: 2px;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    text-align: left;
-    white-space: normal;
-    background-color: #fff;
-  }
-       = content_for :extra_js do
+= content_for :extra_js do
   :javascript
     $(document).on("click", ".show-video-iframe", function(e){
       videodiv_element = $(this).attr('data-video-frame-div');
       $(this).hide();
       $(videodiv_element).removeClass('hidden');
-    })
+    });
+    $(".shareShowcaseRoundIcons").jsSocials({url: "https://www.cocociti.com/wish/"+$(this).attr('data-showcase-id'),showLabel: false,showCount: false,shares: ["twitter", "facebook", "pinterest", "whatsapp"]});
+    $(this).next(".share_popup").fadeToggle(100);

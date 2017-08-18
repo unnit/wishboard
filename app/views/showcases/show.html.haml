@@ -3,15 +3,11 @@
 = content_for :title do
   - title = @showcase.title
 - if @showcase.accept_fund
-  #cont-wrapper.modal.fade.padding0
-  .messages
-  .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 100%;"}
-    .container.ptop10.helvetica-font.padding0
+  .container-fluid.ptop50.mob-ptop100.padding0{style: "min-height: 100%;"}
+    .container.ptop10
       .col-xs-12.col-sm-10.col-md-12.padding0
         = render partial: "home/raisefund_showcase.html", locals: {showcase: @showcase, feed: "no"}
 - else
-  #cont-wrapper.modal.fade.padding0
-  .messages
   .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 100%;"}
     .container.ptop10.helvetica-font.padding0
       - unless current_user

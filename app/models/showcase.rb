@@ -433,8 +433,12 @@ class Showcase < ApplicationRecord
     return cocotransfers.complete.sum(:amount).to_i
   end
 
-  def remaing_amount
+  def remaining_amount
     (goal_amount.to_f - raised_amount.to_f) > 0 ? (goal_amount.to_f - raised_amount.to_f) : 0
+  end
+
+  def remaining_days
+    (Time.now.utc.to_date - created_at.to_date).to_i
   end
 
   def percentage_raised

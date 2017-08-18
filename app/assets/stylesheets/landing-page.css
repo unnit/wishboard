@@ -3715,6 +3715,23 @@ th.headerSortDown {
   background-color: #732db0 !important;
   border-color: #732db0 !important;
 }
+.custom_share_container{
+  min-width: 400px;
+}
+.share_popup{
+  display: none;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 20px;
+  left: -85px;
+  z-index: 1060;
+  padding: 2px 0px 2px 10px;
+  line-height: 1.42857143;
+  text-align: left;
+  white-space: normal;
+  background-color: #fff;
+}
 /*******************************/
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .tab125h{

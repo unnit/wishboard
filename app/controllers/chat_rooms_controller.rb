@@ -102,7 +102,7 @@ class ChatRoomsController < ApplicationController
 
   def new_chat_for_crowd_fund
     showcase = Showcase.find_by_id params[:id]
-    if showcase.owner?(current_user) && showcase.chat_room.blank?
+    if showcase.owner?(current_user) && showcase.chat_room.blank? && showcase.publicably_available?
       chat_room = ChatRoom.new
       chat_room.name = showcase.title
       chat_room.main_category_id = ChatRoom::CROWDFUNDING_ID

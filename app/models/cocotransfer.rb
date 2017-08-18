@@ -5,11 +5,11 @@ require 'openssl'
 require 'rubygems'
 require 'sms_service'
 class Cocotransfer < ApplicationRecord
-  # extend FriendlyId
-  # friendly_id :slug_candidates, use: :slugged
-  # def slug_candidates
-  #   [:slug]
-  # end
+  ## extend FriendlyId
+  ## friendly_id :slug_candidates, use: :slugged
+  ## def slug_candidates
+  ##   [:slug]
+  ## end
   has_many :txdetails
   belongs_to :fullfillment_contributer, class_name: "User", :foreign_key => :from_user_id
   belongs_to :user, class_name: "User", :foreign_key => :user_id
@@ -106,11 +106,11 @@ class Cocotransfer < ApplicationRecord
   def paid!(transaction_id, tamount)
     update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: tamount
     FundreceivedNotification.create(user_id: self.showcase.user_id, cocotransfer: self )
-    inform_success_to_donor
-    inform_success_showcase_owner
-    inform_success_admin
-    CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
-    CocotransferMailer.fund_reception_donor(self, self.showcase.user.email).deliver_now
+    # inform_success_to_donor
+    # inform_success_showcase_owner
+    # inform_success_admin
+     CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
+     CocotransferMailer.fund_reception_donor(self, self.showcase.user.email).deliver_now
   end
 
   def inform_success_to_donor

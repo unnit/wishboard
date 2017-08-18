@@ -68,6 +68,8 @@ class Showcase < ApplicationRecord
   INSTANT_WISH_DATE_VALUES = ["0-1", "1-3", "3-5", "5-7"]
   RAISING_FOR = [[1, 'Self'] ,[2, 'Others']]
   RAISING_FOR_VALUES = [1, 2]
+  ACCEESS_TYPE = [0, 1]
+  ACCEESS_TYPE_NAME = [[0, 'Public'] ,[1, 'With link only']]
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
@@ -92,6 +94,27 @@ class Showcase < ApplicationRecord
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
   scope :user_coin_wishesh, -> {where(["admin_created = false and coin_wish = true"])}
   scope :not_admin_disbled, -> {where(admin_status: [0, nil] )}
+  scope :public_accessible, -> {where(access_type: [ACCEESS_TYPE[0], nil])}
+  scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])} 
+
+  before_save :generate_accesss_token
+def publicably_available?
+  !is_only_accessible_with_link?
+end
+
+def is_only_accessible_with_link?
+  self.access_type && self.access_type == ACCEESS_TYPE[1]
+end
+
+def private_access_url
+   GLOBAL_VARIABLES[:root_url] + "/showcase/private/#{access_token}"
+end
+
+def generate_accesss_token
+  begin
+    self.access_token = SecureRandom.urlsafe_base64(20, false)
+  end while self.class.find_by(access_token: access_token)
+end
 
   HUMANIZED_ATTRIBUTES = {
     fundcategory_id: "Category",
@@ -446,7 +469,8 @@ class Showcase < ApplicationRecord
    percentage <= 100 ? percentage : 100
   end
   def no_of_contributers
-    cocotransfers.complete.non_anonymous.pluck(:from_user_id).uniq.count +  cocotransfers.complete.anonymous.pluck(:from_user_id).count
+    cocotransfers.complete.count
+    #cocotransfers.complete.non_anonymous.pluck(:from_user_id).uniq.count +  cocotransfers.complete.anonymous.pluck(:from_user_id).count
   end
 
   after_create :create_showcase_notification, :promotional_offer, :set_achieved

@@ -1,10 +1,13 @@
 class Withdraw < ApplicationRecord
+  attr_accessor :acc_no_confirmation, :mmid_confirmation
   belongs_to :user
   belongs_to :showcase
 
-  validates :name, :acc_no, :ifsccode, :coins, presence: true
+  validates :name, :acc_no,  :ifsccode, :coins, presence: true
   validates :name, :acc_no, :ifsccode, :mmid, length: {maximum: 100}
   validates :coins, numericality: {only_integer: true, less_than_or_equal_to: 1000, greater_than: 0, message: "should be between 0 and 1000"} , if: :coin_withdraw?
+  validate :acc_no_matching, on: :create
+  validate :mmid_matching,on: :create
   # validate :max_coin_withdraw
   validates :coins, numericality: {only_integer: true, less_than_or_equal_to: 100000, greater_than: 0, message: "between 0 and 100000"}, if: :showcase_raised_withdraw?
   validate :max_amount
@@ -19,9 +22,23 @@ class Withdraw < ApplicationRecord
   STATUS_NAME = [["Open", 0], ["Closed", 1], ["Rejected", 2], ["Deactivated", 3]]
   WITHDRAW_TYPE = [0, 1]
   WITHDRAW_TYPE_NAME = [["Coin", 0], ["Raised", 1]]
+  HUMANIZED_ATTRIBUTES = {
+    acc_no: "Account Number",
+    mmid: "MMID"
+  }
+  def self.human_attribute_name(attr, options = {})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
+  end
 
   def max_amount
      showcase ? max_showcase_amount : max_coin_withdraw
+  end
+
+  def acc_no_matching
+    errors.add(:acc_no, "dont match") if (acc_no && acc_no_confirmation && (acc_no != acc_no_confirmation))
+  end
+  def mmid_matching
+    errors.add(:mmid, "dont match") if (mmid && mmid_confirmation && (mmid != mmid_confirmation))
   end
 
   def max_showcase_amount

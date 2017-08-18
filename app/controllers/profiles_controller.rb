@@ -356,8 +356,10 @@ class ProfilesController < ApplicationController
     @withdraw.name = params[:name]
     @withdraw.coins = params[:coins].to_i.abs
     @withdraw.acc_no = params[:acc_no]
+    @withdraw.acc_no_confirmation = params[:acc_no_confirmation]
     @withdraw.ifsccode = params[:ifsccode]
     @withdraw.mmid = params[:mmid]
+    @withdraw.mmid_confirmation = params[:mmid_confirmation]
     @withdraw.user = current_user
     @withdraw.status = Withdraw::STATUS[0]
 

@@ -9,12 +9,13 @@ class CocotransferMailer < ApplicationMailer
 
   def fund_reception_donor(cocotransfer, email)
   	@cocotransfer = cocotransfer
-  	mail to: email, subject: "Boom De Yada! Gifting 🎁 successful!"
+    subject_line = "Boom De Yada! Gifting successful!"
+  	mail to: email, subject: subject_line
   end
 
   def fund_reception_owner(cocotransfer, email)
   	@cocotransfer = cocotransfer
-  	mail to: email, subject: "Boom De Yada! Gift money 🎁  &#x20b9 #{@cocotransfer.} credited!"
+  	mail to: email, subject: "Boom De Yada! Gift money &#x20b9 #{@cocotransfer.amount} credited!"
   end
 
    def fail(cocotransfer, message)

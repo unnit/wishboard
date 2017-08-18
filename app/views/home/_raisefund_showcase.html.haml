@@ -189,6 +189,9 @@
           = link_preview_content(showcase.video_link).html_safe
         .embed-responsive.embed-responsive-16by9{id: "video-link-#{showcase.id}"}
           = showcase.video_iframe.html_safe
+    - if showcase.is_only_accessible_with_link?
+      .col-xs-12.col-sm-12.bg-white{class: "showcase-private-link-#{showcase.id
+        Private url : #{showcase.private_access_url}
   .col-xs-12.col-sm-12.col-md-4.padding00.ptop0.no-bord-mob
     .col-xs-12.col-sm-12.col-md-12.padding10.bg-shad
       %span.pull-left.full-width.cc-dark-fg.font25.weight600
@@ -210,13 +213,13 @@
         %span.pull-left.full-width.font12 TIME LEFT
         %span.pull-left.full-width.font16.weight600 #{showcase.remaining_days} #{showcase.remaining_days > 1 ? 'days' : 'day'} to go
       .col-xs-12.col-sm-12.no-mar-pad.mtop15.donate-form-block.padding10
-        = form_for @cocotransfer, url: cocotransfers_path(@cocotransfer), method: :post do |f|
-          = f.hidden_field :showcase_id, value: showcase.id
+        = form_for @cocotransfer, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
+          = f.hidden_field :showcase_id, value: showcase.id, name: 'showcase_id'
           .col-xs-12.col-sm-12.mbottom10.padding0
             .col-xs-2.col-sm-2.text-center.padding0
               %span.full-width.full-height.pull-left.mtop2.font20 Rs.
             .col-xs-10.col-sm-10.padding0
-              = f.text_field :amount, value: 100,  placeholder: "", class: "form-control bg-white cc-dark-fg-border"
+              = f.text_field :amount, name: 'amount', value: 100,  placeholder: "", class: "form-control bg-white cc-dark-fg-border"
           .col-xs-12.col-sm-12.no-mar-pad
             = f.submit "Gift", class: "btn cc-dark-bg white-fg weight600 full-width font20", style: "height: 45px;"
     .col-xs-12.col-sm-12.padding5.text-center.bg-shad.mtop20

@@ -4,7 +4,11 @@
       .col-xs-12.col-sm-12.no-mar-pad.text-center.h189.show-img-wrap.mob125h.hidden-overflow.tab125h
         = link_to showcase_path(showcase), remote: true do
           .pos-absolute.show-details.hide-display.full-width.full-height.padding10.font13.text-left.black-fg{style: "background-color: rgba(255,255,255,0.7)"}
-            %h4.mtop0= truncate showcase.title.humanize, length: 40
+            %h4.mtop0
+              = truncate showcase.title.humanize, length: 40
+            - if showcase.is_only_accessible_with_link?
+              %h4.mtop0
+                %i{class:"fa fa-eye-slash"}
             - if showcase.description.present?
               %span= truncate showcase.description, length: 250
           - if showcase.image.present?

@@ -1,5 +1,5 @@
 class ShowcasesController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete]
+  before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete, :private]
   before_action :get_showcase, only: [:accept_fund, :wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
   before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :undo_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
@@ -12,10 +12,10 @@ class ShowcasesController < ApplicationController
 
   def results
     if params[:query].present?
-      @showcases = Showcase.search(params[:query])
+      @showcases = Showcase.public_accessible.search(params[:query])
       @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(20)
     else
-      @showcases = Showcase.all.order(created_at: :desc).page(params[:showcases]).per(20)
+      @showcases = Showcase.public_accessible.all.order(created_at: :desc).page(params[:showcases]).per(20)
     end
     respond_to do |format|
       format.html
@@ -24,7 +24,7 @@ class ShowcasesController < ApplicationController
   end
 
   def autocomplete
-    render json: Showcase.search(params[:q], autocomplete: true, limit: 20).map(&:title)
+    render json: Showcase.public_accessible.search(params[:q], autocomplete: true, limit: 20).map(&:title)
   end
 
   def create
@@ -59,7 +59,7 @@ class ShowcasesController < ApplicationController
   def update
     @showcase.build_location if @showcase.location.blank?
     @showcase.assign_attributes(showcase_params)
-    if params[:showcase][:showcase_type].to_i == Showcase::SHOWCASE_VALUES[0]
+    if params[:showcase][:showcase_type] == Showcase::SHOWCASE_VALUES[0].to_s
       @showcase.user_status = Showcase::USER_STATUS[1]
     end
     if params[:image].present?
@@ -86,9 +86,21 @@ class ShowcasesController < ApplicationController
     redirect_to :back
   end
 
+  def private
+    @showcase = Showcase.find_by_access_token(params[:access_token])
+    @cocotransfer = Cocotransfer.new
+    return redirect_to root_path if !@showcase || @showcase.admin_created? || @showcase.is_admin_disabled? 
+    @to_move = "yes" if params[:to_move] == "yes"
+    @collection_id = params[:collection_id]
+    respond_to do |format|
+      format.html { render 'show' and return }
+      format.js { render 'show' and return }
+    end
+  end
+
   def show
     @cocotransfer = Cocotransfer.new
-    if !@showcase || @showcase.admin_created? || @showcase.is_admin_disabled?
+    if !@showcase || @showcase.admin_created? || @showcase.is_admin_disabled? || (@showcase.is_only_accessible_with_link? && @showcase.user != current_user)
       redirect_to root_path
       return
     end
@@ -155,7 +167,7 @@ class ShowcasesController < ApplicationController
   end
 
   def tagged_showcases
-    @showcases = Showcase.tagged_with(params[:tag]).where("admin_created = ?", false)
+    @showcases = Showcase.public_accessible.tagged_with(params[:tag]).where("admin_created = ?", false)
     @tag = params[:tag]
     if @showcases.blank?
       redirect_to root_path
@@ -310,7 +322,7 @@ class ShowcasesController < ApplicationController
   end
 
   def showcase_params
-    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :all_tags, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :fundcategory_id, :beneficiary, location_attributes: [:id, :name])
+    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :all_tags, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :fundcategory_id, :beneficiary,:access_type, location_attributes: [:id, :name])
   end
 
   def get_showcase

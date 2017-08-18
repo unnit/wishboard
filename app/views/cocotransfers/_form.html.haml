@@ -33,7 +33,7 @@
         %span (Mobile):
         %span.font10{style: "font-size: 10px;"} (optional)
       .col-xs-12.col-sm-12.col-md-2.pull-left
-        = select("profile", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control user-phone-prefix"})
+        = select("cocotransfer", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control user-phone-prefix"})
       .col-xs-8.col-sm-7
         = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
 

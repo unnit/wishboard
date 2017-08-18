@@ -118,52 +118,19 @@
 
 
     function getPaymentData(){
-
     var data = {
     "mode": $('#mode').val(),
-
     "merchantTxnId": $('#merchantTxnId').val(),
-
     "amount": $('#amount').val(),
-
     "userDetails": {
-
-    "email": $('#email').val(),//"sumittest@mailinator.com",
-
-    "firstName": $('#firstName').val(),//"nagama",
-
-    "lastName": $('#lastName').val(), //"inamdar",
-
-    "address": {
-
-    "street1": $('#street1').val(),//"City Garden",
-
-    "street2": $('#street2').val(), //"Link Road",
-
-    "city": $('#city').val(), // "Pune",
-
-    "state": $('#state').val(), //"Maharashtra",
-
-    "country": $('#country').val(),//"India",
-
-    "zip": $('#zip').val() //"412345"
-
+    "email": $('#email').val(),
+    "mobileNo": $('#mobileNo').val(),
     },
-
-    "mobileNo": $('#mobileNo').val()//"9876543210"
-
-    },
-
     "returnUrl": $('#returnUrl').val(),
-
     "notifyUrl": $('#notifyUrl').val(),
-
     "requestSignature": $("#requestSignature").val(),
-
     };
-
     return data;
-
     }
 
 

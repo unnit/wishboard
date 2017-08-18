@@ -8,6 +8,16 @@ namespace :coco_tasks do
       product.update_column :internal_id, row[2]
     end
   end
+  task add_access_tokens_to_old_showcases: :environment do
+    Showcase.find_each do |showcase|
+        showcase.generate_accesss_token
+        showcase.save
+    end
+  end
+
+  task add_access_type_to_old_showcases: :environment do
+    Showcase.where(access_type: nil).update_all(access_type: 0)
+  end
 
   task add_phonecode_to_old_users: :environment do
     Profile.where(phonecode: nil).update_all(phonecode: "91")

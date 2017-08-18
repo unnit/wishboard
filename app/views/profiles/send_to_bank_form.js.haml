@@ -9,3 +9,42 @@
   }
   $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
 $("#cont-wrapper").modal().show();
+$('form#send_to_bank_form').submit(function() {
+if (is_account_number_matching() && is_mmid_matching()){return true;}
+else{
+if (!is_account_number_matching()){invalid_acc_nums(); }
+else if(!is_mmid_matching()){invalid_mmids(); }
+else{}
+return false;
+}
+});
+$("input#acc_no_confirmation").bind("keyup change", function(e) {
+if(is_account_number_matching()){valid_acc_nums(); }else{invalid_acc_nums(); }
+})
+$("input#mmid_confirmation").bind("keyup change", function(e) {
+if (is_mmid_matching()){valid_mmids(); }else{invalid_mmids(); } 
+})
+
+function valid_mmids(){
+$("#mmid_confirmation").css('border-color', 'green');
+$("#confirm_mmid_error").html("").hide();
+}
+function invalid_mmids(){
+$("#mmid_confirmation").css('border-color', 'red');
+$("#confirm_mmid_error").html("Acoount number not matching").show();
+}
+function valid_acc_nums(){
+$("#acc_no_confirmation").css('border-color', 'green');
+$("#confirm_acc_no_error").html("").hide();
+}
+function invalid_acc_nums(){
+$("#acc_no_confirmation").css('border-color', 'red');
+$("#confirm_acc_no_error").html("MMID not matching").hide();
+}
+function  is_account_number_matching(){
+return ($('#acc_no_confirmation').val() == $('#acc_no').val())
+}
+function is_mmid_matching (){
+return ($('#mmid_confirmation').val() == $('#mmid').val())
+}
+

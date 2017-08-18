@@ -1,8 +1,14 @@
 class ShowcaseNotification < ApplicationRecord
   belongs_to :showcase
   belongs_to :user
+  validate :non_private_showcase
   after_create_commit {NotificationBroadcastJob.perform_later(self.user)}
   after_create_commit :deliver_firebase_notification
+
+  def non_private_showcase
+    errors.add(:showcase, "is private") if showcase && showcase.is_only_accessible_with_link?
+  end
+
   def notification_image_url
     self.showcase.user.profile_image_url
   end

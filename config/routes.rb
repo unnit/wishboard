@@ -188,6 +188,7 @@ Rails.application.routes.draw do
     end
   end
   match 'showcases/:id', to: 'showcases#show', via: 'get'
+  match 'showcases/private/:access_token', to: 'showcases#private', via: 'get'
   resources :showcases, path: "wish", only: [:edit, :create, :update, :destroy, :show] do
     member do
       post :wow

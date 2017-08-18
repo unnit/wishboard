@@ -66,4 +66,5 @@ gem 'obscenity'
 gem 'fcm'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
+gem 'puma'
 

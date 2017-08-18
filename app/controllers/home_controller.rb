@@ -25,17 +25,17 @@ class HomeController < ApplicationController
       @all_count = all_wishes(nil).count
       @all_showcases = all_wishes(nil).limit(8)
       admin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = false"]
-      unless current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq.blank?
+      unless current_user.showcases.public_accessible.where("parent_id is not null").map{|s| s.parent_id}.uniq.blank?
         admin_wish_conditions[0]+=" and id not in (?) "
-        admin_wish_conditions.push current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq
+        admin_wish_conditions.push current_user.showcases.public_accessible.where("parent_id is not null").map{|s| s.parent_id}.uniq
       end
-      @admin_showcases = Showcase.where(admin_wish_conditions).order(created_at: :desc)
+      @admin_showcases = Showcase.public_accessible.where(admin_wish_conditions).order(created_at: :desc)
       coin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = true"]
       unless current_user.coin_wishes.map{|c| c.id}.uniq.blank?
         coin_wish_conditions[0]+=" and id not in (?) "
         coin_wish_conditions.push current_user.coin_wishes.map{|c| c.parent_id}.uniq
       end
-      @coin_wishes = Showcase.where(coin_wish_conditions).order(created_at: :desc)
+      @coin_wishes = Showcase.public_accessible.where(coin_wish_conditions).order(created_at: :desc)
       #@users = User.joins(:profile).where.not(id:current_user.following.map(&:id).append(current_user.id), verified: false)
       #@users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
       @top_performers = User.where("id in (?)", GLOBAL_VARIABLES[:top_performers])
@@ -48,7 +48,7 @@ class HomeController < ApplicationController
     else
       @auth_layout = "yes"
       @remove_footer = nil
-      @showcases = Showcase.where('id in (?)', GLOBAL_VARIABLES[:featured_wishes])
+      @showcases = Showcase.public_accessible.where('id in (?)', GLOBAL_VARIABLES[:featured_wishes])
       render :authenticate
     end
   end
@@ -57,7 +57,7 @@ class HomeController < ApplicationController
     @last_all_value = params[:last_all_value]
     @all_count = params[:all_count]
     @showcases = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), params[:last_value]).order(achieved_at: :desc).limit(8)
-    @showcases.present? ? @count = Showcase.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), @showcases.last.achieved_at).count : @count = 0
+    @showcases.present? ? @count = Showcase.public_accessible.where("admin_created = ? and user_id in (?) and achieved_at < ?", false, current_user.following.map(&:id).append(current_user.id), @showcases.last.achieved_at).count : @count = 0
     respond_to :js
   end
 
@@ -238,7 +238,11 @@ class HomeController < ApplicationController
   def myprofile
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
-    @showcases = @user.showcases.where("admin_created = ?", false).order(achieved_at: :desc).limit(6)
+    if @user == current_user
+      @showcases = @user.showcases.where("admin_created = ?", false).order(achieved_at: :desc).limit(6)
+    else
+      @showcases = @user.showcases.public_accessible.where("admin_created = ?", false).order(achieved_at: :desc).limit(6)
+    end
     respond_to do |format|
       format.html
       format.js
@@ -249,7 +253,11 @@ class HomeController < ApplicationController
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Fulfilled", myshowpieces_path(@profile.slug)
-    @showcases = @user.showcases.where("admin_created = ?", false).showpieces.order(achieved_at: :desc)
+    if @user == current_user
+      @showcases = @user.showcases.where("admin_created = ?", false).showpieces.order(achieved_at: :desc)
+    else
+      @showcases = @user.showcases.public_accessible.where("admin_created = ?", false).showpieces.order(achieved_at: :desc)
+    end
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html
@@ -261,7 +269,11 @@ class HomeController < ApplicationController
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Future", mywishes_path(@profile.slug)
-    @showcases = @user.showcases.where("admin_created = ?", false).wishes.order(achieved_at: :desc)
+    if @user == current_user
+      @showcases = @user.showcases.where("admin_created = ?", false).wishes.order(achieved_at: :desc)
+    else
+      @showcases = @user.showcases.public_accessible.where("admin_created = ?", false).wishes.order(achieved_at: :desc)
+    end
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html
@@ -273,7 +285,11 @@ class HomeController < ApplicationController
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Momentary", mymomentary_path(@profile.slug)
-    @showcases = @user.showcases.where("admin_created = ?", false).momentary.order(achieved_at: :desc)
+    if @user == current_user
+      @showcases = @user.showcases.where("admin_created = ?", false).momentary.order(achieved_at: :desc)
+    else
+      @showcases = @user.showcases.public_accessible.where("admin_created = ?", false).momentary.order(achieved_at: :desc)
+    end
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
       format.html
@@ -420,7 +436,7 @@ class HomeController < ApplicationController
 
   def authenticate
     @auth_layout = "yes"
-    @showcases = Showcase.where('id in (?)', GLOBAL_VARIABLES[:featured_wishes])
+    @showcases = Showcase.public_accessible.where('id in (?)', GLOBAL_VARIABLES[:featured_wishes])
   end
 
   def offers
@@ -468,7 +484,7 @@ class HomeController < ApplicationController
   end
 
   def feed_wishes
-    return Showcase.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc)
+    return Showcase.public_accessible.where("admin_created = ? and user_id in (?)", false, current_user.following.map(&:id).append(current_user.id)).order(achieved_at: :desc)
   end
 
   def all_wishes(last_all_value)
@@ -481,7 +497,7 @@ class HomeController < ApplicationController
       conditions[0]+=" and achieved_at < ?"
       conditions.push last_all_value
     end
-    return Showcase.where(conditions).order(achieved_at: :desc)
+    return Showcase.public_accessible.where(conditions).order(achieved_at: :desc)
   end
 
 end

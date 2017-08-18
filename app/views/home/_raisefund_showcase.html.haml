@@ -190,7 +190,7 @@
         .embed-responsive.embed-responsive-16by9{id: "video-link-#{showcase.id}"}
           = showcase.video_iframe.html_safe
     - if showcase.is_only_accessible_with_link?
-      .col-xs-12.col-sm-12.bg-white{class: "showcase-private-link-#{showcase.id
+      .col-xs-12.col-sm-12.bg-white{class: "showcase-private-link-#{showcase.id}"}
         Private url : #{showcase.private_access_url}
   .col-xs-12.col-sm-12.col-md-4.padding00.ptop0.no-bord-mob
     .col-xs-12.col-sm-12.col-md-12.padding10.bg-shad

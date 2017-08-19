@@ -18,7 +18,7 @@ class Cocotransfer < ApplicationRecord
   validates :amount, :email, :phone, :phonecode, :showcase,  presence: true
   validates :donor_name, presence: true, if: :not_hiding_identity
   validate :is_valid_showcase, if: :showcase_not_blank
-  validates :amount, numericality: { only_integer: true }
+  validates :amount, numericality: { only_integer: true, greater_than_or_equal_to: 10 }
   validate :amount_should_not_less_than_or_greater_than
 
 

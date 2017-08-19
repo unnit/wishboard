@@ -4,12 +4,12 @@
     - donor = cocotransfer.fullfillment_contributer
     .col-xs-12.col-sm-12.padding10.mtop10.bg-light-grey
       .media-left
-        -if donor && donor.avatar
+        -if cocotransfer.is_anonymous?
+          %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
+            A
+        - else
           = link_to myprofile_path(donor.profile.slug) do
             = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
-        -else
-          %span.img-circle.grey-bg.text-center{style: "height: 30px;"}
-            A
       .media-body.media-middle
         - if cocotransfer.is_anonymous?
           %span.cc-dark-fg= cocotransfer.display_donor_name

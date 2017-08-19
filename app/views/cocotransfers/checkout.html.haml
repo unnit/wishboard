@@ -12,10 +12,11 @@
       #edit_details.collapse
         = render partial: "cocotransfers/form", locals: {cocotransfer: @cocotransfer,  remote: true, submit_name: "Continue"}
     .col-xs-12.col-md-12.mtop20.padding0
-      .full-width.light-border.mbottom15.padding10.pull-left.pon{"data-toggle":"collapse", "data-target":"#payment_details", "data-parent":"#myGroup"}
+      .full-width.light-border.mbottom10.padding10.pull-left.pon{"data-toggle":"collapse", "data-target":"#payment_details", "data-parent":"#myGroup"}
         Payment Details
         %span.pull-right
           %i.fa.fa-chevron-down
+      .full-width.pull-left.payment-citrus-errors.mbottom10
       #payment_details.collapse.in
         = hidden_field_tag :amount, @cocotransfer.amount, id: "amount"
         = hidden_field_tag :coco_transaction_id, @cocotransfer.txnid, id: "merchantTxnId"
@@ -191,7 +192,6 @@
 
 
     citrus.registerHandlers("transactionHandler", function(resp){
-    alert(JSON.stringify(resp));
     $('#cardPayButton').prop('disabled', false);
     $('#netbankingButton').prop('disabled', false);
     console.log(JSON.stringify(resp));
@@ -203,7 +203,7 @@
     }
     else {
     console.log('field type '+hostedField.fieldType + ' is invalid, message '+cardValidationResult.txMsg);
-    alert(cardValidationResult.txMsg);
+    $(".payment-citrus-errors").html(cardValidationResult.txMsg);
     }
     });
 

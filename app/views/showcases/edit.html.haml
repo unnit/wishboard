@@ -32,6 +32,7 @@
     $(document).ready(function(){
       $wrap = $("#edit_showcase_"+#{@showcase.id});
       $(document).on("click", ".showcase-update-submit", function(e){
+        $wrap = $("#edit_showcase_"+#{@showcase.id});
         e.preventDefault();
         $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
         $wrap.submit();

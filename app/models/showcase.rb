@@ -134,7 +134,7 @@ class Showcase < ApplicationRecord
   end
 
   def is_raising_for_others?
-    self.raising_for.present? && self.raising_for == RAISING_FOR[1]
+    self.raising_for.present? && self.raising_for == RAISING_FOR_VALUES[1]
   end
 
   def publicably_available?

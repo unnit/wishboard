@@ -3,7 +3,7 @@
     .col-xs-12.col-sm-12.padding0.bg-white.border2.ps-sub-wrap-1.ps-box-shadow
       .col-xs-12.col-sm-12.padding5.pbottom0.j-ps-holder.height89
         .col-xs-12.col-sm-12.no-mar-pad.ptop5.grey-fg.height50
-          - if current_user.id == "2"
+          - if current_user.id == 2
             - if current_user.mobile_verified?
               %label.pull-right.raise-toggle-switch.pon
                 = f.check_box :accept_fund

@@ -17,8 +17,8 @@
       = hidden_field_tag :notify_url, @cocotransfer.return_url, id: "notifyUrl"
       = hidden_field_tag :return_url, @cocotransfer.return_url, id: "returnUrl"
       = hidden_field_tag :merchantAccessKey,"#{CITRUS_CONFIG[:merchant_access_key]}", id: "merchantAccessKey"
-      = hidden_field_tag :email, "mailmemahesh91@gmail.com", id:"email"
-      = hidden_field_tag :phone, "9591779317", id:"mobileNo"
+      = hidden_field_tag :email, @cocotransfer.email, id:"email"
+      = hidden_field_tag :phone, @cocotransfer.phone, id:"mobileNo"
       %input#mode{type: "hidden", value: "dropOut"}
       %ul.nav.nav-tabs
         %li.active
@@ -42,7 +42,7 @@
           .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Card Holder Name*
             .col-md-6
-              %input.form-control#cardHolderName{type: "text", value: "Mahesh", autocomplete: "false"}/
+              %input.form-control#cardHolderName{type: "text", autocomplete: "false"}/
           .col-md-12.mtop10.no-mar-pad
             %label.col-md-3 Expiry*
             .col-md-3

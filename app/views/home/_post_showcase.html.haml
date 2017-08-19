@@ -3,15 +3,16 @@
     .col-xs-12.col-sm-12.padding0.bg-white.border2.ps-sub-wrap-1.ps-box-shadow
       .col-xs-12.col-sm-12.padding5.pbottom0.j-ps-holder.height89
         .col-xs-12.col-sm-12.no-mar-pad.ptop5.grey-fg.height50
-          - if current_user.mobile_verified?
-            %label.pull-right.raise-toggle-switch.pon
-              = f.check_box :accept_fund
-              %div
-          - else
-            = link_to unlock_crowd_funding_profiles_path, class: "j-loader-trigger-link" do
+          - if current_user.id == "2"
+            - if current_user.mobile_verified?
               %label.pull-right.raise-toggle-switch.pon
+                = f.check_box :accept_fund
                 %div
-          %i.fa.fa-inr.pull-right.mright5.font16
+            - else
+              = link_to unlock_crowd_funding_profiles_path, class: "j-loader-trigger-link" do
+                %label.pull-right.raise-toggle-switch.pon
+                  %div
+            %i.fa.fa-inr.pull-right.mright5.font16
           %span.type-holder.pon.pos-absolute{style: "left: 5px;top: 32px;font-size: 15px;"}
         .prefix-holder.pon.pull-left{style: "height: 34px;border-bottom: 2px solid #732db0;padding: 6px 0px;font-size: 14px;line-height: 1.42857143;display: inline;"}
         = text_field_tag :initial, "", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial bg-white", readonly: true

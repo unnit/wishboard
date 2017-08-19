@@ -38,6 +38,7 @@ class Showcase < ApplicationRecord
    ["Experience", 3, "An activity, events | ex: a paranormal activity, a live concert", "I experienced", "I wish to experience", "Wow! What did you experience?", "What do you wish to experience?"],
    ["Watch", 4, "a movie , serial | ex: Titanic, Game of Thrones, a Netflix series", "I watched", "I wish to watch", "Wow! What did you watch?", "What do you wish to watch?"],
    ["Meet", 5, "a person/celebrity | ex: Meet Michael Jackson (seriously?!), Sachin Tendulkar etc.", "I met", "I wish to meet", "Wow! Whom did you meet?", "Whom do you wish to meet?"],
+   ["Celeberate", 19, "birthday/festival | ex: celeberate friend's birthday, celeberate festival etc", "I celeberated", "I wish to celeberate", "Wow! What did you celeberate?", "Whom do you wish to celeberate?"],
    ["Learn", 6, "a course/skills/language | ex: cooking, guitar, German", "I learned", "I wish to learn", "Wow! What did you learn?", "What do you wish to learn?"],
    ["Read", 7, "a book | ex: Jungle Book, Twinkle, Sherlock holmes", "I read", "I wish to read", "Wow! What did you read?", "What do you wish to read?"],
    ["Use", 8, "Rent, try, test, trial | ex: rent a bullet, test drive a BMW", "I used", "I wish to use", "Wow! What was that?", "What do you wish to use?"],
@@ -51,7 +52,7 @@ class Showcase < ApplicationRecord
    ["Announce", 16, "milestones/revealations/swag| ex: a status update", "I announced", "I wish to announce", "Wow! What was the update?", "What do you wish to announce?"],
    ["Confess", 17, "about something| ex: a high school or college event", "I confessed", "I wish to confess", "What was that?", "What do you wish to confess?"],
    ["Type Your Own", 18, "Be creative & type your wish here directly | ex: anything!", "Others ", "Others", "Wow! Looks like that was a unique wish. Tell us? :)", "Wow! Looks like you have a uniques wish to share. What's that?"]]
-  WISH_PREFIX_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+  WISH_PREFIX_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
   COIN_WISH_PREFIX_VALUES = [0, 1, 2, 9, 10]
   SHOWCASE_TYPE = [["Showpiece", 0], ["Wish", 1], ["Instant", 2]]
   SHOWCASE_VALUES = [0, 1, 2]
@@ -96,18 +97,25 @@ class Showcase < ApplicationRecord
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
   scope :user_coin_wishes, -> {where(["admin_created = false and coin_wish = true"])}
   scope :not_admin_disbled, -> {where(admin_status: [0, nil] )}
-  scope :public_accessible, -> {where(access_type: [ACCEESS_TYPE[0], nil])}
-  scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])} 
+  scope :public_accessible, -> {where("access_type in (?) and title != ?", [ACCEESS_TYPE[0], nil], "Nikhil and Sunaina's marriage")}
+  scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
   scope :active, -> {where(admin_status: [0, nil] )}
 
   before_save :generate_accesss_token
+
+  HUMANIZED_ATTRIBUTES = {
+    fundcategory_id: "Category",
+    user_status: "Achieved",
+    showcase_type: "Wish Type",
+    wish_prefix: "Wish Category"
+  }
 
   def date_range_for_target_date
     begin
       reference_date = self.new_record? ?  Time.now.utc.to_date : self.created_at.to_date
       if wishlist? && target_date.to_date <  reference_date + 8.days
         errors.add(:target_date, "Invalid")
-      elsif showpiece? 
+      elsif showpiece?
         if self.accept_fund && target_date.to_date < reference_date
           errors.add(:target_date, "Invalid")
         elsif !self.accept_fund && target_date.to_date > reference_date
@@ -125,34 +133,28 @@ class Showcase < ApplicationRecord
     target_date.blank?
   end
 
-def is_raising_for_others?
-  self.raising_for.present? && self.raising_for == RAISING_FOR[1]
-end
+  def is_raising_for_others?
+    self.raising_for.present? && self.raising_for == RAISING_FOR[1]
+  end
 
-def publicably_available?
-  !is_only_accessible_with_link?
-end
+  def publicably_available?
+    !is_only_accessible_with_link?
+  end
 
-def is_only_accessible_with_link?
-  self.access_type && self.access_type == ACCEESS_TYPE[1]
-end
+  def is_only_accessible_with_link?
+    self.access_type && self.access_type == ACCEESS_TYPE[1]
+  end
 
-def private_access_url
-   GLOBAL_VARIABLES[:root_url] + "/showcase/private/#{access_token}"
-end
+  def private_access_url
+     GLOBAL_VARIABLES[:root_url] + "/showcase/private/#{access_token}"
+  end
 
-def generate_accesss_token
-  begin
-    self.access_token = SecureRandom.urlsafe_base64(20, false)
-  end while self.class.find_by(access_token: access_token)
-end
+  def generate_accesss_token
+    begin
+      self.access_token = SecureRandom.urlsafe_base64(20, false)
+    end while self.class.find_by(access_token: access_token)
+  end
 
-  HUMANIZED_ATTRIBUTES = {
-    fundcategory_id: "Category",
-    user_status: "Achieved",
-    showcase_type: "Wish Type",
-    wish_prefix: "Wish Category"
-  }
   def video_iframe
     require 'video_service'
     VideoService.new.get_video_iframe(video_link)
@@ -492,13 +494,14 @@ end
   end
 
   def remaining_days
-    (Time.now.utc.to_date - created_at.to_date).to_i
+    (target_date.to_date - Time.now.to_date).to_i
   end
 
   def percentage_raised
    percentage = ( raised_amount.to_f/goal_amount.to_f) * 100
    percentage <= 100 ? percentage : 100
   end
+
   def no_of_contributers
     cocotransfers.complete.count
     #cocotransfers.complete.non_anonymous.pluck(:from_user_id).uniq.count +  cocotransfers.complete.anonymous.pluck(:from_user_id).count
@@ -522,9 +525,11 @@ end
   end
 
   def create_showcase_notification
-    unless self.admin_created? && self.publicably_available?
-      user.followers.each do |follower|
-        self.showcase_notifications.create(user_id: follower.id)
+    unless self.title == "Nikhil and Sunaina's marriage"
+      unless self.admin_created? && self.publicably_available?
+        user.followers.each do |follower|
+          self.showcase_notifications.create(user_id: follower.id)
+        end
       end
     end
   end

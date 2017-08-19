@@ -43,7 +43,7 @@ module ApplicationHelper
     page.parse!
     if page.valid?
     <<-EOS
-      <div class="col-md-12" style="background-color:rgba(202, 230, 243, 0.42);">
+      <div class="col-md-12 padding10" style="background-color: rgba(250, 255, 170, 0.45);">
         <div class="col-md-3 pull-left">
           <img src="#{page.favicon}" width="100%">
         </div>

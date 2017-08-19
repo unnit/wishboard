@@ -16,7 +16,7 @@
         Payment Details
         %span.pull-right
           %i.fa.fa-chevron-down
-      .full-width.pull-left.payment-citrus-errors.mbottom10
+      .full-width.pull-left.payment-citrus-errors.mbottom10.heart-red-fg
       #payment_details.collapse.in
         = hidden_field_tag :amount, @cocotransfer.amount, id: "amount"
         = hidden_field_tag :coco_transaction_id, @cocotransfer.txnid, id: "merchantTxnId"
@@ -217,11 +217,12 @@
     {
     fieldType:'cvv',
     selector:'#cvv',
-    placeholder:'111'
+    placeholder:''
     },
     {
     fieldType:'expiry',
-    selector:'#expiry'
+    selector:'#expiry',
+    placeholder:'mm/yy'
     },
     {
     fieldType:'number',

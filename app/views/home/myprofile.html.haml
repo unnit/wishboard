@@ -71,19 +71,19 @@
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           %span.scase-name-wrap.white-fg.font-medium
             Fulfilled
-            .badge.weight500=  (@user == current_user)? @user.showcases.showpieces.count : @user.showcases.public_accessible.showpieces.count
+            .badge.weight500=  (@user == current_user)? @user.showcases.showpieces.count : @user.showcases.public_accessible.active.showpieces.count
     .col-xs-12.col-sm-3.mbottom20
       = link_to mywishes_path(@profile.slug), style: "color: #292929", class: "j-loader-trigger-link" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           %span.scase-name-wrap.white-fg.font-medium
             Future
-            .badge.weight500= (@user == current_user)? @user.showcases.wishes.count : @user.showcases.public_accessible.wishes.count
+            .badge.weight500= (@user == current_user)? @user.showcases.wishes.count : @user.showcases.public_accessible.active.wishes.count
     .col-xs-12.col-sm-3.mbottom20
       = link_to mymomentary_path(@profile.slug), style: "color: #292929", class: "j-loader-trigger-link" do
         .col-xs-12.col-sm-12.folder-prof.text-center.hvr-float
           %span.scase-name-wrap.white-fg.font-medium
             Momentary
-            .badge.weight500= (@user == current_user) ? @user.showcases.public_accessible.momentary.count : @user.showcases.momentary.count
+            .badge.weight500= (@user == current_user) ? @user.showcases.momentary.count : @user.showcases.public_accessible.active.momentary.count
     .collection-strip
       - @user.collections.each do |collection|
         = render partial: "showcases/collection", locals: {collection: collection}

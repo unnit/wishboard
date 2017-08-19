@@ -1573,7 +1573,11 @@ $(document).ready(function(){
     videodiv_element = $(this).attr('data-video-frame-div');
     $(this).hide();
     $(videodiv_element).removeClass('hidden');
-  })
+  });
+
+  $(document).on("keyup", "form.new_cocotransfer #cocotransfer_amount", function(e){
+   $(".cocotransfer_display_amount").html(($(this).val()));
+  });
 
 
 });// eof document ready

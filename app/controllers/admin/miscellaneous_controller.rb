@@ -2,7 +2,7 @@ class Admin::MiscellaneousController < AdminController
   def index
   	@users = User.all
   	@showcases = Showcase.all
-  	@coin_wishesh = Showcase.user_coin_wishesh
+  	@coin_wishesh = Showcase.user_coin_wishes
   	@cround_funding_wishesh = Showcase.active_rasing_funds
   	@cocotransfers = Cocotransfer.successfully_paid
   end

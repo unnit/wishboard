@@ -86,7 +86,7 @@ class ShowcasesController < ApplicationController
     redirect_to :back
   end
 
-  def private
+  def private_showcase
     @showcase = Showcase.find_by_access_token(params[:access_token])
     @cocotransfer = Cocotransfer.new
     return redirect_to root_path if !@showcase || @showcase.admin_created? || @showcase.is_admin_disabled? 

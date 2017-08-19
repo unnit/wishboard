@@ -92,10 +92,11 @@ class Showcase < ApplicationRecord
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
   scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
-  scope :user_coin_wishesh, -> {where(["admin_created = false and coin_wish = true"])}
+  scope :user_coin_wishes, -> {where(["admin_created = false and coin_wish = true"])}
   scope :not_admin_disbled, -> {where(admin_status: [0, nil] )}
   scope :public_accessible, -> {where(access_type: [ACCEESS_TYPE[0], nil])}
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])} 
+  scope :active, -> {where(admin_status: [0, nil] )}
 
   before_save :generate_accesss_token
 def publicably_available?
@@ -491,7 +492,7 @@ end
   end
 
   def create_showcase_notification
-    unless self.admin_created?
+    unless self.admin_created? && self.publicably_available?
       user.followers.each do |follower|
         self.showcase_notifications.create(user_id: follower.id)
       end

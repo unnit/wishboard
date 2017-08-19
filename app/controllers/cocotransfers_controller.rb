@@ -120,7 +120,7 @@ class CocotransfersController < ApplicationController
       + params["addressZip"]
   end
 
-  def handle_signature_verification_failure
+  def handle_invalid_signature
     @cocotransfer.deliver_signature_verification_failed
     flash[:alert] = "Signaure Verification failed. Please try again."
     redirect_to checkout_cocotransfer_path(@cocotransfer) and return true
@@ -138,7 +138,7 @@ class CocotransfersController < ApplicationController
   end
 
   def assign_coco_attributes
-    @cocotransfer.amount = !params[:amount].blank? ? params[:amount] : @showcase.try(:default_gift_amount).to_i
+    @cocotransfer.amount = !params[:amount].blank? && params[:amount].to_i > @showcase.try(:default_gift_amount).to_i ? params[:amount] : @showcase.try(:default_gift_amount).to_i
     @cocotransfer.donor_name = !params[:donor_name].blank? ?  params[:donor_name] : current_user.try(:name)
     @cocotransfer.email = !params[:email].blank? ?  params[:email] : current_user.try(:email)
     @cocotransfer.phonecode = params[:phonecode].blank? ?  params[:phonecode] : current_user.try(:profile).try(:phonecode)

@@ -16,6 +16,7 @@ class Cocotransfer < ApplicationRecord
   belongs_to :showcase
 
   validates :amount, :email, :phone, :phonecode, :showcase,  presence: true
+  validates :donor_name, presence: true, if: :not_hiding_identity
   validate :is_valid_showcase, if: :showcase_not_blank
   validates :amount, numericality: { only_integer: true }
   validate :amount_should_not_less_than_or_greater_than
@@ -54,6 +55,10 @@ class Cocotransfer < ApplicationRecord
 
   def display_donor_name
     self.is_anonymous? ? "Anonymous" : fullfillment_contributer.try(:name)
+  end
+
+  def not_hiding_identity
+   return self.hide_identity != true
   end
 
   def is_anonymous?

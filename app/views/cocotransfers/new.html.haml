@@ -1,7 +1,7 @@
 = content_for :title do
   -title = "Gift(Cocotransfer) - Cocociti"
-.container.ptop50.mob-ptop100{style: "min-height: 600px;"}
-  .col-xs-12.col-sm-12.bg-shad.mtop20{style: "border-left: 10px solid #732db0;"}
+.container.ptop50.mob-ptop100{style: "min-height: 100%;"}
+  .col-xs-12.col-sm-offset-2.col-sm-8.padding0.ptop20
     = render partial: "cocotransfers/showcase_details", locals: {showcase: @cocotransfer.showcase, cocotransfer: @cocotransfer}
-  .col-xs-12.col-sm-6.col-sm-offset-3.padding20.bg-shad.mtop20
-    = render partial: 'form' , locals: {cocotransfer: @cocotransfer, remote: false, submit_name: "Gift"}
+    .col-xs-12.col-sm-12.padding20.bg-shad.mtop20
+      = render partial: 'form' , locals: {cocotransfer: @cocotransfer, remote: false, submit_name: "Gift"}

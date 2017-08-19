@@ -11,11 +11,11 @@
           .panel-body
             #end_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{DateTime.current - 18.years}"}
             #start_date_and_time_for_dob_datepicker.hidden{"data-id" => "#{DateTime.current - 130.years}"}
-            .col-md-12
+            .col-xs-12.col-md-12.padding0
               ~ form_for @profile, html: {class: 'form-horizontal profile_form font13', role: "form"} do |f|
                 %fieldset
                   .form-group
-                    .col-sm-12.note-font-size.website-color.text-right
+                    .col-xs-12.col-sm-12.note-font-size.website-color.text-right
                       - if @profile.date_of_birth.blank? || @profile.gender.blank?
                         *, # marked fields are mandatory
                         %br
@@ -25,16 +25,16 @@
                       - else
                         * marked fields are mandatory
                   .form-group
-                    %label.col-sm-2.control-label{:for => "textinput"}
+                    %label.col-xs-12.col-sm-2.control-label{:for => "textinput"}
                       Username
                       %span.website-color *
-                    .col-sm-3
+                    .col-xs-12.col-sm-3
                       = f.text_field :slug, :placeholder => "Username", class: "form-control username lowercase", maxlength: 30, required: true
-                    .col-sm-3.uname-avail.padding10.pbottom0.grey-fg
-                    .col-sm-10.col-sm-offset-2.ptop10
+                    .col-xs-12.col-sm-3.uname-avail.padding10.pbottom0.grey-fg
+                    .col-xs-12.col-sm-10.col-sm-offset-2.ptop10
                       %span.pull-left https://www.cocociti.com/
                       %span.pull-left.username-url.lowercase
-                    .col-sm-10.col-sm-offset-2.ptop10.font11.grey-fg
+                    .col-xs-12.col-sm-10.col-sm-offset-2.ptop10.font11.grey-fg
                       Note: Only hyphens and underscores are allowed.
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
@@ -70,15 +70,15 @@
                         = f.radio_button :gender, "#{Profile::GENDER[2]}"
                         %label Others
                   .form-group.set-mob-no
-                    %label.col-sm-2.control-label{:for => "textinput"}
+                    %label.col-sm-2.col-xs-12.control-label{:for => "textinput"}
                       Mobile
                       %br
                       %span.grey-fg.font11 *Not visible to others
-                    .col-sm-1.no-mar-pad.pleft15
+                    .col-sm-2.col-xs-6.no-mar-pad.pleft15
                       = select("profile", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control"})
-                    .col-sm-4
+                    .col-sm-4.col-xs-12.mob-mtop10
                       = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
-                    .col-sm-5.mob-otp-verify.padding0.grey-fg
+                    .col-sm-4.col-xs-12.mob-otp-verify.padding0.ptop10.grey-fg
                       - if @profile.mobile_verified
                         Verified&nbsp;
                         %i{class: "fa fa-check-circle green-fg font17"}

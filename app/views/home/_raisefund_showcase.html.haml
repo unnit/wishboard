@@ -36,11 +36,11 @@
                 posted a future wish.
               - elsif showcase.instant_wishlist?
                 posted a momentary wish.
-            %span.full-width.inline-block{class: "#{showcase.image.present? ? 'font-medium' : 'font25'}"}
+            %span.full-width.inline-block.font25
               = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
                 = showcase.title
           - else
-            %span.full-width.inline-block{class: "#{showcase.image.present? ? 'font-medium' : 'font25'}"}
+            %span.full-width.inline-block.font25
               %span{class: "#{showcase.owner?(current_user) ? '' : 'hovercard'}", "data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
               %span
                 - if showcase.showpiece? || showcase.achieved?
@@ -181,7 +181,7 @@
             = f.submit "Comment", class: "btn btn-sm cc-dark-fg cc-dark-fg-border bg-white mtop5 btn-comment-create pull-left"
             .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}
     - if showcase.video_link.present?
-      .col-xs-12.col-sm-12{class: "showcase-video-#{showcase.id}"}
+      .col-xs-12.col-sm-12.padding0.mtop20
         Video:
         .col-xs-12.col-sm-12.no-mar-pad.show-video-iframe{"data-video-frame-div": "#video-link-#{showcase.id}" }
           %a{target:'_blank', href:"#{showcase.video_link}"}
@@ -192,7 +192,7 @@
     - if showcase.is_only_accessible_with_link? && showcase.user == current_user
       .col-xs-12.col-sm-12.bg-white{class: "showcase-private-link-#{showcase.id}"}
         Private url : #{showcase.private_access_url}
-  .col-xs-12.col-sm-12.col-md-4.padding00.ptop0.no-bord-mob
+  .col-xs-12.col-sm-12.col-md-4.ptop0.padding-mob0
     .col-xs-12.col-sm-12.col-md-12.padding10.bg-shad
       %span.pull-left.full-width.cc-dark-fg.font25.weight600
         Rs.#{showcase.raised_amount}

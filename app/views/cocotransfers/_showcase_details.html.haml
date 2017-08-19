@@ -1,6 +1,9 @@
-.col-xs-12.col-sm-12.padding10.font25
-  %span.inline-block You are gifting Rs.
-  %span.inline-block{class: "cocotransfer_display_amount"}
-    #{cocotransfer.amount}
-  %span.inline-block to #{showcase.user.name}
-  = cl_image_tag showcase.user.avatar, class: "img-circle", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face, alt: showcase.user.name
+.col-xs-12.col-sm-12.padding10.font-bit-large.bg-shad
+  .media
+    .media-left.media-middle
+      %i.fa.fa-bullhorn.font25.cc-dark-fg
+    .media-body
+      You are gifting Rs.
+      %span.inline-block{class: "cocotransfer_display_amount"}
+        #{cocotransfer.amount}
+      to #{showcase.user.name} for #{showcase.title}

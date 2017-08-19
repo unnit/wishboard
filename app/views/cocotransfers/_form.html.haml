@@ -30,7 +30,7 @@
         %span Mobile
         %i.fa.fa-mobile
       .col-xs-4.col-sm-3.padding0
-        = select("cocotransfer", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control user-phone-prefix"})
+        = select("cocotransfer", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] },{:selected => current_user.try(:profile).try(:phonecode), include_blank: false}, {class: "form-control user-phone-prefix"})
       .col-xs-8.col-sm-6.pright0
         = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
     .col-xs-12.col-sm-12.text-center

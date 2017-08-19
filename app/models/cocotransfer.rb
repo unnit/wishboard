@@ -51,6 +51,9 @@ class Cocotransfer < ApplicationRecord
     if self.amount && showcase.try(:min_amount_allowed).to_i > self.amount
       errors.add(:amount, "allowed minimum is #{showcase.try(:min_amount_allowed).to_i} ")
     end
+    if self.amount && self.amount > 1000000
+      errors.add(:amount, "allowed maximum is 1000000")
+    end
   end
 
   def display_donor_name

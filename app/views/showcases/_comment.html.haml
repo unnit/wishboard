@@ -22,5 +22,5 @@
         %a.small.grey-fg.see-more-comment.pon{style: "color: blue !important;"} See More
     - if comment.owner?(current_user)
       = form_for comment, url: edit_comment_showcase_path(comment), remote: true, method: :post, html: {class: "form-comment-showcase form-comment-#{comment.id}"} do |f|
-        = f.text_area :description, rows: 3, class: "form-control comment-description"
-        = f.submit "Update", class: "btn btn-primary btn-social mtop10 btn-shadow"
+        ~ f.text_area :description, rows: 3, class: "form-control comment-description"
+        = f.submit "Update", class: "btn btn-sm cc-dark-fg-border cc-dark-fg mtop10 bg-white"

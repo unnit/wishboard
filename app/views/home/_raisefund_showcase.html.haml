@@ -91,7 +91,7 @@
         %br
         %span.weight600.light-grey-fg No Image
     - if showcase.tags.present?
-      .col-xs-12.col-sm-12.showcase-tags.padding10.ptpp0
+      .col-xs-12.col-sm-12.showcase-tags.padding10
         - showcase.tags.each do |tag|
           %span.pright5.mbottom5.pull-left.mright5.font12
             .fa.fa-circle
@@ -102,24 +102,24 @@
         .col-xs-2.col-sm-2.pleft0
           = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
             - if showcase.wowed?(current_user)
-              %i.fa.fa-heart.cc-dark-fg.pull-left.hvr-push
+              %i.fa.fa-heart.cc-dark-fg.pull-left.hvr-push.font20
             - else
-              %i.fa.fa-heart-o.cc-dark-fg.pull-left.hvr-push
+              %i.fa.fa-heart-o.cc-dark-fg.pull-left.hvr-push.font20
           .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
             = showcase.active_wows.count
         .col-xs-2.col-sm-2.pright0.pleft5
-          %i.fa.fa-comment-o.pull-left.cc-dark-fg.comment-link.pon{class: "comment-link-#{showcase.id}"}
+          %i.fa.fa-comment-o.pull-left.cc-dark-fg.comment-link.pon.font20{class: "comment-link-#{showcase.id}"}
           .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
             = showcase.comments.count
       - else
         .col-xs-2.col-sm-2.pleft0
           = link_to authenticate_path do
-            %i.fa.fa-heart-o.cc-dark-fg.pull-left
+            %i.fa.fa-heart-o.cc-dark-fg.pull-left.font20
             .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
               = showcase.active_wows.count
         .col-xs-2.col-sm-2.pright0.pleft5
           = link_to authenticate_path do
-            %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
+            %i.fa.fa-comment-o.pull-left.cc-dark-fg.font20{class: "comment-link-#{showcase.id}"}
             .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
               = showcase.comments.count
       .col-xs-6.col-sm-6.pright0.pleft5
@@ -127,39 +127,39 @@
           - if showcase.owner?(current_user)
             - if (!showcase.showpiece? && !showcase.achieved?)
               = link_to fullfillment_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
-                %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
-                %span.pull-left.font12.mtop2.grey-fg.mright10 Mark as completed?
+                %i.fa.fa-check-square-o.pull-left.mtop2.font22
+                %span.pull-left.font12.mtop5.grey-fg.mright10 Mark as completed?
             - elsif showcase.backstory_possible?
               = link_to backstory_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
-                %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
-                %span.pull-left.font12.mtop2.grey-fg Backstory?
+                %i.fa.fa-check-square-o.pull-left.mtop2.font22
+                %span.pull-left.font12.mtop5.grey-fg Backstory?
             - else
               .achieved-wish-sprite.mright5
               %span.grey-fg.font12 Achieved
           - else
             - unless showcase.coin_wish?
               %span.rewish-link.pon.cc-dark-fg.pull-left{"data-id" => "#{showcase.id}"}
-                %i.fa.fa-clone.pull-left.mtop2
-                %span.font12.grey-fg.pull-left.mtop2 Wish?
+                %i.fa.fa-clone.pull-left.mtop2.font20
+                %span.font12.grey-fg.pull-left.mtop5 Wish?
               .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
                 = showcase.children.count
               %span.done-this.pon.cc-dark-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
-                %i.fa.fa-check-square-o.pull-left.font17.mtop2
-                %span.font12.grey-fg.pull-left.mtop2 Done?
+                %i.fa.fa-check-square-o.pull-left.mtop2.font22
+                %span.font12.grey-fg.pull-left.mtop5 Done?
         - else
           = link_to authenticate_path do
             %span.pon.cc-dark-fg.pull-left.pright5
-              %i.fa.fa-clone.pull-left.mtop2
-              %span.font12.grey-fg.pull-left.mtop2 Wish?
+              %i.fa.fa-clone.pull-left.mtop2.font20
+              %span.font12.grey-fg.pull-left.mtop5 Wish?
             .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
               = showcase.children.count
             %span.pon.cc-dark-fg.pull-left.pleft-10
-              %i.fa.fa-check-square-o.pull-left.font17.mtop2
-              %span.font12.grey-fg.pull-left.mtop2 Done?
+              %i.fa.fa-check-square-o.pull-left.font22.mtop2
+              %span.font12.grey-fg.pull-left.mtop5 Done?
       .col-xs-2.col-sm-2.pright0.pleft5
         - if current_user && showcase.owner?(current_user)
           = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
-            .fa.fa-folder-o.grey-fg.pull-right.font16{title: "Arrange Showcase"}
+            .fa.fa-folder-o.grey-fg.pull-right.font20{title: "Arrange Showcase"}
     .col-xs-12.col-sm-12.no-mar-pad.min-height0{class: "user-comments-#{showcase.id}"}
       - if feed == "yes"
         - if showcase.comments.count > 4
@@ -178,7 +178,7 @@
               = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
           .media-body
             ~ f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 2500
-            = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-fg cc-dark-fg-border bg-white mtop5 btn-comment-create pull-left"
+            = f.submit "Comment", class: "btn btn-sm cc-dark-fg cc-dark-fg-border bg-white mtop5 btn-comment-create pull-left"
             .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}
     - if showcase.video_link.present?
       .col-xs-12.col-sm-12{class: "showcase-video-#{showcase.id}"}
@@ -198,7 +198,7 @@
         Rs.#{showcase.raised_amount}
       %span.pull-left.full-width.font11
         raised of Rs.#{showcase.goal_amount} goal
-      %div.full-width.pull-left
+      %div.full-width.pull-left.mtop5
         .progress.mbottom0{style: "height: 8px;"}
           .progress-bar.cc-dark-bg{:style => "width: #{showcase.percentage_raised.to_i}%;"}
       .col-xs-12.col-sm-12.col-md-6.hidden
@@ -206,13 +206,13 @@
           %span.font20
             %i.fa.fa-inr{"aria-hidden" => "true"} #{showcase.remaining_amount}
           %span.font16.inline-block remaining
-      .col-xs-12.col-sm-12.padding0.ptop15
-        %span.pull-left.full-width.font12 FROM
-        %span.pull-left.full-width.font16.weight600 #{showcase.no_of_contributers} Contributers
-      .col-xs-12.col-sm-12.padding0.ptop15
-        %span.pull-left.full-width.font12 TIME LEFT
-        %span.pull-left.full-width.font16.weight600 #{showcase.remaining_days} #{showcase.remaining_days > 1 ? 'days' : 'day'} to go
-      .col-xs-12.col-sm-12.no-mar-pad.mtop15.donate-form-block.padding10
+      .col-xs-6.col-sm-6.padding0.ptop10
+        %span.pull-left.full-width.font11 FROM
+        %span.pull-left.full-width.font-medium.weight600 #{showcase.no_of_contributers} #{showcase.no_of_contributers > 1 ? 'Contributers' : 'Contributer'}
+      .col-xs-6.col-sm-6.padding0.ptop10
+        %span.pull-left.full-width.font11 TIME LEFT
+        %span.pull-left.full-width.font-medium.weight600 #{showcase.remaining_days} #{showcase.remaining_days > 1 ? 'days' : 'day'} to go
+      .col-xs-12.col-sm-12.no-mar-pad.mtop20.donate-form-block.padding0
         = form_for @cocotransfer, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
           = f.hidden_field :showcase_id, value: showcase.id, name: 'showcase_id'
           .col-xs-12.col-sm-12.mbottom10.padding0
@@ -222,11 +222,11 @@
               = f.text_field :amount, name: 'amount', value: 100,  placeholder: "", class: "form-control bg-white cc-dark-fg-border"
           .col-xs-12.col-sm-12.no-mar-pad
             = f.submit "Gift", class: "btn cc-dark-bg white-fg weight600 full-width font20", style: "height: 45px;"
-    .col-xs-12.col-sm-12.padding5.text-center.bg-shad.mtop20
+    .col-xs-12.col-sm-12.padding5.text-center.mtop10
       .shareShowcaseRoundIcons{"data-id" => "#{showcase.id}", "data-showcase-id": "#{showcase.id}"}
-    .col-xs-12.col-sm-12.padding0.mtop20
+    .col-xs-12.col-sm-12.padding0.mtop10
       = render partial: "showcases/owner_details", locals: {showcase: showcase}
-    .col-xs-12.col-sm-12.mtop20.contributers-list.padding10
+    .col-xs-12.col-sm-12.mtop20.padding0
       = render partial: "showcases/contributers", locals: {showcase: showcase}
 = content_for :extra_js do
   :javascript

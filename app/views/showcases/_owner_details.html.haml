@@ -1,12 +1,17 @@
 - user = showcase.user
-.col-xs-12.col-sm-12.bg-light-grey.padding10.border-bt-side.grey-fg
+.col-xs-12.col-sm-12.bg-light-grey.padding10.border-bt-side-dark.grey-fg
   ORGANIZER
 .col-xs-12.col-sm-12.bg-light-grey.padding5
-  .col-xs-6.col-sm-6.padding5.border-rt-side.black80-fg
-    %span.full-width.pull-left.weight500.font-medium{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "auto"}
-      = (truncate user.name, length: 20)
-    %span.full-width.pull-left.font11
-      (@#{user.profile.slug})
+  .col-xs-6.col-sm-6.padding5.black-fg
+    .media
+      .media-left
+        = link_to myprofile_path(showcase.user.profile.slug), class: "pull-left" do
+          = cl_image_tag showcase.user.avatar, class: "img-circle #{showcase.owner?(current_user) ? '' : 'hovercard'}", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face, alt: showcase.user.name
+      .media-body
+        %span.full-width.pull-left.weight500.font-medium{title: "#{user.name}", "data-toggle" => "tooltip", "data-placement" => "auto"}
+          = (truncate user.name, length: 20)
+        %span.full-width.pull-left.font11
+          (@#{user.profile.slug})
   - if current_user && current_user != user
     .col-xs-6.col-sm-6.padding5.text-center{class: "follow-set-#{user.id}"}
       = link_to user_toggle_follow_path(user), remote: true, method: :post, class: "inline-block mtop5" do
@@ -24,7 +29,7 @@
               %span
               %span
 - if showcase.beneficiary.present?
-  .col-xs-12.col-sm-12.bg-light-grey.padding10.mtop10
+  .col-xs-12.col-sm-12.bg-light-grey.padding10.mtop15.bg-shad
     %span.full-width.pull-left.weight500.font-medium
-      Beneficiary: 
+      %span.grey-fg Beneficiary:
       = showcase.beneficiary

@@ -2,8 +2,7 @@ $(".loader-button").show();
 $(".loader-effect").hide();
 $(".messages").html("#{j(render 'layouts/messages')}")
 - if @showcase.errors.blank?
-  $('.ps-wrapper2').css({"z-index": "1051"});
-  $("#showcase-modal2 .modal-dialog").html("#{j render partial: 'showcases/wish_success', locals: {showcase: @showcase}}"); 
+  $("#showcase-modal2 .modal-dialog").html("#{j render partial: 'showcases/wish_success', locals: {showcase: @showcase}}");
   $("#showcase-modal2").addClass("violet-bg");
   $("#showcase-modal2").modal('show');
   $("#showcase-modal").modal('hide');
@@ -23,8 +22,3 @@ $('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {$(".
 $('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find(".file-input-button, .progress").hide();$wrap.find(".preview").show();$wrap.find('.preview').html($.cloudinary.image(data.result.public_id,{ format: data.result.format, version: data.result.version,crop: 'fill', width: 100, height: 100, class: 'img-responsive inline-display' }));$wrap.find('.progress-bar').css('width', '0%');$wrap.find(".preview-delete").show();$wrap.find(".error-ps-photo").fadeOut();return true;});
 $(".preview-delete").click(function(){$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find(".preview").empty();$wrap.find(".preview-delete, .preview").hide();$wrap.find(".file-input-button").show();})
 reatch_cloundinary(".cloudinary-fileupload-raise-edit");
-
-
-
-
-

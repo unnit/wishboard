@@ -10,8 +10,8 @@ namespace :coco_tasks do
   end
   task add_access_tokens_to_old_showcases: :environment do
     Showcase.find_each do |showcase|
-        showcase.generate_accesss_token
-        showcase.save
+      showcase.generate_accesss_token
+      showcase.save
     end
   end
 

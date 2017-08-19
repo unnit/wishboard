@@ -193,5 +193,5 @@
           = cl_image_tag current_user.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
       .media-body
         ~ f.text_area :description, rows: 2, class: "form-control comment-description", id: "comment-description-#{showcase.id}", required: true, placeholder: "Write a comment...", maxlength: 2500
-        = f.submit "Comment", class: "btn btn-primary btn-sm cc-dark-bg mtop5 btn-shadow btn-comment-create pull-left"
+        = f.submit "Comment", class: "btn btn-sm cc-dark-fg cc-dark-fg-border mtop5 bg-white btn-comment-create pull-left"
         .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}

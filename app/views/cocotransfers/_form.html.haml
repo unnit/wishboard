@@ -1,41 +1,37 @@
-.col-xs-12.col-sm-12.no-mar-pad.bg-white.min-height0.ptop10.mtop10.font14{class: "donate-form-block-#{cocotransfer.showcase.id}"}
+.col-xs-12.col-sm-12.padding0
   = hidden_field_tag :cocotransfer_id, value: cocotransfer.id
   = form_for cocotransfer, remote: remote, html:{id: "cocotranfer_form"} do |f|
     = f.hidden_field :showcase_id, value: cocotransfer.showcase.id
-    .col-xs-12.col-sm-12.mbottom10
-      .col-xs-12.col-sm-12.col-md-3.pull-left
+    .col-xs-12.col-sm-12.mbottom20.padding0
+      .col-xs-12.col-sm-3.pleft0
+        %span Amount
         %i.fa.fa-inr
-        %span (Amount):
-      .col-xs-12.col-sm-12.col-md-9
+      .col-xs-12.col-sm-9.padding0
         = f.text_field :amount, placeholder: "Gift amount", class: "form-control bg-white"
-    .col-xs-12.col-sm-12.mbottom10
-      .col-xs-12.col-sm-12.col-md-3.pull-left
+    .col-xs-12.col-sm-12.mbottom20.padding0
+      .col-xs-12.col-sm-3.pleft0
+        %span Email
         %i.fa.fa-envelope-o
-        %span (Email):
-      .col-xs-12.col-sm-12.col-md-9
+      .col-xs-12.col-sm-9.padding0
         = f.email_field :email, placeholder: "Email", class: "form-control bg-white"
-    .col-xs-12.col-sm-12
-      .col-xs-12.col-sm-12.col-md-3.pull-left
+    .col-xs-12.col-sm-12.mbottom20.padding0
+      .col-xs-12.col-sm-3.pleft0
+        %span Name
         %i.fa.fa-user
-        %span (Name):
-        %span.font10{style: "font-size: 10px;"} (optional)
-      .col-xs-12.col-sm-12.col-md-9
+      .col-xs-12.col-sm-9.padding0
         = f.text_field :donor_name, placeholder: "Name", class: "form-control bg-white"
-    .col-xs-12.col-sm-12.mbottom10
-      .col-md-offset-3.col-xs-12.col-sm-12.col-md-9.extra-small-font
+    .col-xs-12.col-sm-12.mbottom20.padding0
+      .col-md-offset-3.col-xs-12.col-md-9.font10.pleft0
         = f.check_box :hide_identity
         %i.fa.fa-eye-slash
-        %span (Stay anonymous)
-
-    .col-xs-12.col-sm-12.mbottom10
-      .col-xs-12.col-sm-12.col-md-3.pull-left
+        %span Stay anonymous
+    .col-xs-12.col-sm-12.mbottom20.padding0
+      .col-xs-12.col-md-3.pleft0
+        %span Mobile
         %i.fa.fa-mobile
-        %span (Mobile):
-        %span.font10{style: "font-size: 10px;"} (optional)
-      .col-xs-12.col-sm-12.col-md-2.pull-left
+      .col-xs-4.col-sm-3.padding0
         = select("cocotransfer", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control user-phone-prefix"})
-      .col-xs-8.col-sm-7
+      .col-xs-8.col-sm-6.pright0
         = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
-
     .col-xs-12.col-sm-12.text-center
-      = f.submit "#{submit_name}", class: "btn btn-lg cc-dark-bg white-fg weight-bold full-width"
+      = f.submit "#{submit_name}", class: "btn btn-md cc-dark-bg white-fg weight-bold"

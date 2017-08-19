@@ -1,10 +1,6 @@
-.col-xs-12.col-sm-12
-  %div.font20 
-    You are Gifting
-    %span.fontweight600
-      %i.fa.fa-inr 
-      %span{id:"cocotransfer_display_amount", class: "cocotransfer_display_amount" }#{cocotransfer.amount}
-  %div.font20 To
-.col-xs-12.col-sm-12
-  %div.font20= showcase.user.name
-  %div= cl_image_tag showcase.user.avatar, class: "img-circle #{showcase.owner?(current_user) ? '' : 'hovercard'}", data: {id: showcase.user.id}, width: 100, height: 100, crop: :fill, gravity: :face, alt: showcase.user.name
+.col-xs-12.col-sm-12.padding10.font25
+  %span.inline-block You are gifting Rs.
+  %span.inline-block{class: "cocotransfer_display_amount"}
+    #{cocotransfer.amount}
+  %span.inline-block to #{showcase.user.name}
+  = cl_image_tag showcase.user.avatar, class: "img-circle", data: {id: showcase.user.id}, width: 40, height: 40, crop: :fill, gravity: :face, alt: showcase.user.name

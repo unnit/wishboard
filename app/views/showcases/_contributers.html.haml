@@ -1,22 +1,22 @@
-.col-xs-12.col-sm-12.mtop10
-  .font20 #{showcase.no_of_contributers} contributers
-  - @displayed_user_ids = []
+.col-xs-12.col-sm-12.padding0
+  %span.pbottom5.border-bt-side-dark.full-width.pull-left.font20 #{showcase.no_of_contributers} #{showcase.no_of_contributers > 1 ? 'Contributers' : 'Contributer'}
   - showcase.cocotransfers.complete.order(created_at: :desc).limit(10).each do |cocotransfer|
     - donor = cocotransfer.fullfillment_contributer
-    - if cocotransfer.is_anonymous? || !@displayed_user_ids.include?(donor.id)
-      .col-xs-12.col-sm-12.mtop10.ptop10.bg-shad{style: "min-height: 50px;"}
-        .col-xs-3.col-sm-3
-          -if donor && donor.avatar
+    .col-xs-12.col-sm-12.padding10.mtop10.bg-light-grey
+      .media-left
+        -if donor && donor.avatar
+          = link_to myprofile_path(donor.profile.slug) do
             = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
-          -else
-            = cl_image_tag "", class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
-        .col-xs-9.col-sm-9
-          - if cocotransfer.is_anonymous?
-            = cocotransfer.display_donor_name
-          - else
-            = link_to myprofile_path(donor.profile.slug) do
-              = cocotransfer.display_donor_name
-    - @displayed_user_ids.push donor.try(:id) if !cocotransfer.is_anonymous?
+        -else
+          %span.img-circle.grey-bg.text-center{style: "height: 30px;"}
+            A
+      .media-body.media-middle
+        - if cocotransfer.is_anonymous?
+          %span.cc-dark-fg= cocotransfer.display_donor_name
+        - else
+          = link_to myprofile_path(donor.profile.slug) do
+            %span.cc-dark-fg= cocotransfer.display_donor_name
+        contributed Rs.#{cocotransfer.amount}
   - if showcase.cocotransfers.complete.count > 10
     .col-xs-12.col-sm-12.mtop10
       = link_to "Show All", "#cocotransfers-#{showcase.id}", data: {toggle: "modal"}

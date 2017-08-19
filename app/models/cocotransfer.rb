@@ -114,9 +114,9 @@ class Cocotransfer < ApplicationRecord
   def paid!(transaction_id, tamount)
     update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: tamount
     FundreceivedNotification.create(user_id: self.showcase.user_id, cocotransfer: self )
-    # inform_success_to_donor
-    # inform_success_showcase_owner
-    # inform_success_admin
+    inform_success_to_donor
+    inform_success_showcase_owner
+    inform_success_admin
      CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
      CocotransferMailer.fund_reception_donor(self, self.showcase.user.email).deliver_now
   end
@@ -141,10 +141,10 @@ class Cocotransfer < ApplicationRecord
 
 
   def deliver_failed_transaction(msg)
-    TransactionMailer.fail(@cocotransfer, params["TxMsg"]).deliver_now
-    failed_msg_to_customer(msg)
-    failed_msg_to_admin(msg)
-    TransactionMailer.fail(@cocotransfer, params["TxMsg"]).deliver_now
+    email_message = "Your payment failed. Please try again."
+    CocotransferMailer.fail(self, email_message).deliver_now
+    # failed_msg_to_customer(msg)
+    # failed_msg_to_admin(msg)
   end
   def failed_msg_to_customer(msg)
     msg_customer =  I18n.t('sms.cocotransfer.failed.to_donor', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )

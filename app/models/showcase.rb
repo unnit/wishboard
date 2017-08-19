@@ -83,10 +83,12 @@ class Showcase < ApplicationRecord
   validates :goal_amount, :fundcategory, :target_date, :raising_for, presence: true, if: :is_for_raising_fund?
   validates :raising_for, inclusion: {in: RAISING_FOR_VALUES, message: "not an accepted value."}, if: :is_for_raising_fund?
   validates :beneficiary, length: {maximum: 200}, if: :is_for_raising_fund?
+  validates :beneficiary, presence: true, if: :is_raising_for_others?
   validates :video_link, length: {maximum: 300}, if: :is_for_raising_fund?
   validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 1000000, greater_than: 10, message: "should be between 0 and 1000000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
   validate :accept_fund_option_should_not_change, if: :already_raised_some_amount
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
+  validate :date_range_for_target_date, unless: :target_date_blank?
 
   scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
@@ -99,6 +101,34 @@ class Showcase < ApplicationRecord
   scope :active, -> {where(admin_status: [0, nil] )}
 
   before_save :generate_accesss_token
+
+  def date_range_for_target_date
+    begin
+      reference_date = self.new_record? ?  Time.now.utc.to_date : self.created_at.to_date
+      if wishlist? && target_date.to_date <  reference_date + 8.days
+        errors.add(:target_date, "Invalid")
+      elsif showpiece? 
+        if self.accept_fund && target_date.to_date < reference_date
+          errors.add(:target_date, "Invalid")
+        elsif !self.accept_fund && target_date.to_date > reference_date
+          errors.add(:target_date, "Invalid")
+        end
+      elsif instant_wishlist? && (target_date.to_date < reference_date || target_date >= reference_date + 8.days)
+        errors.add(:target_date, "Invalid")
+      end
+    rescue
+      errors.add(:target_date, "Invalid")
+    end
+  end
+
+  def target_date_blank?
+    target_date.blank?
+  end
+
+def is_raising_for_others?
+  self.raising_for.present? && self.raising_for == RAISING_FOR[1]
+end
+
 def publicably_available?
   !is_only_accessible_with_link?
 end

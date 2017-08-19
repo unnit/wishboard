@@ -65,13 +65,9 @@ class CocotransfersController < ApplicationController
       @cocotransfer.paid!(params["transactionId"], params["amount"])
       render :payment_success
     else
-      ##### comment it after checking (test purpose only)
-      @cocotransfer.paid!(params["transactionId"], params["amount"])
-      render :payment_success
-      ##### comment it after checking (test purpose only) uncomment below
-      # @cocotransfer.deliver_failed_transaction(params["TxMsg"])
-      # flash[:alert] = "#{params["TxMsg"]}"
-      # redirect_to checkout_cocotransfer_path(@cocotransfer)
+      @cocotransfer.deliver_failed_transaction(params["TxMsg"])
+      flash[:alert] = "#{params["TxMsg"]}"
+      redirect_to checkout_cocotransfer_path(@cocotransfer)
     end
   end
 

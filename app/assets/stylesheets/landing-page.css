@@ -3699,7 +3699,6 @@ th.headerSortDown {
 }
 .raise-toggle-switch div::before{
   font-size: 10px;
-  / content: "No fund"
 }
 .raise-toggle-switch input:checked + div {
   -webkit-transform: translate3d(100%, 0, 0);
@@ -3709,7 +3708,6 @@ th.headerSortDown {
 }
 .raise-toggle-switch input:checked + div::before{
   font-size: 10px;
-  / content: "Accept funds"
 }
 .settings-group .list-group-item.active, .settings-group .list-group-item.active:focus, .settings-group .list-group-item.active:hover{
   background-color: #732db0 !important;

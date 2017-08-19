@@ -1,3 +1,5 @@
+.col-xs-12.col-sm-12.full-width.pos-fixed.text-center.full-height.j-checkout-wrapper.hide-display{style: "top:0;left:0;z-index:10000000;background-color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0.6);"}
+  %span.white-fg.weight600.inline-block{style: "margin-top: 100px;font-size: 35px;"} Please wait...
 .container.ptop50.mob-ptop100.padding0.min-height1000
   .col-xs-12.col-sm-offset-2.col-sm-8.padding10#toggleGroup
     .col-xs-12.col-md-12.padding0.mtop10
@@ -78,182 +80,163 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
-    var $toggleGroup = $('#toggleGroup');
-    $toggleGroup.on('show.bs.collapse','.collapse', function() {
-    $toggleGroup.find('.collapse.in').collapse('hide');
-    });
-    citrus.setConfig({
-    env : "#{Rails.env.production? ? 'prod': 'sandbox'}",
-    merchantAccessKey : '#{CITRUS_CONFIG[:merchant_access_key]}',
-    vanityUrl : 'cococitiospvtltd',
-    });
+      var $toggleGroup = $('#toggleGroup');
+      $toggleGroup.on('show.bs.collapse','.collapse', function() {
+        $toggleGroup.find('.collapse.in').collapse('hide');
+      });
+      citrus.setConfig({
+        env : "#{Rails.env.production? ? 'prod': 'sandbox'}",
+        merchantAccessKey : '#{CITRUS_CONFIG[:merchant_access_key]}',
+        vanityUrl : 'cococitiospvtltd',
+      });
+
+      $(function(){
+        citrus.cards.getPaymentDetails({
+          vanityUrl: $('#vanityUrl').val()
+          },
+          function (err, pgSettingData) {
+            if(err){
+            console.log('got error while calling getPaymentDetails',err);
+            return;
+            }else{
+            console.log("success");
+            console.log(pgSettingData);
+            }
+            pgSettingData.netBanking.forEach(function (bank) {
+            $('#netbankingBanks').append($("<option />").val(bank.issuerCode).text(bank.bankName));
+            });
+        });
+      });
 
     $(function(){
-    citrus.cards.getPaymentDetails({
-    vanityUrl: $('#vanityUrl').val()
-    }, function (err, pgSettingData) {
-    if(err){
-    console.log('got error while calling getPaymentDetails',err);
-    return;
-    }else{
-    console.log("success");
-    console.log(pgSettingData);
-    }
-    pgSettingData.netBanking.forEach(function (bank) {
-    $('#netbankingBanks').append($("<option />").val(bank.issuerCode).text(bank.bankName));
+      $("#netbankingButton").on("click", function (){
+        $(this).prop('disabled', true);
+        $("#cardPayButton").prop('disabled', true);
+        var data = getPaymentData();
+        data.paymentDetails = {
+          "paymentMode" : "netBanking",
+          "bankCode" : $('#netbankingBanks').val()
+        };
+        $(".j-checkout-wrapper").show();
+        citrus.payment.makePayment(data);
+      });
     });
-    });
-    });
-
-
-
-
-
-
-    $(function(){
-    $("#netbankingButton").on("click", function () {
-    $(this).prop('disabled', true);
-    $("#cardPayButton").prop('disabled', true);
-    var data = getPaymentData();
-    data.paymentDetails = {
-    "paymentMode" : "netBanking",
-    "bankCode" : $('#netbankingBanks').val()
-    };
-    citrus.payment.makePayment(data);
-    });
-    });
-
-
-
 
     function getPaymentData(){
-    var data = {
-    "mode": $('#mode').val(),
-    "merchantTxnId": $('#merchantTxnId').val(),
-    "amount": $('#amount').val(),
-    "userDetails": {
-    "email": $('#email').val(),
-    "mobileNo": $('#mobileNo').val(),
-    },
-    "returnUrl": $('#returnUrl').val(),
-    "notifyUrl": $('#notifyUrl').val(),
-    "requestSignature": $("#requestSignature").val(),
-    };
-    return data;
+      var data = {
+        "mode": $('#mode').val(),
+        "merchantTxnId": $('#merchantTxnId').val(),
+        "amount": $('#amount').val(),
+        "userDetails": {
+          "email": $('#email').val(),
+          "mobileNo": $('#mobileNo').val(),
+        },
+        "returnUrl": $('#returnUrl').val(),
+        "notifyUrl": $('#notifyUrl').val(),
+        "requestSignature": $("#requestSignature").val(),
+      };
+      return data;
     }
-
 
     $(function(){
-    $("#cardPayButton").on("click", function () {
-    console.log("click pay");
-    var data = getPaymentData();
-    data.paymentDetails = {
-    paymentMode: "card",
-    holder:$('#cardHolderName').val(),
-    type: "debit"
-    };
-    citrus.payment.makePayment(data);
+      $("#cardPayButton").on("click", function(){
+      var data = getPaymentData();
+      data.paymentDetails = {
+        paymentMode: "card",
+        holder:$('#cardHolderName').val(),
+        type: "debit"
+      };
+      $(".j-checkout-wrapper").show();
+      citrus.payment.makePayment(data);
+      });
     });
-    });
-
-
 
     function replace_html(data, cocotransfer){
-    $("#amount").val(cocotransfer.amount);
-    $(".cocotransfer_display_amount").html(cocotransfer.amount)
-    $("#merchantTxnId").val(cocotransfer.txnid);
-    $("#requestSignature").val(data.security_signature);
-    $("#returnUrl").val(data.return_url);
-    $("#email").val(cocotransfer.email);
+      $("#amount").val(cocotransfer.amount);
+      $(".cocotransfer_display_amount").html(cocotransfer.amount)
+      $("#merchantTxnId").val(cocotransfer.txnid);
+      $("#requestSignature").val(data.security_signature);
+      $("#returnUrl").val(data.return_url);
+      $("#email").val(cocotransfer.email);
     }
-
-
-
 
     citrus.registerHandlers("errorHandler", function (error) {
-    console.log(error);
-    console.log("error in client code")
-    $('#cardPayButton').prop('disabled', false);
-    $('#netbankingButton').prop('disabled', false);
+      console.log(error);
+      console.log("error in client code")
+      $('#cardPayButton').prop('disabled', false);
+      $('#netbankingButton').prop('disabled', false);
     });
-
-
-
-
 
     citrus.registerHandlers("serverErrorHandler", function (error){
-    console.log("Error from server");
-    console.log(JSON.stringify(error));
-    $('#cardPayButton').prop('disabled', false);
-    $('#netbankingButton').prop('disabled', false);
+      console.log("Error from server");
+      console.log(JSON.stringify(error));
+      $('#cardPayButton').prop('disabled', false);
+      $('#netbankingButton').prop('disabled', false);
     });
-
-
-
 
     citrus.registerHandlers("transactionHandler", function(resp){
-    $('#cardPayButton').prop('disabled', false);
-    $('#netbankingButton').prop('disabled', false);
-    console.log(JSON.stringify(resp));
+      $('#cardPayButton').prop('disabled', false);
+      $('#netbankingButton').prop('disabled', false);
+      console.log(JSON.stringify(resp));
     });
-
 
     citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
-    if(cardValidationResult.isValid){
-    }
-    else {
-    console.log('field type '+hostedField.fieldType + ' is invalid, message '+cardValidationResult.txMsg);
-    $(".payment-citrus-errors").html(cardValidationResult.txMsg);
-    }
+      if(cardValidationResult.isValid){}
+      else{
+        console.log('field type '+hostedField.fieldType + ' is invalid, message '+cardValidationResult.txMsg);
+        $(".payment-citrus-errors").html(cardValidationResult.txMsg);
+      }
     });
 
-
-
-
-
-
-     $(function(){
-    citrus.hostedFields.create({setupType : "card",hostedFields:[
-    {
-    fieldType:'cvv',
-    selector:'#cvv',
-    placeholder:''
-    },
-    {
-    fieldType:'expiry',
-    selector:'#expiry',
-    placeholder:'mm/yy'
-    },
-    {
-    fieldType:'number',
-    selector:'#cardNumber'
-    }
-    ],style : {
-    'input.valid': {
-    color:'black'
-    },
-    'input.invalid':
-    {
-    color:'black'
-    }
-    }});
+    $(function(){
+      citrus.hostedFields.create({
+        setupType : "card",
+        hostedFields:[
+          {
+          fieldType:'cvv',
+          selector:'#cvv',
+          placeholder:''
+          },
+          {
+          fieldType:'expiry',
+          selector:'#expiry',
+          placeholder:'mm/yy'
+          },
+          {
+          fieldType:'number',
+          selector:'#cardNumber'
+          }
+        ],
+        style : {
+          'input.valid': {
+            color:'black'
+          },
+          'input.invalid': {
+          color:'black'
+          }
+        }
+      });
     });
 
     $('#cocotranfer_form').on('ajax:before', function(){
-    $("#netbankingButton").prop('disabled', true);
-    $("#cardPayButton").prop('disabled', true);
+      $("#netbankingButton").prop('disabled', true);
+      $("#cardPayButton").prop('disabled', true);
     })
 
-    $('#cocotranfer_form').on('ajax:success', function(e, data, status, xhr){
-    if(data.success ){replace_html(data, data.cocotransfer);  $("#edit_details").collapse('hide');
-    $("#payment_details").collapse('show');
-    $("#netbankingButton").prop('disabled', false);
-    $("#cardPayButton").prop('disabled', false);
-    $("#error").html("").hide();
-    }else{$("#error").html(data.error_messages).show();
-    setTimeout(function(){$("#error").hide();}, 40000);
-    }
-    });
+    $('#cocotranfer_form').on('ajax:success',
+      function(e, data, status, xhr){
+        if(data.success ){
+          replace_html(data, data.cocotransfer);
+          $("#edit_details").collapse('hide');
+          $("#payment_details").collapse('show');
+          $("#netbankingButton").prop('disabled', false);
+          $("#cardPayButton").prop('disabled', false);
+          $("#error").html("").hide();
+        }else{
+          $("#error").html(data.error_messages).show();
+          setTimeout(function(){$("#error").hide();}, 40000);
+        }
+      });
     });
 :css
   #cardNumber,#cvv,#expiry{

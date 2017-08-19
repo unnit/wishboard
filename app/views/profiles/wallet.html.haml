@@ -50,7 +50,7 @@
               Balance
             .col-xs-12.col-sm-12.no-mar-pad
               ="#{current_user.wallet.unused_coins.to_i}"
-            
+
           .col-xs-12.col-sm-4.no-mar-pad
             .col-xs-12.col-sm-12.no-mar-pad
               Total
@@ -98,7 +98,7 @@
 
           .col-xs-12.col-sm-12.no-mar-pad.padding10.bg-shad.light-border
             .col-xs-4.col-sm-4.no-mar-pad
-              = showcase.title 
+              = showcase.title
             .col-xs-4.col-sm-4.no-mar-pad
               %i.fa.fa-inr=showcase.available_withdraw_amount
             .col-xs-4.col-sm-4.no-mar-pad
@@ -162,7 +162,6 @@
           %br
           %br
           %span.font20.weight-bold Happy Wishing.
-          = console 
 
 = content_for :extra_js do
   :javascript
@@ -179,6 +178,3 @@
         LoadtransferForm($(this).attr('data-showcase-id'))
       })
     })
-    
-
-

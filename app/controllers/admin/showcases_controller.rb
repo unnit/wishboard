@@ -79,7 +79,7 @@ class Admin::ShowcasesController < AdminController
   private
 
   def admin_wish_params
-    params.require(:showcase).permit(:title, :description, :year, :showcase_type, :all_tags, :wish_prefix, :admin_status, :coin_wish, location_attributes: [:id, :name])
+    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :all_tags, :wish_prefix, :admin_status, :coin_wish, location_attributes: [:id, :name])
   end
 
   def get_showcase

@@ -3879,10 +3879,13 @@ th.headerSortDown {
     width: 100% !important;
   }
   .mob-font12{
-    font-size: 12px;
+    font-size: 12px !important;
+  }
+  .mob-font14{
+    font-size: 14px !important;
   }
   .mob-font20{
-    font-size: 20px;
+    font-size: 20px !important;
   }
   .jssocials-share-whatsapp .jssocials-share-link {
     background: #29a628; display: block !important;}

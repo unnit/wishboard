@@ -164,7 +164,7 @@ $(document).ready(function(){
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-left", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){
         if($wrap.find("#showcase_accept_fund").is(":checked")){
-          date_options["startDate"] = new Date($(".ps-wrapper").data("fdate"));
+          date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
         }else{
           date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
         }

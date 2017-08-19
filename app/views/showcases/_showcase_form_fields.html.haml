@@ -57,7 +57,7 @@
       = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
   - unless @showcase.achieved? && (!@showcase.showpiece?)
     .col-xs-12.col-sm-5.ptop10.height50
-      = f.text_field :target_date, placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{showcase.is_for_raising_fund? ? 'hidden' : ''}"
+      = f.text_field :target_date, value: "#{@showcase.target_date.strftime('%d-%m-%Y')}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{showcase.is_for_raising_fund? ? 'hidden' : ''}"
     .col-xs-12.col-sm-12.ptop10.height50
       Accept Fund:
       - if showcase.accept_fund_is_editable?
@@ -68,7 +68,7 @@
       .col-xs-12.col-sm-6.pleft0.height50
         = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field pac-input", maxlength: 200
       .col-xs-12.col-sm-6.pright0.height50
-        = f.text_field :target_date, placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date"
+        = f.text_field :target_date, value: "#{@showcase.target_date.strftime('%d-%m-%Y')}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date"
       .col-xs-12.col-sm-12.pleft0.pright0.ptop10
         .col-xs-4.col-sm-3.pleft0
           %label{for: "showcase_fundcategory_id"} Category

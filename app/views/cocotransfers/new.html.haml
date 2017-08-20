@@ -10,5 +10,6 @@
     $(document).ready(function(){
       if(#{params[:amount]} != ""){
         $("#cocotransfer_amount").val(#{params[:amount]});
+        $(".cocotransfer_display_amount").text(#{params[:amount]});
       }
     })

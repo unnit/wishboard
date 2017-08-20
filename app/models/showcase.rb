@@ -97,7 +97,7 @@ class Showcase < ApplicationRecord
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
   scope :user_coin_wishes, -> {where(["admin_created = false and coin_wish = true"])}
   scope :not_admin_disbled, -> {where(admin_status: [0, nil] )}
-  scope :public_accessible, -> {where("access_type in (?) and title != ?", [ACCEESS_TYPE[0], nil], "Nikhil and Sunaina's marriage")}
+  scope :public_accessible, -> {where("access_type in (?) and title not in (?)", [ACCEESS_TYPE[0], nil], ["Nikhil and Sunaina's marriage", "Adarsh and Krishnaja's marriage"])}
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
   scope :active, -> {where(admin_status: [0, nil] )}
 
@@ -525,7 +525,7 @@ class Showcase < ApplicationRecord
   end
 
   def create_showcase_notification
-    unless self.title == "Nikhil and Sunaina's marriage"
+    unless self.title == "Adarsh and Krishnaja's marriage"
       unless self.admin_created? && self.publicably_available?
         user.followers.each do |follower|
           self.showcase_notifications.create(user_id: follower.id)

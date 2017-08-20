@@ -19,3 +19,16 @@
     = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 100
   .col-xs-12.col-sm-12.mtop20.mbottom20.text-center
     = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold showcase-raise-update-submit"
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      var places_input_1= $('.pac-input')[1];
+      google.maps.event.addDomListener(window, 'load', function () {
+          var autocomplete = new google.maps.places.Autocomplete(places_input_1);
+          google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
+            if (e.keyCode == 13 && $('.pac-container:visible').length) {
+              e.preventDefault();
+            }
+          });
+      });
+    })

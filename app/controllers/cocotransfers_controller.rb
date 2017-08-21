@@ -62,7 +62,7 @@ class CocotransfersController < ApplicationController
     log_transaction_response
     handle_invalid_signature if @signature != params["signature"]
     if params["TxStatus"] == Transaction::PAYMENT_GATEWAY_STATUS[0]
-      @cocotransfer.paid!(params["transactionId"], params["amount"])
+      @cocotransfer.paid!(params["transactionId"], params["amount"]) unless @cocotransfer.paid?
       render :payment_success
     else
       @cocotransfer.deliver_failed_transaction(params["TxMsg"])

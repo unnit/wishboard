@@ -127,9 +127,13 @@ class CocotransfersController < ApplicationController
     @old_coco_transfer = Cocotransfer.last
     @cocotransfer = Cocotransfer.new
     @cocotransfer.attributes = @old_coco_transfer.attributes.symbolize_keys.slice(:showcase_id, :amount, :email, :donor_name, :phonecode, :phone)
-    @cocotransfer.showcase_id = 644
-    @cocotransfer.amount = 4000
-    @cocotransfer.save
+    if @cocotransfer.save
+      @cocotransfer.generate_txnid!
+      return redirect_to checkout_cocotransfer_path(@cocotransfer)
+    else
+      flash[:alert] = @cocotransfer.errors.full_messages.join(", ")
+      render :new
+    end
     redirect_to checkout_cocotransfer_path(@cocotransfer)
   end
 

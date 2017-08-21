@@ -5,11 +5,6 @@ require 'openssl'
 require 'rubygems'
 require 'sms_service'
 class Cocotransfer < ApplicationRecord
-  ## extend FriendlyId
-  ## friendly_id :slug_candidates, use: :slugged
-  ## def slug_candidates
-  ##   [:slug]
-  ## end
   has_many :txdetails
   belongs_to :fullfillment_contributer, class_name: "User", :foreign_key => :from_user_id
   belongs_to :user, class_name: "User", :foreign_key => :user_id
@@ -118,7 +113,7 @@ class Cocotransfer < ApplicationRecord
     inform_success_showcase_owner
     inform_success_admin
      CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
-     CocotransferMailer.fund_reception_donor(self, self.showcase.user.email).deliver_now
+     CocotransferMailer.fund_reception_owner(self, self.showcase.user.email).deliver_now
   end
 
   def inform_success_to_donor

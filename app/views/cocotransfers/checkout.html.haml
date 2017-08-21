@@ -161,15 +161,11 @@
     }
 
     citrus.registerHandlers("errorHandler", function (error) {
-      console.log(error);
-      console.log("error in client code")
       $('#cardPayButton').prop('disabled', false);
       $('#netbankingButton').prop('disabled', false);
     });
 
     citrus.registerHandlers("serverErrorHandler", function (error){
-      console.log("Error from server");
-      console.log(JSON.stringify(error));
       $('#cardPayButton').prop('disabled', false);
       $('#netbankingButton').prop('disabled', false);
     });
@@ -177,13 +173,12 @@
     citrus.registerHandlers("transactionHandler", function(resp){
       $('#cardPayButton').prop('disabled', false);
       $('#netbankingButton').prop('disabled', false);
-      console.log(JSON.stringify(resp));
     });
 
     citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
-      if(cardValidationResult.isValid){}
-      else{
-        console.log('field type '+hostedField.fieldType + ' is invalid, message '+cardValidationResult.txMsg);
+      if(cardValidationResult.isValid){
+        $(".payment-citrus-errors").html("");
+      }else{
         $(".payment-citrus-errors").html(cardValidationResult.txMsg);
       }
     });

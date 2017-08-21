@@ -288,6 +288,12 @@ class Showcase < ApplicationRecord
     active_wows.count >= 1
   end
 
+  def changed_date
+    if self.target_date.present?
+      target_date.strftime('%d-%m-%Y');
+    end
+  end
+
   ##--- Coin activation and deactivation
   def create_coin(user)
     coins.create(user_id: user.id)

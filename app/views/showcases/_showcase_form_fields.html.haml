@@ -58,8 +58,9 @@
   - unless @showcase.achieved? && (!@showcase.showpiece?)
     .col-xs-12.col-sm-5.ptop10.height50
       = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{showcase.is_for_raising_fund? ? 'hidden' : ''}"
+  - if current_user.id == 2
     .col-xs-12.col-sm-12.ptop10.height50
-      Accept Fund:
+      Accept as Gift:
       - if showcase.accept_fund_is_editable?
         = f.check_box :accept_fund
       - else

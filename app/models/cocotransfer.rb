@@ -12,6 +12,7 @@ class Cocotransfer < ApplicationRecord
 
   validates :amount, :email, :phone, :phonecode, :showcase,  presence: true
   validates :donor_name, presence: true, if: :not_hiding_identity
+  validates :donor_name, length: {maximum: 150}
   validate :is_valid_showcase, if: :showcase_not_blank
   validates :amount, numericality: { only_integer: true, greater_than_or_equal_to: 10 }
   validate :amount_should_not_less_than_or_greater_than
@@ -52,7 +53,7 @@ class Cocotransfer < ApplicationRecord
   end
 
   def display_donor_name
-    self.is_anonymous? ? "Anonymous" : fullfillment_contributer.try(:name)
+    self.is_anonymous? ? "Anonymous" : self.donor_name
   end
 
   def not_hiding_identity
@@ -60,7 +61,7 @@ class Cocotransfer < ApplicationRecord
   end
 
   def is_anonymous?
-    return self.hide_identity || !self.fullfillment_contributer
+    return self.hide_identity
   end
 
   def generate_txnid!

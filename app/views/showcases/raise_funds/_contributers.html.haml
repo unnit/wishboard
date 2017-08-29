@@ -1,28 +1,30 @@
-.modal.profile-modal.fade{id: "cocotransfers-#{showcase.id}"}
+.modal.fade{id: "cocotransfers-#{showcase.id}"}
   .modal-dialog
     .modal-content
       .modal-header
         %button.close{ type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => true }x
-        %h2 Contributions
-      .modal-body
-        %span.pbottom5.border-bt-side-dark.full-width.pull-left.font20 #{showcase.no_of_contributers} #{showcase.no_of_contributers > 1 ? 'Contributers' : 'Contributer'}
+        %h3.no-mar-pad Contributions
+      .modal-body.pull-left
+        %span.pbottom5.full-width.pull-left.font16 #{showcase.no_of_contributers} #{showcase.no_of_contributers > 1 ? 'Contributers' : 'Contributer'}
         - showcase.cocotransfers.complete.order(created_at: :desc).each do |cocotransfer|
           - donor = cocotransfer.fullfillment_contributer
           .col-xs-12.col-sm-12.padding10.mtop10.bg-light-grey
             .media-left
-              -if cocotransfer.is_anonymous?
+              - if cocotransfer.is_anonymous?
                 %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
                   A
-              - else
+              - elsif cocotransfer.fullfillment_contributer.blank? || (cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name != cocotransfer.fullfillment_contributer.name)
+                %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
+                  = cocotransfer.donor_name.first.upcase
+              - elsif cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name == cocotransfer.fullfillment_contributer.name
                 = link_to myprofile_path(donor.profile.slug) do
                   = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
             .media-body.media-middle
-              - if cocotransfer.is_anonymous?
+              - if cocotransfer.is_anonymous? || cocotransfer.fullfillment_contributer.blank? || (cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name != cocotransfer.fullfillment_contributer.name)
                 %span.cc-dark-fg= cocotransfer.display_donor_name
-              - else
+              - elsif cocotransfer.fullfillment_contributer.present?  && cocotransfer.donor_name == cocotransfer.fullfillment_contributer.name
                 = link_to myprofile_path(donor.profile.slug) do
                   %span.cc-dark-fg= cocotransfer.display_donor_name
               contributed Rs.#{cocotransfer.amount}
       .clearfix
       .modal-footer
-        = link_to "Close", "javascript:;", class: "btn btn-danger pull right", data: {dismiss: "modal"}

@@ -1,23 +1,26 @@
 .col-xs-12.col-sm-12.padding0
   %span.pbottom5.border-bt-side-dark.full-width.pull-left.font20 #{showcase.no_of_contributers} #{showcase.no_of_contributers > 1 ? 'Contributers' : 'Contributer'}
-  - showcase.cocotransfers.complete.order(created_at: :desc).limit(10).each do |cocotransfer|
+  - showcase.cocotransfers.complete.order(created_at: :desc).limit(5).each do |cocotransfer|
     - donor = cocotransfer.fullfillment_contributer
     .col-xs-12.col-sm-12.padding10.mtop10.bg-light-grey
       .media-left
-        -if cocotransfer.is_anonymous?
+        - if cocotransfer.is_anonymous?
           %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
             A
-        - else
+        - elsif cocotransfer.fullfillment_contributer.blank? || (cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name != cocotransfer.fullfillment_contributer.name)
+          %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
+            = cocotransfer.donor_name.first.upcase
+        - elsif cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name == cocotransfer.fullfillment_contributer.name
           = link_to myprofile_path(donor.profile.slug) do
             = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
       .media-body.media-middle
-        - if cocotransfer.is_anonymous?
+        - if cocotransfer.is_anonymous? || cocotransfer.fullfillment_contributer.blank? || (cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name != cocotransfer.fullfillment_contributer.name)
           %span.cc-dark-fg= cocotransfer.display_donor_name
-        - else
+        - elsif cocotransfer.fullfillment_contributer.present?  && cocotransfer.donor_name == cocotransfer.fullfillment_contributer.name
           = link_to myprofile_path(donor.profile.slug) do
             %span.cc-dark-fg= cocotransfer.display_donor_name
         contributed Rs.#{cocotransfer.amount}
-  - if showcase.cocotransfers.complete.count > 10
+  - if showcase.cocotransfers.complete.count > 5
     .col-xs-12.col-sm-12.mtop10
-      = link_to "Show All", "#cocotransfers-#{showcase.id}", data: {toggle: "modal"}
+      = link_to "Show All", "#cocotransfers-#{showcase.id}", data: {toggle: "modal"}, class: "cc-dark-fg font11"
       = render partial: "showcases/raise_funds/contributers", locals: {showcase: showcase}

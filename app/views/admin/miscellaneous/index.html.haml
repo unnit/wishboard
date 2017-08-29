@@ -1,14 +1,10 @@
 .container
   .text-center.stat-columns.font18
-    .col-xs-12.col-sm-12.col-md-12{style: "margin-top: 110px;"}
-    .col-xs-12.col-sm-12.col-md-12
-      .col-xs-12.col-sm-12.col-md-12
-        .padding5
-          %h2
-            Stats
+    .col-xs-12.col-sm-12.col-md-12.mtop70
+      %h2 Stats
       .col-xs-12.col-xs-12.col-md-4.mtop10
         .padding20.bg-shad.mleft5
-          %p.font18.weight600.subheader{style: "text-align: left;"} Showcases
+          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Showcases
           %p Total: #{@showcases.count}
           %P Fullfilled: #{@showcases.showpieces.count}
           %P Momentry: #{@showcases.momentary.count}
@@ -27,7 +23,7 @@
           %p With after stroy: #{Showcase.showpieces.where("showcase_type IN  (?) and user_status = ?", [Showcase::SHOWCASE_VALUES[1] , Showcase::SHOWCASE_VALUES[1]], Showcase::USER_STATUS[1]).where("achieved_description != ? OR fullfilled_image != ? OR after_rating != ?", nil, nil, nil).count}
       .col-xs-12.col-xs-12.col-md-4.mtop10
         .padding20.bg-shad.mleft5
-          %p.font18.weight600.subheader{style: "text-align: left;"} Users
+          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Users
           %p Total: #{@users.count}
           %p Email unverified: #{User.where(inactive: true).count}
           %p Mobile verified: #{Profile.phone_verified.count}
@@ -37,7 +33,7 @@
           %p Wiki content: #{Wiki.pluck(:user_id).uniq.count}
           %p Profiles with dp: #{Profile.where.not(image: nil).count}
           %p With About info:
-          %p.font18.weight600.subheader{style: "text-align: left;"} Cround funding
+          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Cround funding
           %p Number of Wishesh: #{@cround_funding_wishesh.count}
           %p Total Raised Amount: Rs.#{@cocotransfers.sum(:amount)}
           %p Total Transactions: #{Cocotransfer.all.count} (#{Cocotransfer.complete.count} / #{Cocotransfer.all.count - Cocotransfer.complete.count})
@@ -45,11 +41,11 @@
           %p Amount withdrawn: #{Withdraw.sum(:amount)}
       .col-xs-12.col-xs-12.col-md-4.mtop10
         .padding20.bg-shad
-          %p.font18.weight600.subheader{style: "text-align: left;"} ChatRooms
+          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} ChatRooms
           %p Chatrooms: #{ChatRoom.all.count}
           %P Messages: #{ChatMessage.all.count}
           %p{id: 'no_of_emojis_used'}No of emojis used: XX
-          %p.font18.weight600.subheader{style: "text-align: left;"} Misc
+          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Misc
           %p Comments #{Comment.all.count}
           %P Likes: #{Wow.all.count}
           %P Tags: #{Tag.all.count}

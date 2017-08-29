@@ -19,9 +19,9 @@
         %li{class: "dropdown"}
           =link_to "Croudfunding", "#"
           .dropdown-content
-            %div= link_to  "Wishesh", croudfunding_admin_showcases_path, {class: "internallink"}
-            %div= link_to "cocotransfers", admin_cocotransfers_path,  {class: "internallink"}
-            %div= link_to "Withdraws", croudfunding_withdraws_admin_users_path
+            %div.padding10= link_to  "Wishes", croudfunding_admin_showcases_path, class: "internallink grey-fg"
+            %div.padding10= link_to "Cocotransfers", admin_cocotransfers_path,  class: "internallink grey-fg"
+            %div.padding10= link_to "Withdraws", croudfunding_withdraws_admin_users_path, class: "grey-fg"
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Withdraws", withdraws_admin_users_path
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Notification", admin_admin_firebasenotifications_path
         %li{class: "dropdown"}

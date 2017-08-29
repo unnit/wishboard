@@ -10,10 +10,7 @@
           .col-sm-3.mbottom20
             = cocotransfer.amount
           .col-sm-3.mbottom20
-            - if !cocotransfer.is_anonymous? && donor
-              = link_to donor.name, "#profile-#{donor.profile_id}", data: {toggle: "modal" }
-            -else
-              = cocotransfer.display_donor_name
+            = link_to donor.name, "#profile-#{donor.profile_id}", data: {toggle: "modal"}
           .col-sm-6.mbottom20
             = cocotransfer.created_at
       .clearfix

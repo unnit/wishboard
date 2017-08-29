@@ -18,9 +18,9 @@
         - if !@showcase.custom_wish_type? && @showcase.wish_prefix.present?
           %span.cc-dark-fg-dotted-border.mleft5
             - if @showcase.showpiece?
-              = Showcase::WISH_PREFIX[@showcase.wish_prefix][3]
+              = Showcase::WISH_PREFIX.sort {|a,b| a[1] <=> b[1]}[@showcase.wish_prefix][3]
             - else
-              = Showcase::WISH_PREFIX[@showcase.wish_prefix][4]
+              = Showcase::WISH_PREFIX.sort {|a,b| a[1] <=> b[1]}[@showcase.wish_prefix][4]
             &nbsp;
             %i.fa.fa-angle-down.font16
         - else
@@ -67,7 +67,7 @@
         = f.check_box :accept_fund, disabled: "disabled"
     .col-xs-12.col-sm-12.raise-funds-fields{class: "#{showcase.is_for_raising_fund? ? '' : 'hidden'}"}
       .col-xs-12.col-sm-6.pleft0.height50
-        = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field pac-input", maxlength: 200
+        = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field pac-input", maxlength: 7
       .col-xs-12.col-sm-6.pright0.height50
         = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date"
       .col-xs-12.col-sm-12.pleft0.pright0.ptop10

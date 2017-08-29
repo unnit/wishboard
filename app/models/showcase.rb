@@ -96,7 +96,6 @@ class Showcase < ApplicationRecord
   scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
   scope :user_coin_wishes, -> {where(["admin_created = false and coin_wish = true"])}
-  scope :not_admin_disbled, -> {where(admin_status: [0, nil] )}
   scope :public_accessible, -> {where("access_type in (?) and title not in (?)", [ACCEESS_TYPE[0], nil], ["Nikhil and Sunaina's marriage", "Adarsh and Krishnaja's marriage"])}
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
   scope :active, -> {where(admin_status: [0, nil] )}
@@ -206,9 +205,9 @@ class Showcase < ApplicationRecord
   def remove_croundfunding_attributes
     unless self.accept_fund
       self.goal_amount = nil
-     self.fundcategory_id = nil
-     self.raising_for = nil
-     self.video_link = nil
+      self.fundcategory_id = nil
+      self.raising_for = nil
+      self.video_link = nil
    end
  end
 
@@ -500,7 +499,7 @@ class Showcase < ApplicationRecord
   end
 
   def remaining_days
-    (target_date.to_date - Time.now.to_date).to_i
+    (target_date.to_date - Time.now.to_date).to_i > 0 ? (target_date.to_date - Time.now.to_date).to_i : 0
   end
 
   def percentage_raised

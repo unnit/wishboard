@@ -17,8 +17,16 @@ $(".messages").html("#{j(render 'layouts/messages')}")
   $(".tm-input").typeahead(null, {display: 'value',source: tags,}).on('typeahead:selected', function (e, d) {tagApi.tagsManager("pushTag", d.value);$('.tm-input').typeahead('val', "");});
   tagApi.tagsManager("empty");
   $(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});
-$(".cloudinary-fileupload").cloudinary_fileupload();
-$('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {$(".ps-sub-wrap-2").fadeIn(50, function(){$(".ps-sub-wrap-2").animate({"opacity": "1", "margin-left": "10px", "margin-top": "-120px"}, 150);});$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find('.progress').css("display", "inline-block");console.log(data.loaded);$wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');});
-$('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find(".file-input-button, .progress").hide();$wrap.find(".preview").show();$wrap.find('.preview').html($.cloudinary.image(data.result.public_id,{ format: data.result.format, version: data.result.version,crop: 'fill', width: 100, height: 100, class: 'img-responsive inline-display' }));$wrap.find('.progress-bar').css('width', '0%');$wrap.find(".preview-delete").show();$wrap.find(".error-ps-photo").fadeOut();return true;});
-$(".preview-delete").click(function(){$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find(".preview").empty();$wrap.find(".preview-delete, .preview").hide();$wrap.find(".file-input-button").show();})
-reatch_cloundinary(".cloudinary-fileupload-raise-edit");
+  $(".cloudinary-fileupload").cloudinary_fileupload();
+  $('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {$(".ps-sub-wrap-2").fadeIn(50, function(){$(".ps-sub-wrap-2").animate({"opacity": "1", "margin-left": "10px", "margin-top": "-120px"}, 150);});$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find('.progress').css("display", "inline-block");console.log(data.loaded);$wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');});
+  $('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find(".file-input-button, .progress").hide();$wrap.find(".preview").show();$wrap.find('.preview').html($.cloudinary.image(data.result.public_id,{ format: data.result.format, version: data.result.version,crop: 'fill', width: 100, height: 100, class: 'img-responsive inline-display' }));$wrap.find('.progress-bar').css('width', '0%');$wrap.find(".preview-delete").show();$wrap.find(".error-ps-photo").fadeOut();return true;});
+  $(".preview-delete").click(function(){$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find(".preview").empty();$wrap.find(".preview-delete, .preview").hide();$wrap.find(".file-input-button").show();})
+  reatch_cloundinary(".cloudinary-fileupload-raise-edit");
+  :plain
+    var places_input_1= $('.pac-extra-input')[0];
+    var autocomplete = new google.maps.places.Autocomplete(places_input_1);
+    google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
+      if (e.keyCode == 13 && $('.pac-container:visible').length) {
+        e.preventDefault();
+      }
+    });

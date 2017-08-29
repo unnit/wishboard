@@ -77,18 +77,37 @@ $(document).ready(function(){
     });
     $(document).on('change', '#showcase_accept_fund', function() {
       $wrap = $(this).closest(".create-showcase");
+      date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-left", startDate: "", endDate: "" };
       if($(this).is(":checked")){
         $wrap.find(".j-more, .j-img-wrapper").hide();
         $wrap.find(".showcase-submit").val("Next");
         $wrap.find(".goal-target-date").removeAttr("disabled").attr("readonly", true);
         $wrap.find(".more-target-date").addClass("hidden").removeAttr("readonly").attr("disabled", true);
         $wrap.find('.raise-funds-fields').removeClass('hidden');
+        if($wrap.find("#showcase_showcase_type").val() == 0){
+          date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+          $wrap.find(".dt-of-achievement").val("").datetimepicker('remove');
+          $wrap.find(".dt-of-achievement").datetimepicker(date_options).on('changeDate', function(){
+            if($wrap.find("#showcase_accept_fund").is(":checked")){
+              showPsNext();
+            }
+          });
+        }
       }else{
         $wrap.find(".j-more, .j-img-wrapper").show();
         $wrap.find(".showcase-submit").val("Wish");
         $wrap.find(".goal-target-date").removeAttr("readonly").attr("disabled", true);
         $wrap.find(".more-target-date").removeClass("hidden").removeAttr("disabled").attr("readonly", true);
         $wrap.find('.raise-funds-fields').addClass('hidden');
+        if($wrap.find("#showcase_showcase_type").val() == 0){
+          date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+          $wrap.find(".dt-of-achievement").val("").datetimepicker('remove');
+          $wrap.find(".dt-of-achievement").datetimepicker(date_options).on('changeDate', function(){
+            if($wrap.find("#showcase_accept_fund").is(":checked")){
+              showPsNext();
+            }
+          });
+        }
       }
     })
     $(document).on("click", ".ps-nav-btn", function(){

@@ -1,4 +1,4 @@
-.container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0.admin-showcase-edit{"data-pdate" => "#{DateTime.current}", "data-fdate" => "#{DateTime.current + 8.days}"}
+.container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0.ps-wrapper{"data-pdate" => "#{DateTime.current}", "data-fdate" => "#{DateTime.current + 8.days}"}
   .container.padding0.ptop20.pbottom70.helvetica-font
     .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
       = form_for [:admin, @showcase], html: {class: "create-showcase"} do |f|
@@ -54,7 +54,7 @@
           = f.fields_for :location do |lf|
             = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
         .col-xs-12.col-sm-5.ptop10.height50
-          = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{showcase.is_for_raising_fund? ? 'hidden' : ''}"
+          = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{@showcase.is_for_raising_fund? ? 'hidden' : ''}"
         .col-xs-12.col-sm-3.mtop10
           %span.no-mar-pad.col-xs-12.col-sm-12
             = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}", required: true
@@ -67,13 +67,13 @@
           %label.mbottom0 Coin WIsh
         .col-xs-12.col-sm-12.ptop10.height50
           Accept Fund:
-          - if showcase.accept_fund_is_editable?
+          - if @showcase.accept_fund_is_editable?
             = f.check_box :accept_fund
           - else
             = f.check_box :accept_fund, disabled: "disabled"
-        .col-xs-12.col-sm-12.raise-funds-fields{class: "#{showcase.is_for_raising_fund? ? '' : 'hidden'}"}
+        .col-xs-12.col-sm-12.raise-funds-fields{class: "#{@showcase.is_for_raising_fund? ? '' : 'hidden'}"}
           .col-xs-12.col-sm-6.pleft0.height50
-            = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field pac-input", maxlength: 200
+            = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field pac-input", maxlength: 7
           .col-xs-12.col-sm-6.pright0.height50
             = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date"
           .col-xs-12.col-sm-12.pleft0.pright0.ptop10
@@ -88,33 +88,41 @@
               = f.collection_radio_buttons :raising_for, Showcase::RAISING_FOR, :first, :last do |b|
                 = b.radio_button(class: "pull-left", style: "margin-left: 6px;") + b.label(class: "pull-left mbottom0 mleft5")
             .col-xs-8.col-xs-offset-4.col-sm-offset-0.col-sm-5.pleft0.pright0
-              = f.text_field :beneficiary, class: "form-control coco-input-field #{showcase.is_raising_for_others? ? '' : 'hidden'}", placeholder: "Beneficiary name*"
+              = f.text_field :beneficiary, class: "form-control coco-input-field #{@showcase.is_raising_for_others? ? '' : 'hidden'}", placeholder: "Beneficiary name*"
           .col-xs-12.col-sm-12.height50.padding0.ptop10
             = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 200
         .col-xs-12.col-sm-12.mtop25.text-center
-          = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
+          = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
 
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
       $wrap = $("#edit_showcase_"+#{@showcase.id});
+      $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 3});
       $wrap.find(".type-holder").html("#{@showcase.showcase_type_label.html_safe}");
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-right", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){
-        date_options["endDate"] = new Date($(".admin-showcase-edit").data("pdate"));
-        $wrap.find(".dt-of-achievement").datetimepicker(date_options);
+        if($wrap.find("#showcase_accept_fund").is(":checked")){
+          date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+        }else{
+          date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+        }
       }
       else if($wrap.find("#showcase_showcase_type").val() == 1){
-        date_options["startDate"] = new Date($(".admin-showcase-edit").data("fdate"));
-        $wrap.find(".dt-of-achievement").datetimepicker(date_options);
+        date_options["startDate"] = new Date($(".ps-wrapper").data("fdate"));
       }
+      else if($wrap.find("#showcase_showcase_type").val() == 2){
+        date_options["endDate"] = new Date($(".ps-wrapper").data("fdate"));
+        date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+      }
+      $wrap.find(".dt-of-achievement").datetimepicker(date_options);
       var places_input_1= $('.pac-input')[1];
       google.maps.event.addDomListener(window, 'load', function () {
-          var autocomplete = new google.maps.places.Autocomplete(places_input_1);
-          google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
-            if (e.keyCode == 13 && $('.pac-container:visible').length) {
-              e.preventDefault();
-            }
-          });
+        var autocomplete = new google.maps.places.Autocomplete(places_input_1);
+        google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
+          if (e.keyCode == 13 && $('.pac-container:visible').length) {
+            e.preventDefault();
+          }
+        });
       });
     })

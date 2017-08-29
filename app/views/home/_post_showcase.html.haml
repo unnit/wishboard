@@ -33,7 +33,7 @@
                     %em= wish_prefix[2]
       .col-xs-12.col-sm-12.pleft5.pright5.ptop15.pbottom5.raise-funds-fields.hidden
         .col-xs-6.col-sm-6.pleft0.pright5
-          = f.text_field :goal_amount, class: "form-control coco-input-field", placeholder: "Goal Amount*"
+          = f.text_field :goal_amount, class: "form-control coco-input-field", placeholder: "Goal Amount*", maxlength: 7
         .col-xs-6.col-sm-6.pleft5.pright0
           = f.text_field :target_date, class: "form-control coco-input-field goal-target-date dt-of-achievement bg-white", placeholder: "Goal Date*", disabled: true
         .col-xs-12.col-sm-12.pleft0.pright0.ptop15

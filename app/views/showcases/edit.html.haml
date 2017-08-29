@@ -31,6 +31,7 @@
   :javascript
     $(document).ready(function(){
       $wrap = $("#edit_showcase_"+#{@showcase.id});
+      $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 3});
       $(document).on("click", ".showcase-update-submit", function(e){
         $wrap = $("#edit_showcase_"+#{@showcase.id});
         e.preventDefault();
@@ -40,23 +41,30 @@
       $wrap.find(".type-holder").html("#{@showcase.showcase_type_label.html_safe}");
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-right", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){
-        date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
-        $wrap.find(".dt-of-achievement").datetimepicker(date_options);
+        if($wrap.find("#showcase_accept_fund").is(":checked")){
+          date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+        }else{
+          date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+        }
       }
       else if($wrap.find("#showcase_showcase_type").val() == 1){
         date_options["startDate"] = new Date($(".ps-wrapper").data("fdate"));
-        $wrap.find(".dt-of-achievement").datetimepicker(date_options);
       }
+      else if($wrap.find("#showcase_showcase_type").val() == 2){
+        date_options["endDate"] = new Date($(".ps-wrapper").data("fdate"));
+        date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+      }
+      $wrap.find(".dt-of-achievement").datetimepicker(date_options);
       date_options["startDate"] = "";
       date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
       $(".after-date-of-achievement").datetimepicker(date_options)
       var places_input_1= $('.pac-input')[1];
       google.maps.event.addDomListener(window, 'load', function () {
-              var autocomplete = new google.maps.places.Autocomplete(places_input_1);
-              google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
-                if (e.keyCode == 13 && $('.pac-container:visible').length) {
-                  e.preventDefault();
-                }
-              });
-          });
+        var autocomplete = new google.maps.places.Autocomplete(places_input_1);
+        google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
+          if (e.keyCode == 13 && $('.pac-container:visible').length) {
+            e.preventDefault();
+          }
+        });
+      });
     })

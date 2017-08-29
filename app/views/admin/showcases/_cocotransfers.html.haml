@@ -7,12 +7,15 @@
       .modal-body
         - showcase.cocotransfers.complete.each do |cocotransfer|
           - donor = cocotransfer.fullfillment_contributer
-          .col-sm-3.mbottom20
+          .col-sm-2.mbottom20
             = cocotransfer.amount
-          .col-sm-3.mbottom20
-            = link_to donor.name, "#profile-#{donor.profile_id}", data: {toggle: "modal"}
-          .col-sm-6.mbottom20
-            = cocotransfer.created_at
+          .col-sm-6.font-medium.mbottom20
+            - if donor.present?
+              = link_to "(#{cocotransfer.donor_name})#{donor.name}", "#profile-#{donor.profile_id}", data: {toggle: "modal"}
+            - else
+              = cocotransfer.donor_name
+          .col-sm-4.mbottom20
+            = cocotransfer.created_at.strftime('%d-%m-%Y %H:%M')
       .clearfix
       .modal-footer
         = link_to "Close", "javascript:;", class: "btn btn-danger pull right", data: {dismiss: "modal"}

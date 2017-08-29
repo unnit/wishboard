@@ -71,8 +71,6 @@ class CocotransfersController < ApplicationController
     end
   end
 
-
-
   private
   def save_txdetails
     unless Txdetail.find_by_tx_id params["TxId"]
@@ -81,7 +79,6 @@ class CocotransfersController < ApplicationController
       @txdetail.save
     end
   end
-
 
   def transaction_parameters
     params.permit("TxStatus", "TxId", "TxRefNo", "pgTxnNo", "pgRespCode", "TxMsg", "amount", "authIdCode", "issuerRefNo", "signature", "transactionId", "paymentMode", "TxGateway", "currency", "issuerCode", "firstName", "lastName", "email", "addressStreet1", "addressStreet2", "addressCity", "addressState", "addressCountry", "addressZip", "mobileNo", "isCOD", "txnDateTime", "impsMmid", "impsMobileNumber").map{|k, v| [k.underscore, v]}.to_h.symbolize_keys

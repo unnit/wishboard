@@ -92,11 +92,17 @@
           .col-xs-12.col-sm-12.height50.padding0.ptop10
             = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 200
         .col-xs-12.col-sm-12.mtop25.text-center
-          = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
+          = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold showcase-update-submit"
 
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      $(document).on("click", ".showcase-update-submit", function(e){
+        $wrap = $("#edit_showcase_"+#{@showcase.id});
+        e.preventDefault();
+        $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
+        $wrap.submit();
+      });
       $wrap = $("#edit_showcase_"+#{@showcase.id});
       $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 3});
       $wrap.find(".type-holder").html("#{@showcase.showcase_type_label.html_safe}");

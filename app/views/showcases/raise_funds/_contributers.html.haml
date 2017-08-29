@@ -13,16 +13,16 @@
               - if cocotransfer.is_anonymous?
                 %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
                   A
-              - elsif cocotransfer.fullfillment_contributer.blank? || (cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name != cocotransfer.fullfillment_contributer.name)
+              - elsif donor.blank? || (donor.present? && cocotransfer.donor_name != donor.name)
                 %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
                   = cocotransfer.donor_name.first.upcase
-              - elsif cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name == cocotransfer.fullfillment_contributer.name
+              - elsif donor.present? && cocotransfer.donor_name == donor.name
                 = link_to myprofile_path(donor.profile.slug) do
                   = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
             .media-body.media-middle
-              - if cocotransfer.is_anonymous? || cocotransfer.fullfillment_contributer.blank? || (cocotransfer.fullfillment_contributer.present? && cocotransfer.donor_name != cocotransfer.fullfillment_contributer.name)
+              - if cocotransfer.is_anonymous? || donor.blank? || (donor.present? && cocotransfer.donor_name != donor.name)
                 %span.cc-dark-fg= cocotransfer.display_donor_name
-              - elsif cocotransfer.fullfillment_contributer.present?  && cocotransfer.donor_name == cocotransfer.fullfillment_contributer.name
+              - elsif donor.present?  && cocotransfer.donor_name == donor.name
                 = link_to myprofile_path(donor.profile.slug) do
                   %span.cc-dark-fg= cocotransfer.display_donor_name
               contributed Rs.#{cocotransfer.amount}

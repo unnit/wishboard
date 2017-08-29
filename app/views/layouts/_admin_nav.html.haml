@@ -17,7 +17,7 @@
         %li{class: "#{'active' if controller_name=='users'}"}= link_to "Messaging", messages_admin_users_path
         %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Showcase", admin_showcases_path
         %li{class: "dropdown"}
-          =link_to "Croudfunding", "#"
+          =link_to "Crowdfunding", "#"
           .dropdown-content
             %div.padding10= link_to  "Wishes", croudfunding_admin_showcases_path, class: "internallink grey-fg"
             %div.padding10= link_to "Cocotransfers", admin_cocotransfers_path,  class: "internallink grey-fg"

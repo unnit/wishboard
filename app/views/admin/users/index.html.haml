@@ -1,9 +1,6 @@
 .container
   .page-header
     .col-sm-5
-      %h1
-        Users
-        %small= "#{@users.total_count} users"
     .col-sm-7.no-mar-pad.mtop25
       .pull-right
         ~ form_tag url_for, method: :get do

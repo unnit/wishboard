@@ -2,8 +2,8 @@ class Admin::MiscellaneousController < AdminController
   def index
   	@users = User.all
   	@showcases = Showcase.all
-  	@coin_wishesh = Showcase.user_coin_wishes
-  	@cround_funding_wishesh = Showcase.active_rasing_funds
+  	@coin_wishes = Showcase.user_coin_wishes
+  	@crowdfunding_wishes = Showcase.active_rasing_funds
   	@cocotransfers = Cocotransfer.successfully_paid
   end
 

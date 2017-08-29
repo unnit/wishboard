@@ -1,14 +1,13 @@
 = content_for :title do
   - title = "#{@chat_room.name} chatroom - Discuss & Chat | #{@chat_room.sub_category.name}, #{@chat_room.main_category.name} | Cocociti"
 .pos-fixed.full-width.text-center.ptop10.pbottom10.bg-white.bg-shad.visible-xs{style: "top: 50px;z-index: 1029;"}
-  %h1.font25.mtop0.mbottom0= truncate @chat_room.name, length: 25
+  %h1.font25.mtop0.mbottom5= truncate @chat_room.name, length: 25
   %div.inline-block{class: "chat-room-online-#{@chat_room.id} #{@chat_room.online_count == 0 ? 'hidden' : ''}"}
     .online-count-wrap.img-circle.inline-block
       = @chat_room.online_count if @chat_room.online_count > 0
     .fa.fa-angle-down.j-online-users.pos-relative.v-align-bottom.pon
     .online-users-wrap.hide-display.inline-block.j-online-users-wrap.pos-absolute.mtop5.padding5.border5.font12.white-fg.text-center
       = @chat_room.online_users_name
-  %span.block-display.mtop5{style: "font-size: 8px;"} α Alpha mode
 .container-fluid.padding-mob0.ptop50.mob-ptop100.full-height.chat-ids-holder{"data-chat-room-ids" => "#{@chat_room.id}"}
   .col-xs-12.col-sm-6.col-sm-offset-3.btn-shadow.padding0.full-height#j-c-m-wrapper
     #chat_messages_wrapper.pull-left.full-width{style: "height:88%;"}

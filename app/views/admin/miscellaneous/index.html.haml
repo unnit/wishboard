@@ -7,18 +7,18 @@
           %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Showcases
           %p Total: #{@showcases.count}
           %P Fullfilled: #{@showcases.showpieces.count}
-          %P Momentry: #{@showcases.momentary.count}
+          %P Momentary: #{@showcases.momentary.count}
           %P Future: #{@showcases.wishes.count}
-          %p Coin Wishesh: #{@coin_wishesh.count}
+          %p Coin Wishes: #{@coin_wishes.count}
           %p Before/after: #{""}
-          %p Rewishesh: #{Showcase.where.not(parent_id: nil).count}
-          %P Collections : #{Collection.all.count}
-          %p Atleast one comment : #{Comment.pluck(:showcase_id).uniq.count}
+          %p Rewishes: #{Showcase.where.not(parent_id: nil).count}
+          %P Collections: #{Collection.all.count}
+          %p Atleast one comment: #{Comment.pluck(:showcase_id).uniq.count}
           %p Number of links: XX
           %p With tags: #{Tagging.pluck(:showcase_id).uniq.count}
           %p With date: #{Showcase.where.not(target_date: nil).count}
           %p With location: #{Location.for_showcase.pluck(:locatable_id).uniq.count}
-          %p With description #{Showcase.where.not(description: nil).count}
+          %p With description: #{Showcase.where.not(description: nil).count}
           %p With backstory: #{Showcase.showpieces.where("backstory_description != ? OR backstory_image != ?", nil, nil).count}
           %p With after stroy: #{Showcase.showpieces.where("showcase_type IN  (?) and user_status = ?", [Showcase::SHOWCASE_VALUES[1] , Showcase::SHOWCASE_VALUES[1]], Showcase::USER_STATUS[1]).where("achieved_description != ? OR fullfilled_image != ? OR after_rating != ?", nil, nil, nil).count}
       .col-xs-12.col-xs-12.col-md-4.mtop10
@@ -31,22 +31,22 @@
           %p Min 5 follower: #{User.joins(:following).select('users.id').group('users.id').having('count(relationships.followed_id)> 5').to_a.count}
           %p Cross-connections: #{Relationship.active_connections.count}
           %p Wiki content: #{Wiki.pluck(:user_id).uniq.count}
-          %p Profiles with dp: #{Profile.where.not(image: nil).count}
+          %p Profiles with DP: #{Profile.where.not(image: nil).count}
           %p With About info:
-          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Cround funding
-          %p Number of Wishesh: #{@cround_funding_wishesh.count}
+          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Crowdfunding
+          %p Number of Wishes: #{@crowdfunding_wishes.count}
           %p Total Raised Amount: Rs.#{@cocotransfers.sum(:amount)}
           %p Total Transactions: #{Cocotransfer.all.count} (#{Cocotransfer.complete.count} / #{Cocotransfer.all.count - Cocotransfer.complete.count})
           %p People requested withdrawn: #{Withdraw.pluck(:user_id).uniq.count}
           %p Amount withdrawn: #{Withdraw.sum(:amount)}
       .col-xs-12.col-xs-12.col-md-4.mtop10
         .padding20.bg-shad
-          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} ChatRooms
+          %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Chatrooms
           %p Chatrooms: #{ChatRoom.all.count}
           %P Messages: #{ChatMessage.all.count}
           %p{id: 'no_of_emojis_used'}No of emojis used: XX
           %p.font18.weight600.subheader.padding10{style: "text-align: left;"} Misc
-          %p Comments #{Comment.all.count}
+          %p Comments: #{Comment.all.count}
           %P Likes: #{Wow.all.count}
           %P Tags: #{Tag.all.count}
 
@@ -66,6 +66,6 @@
     })
 :css
   .subheader{
-   border: 1px solid black;
-   border-bottom: 1px solid black;
+   border: 1px solid #cacaca;
+   border-radius: 4px;
   }

@@ -29,13 +29,13 @@ class CocotransfersController < ApplicationController
   def update
     @cocotransfer = Cocotransfer.find_by_id(params[:id])
     unless @cocotransfer.paid?
-    if @cocotransfer.update_attributes(cocotransfer_params)
-      @cocotransfer.generate_txnid!
-      render json: {cocotransfer: @cocotransfer, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url, success: true}
-    else
-      error_messages = @cocotransfer.errors.full_messages.join(", ")
-      render json: {cocotransfer: @cocotransfer, success: false, error_messages: error_messages }
-    end
+      if @cocotransfer.update_attributes(cocotransfer_params)
+        @cocotransfer.generate_txnid!
+        render json: {cocotransfer: @cocotransfer, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url, success: true}
+      else
+        error_messages = @cocotransfer.errors.full_messages.join(", ")
+        render json: {cocotransfer: @cocotransfer, success: false, error_messages: error_messages }
+      end
      end
   end
 

@@ -40,9 +40,10 @@ Rails.application.routes.draw do
       end
     end
     resources :transactions, only: [:index]
-    resources :showcases do 
+    resources :showcases do
       member do
         post :update_admin_status
+        delete :delete_comment
       end
       collection do
         get :croudfunding

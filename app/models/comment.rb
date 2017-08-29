@@ -17,7 +17,7 @@ class Comment < ApplicationRecord
   end
 
   after_create :create_other_commenters_notification
-  after_create_commit {NotificationBroadcastJob.perform_later(self.showcase.user)}
+  after_create_commit {NotificationBroadcastJob.perform_later(self.showcase.user) unless self.user == self.showcase.user}
   after_create_commit :deliver_firebase_notification
 
   def notification_image_url

@@ -76,6 +76,12 @@ class Admin::ShowcasesController < AdminController
     redirect_to :back
   end
 
+  def delete_comment
+    @comment = Comment.find_by_id params[:id]
+    @comment.destroy
+    render "showcases/delete_comment"
+  end
+
   private
 
   def admin_wish_params

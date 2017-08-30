@@ -8,8 +8,9 @@
       - if showcase.owner?(current_user)
         = link_to edit_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
           Edit...
-        = link_to showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
-          Delete...
+        - unless showcase.already_raised_some_amount
+          = link_to showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
+            Delete...
     - if current_user && current_user.admin?
       = link_to edit_admin_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
         Edit as Admin...
@@ -72,7 +73,7 @@
         .carousel-inner
           - if showcase.backstory_image.present? && showcase.showpiece?
             .item.active
-              = link_to showcase_path(showcase),show_case_link_params do
+              = link_to showcase_path(showcase), show_case_link_params do
                 = cl_image_tag showcase.backstory_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
           - if showcase.image.present?
             .item{class: "#{showcase.backstory_image.blank? || !showcase.showpiece? ? 'active' : '' }"}

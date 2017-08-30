@@ -106,16 +106,23 @@
             .fa.fa-clock-o
             = time_ago_in_words(notification.created_at)
   - elsif notification.class.name == "FundreceivedNotification"
-    -if notification.cocotransfer
-      = link_to update_fundreceived_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
-        .media
-          .media-left
-            %span= cl_image_tag notification.notification_image, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
-          .media-body
-            %span.weight600= truncate notification.cocotransfer.display_donor_name, length: 35
-            %span.font13 gifted you fresh funds for wish
-            %span.weight600= truncate notification.cocotransfer.showcase.title, length: 35
-            %br
-            %span.extra-small-font
-              .fa.fa-clock-o
-              = time_ago_in_words(notification.created_at)
+    - donor = notification.cocotransfer.fullfillment_contributer
+    = link_to update_fundreceived_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
+      .media
+        .media-left
+          - if notification.cocotransfer.is_anonymous?
+            %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
+              A
+          - elsif donor.blank? || (donor.present? && notification.cocotransfer.donor_name != donor.name)
+            %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
+              = notification.cocotransfer.donor_name.first.upcase
+          - elsif donor.present? && notification.cocotransfer.donor_name == donor.name
+            = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
+        .media-body
+          %span.weight600= truncate notification.cocotransfer.display_donor_name, length: 35
+          %span.font13 gifted you fresh funds for wish
+          %span.weight600= truncate notification.cocotransfer.showcase.title, length: 35
+          %br
+          %span.extra-small-font
+            .fa.fa-clock-o
+            = time_ago_in_words(notification.created_at)

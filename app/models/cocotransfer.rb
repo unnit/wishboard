@@ -206,12 +206,4 @@ class Cocotransfer < ApplicationRecord
   def denied?
     transaction_status.to_s == Transaction::TRANSACTION_STATUS[3][1]
   end
-
-  after_create :update_user_id
-
-  private
-
-  def update_user_id
-    self.update_column :user_id, self.showcase.user_id
-  end
 end

@@ -32,8 +32,8 @@ module ApplicationHelper
 
   def match_url(text)
     regexp = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/?)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s\`!()\[\]{};:\'\".,<>?«»“”‘’]))/i
-    converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>" + link_preview_content(url).html_safe
-     }
+    #converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>" + link_preview_content(url).html_safe}
+    converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
     return converted
   end
 

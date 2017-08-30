@@ -3,7 +3,7 @@ class Coin < ApplicationRecord
   belongs_to :showcase
 
   scope :promotional, -> {where promotional: true}
-  after_create_commit :send_gift_coin_notification 
+  after_create_commit :send_gift_coin_notification
   after_create_commit :deliver_firebase_notification
 
   def notification_image_url
@@ -25,9 +25,9 @@ class Coin < ApplicationRecord
   def deliver_firebase_notification
     FirebasenotificationBroadcastJob.perform_later(self.notification_title, self.notification_text, self.notification_url, self.notification_image_url,  self.user.id)
   end
-  
+
   private
   def send_gift_coin_notification
-  	NotificationBroadcastJob.perform_later(self.user) unless promotional
+  	NotificationBroadcastJob.perform_later(self.showcase.user) unless promotional
   end
 end

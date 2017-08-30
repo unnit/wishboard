@@ -2,20 +2,21 @@
   -title = "Payment Successful"
 .container-fluid.mtop50.min-height1000
   - @showcase = @cocotransfer.showcase
-  .col-xs-12.col-md-12.mtop20.text-center
-    %h2.mtop20 Boom De Yaada!!
-    %h4.mtop20 Thank You.. Your payment is successfull.
-  .col-xs-12.col-md-12.mtop20.text-center
-    = cl_image_tag @showcase.image, class: "img-responsive img-style-new", alt: "#{@showcase.title}-#{@showcase.fundcategory.name}", width: 253, height: 190, crop: :fill
-  .col-xs-12.col-md-4.col-md-offset-4.mtop20.padding5.border-solid.text-center
-    %h3.mtop10 Tx ID: #{@cocotransfer.txnid}
-  .col-xs-12.col-md-12.mtop20.text-center
-    #{@cocotransfer.updated_at.strftime('%H:%M, %d-%b-%Y, %a')}
-  .col-xs-12.col-md-12.text-right.mbottom20
-    = link_to "Back to Home", root_path
-  .col.xs-12.col-sm-12.pull-left
+  .col-xs-12.col-sm-4.col-sm-offset-4.cc-dark-fg-border.mtop20.text-center.padding0.pbottom20.border2.black80-fg
+    %h3.mtop0.padding15.bg-light-grey.border-bt-side= @showcase.title
+    %i.fa.fa-check-circle.green-fg.mtop10{style: "font-size: 60px;"}
+    %h3.mtop5 Rs. #{@cocotransfer.amount}
+    %h4.font22.mtop20.mbottom0 Boom De Yaada!
+    %h5.font-medium.mtop10 Your payment is successful.
+    %h4.mtop100 Transaction ID: #{@cocotransfer.txnid}
+    %span.font12 #{@cocotransfer.updated_at.strftime('%H:%M, %d-%b-%Y, %a')}
     %span
       #shareShowcaseRoundIcons{"data-id" => "#{@showcase.id}"}
+    = link_to showcase_path(@showcase) do
+      .btn.btn-md.btn-v-outline.mtop20.transition-effect
+        Gift Again
+  .col-xs-12.col-md-12.text-right.mtop10
+    = link_to "Back to Home", root_path, class: "cc-dark-fg"
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){

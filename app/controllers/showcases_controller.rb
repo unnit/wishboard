@@ -81,15 +81,17 @@ class ShowcasesController < ApplicationController
   end
 
   def destroy
-    @showcase.destroy
-    flash[:notice] = "#{@showcase.title} deleted."
+    if !@showcase.coin_wish? && !@showcase.already_raised_some_amount
+      @showcase.destroy
+      flash[:notice] = "#{@showcase.title} deleted."
+    end
     redirect_to :back
   end
 
   def private_showcase
     @showcase = Showcase.find_by_access_token(params[:access_token])
     @cocotransfer = Cocotransfer.new
-    return redirect_to root_path if !@showcase || @showcase.admin_created? || @showcase.is_admin_disabled? 
+    redirect_to root_path and return if !@showcase || @showcase.admin_created? || @showcase.is_admin_disabled?
     @to_move = "yes" if params[:to_move] == "yes"
     @collection_id = params[:collection_id]
     respond_to do |format|
@@ -190,7 +192,7 @@ class ShowcasesController < ApplicationController
   def coin
     if @showcase.active_coins.count <= 50 && @showcase.coin_wish? && @showcase.coin_wish_active? && !@showcase.owner?(current_user) && current_user.unlocked_coin_wish? && !@showcase.coined?(current_user)
       @showcase.add_coin!(current_user)
-      send_mobile_sms("+#{profile.phonecode}#{@showcase.user.phone}", "#{current_user.name.truncate(30)} gifted you a coin for your '#{@showcase.title.truncate(30)}' coin wish.")
+      send_mobile_sms("+#{@showcase.user.profile.phonecode}#{@showcase.user.phone}", "#{current_user.name.truncate(30)} gifted you a coin for your '#{@showcase.title.truncate(30)}' coin wish.")
       @showcase.reload
       flash[:notice] = "Coin gifted successfully"
       respond_to :js
@@ -312,7 +314,7 @@ class ShowcasesController < ApplicationController
   end
 
   private
-  
+
   def backstory_params
     params.require(:showcase).permit(:backstory_image, :backstory_description)
   end

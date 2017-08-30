@@ -4,20 +4,12 @@ class FundreceivedNotification < ApplicationRecord
 	after_create_commit {NotificationBroadcastJob.perform_later(self.user)}
 	after_create_commit :deliver_firebase_notification
 
-	def notification_image
-		if self.cocotransfer.is_anonymous? 
-		  return ""
-		else
-			return self.cocotransfer.fullfillment_contributer ? self.cocotransfer.fullfillment_contributer.avatar : ""
-		end	
-	end
-
 	def notification_image_url
-		if self.cocotransfer.is_anonymous? 
+		if self.cocotransfer.is_anonymous?
 		  return ""
 		else
 			return self.cocotransfer.fullfillment_contributer ? self.cocotransfer.fullfillment_contributer.profile_image_url : ""
-		end	
+		end
 	end
 
 	def notification_url

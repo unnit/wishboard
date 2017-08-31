@@ -90,49 +90,43 @@
         vanityUrl : 'cococitiospvtltd',
       });
 
-      $(function(){
-        citrus.cards.getPaymentDetails({
-          vanityUrl: $('#vanityUrl').val()
-          },
-          function (err, pgSettingData) {
-            if(err){
-            console.log('got error while calling getPaymentDetails',err);
-            return;
-            }else{
-            console.log("success");
-            console.log(pgSettingData);
-            }
-            pgSettingData.netBanking.forEach(function (bank) {
-            $('#netbankingBanks').append($("<option />").val(bank.issuerCode).text(bank.bankName));
-            });
-        });
+      citrus.cards.getPaymentDetails({
+        vanityUrl: $('#vanityUrl').val()
+        },
+        function (err, pgSettingData) {
+          if(err){
+          console.log('got error while calling getPaymentDetails',err);
+          return;
+          }else{
+          console.log("success");
+          console.log(pgSettingData);
+          }
+          pgSettingData.netBanking.forEach(function (bank) {
+          $('#netbankingBanks').append($("<option />").val(bank.issuerCode).text(bank.bankName));
+          });
       });
 
-    $(function(){
-      $("#netbankingButton").on("click", function (){
-        $(this).prop('disabled', true);
-        $("#cardPayButton").prop('disabled', true);
-        var data = getPaymentData();
-        data.paymentDetails = {
-          "paymentMode" : "netBanking",
-          "bankCode" : $('#netbankingBanks').val()
-        };
-        citrus.payment.makePayment(data);
-      });
+    $("#netbankingButton").on("click", function (){
+      $(this).prop('disabled', true);
+      $("#cardPayButton").prop('disabled', true);
+      var data = getPaymentData();
+      data.paymentDetails = {
+        "paymentMode" : "netBanking",
+        "bankCode" : $('#netbankingBanks').val()
+      };
+      citrus.payment.makePayment(data);
     });
 
-    $(function(){
-      $("#cardPayButton").on("click", function(){
-        $("#cardPayButton").prop('disabled', true);
-        setTimeout(function(){$("#cardPayButton").prop('disabled', false);}, 20000);
-        var data = getPaymentData();
-        data.paymentDetails = {
-          paymentMode: "card",
-          holder:$('#cardHolderName').val(),
-          type: "debit"
-        };
-        citrus.payment.makePayment(data);
-      });
+    $("#cardPayButton").on("click", function(){
+      $("#cardPayButton").prop('disabled', true);
+      setTimeout(function(){$("#cardPayButton").prop('disabled', false);}, 20000);
+      var data = getPaymentData();
+      data.paymentDetails = {
+        paymentMode: "card",
+        holder:$('#cardHolderName').val(),
+        type: "debit"
+      };
+      citrus.payment.makePayment(data);
     });
 
     function getPaymentData(){

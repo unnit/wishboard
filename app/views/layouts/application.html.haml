@@ -46,9 +46,6 @@
       %meta{name: "theme-color", content: "#732db0"}
     - elsif @auth_layout.present?
       %meta{name: "theme-color", content: "#0891e6"}
-    = javascript_include_tag 'application'
-    = javascript_include_tag "//mocha.citruspay.com/js/lib/citrus.min.js"
-    = yield :head_js
   %body{"data-root-url" => "#{GLOBAL_VARIABLES[:root_url]}", "data-logged-in-id" => "#{current_user.present? ? current_user.id : ''}"}
     #j-overlay-wrapper.overlay-wrapper.visible-xs{style: "display: none !important;"}
     #j-page-loader.top-page-loader{style: "display: none !important;"}
@@ -76,6 +73,8 @@
     - else
       = javascript_include_tag "//maps.googleapis.com/maps/api/js?sensor=false&libraries=places"
     = javascript_include_tag "//gstatic.com/firebasejs/4.1.3/firebase.js"
+    = javascript_include_tag 'application'
+    = javascript_include_tag "//mocha.citruspay.com/js/lib/citrus.min.js"
     = yield :extra_js
     =# javascript_include_tag "//apis.google.com/js/client.js"
     = cloudinary_js_config

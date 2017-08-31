@@ -77,7 +77,7 @@
               By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
             .col-md-12.text-center.pbottom50
               %input.btn.btn-info.save-button.mtop10#netbankingButton{type: "button", value: "Pay Now"}
-= content_for :head_js do
+= content_for :extra_js do
   :javascript
     $(function(){
       var $toggleGroup = $('#toggleGroup');
@@ -175,13 +175,33 @@
       $('#netbankingButton').prop('disabled', false);
     });
 
+    //citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
+    //  console.log("validationHandler:"+cardValidationResult);
+    //  if(cardValidationResult.isValid){
+    //    $(".payment-citrus-errors").html("");
+    //  }else{
+    //    $(".payment-citrus-errors").html(cardValidationResult.txMsg);
+    //  }
+    //});
+
     citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
-      console.log("validationHandler:"+cardValidationResult);
-      if(cardValidationResult.isValid){
-        $(".payment-citrus-errors").html("");
-      }else{
-        $(".payment-citrus-errors").html(cardValidationResult.txMsg);
-      }
+    	var ua = navigator.userAgent.toLowerCase();
+    	var isAndroid = ua.indexOf("android") > -1;
+        if(cardValidationResult.isValid){
+          $(".payment-citrus-errors").html("");
+      	  if(cardValidationResult.length === 3 && isAndroid)
+      	  {
+      		var data = getPaymentData();
+      		data.paymentDetails = {
+      		  paymentMode: "card",
+      		  holder:$('#cardHolderName').val(),
+      		  type: $('#cardType').val()
+      		};
+      		citrus.payment.makePayment(data);
+      	  }
+        }else{
+          $(".payment-citrus-errors").html(cardValidationResult.txMsg);
+        }
     });
 
     $(function(){

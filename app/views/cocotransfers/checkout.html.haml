@@ -118,6 +118,7 @@
     });
 
     $("#cardPayButton").on("click", function(){
+      console.log("start");
       $("#cardPayButton").prop('disabled', true);
       setTimeout(function(){$("#cardPayButton").prop('disabled', false);}, 20000);
       var data = getPaymentData();
@@ -126,7 +127,9 @@
         holder:$('#cardHolderName').val(),
         type: $('#cardType').val()
       };
+      console.log("before make payment");
       citrus.payment.makePayment(data);
+      console.log("before make payment");
     });
 
     function getPaymentData(){

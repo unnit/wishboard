@@ -77,7 +77,7 @@
               By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
             .col-md-12.text-center.pbottom50
               %input.btn.btn-info.save-button.mtop10#netbankingButton{type: "button", value: "Pay Now"}
-= content_for :extra_js do
+= content_for :head_js do
   :javascript
     $(document).ready(function(){
       var $toggleGroup = $('#toggleGroup');

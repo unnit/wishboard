@@ -139,7 +139,7 @@
 
     $(function(){
       $("#cardPayButton").on("click", function(){
-      $("#cardPayButton").prop('disabled', true);}
+      $("#cardPayButton").prop('disabled', true);
       setTimeout(function(){$("#cardPayButton").prop('disabled', false);}, 20000);
       var data = getPaymentData();
       data.paymentDetails = {

@@ -99,6 +99,10 @@ class User < ApplicationRecord
     end
   end
 
+  def crowdfunding_wishes_enabled?
+    showcases.active_rasing_funds.recently_created(7).count > 2 ? false : true
+  end
+
   def user_status
     if inactive == true
       return "NO"

@@ -1,5 +1,5 @@
 .col-xs-12.col-sm-12.full-width.pos-fixed.text-center.full-height.j-checkout-wrapper.hide-display{style: "top:0;left:0;z-index:10000000;background-color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0.6);"}
-  %span.white-fg.weight600.inline-block{style: "margin-top: 100px;"} Please wait...
+  %span.white-fg.weight600.inline-block.font-bit-large.mtop100.padding15.pbottom0{style: "border-bottom: 1px solid white;"} Please wait while the request is being processed. Do not press back or refresh button.
 .container.ptop50.mob-ptop100.padding0.min-height1000
   .col-xs-12.col-sm-offset-2.col-sm-8.padding10#toggleGroup
     .col-xs-12.col-md-12.padding0.mtop10
@@ -47,25 +47,25 @@
                   %option{:value => "debit"} Debit
             .col-md-12.mtop10.no-mar-pad
               %label.col-md-3 Card Number*
-              .col-md-6
+              .col-md-9
                 #cardNumber
             .col-md-12.mtop10.no-mar-pad
               %label.col-md-3 Expiry*
               .col-md-3
                 #expiry
-              %label.col-md-2.mob-mtop10{style: "text-align: right;"} CVV/CVC*
+              %label.col-md-3.mob-mtop10{style: "text-align: right;"} CVV/CVC*
               .col-md-3
                 #cvv
             .col-md-12.mtop10.no-mar-pad
               %label.col-md-3 Card Holder Name*
-              .col-md-6
+              .col-md-9
                 %input.form-control#cardHolderName{type: "text", autocomplete: "false"}
-            .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
+            .col-md-12.text-center.mtop10{style: "font-size: 10px;"}
               By continuing, you agree to the Terms and Policies of Cocociti.
             .col-md-12.text-center
               %input.btn.btn-md.cc-dark-bg.white-fg.border2.mtop10#cardPayButton{type: "button", value: "Pay Now"}
-            .col-md-12.pbottom50.mtop20.mleft20.hidden-xs
-              %span.pull-left.cards-sprite
+            .col-md-12.pbottom50.mtop20.mleft20.text-center.hidden-xs
+              %span.inline-block.cards-sprite
           #net_banking.tab-pane.fade
             .col-md-12.mtop10.no-mar-pad
               .col-md-3

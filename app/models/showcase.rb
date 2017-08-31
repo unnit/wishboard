@@ -95,10 +95,12 @@ class Showcase < ApplicationRecord
   scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
   scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
+  scope :recently_created, -> (n) {where("created_at > ?", (Time.now.utc - n.days).beginning_of_day)}
   scope :user_coin_wishes, -> {where(["admin_created = false and coin_wish = true"])}
-  scope :public_accessible, -> {where("access_type in (?) and title not in (?)", [ACCEESS_TYPE[0], nil], ["Nikhil and Sunaina's marriage", "Adarsh and Krishnaja's marriage"])}
+  scope :public_accessible, -> {where("access_type in (?)", [ACCEESS_TYPE[0], nil])}
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
   scope :active, -> {where(admin_status: [0, nil] )}
+  scope :approved, -> {public_accessible.active}
 
   before_save :generate_accesss_token
 
@@ -530,11 +532,9 @@ class Showcase < ApplicationRecord
   end
 
   def create_showcase_notification
-    unless self.title == "Adarsh and Krishnaja's marriage"
-      unless self.admin_created? && self.publicably_available?
-        user.followers.each do |follower|
-          self.showcase_notifications.create(user_id: follower.id)
-        end
+    unless self.admin_created? && self.publicably_available?
+      user.followers.each do |follower|
+        self.showcase_notifications.create(user_id: follower.id)
       end
     end
   end

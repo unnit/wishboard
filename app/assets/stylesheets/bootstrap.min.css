@@ -4746,8 +4746,8 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .nav-tabs>li.active>a:hover {
     color: #fff;
     cursor: default;
-    background-color: #6a67ce;
-    border: 1px solid #ddd;
+    background-color: #732db0;
+    border: 1px solid #732db0;
     border-bottom-color: transparent
 }
 

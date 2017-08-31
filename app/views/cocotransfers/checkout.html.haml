@@ -158,16 +158,19 @@
     }
 
     citrus.registerHandlers("errorHandler", function (error) {
+      console.log("ErrorHandler:"+error);
       $('#cardPayButton').prop('disabled', false);
       $('#netbankingButton').prop('disabled', false);
     });
 
     citrus.registerHandlers("serverErrorHandler", function (error){
+      console.log("serverErrorHandler:"+error);
       $('#cardPayButton').prop('disabled', false);
       $('#netbankingButton').prop('disabled', false);
     });
 
     citrus.registerHandlers("transactionHandler", function(resp){
+      console.log("transactionHandler:"+resp);
       $('#cardPayButton').prop('disabled', false);
       $('#netbankingButton').prop('disabled', false);
     });

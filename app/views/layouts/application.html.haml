@@ -50,8 +50,8 @@
     #j-overlay-wrapper.overlay-wrapper.visible-xs{style: "display: none !important;"}
     #j-page-loader.top-page-loader{style: "display: none !important;"}
     - if Rails.env.production?
-      = render partial: "/layouts/head"
-      = render partial: "/layouts/google_analytics"
+      =# render partial: "/layouts/head"
+      =# render partial: "/layouts/google_analytics"
     - if @social_layout.present?
       = render partial: "/layouts/navbar_social"
     - elsif @plain_layout.present?
@@ -67,7 +67,7 @@
     - if @remove_footer.blank?
       = render partial: "layouts/footer"
     - if Rails.env.production? || Rails.env.staging?
-      = render partial: "layouts/sentry_config"
+      =# render partial: "layouts/sentry_config"
     - if Rails.env.production?
       = javascript_include_tag "//maps.googleapis.com/maps/api/js?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&libraries=places"
     - else
@@ -76,5 +76,5 @@
     = javascript_include_tag 'application'
     = javascript_include_tag "//mocha.citruspay.com/js/lib/citrus.min.js"
     = yield :extra_js
-    = javascript_include_tag "//apis.google.com/js/client.js"
+    =# javascript_include_tag "//apis.google.com/js/client.js"
     = cloudinary_js_config

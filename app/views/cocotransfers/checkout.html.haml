@@ -79,7 +79,7 @@
               %input.btn.btn-info.save-button.mtop10#netbankingButton{type: "button", value: "Pay Now"}
 = content_for :head_js do
   :javascript
-    //$(document).ready(function(){
+    $(function(){
       var $toggleGroup = $('#toggleGroup');
       $toggleGroup.on('show.bs.collapse','.collapse', function() {
         $toggleGroup.find('.collapse.in').collapse('hide');
@@ -233,7 +233,7 @@
           setTimeout(function(){$("#error").hide();}, 40000);
         }
       });
-    //});
+    });
 :css
   #cardNumber,#cvv,#expiry{
     width: 100%;

@@ -176,6 +176,7 @@
     });
 
     citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
+      console.log("transactionHandler:"+cardValidationResult);
       if(cardValidationResult.isValid){
         $(".payment-citrus-errors").html("");
       }else{

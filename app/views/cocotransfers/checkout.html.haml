@@ -63,7 +63,7 @@
             .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
               By continuing, you agree to the Terms and Policies of Cocociti.
             .col-md-12.text-center
-              %input.btn.btn-info.save-button.mtop10#cardPayButton{type: "button", value: "Pay Now"}/
+              %div.btn.btn-info.save-button.mtop10#cardPayButton Pay Now
             .col-md-12.pbottom50.mtop20.mleft20.hidden-xs
               %span.pull-left.cards-sprite
           #net_banking.tab-pane.fade
@@ -121,6 +121,20 @@
       });
     });
 
+    $(function(){
+      $("#cardPayButton").on("click", function(){
+        $("#cardPayButton").prop('disabled', true);
+        setTimeout(function(){$("#cardPayButton").prop('disabled', false);}, 20000);
+        var data = getPaymentData();
+        data.paymentDetails = {
+          paymentMode: "card",
+          holder:$('#cardHolderName').val(),
+          type: "debit"
+        };
+        citrus.payment.makePayment(data);
+      });
+    });
+
     function getPaymentData(){
       var data = {
         "mode": $('#mode').val(),
@@ -136,20 +150,6 @@
       };
       return data;
     }
-
-    $(function(){
-      $("#cardPayButton").on("click", function(){
-      $("#cardPayButton").prop('disabled', true);
-      setTimeout(function(){$("#cardPayButton").prop('disabled', false);}, 20000);
-      var data = getPaymentData();
-      data.paymentDetails = {
-        paymentMode: "card",
-        holder:$('#cardHolderName').val(),
-        type: "debit"
-      };
-      citrus.payment.makePayment(data);
-      });
-    });
 
     function replace_html(data, cocotransfer){
       $("#amount").val(cocotransfer.amount);

@@ -117,7 +117,6 @@
           "paymentMode" : "netBanking",
           "bankCode" : $('#netbankingBanks').val()
         };
-        $(".j-checkout-wrapper").show();
         citrus.payment.makePayment(data);
       });
     });
@@ -140,13 +139,13 @@
 
     $(function(){
       $("#cardPayButton").on("click", function(){
+      setTimeout(function(){$("#cardPayButton").prop('disabled', true);}, 20000);
       var data = getPaymentData();
       data.paymentDetails = {
         paymentMode: "card",
         holder:$('#cardHolderName').val(),
         type: "debit"
       };
-      $(".j-checkout-wrapper").show();
       citrus.payment.makePayment(data);
       });
     });

@@ -191,31 +191,25 @@
   .col-xs-12.col-sm-12.col-md-4.ptop0.mob-padding10
     .col-xs-12.col-sm-12.col-md-12.padding10.bg-shad.mob-mtop10
       %span.pull-left.full-width.cc-dark-fg.font25.weight600
-        Rs.#{showcase.raised_amount}
+        %i.fa.fa-inr
+        #{showcase.raised_amount}
       %span.pull-left.full-width.font11.weight600
         raised of Rs.#{showcase.goal_amount} goal
       %div.full-width.pull-left.mtop5
         .progress.mbottom0{style: "height: 8px;"}
-          .progress-bar.cc-dark-bg{:style => "width: #{showcase.percentage_raised.to_i}%;"}
-      .col-xs-12.col-sm-12.col-md-6.hidden
-        %span
-          %span.font20
-            %i.fa.fa-inr{"aria-hidden" => "true"} #{showcase.remaining_amount}
-          %span.font16.inline-block remaining
+          .progress-bar.cc-dark-bg{:style => "width: #{showcase.percentage_raised}%;"}
       .col-xs-6.col-sm-6.padding0.ptop10
         %span.pull-left.full-width.font11 FROM
         %span.pull-left.full-width.font-medium.weight600 #{showcase.no_of_contributers} #{showcase.no_of_contributers > 1 ? 'Contributers' : 'Contributer'}
       .col-xs-6.col-sm-6.padding0.ptop10
         %span.pull-left.full-width.font11 TIME LEFT
         %span.pull-left.full-width.font-medium.weight600 #{showcase.remaining_days} #{showcase.remaining_days > 1 ? 'days' : 'day'} to go
-      .col-xs-12.col-sm-12.no-mar-pad.mtop20.donate-form-block.padding0
+      .col-xs-12.col-sm-12.no-mar-pad.mtop20.padding0
         = form_for @cocotransfer, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
           = f.hidden_field :showcase_id, value: showcase.id, name: 'showcase_id'
           .col-xs-12.col-sm-12.mbottom10.padding0
-            .col-xs-2.col-sm-2.text-center.padding0
-              %span.full-width.full-height.pull-left.mtop2.font20 Rs.
-            .col-xs-10.col-sm-10.padding0
-              = f.text_field :amount, name: 'amount', value: showcase.default_gift_amount.to_i,  placeholder: "", class: "form-control bg-white cc-dark-fg-border"
+            %i.fa.fa-inr.font-bit-large.grey-fg.pull-left.mtop10.mleft15{style: "margin-right: -25px;"}
+            = f.text_field :amount, name: 'amount', value: showcase.default_gift_amount.to_i,  placeholder: "", class: "form-control bg-white cc-dark-fg-border pleft30"
           .col-xs-12.col-sm-12.no-mar-pad
             = f.submit "Gift", class: "btn cc-dark-bg white-fg weight600 full-width font20", style: "height: 45px;"
     .col-xs-12.col-sm-12.padding5.text-center.mtop10

@@ -128,7 +128,7 @@ Rails.application.routes.draw do
   get "offers", to: "home#offers"
   get "feed", to: "home#feed"
   get "results", to: "showcases#results"
-  get "wallet", to: "profiles#wallet"
+  get "giftbox", to: "profiles#wallet", as: :wallet
   get "profiles", to: "home#user_results", as: :user_results
   get "user_autocomplete", to: "home#user_autocomplete"
   get "unchecked_notifications", to: "home#unchecked_notifications", as: :unchecked_notifications

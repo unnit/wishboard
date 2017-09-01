@@ -105,40 +105,59 @@
       %span.pright5.mbottom5.pull-left.mright5.font12
         .fa.fa-circle
         = link_to tag.name, tag_path(tag.name), class: "black-fg"
+- if showcase.is_for_raising_fund?
+  .col-xs-12.col-sm-12.padding10{style: "background-color: #fbfbfb;"}
+    .col-xs-6.col-sm-6.padding0.pright-10
+      %span.pull-left.cc-dark-fg.font16
+        %i.fa.fa-inr
+        #{showcase.raised_amount}
+      %span.pull-left.font11.mtop5.mleft5
+        raised of Rs.#{showcase.goal_amount} goal
+      %div.full-width.pull-left.mtop5
+        .progress.mbottom0{style: "height: 8px;"}
+          .progress-bar.cc-dark-bg{:style => "width: #{showcase.percentage_raised}%;"}
+    .col-xs-6.col-sm-6.padding0
+      = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
+        = f.hidden_field :showcase_id, value: showcase.id, name: 'showcase_id'
+        .col-xs-8.col-sm-8.padding0
+          %i.fa.fa-inr.grey-fg.pull-left.mtop10.mleft10{style: "margin-right: -20px;"}
+          = f.text_field :amount, name: 'amount', value: showcase.default_gift_amount.to_i,  placeholder: "", class: "form-control cc-dark-fg-border pleft20", style: "background-color: transparent;"
+        .col-xs-4.col-sm-4.pright0
+          = f.submit "Gift", class: "btn cc-dark-bg white-fg full-width"
 .col-xs-12.col-sm-12.border-two.padding10.bg-white.h40
   - if current_user
     .col-xs-2.col-sm-2.pleft0.pright0
       = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
         - if showcase.wowed?(current_user)
-          %i.fa.fa-heart.cc-dark-fg.pull-left.hvr-push
+          %i.fa.fa-heart.grey-fg.pull-left.hvr-push
         - else
-          %i.fa.fa-heart-o.cc-dark-fg.pull-left.hvr-push
+          %i.fa.fa-heart-o.grey-fg.pull-left.hvr-push
       .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
         = showcase.active_wows.count
     .col-xs-2.col-sm-2.pright0.pleft5
-      %i.fa.fa-comment-o.pull-left.cc-dark-fg.comment-link.pon{class: "comment-link-#{showcase.id}"}
+      %i.fa.fa-comment-o.pull-left.grey-fg.comment-link.pon{class: "comment-link-#{showcase.id}"}
       .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
         = showcase.comments.count
   - else
     .col-xs-2.col-sm-2.pleft0.pright0
       = link_to authenticate_path, class: "j-loader-trigger-link" do
-        %i.fa.fa-heart-o.cc-dark-fg.pull-left
+        %i.fa.fa-heart-o.grey-fg.pull-left
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
           = showcase.active_wows.count
     .col-xs-2.col-sm-2.pright0.pleft5
       = link_to authenticate_path, class: "j-loader-trigger-link" do
-        %i.fa.fa-comment-o.pull-left.cc-dark-fg{class: "comment-link-#{showcase.id}"}
+        %i.fa.fa-comment-o.pull-left.grey-fg{class: "comment-link-#{showcase.id}"}
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
           = showcase.comments.count
   .col-xs-6.col-sm-6.pright0.pleft5
     - if current_user
       - if showcase.owner?(current_user)
         - if (!showcase.showpiece? && !showcase.achieved?)
-          = link_to fullfillment_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
+          = link_to fullfillment_form_showcase_path(showcase), method: :post, remote: true, class: "grey-fg" do
             %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
             %span.pull-left.font12.mtop2.grey-fg.mright10 Mark as completed?
         - elsif showcase.backstory_possible?
-          = link_to backstory_form_showcase_path(showcase), method: :post, remote: true, class: "cc-dark-fg" do
+          = link_to backstory_form_showcase_path(showcase), method: :post, remote: true, class: "grey-fg" do
             %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
             %span.pull-left.font12.mtop2.grey-fg Backstory?
         - else
@@ -146,26 +165,26 @@
           %span.grey-fg.font12 Achieved
       - else
         - unless showcase.coin_wish?
-          %span.rewish-link.pon.cc-dark-fg.pull-left{"data-id" => "#{showcase.id}"}
+          %span.rewish-link.pon.grey-fg.pull-left{"data-id" => "#{showcase.id}"}
             %i.fa.fa-clone.pull-left.mtop2
             %span.font12.grey-fg.pull-left.mtop2 Wish?
           .badge.bg-white.pull-left.pleft0.pright0.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
             = showcase.children.count
-          %span.done-this.pon.cc-dark-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
+          %span.done-this.pon.grey-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
             %i.fa.fa-check-square-o.pull-left.font17.mtop2
             %span.font12.grey-fg.pull-left.mtop2 Done?
       - if showcase.coin_wish?
-        %i.fa.fa-inr.pull-left.cc-dark-fg.mtop2{class: "badge-coin-link-#{showcase.id}"}
+        %i.fa.fa-inr.pull-left.grey-fg.mtop2{class: "badge-coin-link-#{showcase.id}"}
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{title: "#{showcase.coined_users}"}
           = showcase.active_coins.count
     - else
       = link_to authenticate_path, class: "j-loader-trigger-link" do
-        %span.pon.cc-dark-fg.pull-left.pright5
+        %span.pon.grey-fg.pull-left.pright5
           %i.fa.fa-clone.pull-left.mtop2
           %span.font12.grey-fg.pull-left.mtop2 Wish?
         .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
           = showcase.children.count
-        %span.pon.cc-dark-fg.pull-left.pleft-10
+        %span.pon.grey-fg.pull-left.pleft-10
           %i.fa.fa-check-square-o.pull-left.font17.mtop2
           %span.font12.grey-fg.pull-left.mtop2 Done?
   .col-xs-2.col-sm-2.pright0.pleft5

@@ -506,7 +506,7 @@ class Showcase < ApplicationRecord
 
   def percentage_raised
    percentage = ( raised_amount.to_f/goal_amount.to_f) * 100
-   percentage <= 100 ? percentage : 100
+   percentage <= 100 ? percentage.to_f.ceil : 100
   end
 
   def no_of_contributers

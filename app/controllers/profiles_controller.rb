@@ -225,6 +225,7 @@ class ProfilesController < ApplicationController
     profile = Profile.where("phone = ?", mobile)
     if profile.blank?
       session[:mobile_no] = params[:mobile]
+      session[:phonecode] = params[:phonecode]
       render json: {result: "getotp"}
     elsif profile.first == current_user.profile
       render json: {result: "own"}
@@ -234,14 +235,12 @@ class ProfilesController < ApplicationController
   end
 
   def get_otp
-    logger.info '*************'
-    logger.info session[:unlock_crowd_funding]
     profile = current_user.profile
     other_profile = Profile.where("phone = ?", session[:mobile_no])
     if profile.phone != session[:mobile_no] && other_profile.blank?
       profile.otp1 = rand(100000..999999)
       profile.save
-      send_mobile_sms("+#{profile.phonecode}#{session[:mobile_no]}", "#{profile.otp1} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
+      send_mobile_sms("+#{session[:phonecode]}#{session[:mobile_no]}", "#{profile.otp1} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
     else
       @unmatch = "yes"
       flash[:alert] = "Mobile no you have entered is either associated with another account or your own verified number"
@@ -254,7 +253,7 @@ class ProfilesController < ApplicationController
       profile = current_user.profile
       profile.otp2 = rand(100000..999999)
       profile.save
-      send_mobile_sms("+#{profile.phonecode}#{session[:mobile_no]}", "#{profile.otp2} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
+      send_mobile_sms("+#{session[:phonecode]}#{session[:mobile_no]}", "#{profile.otp2} is your OTP to verify mobile number on Cocociti. Please do not share it with anyone.")
       respond_to :js
     end
   end
@@ -265,12 +264,14 @@ class ProfilesController < ApplicationController
       if current_user.referrer.present? && profile.mobile_verified ==  false
         current_user.referrer.update_wallet(2)
       end
+      profile.phonecode = session[:phonecode]
       profile.phone = session[:mobile_no]
       profile.mobile_verified = true
       profile.otp1 = nil
       profile.otp2 = nil
       profile.save
       session.delete("mobile_no")
+      session.delete("phonecode")
       session.delete("otp_entered")
       if session[:listing_id]
         render js: "window.location = '#{user_product_url(session.delete(:listing_id))}'"

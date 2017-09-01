@@ -107,7 +107,7 @@
         = link_to tag.name, tag_path(tag.name), class: "black-fg"
 .col-xs-12.col-sm-12.border-two.padding10.bg-white.h40
   - if current_user
-    .col-xs-2.col-sm-2.pleft0
+    .col-xs-2.col-sm-2.pleft0.pright0
       = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
         - if showcase.wowed?(current_user)
           %i.fa.fa-heart.cc-dark-fg.pull-left.hvr-push
@@ -120,7 +120,7 @@
       .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
         = showcase.comments.count
   - else
-    .col-xs-2.col-sm-2.pleft0
+    .col-xs-2.col-sm-2.pleft0.pright0
       = link_to authenticate_path, class: "j-loader-trigger-link" do
         %i.fa.fa-heart-o.cc-dark-fg.pull-left
         .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pleft0.pright0{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}

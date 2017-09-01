@@ -1,7 +1,7 @@
 - feed ||= "yes"
 - hide_on_load_class ||= ''
 .col-xs-12.col-sm-12.no-mar-pad.mbottom20.bg-white.showcase-ps-wrapper{class: "showcase-ps-#{showcase.id} #{hide_on_load_class}"}
-  .col-xs-12.col-sm-12.no-mar-pad
+  .col-xs-12.col-sm-12.padding10
     %span.font11.grey-fg.pos-absolute.right15
       = time_ago_in_words(showcase.achieved_at)
     %i.glyphicon.glyphicon-option-vertical.action-showcase.grey-fg.mtop5.pon.pos-absolute.h-z.right0
@@ -36,23 +36,19 @@
                 posted a future wish.
               - elsif showcase.instant_wishlist?
                 posted a momentary wish.
-            %span.full-width.inline-block.font25.mob-font14
-              = link_to showcase_path(showcase), remote: true, class: "cc-dark-fg" do
-                = showcase.title
+            %span.full-width.inline-block.font25.mob-font14.cc-dark-fg
+              = showcase.title
           - else
             %span.full-width.inline-block.font25.mob-font14
               %span{class: "#{showcase.owner?(current_user) ? '' : 'hovercard'}", "data-id" => "#{showcase.user.id}"}= truncate showcase.user.name.titleize, length: 50
               %span
                 - if showcase.showpiece? || showcase.achieved?
-                  = link_to showcase_path(showcase, popup: "yes"), remote: true do
-                    %span.cc-dark-fg= showcase.fulfilled_wish_prefix_label.split.last
+                  %span.cc-dark-fg= showcase.fulfilled_wish_prefix_label.split.last
                 - else
                   = showcase.future_wish_prefix_label[/(.*)\s/,1]
-                  = link_to showcase_path(showcase, popup: "yes"), remote: true do
-                    %span.cc-dark-fg= showcase.future_wish_prefix_label.split.last
-              %span
-                = link_to showcase_path(showcase, popup: "yes"), remote: true, class: "cc-dark-fg" do
-                  = showcase.title
+                  %span.cc-dark-fg= showcase.future_wish_prefix_label.split.last
+              %span.cc-dark-fg
+                = showcase.title
   .col-xs-12.col-sm-8.col-md-8.padding0
     - if showcase.any_image?
       .col-xs-12.col-sm-12.padding0.text-center{style: "height: auto;max-height: 480px;overflow: hidden;"}
@@ -97,9 +93,9 @@
             .fa.fa-circle
             = link_to tag.name, tag_path(tag.name), class: "black-fg"
     = render partial: "showcases/description_tabs", locals: {showcase: showcase}
-    .col-xs-12.col-sm-12.padding10.h40
+    .col-xs-12.col-sm-12.pleft5.pright5.ptop10.pbottom10.h40
       - if current_user
-        .col-xs-2.col-sm-2.pleft0
+        .col-xs-2.col-sm-2.pleft0.pright0
           = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
             - if showcase.wowed?(current_user)
               %i.fa.fa-heart.cc-dark-fg.pull-left.hvr-push
@@ -112,7 +108,7 @@
           .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pright5{style: "display: #{showcase.comments_any? ? 'inline-block' : 'none'}", title: "#{showcase.commented_users_names}"}
             = showcase.comments.count
       - else
-        .col-xs-2.col-sm-2.pleft0
+        .col-xs-2.col-sm-2.pleft0.pright0
           = link_to authenticate_path do
             %i.fa.fa-heart-o.cc-dark-fg.pull-left
             .badge.pull-left.bg-white.grey-fg.extra-small-font.weight500.mtop2.pright5{style: "display: #{showcase.wows_any? ? 'inline-block' : 'none'}", title: "#{showcase.wowed_users}"}
@@ -181,10 +177,10 @@
             = f.submit "Comment", class: "btn btn-sm cc-dark-fg cc-dark-fg-border bg-white mtop5 btn-comment-create pull-left"
             .fa.fa-spinner.fa-spin.hide-display.pull-left.mtop10.mleft5.font20{class: "comment-spinner-#{showcase.id}"}
     - if showcase.video_link.present?
-      .col-xs-12.col-sm-12.padding0.mtop20
-        Video:
-        .col-xs-12.col-sm-12.no-mar-pad.show-video-iframe{"data-video-frame-div": "#video-link-#{showcase.id}" }
-          %a{target:'_blank', href:"#{showcase.video_link}"}
+      .col-xs-12.col-sm-12.padding5
+        .col-xs-12.col-sm-12.bg-light-grey.padding10.show-video-iframe{"data-video-frame-div": "#video-link-#{showcase.id}" }
+          %i.fa.fa-play.font16
+          %a{target:'_blank', href:"#{showcase.video_link}", class: "cc-dark-fg txt-underline"}
             #{showcase.video_link}
           = link_preview_content(showcase.video_link).html_safe
         .embed-responsive.embed-responsive-16by9{id: "video-link-#{showcase.id}"}
@@ -192,11 +188,11 @@
     - if showcase.is_only_accessible_with_link? && showcase.user == current_user
       .col-xs-12.col-sm-12.bg-white{class: "showcase-private-link-#{showcase.id}"}
         Private url : #{showcase.private_access_url}
-  .col-xs-12.col-sm-12.col-md-4.ptop0.padding-mob0
+  .col-xs-12.col-sm-12.col-md-4.ptop0.mob-padding10
     .col-xs-12.col-sm-12.col-md-12.padding10.bg-shad.mob-mtop10
       %span.pull-left.full-width.cc-dark-fg.font25.weight600
         Rs.#{showcase.raised_amount}
-      %span.pull-left.full-width.font11
+      %span.pull-left.full-width.font11.weight600
         raised of Rs.#{showcase.goal_amount} goal
       %div.full-width.pull-left.mtop5
         .progress.mbottom0{style: "height: 8px;"}

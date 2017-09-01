@@ -3,10 +3,9 @@
 = content_for :title do
   - title = @showcase.title
 - if @showcase.accept_fund
-  .container-fluid.ptop50.mob-ptop100.padding0{style: "min-height: 100%;"}
-    .container.ptop10
-      .col-xs-12.col-sm-10.col-md-12.padding0
-        = render partial: "home/raisefund_showcase.html", locals: {showcase: @showcase, feed: "no"}
+  .container.padding0.ptop10.ptop50.mob-ptop100.padding0{style: "min-height: 100%;"}
+    .col-xs-12.col-sm-10.col-md-12.padding0
+      = render partial: "home/raisefund_showcase.html", locals: {showcase: @showcase, feed: "no"}
 - else
   .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 100%;"}
     .container.ptop10.helvetica-font.padding0

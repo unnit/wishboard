@@ -880,7 +880,7 @@ small{
   width: 150px;
 }
 .txt-underline{
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 .flipped{
   transform: rotateX(360deg);

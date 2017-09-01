@@ -23,9 +23,9 @@ en:
   sms:
     cocotransfer:
       success:
-        to_donor: "You've gifted Rs %{amount} to %{fundraiser_name}'s %{showcase_title}!\n Transaction ID is %{txnid}."
-        to_fundraiser: "You've got fresh funds gifted by %{donor_name}! Your account  has been credited with Rs %{amount}"
-        to_cocomanager: "%{donor_name}! gifted Rs %{amount} to %{fundraiser_name}" 
+        to_donor: "You've gifted Rs %{amount} to %{fundraiser_name}'s %{showcase_title} wish!\n Transaction ID is %{txnid}."
+        to_fundraiser: "You've got fresh funds gifted by %{donor_name}! Your account has been credited with Rs %{amount}"
+        to_cocomanager: "%{donor_name}! gifted Rs %{amount} to %{fundraiser_name}"
       failed:
         to_donor: "Sorry, Your payment failed. %{msg}. ID: %{txnid}"
         to_cocomanager: "%{showcase_title}- Payment failed %{msg}. Name: %{donor_name} ID: %{txnid}"

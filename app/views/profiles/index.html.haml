@@ -69,19 +69,20 @@
                         %label Female&nbsp;&nbsp;
                         = f.radio_button :gender, "#{Profile::GENDER[2]}"
                         %label Others
-                  .form-group.set-mob-no
+                  .form-group.set-mob-no.ptop20
                     %label.col-sm-2.col-xs-12.control-label{:for => "textinput"}
                       Mobile
                       %br
                       %span.grey-fg.font11 *Not visible to others
                     .col-sm-2.col-xs-6.no-mar-pad.pleft15
                       = select("profile", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control"})
-                    .col-sm-4.col-xs-12.pright0.mob-mtop10
+                    .col-sm-3.col-xs-12.mob-mtop10
                       = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
-                    .col-sm-4.col-xs-12.mob-otp-verify.mob-mtop10.grey-fg
+                    .col-sm-5.pright0.col-xs-12.mob-otp-verify.grey-fg
                       - if @profile.mobile_verified
-                        Verified&nbsp;
-                        %i{class: "fa fa-check-circle green-fg font17"}
+                        %span.pull-left.ptop10
+                          Verified&nbsp;
+                          %i{class: "fa fa-check-circle green-fg font17"}
                   .form-group
                     %label.col-sm-2.control-label
                       Location
@@ -115,7 +116,7 @@
               $(".mob-otp-verify").text("Associated with another account");
             }else if(data.result == "getotp"){
               $(".mob-otp-verify").removeClass("ptop5 grey-fg")
-              $(".mob-otp-verify").html("<a data-remote='true' rel='nofollow' data-method='patch' href='/profiles/get_otp' class='btn btn-default get-otp-link'>Get OTP</a>")
+              $(".mob-otp-verify").html("<a data-remote='true' rel='nofollow' data-method='patch' href='/profiles/get_otp' class='btn btn-default get-otp-link mob-mtop10'>Get OTP</a>")
             }
             else if(data.result == "own"){
               $(".mob-otp-verify").text("It's your own verified number!");

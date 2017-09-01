@@ -113,8 +113,8 @@ class Cocotransfer < ApplicationRecord
     inform_success_to_donor
     inform_success_showcase_owner
     inform_success_admin
-     CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
-     CocotransferMailer.fund_reception_owner(self, self.showcase.user.email).deliver_now
+    CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
+    CocotransferMailer.fund_reception_owner(self, self.showcase.user.email).deliver_now
   end
 
   def inform_success_to_donor
@@ -128,7 +128,7 @@ class Cocotransfer < ApplicationRecord
   end
 
   def inform_success_admin
-    msg_coco_manager =      I18n.t('sms.cocotransfer.success.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid )
+    msg_coco_manager = I18n.t('sms.cocotransfer.success.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid )
     GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
     SmsService.send_sms(number, msg_coco_manager)
     end

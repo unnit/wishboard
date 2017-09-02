@@ -70,7 +70,7 @@
             .col-xs-12.col-sm-12.text-center.hide-display.coin-add-wishlist.mtop10.mbottom20
               ~ form_tag add_coin_wish_showcases_path do
                 = hidden_field_tag :id, "", {class: "coin_wish_id"}
-                = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg j-loader-trigger-link", data: {confirm: "#{current_user.active_coin_wishes.blank? ? '' : 'Only one coin wish can be active at a time. If you click okay and proceed, current selection will become your active coin wish. But do not worry, the old earnings will be added to your Gift Box without any deductions.'}"}
+                = submit_tag "Add Coin Wish", class: "btn btn-md wow-badge-bg white-fg j-loader-trigger-link", data: {confirm: "#{current_user.active_coin_wishes.blank? ? '' : 'Only one coin wish can be active at a time. If you click okay and proceed, current selection will become your active coin wish. But do not worry, the old earnings will be added to your Giftbox without any deductions.'}"}
       - else
         .col-xs-12.col-sm-12.no-mar-pad.mbottom10.mtop10
           %span.full-width.ptop50.pbottom50.pleft-10.pright-10.text-center.bg-white.pull-left.gold-border{"data-step" => "2", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>COIN WISHES</h3>Coin Wishes help you to earn whenever your friends click on it. Click unlock and start earning.</span>"}
@@ -180,7 +180,7 @@
             Invite Friends
       .col-xs-12.col-sm-12.hidden-xs.padding10.bg-shad.bg-white.text-center.mbottom10#sim-wrapper{style: "min-height: 183px;"}
         .fa.fa-spinner.fa-spin.sim-frnds-spinner.mtop70
-      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro.mbottom10{"data-step" => "6", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>CHECK YOUR EARNINGS</h3>Did you know that we add ₹1 for all your wishes & ₹2 to your Gift Box whenever your friends join Cocociti? Check your earnings status here.</span>"}
+      .col-xs-12.col-sm-12.hidden-xs.padding15.bg-shad.bg-white.text-center.rhs-intro.mbottom10{"data-step" => "6", "data-intro" => "<span class='font-medium grey-fg'><h4 class='mtop0 weight-bold text-center black-fg'>CHECK YOUR EARNINGS</h3>Did you know that we add ₹1 for all your wishes & ₹2 to your Giftbox whenever your friends join Cocociti? Check your earnings status here.</span>"}
         .col-xs-12.col-sm-12.col-md-8.no-mar-pad.grey-fg.font12
           %span.balance-coins-sprite-grey.inline-block
           .full-width.pull-left.neg-mtop5
@@ -191,7 +191,7 @@
         .col-xs-12.col-sm-12.col-md-4.no-mar-pad
           = link_to wallet_path, class: "j-loader-trigger-link" do
             .btn.btn-sm.mtop15.btn-v-outline.transition-effect
-              Your Gift Box
+              My Giftbox
       - if @featured_tags.present?
         .col-xs-12.col-sm-12.hidden-xs.padding10.bg-shad.bg-white.text-center.mbottom20{style: "height: 180px;"}
           #myInterestsCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}, data: {interval: false}}

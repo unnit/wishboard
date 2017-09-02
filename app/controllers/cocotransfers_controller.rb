@@ -45,7 +45,7 @@ class CocotransfersController < ApplicationController
     @cocotransfer.fullfillment_contributer = current_user
     if @cocotransfer.save
       @cocotransfer.generate_txnid!
-      return redirect_to checkout_cocotransfer_path(@cocotransfer)
+      return redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
     else
       flash[:alert] = @cocotransfer.errors.full_messages.join(", ")
       render :new
@@ -67,7 +67,7 @@ class CocotransfersController < ApplicationController
     else
       @cocotransfer.deliver_failed_transaction(params["TxMsg"])
       flash[:alert] = "#{params["TxMsg"]}"
-      redirect_to checkout_cocotransfer_path(@cocotransfer)
+      redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
     end
   end
 
@@ -85,7 +85,7 @@ class CocotransfersController < ApplicationController
   end
 
   def set_cocotransfer
-    @cocotransfer = Cocotransfer.find(params[:id])
+    @cocotransfer = Cocotransfer.find_by_slug(params[:id])
   end
 
   def cocotransfer_params
@@ -116,7 +116,7 @@ class CocotransfersController < ApplicationController
   def handle_invalid_signature
     @cocotransfer.deliver_signature_verification_failed
     flash[:alert] = "Signaure Verification failed. Please try again."
-    redirect_to checkout_cocotransfer_path(@cocotransfer) and return true
+    redirect_to checkout_cocotransfer_path(@cocotransfer.slug) and return true
   end
 
   def initiate_new_checkout
@@ -126,12 +126,12 @@ class CocotransfersController < ApplicationController
     @cocotransfer.attributes = @old_coco_transfer.attributes.symbolize_keys.slice(:showcase_id, :amount, :email, :donor_name, :phonecode, :phone)
     if @cocotransfer.save
       @cocotransfer.generate_txnid!
-      return redirect_to checkout_cocotransfer_path(@cocotransfer)
+      return redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
     else
       flash[:alert] = @cocotransfer.errors.full_messages.join(", ")
       render :new
     end
-    redirect_to checkout_cocotransfer_path(@cocotransfer)
+    redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
   end
 
   def assign_coco_attributes

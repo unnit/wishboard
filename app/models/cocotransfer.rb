@@ -206,4 +206,14 @@ class Cocotransfer < ApplicationRecord
   def denied?
     transaction_status.to_s == Transaction::TRANSACTION_STATUS[3][1]
   end
+
+  before_create :generate_slug
+
+  private
+  def generate_slug
+    begin
+      self.slug = SecureRandom.urlsafe_base64(10, false)
+    end while self.class.find_by(slug: slug)
+  end
+  
 end

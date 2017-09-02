@@ -71,6 +71,8 @@ class Showcase < ApplicationRecord
   RAISING_FOR_VALUES = [1, 2]
   ACCEESS_TYPE = [0, 1]
   ACCEESS_TYPE_NAME = [[0, 'Public'] ,[1, 'With link only']]
+  CAMPAIGN_STATUS = [[0, "Started"], [1, "Ended"]]
+  CAMPAIGN_STATUS_VALUES = [0, 1]
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
@@ -101,8 +103,6 @@ class Showcase < ApplicationRecord
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
   scope :active, -> {where(admin_status: [0, nil] )}
   scope :approved, -> {public_accessible.active}
-
-  before_save :generate_accesss_token
 
   HUMANIZED_ATTRIBUTES = {
     fundcategory_id: "Category",
@@ -194,8 +194,11 @@ class Showcase < ApplicationRecord
   end
 
   def is_goal_amount_not_blank?
-    return true
-     !(goal_amount.blank?)
+    return !(goal_amount.blank?)
+  end
+
+  def campaign_ended?
+    campaign_status == CAMPAIGN_STATUS_VALUES[1]
   end
 
   def self.tagged_with(name)
@@ -514,7 +517,8 @@ class Showcase < ApplicationRecord
     #cocotransfers.complete.non_anonymous.pluck(:from_user_id).uniq.count +  cocotransfers.complete.anonymous.pluck(:from_user_id).count
   end
 
-  after_create :create_showcase_notification, :promotional_offer, :set_achieved
+  before_create :generate_accesss_token
+  after_create :create_showcase_notification, :promotional_offer, :set_achieved, :set_campaign_status
   after_create_commit :send_new_wish
   after_destroy :verify_wallet
 
@@ -529,6 +533,12 @@ class Showcase < ApplicationRecord
   private
   def set_achieved
     update_column :achieved_at, created_at
+  end
+
+  def set_campaign_status
+    if self.is_for_raising_fund?
+      update_column :campaign_status, CAMPAIGN_STATUS_VALUES[0]
+    end
   end
 
   def create_showcase_notification

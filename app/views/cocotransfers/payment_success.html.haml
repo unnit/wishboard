@@ -11,7 +11,7 @@
     %h4.mtop100 Transaction ID: #{@cocotransfer.txnid}
     %span.font12 #{@cocotransfer.updated_at.strftime('%H:%M, %d-%b-%Y, %a')}
     %span
-      #shareShowcaseRoundIcons{"data-id" => "#{@showcase.id}"}
+      .shareShowcaseRoundIcons{"data-id" => "#{@showcase.id}"}
     = link_to showcase_path(@showcase) do
       .btn.btn-md.btn-v-outline.mtop20.transition-effect
         Gift Again
@@ -20,5 +20,14 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
-    $("#shareShowcaseRoundIcons").jsSocials({url: "https://www.cocociti.com/wish/#{@showcase.id}",showLabel: false,showCount: false,shares: ["twitter", "facebook", "pinterest", "whatsapp"]});
+      obj = {"longUrl" : "https://www.cocociti.com/wish/#{@showcase.id}"}
+      $.ajax({url: "https://content.googleapis.com/urlshortener/v1/url?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&alt=json", type: 'POST', contentType: "application/json", data: JSON.stringify(obj), success: function(data){
+        $(".shareShowcaseRoundIcons").jsSocials({
+          url: data["id"],
+          text: "I just backed #{@showcase.title} @Cocociti",
+          showLabel: false,
+          showCount: false,
+          shares: ["twitter", "facebook", "googleplus", "linkedin", "pinterest", "whatsapp"]
+        });
+      }});
     })

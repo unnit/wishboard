@@ -8,12 +8,25 @@ class CocotransfersController < ApplicationController
 
   def new
     @showcase = Showcase.find_by_id(params[:showcase_id])
-    if @showcase.is_for_raising_fund? && !@showcase.is_admin_disabled?
+    if @showcase.is_for_raising_fund? && !@showcase.is_admin_disabled? && !@showcase.campaign_ended?
       @cocotransfer = Cocotransfer.new
       @cocotransfer.showcase = @showcase
       assign_coco_attributes
     else
       redirect_to root_path
+    end
+  end
+
+  def create
+    @cocotransfer = Cocotransfer.new(cocotransfer_params)
+    @cocotransfer.transaction_status = Transaction::TRANSACTION_STATUS[1][1]
+    @cocotransfer.fullfillment_contributer = current_user
+    if @cocotransfer.save
+      @cocotransfer.generate_txnid!
+      return redirect_to checkout_cocotransfer_path(@cocotransfer)
+    else
+      flash[:alert] = @cocotransfer.errors.full_messages.join(", ")
+      render :new
     end
   end
 
@@ -23,7 +36,6 @@ class CocotransfersController < ApplicationController
   def checkout
     return initiate_new_checkout  if @cocotransfer.paid?
     @cocotransfer.generate_txnid!
-    # render 'checkoutsimple' and return
   end
 
   def update
@@ -37,20 +49,6 @@ class CocotransfersController < ApplicationController
         render json: {cocotransfer: @cocotransfer, success: false, error_messages: error_messages }
       end
      end
-  end
-
-  def create
-    @cocotransfer = Cocotransfer.new(cocotransfer_params)
-    @cocotransfer.transaction_status = Transaction::TRANSACTION_STATUS[1][1]
-    @cocotransfer.fullfillment_contributer = current_user
-    if @cocotransfer.save
-      @cocotransfer.generate_txnid!
-      return redirect_to checkout_cocotransfer_path(@cocotransfer)
-    else
-      flash[:alert] = @cocotransfer.errors.full_messages.join(", ")
-      render :new
-      # redirect_to new_cocotransfer_path(@cocotransfer, showcase_id: 3, amount: @cocotransfer.amount, email: @cocotransfer.email)
-    end
   end
 
   def callback

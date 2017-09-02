@@ -25,7 +25,8 @@ class Cocotransfer < ApplicationRecord
 
 
   HUMANIZED_ATTRIBUTES = {
-    donor_name: "Name"
+    donor_name: "Name",
+    showcase: "Wish"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
@@ -37,9 +38,11 @@ class Cocotransfer < ApplicationRecord
 
   def is_valid_showcase
     if showcase.is_admin_disabled?
-      errors.add(:showcase, "disabled by admin")
+      errors.add(:showcase, "is disabled by admin")
     elsif !showcase.is_for_raising_fund?
-      errors.add(:showcase, "not for receiving fund")
+      errors.add(:showcase, "is not enabled to receiving fund")
+    elsif !showcase.campaign_ended?
+      errors.add(:showcase, "campaign ended")
     end
   end
 

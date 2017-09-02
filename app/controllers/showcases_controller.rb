@@ -1,8 +1,9 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete, :private]
-  before_action :get_showcase, only: [:accept_fund, :wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
+  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign]
+  before_action :check_end_campaign, only: [:edit, :update, :end_campaign]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
-  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :undo_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating]
+  before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :undo_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign]
   before_action :check_coin_wish, only: [:edit, :update, :delete]
   before_action :get_comment, only: [:edit_comment, :delete_comment]
   before_action :authenticate_comment_owner, only: [:edit_comment, :delete_comment]
@@ -81,7 +82,7 @@ class ShowcasesController < ApplicationController
   end
 
   def destroy
-    if !@showcase.coin_wish? && !@showcase.already_raised_some_amount
+    if !@showcase.coin_wish? && !@showcase.already_raised_some_amount && !showcase.campaign_ended?
       @showcase.destroy
       flash[:notice] = "#{@showcase.title} deleted."
     end
@@ -313,6 +314,12 @@ class ShowcasesController < ApplicationController
     respond_to :js
   end
 
+  def end_campaign
+    @showcase.update_column :campaign_status, Showcase::CAMPAIGN_STATUS_VALUES[1]
+    flash[:notice] = "Gift collection for #{@showcase.title} completed successfully"
+    redirect_to :back
+  end
+
   private
 
   def backstory_params
@@ -388,6 +395,13 @@ class ShowcasesController < ApplicationController
 
   def re_eligibilty
     if @showcase.owner?(current_user) || @showcase.coin_wish?
+      redirect_to root_path
+      return
+    end
+  end
+
+  def check_end_campaign
+    if @showcase.campaign_ended?
       redirect_to root_path
       return
     end

@@ -207,7 +207,7 @@ Rails.application.routes.draw do
       post :update_rating
       post :backstory_form
       post :update_backstory
-      post :accept_fund
+      post :end_campaign
     end
     collection do
       get :gettags

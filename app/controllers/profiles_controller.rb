@@ -344,7 +344,6 @@ class ProfilesController < ApplicationController
   end
 
   def send_to_bank
-
     @showcase = Showcase.find_by_id(params[:showcase_id])
     unless current_user.can_withdraw? || @showcase
       render js: "window.location = '#{root_path}'"
@@ -363,7 +362,6 @@ class ProfilesController < ApplicationController
     @withdraw.mmid_confirmation = params[:mmid_confirmation]
     @withdraw.user = current_user
     @withdraw.status = Withdraw::STATUS[0]
-
     if @withdraw.save
       if @withdraw.showcase
       else

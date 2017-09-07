@@ -82,7 +82,7 @@ class ShowcasesController < ApplicationController
   end
 
   def destroy
-    if !@showcase.coin_wish? && !@showcase.already_raised_some_amount && !showcase.campaign_ended?
+    if !@showcase.coin_wish? && !@showcase.already_raised_some_amount && !@showcase.campaign_ended?
       @showcase.destroy
       flash[:notice] = "#{@showcase.title} deleted."
     end

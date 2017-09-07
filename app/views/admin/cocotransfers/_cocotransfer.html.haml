@@ -1,7 +1,7 @@
 %td= cocotransfer.txnid
 %td= link_to cocotransfer.showcase.title, showcase_path(cocotransfer.showcase.id), target: "_blank"
 %td= link_to cocotransfer.showcase.user.name, "#profile-#{cocotransfer.showcase.user.profile_id}", data: {toggle: "modal" }
-%td= cocotransfer.fullfillment_contributer.try(:name)
+%td= cocotransfer.donor_name
 %td= cocotransfer.created_at.strftime("%d %a %b, %Y %H:%M")
 %td= rupee cocotransfer.amount
 %td= cocotransfer.display_status

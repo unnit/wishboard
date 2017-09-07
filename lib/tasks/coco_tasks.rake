@@ -1,4 +1,13 @@
 namespace :coco_tasks do
+  task update_slug_cocotransfer: :environment do
+    i = 0
+    Cocotransfer.all.each do |cocotransfer|
+      cocotransfer.update_column :slug, SecureRandom.urlsafe_base64(10, false)
+      i+=1
+    end
+    puts i
+  end
+
   task update_products_internal_id_via_backend: :environment do
     require 'csv'
     #filename = "#{Rails.root}/lib/madiwala-upload.csv"

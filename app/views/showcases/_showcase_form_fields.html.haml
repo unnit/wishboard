@@ -66,7 +66,7 @@
       = f.check_box :accept_fund, disabled: "disabled"
   .col-xs-12.col-sm-12.raise-funds-fields{class: "#{showcase.is_for_raising_fund? ? '' : 'hidden'}"}
     .col-xs-12.col-sm-6.pleft0.height50
-      = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field pac-input", maxlength: 7
+      = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field", maxlength: 7
     .col-xs-12.col-sm-6.pright0.height50
       = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date"
     .col-xs-12.col-sm-12.pleft0.pright0.ptop10
@@ -83,6 +83,6 @@
       .col-xs-8.col-xs-offset-4.col-sm-offset-0.col-sm-5.pleft0.pright0
         = f.text_field :beneficiary, class: "form-control coco-input-field #{showcase.is_raising_for_others? ? '' : 'hidden'}", placeholder: "Beneficiary name*"
     .col-xs-12.col-sm-12.height50.padding0.ptop10
-      = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 200
+      = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field", maxlength: 200
   .col-xs-12.col-sm-12.mtop20.text-center
     = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold j-loader-trigger-link showcase-update-submit"

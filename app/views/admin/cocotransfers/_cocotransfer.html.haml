@@ -4,7 +4,6 @@
 %td= cocotransfer.fullfillment_contributer.try(:name)
 %td= cocotransfer.created_at.strftime("%d %a %b, %Y %H:%M")
 %td= rupee cocotransfer.amount
-/%td= cocotransfer.product.listing_type_name
 %td= cocotransfer.display_status
 %td
   = link_to "#cocotrfrs-#{cocotransfer.id}", class: "btn btn-sm btn-success", data: {toggle: "modal"} do

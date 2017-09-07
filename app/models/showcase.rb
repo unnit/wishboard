@@ -76,7 +76,7 @@ class Showcase < ApplicationRecord
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
-  validates :description, length: { maximum: 2500 }
+  validates :description, length: { maximum: 25000 }
   validates :showcase_type, inclusion: {in: SHOWCASE_VALUES, message: "not an accepted value."}
   validates :wish_prefix, inclusion: {in: WISH_PREFIX_VALUES, message: "not an accepted value."}
   validates :user_status, inclusion: {in: USER_STATUS, message: "not an accepted value."}, unless: :admin_creation?

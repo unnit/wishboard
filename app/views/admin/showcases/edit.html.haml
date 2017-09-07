@@ -57,10 +57,10 @@
           = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{@showcase.is_for_raising_fund? ? 'hidden' : ''}"
         .col-xs-12.col-sm-3.mtop10
           %span.no-mar-pad.col-xs-12.col-sm-12
-            = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}", required: true
+            = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}"
             %label.mbottom0 Active
           %span.no-mar-pad.col-xs-12.col-sm-12
-            = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[1]}", required: true
+            = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[1]}"
             %label.mbottom0 Inactive
         .col-xs-4.col-sm-3.ptop10
           = f.check_box :coin_wish
@@ -73,7 +73,7 @@
             = f.check_box :accept_fund, disabled: "disabled"
         .col-xs-12.col-sm-12.raise-funds-fields{class: "#{@showcase.is_for_raising_fund? ? '' : 'hidden'}"}
           .col-xs-12.col-sm-6.pleft0.height50
-            = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field pac-input", maxlength: 7
+            = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field", maxlength: 7
           .col-xs-12.col-sm-6.pright0.height50
             = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date"
           .col-xs-12.col-sm-12.pleft0.pright0.ptop10
@@ -90,21 +90,21 @@
             .col-xs-8.col-xs-offset-4.col-sm-offset-0.col-sm-5.pleft0.pright0
               = f.text_field :beneficiary, class: "form-control coco-input-field #{@showcase.is_raising_for_others? ? '' : 'hidden'}", placeholder: "Beneficiary name*"
           .col-xs-12.col-sm-12.height50.padding0.ptop10
-            = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field pac-input", maxlength: 200
+            = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field", maxlength: 200
         .col-xs-12.col-sm-12.mtop25.text-center
           = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold showcase-update-submit"
 
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      $wrap = $("#edit_showcase_"+#{@showcase.id});
+      $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 3});
       $(document).on("click", ".showcase-update-submit", function(e){
         $wrap = $("#edit_showcase_"+#{@showcase.id});
         e.preventDefault();
         $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
         $wrap.submit();
       });
-      $wrap = $("#edit_showcase_"+#{@showcase.id});
-      $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 3});
       $wrap.find(".type-holder").html("#{@showcase.showcase_type_label.html_safe}");
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-right", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){

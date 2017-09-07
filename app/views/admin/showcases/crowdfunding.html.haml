@@ -22,7 +22,7 @@
                 %th Profile
                 %th Delete
             %tbody.showcase-strip
-              = render partial: "admin/showcases/croudfunding_partial", locals: {showcases: @showcases, page: params[:page]}
+              = render partial: "admin/showcases/crowdfunding_partial", locals: {showcases: @showcases, page: params[:page]}
       #infinite-scrolling-content.hidden
         = paginate @showcases, param_name: "showcases"
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}

@@ -1,7 +1,7 @@
 class Admin::ShowcasesController < AdminController
   before_action :get_showcase, only: [:edit, :update, :destroy, :update_admin_status]
 
-  def croudfunding
+  def crowdfunding
     @showcases = Showcase.where("accept_fund = ?", true).order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(30)
     respond_to do |format|

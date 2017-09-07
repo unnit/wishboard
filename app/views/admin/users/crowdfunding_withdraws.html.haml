@@ -12,6 +12,7 @@
               %tr
                 %th
                 %th Name
+                %th Wish
                 %th Total amount
                 %th Amount Requested
                 %th Acc Holder Name
@@ -24,7 +25,7 @@
                 %th Comment
                 %th Update
             %tbody.showcase-strip
-              = render partial: "admin/users/croudfunding_withdraw_content", locals: {withdraws: @withdraws, page: params[:page]}
+              = render partial: "admin/users/crowdfunding_withdraw_content", locals: {withdraws: @withdraws, page: params[:page]}
       #infinite-scrolling-content.hidden
         = paginate @withdraws, param_name: "withdraws"
       .col-xs-12.col-sm-12.text-center.feed-loader.padding40{style: "display:none;"}

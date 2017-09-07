@@ -23,7 +23,6 @@
             %th Donor&nbsp;&nbsp;
             %th Date&nbsp;&nbsp;
             %th Amount&nbsp;&nbsp;
-            /%th Cocotransfer Type&nbsp;&nbsp;
             %th Status&nbsp;&nbsp;
             %th Details&nbsp;&nbsp;
         %tbody
@@ -31,6 +30,6 @@
             %tr
               %td
                 - page = params[:page].blank? ? 1 : params[:page].to_i
-                = (i+1) + 20*(page-1)
+                = (i+1) + 100*(page-1)
               = render partial: "cocotransfer", locals: { cocotransfer: cocotransfer }
     = paginate @cocotransfers

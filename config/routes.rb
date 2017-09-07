@@ -22,7 +22,7 @@ Rails.application.routes.draw do
         get :messages
         post :send_message
         get :withdraws
-        get :croudfunding_withdraws
+        get :crowdfunding_withdraws
       end
       member do
         post :lock
@@ -46,7 +46,7 @@ Rails.application.routes.draw do
         delete :delete_comment
       end
       collection do
-        get :croudfunding
+        get :crowdfunding
       end
     end
   end

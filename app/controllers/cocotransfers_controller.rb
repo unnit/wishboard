@@ -23,7 +23,7 @@ class CocotransfersController < ApplicationController
     @cocotransfer.fullfillment_contributer = current_user
     if @cocotransfer.save
       @cocotransfer.generate_txnid!
-      return redirect_to checkout_cocotransfer_path(@cocotransfer)
+      return redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
     else
       flash[:alert] = @cocotransfer.errors.full_messages.join(", ")
       render :new

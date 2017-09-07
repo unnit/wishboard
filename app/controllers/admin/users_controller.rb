@@ -55,9 +55,10 @@ class Admin::UsersController < AdminController
   end
 
   def withdraws
-    @withdraws = Withdraw.all.order(created_at: :desc).page(params[:withdraws]).per(30)
+    @withdraws = Withdraw.coin_withdraws.order(created_at: :desc).page(params[:withdraws]).per(30)
   end
-  def croudfunding_withdraws
+
+  def crowdfunding_withdraws
      @withdraws = Withdraw.showcase_withdraws.order(created_at: :desc).page(params[:withdraws]).per(30)
   end
 

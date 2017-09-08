@@ -112,11 +112,13 @@ class Cocotransfer < ApplicationRecord
 
   def paid!(transaction_id, tamount)
     update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: tamount
+    create_invoice
     FundreceivedNotification.create(user_id: self.showcase.user_id, cocotransfer: self )
     inform_success_to_donor
     inform_success_showcase_owner
     inform_success_admin
-    CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
+    CocotransferMailer.success_inovoice(self, self.email).deliver_now
+    # CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
     CocotransferMailer.fund_reception_owner(self, self.showcase.user.email).deliver_now
   end
 
@@ -208,6 +210,14 @@ class Cocotransfer < ApplicationRecord
 
   def denied?
     transaction_status.to_s == Transaction::TRANSACTION_STATUS[3][1]
+  end
+
+  def success_txdetail
+  	self.txdetails.where(tx_id: self.txnid).success.first
+  end
+
+  def create_invoice
+  	self.update_column('invoice', "CF"+ self.updated_at.strftime('%d%m%y')+ self.id.to_s + rand.to_s[2..5])
   end
 
   before_create :generate_slug

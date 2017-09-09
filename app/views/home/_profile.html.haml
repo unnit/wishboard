@@ -90,7 +90,9 @@
           - else
             = link_to "http://www.#{@profile.other_url}", target: "_blank", class: "j-loader-trigger-link" do
               .fa.fa-link.grey-fg
-      %h4.font21.mtop0= (truncate user.name, length: 40)
+      %h4.mbottom0.font21.mtop0= (truncate user.name, length: 40)
+      %h5.mtop5.grey-fg
+        = "(@#{user.slug})"
       %h6.grey-fg
         - if user.location && user.location.name.present?
           .fa.fa-anchor

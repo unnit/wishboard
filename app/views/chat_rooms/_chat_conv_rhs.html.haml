@@ -7,8 +7,6 @@
     .online-users-wrap.hide-display.inline-block.j-online-users-wrap.pos-absolute.mtop5.padding5.border5.font12.white-fg.text-center
       = chat_room.online_users_name
 .pull-left.full-width
-  %span.full-width.pull-left.text-center.font11.mbottom10
-    %span α Alpha mode
   .pos-relative.pull-left#j-chat-room-members-scroll{style: "height: 360px;"}
     - chat_room.memberships.where.not(user_id: current_user.try(:id)).each do |membership|
       .col-sm-12.ptop10.pbottom5.mbottom10.pleft5

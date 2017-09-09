@@ -375,8 +375,9 @@ class Showcase < ApplicationRecord
   def date_of_achievement_blank?
     date_of_achievement.blank?
   end
+
   def date_of_achievement_not_in_future
-      self.errors.add(:date_of_achievement, "Date of achievement shoud not be in future")  if date_of_achievement_blank? && Date.strftime("dd-mm-yyyy", date_of_achievement) > Time.zone.today
+    self.errors.add(:date_of_achievement, "Date of achievement shoud not be in future")  if date_of_achievement_blank? && Date.strftime("dd-mm-yyyy", date_of_achievement) > Time.zone.today
   end
 
   def wishlist?

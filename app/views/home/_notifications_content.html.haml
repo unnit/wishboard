@@ -111,10 +111,10 @@
       .media
         .media-left
           - if notification.cocotransfer.is_anonymous?
-            %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
+            %span.img-circle.dark-grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
               A
           - elsif donor.blank? || (donor.present? && notification.cocotransfer.donor_name != donor.name)
-            %span.img-circle.grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
+            %span.img-circle.dark-grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
               = notification.cocotransfer.donor_name.first.upcase
           - elsif donor.present? && notification.cocotransfer.donor_name == donor.name
             = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face

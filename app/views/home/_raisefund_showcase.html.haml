@@ -93,7 +93,7 @@
           %span.pright5.mbottom5.pull-left.mright5.font12
             .fa.fa-circle
             = link_to tag.name, tag_path(tag.name), class: "black-fg"
-    = render partial: "showcases/description_tabs", locals: {showcase: showcase}
+    = render partial: "showcases/description_tabs", locals: {showcase: showcase, full: "yes"}
     .col-xs-12.col-sm-12.pleft5.pright5.ptop10.pbottom10.h40
       - if current_user
         .col-xs-2.col-sm-2.pleft0.pright0

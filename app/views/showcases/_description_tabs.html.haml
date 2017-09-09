@@ -1,3 +1,4 @@
+- full ||= ""
 .col-xs-12.col-sm-12.padding0.min-height0
   - if showcase.description.present? && showcase.achieved? && ((showcase.achieved_description.present? && !showcase.showpiece?) || (showcase.backstory_description.present? && showcase.showpiece?))
     .carousel.slide.description_carousel{id: "descriptionCarousel_#{showcase.id}", "data-interval": false}
@@ -8,28 +9,40 @@
         - if showcase.backstory_description.present? && showcase.showpiece?
           .item.padding10.pull-left{class: "#{showcase.backstory_description.present? ? 'active' : ''}"}
             %span.weight600.black80-fg.pull-left.full-width Backstory:
-            %span.pull-left.small.grey-fg.excerpt-desc.full-width= sanitize(match_url(truncate_html(showcase.backstory_description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
-            - if showcase.backstory_description.length > 150
-              %span.pull-left.small.grey-fg.full-desc.full-width{style: "display: none;"}= sanitize(match_url(showcase.backstory_description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
-              %a.pull-left.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+            - if full.empty?
+              %span.pull-left.small.grey-fg.excerpt-desc.full-width= sanitize(match_url(truncate_html(showcase.backstory_description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
+              - if showcase.backstory_description.length > 150
+                %span.pull-left.small.grey-fg.full-desc.full-width{style: "display: none;"}= sanitize(match_url(showcase.backstory_description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
+                %a.pull-left.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+            - else
+              %span.pull-left.small.grey-fg.full-width= sanitize(match_url(showcase.backstory_description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
         .item.padding10.pull-left{class: "#{showcase.achieved_description.present? && !showcase.showpiece? ? 'active' : ''}"}
           %span.weight600.black80-fg.pull-left.full-width Story:
-          %span.pull-left.small.grey-fg.excerpt-desc.full-width= sanitize(match_url(truncate_html(showcase.description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
-          - if showcase.description.length > 150
-            %span.pull-left.small.grey-fg.full-desc.full-width{style: "display: none;"}= sanitize(match_url(showcase.description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
-            %a.pull-left.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+          - if full.empty?
+            %span.pull-left.small.grey-fg.excerpt-desc.full-width= sanitize(match_url(truncate_html(showcase.description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
+            - if showcase.description.length > 150
+              %span.pull-left.small.grey-fg.full-desc.full-width{style: "display: none;"}= sanitize(match_url(showcase.description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
+              %a.pull-left.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+          - else
+            %span.pull-left.small.grey-fg.full-width= sanitize(match_url(showcase.description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
         - if showcase.achieved_description.present? && !showcase.showpiece?
           .item.padding10.pull-left
             %span.weight600.black80-fg.pull-left.full-width Story of fulfillment:
-            %span.pull-left.small.grey-fg.excerpt-desc.full-width= sanitize(match_url(truncate_html(showcase.achieved_description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
-            - if showcase.achieved_description.length > 150
-              %span.pull-left.small.grey-fg.full-desc.full-width{style: "display: none;"}= sanitize(match_url(showcase.achieved_description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
-              %a.pull-left.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+            - if full.empty?
+              %span.pull-left.small.grey-fg.excerpt-desc.full-width= sanitize(match_url(truncate_html(showcase.achieved_description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
+              - if showcase.achieved_description.length > 150
+                %span.pull-left.small.grey-fg.full-desc.full-width{style: "display: none;"}= sanitize(match_url(showcase.achieved_description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
+                %a.pull-left.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+            - else
+              %span.pull-left.small.grey-fg.full-width= sanitize(match_url(showcase.achieved_description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
   - else
     - description = (showcase.description.blank? ? nil : showcase.description) || (showcase.achieved_description.blank? ? nil : showcase.achieved_description) || (showcase.backstory_description.blank? ? nil : showcase.backstory_description)
     - if description.present?
       .col-xs-12.col-sm-12.bg-white.padding10
-        %span.pull-left.small.grey-fg.excerpt-desc.full-width= sanitize(match_url(truncate_html(description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
-        - if description.length > 150
-          %span.pull-left.small.grey-fg.full-desc.full-width{style: "display: none;"}= sanitize(match_url(description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
-          %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+        - if full.empty?
+          %span.pull-left.small.grey-fg.excerpt-desc.full-width= sanitize(match_url(truncate_html(description.gsub("\r\n", "<br>"), 150)), attributes: ["href", "target"])
+          - if description.length > 150
+            %span.pull-left.small.grey-fg.full-desc.full-width{style: "display: none;"}= sanitize(match_url(description.gsub("\r\n", "<br>")), attributes: ["href", "target"])
+            %a.pull-left.mleft5.small.grey-fg.see-more.pon{style: "color: blue !important;"} See More
+        - else
+          %span.pull-left.small.grey-fg.full-width= sanitize(match_url(description.gsub("\r\n", "<br>")), attributes: ["href", "target"])

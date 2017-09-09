@@ -42,8 +42,11 @@
         %ul.text-center.mbottom0.pleft0
           %li.inline-block
             %span.text-muted.small.fot-res Copyright &copy; #{Time.now.in_time_zone("Kolkata").strftime('%Y')} Cocociti Online Solutions Pvt Ltd. All items &copy; their respective owners.
-          %li.inline-block= link_to "Terms", "/terms", class: "small fot-res text-muted hvr-underline-from-center", rel: "no-follow"
-          %li.inline-block= link_to "Privacy", "/privacy", class: "small fot-res text-muted hvr-underline-from-center", rel: "no-follow"
+      .col-md-12.text-center.no-mar-pad
+        %ul.text-center.mbottom0.pleft0
+          %li.inline-block= link_to "Terms |", "/terms", class: "font-medium fot-res white-fg hvr-underline-from-center", rel: "no-follow"
+          %li.inline-block= link_to "Privacy |", "/privacy", class: "font-medium fot-res white-fg hvr-underline-from-center", rel: "no-follow"
+          %li.inline-block= link_to " Refunds & cancellation", "/refund", class: "font-medium white-fg text-muted hvr-underline-from-center", rel: "no-follow"
       .col-xs-12.text-center.visible-xs
         %a{href: "https://goo.gl/Hk8Jdn"}
           %img{alt: "Get it on Google Play", src: "https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png", style: "width: 150px;margin-bottom: -10px;"}

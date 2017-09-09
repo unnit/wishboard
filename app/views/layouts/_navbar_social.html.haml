@@ -22,6 +22,7 @@
             %li.visible-xs.bg-white.white-border
               = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;", class: "j-loader-trigger-link" do
                 %span.black-fg= truncate current_user.name, length: 25
+                %span.font11.black80-fg= "(@#{current_user.slug})"
                 %br
                 %span.font11.grey-fg View Profile
             %li.visible-xs.bg-white.white-border
@@ -50,6 +51,7 @@
                     %li
                       = link_to myprofile_path(current_user.profile.slug), style: "white-space: normal;", class: "j-loader-trigger-link" do
                         %span.black-fg= truncate current_user.name, length: 25
+                        %span.font11.black80-fg= "(@#{current_user.slug})"
                         %br
                         %span.font11.grey-fg View Profile
                     %li.divider{style: "overflow: visible"}

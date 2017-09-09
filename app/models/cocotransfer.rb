@@ -147,10 +147,12 @@ class Cocotransfer < ApplicationRecord
     # failed_msg_to_customer(msg)
     # failed_msg_to_admin(msg)
   end
+
   def failed_msg_to_customer(msg)
     msg_customer =  I18n.t('sms.cocotransfer.failed.to_donor', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )
      SmsService.send_sms(self.phone_with_prefix,msg_customer) if self.phone_with_prefix
   end
+
   def failed_msg_to_admin(msg)
     msg_coco_manager =  I18n.t('sms.cocotransfer.failed.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )
     GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
@@ -158,6 +160,7 @@ class Cocotransfer < ApplicationRecord
     end
     msg_coco_manager
   end
+  
   def deliver_signature_verification_failed
     email_message = "Your payment failed. Please try again."
     CocotransferMailer.fail(self, email_message).deliver_now

@@ -264,6 +264,10 @@ class User < ApplicationRecord
     profile.phone
   end
 
+  def slug
+    profile.slug
+  end
+
   def location
     profile.location
   end

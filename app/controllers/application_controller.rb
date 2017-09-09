@@ -41,8 +41,8 @@ class ApplicationController < ActionController::Base
   private
 
   def redirect_to_home
-    # redirect_to root_path
-    # return
+    redirect_to root_path
+    return
   end
 
   def set_raven_context

@@ -17,6 +17,6 @@
           .media-body.font-medium
             = link_to myprofile_path(membership.user.profile.slug), target: "_blank" do
               %span.pull-left.full-width.text-left.black80-fg= membership.user.name
-              %span.cc-dark-fg.v-align-top.font13.pull-left
-                %span.pull-left{style: "text-decoration: underline;"} cocociti.com/
-                %span.pull-left{style: "text-decoration: underline;"}= membership.user.profile.slug
+              %span.grey-fg.v-align-top.font13.pull-left
+                /%span.pull-left{style: "text-decoration: underline;"} cocociti.com/
+                %span.pull-left.txt-underline= "@#{membership.user.profile.slug}"

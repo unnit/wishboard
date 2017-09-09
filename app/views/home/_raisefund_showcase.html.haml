@@ -88,7 +88,7 @@
         %br
         %span.weight600.light-grey-fg No Image
     - if showcase.tags.present?
-      .col-xs-12.col-sm-12.showcase-tags.padding10
+      .col-xs-12.col-sm-12.showcase-tags.padding10.pbottom0
         - showcase.tags.each do |tag|
           %span.pright5.mbottom5.pull-left.mright5.font12
             .fa.fa-circle
@@ -221,9 +221,9 @@
       .shareShowcaseRoundIcons{"data-id" => "#{showcase.id}"}
     - if showcase.owner?(current_user) && !showcase.campaign_ended?
       .col-xs-12.col-sm-12.padding0.mtop10
-        = link_to end_campaign_showcase_path(showcase), method: :post, data: { confirm: "Are you sure to end this gift collection?" }, class: "btn grey-fg light-border j-loader-trigger-link full-width font20", style: "height:45px;" do
-          Close Gifting
-          %i.fa.fa-times
+        = link_to end_campaign_showcase_path(showcase), method: :post, data: { confirm: "Are you sure to end this gift collection?" }, class: "btn grey-fg border-medium j-loader-trigger-link full-width font20", style: "height:45px;" do
+          Close Gifting&nbsp;
+          %i.fa.fa-lock
     .col-xs-12.col-sm-12.padding0.mtop10
       = render partial: "showcases/owner_details", locals: {showcase: showcase}
     .col-xs-12.col-sm-12.mtop20.padding0

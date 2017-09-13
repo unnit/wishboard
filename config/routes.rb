@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :cocotransfers,only: [:create, :new, :update] do
     member do
       get :checkout
+      get :transfer_success
     end
     collection do
       post :callback
@@ -92,6 +93,8 @@ Rails.application.routes.draw do
       get :unlock_coin_wish
       get :verify_profile
       get :unlock_crowd_funding
+      get :convert_to_profile_money_form
+      post :convert_to_profile_money
     end
     member do
       post :delete_withdraw_request

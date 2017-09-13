@@ -5,5 +5,8 @@
     .media-body
       You are gifting Rs.
       %span.inline-block{class: "cocotransfer_display_amount"}
-        #{cocotransfer.amount}
-      to #{showcase.user.name} for #{showcase.title}
+        #{cocotransfer.total_amount}
+      -if cocotransfer.profile_transfer?
+        to #{cocotransfer.receiver.name}
+      -elsif cocotransfer.showcase_transfer?
+        to #{cocotransfer.receiver.name} for #{cocotransfer.showcase_title}

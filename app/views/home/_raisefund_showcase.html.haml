@@ -211,7 +211,8 @@
             Gifting ended
         - else
           = form_for @cocotransfer, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
-            = f.hidden_field :showcase_id, value: showcase.id, name: 'showcase_id'
+            = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
+            = f.hidden_field :transferable_type, value: 'Showcase', name: 'transferable_type'
             .col-xs-12.col-sm-12.mbottom10.padding0
               %i.fa.fa-inr.font-bit-large.grey-fg.pull-left.mtop10.mleft15{style: "margin-right: -25px;"}
               = f.text_field :amount, name: 'amount', value: showcase.default_gift_amount.to_i,  placeholder: "", class: "form-control bg-white cc-dark-fg-border pleft30"

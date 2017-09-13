@@ -2,11 +2,7 @@
   $("#cont-wrapper").html("#{j( render partial: 'profiles/bank_info', locals: {last_transaction: @withdraws.last })}");
   $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
 - else
-  if(#{current_user.can_withdraw?} == true){
   $("#cont-wrapper").html("#{j( render partial: 'profiles/bank_info', locals: {last_transaction: @withdraws.last })}");
-  }else{
-  $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font16'>Ayyo! You can withdraw money to your bank only when your wallet balance reach 10, 20, 50, 100 & multiples of 200 thereafter. Don't worry if you are short of these numbers, just ask your friends to help you to reach.<br><br>Tip: You can withdraw 10 rupees even if your earnings are 10 or above.<br><br>Please verify your mobile number to send your coins to bank.</div>")
-  }
   $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
 $("#cont-wrapper").modal().show();
 $('form#send_to_bank_form').submit(function() {

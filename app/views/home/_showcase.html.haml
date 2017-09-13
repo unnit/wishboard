@@ -128,6 +128,42 @@
             = f.text_field :amount, name: 'amount', value: showcase.default_gift_amount.to_i,  placeholder: "", class: "form-control cc-dark-fg-border pleft20", style: "background-color: transparent;"
           .col-xs-4.col-sm-4.pright0
             = f.submit "Gift", class: "btn cc-dark-bg white-fg full-width"
+-else# showcase.accept_gift_money_to_wish?
+  .col-xs-12.col-sm-12.padding10{style: "background-color: #fbfbfb;"}
+    .col-xs-4.col-sm-4.padding0.pright-10
+      %span.pull-left.cc-dark-fg.font16
+        %i.fa.fa-inr
+        #{showcase.raised_amount}
+      %span.pull-left.font11.mtop5.mleft5
+        raised of Rs.#{showcase.goal_amount} estimated amount
+      %div.full-width.pull-left.mtop5
+        .progress.mbottom0{style: "height: 8px;"}
+          .progress-bar.cc-dark-bg{:style => "width: #{showcase.percentage_raised}%;"}
+    .col-xs-8.col-sm-8.padding0
+      - if showcase.campaign_ended?
+        .btn.border-medium.black80-fg.full-width
+          Gifting ended
+      - else
+        -if showcase.goal_amount
+          = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
+            = f.hidden_field :showcase_id, value: showcase.id, name: 'showcase_id'
+            .col-xs-6.col-sm-6.pright0
+              = f.submit "Fullfill", class: "btn cc-dark-bg white-fg full-width" 
+              .amount_detail.extra-small-font
+                %i.fa.fa-inr.grey-fg
+                = showcase.goal_amount
+        = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
+          = f.hidden_field :showcase_id, value: showcase.id, name: 'showcase_id'
+          .col-xs-6.col-sm-6.pright0
+            = f.submit "Contribute to Wish", class: "btn cc-dark-bg white-fg full-width"
+            .amount_detail.extra-small-font
+              approximately 
+              %i.fa.fa-inr.grey-fg
+              = showcase.default_min_amount
+              To
+              %i.fa.fa-inr.grey-fg
+              = 10000
+
 .col-xs-12.col-sm-12.border-two.padding10.bg-white.h40
   - if current_user
     .col-xs-2.col-sm-2.pleft0.pright0

@@ -223,7 +223,7 @@ class HomeController < ApplicationController
     fundreceived_notification = FundreceivedNotification.find_by_id params[:id]
     unless fundreceived_notification.blank?
       fundreceived_notification.update_column :checked, true if fundreceived_notification.user == current_user
-      redirect_to showcase_path(fundreceived_notification.cocotransfer.showcase)
+      redirect_to fundreceived_notification.notification_path
     else
       redirect_to root_path
     end

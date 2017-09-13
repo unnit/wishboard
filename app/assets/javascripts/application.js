@@ -1594,9 +1594,18 @@ $(document).ready(function(){
     $(videodiv_element).removeClass('hidden');
   });
 
-  $(document).on("keyup", "form.new_cocotransfer #cocotransfer_amount", function(e){
+  $(document).on("keyup", "form.new_cocotransfer #cocotransfer_total_amount", function(e){
    $(".cocotransfer_display_amount").html(($(this).val()));
   });
+
+  $(document).on("keyup", "#cocotransfer_total_amount", function(e){
+   setOnlineAndWalletAmount();
+  });
+
+  $(document).on("change", "#cocotransfer_use_wallet_amount", function(e){
+   setOnlineAndWalletAmount();
+  });
+
 
 
 });// eof document ready
@@ -1606,6 +1615,36 @@ $(window).on("load", function(){
     setTimeout(function(){$("footer").css({"position": "absolute", "bottom": "0"});}, 3000);
   }
 })
+
+function setOnlineAndWalletAmount(){
+    $currentAmount = parseInt($("#cocotransfer_total_amount").val());
+    $availableWalletAmount = parseInt($("#cocotransfer_available_wallet_amount").val());
+    console.log("current:"+ $currentAmount + "  availableWalletAmount:" )
+
+     if ($("#cocotransfer_use_wallet_amount").is(":checked")){
+          if ($availableWalletAmount >= $currentAmount){
+           $("#cocotransfer_wallet_amount_display").html($currentAmount);
+           $("#cocotransfer_wallet_amount").val($currentAmount);
+           $("#cocotransfer_amount_display").html(0);
+           $("#cocotransfer_amount").val(0);
+          }else{
+           $("#cocotransfer_wallet_amount_display").html($availableWalletAmount);
+           $("#cocotransfer_wallet_amount").val($availableWalletAmount);
+           $("#cocotransfer_amount_display").html($currentAmount - $availableWalletAmount);
+           $("#cocotransfer_amount").val($currentAmount - $availableWalletAmount);
+          }
+    }else{
+      $("#cocotransfer_amount_display").html($currentAmount);
+      $("#cocotransfer_amount").val($currentAmount);
+      if ($availableWalletAmount >= $currentAmount){
+       $("#cocotransfer_amount_display").html($currentAmount);
+       $("#cocotransfer_amount").val(0);
+     }else{
+       $("#cocotransfer_amount_display").html($currentAmount);
+       $("#cocotransfer_amount").val(0);
+     }
+    }
+  }
 
 function reEnableSubmitButton(element_id){
   $formsubmitbutton = $(element_id);

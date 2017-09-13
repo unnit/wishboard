@@ -24,7 +24,7 @@ class Showcase < ApplicationRecord
   has_many :achieved_notifications, dependent: :destroy
   has_many :commenter_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
-  has_many :cocotransfers, dependent: :destroy
+  has_many :cocotransfers, as: :transferable, dependent: :destroy
   has_many :fullfillment_contributers, through: :cocotransfers, primary_key: "from_user_id", class_name: "User"
   has_many :withdraws
   accepts_nested_attributes_for :location
@@ -493,11 +493,14 @@ class Showcase < ApplicationRecord
   end
 
   def available_withdraw_amount
-    return cocotransfers.complete.sum(:amount).to_i - withdraws.complete_withdraws.sum(:coins).to_i
+    return  raised_amount - withdraws.showcase_withdraws.complete_withdraws.sum(:coins).to_i
+    #return cocotransfers.showcase_gifting.complete.sum("amount + wallet_amount").to_i - withdraws.showcase_withdraws.complete_withdraws.sum(:coins).to_i
   end
 
   def raised_amount
-    return cocotransfers.complete.sum(:amount).to_i
+    online_and_wallet = cocotransfers.showcase_gifting.complete.select("SUM(cocotransfers.amount) AS amount, SUM(cocotransfers.wallet_amount) AS wallet_amount")
+    return (online_and_wallet[0].try(:amount).to_i + online_and_wallet[0].try(:wallet_amount).to_i)
+    #return cocotransfers.showcase_gifting.complete.sum("amount + wallet_amount").to_i
   end
 
   def remaining_amount
@@ -514,7 +517,7 @@ class Showcase < ApplicationRecord
   end
 
   def no_of_contributers
-    cocotransfers.complete.count
+    cocotransfers.showcase_gifting.complete.count
     #cocotransfers.complete.non_anonymous.pluck(:from_user_id).uniq.count +  cocotransfers.complete.anonymous.pluck(:from_user_id).count
   end
 
@@ -524,14 +527,20 @@ class Showcase < ApplicationRecord
   after_destroy :verify_wallet
 
   def default_min_amount
-    1
+    10
   end
 
-  def min_amount_allowed
+  def min_gift_amount_allowed
      default_min_amount
   end
 
+  before_destroy :can_be_deleted?
+
   private
+  def can_be_deleted?
+    self.already_raised_some_amount
+     errors.blank?
+  end
   def set_achieved
     update_column :achieved_at, created_at
   end

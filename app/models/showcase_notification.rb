@@ -14,7 +14,7 @@ class ShowcaseNotification < ApplicationRecord
   end
 
   def notification_url
-    Rails.application.routes.url_helpers.update_showcase_checked_url(self, :host => "#{GLOBAL_VARIABLES[:root_url]}")
+    Rails.application.routes.url_helpers.showcase_url(self, :host => "#{GLOBAL_VARIABLES[:root_url]}")
   end
 
   def notification_title
@@ -22,7 +22,7 @@ class ShowcaseNotification < ApplicationRecord
   end
 
   def notification_text
-    "#{self.showcase.user.truncated_name} #{showcase_wish_type} #{self.showcase.truncated_title}"
+    self.showcase.user.truncated_name + " " + showcase_wish_type + " " + self.showcase.truncated_title
   end
 
   def showcase_wish_type

@@ -85,7 +85,7 @@ $(document).ready(function(){
         $wrap.find(".more-target-date").addClass("hidden").removeAttr("readonly").attr("disabled", true);
         $wrap.find('.raise-funds-fields').removeClass('hidden');
         if($wrap.find("#showcase_showcase_type").val() == 0){
-          date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+          date_options["startDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("pdate"));
           $wrap.find(".dt-of-achievement").val("").datetimepicker('remove');
           $wrap.find(".dt-of-achievement").datetimepicker(date_options).on('changeDate', function(){
             if($wrap.find("#showcase_accept_fund").is(":checked")){
@@ -100,7 +100,7 @@ $(document).ready(function(){
         $wrap.find(".more-target-date").removeClass("hidden").removeAttr("disabled").attr("readonly", true);
         $wrap.find('.raise-funds-fields').addClass('hidden');
         if($wrap.find("#showcase_showcase_type").val() == 0){
-          date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+          date_options["endDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("pdate"));
           $wrap.find(".dt-of-achievement").val("").datetimepicker('remove');
           $wrap.find(".dt-of-achievement").datetimepicker(date_options).on('changeDate', function(){
             if($wrap.find("#showcase_accept_fund").is(":checked")){
@@ -183,17 +183,17 @@ $(document).ready(function(){
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-left", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){
         if($wrap.find("#showcase_accept_fund").is(":checked")){
-          date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+          date_options["startDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("pdate"));
         }else{
-          date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+          date_options["endDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("pdate"));
         }
       }
       else if($wrap.find("#showcase_showcase_type").val() == 1){
-        date_options["startDate"] = new Date($(".ps-wrapper").data("fdate"));
+        date_options["startDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("fdate"));
       }
       else if($wrap.find("#showcase_showcase_type").val() == 2){
-        date_options["endDate"] = new Date($(".ps-wrapper").data("fdate"));
-        date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+        date_options["endDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("fdate"));
+        date_options["startDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("pdate"));
       }
       $wrap.find(".dt-of-achievement").datetimepicker(date_options).on('changeDate', function(){
         if($wrap.find("#showcase_accept_fund").is(":checked")){

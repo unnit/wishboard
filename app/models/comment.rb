@@ -33,7 +33,7 @@ class Comment < ApplicationRecord
   end
 
   def notification_text
-    self.user.truncated_name + " commented on your wish - " +  self.showcase.truncated_title
+    "#{self.user.truncated_name} commented on your wish - #{self.showcase.truncated_title}"
   end
 
   def deliver_firebase_notification

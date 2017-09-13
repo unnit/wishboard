@@ -213,8 +213,8 @@ class Showcase < ApplicationRecord
       self.fundcategory_id = nil
       self.raising_for = nil
       self.video_link = nil
-   end
- end
+    end
+  end
 
   def  default_gift_amount
     if !self.new_record? && is_for_raising_fund?

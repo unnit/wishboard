@@ -17,7 +17,7 @@ class AchievedNotification < ApplicationRecord
   end
 
   def notification_text
-    self.showcase.user.truncated_name + " completed " +  self.showcase.truncated_title + " from wishlist"
+    "#{self.showcase.user.truncated_name} completed #{self.showcase.truncated_title} from wishlist"
   end
 
   def deliver_firebase_notification

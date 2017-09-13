@@ -12,12 +12,18 @@
     .col-sm-3.hidden-xs.no-mar-pad.ptop15#lhs-feed
       = render partial: "user", locals: {user: current_user, card_padding: "0px", card_width: "100%"}
       .col-xs-12.col-sm-4.padding10.pleft0.mtop15{style: "min-width: 292px;"}
-        %h6.no-mar-pad.font12.pleft0.text-left.weight-bold{style: "line-height: 18px;border-bottom: none;"}
-          TRENDING
+        %h5.no-mar-pad.pleft0.text-left{style: "line-height: 18px;border-bottom: none;"}
+          TRENDING CHATROOMS
+        - @trending_chat_rooms.each do |chat_room|
+          = link_to chat_room_path(chat_room), class: "j-ct-card-wrap j-loader-trigger-link" do
+            %span.font-medium.cc-dark-fg.mbottom5.mtop5.pull-left.full-width
+              %span.border2{style: "padding: 3px;background-color: #e3c4ff;"}= "##{truncate chat_room.name, length: 20}"
+        %h5.mtop30.mbottom0.pleft0.pull-left.full-width{style: "line-height: 18px;border-bottom: none;"}
+          TRENDING TAGS
         - tag_cloud Tag.counts, %w{font11 font13 font17 font20} do |tag, css_class|
-          %span.padding5.inline-block.grey-fg.pull-left.full-width
-            .fa.fa-line-chart.cc-dark-fg.font12
-            = link_to tag.name.strip, tag_path(tag.name), class: "font11 black-fg j-loader-trigger-link"
+          %span.inline-block.grey-fg.pull-left.full-width.mbottom5
+            .fa.fa-line-chart.cc-dark-fg.font13
+            = link_to tag.name.strip, tag_path(tag.name), class: "font13 black-fg j-loader-trigger-link"
     .col-xs-12.col-sm-6.ptop15.padding-mob0.main-feed{class: "#{'hide-display' if params[:view] == "follow"}"}
       #new-wish
         = render partial: "post_showcase", locals: {showcase: @scase}

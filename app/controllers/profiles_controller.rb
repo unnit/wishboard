@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
   end
 
   def create
-    unless current_user.profile
+    #unless current_user.profile
       @profile = Profile.new(create_profile_params)
       @profile.slug = params[:profile][:slug].downcase
       @profile.user = current_user
@@ -42,9 +42,9 @@ class ProfilesController < ApplicationController
         render :info
         return
       end
-    else
-      redirect_to root_path
-    end
+    #else
+    #  redirect_to root_path
+    #end
   end
 
   def index
@@ -405,11 +405,11 @@ class ProfilesController < ApplicationController
     end
 
     def create_profile_params
-      params.require(:profile).permit(:first_name, :last_name, :image)
+      params.require(:profile).permit(:first_name, :last_name, :image, :enable_profilepay)
     end
 
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :about, location_attributes: [:id, :name])
+      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :about, :enable_profilepay, location_attributes: [:id, :name])
     end
 
     def business_params

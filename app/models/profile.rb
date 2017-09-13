@@ -28,7 +28,7 @@ class Profile < ApplicationRecord
   acts_as_mappable through: :location
   accepts_nested_attributes_for :location
 
-  validates :first_name, :last_name, :slug, presence: true
+  validates :first_name, :last_name, :slug, :enable_profilepay, presence: true
   validates :slug, uniqueness: true
   validates :first_name, :last_name, length: { maximum: 100, message: "should be between 100 characters." }
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z\.\ ]*\z/, message: "only allows alphabets, dot and space" }

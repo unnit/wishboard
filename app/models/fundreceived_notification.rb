@@ -21,7 +21,7 @@ class FundreceivedNotification < ApplicationRecord
 	end
 
 	def notification_text
-	  "#{self.cocotransfer.display_donor_name} gifted you fresh funds for wish" + self.cocotransfer.showcase.truncated_title
+		"#{self.cocotransfer.display_donor_name} gifted you fresh funds for wish #{self.cocotransfer.showcase.truncated_title}"
 	end
 
 	def deliver_firebase_notification

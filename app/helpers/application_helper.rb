@@ -31,9 +31,14 @@ module ApplicationHelper
   end
 
   def match_url(text)
-    regexp = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/?)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s\`!()\[\]{};:\'\".,<>?«»“”‘’]))/i
+    #regexp = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/?)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s\`!()\[\]{};:\'\".,<>?«»“”‘’]))/i
+    #converted = text.gsub(/www+[.][a-z0-9]+[.][\S]+/){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
     #converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>" + link_preview_content(url).html_safe}
-    converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
+    if URI.extract(text).present?
+      converted = text.gsub(URI.regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
+    else
+      converted = text.gsub(/www+[.][\S]+[.][\S]+/){|url| "<a target='_blank' href=http://#{url}>#{url}</a>"}
+    end
     return converted
   end
 

@@ -16,8 +16,9 @@ class CommenterNotification < ApplicationRecord
   def notification_title
     self.comment.user.name
   end
+  
   def notification_text
-    self.comment.user.truncated_name + " also commented on " + 	self.showcase.truncated_title
+    "#{self.comment.user.truncated_name} also commented on #{self.showcase.truncated_title}"
   end
 
   def deliver_firebase_notification

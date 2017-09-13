@@ -1,5 +1,5 @@
 = form_for @showcase, html: { class: "create-showcase" } do |f|
-  .col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-edit-wrapper.hidden-overflow{style: "max-height:480px;min-height: 150px;height: auto;"}
+  .col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-edit-wrapper.hidden-overflow.ps-edit-wrapper{style: "max-height:480px;min-height: 150px;height: auto;", "data-pdate" => "#{@showcase.created_at.to_date}", "data-fdate" => "#{@showcase.created_at.to_date + 8.days}"}
     .preview-edit
       - if @showcase.image.present?
         = cl_image_tag @showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: @showcase.title
@@ -57,7 +57,7 @@
       = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
   - unless @showcase.achieved? && (!@showcase.showpiece?)
     .col-xs-12.col-sm-5.ptop10.height50
-      = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{showcase.is_for_raising_fund? ? 'hidden' : ''}"
+      = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{showcase.is_for_raising_fund? ? 'hidden' : ''}", readonly: true
   .col-xs-12.col-sm-12.ptop10.height50
     Accept as Gift:
     - if showcase.accept_fund_is_editable?
@@ -68,7 +68,7 @@
     .col-xs-12.col-sm-6.pleft0.height50
       = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field", maxlength: 7
     .col-xs-12.col-sm-6.pright0.height50
-      = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date"
+      = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date", readonly: true
     .col-xs-12.col-sm-12.pleft0.pright0.ptop10
       .col-xs-4.col-sm-3.pleft0
         %label{for: "showcase_fundcategory_id"} Category

@@ -18,7 +18,7 @@ class Relationship < ApplicationRecord
   end
 
   def notification_text
-  	self.follower.truncated_name + " started following you" 
+    "#{self.follower.truncated_name} started following you"
   end
 
   def deliver_firebase_notification

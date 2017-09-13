@@ -53,6 +53,14 @@ class User < ApplicationRecord
 
   validates :invited_code, format: { with: /\A[a-zA-Z0-9]*\z/ }, if: :invited_code_present?
 
+  def email=(address)
+    if new_record?
+      write_attribute(:email, address)
+    else
+      raise 'Email is immutable!'
+    end
+  end
+
   def remember_me
     return true
   end
@@ -145,7 +153,7 @@ class User < ApplicationRecord
      total_amt+=s.raised_amount
    end
    return total_amt.to_i
- end
+  end
 
   def total_showcase_withdraw_available_amount
     total_amt = 0
@@ -153,7 +161,7 @@ class User < ApplicationRecord
      total_amt+=s.available_withdraw_amount
    end
    return total_amt.to_i
- end
+  end
 
   def can_withdraw?
     unused_coins = wallet.unused_coins.to_i

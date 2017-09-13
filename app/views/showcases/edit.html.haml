@@ -42,21 +42,21 @@
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-right", startDate: "", endDate: "" };
       if($wrap.find("#showcase_showcase_type").val() == 0){
         if($wrap.find("#showcase_accept_fund").is(":checked")){
-          date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+          date_options["startDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
         }else{
-          date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+          date_options["endDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
         }
       }
       else if($wrap.find("#showcase_showcase_type").val() == 1){
-        date_options["startDate"] = new Date($(".ps-wrapper").data("fdate"));
+        date_options["startDate"] = new Date($(".ps-edit-wrapper").data("fdate"));
       }
       else if($wrap.find("#showcase_showcase_type").val() == 2){
-        date_options["endDate"] = new Date($(".ps-wrapper").data("fdate"));
-        date_options["startDate"] = new Date($(".ps-wrapper").data("pdate"));
+        date_options["endDate"] = new Date($(".ps-edit-wrapper").data("fdate"));
+        date_options["startDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
       }
       $wrap.find(".dt-of-achievement").datetimepicker(date_options);
       date_options["startDate"] = "";
-      date_options["endDate"] = new Date($(".ps-wrapper").data("pdate"));
+      date_options["endDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
       $(".after-date-of-achievement").datetimepicker(date_options)
       var places_input_1= $('.pac-input')[1];
       google.maps.event.addDomListener(window, 'load', function () {

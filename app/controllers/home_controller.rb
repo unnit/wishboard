@@ -20,6 +20,7 @@ class HomeController < ApplicationController
       @social_layout = "yes"
       @sh_btn = 'none;'
       @scase_modal = "no"
+      @trending_chat_rooms = ChatRoom.joins(:chat_messages).order('count(chat_messages.chat_room_id) DESC').group('chat_rooms.id').limit(8)
       @count = feed_wishes.count
       @showcases = feed_wishes.limit(8)
       @all_count = all_wishes(nil).count

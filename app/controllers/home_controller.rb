@@ -223,7 +223,7 @@ class HomeController < ApplicationController
     fundreceived_notification = FundreceivedNotification.find_by_id params[:id]
     unless fundreceived_notification.blank?
       fundreceived_notification.update_column :checked, true if fundreceived_notification.user == current_user
-      redirect_to showcase_path(fundreceived_notification.cocotransfer.showcase)
+      redirect_to fundreceived_notification.notification_path
     else
       redirect_to root_path
     end
@@ -460,6 +460,15 @@ class HomeController < ApplicationController
    @firebasetoken.update_attributes(active: true)  if @firebasetoken
    FirebaseToken.where(token: params[:token]).where.not(user_id: current_user.id).update_all(active: false)   if @firebasetoken && current_user
    render json: {saved:  @firebasetoken ? true : false}
+  end
+
+  def display_preview
+    # layout :false
+    @url = params[:linkurl]
+    render layout: false
+
+    #render html: link_preview_content(params[:linkurl]).html_safe
+
   end
 
   private

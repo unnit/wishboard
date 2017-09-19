@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
   before_action :set_raven_context
   #before_action :check_interests
 
+  def user_params
+  end
+
   def set_timezone
     Time.zone = "Kolkata"
   end

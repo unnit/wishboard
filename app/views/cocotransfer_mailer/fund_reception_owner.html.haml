@@ -1,10 +1,10 @@
 %span{style: "font-size:14px;float:left;margin-bottom:20px;width:100%;text-align:left;"}
-  -name = @cocotransfer.showcase.user.name ? @cocotransfer.showcase.user.name : "Cocociti User"
+  -name = @cocotransfer.receiver.name ? @cocotransfer.receiver.name : "Cocociti User"
   Dear #{name},
 %span{style: "font-size:14px;float:left;margin-bottom:5px;width:100%;"}
   You've got fresh funds gifted by #{@cocotransfer.display_donor_name}! Your Cocociti account  has been credited with Rs #{@cocotransfer.amount}
 %span{style: "font-size:14px;float:left;margin-bottom:5px;width:100%;"}
-  = link_to "Cick here", showcase_url(@cocotransfer.showcase)
+  = link_to "Cick here", showcase_url(@cocotransfer.transferable)
   to check your total Cocociti credits & detailed contributor list 
 %span{style: "font-size:14px;float:left;margin-bottom:10px;width:100%;"}
   Thank you for using COCOCITI.

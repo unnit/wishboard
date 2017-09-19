@@ -35,9 +35,9 @@ module ApplicationHelper
     #converted = text.gsub(/www+[.][a-z0-9]+[.][\S]+/){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
     #converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>" + link_preview_content(url).html_safe}
     if URI.extract(text).present?
-      converted = text.gsub(URI.regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
+      converted = text.gsub(URI.regexp){|url| "<a target='_blank' href=#{url} class='url_preview'>#{url}</a>"}
     else
-      converted = text.gsub(/www+[.][\S]+[.][\S]+/){|url| "<a target='_blank' href=http://#{url}>#{url}</a>"}
+      converted = text.gsub(/www+[.][\S]+[.][\S]+/){|url| "<a target='_blank' href=http://#{url} class='url_preview'>#{url}</a>"}
     end
     return converted
   end
@@ -47,19 +47,20 @@ module ApplicationHelper
     page = LinkPreview::Page.new(url)
     page.parse!
     if page.valid?
-    <<-EOS
-      <div class="col-md-12 padding10" style="background-color: rgba(250, 255, 170, 0.45);">
-        <div class="col-md-3 pull-left">
-          <img src="#{page.favicon}" width="100%">
+    preview_content = <<-EOS
+      <div class='col-md-12 padding10 mbottom5' style='background-color: rgba(250, 255, 170, 0.45);'>
+        <div class='col-md-3 pull-left'>
+          <img src='#{page.favicon}' width='100%'>
         </div>
-        <div class="col-md-9">
-          <div class="font16"> #{page.title}</div>
-          <div style="font-size: 10px;"> #{page.description}</div>
+        <div class='col-md-9'>
+          <div class='font16'> #{page.title}</div>
+          <div style='font-size: 10px;'> #{page.description}</div>
         </div>
       </div>
      EOS
+     preview_content.html_safe
    else
-    ""
+     return ""
    end
   end
 

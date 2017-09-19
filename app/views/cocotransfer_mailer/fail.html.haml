@@ -1,6 +1,9 @@
 Ayyo!
 %p
-  Your payment of Rs. #{@cocotransfer.amount} for #{@cocotransfer.showcase.try(:truncated_title)} was unsuccessful
+  -if @cocotransfer.showcase_transfer?
+    Your payment of Rs. #{@cocotransfer.amount} for #{@cocotransfer.transferable.try(:truncated_title)} was unsuccessful
+  -else
+    Your payment of Rs. #{@cocotransfer.amount} to #{@cocotransfer.transferable.try(:name)} was unsuccessful
   %br
   %br
   #{@message}

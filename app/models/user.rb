@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable
+    :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable
   acts_as_messageable
   has_many :firebase_tokens
   has_many :addresses, dependent: :destroy
@@ -50,8 +50,35 @@ class User < ApplicationRecord
 
   has_one :profile, dependent: :destroy
   has_one :wallet, dependent: :destroy
+  has_many :cocotransfers, as: :transferable, dependent: :destroy
+  has_many :tranfered_cocotransfers, class_name: "Cocotransfer", foreign_key: "from_user_id"
+
+  scope :all_cocotransfers, ->(user_id) {Cocotransfer.where("(transferable_type = ? and transferable_id = ? ) or (from_user_id = ? )", "User", user_id, user_id)}
 
   validates :invited_code, format: { with: /\A[a-zA-Z0-9]*\z/ }, if: :invited_code_present?
+  DEFAULT_GIFT_AMOUNT = 10
+  MIN_GIFT_AMOUNT_ALLOWED = 10
+  MAX_GIFT_AMOUNT_ALLOWED = 10000
+
+  def all_cocotransfers
+    Cocotransfer.where("(transferable_type = ? and transferable_id = ? ) or (from_user_id = ? )", "User", self.id, self.id)
+  end
+
+  def can_accept_gift?
+  	self.profile.enable_profilepay
+  end
+
+  def default_gift_amount
+    return DEFAULT_GIFT_AMOUNT
+  end
+
+  def min_gift_amount_allowed
+    return MIN_GIFT_AMOUNT_ALLOWED
+  end
+
+  def max_gift_amount_allowed
+  	return MAX_GIFT_AMOUNT_ALLOWED
+  end
 
   def email=(address)
     if new_record?
@@ -74,7 +101,7 @@ class User < ApplicationRecord
       results = joins(:profile)
       unless term.blank?
         results = results.where("lower(profiles.first_name) like ? or lower(profiles.last_name) like ? or lower(profiles.phone) like ? or lower(users.email) like ? ",
-                            "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%")
+                                "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%", "%#{term.downcase}%")
       end
       results.order("profiles.created_at DESC")
     end
@@ -147,20 +174,57 @@ class User < ApplicationRecord
   # def can_withdraw_showcase_raised_amount?(showcase)
   #   showcase.
   # end
-  def total_showcase_raised_amount
-    total_amt = 0
-    showcases.active_rasing_funds.each do |s|
-     total_amt+=s.raised_amount
-   end
-   return total_amt.to_i
+
+  def total_profile_raised_amount
+    profile_gifting_raised_amount + wishpay_raised_amount + coin_converted_amount
   end
 
-  def total_showcase_withdraw_available_amount
+  def profile_gifting_raised_amount
+    return (cocotransfers.profile_gifting.complete.sum("wallet_amount + amount")).to_i
+  end
+
+  def profile_withdrawn_amount
+    return withdraws.profile_withdraws.complete_withdraws.sum(:coins).to_i
+  end
+
+  def wallet_tranfered_amount
+    return tranfered_cocotransfers.complete.sum(:wallet_amount).to_i
+  end
+
+  def online_tranfered_amount
+    return tranfered_cocotransfers.complete.sum(:amount).to_i
+  end
+
+  def total_transfered_amount
+   ( wallet_tranfered_amount + online_tranfered_amount).to_i
+  end
+
+  def total_profile_withdraw_available_amount
+    return   total_profile_raised_amount - (profile_withdrawn_amount + wallet_tranfered_amount)
+  end
+
+  def wishpay_raised_amount
+    Cocotransfer.showcase_gifting.where(transferable_id: showcases.non_crowdfunding.pluck(:id)).sum("amount + wallet_amount")
+  end
+
+  def coin_converted_amount
+     (cocotransfers.profile_gifting.complete.sum("coin_amount")).to_i
+  end
+
+  def total_crowdfunding_raised_amount
     total_amt = 0
     showcases.active_rasing_funds.each do |s|
-     total_amt+=s.available_withdraw_amount
-   end
-   return total_amt.to_i
+      total_amt+=s.raised_amount
+    end
+    return total_amt.to_i
+  end
+
+  def total_crowdfunding_withdraw_available_amount
+    total_amt = 0
+    showcases.active_rasing_funds.each do |s|
+      total_amt+=s.available_withdraw_amount
+    end
+    return total_amt.to_i
   end
 
   def can_withdraw?
@@ -434,6 +498,26 @@ class User < ApplicationRecord
 
   def profile_image_url
     cl_image_path self.avatar
+  end
+
+  def can_convert_coins_to_profile?
+    unused_coins = wallet.unused_coins.to_i
+    count = withdraws.coin_withdraws.active.count + cocotransfers.coin_transfers.complete.count
+    if mobile_verified?
+      if count == 0
+        unused_coins >= 10 ? true : false
+      elsif count == 1
+        unused_coins >= 20 ? true : false
+      elsif count == 2
+        unused_coins >= 50 ? true : false
+      elsif count == 3
+        unused_coins >= 100 ? true : false
+      elsif count >= 4
+        unused_coins >= 200 ? true : false
+      end
+    else
+      return false
+    end
   end
 
   # create methods like [somebody_sends_me_a_message?, I_receive_a_new_payment?, ...]

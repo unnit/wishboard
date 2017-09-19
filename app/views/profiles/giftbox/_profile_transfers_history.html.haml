@@ -1,0 +1,36 @@
+%h6.font16 Profile History
+-if @all_related_cocotransfers.count == 0
+  .col-xs-12{style: "height: 100%;"}
+    %p.font14{style: "margin-left: 10px;"} No transfers to show
+- else
+  .col-xs-12{style: "height: 100%;"}
+    .col-xs-12.font14
+      .col-xs-3
+      .col-xs-3
+        Amount
+      .col-xs-3
+        Date
+      .col-xs-3
+    .col-xs-12{style: "overflow-y: scroll; height: 80%;"}
+      - @all_related_cocotransfers.each do |cocotransfer|
+        .col-xs-12.extra-small-font.mtop10
+          .col-xs-3
+            -if cocotransfer.is_coin_converted?
+              %i.fa.fa-download{style: "color: green;"} 
+              (Credited)
+              - type = "Converted Coins"
+            -elsif cocotransfer.is_transferd_by?(current_user.id)
+              %i.fa.fa-upload{style: "color: red;"} 
+              (Debited)
+              - type = "Transferd to #{cocotransfer.receiver.name}"
+            -else
+              %i.fa.fa-download{style: "color: green;"} 
+              (Credited)
+              - type = "Received from #{cocotransfer.donor_name}"
+          .col-xs-3
+            #{cocotransfer.total_amount}
+          .col-xs-3
+            = cocotransfer.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
+          .col-xs-3
+            #{type}
+    

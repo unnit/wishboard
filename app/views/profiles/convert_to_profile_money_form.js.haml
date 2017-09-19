@@ -1,0 +1,7 @@
+- if current_user.can_convert_coins_to_profile?
+  $("#cont-wrapper").html("#{j( render partial: 'profiles/convert_coins_form')}");
+  $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
+- else
+  $("#cont-wrapper").html("<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font16'>Ayyo! You can convert your coins to your profile money only when your wallet coin balance reach 10, 20, 50, 100 & multiples of 200 thereafter. Don't worry if you are short of these numbers, just ask your friends to help you to reach.<br><br>Tip: You can convert 10 coins even if your earnings are 10 or above.<br><br>Please verify your mobile number to send your coins to bank.</div>");
+  $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
+$("#cont-wrapper").modal().show();

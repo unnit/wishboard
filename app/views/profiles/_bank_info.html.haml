@@ -14,10 +14,10 @@
               = text_field_tag :name, "#{last_transaction.name unless last_transaction.blank?}", class: "form-control", required: true
           .form-group
             .col-xs-12.col-sm-4
-              = @showcase ? "Amount" : "Coins"
+              = @showcase ? "Amount" : "Amount"
               %span.heart-red-fg *
             .col-xs-12.col-sm-8
-              = text_field_tag :coins, "#{@showcase ? @showcase.available_withdraw_amount : current_user.wallet.unused_coins.to_i}", class: "form-control", required: true, id: 'withdraw_coins'
+              = text_field_tag :coins, "#{@showcase ? @showcase.available_withdraw_amount : current_user.total_profile_withdraw_available_amount.to_i}", class: "form-control", required: true, id: 'withdraw_coins'
           .form-group
             .col-xs-12.col-sm-4
               Account No

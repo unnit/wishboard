@@ -1589,14 +1589,27 @@ $(document).ready(function(){
   });
 
   $(document).on("click", ".show-video-iframe", function(e){
+    e.preventDefault();
     videodiv_element = $(this).attr('data-video-frame-div');
     $(this).hide();
     $(videodiv_element).removeClass('hidden');
   });
 
-  $(document).on("keyup", "form.new_cocotransfer #cocotransfer_amount", function(e){
+  $(document).on("keyup", "form.new_cocotransfer #cocotransfer_total_amount", function(e){
    $(".cocotransfer_display_amount").html(($(this).val()));
   });
+
+  $(document).on("keyup", "#cocotransfer_total_amount", function(e){
+   setOnlineAndWalletAmount();
+   setFullfillmentOrContribute();
+  });
+
+  $(document).on("change", "#cocotransfer_use_wallet_amount", function(e){
+   setOnlineAndWalletAmount();
+  });
+
+  showLinkPreviews(".url_preview");
+
 
 
 });// eof document ready
@@ -1606,6 +1619,100 @@ $(window).on("load", function(){
     setTimeout(function(){$("footer").css({"position": "absolute", "bottom": "0"});}, 3000);
   }
 })
+
+
+
+function showLinkPreviews(element_selector){
+  $(element_selector+":not([data-linkpreview-added])").each(function() {
+   var thisLinkPreview = this;
+   appendLoader(thisLinkPreview);
+   var data = {linkurl: $(this).attr('href')  };
+   $.ajax({
+    type: 'GET',
+    data: data,
+    url: "/home/display_preview",
+    success: function(data) {
+      hideLoader(thisLinkPreview);
+      $(thisLinkPreview).attr("data-linkpreview-added","");
+      $(thisLinkPreview).append(data);
+    },
+    error: function(data) {
+      hideLoader(thisLinkPreview);
+    },
+  });
+ });
+}
+
+function appendLoader(thisLinkPreview){
+  $(thisLinkPreview).after("<div class='link-preview-loader'><i class='fa fa-spinner fa-spin font22'></div>");
+}
+
+function hideLoader(thisLinkPreview){
+  $(thisLinkPreview).next(".link-preview-loader").remove();
+}
+
+
+function setFullfillmentOrContribute(){
+  $currentAmount = parseInt($("#cocotransfer_total_amount").val());
+  $fullfillmentAmount = parseInt($("#cocotransfer_fullfillment_at_once_amount").val());
+  console.log("current:"+ $currentAmount + "  fullfillment_amount:" + $fullfillmentAmount);
+  console.log($("#cocotransfer_transferable_type").val());
+  if($("#cocotransfer_transferable_type").val() == "Showcase"){
+      if($currentAmount == $fullfillmentAmount){setWishFullfillment(); }
+      else{setWishContribute(); }
+  }
+
+
+}
+function setWishFullfillment(){
+  console.log("fullfilment");
+  $giftButton = $("form.new_cocotransfer #gift-button");
+  $diplayGiftType = $("#diplay-gift-type");
+  $giftButton.prop('value', 'Fullfill Wish');
+  $giftButton.attr('data-disable-with', 'Fullfill Wish');
+  $diplayGiftType.html("You are fullfiling this wish");
+}
+
+function setWishContribute(){
+  console.log("contubution")
+  $giftButton = $("form.new_cocotransfer #gift-button");
+  $diplayGiftType = $("#diplay-gift-type");
+  $giftButton.prop('value', 'Gift');
+  $giftButton.attr('data-disable-with', 'Gift');
+  $diplayGiftType.html("You are contributing to this wish");
+}
+
+
+
+function setOnlineAndWalletAmount(){
+    $currentAmount = parseInt($("#cocotransfer_total_amount").val());
+    $availableWalletAmount = parseInt($("#cocotransfer_available_wallet_amount").val());
+    console.log("current:"+ $currentAmount + "  availableWalletAmount:" )
+
+     if ($("#cocotransfer_use_wallet_amount").is(":checked")){
+          if ($availableWalletAmount >= $currentAmount){
+           $("#cocotransfer_wallet_amount_display").html($currentAmount);
+           $("#cocotransfer_wallet_amount").val($currentAmount);
+           $("#cocotransfer_amount_display").html(0);
+           $("#cocotransfer_amount").val(0);
+          }else{
+           $("#cocotransfer_wallet_amount_display").html($availableWalletAmount);
+           $("#cocotransfer_wallet_amount").val($availableWalletAmount);
+           $("#cocotransfer_amount_display").html($currentAmount - $availableWalletAmount);
+           $("#cocotransfer_amount").val($currentAmount - $availableWalletAmount);
+          }
+    }else{
+      $("#cocotransfer_amount_display").html($currentAmount);
+      $("#cocotransfer_amount").val($currentAmount);
+      if ($availableWalletAmount >= $currentAmount){
+       $("#cocotransfer_amount_display").html($currentAmount);
+       $("#cocotransfer_amount").val(0);
+     }else{
+       $("#cocotransfer_amount_display").html($currentAmount);
+       $("#cocotransfer_amount").val(0);
+     }
+    }
+  }
 
 function reEnableSubmitButton(element_id){
   $formsubmitbutton = $(element_id);

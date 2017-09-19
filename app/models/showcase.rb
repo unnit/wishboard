@@ -74,7 +74,7 @@ class Showcase < ApplicationRecord
   CAMPAIGN_STATUS = [[0, "Started"], [1, "Ended"]]
   CAMPAIGN_STATUS_VALUES = [0, 1]
   WISHPAY_STATUS = [0, 1]
-  WISHPAY_STATUS_VALUES = [[0, "Disabled"], [0, "Active"]]
+  WISHPAY_STATUS_VALUES = [[0, "Disabled"], [1, "Enabled"]]
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
@@ -107,6 +107,7 @@ class Showcase < ApplicationRecord
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
   scope :active, -> {where(admin_status: [0, nil] )}
   scope :approved, -> {public_accessible.active}
+  scope :non_crowdfunding, -> {where("accept_fund = ? and admin_created = ? and coin_wish = ?", false, false, false)}
 
   HUMANIZED_ATTRIBUTES = {
     fundcategory_id: "Category",

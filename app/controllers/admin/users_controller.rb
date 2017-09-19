@@ -5,10 +5,10 @@ class Admin::UsersController < AdminController
   end
 
   def send_new_firebase_notification
-   @notification = { notification_title: params[:firebase_notification][:notification_title],notification_text: params[:firebase_notification][:notification_text], notification_image_url: params[:firebase_notification][:notification_image_url] }
+    @notification = { notification_title: params[:firebase_notification][:notification_title],notification_text: params[:firebase_notification][:notification_text], notification_image_url: params[:firebase_notification][:notification_image_url] }
     FirebasenotificationBroadcastJob.perform_later(@notification[:notification_title].to_s, @notification[:notification_text].to_s, @notification[:notification_url].to_s, @notification[:notification_image_url].to_s, User.all.pluck(:id))
    render json: {status: "SENDING"} and return
- end
+  end
 
   def index
     @users = User.admin_search(params[:term]).page(params[:page]).per(40)
@@ -69,7 +69,7 @@ class Admin::UsersController < AdminController
     if withdraw.save
       flash[:notice] = "Updated successfully"
     else
-      flash[:alert] = withdraw.errors.join.(", ")
+      flash[:alert] = withdraw.errors.full_messages.join.(", ")
     end
     respond_to :js
   end

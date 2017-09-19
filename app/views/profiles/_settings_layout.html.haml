@@ -3,7 +3,10 @@
   .col-sm-12.no-mar-pad.mtop15.settings-group
     .list-group
       = link_to settings_path, class: "list-group-item acc-sett j-loader-trigger-link" do
-        Settings
+        Account
+        %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
+      = link_to settings_wish_path, class: "list-group-item wish-sett j-loader-trigger-link" do
+        Wish
         %i.glyphicon.glyphicon-menu-right.pull-right{style: "margin-top: 4px;"}
       = link_to settings_password_path, class: "list-group-item pass-sett j-loader-trigger-link" do
         Password

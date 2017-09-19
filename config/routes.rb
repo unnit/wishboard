@@ -83,6 +83,7 @@ Rails.application.routes.draw do
       post :update_business
       post :update_address
       patch :update_social
+      patch :update_wish_settings
       get :username_available
       get :verify_mobile
       patch :get_otp
@@ -110,6 +111,7 @@ Rails.application.routes.draw do
   get "settings/password", to: "profiles#password"
   get "settings/social", to: "profiles#social"
   get "settings/addressbook", to: "profiles#addressbook"
+  get "settings/wish", to: "profiles#wish_settings"
   get "dashboard", to: "profiles#dashboard"
   get :about, to: "home#about"
   get :terms, to: "home#terms"

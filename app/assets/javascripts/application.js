@@ -44,8 +44,8 @@ $(document).ready(function(){
   //Custom scrollbar for wish type dropdown with setHeight
     $(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});
   //Post-Showcase functions
-    $(document).on("click", "html,body", function(e){
-      var container_1 = $(".ps-wrapper, .alert, .sweet-overlay, .sweet-alert, .ps-nav-btn, .pac-input")
+    $("html,body").click(function(e){
+      var container_1 = $(".ps-wrapper, .alert, .sweet-overlay, .sweet-alert, .ps-nav-btn, .pac-input, .j-coco-fixed-wrapper")
       if (!container_1.is(e.target) // if the target of the click isn't the container...
           && container_1.has(e.target).length === 0) // ... nor a descendant of the container
       {
@@ -80,7 +80,6 @@ $(document).ready(function(){
       date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-left", startDate: "", endDate: "" };
       if($(this).is(":checked")){
         $wrap.find(".j-more, .j-img-wrapper").hide();
-        $wrap.find(".showcase-submit").val("Next");
         $wrap.find(".goal-target-date").removeAttr("disabled").attr("readonly", true);
         $wrap.find(".more-target-date").addClass("hidden").removeAttr("readonly").attr("disabled", true);
         $wrap.find('.raise-funds-fields').removeClass('hidden');
@@ -95,7 +94,6 @@ $(document).ready(function(){
         }
       }else{
         $wrap.find(".j-more, .j-img-wrapper").show();
-        $wrap.find(".showcase-submit").val("Wish");
         $wrap.find(".goal-target-date").removeAttr("readonly").attr("disabled", true);
         $wrap.find(".more-target-date").removeClass("hidden").removeAttr("disabled").attr("readonly", true);
         $wrap.find('.raise-funds-fields').addClass('hidden');
@@ -115,7 +113,7 @@ $(document).ready(function(){
     })
     $(document).on("click", ".ps-wrapper", function(e){
       $wrap = $(this).closest(".create-showcase");
-      $(this).css({"z-index": "1051"});
+      $(this).css({"z-index": "1052"});
       $(".wish-success-wrapper").remove();
       $("#showcase-modal").addClass("violet-bg");
       $("#showcase-modal").modal("show");
@@ -286,42 +284,56 @@ $(document).ready(function(){
         $wrap.find(".ps-sub-wrap-2").animate({"opacity": "1", "margin-left": "10px", "margin-top": "-120px"}, 150);
       });
     })
-    $(document).on("click", ".j-ps-holder, .ps-wrap-2-close", function(){
+    $(document).on("click", ".j-ps-holder, .ps-wrap-2-close", function(e){
       $wrap = $(this).closest(".create-showcase");
       if($wrap.find(".ps-sub-wrap-2").css("margin-left") == "10px"){
         $wrap.find(".ps-sub-wrap-2").animate({"margin-left": "0px", "margin-top": "-130px"}, 150,
           function(){
-            $wrap.find(".ps-sub-wrap-2").fadeOut(50, function(){$(".ps-sub-wrap-2").css({"opacity": 0})})
+            $wrap.find(".ps-sub-wrap-2").fadeOut(50, function(){$wrap.find(".ps-sub-wrap-2").css({"opacity": 0})})
           });
+      }else{
+        if($(e.target).is(".ps-wrap-2-close")){
+          $(".j-coco-fixed-wrapper").hide();
+          $wrap.find(".ps-sub-wrap-1 .showcase-submit").removeClass("j-showcase-more-submit").addClass("j-showcase-more-submit");
+          $wrap.find(".ps-sub-wrap-2 .showcase-submit").val("Wish");
+          $wrap.find(".ps-sub-wrap-2").fadeOut(50, function(){$wrap.find(".ps-sub-wrap-2").css({"opacity": 0})})
+        }
       }
     });
 
     function psSubmit(title){
       if($wrap.find(".preview, .preview-edit").children().length == 0){
-        swal({
-            title: title,
-            text: "A photo would be nice.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#ffffff",
-            confirmButtonText: "Yes, Proceed",
-            cancelButtonText: "Upload Photo",
-            allowOutsideClick: true,
-            allowEscapeKey: false,
-            closeOnConfirm: true,
-            closeOnCancel: true,
-            animation: "pop"
-          },
-          function(isConfirm){
-            if (isConfirm){
-              $wrap.submit();
-              $wrap.find(".loader-button").hide();
-              $wrap.find(".loader-effect").show();
-            }
-            else{
-              $wrap.find(".file-upload-trigger").trigger('click');
-            }
-        });
+        if($wrap.find("#showcase_description").val().trim() == "" && $wrap.find(".more-target-date").val().trim() == "" && $wrap.find("[name='showcase[all_tags]']").val().trim() == "" && $wrap.find("#showcase_location_attributes_name").val().trim() == ""
+         && $wrap.find("#showcase_projected_amount").val().trim() == ""){
+          $(".j-coco-fixed-wrapper").show();
+          $wrap.find(".ps-sub-wrap-2 .showcase-submit").removeClass("j-showcase-more-submit").addClass("j-showcase-more-submit").val("Skip & Wish");
+          $wrap.find(".ps-sub-wrap-2").css("opacity", 1).fadeIn(400);
+        }else{
+          swal({
+              title: title,
+              text: "A photo would be nice.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#ffffff",
+              confirmButtonText: "Yes, Proceed",
+              cancelButtonText: "Upload Photo",
+              allowOutsideClick: true,
+              allowEscapeKey: false,
+              closeOnConfirm: true,
+              closeOnCancel: true,
+              animation: "pop"
+            },
+            function(isConfirm){
+              if (isConfirm){
+                $wrap.submit();
+                $wrap.find(".loader-button").hide();
+                $wrap.find(".loader-effect").show();
+              }
+              else{
+                $wrap.find(".file-upload-trigger").trigger('click');
+              }
+          });
+        }
       }
       else{
         $wrap.submit();
@@ -347,21 +359,27 @@ $(document).ready(function(){
       e.preventDefault();
       $wrap = $(this).closest(".create-showcase");
       $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
-      if($wrap.find(".ps-initial").val().trim().length > 0){
-        if($wrap.find("#showcase_accept_fund").is(":checked")){
-          if($wrap.find("#showcase_goal_amount").val().trim() != "" && $wrap.find("#showcase_target_date").val().trim() != "" && $wrap.find("#showcase_fundcategory_id").val().trim() != ""){
-            $wrap.submit();
-            $wrap.find(".loader-button").hide();
-            $wrap.find(".loader-effect").show();
+      if($(this).hasClass("j-showcase-more-submit")){
+        $wrap.submit();
+        $wrap.find(".loader-button").hide();
+        $wrap.find(".loader-effect").show();
+      }else{
+        if($wrap.find(".ps-initial").val().trim().length > 0){
+          if($wrap.find("#showcase_accept_fund").is(":checked")){
+            if($wrap.find("#showcase_goal_amount").val().trim() != "" && $wrap.find("#showcase_target_date").val().trim() != "" && $wrap.find("#showcase_fundcategory_id").val().trim() != ""){
+              $wrap.submit();
+              $wrap.find(".loader-button").hide();
+              $wrap.find(".loader-effect").show();
+            }else{
+              swal("Sorry", "Please complete your wish", "error");
+            }
           }else{
-            swal("Sorry", "Please complete your wish", "error");
+            psSubmit("Are you sure to post your wish without a photo?");
           }
-        }else{
-          psSubmit("Are you sure to post your wish without a photo?");
         }
-      }
-      else{
-        swal("Sorry", "Please complete your wish", "error");
+        else{
+          swal("Sorry", "Please complete your wish", "error");
+        }
       }
     })
 
@@ -370,8 +388,6 @@ $(document).ready(function(){
       $wrap = $(this).closest(".update-raise-showcase");
       psSubmit("Are you sure to post your wish without a photo?");
     })
-
-
 
   //Image loading bar effect
   $('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {

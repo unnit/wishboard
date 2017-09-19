@@ -17,6 +17,8 @@ class Profile < ApplicationRecord
    "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "14:30",
    "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30",
    "22:00", "22:30", "23:00", "23:30"]
+   WISHPAY_CONDITIONS = [["Enable all wishes", 0], ["Disable all wishes", 1], ["Enable past wishes", 2], ["Disable past wishes", 3], ["Enable future wishes", 4], ["Disable future wishes", 5]]
+   WISHPAY_CONDITIONS_VALUES = [0, 1, 2, 3, 4, 5]
 
   serialize :email_notification
   serialize :avail_days
@@ -28,13 +30,15 @@ class Profile < ApplicationRecord
   acts_as_mappable through: :location
   accepts_nested_attributes_for :location
 
-  validates :first_name, :last_name, :slug, :enable_profilepay, presence: true
+  validates :first_name, :last_name, :slug, presence: true
   validates :slug, uniqueness: true
   validates :first_name, :last_name, length: { maximum: 100, message: "should be between 100 characters." }
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z\.\ ]*\z/, message: "only allows alphabets, dot and space" }
   validates :slug, length: { minimum: 6, maximum: 30, message: "should be between 6 and 30 characters." }
   validates :slug, format: { with: /\A[a-zA-Z0-9\_\-]*\z/, message: "only allows alphabets, numbers, underscore and hyphen" }
   validates :slug, exclusion: { in: GLOBAL_VARIABLES[:slug_exceptions], message: "not available" }
+  validates :enable_profilepay, inclusion: {in: [true, false], message: "should not be blank"}
+  validates :wishpay_condition, inclusion: {in: WISHPAY_CONDITIONS_VALUES, message: "should not be blank"}
 
   validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_blank?, on: :update
   validates_date :date_of_birth, :before => lambda { 18.years.ago },
@@ -66,7 +70,8 @@ class Profile < ApplicationRecord
     :increase => "Rent Increase in % - Weekend/Seasonal,",
     :increase_hourly => "Rent Increase in % - Hourly,",
     :date_of_birth => "Birthday",
-    :slug => "Username"
+    :slug => "Username",
+    :wishpay_condition => "Wish settings"
   }
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super

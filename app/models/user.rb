@@ -138,6 +138,10 @@ class User < ApplicationRecord
     showcases.active_rasing_funds.recently_created(7).count > 2 ? false : true
   end
 
+  def wishpay_enabled_globally?
+    profile.wishpay_condition == Profile::WISHPAY_CONDITIONS_VALUES[0] || profile.wishpay_condition == Profile::WISHPAY_CONDITIONS_VALUES[4]
+  end
+
   def user_status
     if inactive == true
       return "NO"

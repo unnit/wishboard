@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
   end
 
   def create
-    #unless current_user.profile
+    unless current_user.profile
       @profile = Profile.new(create_profile_params)
       @profile.slug = params[:profile][:slug].downcase
       @profile.user = current_user
@@ -42,9 +42,9 @@ class ProfilesController < ApplicationController
         render :info
         return
       end
-    #else
-    #  redirect_to root_path
-    #end
+    else
+      redirect_to root_path
+    end
   end
 
   def index
@@ -93,6 +93,25 @@ class ProfilesController < ApplicationController
       render :index
       return
     end
+  end
+
+  def wish_settings
+  end
+
+  def update_wish_settings
+    profile = current_user.profile
+    profile.wishpay_condition = params[:profile][:wishpay_condition]
+    if current_user.profile.save
+      if params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[2] || params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[0]
+        current_user.showcases.non_crowdfunding.update_all(wishpay_status: Showcase::WISHPAY_STATUS[1])
+      elsif params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[3] || params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[1]
+        current_user.showcases.non_crowdfunding.update_all(wishpay_status: Showcase::WISHPAY_STATUS[0])
+      end
+      flash[:notice] = "Wish settings updated successfully"
+    else
+      flash[:alert] = profile.errors.full_messages.join(", ")
+    end
+    redirect_to settings_wish_path
   end
 
   def password
@@ -410,7 +429,7 @@ class ProfilesController < ApplicationController
     if @cocotransfer.save
       wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
       wallet.unused_coins = 0
-	    if wallet.save 
+	    if wallet.save
         @cocotransfer.update_column("transaction_status", Transaction::TRANSACTION_STATUS[2][1])
 	      flash[:notice] = "You have successfully converted your coins to profile money"
 	    else
@@ -455,7 +474,7 @@ class ProfilesController < ApplicationController
     end
 
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :about, :enable_profilepay, location_attributes: [:id, :name])
+      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :about, :enable_profilepay, :wishpay_condition, location_attributes: [:id, :name])
     end
 
     def business_params

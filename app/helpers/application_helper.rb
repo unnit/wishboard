@@ -47,21 +47,21 @@ module ApplicationHelper
     page = LinkPreview::Page.new(url)
     page.parse!
     if page.valid?
-    preview_content = <<-EOS
-      <div class='col-md-12 padding10 mbottom5' style='background-color: rgba(250, 255, 170, 0.45);'>
-        <div class='col-md-3 pull-left'>
-          <img src='#{page.favicon}' width='100%'>
+      preview_content = <<-EOS
+        <div class='col-md-12 padding10 mbottom5' style='background-color: rgba(250, 255, 170, 0.45);'>
+          <div class='col-md-3 pull-left'>
+            <img src='#{page.favicon}' width='100%'>
+          </div>
+          <div class='col-md-9'>
+            <div class='font16'> #{page.title}</div>
+            <div style='font-size: 10px;'> #{page.description}</div>
+          </div>
         </div>
-        <div class='col-md-9'>
-          <div class='font16'> #{page.title}</div>
-          <div style='font-size: 10px;'> #{page.description}</div>
-        </div>
-      </div>
-     EOS
-     preview_content.html_safe
-   else
-     return ""
-   end
+       EOS
+       preview_content.html_safe
+    else
+      return ""
+    end
   end
 
 end

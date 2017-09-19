@@ -345,7 +345,10 @@ class ProfilesController < ApplicationController
 
   def send_to_bank
     @showcase = Showcase.find_by_id(params[:showcase_id])
-    unless current_user.can_withdraw? || @showcase
+    if @showcase && @showcase.user != current_user
+      render js: "window.location = '#{root_path}'"
+      return
+    elsif !current_user.can_withdraw?
       render js: "window.location = '#{root_path}'"
       return
     end

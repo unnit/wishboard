@@ -543,7 +543,7 @@ class Showcase < ApplicationRecord
   end
 
   def create_showcase_notification
-    unless self.admin_created? && self.publicably_available?
+    if !self.admin_created? && self.publicably_available?
       user.followers.each do |follower|
         self.showcase_notifications.create(user_id: follower.id)
       end
@@ -568,8 +568,10 @@ class Showcase < ApplicationRecord
   end
 
   def send_new_wish
-    @follower_ids = self.user.followers.pluck(:id)
-    ShowcaseBroadcastJob.perform_later(self.id, @follower_ids )
+    if !self.admin_created? & self.publicably_available?
+      @follower_ids = self.user.followers.pluck(:id)
+      ShowcaseBroadcastJob.perform_later(self.id, @follower_ids)
+    end
   end
 
 end

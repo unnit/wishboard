@@ -34,7 +34,7 @@ module ApplicationHelper
     #regexp = /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/?)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s\`!()\[\]{};:\'\".,<>?«»“”‘’]))/i
     #converted = text.gsub(/www+[.][a-z0-9]+[.][\S]+/){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
     #converted = text.gsub(regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>" + link_preview_content(url).html_safe}
-    if URI.extract(text).present?
+    if URI.extract(text, /http(s)?|mailto/).present?
       converted = text.gsub(URI.regexp){|url| "<a target='_blank' href=#{url}>#{url}</a>"}
     else
       converted = text.gsub(/www+[.][\S]+[.][\S]+/){|url| "<a target='_blank' href=http://#{url}>#{url}</a>"}
@@ -47,7 +47,7 @@ module ApplicationHelper
     page = LinkPreview::Page.new(url)
     page.parse!
     if page.valid?
-    <<-EOS
+      <<-EOS
       <div class="col-md-12 padding10" style="background-color: rgba(250, 255, 170, 0.45);">
         <div class="col-md-3 pull-left">
           <img src="#{page.favicon}" width="100%">
@@ -57,10 +57,10 @@ module ApplicationHelper
           <div style="font-size: 10px;"> #{page.description}</div>
         </div>
       </div>
-     EOS
-   else
-    ""
-   end
+      EOS
+    else
+      ""
+    end
   end
 
 end

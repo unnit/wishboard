@@ -77,7 +77,7 @@
                     .col-sm-2.col-xs-6.no-mar-pad.pleft15
                       = select("profile", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] }, { include_blank: false}, {class: "form-control"})
                     .col-sm-3.col-xs-12.mob-mtop10
-                      = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
+                      = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 12
                     .col-sm-5.pright0.col-xs-12.mob-otp-verify.grey-fg
                       - if @profile.mobile_verified
                         %span.pull-left.ptop10
@@ -108,7 +108,8 @@
     $(document).ready(function(){
       $(".acc-sett").addClass("active");
       $(".user-mobile-no").on("keyup", function(){
-        if($(this).val().length == 10){
+        if((($(this).val().length == 10 && ($("#profile_phonecode").val() == "91" || $("#profile_phonecode").val() == "1")) || (($(this).val().length > 3 && $(this).val().length < 13)
+        && ($("#profile_phonecode").val() != "91" && $("#profile_phonecode").val() != "1")))){
           $(".mob-otp-verify").text("Checking...");
           $.get("/profiles/verify_mobile", {mobile: $(this).val(), phonecode: $("#profile_phonecode").val()}, function(data){
             $(".mob-otp-verify").addClass("ptop5 grey-fg")
@@ -125,7 +126,7 @@
         }else{
           $(".mob-otp-verify").addClass("ptop5 grey-fg")
           $(".mob-otp-verify").empty();
-          $(".mob-otp-verify").text("Please enter your 10 digit number without leading zero.")
+          $(".mob-otp-verify").text("Please enter your mobile number without country code.")
         }
       })
       $(document).on("click", ".get-otp-link", function(){

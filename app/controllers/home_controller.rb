@@ -462,6 +462,15 @@ class HomeController < ApplicationController
    render json: {saved:  @firebasetoken ? true : false}
   end
 
+  def display_preview
+    # layout :false
+    @url = params[:linkurl]
+    render layout: false
+
+    #render html: link_preview_content(params[:linkurl]).html_safe
+
+  end
+
   private
 
   def bulk_params

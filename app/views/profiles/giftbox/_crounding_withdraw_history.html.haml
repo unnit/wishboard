@@ -1,0 +1,32 @@
+%h6.font16 Crowdfunding Withdraw history
+-if @crowdfunding_withdraws.count == 0
+  .col-xs-12{style: "height: 100%;"}
+    %p.font14{style: "margin-left: 10px;"} No withdraws to show
+- else
+  .col-xs-12{style: "height: 100%;"}
+    .col-xs-12.font14
+      .col-xs-3
+        Wish Title
+      .col-xs-3
+        Amount
+      .col-xs-3
+        Date Time
+      .col-xs-3
+        Status
+    .col-xs-12{style: "overflow-y: scroll; height: 80%;"}
+      - @crowdfunding_withdraws.each do |withdraw|
+        .col-xs-12.extra-small-font.mtop5
+          .col-xs-3
+            #{withdraw.showcase.truncated_title}
+          .col-xs-3
+            #{withdraw.showcase.available_withdraw_amount}
+          .col-xs-3
+            = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")  
+          .col-xs-3
+            - if withdraw.open?
+              = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" }, class: "j-loader-trigger-link" do
+                Delete Request
+            - elsif withdraw.closed?
+              Completed
+            -elsif withdraw.rejected?
+              Rejected

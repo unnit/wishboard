@@ -16,11 +16,12 @@ class Cocotransfer < ApplicationRecord
   validates :amount, :email, :phone, :phonecode,  presence: true
   validates :donor_name, presence: true, if: :not_hiding_identity
   validates :donor_name, length: {maximum: 150}
-  validate :is_valid_showcase, if: [ :showcase_not_blank, :showcase_transfer?]
+  validate :is_valid_showcase, if: [ :showcase_not_blank, :showcase_transfer? ]
   validates :amount, numericality: { only_integer: true }
   validate :amount_should_not_less_than_or_greater_than
   validate :wallet_amount_validations
-
+  validate :coin_conversion_validations
+  validates :transferable_type, inclusion: { in: :available_tranfer_types}
 
   scope :anonymous, -> {where(hide_identity: true)}
   scope :non_anonymous, -> {where(hide_identity: [false, nil])}
@@ -29,23 +30,51 @@ class Cocotransfer < ApplicationRecord
  
   scope :showcase_gifting, -> {where(transferable_type: TRANSFER_TYPE[0][0])}
   scope :profile_gifting, -> {where(transferable_type: TRANSFER_TYPE[1][0])}
+  scope :coin_transfers, -> {where("coin_amount > 0")}
   # profile_gifting
 
 
-  TRANSFER_TYPE = [["Showcase", 0], ["User", 1], ["Wallet Add", 2]]
+  TRANSFER_TYPE = [["Showcase", 0], ["User", 1]]
 
   HUMANIZED_ATTRIBUTES = {
     donor_name: "Name",
     showcase: "Wish"
   }
 
+  def is_wish_fullfillment?
+    self.applicable_for_wish_fullfillment? && self.total_amount == self.transferable.fullfillment_at_once_amount
+  end
+
+  def applicable_for_wish_fullfillment?
+   self.is_for_wishpay? && self.transferable.can_be_fullfilled_at_once?
+  end
+
+  def is_for_wishpay?
+    self.showcase_transfer? && self.transferable.is_wishpay?
+  end
+
+  def available_tranfer_types
+    TRANSFER_TYPE.map{|t| t[0]}
+  end
+
   def total_amount
     self.wallet_amount.to_i + self.amount.to_i + self.coin_amount.to_i
   end
 
    def wallet_amount_validations
-     if self.wallet_amount  > fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
+     if self.wallet_amount.to_i != 0 && self.wallet_amount.to_i  > fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
       errors.add(:wallet_amount, "is invalid")
+    end
+  end
+
+   def coin_conversion_validations
+     if self.profile_transfer? && self.coin_amount.to_i > 0 
+       if self.fullfillment_contributer 
+         errors.add(:coin_amount, "is invalid") if self.coin_amount.to_i  > self.fullfillment_contributer.wallet.unused_coins
+       else
+          errors.add(:user, "is invalid") 
+       end
+      errors.add(:user, "is invalid") if( self.wallet_amount > 0 || self.amount > 0)
     end
   end
 
@@ -84,7 +113,7 @@ class Cocotransfer < ApplicationRecord
   def is_valid_showcase
     if transferable.is_admin_disabled?
       errors.add(:showcase, "is disabled by admin")
-    elsif !transferable.is_for_raising_fund?
+    elsif !transferable.is_for_raising_fund? && !transferable.is_wishpay?
       errors.add(:showcase, "is not enabled to receiving fund")
     elsif transferable.campaign_ended?
       errors.add(:showcase, "campaign ended")
@@ -92,9 +121,19 @@ class Cocotransfer < ApplicationRecord
   end
 
   def amount_should_not_less_than_or_greater_than
-      errors.add(:amount, "allowed minimum is #{transferable.try(:min_gift_amount_allowed).to_i} ") if (transferable.try(:min_gift_amount_allowed).to_i > self.total_amount)
-      errors.add(:amount, "allowed maximum is 1000000")  if (self.total_amount && self.total_amount > 1000000)
+   self.showcase_transfer? ? min_max_amount_showcase : min_max_amount_profile
   end
+
+  def min_max_amount_showcase
+    errors.add(:amount, "allowed minimum is #{transferable.try(:min_gift_amount_allowed).to_i} ") if (transferable.try(:min_gift_amount_allowed).to_i > self.total_amount)
+    errors.add(:amount, "allowed maximum is #{transferable.try(:max_gift_amount_allowed).to_i}")  if (self.total_amount && self.total_amount > transferable.try(:max_gift_amount_allowed).to_i)
+  end
+
+  def min_max_amount_profile
+    errors.add(:amount, "allowed minimum is #{transferable.try(:min_gift_amount_allowed).to_i} ") if (transferable.try(:min_gift_amount_allowed).to_i > self.total_amount)
+    errors.add(:amount, "allowed maximum is #{transferable.try(:max_gift_amount_allowed).to_i}")  if (self.total_amount && self.total_amount > transferable.try(:max_gift_amount_allowed).to_i)
+  end
+
 
   def display_donor_name
     self.is_anonymous? ? "Anonymous" : self.donor_name
@@ -299,9 +338,13 @@ class Cocotransfer < ApplicationRecord
     self.profile_transfer? && coin_amount.to_i > 0
   end
 
-  def transfer_mode
-    transfer_modes = [[0, "only online"],[1, "only wallet"], [2, "coin conversion"], [3, "wallet money + online"]]
+  def is_transferd_by?(user_id)
+    self.from_user_id == user_id
   end
+
+  # def transfer_mode
+  #   transfer_modes = [[0, "only online"],[1, "only wallet"], [2, "coin conversion"], [3, "wallet money + online"]]
+  # end
 
   def debited_through
     if self.is_only_wallet?

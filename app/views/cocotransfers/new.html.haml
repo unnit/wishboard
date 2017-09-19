@@ -4,7 +4,7 @@
   .col-xs-12.col-sm-offset-2.col-sm-8.padding0.ptop20
     = render partial: "cocotransfers/showcase_details", locals: {cocotransfer: @cocotransfer}
     .col-xs-12.col-sm-12.padding20.bg-shad.mtop20
-      = render partial: 'form' , locals: {cocotransfer: @cocotransfer, remote: false, submit_name: "Gift"}
+      = render partial: 'form' , locals: {cocotransfer: @cocotransfer, remote: false, submit_name: @cocotransfer.is_wish_fullfillment? ? "Fullfill Wish" : "Gift"}
 = content_for :extra_js do
   :javascript
     // $(document).ready(function(){

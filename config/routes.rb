@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  get 'home/display_preview'
   resources :cocotransfers,only: [:create, :new, :update] do
     member do
       get :checkout

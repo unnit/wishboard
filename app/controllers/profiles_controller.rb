@@ -336,6 +336,10 @@ class ProfilesController < ApplicationController
     @coin_withdraws = current_user.withdraws.coin_withdraws.valid_withdraws
     @profile_withdraws = current_user.withdraws.profile_withdraws.valid_withdraws
     @tranfered_cocotransfers = current_user.tranfered_cocotransfers.complete
+    @crowdfunding_showcases = current_user.showcases.active_rasing_funds
+    @crowdfunding_withdraws = current_user.withdraws.showcase_withdraws.valid_withdraws
+    @all_related_cocotransfers = User.all_cocotransfers(current_user.id).complete
+    render :giftbox
     # @withdraws = current_user.withdraw_history
   end
 
@@ -353,9 +357,9 @@ class ProfilesController < ApplicationController
     if @showcase && @showcase.user != current_user
       render js: "window.location = '#{root_path}'"
       return
-    elsif !current_user.can_withdraw?
-      render js: "window.location = '#{root_path}'"
-      return
+    # elsif !current_user.can_withdraw?
+    #   render js: "window.location = '#{root_path}'"
+    #   return
     end
     # reload_wallet
 
@@ -401,11 +405,13 @@ class ProfilesController < ApplicationController
     #   wallet.save
     # end
 	# wallet.lock!
+  # return redirect_to wallet_path unless current_user.can_convert_coins_to_profile?
 	create_coin_cocotransfer(params[:coins].to_i)
-	wallet.used_coins = wallet.used_coins.to_i + wallet.unused_coins
-	wallet.unused_coins = 0
     if @cocotransfer.save
+      wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
+      wallet.unused_coins = 0
 	    if wallet.save 
+        @cocotransfer.update_column("transaction_status", Transaction::TRANSACTION_STATUS[2][1])
 	      flash[:notice] = "You have successfully converted your coins to profile money"
 	    else
 	      flash[:alert] =  wallet.errors.full_messages.join(", ")
@@ -469,9 +475,9 @@ class ProfilesController < ApplicationController
       wallet.save
     end
 
-    def create_coin_cocotransfer(amountss)
+    def create_coin_cocotransfer(amount)
       @cocotransfer = Cocotransfer.new
-      @cocotransfer.assign_attributes(amount: amountss, transaction_status: Transaction::TRANSACTION_STATUS[2][1], user_id: current_user.id, phonecode: current_user.profile.phonecode, phone: current_user.profile.phone, email: current_user.email, donor_name: current_user.name , transferable_type: Cocotransfer::TRANSFER_TYPE[1][1] )
+      @cocotransfer.assign_attributes(amount: 0, wallet_amount: 0, coin_amount: amount, transferable_id: current_user.id, from_user_id: current_user.id,  phonecode: current_user.profile.phonecode, phone: current_user.profile.phone, email: current_user.email, donor_name: current_user.name , transferable_type: Cocotransfer::TRANSFER_TYPE[1][0] )
       @cocotransfer.save
     end
 

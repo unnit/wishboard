@@ -1,0 +1,30 @@
+.col-xs-12.col-sm-4.font20
+  .col-xs-12.col-sm-12.no-mar-pad
+    Crowdfunding
+  .col-xs-12.col-sm-12.no-mar-pad
+    %i.fa.fa-inr
+    Banlance: #{current_user.total_crowdfunding_withdraw_available_amount}
+.col-xs-12.col-sm-4.font20
+  .col-xs-12.col-sm-12.no-mar-pad
+    Profile
+  .col-xs-12.col-sm-12.no-mar-pad
+    %i.fa.fa-inr
+    Banlance: #{current_user.total_profile_withdraw_available_amount}
+  .col-xs-12.col-sm-12.no-mar-pad
+    - if current_user.mobile_verified?
+      .wdrw-btn.send-to-bank-btn.pon.font16.mtop5.inline-block{style: "margin-left: 10px; display: inline-block; width: 160px;"} Withdraw Amount
+    - else
+      = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
+        .send-to-bank-btn.pon.font16.mtop5.inline-block{style: "margin-left: 10px; display: inline-block; width: 160px;"} Withdraw Amount
+.col-xs-12.col-sm-4.font20
+  .col-xs-12.col-sm-12.no-mar-pad
+    Coins
+  .col-xs-12.col-sm-12.no-mar-pad
+    Banlance: #{current_user.wallet.unused_coins.to_i} coins
+  .col-xs-12.col-sm-12.no-mar-pad
+    - if current_user.mobile_verified?
+      = link_to convert_to_profile_money_form_profiles_path, remote: true do
+        .send-to-bank-btn.pon.font16.mtop5.inline-block{style: "margin-left: 10px; display: inline-block"} Convert Coins
+    - else
+      = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
+        .send-to-bank-btn.pon.font16.inline-display.mtop5 Convert Coins

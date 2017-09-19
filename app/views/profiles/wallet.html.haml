@@ -14,13 +14,13 @@
             Balance
           .col-xs-12.col-sm-12.no-mar-pad
             %i.fa.fa-inr
-            #{current_user.total_showcase_withdraw_available_amount}
+            #{current_user.total_crowdfunding_withdraw_available_amount}
         .col-xs-12.col-sm-4.no-mar-pad
           .col-xs-12.col-sm-12.no-mar-pad
             Total
           .col-xs-12.col-sm-12.no-mar-pad
             %i.fa.fa-inr
-            #{current_user.total_showcase_raised_amount}
+            #{current_user.total_crowdfunding_raised_amount}
         .col-xs-12.col-sm-4.no-mar-pad
           .col-xs-12.col-sm-12.no-mar-pad
             Withdrawn
@@ -45,7 +45,7 @@
             Total
           .col-xs-12.col-sm-12.no-mar-pad
             %i.fa.fa-inr
-            #{current_user.profile_raised_amount}
+            #{current_user.total_profile_raised_amount}
         .col-xs-12.col-sm-4.no-mar-pad
           .col-xs-12.col-sm-12.no-mar-pad
             Withdrawn
@@ -136,7 +136,7 @@
             .col-xs-4.col-sm-4.no-mar-pad
               .btn.btn-primary.wdrw-btn{class: "#{ (showcase.available_withdraw_amount > 0) ? '' : 'disabled' }","data-amount" => "#{showcase.available_withdraw_amount}", "data-showcase-id" => "#{showcase.id}"} Withdraw
     .col-xs-12.col-sm-4.padding10.ptop0.mtop30
-      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad CROUDFUNDING WITHDRAWAL HISTORY
+      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad CROWDFUNDING WITHDRAWAL HISTORY
       .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}
         - @showcase_withdraws.each do |withdraw|
           %h5.no-mar-pad.padding10.border5.bg-shad.light-border
@@ -178,19 +178,19 @@
         -if @tranfered_cocotransfers.count == 0
           %p.font14{style: "margin-left: 10px;"} No Transfers to show
         - else
-          - @tranfered_cocotransfers.each do |cocotransfer|
-            %table.table.table-condensed.table-hover
-              %thead
-                %tr
-                  %th
-                    Total
-                  %th
-                    Wallet
-                  %th
-                    Amount
-                  %th 
-                    Datetime
-              %tbody
+          %table.table.table-condensed.table-hover.extra-small-font
+            %thead
+              %tr
+                %th
+                  Total
+                %th
+                  Wallet
+                %th
+                  Amount
+                %th 
+                  Datetime
+            %tbody
+              - @tranfered_cocotransfers.each do |cocotransfer|
                 %tr 
                   %td
                     #{cocotransfer.total_amount}

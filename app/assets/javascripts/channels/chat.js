@@ -13,6 +13,7 @@ $(document).ready(function(){
           received: function(data) {
             if($(".chat-room-"+data['chat_room_id']).length > 0){
               $(".chat-room-"+data['chat_room_id']).append($(emojione.unicodeToImage(data['message'])).hide());
+              showLinkPreviews(".url_preview");
               $(".chat-room-"+data['chat_room_id']+" .j-chat_content_data").removeClass("hidden");
               if($(".chat-room-"+data['chat_room_id']).data('current-user-id') == data['owner_id']){
                 $(".chat-txt-"+data['chat_id']).removeClass("pull-left left-top bg-white mleft5").addClass("pull-right right-top mright5");

@@ -53,9 +53,20 @@ class User < ApplicationRecord
   has_many :cocotransfers, as: :transferable, dependent: :destroy
   has_many :tranfered_cocotransfers, class_name: "Cocotransfer", foreign_key: "from_user_id"
 
+  scope :all_cocotransfers, ->(user_id) {Cocotransfer.where("(transferable_type = ? and transferable_id = ? ) or (from_user_id = ? )", "User", user_id, user_id)}
+
   validates :invited_code, format: { with: /\A[a-zA-Z0-9]*\z/ }, if: :invited_code_present?
   DEFAULT_GIFT_AMOUNT = 10
   MIN_GIFT_AMOUNT_ALLOWED = 10
+  MAX_GIFT_AMOUNT_ALLOWED = 10000
+
+  def all_cocotransfers
+    Cocotransfer.where("(transferable_type = ? and transferable_id = ? ) or (from_user_id = ? )", "User", self.id, self.id)
+  end
+
+  def can_accept_gift?
+  	self.profile.enable_profilepay
+  end
 
   def default_gift_amount
     return DEFAULT_GIFT_AMOUNT
@@ -63,6 +74,10 @@ class User < ApplicationRecord
 
   def min_gift_amount_allowed
     return MIN_GIFT_AMOUNT_ALLOWED
+  end
+
+  def max_gift_amount_allowed
+  	return MAX_GIFT_AMOUNT_ALLOWED
   end
 
   def email=(address)
@@ -160,9 +175,12 @@ class User < ApplicationRecord
   #   showcase.
   # end
 
-  def profile_raised_amount
-    online_and_wallet = cocotransfers.profile_gifting.complete.select("SUM(cocotransfers.amount) AS amount, SUM(cocotransfers.wallet_amount) AS wallet_amount")
-    return (online_and_wallet[0].try(:amount).to_i + online_and_wallet[0].try(:wallet_amount).to_i)
+  def total_profile_raised_amount
+    profile_gifting_raised_amount + wishpay_raised_amount + coin_converted_amount
+  end
+
+  def profile_gifting_raised_amount
+    return (cocotransfers.profile_gifting.complete.sum("wallet_amount + amount")).to_i
   end
 
   def profile_withdrawn_amount
@@ -178,14 +196,22 @@ class User < ApplicationRecord
   end
 
   def total_transfered_amount
-    wallet_tranfered_amount + online_tranfered_amount
+   ( wallet_tranfered_amount + online_tranfered_amount).to_i
   end
 
   def total_profile_withdraw_available_amount
-    return profile_raised_amount - (profile_withdrawn_amount + wallet_tranfered_amount)
+    return   total_profile_raised_amount - (profile_withdrawn_amount + wallet_tranfered_amount)
   end
 
-  def total_showcase_raised_amount
+  def wishpay_raised_amount
+    Cocotransfer.showcase_gifting.where(transferable_id: showcases.non_crowdfunding.pluck(:id)).sum("amount + wallet_amount")
+  end
+
+  def coin_converted_amount
+     (cocotransfers.profile_gifting.complete.sum("coin_amount")).to_i
+  end
+
+  def total_crowdfunding_raised_amount
     total_amt = 0
     showcases.active_rasing_funds.each do |s|
       total_amt+=s.raised_amount
@@ -193,7 +219,7 @@ class User < ApplicationRecord
     return total_amt.to_i
   end
 
-  def total_showcase_withdraw_available_amount
+  def total_crowdfunding_withdraw_available_amount
     total_amt = 0
     showcases.active_rasing_funds.each do |s|
       total_amt+=s.available_withdraw_amount
@@ -476,7 +502,7 @@ class User < ApplicationRecord
 
   def can_convert_coins_to_profile?
     unused_coins = wallet.unused_coins.to_i
-    count = withdraws.coin_withdraws.active.count
+    count = withdraws.coin_withdraws.active.count + cocotransfers.coin_transfers.complete.count
     if mobile_verified?
       if count == 0
         unused_coins >= 10 ? true : false

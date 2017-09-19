@@ -22,7 +22,7 @@ class ShowcaseNotification < ApplicationRecord
   end
 
   def notification_text
-    self.showcase.user.truncated_name + " " + showcase_wish_type + " " + self.showcase.truncated_title
+    "#{self.showcase.user.truncated_name} #{showcase_wish_type} #{self.showcase.truncated_title}"
   end
 
   def showcase_wish_type

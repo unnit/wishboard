@@ -12,8 +12,9 @@ class CocotransfersController < ApplicationController
     @cocotransfer.transferable_type = params[:transferable_type]
     @showcase = Showcase.find_by_id(params[:transferable_id]) if @cocotransfer.showcase_transfer?
     @receiver = User.find_by_id(params[:transferable_id]) if @cocotransfer.profile_transfer?
-    vaild_showcase_transfer = (@showcase && @showcase.is_for_raising_fund? && !@showcase.is_admin_disabled? && !@showcase.campaign_ended?)
-    valid_profile_transfer = @receiver
+    #vaild_showcase_transfer = (@showcase && @showcase.is_for_raising_fund? && !@showcase.is_admin_disabled? && !@showcase.campaign_ended?)
+    vaild_showcase_transfer = (@showcase && @showcase.can_accept_gift?)
+    valid_profile_transfer = @receiver && @receiver.can_accept_gift?
     # @cocotransfer.transferable_type = valid_profile_transfer ? Cocotransfer::TRANSFER_TYPE[1][1] : Cocotransfer::TRANSFER_TYPE[0][1]
     if valid_profile_transfer || vaild_showcase_transfer  
       assign_coco_attributes
@@ -82,14 +83,25 @@ class CocotransfersController < ApplicationController
     log_transaction_response
     handle_invalid_signature if @signature != params["signature"]
     if params["TxStatus"] == Transaction::PAYMENT_GATEWAY_STATUS[0]
-      @cocotransfer.update_columns(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: tamount) unless @cocotransfer.paid?
+      available_wallet_amount = @cocotransfer.fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
+      wallet_amount = ((@cocotransfer.wallet_amount.to_i > 0)  && available_wallet_amount < @cocotransfer.wallet_amount.to_i ) ? available_wallet_amount : @cocotransfer.wallet_amount
+      @cocotransfer.update_columns(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: params[:amount], wallet_amount: wallet_amount) unless @cocotransfer.paid?
       @cocotransfer.paid_callbacks! unless @cocotransfer.paid?
       redirect_to transfer_success_cocotransfer_path(@cocotransfer.slug)
-      render :payment_success
+      # render :payment_success
     else
-      @cocotransfer.deliver_failed_transaction(params["TxMsg"])
-      flash[:alert] = "#{params["TxMsg"]}"
-      redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
+      available_wallet_amount = @cocotransfer.fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
+      wallet_amount = ((@cocotransfer.wallet_amount.to_i > 0)  && available_wallet_amount < @cocotransfer.wallet_amount.to_i ) ? available_wallet_amount : @cocotransfer.wallet_amount
+      unless @cocotransfer.paid?
+       @cocotransfer.update_columns(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: params[:amount], wallet_amount: wallet_amount) unless @cocotransfer.paid?
+       @cocotransfer.paid_callbacks! 
+      end
+      redirect_to transfer_success_cocotransfer_path(@cocotransfer.slug)
+      # render :payment_success
+
+      # @cocotransfer.deliver_failed_transaction(params["TxMsg"])
+      # flash[:alert] = "#{params["TxMsg"]}"
+      # redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
     end
   end
 
@@ -167,7 +179,11 @@ class CocotransfersController < ApplicationController
 
    def set_wallet_and_online_amount
      available_profile_amount  = current_user.try(:total_profile_withdraw_available_amount)
-     total_amount = !params[:amount].blank? && params[:amount].to_i > @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i ? params[:amount].to_i : @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i
+     if params[:gift_type] == "fullfill" && @cocotransfer.showcase_transfer? && @cocotransfer.transferable.can_be_fullfilled_at_once?
+      total_amount = @cocotransfer.transferable.try(:fullfillment_at_once_amount).to_i
+     else
+      total_amount = !params[:amount].blank? && params[:amount].to_i > @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i ? params[:amount].to_i : @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i
+     end
      @cocotransfer.wallet_amount = (available_profile_amount >= total_amount )? total_amount : available_profile_amount
      @cocotransfer.amount = (total_amount - @cocotransfer.wallet_amount)
    end

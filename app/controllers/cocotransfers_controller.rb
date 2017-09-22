@@ -4,6 +4,19 @@ class CocotransfersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:callback]
 
   def get_payment_details
+    @cocotransfer = Cocotransfer.find_by_id(params[:cocotransfer][:id])
+    @cocotransfer.assign_attributes(cocotransfer_params)
+    @cocotransfer.assign_attributes(fullfillment_contributer: current_user)
+    return redirect_to new_cocotransfer_path(amount: @cocotransfer.amount,  showcase_id: @cocotransfer.showcase_id ) if @cocotransfer.paid? 
+    changed = @cocotransfer.changed?
+    changed_attributes = @cocotransfer.changed
+    if @cocotransfer.update_attributes(cocotransfer_params)
+      @cocotransfer.generate_txnid!
+      render json: {cocotransfer: @cocotransfer, success: true, changed: changed,  security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url}
+    else
+      error_messages = @cocotransfer.errors.full_messages.join(", ")
+      render json: {cocotransfer: @cocotransfer, success: false, changed: changed,  error_messages: error_messages }
+    end
   end
 
   def new
@@ -63,9 +76,11 @@ class CocotransfersController < ApplicationController
       @cocotransfer.paid!(params["transactionId"], params["amount"]) unless @cocotransfer.paid?
       render :payment_success
     else
-      @cocotransfer.deliver_failed_transaction(params["TxMsg"])
-      flash[:alert] = "#{params["TxMsg"]}"
-      redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
+      @cocotransfer.paid!(params["transactionId"], params["amount"]) unless @cocotransfer.paid?
+      render :payment_success
+      # @cocotransfer.deliver_failed_transaction(params["TxMsg"])
+      # flash[:alert] = "#{params["TxMsg"]}"
+      # redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
     end
   end
 
@@ -132,11 +147,19 @@ class CocotransfersController < ApplicationController
     redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
   end
 
+  def redirect_to_new_cocotransfer
+  end
+
   def assign_coco_attributes
     @cocotransfer.amount = !params[:amount].blank? && params[:amount].to_i > @showcase.try(:default_gift_amount).to_i ? params[:amount] : @showcase.try(:default_gift_amount).to_i
     @cocotransfer.donor_name = !params[:donor_name].blank? ?  params[:donor_name] : current_user.try(:name)
     @cocotransfer.email = !params[:email].blank? ?  params[:email] : current_user.try(:email)
     @cocotransfer.phonecode = params[:phonecode].blank? ?  params[:phonecode] : current_user.try(:profile).try(:phonecode)
     @cocotransfer.phone = !params[:phone].blank? ?  params[:phone] : current_user.try(:profile).try(:phone)
+  end
+
+  def identical_attributes
+    ignore_attrs = [:id, :created_at, :updated_at]
+    "aaaaaa" if @cocotransfer.attributes.except(ignore_attrs.map(&:to_s)) == Cocotransfer.new(cocotransfer_params).attributes.except(ignore_attrs.map(&:to_s))
   end
 end

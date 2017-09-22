@@ -1,6 +1,7 @@
 .col-xs-12.col-sm-12.padding0
-  = hidden_field_tag :cocotransfer_id, value: cocotransfer.id
+  / = hidden_field_tag :cocotransfer_id, cocotransfer.id, id: "cocotransfer_id"
   = form_for cocotransfer, remote: remote, html:{id: "cocotranfer_form"} do |f|
+    = f.hidden_field :id, value: cocotransfer.id
     = f.hidden_field :showcase_id, value: cocotransfer.showcase.id
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0

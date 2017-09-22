@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get :checkout
     end
     collection do
+      patch :get_payment_details
       post :callback
     end
   end

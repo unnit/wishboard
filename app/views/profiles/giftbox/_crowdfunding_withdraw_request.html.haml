@@ -1,0 +1,13 @@
+%h5.histroy-header GROUP PAY
+-if @crowdfunding_showcases.count == 0
+  .col-xs-12.col-sm-12.full-height.text-center
+    %span.font20.mtop70.inline-block No Group pay wishes.
+- else
+  .col-xs-12.col-sm-12.padding0.j-gp-section
+    - @crowdfunding_showcases.each do |showcase|
+      .col-xs-12.col-sm-12.pad-v-15.weight600.grey-fg{style: "border-bottom: 1px solid #f1f1f1;"}
+        %span.pull-left.font-medium #{showcase.truncated_title}
+        .btn.btn-sm.btn-v-outline.transition-effect.j-wdrw-btn.pull-right{class: "#{ (showcase.available_withdraw_amount > 0) ? '' : 'disabled' }","data-amount" => "#{showcase.available_withdraw_amount}", "data-showcase-id" => "#{showcase.id}"} Withdraw
+        %span.pull-right.mright20
+          %i.fa.fa-inr
+          #{showcase.available_withdraw_amount}

@@ -128,41 +128,31 @@
             = f.text_field :amount, name: 'amount', value: showcase.default_gift_amount.to_i,  placeholder: "", class: "form-control cc-dark-fg-border pleft20", style: "background-color: transparent;"
           .col-xs-4.col-sm-4.pright0
             = f.submit "Gift", class: "btn cc-dark-bg white-fg full-width"
--elsif  showcase.is_wishpay?
-  .col-xs-12.col-sm-12.padding10{style: "background-color: #fbfbfb;"}
-    .col-xs-4.col-sm-4.padding0.pright-10
-      - if showcase.projected_amount?
-        %span.pull-left.cc-dark-fg.font16
-          %i.fa.fa-inr
-          #{showcase.raised_amount}
-        %span.pull-left.font11.mtop5.mleft5
-          raised of Rs.#{showcase.projected_amount} estimated amount
-        %div.full-width.pull-left.mtop5
-          .progress.mbottom0{style: "height: 8px;"}
-            .progress-bar.cc-dark-bg{:style => "width: #{showcase.percentage_raised}%;"}
-    .col-xs-8.col-sm-8.padding0
-      -if showcase.can_be_fullfilled_at_once?
-        = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
-          = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
-          = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
-          = f.hidden_field :gift_type, value: "fullfill", name: 'gift_type'
-          .col-xs-6.col-sm-6.pright0
-            = f.submit "Fullfill", class: "btn cc-dark-bg white-fg full-width" 
-            .amount_detail.extra-small-font
-              %i.fa.fa-inr.grey-fg
-              = showcase.fullfillment_at_once_amount
+- elsif showcase.is_wishpay?
+  .col-xs-12.col-sm-12.padding10.text-center{style: "background-color: #fffcf3;"}
+    %i.fa.fa-gift{style: "font-size: 40px;color: #ffb900;border: 1px solid #ffb900;border-radius: 30px;padding: 7px 10px;"}
+    -if showcase.can_be_fullfilled_at_once?
       = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
         = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
         = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
-        .col-xs-6.col-sm-6.pright0
-          = f.submit "Contribute to Wish", class: "btn cc-dark-bg white-fg full-width"
-          .amount_detail.extra-small-font
-            approximately 
-            %i.fa.fa-inr.grey-fg
-            = showcase.min_gift_amount_allowed
-            To
-            %i.fa.fa-inr.grey-fg
-            = showcase.max_gift_amount_allowed
+        = f.hidden_field :gift_type, value: "fullfill", name: 'gift_type'
+        .col-xs-6.col-sm-6{style: "margin-top: -40px;"}
+          = f.submit "Fullfill", class: "btn btn-sm cc-dark-fg-border transa cc-dark-fg", style: "background-color: transparent;width: 77.38px;"
+          -# .amount_detail.extra-small-font
+          -#   %i.fa.fa-inr.grey-fg
+          -#   = showcase.fullfillment_at_once_amount
+    = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
+      = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
+      = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
+      .col-xs-6.col-sm-6.pull-right{style: "margin-top: -40px;"}
+        = f.submit "Contribute", class: "btn btn-sm cc-dark-fg-border cc-dark-fg", style: "background-color: transparent;"
+        -# .amount_detail.extra-small-font
+        -#   approximately
+        -#   %i.fa.fa-inr.grey-fg
+        -#   = showcase.min_gift_amount_allowed
+        -#   To
+        -#   %i.fa.fa-inr.grey-fg
+        -#   = showcase.max_gift_amount_allowed
 
 .col-xs-12.col-sm-12.border-two.padding10.bg-white.h40
   - if current_user

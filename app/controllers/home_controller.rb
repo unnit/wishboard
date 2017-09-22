@@ -240,9 +240,9 @@ class HomeController < ApplicationController
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     if @user == current_user
-      @showcases = @user.showcases.where("admin_created = ?", false).order(achieved_at: :desc).limit(6)
+      @showcases = @user.showcases.user_created.order(achieved_at: :desc).limit(6)
     else
-      @showcases = @user.showcases.approved.where("admin_created = ?", false).order(achieved_at: :desc).limit(6)
+      @showcases = @user.showcases.approved.user_created.order(achieved_at: :desc).limit(6)
     end
     respond_to do |format|
       format.html
@@ -255,9 +255,9 @@ class HomeController < ApplicationController
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Fulfilled", myshowpieces_path(@profile.slug)
     if @user == current_user
-      @showcases = @user.showcases.where("admin_created = ?", false).showpieces.order(achieved_at: :desc)
+      @showcases = @user.showcases.showpieces.order(achieved_at: :desc)
     else
-      @showcases = @user.showcases.approved.where("admin_created = ?", false).showpieces.order(achieved_at: :desc)
+      @showcases = @user.showcases.approved.showpieces.order(achieved_at: :desc)
     end
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
@@ -271,9 +271,9 @@ class HomeController < ApplicationController
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Future", mywishes_path(@profile.slug)
     if @user == current_user
-      @showcases = @user.showcases.where("admin_created = ?", false).wishes.order(achieved_at: :desc)
+      @showcases = @user.showcases.wishes.order(achieved_at: :desc)
     else
-      @showcases = @user.showcases.approved.where("admin_created = ?", false).wishes.order(achieved_at: :desc)
+      @showcases = @user.showcases.approved.wishes.order(achieved_at: :desc)
     end
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
@@ -287,9 +287,9 @@ class HomeController < ApplicationController
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     add_breadcrumb "Momentary", mymomentary_path(@profile.slug)
     if @user == current_user
-      @showcases = @user.showcases.where("admin_created = ?", false).momentary.order(achieved_at: :desc)
+      @showcases = @user.showcases.momentary.order(achieved_at: :desc)
     else
-      @showcases = @user.showcases.approved.where("admin_created = ?", false).momentary.order(achieved_at: :desc)
+      @showcases = @user.showcases.approved.momentary.order(achieved_at: :desc)
     end
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(12)
     respond_to do |format|
@@ -456,9 +456,9 @@ class HomeController < ApplicationController
   end
 
   def save_firebase_token
-   @firebasetoken =   FirebaseToken.where(token: params[:token], user_id: current_user.try(:id)).first_or_create   if current_user
-   @firebasetoken.update_attributes(active: true)  if @firebasetoken
-   FirebaseToken.where(token: params[:token]).where.not(user_id: current_user.id).update_all(active: false)   if @firebasetoken && current_user
+   @firebasetoken = FirebaseToken.where(token: params[:token], user_id: current_user.try(:id)).first_or_create if current_user
+   @firebasetoken.update_attributes(active: true) if @firebasetoken
+   FirebaseToken.where(token: params[:token]).where.not(user_id: current_user.id).update_all(active: false) if @firebasetoken && current_user
    render json: {saved:  @firebasetoken ? true : false}
   end
 
@@ -466,9 +466,7 @@ class HomeController < ApplicationController
     # layout :false
     @url = params[:linkurl]
     render layout: false
-
     #render html: link_preview_content(params[:linkurl]).html_safe
-
   end
 
   private

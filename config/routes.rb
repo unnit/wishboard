@@ -193,8 +193,11 @@ Rails.application.routes.draw do
       post :callback
     end
   end
+
   match "showcases/:id", to: "showcases#show", via: "get"
   get "wish/private/:access_token", to: "showcases#private_showcase"
+  #get ":slug/wish/:id", to: "showcases#show", as: :showcase
+  #get "wish/:id", to: "showcases#show", as: :wish_showcase
   resources :showcases, path: "wish", only: [:edit, :create, :update, :destroy, :show] do
     member do
       post :wow

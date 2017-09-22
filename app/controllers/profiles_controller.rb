@@ -423,21 +423,21 @@ class ProfilesController < ApplicationController
     #   wallet.unused_coins = 0
     #   wallet.save
     # end
-	# wallet.lock!
-  # return redirect_to wallet_path unless current_user.can_convert_coins_to_profile?
-	create_coin_cocotransfer(params[:coins].to_i)
+    # wallet.lock!
+    # return redirect_to wallet_path unless current_user.can_convert_coins_to_profile?
+    create_coin_cocotransfer(params[:coins].to_i)
     if @cocotransfer.save
       wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
       wallet.unused_coins = 0
-	    if wallet.save
+      if wallet.save
         @cocotransfer.update_column("transaction_status", Transaction::TRANSACTION_STATUS[2][1])
-	      flash[:notice] = "You have successfully converted your coins to profile money"
-	    else
-	      flash[:alert] =  wallet.errors.full_messages.join(", ")
-	    end
-	else
-		 flash[:alert] =  @cocotransfer.errors.full_messages.join(", ")
-	end
+        flash[:notice] = "You have successfully converted your coins to profile money"
+      else
+        flash[:alert] =  wallet.errors.full_messages.join(", ")
+      end
+    else
+     flash[:alert] =  @cocotransfer.errors.full_messages.join(", ")
+    end
     return redirect_to wallet_path
     # respond_to :js
   end

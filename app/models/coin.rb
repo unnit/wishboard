@@ -23,7 +23,7 @@ class Coin < ApplicationRecord
   end
 
   def deliver_firebase_notification
-    FirebasenotificationBroadcastJob.perform_later(self.notification_title, self.notification_text, self.notification_url, self.notification_image_url,  self.user.id)
+    FirebasenotificationBroadcastJob.perform_later(self.notification_title, self.notification_text, self.notification_url, self.notification_image_url,  self.user.id) unless promotional
   end
 
   private

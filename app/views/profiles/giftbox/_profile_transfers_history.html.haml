@@ -1,36 +1,30 @@
-%h6.font16 Profile History
+%h5.histroy-header PROFILE TRANSACTIONS
 -if @all_related_cocotransfers.count == 0
-  .col-xs-12{style: "height: 100%;"}
-    %p.font14{style: "margin-left: 10px;"} No transfers to show
+  .col-xs-12.col-sm-12.full-height.text-center
+    %span.font20.mtop70.inline-block No transactions!.
 - else
-  .col-xs-12{style: "height: 100%;"}
-    .col-xs-12.font14
-      .col-xs-3
-      .col-xs-3
-        Amount
-      .col-xs-3
-        Date
-      .col-xs-3
-    .col-xs-12{style: "overflow-y: scroll; height: 80%;"}
-      - @all_related_cocotransfers.each do |cocotransfer|
-        .col-xs-12.extra-small-font.mtop10
-          .col-xs-3
-            -if cocotransfer.is_coin_converted?
-              %i.fa.fa-download{style: "color: green;"} 
-              (Credited)
-              - type = "Converted Coins"
-            -elsif cocotransfer.is_transferd_by?(current_user.id)
-              %i.fa.fa-upload{style: "color: red;"} 
-              (Debited)
-              - type = "Transferd to #{cocotransfer.receiver.name}"
-            -else
-              %i.fa.fa-download{style: "color: green;"} 
-              (Credited)
-              - type = "Received from #{cocotransfer.donor_name}"
-          .col-xs-3
-            #{cocotransfer.total_amount}
-          .col-xs-3
-            = cocotransfer.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
-          .col-xs-3
-            #{type}
-    
+  .col-xs-12.col-sm-12.padding0.j-pft-section
+    - @all_related_cocotransfers.each do |cocotransfer|
+      .col-xs-12.col-sm-12.pad-v-15.weight600{style: "border-bottom: 1px solid #f1f1f1;"}
+        .col-xs-8.col-sm-8
+          -if cocotransfer.is_coin_converted?
+            .media-left
+              %i.fa.fa-inr.white-fg.img-circle.box-shad{style: "background-color: #3AD1BE;padding: 5px 9px;box-shadow: 0 0px 0px 0 #3AD1BE, 0 6px 11px 0 #3AD1BE;"}
+            .media-body
+              Converted Coins
+          -elsif cocotransfer.is_transferd_by?(current_user.id)
+            .media-left
+              %i.fa.fa-inr.white-fg.img-circle.box-shad{style: "background-color: #FB5234;padding: 5px 9px;box-shadow: 0 0px 0px 0 #FB5234, 0 6px 11px 0 #FB5234;"}
+            .media-body
+              %span.font-medium.black80-fg.inline-block Transfer to
+              %span.block-display.font11.grey-fg #{cocotransfer.receiver.name}
+          -else
+            .media-left
+              %i.fa.fa-inr.white-fg.img-circle.box-shad{style: "background-color: #3AD1BE;padding: 5px 9px;box-shadow: 0 0px 0px 0 #3AD1BE, 0 6px 11px 0 #3AD1BE;"}
+            .media-body
+              %span.font-medium.black80-fg.inline-block Received from
+              %span.block-display.font11.grey-fg #{cocotransfer.donor_name}
+        .col-xs-4.col-sm-4.text-right.black80-fg
+          %i.fa.fa-inr
+          #{cocotransfer.total_amount}
+          %span.extra-small-font.block-display.grey-fg= cocotransfer.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")

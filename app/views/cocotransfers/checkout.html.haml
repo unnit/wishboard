@@ -147,9 +147,13 @@
         return data;
       }
 
+      function update_payment_data(){
+        
+      }
+
       function replace_html(data, cocotransfer){
         $("#amount").val(cocotransfer.amount);
-        $(".cocotransfer_display_amount").html(cocotransfer.amount)
+        $(".cocotransfer_display_amount").html(data.total_amount)
         $("#merchantTxnId").val(cocotransfer.txnid);
         $("#requestSignature").val(data.security_signature);
         $("#returnUrl").val(data.return_url);

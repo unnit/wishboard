@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   skip_before_action :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation], raise: false
   skip_before_action :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest], raise: false
   before_action :back_to_home, only: [:authenticate]
-  before_action :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers, :cocopay, :refund, :mobile, :save_firebase_token]
+  before_action :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers, :cocopay, :refund, :mobile, :save_firebase_token, :display_preview]
   before_action :set_profile_caseless, only: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :following, :followers, :wiki]
   before_action :set_wiki_and_check_owner, only: [:edit_wiki, :delete_wiki]
   before_action :set_social_layout, except: [:index, :offers, :user_signup_confirmation, :interests, :feed, :fansday, :authenticate]
@@ -152,7 +152,7 @@ class HomeController < ApplicationController
     wow = Wow.find_by_id params[:id]
     unless wow.blank?
       wow.update_column :checked, true if wow.showcase.user == current_user
-      redirect_to showcase_path(wow.showcase)
+      redirect_to slug_showcase_path(wow.showcase.slug, wow.showcase)
     else
       redirect_to root_path
     end
@@ -162,7 +162,7 @@ class HomeController < ApplicationController
     coin = Coin.find_by_id params[:id]
     unless coin.blank?
       coin.update_column :checked, true if coin.showcase.user == current_user
-      redirect_to showcase_path(coin.showcase)
+      redirect_to slug_showcase_path(coin.showcase.slug, coin.showcase)
     else
       redirect_to root_path
     end
@@ -172,7 +172,7 @@ class HomeController < ApplicationController
     comment = Comment.find_by_id params[:id]
     unless comment.blank?
       comment.update_column :checked, true if comment.showcase.user == current_user
-      redirect_to showcase_path(comment.showcase, q: "#{comment.id}")
+      redirect_to slug_showcase_path(comment.showcase.slug, comment.showcase, q: "#{comment.id}")
     else
       redirect_to root_path
     end
@@ -193,7 +193,7 @@ class HomeController < ApplicationController
     showcase_notification = ShowcaseNotification.find_by_id params[:id]
     unless showcase_notification.blank?
       showcase_notification.update_column :checked, true if showcase_notification.user == current_user
-      redirect_to showcase_path(showcase_notification.showcase)
+      redirect_to slug_showcase_path(showcase_notification.showcase.slug, showcase_notification.showcase)
     else
       redirect_to root_path
     end
@@ -203,7 +203,7 @@ class HomeController < ApplicationController
     achieved_notification = AchievedNotification.find_by_id params[:id]
     unless achieved_notification.blank?
       achieved_notification.update_column :checked, true if achieved_notification.user == current_user
-      redirect_to showcase_path(achieved_notification.showcase)
+      redirect_to slug_showcase_path(achieved_notification.showcase.slug, achieved_notification.showcase)
     else
       redirect_to root_path
     end
@@ -213,7 +213,7 @@ class HomeController < ApplicationController
     commenter_notification = CommenterNotification.find_by_id params[:id]
     unless commenter_notification.blank?
       commenter_notification.update_column :checked, true if commenter_notification.user == current_user
-      redirect_to showcase_path(commenter_notification.showcase, q: "#{commenter_notification.comment.id}")
+      redirect_to slug_showcase_path(commenter_notification.showcase.slug, commenter_notification.showcase, q: "#{commenter_notification.comment.id}")
     else
       redirect_to root_path
     end

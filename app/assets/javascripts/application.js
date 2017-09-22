@@ -1701,34 +1701,34 @@ function setWishContribute(){
 
 
 function setOnlineAndWalletAmount(){
-    $currentAmount = parseInt($("#cocotransfer_total_amount").val());
-    $availableWalletAmount = parseInt($("#cocotransfer_available_wallet_amount").val());
-    console.log("current:"+ $currentAmount + "  availableWalletAmount:" )
-
-     if ($("#cocotransfer_use_wallet_amount").is(":checked")){
-          if ($availableWalletAmount >= $currentAmount){
-           $("#cocotransfer_wallet_amount_display").html($currentAmount);
-           $("#cocotransfer_wallet_amount").val($currentAmount);
-           $("#cocotransfer_amount_display").html(0);
-           $("#cocotransfer_amount").val(0);
-          }else{
-           $("#cocotransfer_wallet_amount_display").html($availableWalletAmount);
-           $("#cocotransfer_wallet_amount").val($availableWalletAmount);
-           $("#cocotransfer_amount_display").html($currentAmount - $availableWalletAmount);
-           $("#cocotransfer_amount").val($currentAmount - $availableWalletAmount);
-          }
+  $currentAmount = parseInt($("#cocotransfer_total_amount").val());
+  $availableWalletAmount = parseInt($("#cocotransfer_available_wallet_amount").val());
+  console.log("current:"+ $currentAmount + "  availableWalletAmount:" );
+  if ($("#cocotransfer_use_wallet_amount").is(":checked")){
+    if ($availableWalletAmount >= $currentAmount){
+      $("#cocotransfer_wallet_amount_display").html($currentAmount);
+      $("#cocotransfer_wallet_amount").val($currentAmount);
+      $("#cocotransfer_amount_display").html(0);
+      $("#cocotransfer_amount").val(0);
     }else{
-      $("#cocotransfer_amount_display").html($currentAmount);
-      $("#cocotransfer_amount").val($currentAmount);
-      if ($availableWalletAmount >= $currentAmount){
-       $("#cocotransfer_amount_display").html($currentAmount);
-       $("#cocotransfer_amount").val(0);
-     }else{
-       $("#cocotransfer_amount_display").html($currentAmount);
-       $("#cocotransfer_amount").val(0);
-     }
+      $("#cocotransfer_wallet_amount_display").html($availableWalletAmount);
+      $("#cocotransfer_wallet_amount").val($availableWalletAmount);
+      $("#cocotransfer_amount_display").html($currentAmount - $availableWalletAmount);
+      $("#cocotransfer_amount").val($currentAmount - $availableWalletAmount);
+    }
+  }else{
+    $("#cocotransfer_amount_display").html($currentAmount);
+    $("#cocotransfer_amount").val($currentAmount);
+    if($availableWalletAmount >= $currentAmount){
+      $("#cocotransfer_wallet_amount_display").html($currentAmount);
+      // $("#cocotransfer_wallet_amount_display").html($currentAmount + " (Rs." +$availableWalletAmount +" available)");
+      $("#cocotransfer_wallet_amount").val(0);
+    }else{
+      $("#cocotransfer_wallet_amount_display").html($availableWalletAmount);
+      $("#cocotransfer_wallet_amount").val(0);
     }
   }
+}
 
 function reEnableSubmitButton(element_id){
   $formsubmitbutton = $(element_id);

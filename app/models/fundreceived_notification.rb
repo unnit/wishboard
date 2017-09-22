@@ -14,7 +14,7 @@ class FundreceivedNotification < ApplicationRecord
 
 	def notification_url
 		if self.cocotransfer.showcase_transfer?
-		  Rails.application.routes.url_helpers.showcase_url(self.cocotransfer.transferable, :host => "#{GLOBAL_VARIABLES[:root_url]}")
+		  Rails.application.routes.url_helpers.slug_showcase_url(self.cocotransfer.transferable.slug, self.cocotransfer.transferable, :host => "#{GLOBAL_VARIABLES[:root_url]}")
 		else
 			 Rails.application.routes.url_helpers.wallet_url(host: "#{GLOBAL_VARIABLES[:root_url]}" )
 		end
@@ -22,7 +22,7 @@ class FundreceivedNotification < ApplicationRecord
 
 	def notification_path
 		if self.cocotransfer.showcase_transfer?
-		  Rails.application.routes.url_helpers.showcase_path(self.cocotransfer.transferable)
+		  Rails.application.routes.url_helpers.slug_showcase_path(self.cocotransfer.transferable.slug, self.cocotransfer.transferable)
 		else
 			 Rails.application.routes.url_helpers.wallet_path
 		end

@@ -9,7 +9,7 @@
     - fullfillment_at_once_amount = cocotransfer.is_for_wishpay? ?  cocotransfer.transferable.fullfillment_at_once_amount.to_i : 0
     = f.hidden_field :fullfillment_at_once_amount, value: fullfillment_at_once_amount
 
-    = cocotransfer.wallet_amount + cocotransfer.amount
+    / = cocotransfer.wallet_amount + cocotransfer.amount
     / = f.hidden_field :wallet_amount, value: cocotransfer.wallet_amount
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0
@@ -27,7 +27,7 @@
       .col-xs-12.col-sm-3.pleft0
         %span Use Wallet Amount
       .col-xs-12.col-sm-9.padding0.font10.pleft0
-        = f.check_box :use_wallet_amount, checked: true
+        = f.check_box :use_wallet_amount
         %i.fa.fa-inr
         %span#cocotransfer_wallet_amount_display
           #{cocotransfer.wallet_amount} 

@@ -92,22 +92,27 @@ class Showcase < ApplicationRecord
   validates :video_link, length: {maximum: 300}, if: :is_for_raising_fund?
   validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 1000000, greater_than: 10, message: "should be between 0 and 1000000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
   validate :accept_fund_option_should_not_change, if: :already_raised_some_amount
+  validate :accept_only_one_type_of_payment
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
   validate :date_range_for_target_date, unless: :target_date_blank?
 
-  scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
-  scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
-  scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
+  scope :momentary, -> {user_created.where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
+  scope :wishes, -> {user_created.where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
+  scope :showpieces, -> {user_created.where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
   scope :recently_created, -> (n) {where("created_at > ?", (Time.now.utc - n.days).beginning_of_day)}
-  scope :user_coin_wishes, -> {where(["admin_created = false and coin_wish = true"])}
+  scope :user_coin_wishes, -> {user_created.coin_wishes}
   scope :public_accessible, -> {where("access_type in (?)", [ACCEESS_TYPE[0], nil])}
-  scope :non_crowdfunding, ->{where(accept_fund: [nil, false])}
-  scope :wishpay, ->{where("wishpay_status in (?)", [WISHPAY_STATUS[1]])}
+  scope :non_crowdfunding, -> {user_created.non_coin.where(accept_fund: [nil, false])}
+  scope :wishpay, -> {where("wishpay_status in (?)", [WISHPAY_STATUS[1]])}
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
-  scope :active, -> {where(admin_status: [0, nil] )}
+  scope :active, -> {where(admin_status: [0, nil])}
   scope :approved, -> {public_accessible.active}
-  scope :non_crowdfunding, -> {where("accept_fund = ? and admin_created = ? and coin_wish = ?", false, false, false)}
+  scope :user_created, -> {where(admin_created: [nil, false])}
+  scope :non_coin, -> {where(coin_wish: [nil ,false])}
+  scope :admin_generated, -> {where(admin_created: true)}
+  scope :coin_wishes,  -> {where(coin_wish: true)}
+  # scope :non_crowdfunding, -> {where("accept_fund = ? and admin_created = ? and coin_wish = ?", false, false, false)}
 
   HUMANIZED_ATTRIBUTES = {
     fundcategory_id: "Category",
@@ -199,7 +204,39 @@ class Showcase < ApplicationRecord
     self.tags.map(&:name).join(",")
   end
 
+  def accept_only_one_type_of_payment
+    errors.add(:wish, "can accept only one type of gift")  if (self.wishpay_status == WISHPAY_STATUS[1] && self.accept_fund == true)
+    errors.add(:wish, "coin wish can not accept gifts")  if ((self.wishpay_status == WISHPAY_STATUS[1] || self.accept_fund == true) && self.coin_wish == true)
+  end
+
+
+
+
+  # def set_wishpay_fields
+  #   if is_for_raising_fund?
+  #     self.wishpay_status = WISHPAY_STATUS[0] 
+  #     self.projected_amount = nil
+  #   end
+  # end
+
+  # def set_crowdfunding_fields
+  #   if new_record && is_for_raising_fund?
+  #     self.wishpay_status = WISHPAY_STATUS[0] 
+  #     self.projected_amount = nil
+  #   end
+  # end
+
+  def show_wishpay_edit_fields?
+     !(Showcase.find_by_id(self.id).try(:accept_fund) == true && already_raised_some_amount )
+  end
+
+  def wishpay_is_editable?
+     return false if Showcase.find_by_id(self.id).try(:accept_fund) == true && already_raised_some_amount
+     # Showcase.find_by_id(self.id).try(:wishpay_status) == WISHPAY_STATUS[1] && !already_raised_some_amount : true
+  end
+
   def accept_fund_is_editable?
+    return false if Showcase.find_by_id(self.id).try(:wishpay_status) == WISHPAY_STATUS[1] && already_raised_some_amount
     Showcase.find_by_id(self.id).try(:accept_fund) ? !already_raised_some_amount : true
   end
 
@@ -506,6 +543,10 @@ class Showcase < ApplicationRecord
 
   def deactivate_coin_wish
     update_column :coin_wish_status, COIN_WISH_STATUS[1]
+  end
+
+  def slug
+   return self.title.gsub(/\s+/, "_").gsub(/[^0-9A-Za-z\-\_]/, '')
   end
 
   def can_be_withdrawn

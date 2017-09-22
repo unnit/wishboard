@@ -7,6 +7,7 @@ require 'sms_service'
 class Cocotransfer < ApplicationRecord
    # attr_accessor :use_wallet_amount
   # attr_accessor :total_amount
+  has_many :fundreceived_notification
   has_many :txdetails
   belongs_to :fullfillment_contributer, class_name: "User", :foreign_key => :from_user_id
   # belongs_to :user, class_name: "User", :foreign_key => :user_id
@@ -31,6 +32,7 @@ class Cocotransfer < ApplicationRecord
   scope :showcase_gifting, -> {where(transferable_type: TRANSFER_TYPE[0][0])}
   scope :profile_gifting, -> {where(transferable_type: TRANSFER_TYPE[1][0])}
   scope :coin_transfers, -> {where("coin_amount > 0")}
+  # scope :wishpay_transfers, ->{joins(:showcases)}
   # profile_gifting
 
 
@@ -194,9 +196,9 @@ class Cocotransfer < ApplicationRecord
   def paid_callbacks!
     create_invoice
     FundreceivedNotification.create(user_id: self.receiver.try(:id), cocotransfer: self )
-    inform_success_to_donor
-    inform_success_to_receiver
-    inform_success_admin
+    # inform_success_to_donor
+    # inform_success_to_receiver
+    # inform_success_admin
     CocotransferMailer.success_inovoice(self, self.email).deliver_now
     CocotransferMailer.fund_reception_owner(self, self.receiver.email).deliver_now
   end

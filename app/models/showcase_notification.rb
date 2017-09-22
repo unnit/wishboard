@@ -14,7 +14,7 @@ class ShowcaseNotification < ApplicationRecord
   end
 
   def notification_url
-    Rails.application.routes.url_helpers.showcase_url(self, :host => "#{GLOBAL_VARIABLES[:root_url]}")
+    Rails.application.routes.url_helpers.update_showcase_checked_path(self, :host => "#{GLOBAL_VARIABLES[:root_url]}")
   end
 
   def notification_title

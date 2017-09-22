@@ -10,6 +10,7 @@ class CocotransfersController < ApplicationController
     @cocotransfer = Cocotransfer.new
     @cocotransfer.transferable_id = params[:transferable_id]
     @cocotransfer.transferable_type = params[:transferable_type]
+    @cocotransfer.use_wallet_amount = true
     @showcase = Showcase.find_by_id(params[:transferable_id]) if @cocotransfer.showcase_transfer?
     @receiver = User.find_by_id(params[:transferable_id]) if @cocotransfer.profile_transfer?
     #vaild_showcase_transfer = (@showcase && @showcase.is_for_raising_fund? && !@showcase.is_admin_disabled? && !@showcase.campaign_ended?)
@@ -59,7 +60,7 @@ class CocotransfersController < ApplicationController
         if @cocotransfer.is_only_wallet?
          return process_wallet_payment("js")  
         else
-          render json: {cocotransfer: @cocotransfer, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url, success: true}
+          render json: {cocotransfer: @cocotransfer, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url, success: true, total_amount: @cocotransfer.total_amount}
         end
        
       else
@@ -155,7 +156,7 @@ class CocotransfersController < ApplicationController
 
   def initiate_new_checkout
     @old_coco_transfer =  @cocotransfer
-    @old_coco_transfer = Cocotransfer.last
+    # @old_coco_transfer = Cocotransfer.last
     @cocotransfer = Cocotransfer.new
     @cocotransfer.attributes = @old_coco_transfer.attributes.symbolize_keys.slice(:transferable_id, :amount, :email, :donor_name, :phonecode, :phone, :transferable_type, :use_wallet_amount, :wallet_amount)
     if @cocotransfer.save

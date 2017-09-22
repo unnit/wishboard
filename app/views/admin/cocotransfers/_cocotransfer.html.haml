@@ -1,5 +1,5 @@
 %td= cocotransfer.txnid
-%td= link_to cocotransfer.showcase.title, showcase_path(cocotransfer.showcase.id), target: "_blank"
+%td= link_to cocotransfer.showcase.title, slug_showcase_path(cocotransfer.showcase.slug,cocotransfer.showcase.id), target: "_blank"
 %td= link_to cocotransfer.showcase.user.name, "#profile-#{cocotransfer.showcase.user.profile_id}", data: {toggle: "modal" }
 %td= cocotransfer.donor_name
 %td= cocotransfer.created_at.strftime("%d %a %b, %Y %H:%M")

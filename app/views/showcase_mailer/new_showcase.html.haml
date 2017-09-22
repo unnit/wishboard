@@ -3,7 +3,7 @@
     %span= truncate @showcase.user.name.titleize, length: 50
   &nbsp;
   %span= @showcase.wishlist? ? " has a new" : " fulfilled a"
-  = link_to showcase_url(@showcase) do
+  = link_to slug_showcase_url(@showcase.slug, @showcase) do
     %span wish
 %br
 Discover

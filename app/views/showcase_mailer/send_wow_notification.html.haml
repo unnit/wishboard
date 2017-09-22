@@ -3,7 +3,7 @@
     %span= truncate @wower.name.titleize, length: 50
   &nbsp;
   %span liked your
-  = link_to showcase_url(@showcase) do
+  = link_to slug_showcase_url(@showcase.slug, @showcase) do
     %span= truncate @showcase.title, length: 50
 %br
 Discover more on

@@ -15,7 +15,7 @@
     -if @cocotransfer.showcase_transfer?
       %span
         .shareShowcaseRoundIcons{"data-id" => "#{@cocotransfer.transferable.try(:id)}"}
-      = link_to showcase_path(@cocotransfer.transferable) do
+      = link_to slug_showcase_path(@cocotransfer.transferable.slug, @cocotransfer.transferable) do
         .btn.btn-md.btn-v-outline.mtop20.transition-effect
           Gift Again
     -else

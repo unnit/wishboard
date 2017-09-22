@@ -7,7 +7,7 @@
       = link_to myprofile_path(withdraw.user.slug), target: "_blank" do
         = withdraw.user.name
     %td
-      = link_to showcase_path(withdraw.showcase), target: "_blank" do
+      = link_to slug_showcase_path(withdraw.showcase.slug, withdraw.showcase), target: "_blank" do
         = withdraw.showcase.title
     %td= withdraw.showcase.goal_amount
     %td= withdraw.coins

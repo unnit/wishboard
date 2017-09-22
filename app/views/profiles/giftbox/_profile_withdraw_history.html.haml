@@ -1,21 +1,26 @@
 %h5.histroy-header PROFILE WITHDRAWS
--if @crowdfunding_withdraws.count == 0
+-if @profile_withdraws.count == 0
   .col-xs-12.col-sm-12.full-height.text-center
     %span.font20.mtop70.inline-block No withdrawal requests as of now.
 - else
-  .col-xs-12{style: "overflow-y: scroll; height: 80%;"}
-    - @crowdfunding_withdraws.each do |withdraw|
-      .col-xs-12.extra-small-font.mtop10
-        .col-xs-4
-          #{withdraw.showcase.available_withdraw_amount}
-        .col-xs-4
-          = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
-        .col-xs-4
-          - if withdraw.open?
-            Pending
-            = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" }, class: "j-loader-trigger-link" do
-              Delete Request
-          - elsif withdraw.closed?
-            Completed
-          -elsif withdraw.rejected?
-            Rejected
+  .col-xs-12.col-sm-12.padding0.j-pfw-section
+    - @profile_withdraws.each do |withdraw|
+      .col-xs-12.col-sm-12.pad-v-15.weight600{style: "border-bottom: 1px solid #f1f1f1;"}
+        .col-xs-8.col-sm-8
+          %span.pull-left.cc-dark-bg.img-circle{style: "padding: 10px 3px;border-radius: 20px;"}
+            %i.fa.fa-arrow-down.extra-small-font.pull-left.white-fg.mleft5{style: "margin-right: -2px;"}
+            %i.fa.fa-user.white-fg.pull-left
+          %span.pull-left.mleft10.mtop8
+            %i.fa.fa-inr
+            #{withdraw.coins}
+        .col-xs-4.col-sm-4.text-right
+          %span.pull-right.font22
+            - if withdraw.open?
+              = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" }, class: "j-loader-trigger-link" do
+                %i.fa.fa-trash-o{style: "color: #FB5234;", title: "Delete"}
+            - elsif withdraw.closed?
+              %i.fa.fa-check{style: "color: #3AD1BE;", title: "Completed"}
+            - elsif withdraw.rejected?
+              %i.fa.fa-times{style: "color: #3AD1BE;", title: "Rejected"}
+          %span.pull-right.full-width.text-right.grey-fg.extra-small-font
+            = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")

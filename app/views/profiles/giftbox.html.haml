@@ -1,6 +1,6 @@
 = content_for :title do
   - title = "Giftbox - Cocociti"
-.container-fluid.ptop50.mob-ptop100.pattern-bg{style: "min-height: 700px;"}
+.container-fluid.ptop50.mob-ptop100.pattern-bg.pleft0.pright0{style: "min-height: 700px;"}
   .container.padding0.mtop20.pbottom70
     = render "profiles/giftbox/overall_stats"
     .col-xs-12.col-sm-6.mtop30
@@ -23,7 +23,7 @@
 
 = content_for :extra_js do
   :javascript
-    $(".j-gp-section, .j-pft-section").mCustomScrollbar({setHeight: 240});
+    $(".j-gp-section, .j-pft-section, .j-gpw-section, .j-pfw-section").mCustomScrollbar({setHeight: 240});
     $(document).ready(function(){
       function loadtransferForm(showcase_id){
         $.ajax({

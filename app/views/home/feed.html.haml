@@ -22,7 +22,7 @@
           TRENDING TAGS
         - tag_cloud Tag.counts, %w{font11 font13 font17 font20} do |tag, css_class|
           %span.inline-block.grey-fg.pull-left.full-width.mbottom5
-            .fa.fa-line-chart.cc-dark-fg.font13
+            .fa.fa-circle.cc-dark-fg.font13
             = link_to tag.name.strip, tag_path(tag.name), class: "font13 black-fg j-loader-trigger-link"
     .col-xs-12.col-sm-6.ptop15.padding-mob0.main-feed{class: "#{'hide-display' if params[:view] == "follow"}"}
       #new-wish

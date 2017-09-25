@@ -19,6 +19,9 @@
         %span.pull-right
           %i.fa.fa-chevron-down
       .full-width.pull-left.payment-citrus-errors.mbottom10.heart-red-fg
+        %span.block-display.error-cvv
+        %span.block-display.error-number
+        %span.block-display.error-expiry
       #payment_details.collapse.in
         = hidden_field_tag :amount, "", id: "amount"
         = hidden_field_tag :coco_transaction_id, "",  id: "merchantTxnId"
@@ -63,7 +66,7 @@
             .col-md-12.text-center.mtop10{style: "font-size: 10px;"}
               By continuing, you agree to the Terms and Policies of Cocociti.
             .col-md-12.text-center
-              %input.btn.btn-md.cc-dark-bg.white-fg.border2.mtop10#cardPayButton{type: "button", value: "Pay Now", disabled: true}
+              %input.btn.btn-md.cc-dark-bg.white-fg.border2.mtop10#cardPayButton{type: "button", value: "Pay Now"}
             .col-md-12.pbottom50.mtop20.mleft20.text-center.hidden-xs
               %span.inline-block.cards-sprite
           #net_banking.tab-pane.fade
@@ -76,12 +79,12 @@
             .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
               By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
             .col-md-12.text-center.pbottom50
-              %input.btn.btn-md.cc-dark-bg.white-fg.mtop10#netbankingButton{type: "button", value: "Pay Now", disabled: true}
+              %input.btn.btn-md.cc-dark-bg.white-fg.mtop10#netbankingButton{type: "button", value: "Pay Now"}
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
       var $toggleGroup = $('#toggleGroup');
-      $toggleGroup.on('show.bs.collapse','.collapse', function() {
+      $toggleGroup.on('show.bs.collapse', '.collapse', function() {
         $toggleGroup.find('.collapse.in').collapse('hide');
       });
       citrus.setConfig({
@@ -140,38 +143,24 @@
         $("#email").val(cocotransfer.email);
       }
       citrus.registerHandlers("errorHandler", function (error) {
-      console.log("Errorhandler")
-      console.log(error)
-      console.log("Errorhandler")
         enablePaymentButtons();
-        // disablePaymentButtons();
       });
 
       citrus.registerHandlers("serverErrorHandler", function (error){
-      console.log("serverErrorHandler")
-      console.log(error)
-      console.log("serverErrorHandler")
-          enablePaymentButtons();
-        // disablePaymentButtons();
+        enablePaymentButtons();
       });
 
       citrus.registerHandlers("transactionHandler", function(resp){
-      console.log("transactionHandler")
-      console.log(resp)
-      console.log("transactionHandler")
+        enablePaymentButtons();
       });
 
-
       citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
-      console.log(cardValidationResult);
-      console.log(hostedField);
-
         if(cardValidationResult.isValid){
-          //alert(cardValidationResult.length);
-          // if (cardValidationResult.length === 3)
-          $(".payment-citrus-errors").html("");
+          $(hostedField.selector).css("border", "1px solid #ccc");
+          $(".payment-citrus-errors .error-"+hostedField.fieldType).html("");
         }else{
-          $(".payment-citrus-errors").append(cardValidationResult.txMsg);
+          $(hostedField.selector).css("border", "1px solid red");
+          $(".payment-citrus-errors .error-"+hostedField.fieldType).html(cardValidationResult.txMsg);
         }
       });
 
@@ -211,7 +200,7 @@
 
       $('#cocotranfer_form').on('ajax:success',
         function(e, data, status, xhr){
-          if(data.success ){
+          if(data.success){
             $(".cocotransfer_display_amount").html(data.cocotransfer.amount)
             // replace_html(data, data.cocotransfer);
             $("#edit_details").collapse('hide');
@@ -220,7 +209,7 @@
             $("#error").html("").hide();
           }else{
             $("#error").html(data.error_messages).show();
-            setTimeout(function(){$("#error").hide();}, 40000);
+            setTimeout(function(){$("#error").hide();}, 15000);
           }
       });
 
@@ -248,11 +237,7 @@
       }
 
       function reloadPaymentDataFromServer(payType){
-      if( $(".payment-citrus-errors").html().length > 0){
-       return;
-      }
         var paymentType = payType;
-
         clear_payment_data();
         $.ajax({
           type: 'PATCH',

@@ -7,9 +7,9 @@ class CocotransfersController < ApplicationController
     @cocotransfer = Cocotransfer.find_by_id(params[:cocotransfer][:id])
     @cocotransfer.assign_attributes(cocotransfer_params)
     @cocotransfer.assign_attributes(fullfillment_contributer: current_user)
-    return redirect_to new_cocotransfer_path(amount: @cocotransfer.amount,  showcase_id: @cocotransfer.showcase_id ) if @cocotransfer.paid? 
+    return redirect_to new_cocotransfer_path(amount: @cocotransfer.amount,  showcase_id: @cocotransfer.showcase_id) if @cocotransfer.paid?
     changed = @cocotransfer.changed?
-    changed_attributes = @cocotransfer.changed
+    #changed_attributes = @cocotransfer.changed
     if @cocotransfer.update_attributes(cocotransfer_params)
       @cocotransfer.generate_txnid!
       render json: {cocotransfer: @cocotransfer, success: true, changed: changed,  security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url}
@@ -61,7 +61,7 @@ class CocotransfersController < ApplicationController
         error_messages = @cocotransfer.errors.full_messages.join(", ")
         render json: {cocotransfer: @cocotransfer, success: false, error_messages: error_messages }
       end
-     end
+    end
   end
 
   def callback

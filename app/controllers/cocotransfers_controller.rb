@@ -9,13 +9,13 @@ class CocotransfersController < ApplicationController
     @cocotransfer.assign_attributes(fullfillment_contributer: current_user)
     return redirect_to new_cocotransfer_path(amount: @cocotransfer.amount,  showcase_id: @cocotransfer.showcase_id) if @cocotransfer.paid?
     changed = @cocotransfer.changed?
-    #changed_attributes = @cocotransfer.changed
+    changed_attributes = @cocotransfer.changed
     if @cocotransfer.update_attributes(cocotransfer_params)
       @cocotransfer.generate_txnid!
-      render json: {cocotransfer: @cocotransfer, success: true, changed: changed,  security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url}
+      render json: {cocotransfer: @cocotransfer, success: true, changed: changed, changed_attributes: changed_attributes, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url}
     else
       error_messages = @cocotransfer.errors.full_messages.join(", ")
-      render json: {cocotransfer: @cocotransfer, success: false, changed: changed,  error_messages: error_messages }
+      render json: {cocotransfer: @cocotransfer, success: false, error_messages: error_messages }
     end
   end
 

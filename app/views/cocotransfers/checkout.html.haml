@@ -110,11 +110,11 @@
       });
 
       $("#netbankingButton").on("click", function (){
-       reloadPaymentDataFromServer("netbanking");
+        reloadPaymentDataFromServer("netbanking");
       });
 
       $("#cardPayButton").on("click", function(){
-         reloadPaymentDataFromServer("cardpayment")
+        reloadPaymentDataFromServer("cardpayment");
       });
 
       function getPaymentData(){
@@ -133,10 +133,10 @@
         return data;
       }
 
-      function replace_html(data, cocotransfer){
-        $("#amount").val(cocotransfer.amount);
-        $(".cocotransfer_display_amount").html(cocotransfer.amount);
-        $("#merchantTxnId").val(cocotransfer.txnid);
+      function replace_html(data){
+        $("#amount").val(data.cocotransfer.amount);
+        $(".cocotransfer_display_amount").html(data.cocotransfer.amount);
+        $("#merchantTxnId").val(data.cocotransfer.txnid);
         $("#requestSignature").val(data.security_signature);
         $("#returnUrl").val(data.return_url);
         $("#notifyUrl").val(data.return_url);
@@ -154,7 +154,7 @@
         enablePaymentButtons();
       });
 
-      citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
+      citrus.registerHandlers.apply("validationHandler", function (hostedField,cardValidationResult) {
         if(cardValidationResult.isValid){
           $(hostedField.selector).css("border", "1px solid #ccc");
           $(".payment-citrus-errors .error-"+hostedField.fieldType).html("");
@@ -162,6 +162,12 @@
           $(hostedField.selector).css("border", "1px solid red");
           $(".payment-citrus-errors .error-"+hostedField.fieldType).html(cardValidationResult.txMsg);
         }
+        //if($(".payment-citrus-errors .error-cvv").html() == "" && $(".payment-citrus-errors .error-expiry").html() == "" && $(".payment-citrus-errors .error-number").html() == ""){
+        //  var result = true;
+        //}else{
+        //  var result = false
+        //}
+        //return result;
       });
 
       $(function(){
@@ -202,10 +208,8 @@
         function(e, data, status, xhr){
           if(data.success){
             $(".cocotransfer_display_amount").html(data.cocotransfer.amount)
-            // replace_html(data, data.cocotransfer);
             $("#edit_details").collapse('hide');
             $("#payment_details").collapse('show');
-            enablePaymentButtons();
             $("#error").html("").hide();
           }else{
             $("#error").html(data.error_messages).show();
@@ -245,8 +249,8 @@
           data: $("#cocotranfer_form").serialize(),
           success: function(data) {
             if(data.success ){
-              console.log(data);
-              replace_html(data, data.cocotransfer);
+              //console.log(data);
+              replace_html(data);
               if (paymentType == "netbanking"){
                 processNetBanking();
               }else{

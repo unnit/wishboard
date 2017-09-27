@@ -77,11 +77,9 @@ class CocotransfersController < ApplicationController
       @cocotransfer.paid!(params["transactionId"], params["amount"]) unless @cocotransfer.paid?
       render :payment_success
     else
-      @cocotransfer.paid!(params["transactionId"], params["amount"]) unless @cocotransfer.paid?
-      render :payment_success
-      # @cocotransfer.deliver_failed_transaction(params["TxMsg"])
-      # flash[:alert] = "#{params["TxMsg"]}"
-      # redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
+      @cocotransfer.deliver_failed_transaction(params["TxMsg"])
+      flash[:alert] = "#{params["TxMsg"]}"
+      redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
     end
   end
 
@@ -135,7 +133,6 @@ class CocotransfersController < ApplicationController
 
   def initiate_new_checkout
     @old_coco_transfer =  @cocotransfer
-    @old_coco_transfer = Cocotransfer.last
     @cocotransfer = Cocotransfer.new
     @cocotransfer.attributes = @old_coco_transfer.attributes.symbolize_keys.slice(:showcase_id, :amount, :email, :donor_name, :phonecode, :phone)
     if @cocotransfer.save

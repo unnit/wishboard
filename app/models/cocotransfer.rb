@@ -160,7 +160,7 @@ class Cocotransfer < ApplicationRecord
     end
     msg_coco_manager
   end
-  
+
   def deliver_signature_verification_failed
     email_message = "Your payment failed. Please try again."
     CocotransferMailer.fail(self, email_message).deliver_now

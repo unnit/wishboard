@@ -1,9 +1,10 @@
-.col-xs-12.col-sm-12.padding10.font-bit-large.bg-shad
+.col-xs-12.col-sm-12.padding10.font-bit-large.bg-shad.cc-dark-bg.white-fg
   .media
     .media-left.media-middle
-      %i.fa.fa-bullhorn.font25.cc-dark-fg
+      %i.fa.fa-bullhorn.font25
     .media-body
-      You are gifting Rs.
-      %span.inline-block{class: "cocotransfer_display_amount"}
+      You are gifting&nbsp;
+      %i.fa.fa-inr
+      %span.inline-block.weight600{class: "cocotransfer_display_amount"}
         #{cocotransfer.amount}
-      to #{showcase.user.name} for #{showcase.title}
+      &nbsp;to #{showcase.user.name} for #{showcase.title}

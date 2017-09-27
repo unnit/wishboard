@@ -12,6 +12,7 @@ class CocotransfersController < ApplicationController
     changed_attributes = @cocotransfer.changed
     if @cocotransfer.update_attributes(cocotransfer_params)
       @cocotransfer.generate_txnid!
+      @cocotransfer.reload
       render json: {cocotransfer: @cocotransfer, success: true, changed: changed, changed_attributes: changed_attributes, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url}
     else
       error_messages = @cocotransfer.errors.full_messages.join(", ")

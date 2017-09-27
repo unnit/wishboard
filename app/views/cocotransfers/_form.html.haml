@@ -1,4 +1,4 @@
-.col-xs-12.col-sm-12.padding0
+.col-xs-12.col-sm-12.padding15.bg-white
   / = hidden_field_tag :cocotransfer_id, cocotransfer.id, id: "cocotransfer_id"
   = form_for cocotransfer, remote: remote, html:{id: "cocotranfer_form"} do |f|
     = f.hidden_field :id, value: cocotransfer.id

@@ -1,85 +1,118 @@
 .col-xs-12.col-sm-12.full-width.pos-fixed.text-center.full-height.j-checkout-wrapper.hide-display{style: "top:0;left:0;z-index:10000000;background-color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0.6);"}
   %span.white-fg.weight600.inline-block.font-bit-large.mtop100.padding15.pbottom0{style: "border-bottom: 1px solid white;"} Please wait while the request is being processed. Do not press back or refresh button.
-.container.ptop50.mob-ptop100.padding0.min-height1000
-  .col-xs-12.col-sm-offset-2.col-sm-8.padding10#toggleGroup
-    .col-xs-12.col-md-12.padding0.mtop10
-      = render partial: "cocotransfers/showcase_details", locals: {showcase: @cocotransfer.showcase, cocotransfer: @cocotransfer}
-    .col-xs-12.col-sm-12.padding0.ptop10
-      #error.col-xs-12.col-sm-12.text-danger.bg-white{style: "font-weight: bold; margin-left: 5px;"}
-    .col-xs-12.col-sm-12.mtop10.padding0
-      .full-width.light-border.mbottom15.padding10.pull-left.pon{"data-toggle":"collapse", "data-target":"#edit_details", "data-parent":"#myGroup"}
-        Contributer Details
-        %span.pull-right
-          %i.fa.fa-chevron-down
-      #edit_details.collapse
-        = render partial: "cocotransfers/form", locals: {cocotransfer: @cocotransfer,  remote: true, submit_name: "Continue"}
-    .col-xs-12.col-md-12.mtop20.padding0
-      .full-width.light-border.mbottom10.padding10.pull-left.pon{"data-toggle":"collapse", "data-target":"#payment_details", "data-parent":"#myGroup"}
-        Payment Details
-        %span.pull-right
-          %i.fa.fa-chevron-down
-      .full-width.pull-left.payment-citrus-errors.mbottom10.heart-red-fg
-        %span.block-display.error-cvv
-        %span.block-display.error-number
-        %span.block-display.error-expiry
-      #payment_details.collapse.in
-        = hidden_field_tag :amount, "", id: "amount"
-        = hidden_field_tag :coco_transaction_id, "",  id: "merchantTxnId"
-        = hidden_field_tag :signature, "", id: "requestSignature"
-        = hidden_field_tag :vanityUrl, "cococitiospvtltd", id: "vanityUrl"
-        = hidden_field_tag :notify_url, "",  id: "notifyUrl"
-        = hidden_field_tag :return_url, "",  id: "returnUrl"
-        = hidden_field_tag :merchantAccessKey,"#{CITRUS_CONFIG[:merchant_access_key]}", id: "merchantAccessKey"
-        = hidden_field_tag :email, @cocotransfer.email, id:"email"
-        = hidden_field_tag :phone, @cocotransfer.phone, id:"mobileNo"
-        %input#mode{type: "hidden", value: "dropOut"}
-        %ul.nav.nav-tabs
-          %li.active
-            %a{"data-toggle" => "tab", :href => "#credit_card"} Card
-          %li
-            %a{"data-toggle" => "tab", :href => "#net_banking"} Net Banking
-        .tab-content.ptop10
-          #credit_card.tab-pane.fade.in.active
-            %input{style: "display:none"}/
-            %input{style: "display:none", type: "password"}/
-            .col-md-12.mtop10.no-mar-pad
-              %label.col-md-3 Card Type*
-              .col-md-4
-                %select.coco-select-box#cardType
-                  %option{:selected => "selected", :value => "credit"} Credit
-                  %option{:value => "debit"} Debit
-            .col-md-12.mtop10.no-mar-pad
-              %label.col-md-3 Card Number*
-              .col-md-9
-                #cardNumber
-            .col-md-12.mtop10.no-mar-pad
-              %label.col-md-3 Expiry*
-              .col-md-3
-                #expiry
-              %label.col-md-3.mob-mtop10{style: "text-align: right;"} CVV/CVC*
-              .col-md-3
-                #cvv
-            .col-md-12.mtop10.no-mar-pad
-              %label.col-md-3 Card Holder Name*
-              .col-md-9
-                %input.form-control#cardHolderName{type: "text", autocomplete: "false"}
-            .col-md-12.text-center.mtop10{style: "font-size: 10px;"}
-              By continuing, you agree to the Terms and Policies of Cocociti.
-            .col-md-12.text-center
-              %input.btn.btn-md.cc-dark-bg.white-fg.border2.mtop10#cardPayButton{type: "button", value: "Pay Now"}
-            .col-md-12.pbottom50.mtop20.mleft20.text-center.hidden-xs
-              %span.inline-block.cards-sprite
-          #net_banking.tab-pane.fade
-            .col-md-12.mtop10.no-mar-pad
-              .col-md-3
-                %label Select Your Bank*
-              .col-md-6
-                %select.coco-select-box#netbankingBanks.form-control.select-another
-                  %option{:value => ""} Select Another Bank
-            .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
-              By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
-            .col-md-12.text-center.pbottom50
-              %input.btn.btn-md.cc-dark-bg.white-fg.mtop10#netbankingButton{type: "button", value: "Pay Now"}
+.container-fluid.bg-light-grey.padding0.min-height1000
+  .container.ptop50.mob-ptop100.padding0
+    .col-xs-12.col-sm-6.col-sm-offset-3.min-height0.bg-white.j-chng-confirm.bg-shad.hide-display.padding15.mtop50
+      %h4.text-center.cc-dark-fg-border.cc-dark-fg.border2.padding10
+        %i.fa.fa-bullhorn
+        &nbsp;You have changed the following fields. Are to sure to proceed?
+      .col-xs-6.col-sm-6.text-right.mtop10.j-cnf-wrap.j-cnf-label-amount.hide-display
+        %i.fa.fa-chevron-right
+        Amount
+      .col-xs-6.col-sm-6.j-cnf-amount.mtop10.j-cnf-wrap.hide-display
+        %i.fa.fa-inr&nbsp;
+      .col-xs-6.col-sm-6.text-right.mtop5.j-cnf-wrap.j-cnf-label-email.hide-display
+        %i.fa.fa-chevron-right
+        Email
+      .col-xs-6.col-sm-6.j-cnf-email.mtop5.j-cnf-wrap.hide-display
+      .col-xs-6.col-sm-6.text-right.mtop5.j-cnf-wrap.j-cnf-label-donor_name.hide-display
+        %i.fa.fa-chevron-right
+        Name
+      .col-xs-6.col-sm-6.j-cnf-donor_name.mtop5.j-cnf-wrap.hide-display
+      .col-xs-6.col-sm-6.text-right.mtop5.j-cnf-wrap.j-cnf-label-hide_identity.hide-display
+        %i.fa.fa-chevron-right
+        Stay anonymous
+      .col-xs-6.col-sm-6.j-cnf-hide_identity.mtop5.j-cnf-wrap.hide-display
+      .col-xs-6.col-sm-6.text-right.mtop5.j-cnf-wrap.j-cnf-label-phonecode.hide-display
+        %i.fa.fa-chevron-right
+        Phonecode
+      .col-xs-6.col-sm-6.j-cnf-phonecode.mtop5.j-cnf-wrap.hide-display
+      .col-xs-6.col-sm-6.text-right.mtop5.j-cnf-wrap.j-cnf-label-phone.hide-display
+        %i.fa.fa-chevron-right
+        Mobile
+      .col-xs-6.col-sm-6.j-cnf-phone.mtop5.j-cnf-wrap.hide-display
+      .col-xs-12.col-sm-12.mtop20.text-center
+        .btn.btn-md.cc-dark-bg.white-fg.pon.j-cnf-submit
+          Confirm
+    .col-xs-12.col-sm-offset-2.col-sm-8.padding10#toggleGroup
+      .col-xs-12.col-md-12.padding0.mtop10
+        = render partial: "cocotransfers/showcase_details", locals: {showcase: @cocotransfer.showcase, cocotransfer: @cocotransfer}
+      .col-xs-12.col-sm-12.padding0.ptop10.min-height0
+        #error.full-width.pull-left.text-danger.bg-white{style: "font-weight: bold; margin-left: 5px;"}
+      .col-xs-12.col-sm-12.mtop10.padding0.bg-white
+        .full-width.light-border.padding10.pull-left.pon.weight600{"data-toggle": "collapse", "data-target": "#edit_details", "data-parent": "#myGroup"}
+          Contributer Details
+          %span.pull-right
+            %i.fa.fa-chevron-down
+        #edit_details.collapse
+          = render partial: "cocotransfers/form", locals: {cocotransfer: @cocotransfer,  remote: true, submit_name: "Continue"}
+      .col-xs-12.col-md-12.mtop20.padding0.bg-white
+        .full-width.light-border.padding10.pull-left.pon.weight600{"data-toggle":"collapse", "data-target":"#payment_details", "data-parent":"#myGroup"}
+          Payment Details
+          %span.pull-right
+            %i.fa.fa-chevron-down
+        #payment_details.collapse.in
+          .full-width.pull-left.payment-citrus-errors.heart-red-fg.ptop5
+            %span.block-display.error-cvv.pleft-10
+            %span.block-display.error-number.pleft-10
+            %span.block-display.error-expiry.pleft-10
+          = hidden_field_tag :amount, "", id: "amount"
+          = hidden_field_tag :coco_transaction_id, "",  id: "merchantTxnId"
+          = hidden_field_tag :signature, "", id: "requestSignature"
+          = hidden_field_tag :vanityUrl, "cococitiospvtltd", id: "vanityUrl"
+          = hidden_field_tag :notify_url, "",  id: "notifyUrl"
+          = hidden_field_tag :return_url, "",  id: "returnUrl"
+          = hidden_field_tag :merchantAccessKey,"#{CITRUS_CONFIG[:merchant_access_key]}", id: "merchantAccessKey"
+          = hidden_field_tag :email, @cocotransfer.email, id:"email"
+          = hidden_field_tag :phone, @cocotransfer.phone, id:"mobileNo"
+          %input#mode{type: "hidden", value: "dropOut"}
+          %ul.nav.nav-tabs.pleft15.pull-left.full-width.mtop10.mbottom10
+            %li.active
+              %a{"data-toggle" => "tab", :href => "#credit_card"} Card
+            %li
+              %a{"data-toggle" => "tab", :href => "#net_banking"} Net Banking
+          .tab-content.ptop10
+            #credit_card.tab-pane.fade.in.active.padding15
+              %input{style: "display:none"}/
+              %input{style: "display:none", type: "password"}/
+              .col-md-12.mtop10.no-mar-pad
+                %label.col-md-3 Card Type*
+                .col-md-4
+                  %select.coco-select-box#cardType
+                    %option{:selected => "selected", :value => "credit"} Credit
+                    %option{:value => "debit"} Debit
+              .col-md-12.mtop10.no-mar-pad
+                %label.col-md-3 Card Number*
+                .col-md-9
+                  #cardNumber
+              .col-md-12.mtop10.no-mar-pad
+                %label.col-md-3 Expiry*
+                .col-md-3
+                  #expiry
+                %label.col-md-3.mob-mtop10{style: "text-align: right;"} CVV/CVC*
+                .col-md-3
+                  #cvv
+              .col-md-12.mtop10.no-mar-pad
+                %label.col-md-3 Card Holder Name*
+                .col-md-9
+                  %input.form-control#cardHolderName{type: "text", autocomplete: "false"}
+              .col-md-12.text-center.mtop10{style: "font-size: 10px;"}
+                By continuing, you agree to the Terms and Policies of Cocociti.
+              .col-md-12.text-center
+                %input.btn.btn-md.cc-dark-bg.white-fg.border2.mtop10#cardPayButton{type: "button", value: "Pay Now"}
+              .col-md-12.pbottom50.mtop20.mleft20.text-center.hidden-xs
+                %span.inline-block.cards-sprite
+            #net_banking.tab-pane.fade.padding15
+              .col-md-12.mtop10.no-mar-pad
+                .col-md-3
+                  %label Select Your Bank*
+                .col-md-6
+                  %select.coco-select-box#netbankingBanks.form-control.select-another
+                    %option{:value => ""} Select Another Bank
+              .col-md-12.text-center.mtop20{style: "font-size: 10px;"}
+                By continuing, you agree to the Terms and Policies of Cocociti & Product Owner.
+              .col-md-12.text-center.pbottom50
+                %input.btn.btn-md.cc-dark-bg.white-fg.mtop10#netbankingButton{type: "button", value: "Pay Now"}
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
@@ -98,11 +131,8 @@
         },
         function (err, pgSettingData) {
           if(err){
-          console.log('got error while calling getPaymentDetails',err);
-          return;
+            return;
           }else{
-          console.log("success");
-          console.log(pgSettingData);
           }
           pgSettingData.netBanking.forEach(function (bank) {
           $('#netbankingBanks').append($("<option />").val(bank.issuerCode).text(bank.bankName));
@@ -140,7 +170,7 @@
         $("#requestSignature").val(data.security_signature);
         $("#returnUrl").val(data.return_url);
         $("#notifyUrl").val(data.return_url);
-        $("#email").val(cocotransfer.email);
+        $("#email").val(data.cocotransfer.email);
       }
       citrus.registerHandlers("errorHandler", function (error) {
         enablePaymentButtons();
@@ -154,7 +184,7 @@
         enablePaymentButtons();
       });
 
-      citrus.registerHandlers.apply("validationHandler", function (hostedField,cardValidationResult) {
+      citrus.registerHandlers("validationHandler", function (hostedField,cardValidationResult) {
         if(cardValidationResult.isValid){
           $(hostedField.selector).css("border", "1px solid #ccc");
           $(".payment-citrus-errors .error-"+hostedField.fieldType).html("");
@@ -162,12 +192,6 @@
           $(hostedField.selector).css("border", "1px solid red");
           $(".payment-citrus-errors .error-"+hostedField.fieldType).html(cardValidationResult.txMsg);
         }
-        //if($(".payment-citrus-errors .error-cvv").html() == "" && $(".payment-citrus-errors .error-expiry").html() == "" && $(".payment-citrus-errors .error-number").html() == ""){
-        //  var result = true;
-        //}else{
-        //  var result = false
-        //}
-        //return result;
       });
 
       $(function(){
@@ -199,10 +223,6 @@
           }
         });
       });
-
-      $('#cocotranfer_form').on('ajax:before', function(){
-        disablePaymentButtons();
-      })
 
       $('#cocotranfer_form').on('ajax:success',
         function(e, data, status, xhr){
@@ -240,6 +260,27 @@
         citrus.payment.makePayment(data);
       }
 
+      $("html,body").click(function(e){
+        var container_1 = $(".j-chng-confirm")
+        if (!container_1.is(e.target) // if the target of the click isn't the container...
+            && container_1.has(e.target).length === 0) // ... nor a descendant of the container
+        {
+          if($("#cont-wrapper").find(".j-chng-confirm").length > 0){
+            $("#cont-wrapper").modal("hide");
+            $(".j-cnf-wrap").hide();
+          }
+        }
+      });
+
+      $(document).on("click", ".j-cnf-submit", function(){
+        $(".j-chng-confirm").hide();
+        if($(this).data("payment-type") == "netbanking"){
+          processNetBanking();
+        }else{
+          processCardPayment();
+        }
+      })
+
       function reloadPaymentDataFromServer(payType){
         var paymentType = payType;
         clear_payment_data();
@@ -248,13 +289,31 @@
           url: "/cocotransfers/get_payment_details",
           data: $("#cocotranfer_form").serialize(),
           success: function(data) {
-            if(data.success ){
-              //console.log(data);
+            if(data.success){
+              console.log(data);
               replace_html(data);
-              if (paymentType == "netbanking"){
-                processNetBanking();
+              if(data.changed){
+                $(".j-cnf-submit").attr("data-payment-type", paymentType);
+                $.each(data.changed_attributes, function(){
+                  var attr = this;
+                  $(".j-cnf-label-"+attr).show();
+                  if(attr == 'hide_identity'){
+                    $(".j-cnf-"+attr).text($("#cocotransfer_"+attr).is(":checked") ? 'Yes' : 'No').show();
+                  }else{
+                    $(".j-cnf-"+attr).text($("#cocotransfer_"+attr).val()).show();
+                  }
+                });
+                if($("#cont-wrapper").find(".j-chng-confirm").length == 0){
+                  $(".j-chng-confirm").appendTo("#cont-wrapper");
+                }
+                $(".j-chng-confirm").show();
+                $("#cont-wrapper").modal("show");
               }else{
-                processCardPayment();
+                if(paymentType == "netbanking"){
+                  processNetBanking();
+                }else{
+                  processCardPayment();
+                }
               }
             }else{
               $("#error").html(data.error_messages).show();

@@ -134,9 +134,6 @@ class Showcase < ApplicationRecord
   end
 
   def can_accept_gift?
-    puts "***************************"
-    puts "#{!self.is_admin_disabled?} && ((#{self.is_for_raising_fund?} && #{!self.campaign_ended?}) || #{self.is_wishpay?} )"
-     puts "***************************"
     !self.is_admin_disabled? && ((self.is_for_raising_fund? && !self.campaign_ended?) || self.is_wishpay? )
   end
 
@@ -214,14 +211,14 @@ class Showcase < ApplicationRecord
 
   # def set_wishpay_fields
   #   if is_for_raising_fund?
-  #     self.wishpay_status = WISHPAY_STATUS[0] 
+  #     self.wishpay_status = WISHPAY_STATUS[0]
   #     self.projected_amount = nil
   #   end
   # end
 
   # def set_crowdfunding_fields
   #   if new_record && is_for_raising_fund?
-  #     self.wishpay_status = WISHPAY_STATUS[0] 
+  #     self.wishpay_status = WISHPAY_STATUS[0]
   #     self.projected_amount = nil
   #   end
   # end

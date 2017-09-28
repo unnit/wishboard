@@ -128,32 +128,6 @@
             = f.text_field :amount, name: 'amount', value: showcase.default_gift_amount.to_i,  placeholder: "", class: "form-control cc-dark-fg-border pleft20", style: "background-color: transparent;"
           .col-xs-4.col-sm-4.pright0
             = f.submit "Gift", class: "btn cc-dark-bg white-fg full-width"
-- elsif showcase.is_wishpay?
-  .col-xs-12.col-sm-12.padding10.text-center{style: "background-color: #fffcf3;"}
-    %i.fa.fa-gift{style: "font-size: 40px;color: #ffb900;border: 1px solid #ffb900;border-radius: 30px;padding: 7px 10px;"}
-    -if showcase.can_be_fullfilled_at_once?
-      = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
-        = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
-        = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
-        = f.hidden_field :gift_type, value: "fullfill", name: 'gift_type'
-        .col-xs-6.col-sm-6{style: "margin-top: -40px;"}
-          = f.submit "Fullfill", class: "btn btn-sm cc-dark-fg-border transa cc-dark-fg", style: "background-color: transparent;width: 77.38px;"
-          -# .amount_detail.extra-small-font
-          -#   %i.fa.fa-inr.grey-fg
-          -#   = showcase.fullfillment_at_once_amount
-    = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
-      = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
-      = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
-      .col-xs-6.col-sm-6.pull-right{style: "margin-top: -40px;"}
-        = f.submit "Contribute", class: "btn btn-sm cc-dark-fg-border cc-dark-fg", style: "background-color: transparent;"
-        -# .amount_detail.extra-small-font
-        -#   approximately
-        -#   %i.fa.fa-inr.grey-fg
-        -#   = showcase.min_gift_amount_allowed
-        -#   To
-        -#   %i.fa.fa-inr.grey-fg
-        -#   = showcase.max_gift_amount_allowed
-
 .col-xs-12.col-sm-12.border-two.padding10.bg-white.h40
   - if current_user
     .col-xs-2.col-sm-2.pleft0.pright0
@@ -184,7 +158,7 @@
       - if showcase.owner?(current_user)
         - if (!showcase.showpiece? && !showcase.achieved?)
           = link_to fullfillment_form_showcase_path(showcase), method: :post, remote: true, class: "grey-fg" do
-            %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2
+            %i.fa.fa-check-square-o.pull-left.font-bit-large.mtop2{title: "Mark as Completed", "data-toggle" => "tooltip", "data-placement" => "auto"}
             %span.pull-left.font12.mtop2.grey-fg.mright10 Mark as completed?
         - elsif showcase.backstory_possible?
           = link_to backstory_form_showcase_path(showcase), method: :post, remote: true, class: "grey-fg" do
@@ -210,13 +184,38 @@
     - else
       = link_to authenticate_path, class: "j-loader-trigger-link" do
         %span.pon.grey-fg.pull-left.pright5
-          %i.fa.fa-clone.pull-left.mtop2
-          %span.font12.grey-fg.pull-left.mtop2 Wish?
+          %i.fa.fa-clone.pull-left.mtop2{title: "Wish"}
+          /%span.font12.grey-fg.pull-left.mtop2 Wish?
         .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
           = showcase.children.count
         %span.pon.grey-fg.pull-left.pleft-10
           %i.fa.fa-check-square-o.pull-left.font17.mtop2
           %span.font12.grey-fg.pull-left.mtop2 Done?
+    - if showcase.is_wishpay?
+      %i.fa.fa-gift.pull-left.mleft5.font-bit-large.grey-fg.mtop2.j-wishpay-open.pon{style: "/*color: #ffb900;border: 1px solid #ffb900;border-radius: 30px;padding: 4px 5px;*/"}
+      .col-xs-12.col-sm-12.pos-absolute.hide-display.j-wishpay-wrap.bg-white.ptop10.pbottom10.btn-shadow{style: "top: -55px;right: 5px;border-radius: 35px;"}
+        -if showcase.can_be_fullfilled_at_once?
+          = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), html: {class: "inline-block"}, method: :get do |f|
+            = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
+            = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
+            = f.hidden_field :gift_type, value: "fullfill", name: 'gift_type'
+            .inline-block
+              = f.submit "Fullfill", class: "btn btn-sm cc-dark-fg-border transa cc-dark-fg", style: "background-color: transparent;width: 77.38px;border-radius: 16px;"
+              -# .amount_detail.extra-small-font
+              -#   %i.fa.fa-inr.grey-fg
+              -#   = showcase.fullfillment_at_once_amount
+        = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), html: {class: "inline-block"}, method: :get do |f|
+          = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
+          = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
+          .inline-block
+            = f.submit "Contribute", class: "btn btn-sm cc-dark-fg-border cc-dark-fg", style: "background-color: transparent;border-radius: 16px;"
+            -# .amount_detail.extra-small-font
+            -#   approximately
+            -#   %i.fa.fa-inr.grey-fg
+            -#   = showcase.min_gift_amount_allowed
+            -#   To
+            -#   %i.fa.fa-inr.grey-fg
+            -#   = showcase.max_gift_amount_allowed
   .col-xs-2.col-sm-2.pright0.pleft5
     - if current_user && showcase.owner?(current_user)
       = link_to slug_showcase_path(showcase.slug, showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do

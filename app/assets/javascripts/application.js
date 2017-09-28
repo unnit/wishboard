@@ -644,6 +644,21 @@ $(document).ready(function(){
       $(".option-showcase").hide();
     }
   });
+  //Wishpay option
+  $(document).on("click", ".j-wishpay-open", function(){
+    $(this).closest(".showcase-ps-wrapper").find(".j-wishpay-wrap").show();
+    $(".j-wishpay-wrap").not($(this).closest(".showcase-ps-wrapper").find(".j-wishpay-wrap")).each(function(){
+      $(this).hide();
+    });
+  })
+  $("html,body").click(function(e){
+    var container = $(".j-wishpay-wrap")
+    if (!container.is(e.target) // if the target of the click isn't the container...
+      && container.has(e.target).length === 0) // ... nor a descendant of the container
+    {
+      $(".j-wishpay-wrap").hide();
+    }
+  });
   // Edit photo in profile page
   $(document).on("mouseover", ".main-prof-pic,#edit-prof-pic", function(){
     $("#edit-prof-pic").show();

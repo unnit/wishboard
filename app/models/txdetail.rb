@@ -2,7 +2,7 @@ class Txdetail < ApplicationRecord
 	belongs_to :cocotransfer
 	belongs_to :user
 	
-	CITRUS_PAYMENT_MODES = [ ["DEBIT_CARD", 0], ["CREDIT_CARD", 1] , ["NETBANKING", 2]]
+	CITRUS_PAYMENT_MODES = [ ["DEBIT_CARD", 0], ["CREDIT_CARD", 1] , ["NET_BANKING", 2]]
 	scope :success, -> {where tx_status: "SUCCESS"}
 
 	def debited_through

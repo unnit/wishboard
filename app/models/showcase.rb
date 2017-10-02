@@ -95,6 +95,7 @@ class Showcase < ApplicationRecord
   validate :accept_only_one_type_of_payment
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
   validate :date_range_for_target_date, unless: :target_date_blank?
+  validate :mobile_verifictaion
 
   scope :momentary, -> {user_created.where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
   scope :wishes, -> {user_created.where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
@@ -120,6 +121,12 @@ class Showcase < ApplicationRecord
     showcase_type: "Wish Type",
     wish_prefix: "Wish Category"
   }
+
+  def mobile_verifictaion
+    if self.is_for_raising_fund? && !self.user.try(:profile).try(:mobile_verified)
+       errors.add(:user, "Mobile not verified")
+     end
+  end
 
   def can_be_fullfilled_at_once?
     self.projected_amount.present? && self.projected_amount > 0 && self.raised_amount == 0
@@ -248,7 +255,7 @@ class Showcase < ApplicationRecord
   end
 
   def is_for_raising_fund?
-    self.accept_fund && self.accept_fund == true
+    return self.accept_fund && self.accept_fund == true
   end
 
   def is_goal_amount_not_blank?

@@ -2,7 +2,7 @@
   -name = @cocotransfer.receiver.name ? @cocotransfer.receiver.name : "Cocociti User"
   Dear #{name},
 %span{style: "font-size:14px;float:left;margin-bottom:5px;width:100%;"}
-  You've got fresh funds gifted by #{@cocotransfer.display_donor_name}! Your Cocociti account  has been credited with Rs #{@cocotransfer.amount}
+  You've got fresh funds gifted by #{@cocotransfer.display_donor_name}! Your Cocociti account  has been credited with Rs #{@cocotransfer.total_amount}
 %span{style: "font-size:14px;float:left;margin-bottom:5px;width:100%;"}
   -if @cocotransfer.showcase_transfer?
     = link_to "Cick here", slug_showcase_url(@cocotransfer.transferable.slug, @cocotransfer.transferable)

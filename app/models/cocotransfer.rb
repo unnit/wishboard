@@ -350,13 +350,16 @@ class Cocotransfer < ApplicationRecord
 
   def debited_through
     if self.is_only_wallet?
-      return "Profile Money"
+      return "Cocociti balance"
     elsif self.is_only_online?
       return self.success_txdetail.try(:debited_through).to_s
     elsif self.is_coin_converted?
        return "Coins"
     elsif self.wallet_amount > 0
-       "wallet + other options"
+        bank_credited_through = self.success_txdetail.try(:debited_through).to_s
+       "Cocociti balance + #{bank_credited_through}"
+    else
+       "--"
     end
   end
 

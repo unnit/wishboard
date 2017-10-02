@@ -2,7 +2,7 @@
   -name = @cocotransfer.donor_name ? @cocotransfer.donor_name : "Cocociti User"
   Dear #{name},
 %span{style: "font-size:14px;float:left;margin-bottom:10px;width:100%;"}
-  Your Gift of Rs. #{@cocotransfer.amount} for #{@cocotransfer.showcase.title} by #{@cocotransfer.showcase.user.name} was successful.
+  Your Gift of Rs. #{@cocotransfer.total_amount} for #{@cocotransfer.showcase.title} by #{@cocotransfer.showcase.user.name} was successful.
   Transaction ID is #{@cocotransfer.txnid}
 %span{style: "font-size:14px;float:left;margin-bottom:10px;width:100%;"}
   Thank you for using Cocociti.

@@ -196,9 +196,9 @@ class Cocotransfer < ApplicationRecord
   def paid_callbacks!
     create_invoice
     FundreceivedNotification.create(user_id: self.receiver.try(:id), cocotransfer: self )
-    # inform_success_to_donor
-    # inform_success_to_receiver
-    # inform_success_admin
+    inform_success_to_donor
+    inform_success_to_receiver
+    inform_success_admin
     CocotransferMailer.success_inovoice(self, self.email).deliver_now
     CocotransferMailer.fund_reception_owner(self, self.receiver.email).deliver_now
   end

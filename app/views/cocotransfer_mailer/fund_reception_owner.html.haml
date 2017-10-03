@@ -25,13 +25,16 @@
                       / Header
                       %table{bgcolor: "#ffffff", border: "0", cellpadding: "0", cellspacing: "0", style: "border-spacing:0;border-collapse:collapse;", width: "100%"}
                         %tr
-                          %td{align: "left", style: "border-collapse:collapse; padding:16px 32px;", valign: "middle"}
+                          %td{align: "left", style: "border-collapse:collapse; padding:16px 15px;", valign: "middle"}
                             %table{bgcolor: "#ffffff", border: "0", cellpadding: "0", cellspacing: "0", style: "border-spacing:0;border-collapse:collapse", width: "100%"}
                               %tr
                                 / Pe Icon
-                                %td{align: "left", style: "padding: 0;text-align:left;border-collapse:collapse;", valign: "middle", width: "40"}
-                                  %a{href: "", style: "text-decoration:none;color:#ffffff;outline:0;outline:none;border:0;border:none;", target: "_blank"}
-                                    = image_tag("#{root_url}emails/coco-logo.png", alt: "Cocociti",align: "middle", border: "0", style: "margin:auto;text-align:center;border:0;outline:none;text-decoration:none;min-height:40px;", width: "40" )
+                                %td{align: "left", style: "padding: 0;text-align:left;border-collapse:collapse;", valign: "middle"}
+                                  .header{style: "height: 70px;position:relative;top: 0;width: 100%;float:left;background-color:white;"}
+                                    .logo{style: "padding: 10px;padding-left:0px;;margin-left: 0px;"}
+                                      = link_to root_url, style: "text-decoration: none;" do
+                                        = image_tag("#{'https://www.cocociti.com/'}emails/coco-logo.png", alt: "", style: "float: left;")
+                                        %span{style: "color: #732db0;font-size: 22px;float: left;margin-top: 10px;margin-left: 5px;"} Cocociti
                                 / End of Pe Icon
                                 %td{align: "left", style: "border-collapse:collapse;", valign: "middle", width: "16"}  
                                 / Date / Time
@@ -44,19 +47,28 @@
                   %tr
                     %td{style: "border-collapse:collapse;padding:0 16px"}
                       / Transaction Details
-                      %table{align: "center", border: "0", cellpadding: "0", cellspacing: "0", style: "background:#f7f9fa;padding:16px;border-radius:8px;-moz-border-radius:8px;-ms-border-radius:8px;-o-border-radius:8px;-webkit-border-radius:8px;overflow:hidden;", width: "100%"}
+                      %table{align: "center", border: "0", cellpadding: "0", cellspacing: "0", style: "background:#ffffff;padding:16px;border-radius:8px;-moz-border-radius:8px;-ms-border-radius:8px;-o-border-radius:8px;-webkit-border-radius:8px;overflow:hidden;", width: "100%"}
                         / User name / Amount
                         %tr
-                          %td{align: "left", style: "border-collapse:collapse;padding-bottom:16px;border-bottom:1px solid #eaeaed;", valign: "middle"}
+                          %td{align: "left", style: "border-collapse:collapse;padding-bottom:16px;", valign: "middle"}
                             %table{align: "center", border: "0", cellpadding: "0", cellspacing: "0", width: "100%"}
                               %tr
-                                %td{align: "left", style: "border-collapse:collapse;text-transform:capitalize;", valign: "top"}
-                                  %span{style: "border-collapse:collapse;width:100%;text-wrap:normal;display:block;"} Paid By
-                                  %span{style: "border-collapse:collapse;font-size:16px;font-weight:500;width:100%;text-wrap:normal;display:block"}
+                                %td{align: "left", style: "border-collapse:collapse;text-transform:capitalize;margin-top:5px;", valign: "top"}
+                                  %span{style: "font-size: 11px;border-collapse:collapse;width:100%;text-wrap:normal;display:block; margin-top: 5px;"} Gifted By
+                                  %span{style: "border-collapse:collapse;font-size:16px;font-weight:500;width:100%;text-wrap:normal;display:block; margin-top: 8px;"}
                                     #{ @cocotransfer.display_donor_name}
+                                  -if @cocotransfer.display_profile_name
+                                    %span{style: "border-collapse:collapse;font-size:14px;font-weight:500;width:100%;text-wrap:normal;display:block"}
+                                      (@#{ @cocotransfer.display_profile_name})
                                 %td{align: "left", style: "border-collapse:collapse;", valign: "middle", width: "32"}
-                                %td{align: "right", style: "border-collapse:collapse;font-size:20px;font-weight:500;", valign: "middle"}
-                                  ₹ #{@cocotransfer.total_amount}
+                                %td{align: "right", style: "border-collapse:collapse;font-size:30px;font-weight:500; margin-top:5px;", valign: "middle"}
+                                  %div{style: "text-align:center;float: right!important;"}
+                                    %div
+                                      ₹ #{@cocotransfer.total_amount}
+                                    %div
+                                      %a{href: "#{wallet_url}", style: "position: relative;margin-top: 0px;"}
+                                        %button{style: "color: #732db0 !important; background-color: #ffffff; display: inline-block; padding: 6px 12px; margin-top:5px; margin-bottom: 0; font-size: 14px; font-weight: 400;  text-align: center; white-space: nowrap; vertical-align: middle; -ms-touch-action: manipulation; touch-action: manipulation; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-image: none; border: 1px solid #732db0; border-radius: 42px;"}
+                                          Check Balance
                         / End of User name / Amount
                       / End of Transaction Details
                   / End of Transaction Wrapper Details
@@ -64,24 +76,23 @@
                   %tr{style: "border-bottom:0px solid #eaeaed;"}
                     %td{style: "border-collapse:collapse; padding:32px;background:#ffffff; font-family:'roboto',Arial, Helvetica, sans-serif;"}
                       %p{style: "padding:0;margin:0;"}
-                        Hello #{@cocotransfer.receiver.try(:name).try(:titelize)}
+                        Hello #{@cocotransfer.receiver.try(:name).try(:titleize)},
                         %br/
                         %br/
                         Is your Cocociti wishlist up to date?
                         %br/
                         %br/
-                        People like #{@cocotransfer.display_donor_name.try(:titelize)} and your well wishers go through your wishes before gifting you. Help them gift you better by constantly updating & sharing your wishes on Cocociti.
+                        Your well wishers go through your wishes before gifting you. Help them gift you better by constantly updating & sharing your wishes on Cocociti.
                         %br/
                         %br/
                         %span{style:"font-style: italic; font-family:'roboto',Arial, Helvetica, sans-serif;font-size:12px;"}
                           HINT: Create wishlists (folders) like Birthday, Travel, Wedding, Own etc for easy discovery.
                         %br/
-                  %tr
-                    %td{style: "border-collapse:collapse;background:#ffffff;font-family:'roboto',Arial, Helvetica, sans-serif;text-align:center;"}
-                      %span{style: "text-align:center; width: 100%;"}
-                        %a{href: "https://www.cocociti.com", style: "position: relative;margin-top: 0px;width: 150px;z-index: 1;"}
-                          %button{style: "color: #fff !important; background-color: #732db0; display: inline-block; padding: 10px 20px; margin-top:15px; margin-bottom: 0; font-size: 24px; font-weight: 600;  text-align: center; white-space: nowrap; vertical-align: middle; -ms-touch-action: manipulation; touch-action: manipulation; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-image: none; border: 1px solid #732db0; border-radius: 42px;"}
-                            Wish Now
+                      %div{style: "background:#ffffff;font-family:'roboto',Arial, Helvetica, sans-serif;text-align:center;"}
+                        %span{style: "text-align:center; width: 100%;"}
+                          %a{href: "#{root_url}", style: "position: relative;margin-top: 0px;width: 150px;z-index: 1;"}
+                            %button{style: "color: #fff !important; background-color: #732db0; display: inline-block; padding: 10px 20px; margin-top:15px; margin-bottom: 0; font-size: 24px; font-weight: 600;  text-align: center; white-space: nowrap; vertical-align: middle; -ms-touch-action: manipulation; touch-action: manipulation; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; background-image: none; border: 1px solid #732db0; border-radius: 42px;"}
+                              Wish Now
                   / End of Content
                   / Footer
                   %tr
@@ -95,7 +106,7 @@
                         / Links
                         %tr
                           %td{align: "left", style: "border-collapse:collapse;font-weight:normal;", valign: "middle"}
-                            %a{href: "https://www.cocociti.com", style: "color:#673ab7;font-size:12px;padding:4px;height:24px;display:inline-block;outline:0;outline:none;border:0;border:none;", target: "_blank"}
+                            %a{href: "#{root_url}", style: "color:#673ab7;font-size:12px;padding:4px;height:24px;display:inline-block;outline:0;outline:none;border:0;border:none;", target: "_blank"}
                               www.coccociti.com
                           %td{align: "left", style: "border-collapse:collapse;", valign: "middle", width: "16"}  
                           %td{align: "right", style: "border-collapse:collapse;", valign: "middle"}

@@ -141,6 +141,15 @@ class Cocotransfer < ApplicationRecord
     self.is_anonymous? ? "Anonymous" : self.donor_name
   end
 
+  def display_profile_name
+   if  !self.is_anonymous? && fullfillment_contributer && self.display_donor_name == fullfillment_contributer.try(:name).to_s
+       return fullfillment_contributer.try(:profile).try(:slug)
+   else
+     return nil
+   end
+  end
+
+
   def not_hiding_identity
    return self.hide_identity != true
   end

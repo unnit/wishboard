@@ -204,7 +204,7 @@ class Cocotransfer < ApplicationRecord
   end
 
   def sms_params
-   return {amount: self.amount, fundraiser_name: self.receiver.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase_title, txnid: self.txnid}
+   return {amount: self.amount, total_amount: self.total_amount, fundraiser_name: self.receiver.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase_title, txnid: self.txnid}
   end
 
   def inform_success_to_donor

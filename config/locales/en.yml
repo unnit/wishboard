@@ -23,12 +23,12 @@ en:
   sms:
     cocotransfer:
       success:
-        showcase_to_donor: "You've gifted Rs %{amount} to %{fundraiser_name}'s %{showcase_title} wish!\n Transaction ID is %{txnid}."
-        showcase_to_fundraiser: "You've got fresh funds gifted by %{donor_name}! Your account has been credited with Rs %{amount}"
-        showcase_to_cocomanager: "%{donor_name}! gifted Rs %{amount} to %{fundraiser_name}"
-        profile_to_donor: "You've gifted Rs %{amount} to %{fundraiser_name}'s %{showcase_title} wish!\n Transaction ID is %{txnid}."
-        profile_to_fundraiser: "You've got fresh funds gifted by %{donor_name}! Your account has been credited with Rs %{amount}"
-        profile_to_cocomanager: "%{donor_name}! gifted Rs %{amount} to %{fundraiser_name}"
+        showcase_to_donor: "You've gifted Rs %{total_amount} to %{fundraiser_name}'s %{showcase_title} wish!\n Transaction ID is %{txnid}."
+        showcase_to_fundraiser: "You've got fresh funds gifted by %{donor_name}! Your account has been credited with Rs %{total_amount}"
+        showcase_to_cocomanager: "%{donor_name}! gifted Rs %{total_amount} to %{fundraiser_name}"
+        profile_to_donor: "You've gifted Rs %{total_amount} to %{fundraiser_name}'s %{showcase_title} wish!\n Transaction ID is %{txnid}."
+        profile_to_fundraiser: "You've got fresh funds gifted by %{donor_name}! Your account has been credited with Rs %{total_amount}"
+        profile_to_cocomanager: "%{donor_name}! gifted Rs %{total_amount} to %{fundraiser_name}"
       failed:
         showcase_to_donor: "Sorry, Your payment failed. %{msg}. ID: %{txnid}"
         showcase_to_cocomanager: "%{showcase_title}- Payment failed %{msg}. Name: %{donor_name} ID: %{txnid}"

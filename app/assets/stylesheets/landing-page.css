@@ -2755,7 +2755,7 @@ th.headerSortDown {
   border: 0px;
 }
 .loader-in-showcase-button{
-  width: 80px;
+  width: 90px;
   height: 28px;
   border: none;
   background-color: #732db0;
@@ -2775,7 +2775,7 @@ th.headerSortDown {
   outline: none !important;
 }
 .loader-out-showcase-button{
-  width: 80px;
+  width: 90px;
   height: 28px;
   border-radius: 2px;
 }

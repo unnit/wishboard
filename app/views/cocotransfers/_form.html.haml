@@ -2,13 +2,46 @@
   / = hidden_field_tag :cocotransfer_id, cocotransfer.id, id: "cocotransfer_id"
   = form_for cocotransfer, remote: remote, html:{id: "cocotranfer_form"} do |f|
     = f.hidden_field :id, value: cocotransfer.id
-    = f.hidden_field :showcase_id, value: cocotransfer.showcase.id
+
+    = f.hidden_field :transferable_id, value: cocotransfer.transferable_id
+    = f.hidden_field :transferable_type, value: cocotransfer.transferable_type
+    = f.hidden_field :wallet_amount, value: cocotransfer.wallet_amount
+    = f.hidden_field :amount, value: cocotransfer.amount
+    = f.hidden_field :available_wallet_amount, value: current_user.try(:total_profile_withdraw_available_amount).to_i
+    - fullfillment_at_once_amount = cocotransfer.is_for_wishpay? ?  cocotransfer.transferable.fullfillment_at_once_amount.to_i : 0
+    = f.hidden_field :fullfillment_at_once_amount, value: fullfillment_at_once_amount
+
+    / = cocotransfer.wallet_amount + cocotransfer.amount
+    / = f.hidden_field :wallet_amount, value: cocotransfer.wallet_amount
+
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0
         %span Amount
         %i.fa.fa-inr
       .col-xs-12.col-sm-9.padding0
-        = f.text_field :amount, placeholder: "Gift amount", class: "form-control bg-white"
+        = f.number_field :total_amount, required: true, placeholder: "Gift amount", min: cocotransfer.transferable.try(:min_gift_amount_allowed).to_i, max: cocotransfer.transferable.try(:max_gift_amount_allowed).to_i,  class: "form-control bg-white"
+      -if cocotransfer.is_for_wishpay?
+        .col-xs-12.col-sm-offset-3.col-sm-12.padding0#diplay-gift-type
+          -if cocotransfer.is_wish_fullfillment?
+            You are fullfiling this wish
+          -else
+            You are contributing to this wish
+    .col-xs-12.col-sm-12.mbottom20.padding0
+      .col-xs-12.col-sm-3.pleft0
+        %span Use Wallet Amount
+      .col-xs-12.col-sm-9.padding0.font10.pleft0
+        = f.check_box :use_wallet_amount
+        %i.fa.fa-inr
+        %span#cocotransfer_wallet_amount_display
+          #{cocotransfer.wallet_amount} 
+    .col-xs-12.col-sm-12.mbottom20.padding0
+      .col-xs-12.col-sm-3.pleft0
+        %span Payble Amount
+      .col-xs-12.col-sm-9.padding0.font10.pleft0
+        %i.fa.fa-inr 
+        %span#cocotransfer_amount_display
+          #{@cocotransfer.amount} 
+
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0
         %span Email
@@ -35,4 +68,4 @@
       .col-xs-8.col-sm-6.pright0
         = f.text_field :phone, :placeholder => "Mobile No", class: "form-control user-mobile-no", maxlength: 10
     .col-xs-12.col-sm-12.text-center
-      = f.submit "#{submit_name}", class: "btn btn-md cc-dark-bg white-fg weight-bold"
+      = f.submit "#{submit_name}", class: "btn btn-md cc-dark-bg white-fg weight-bold", id: "gift-button"

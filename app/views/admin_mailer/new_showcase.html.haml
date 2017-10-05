@@ -7,6 +7,6 @@
   %br
   %br
   %br
-  = link_to "#{showcase_url(@showcase)}", style: "text-decoration: none" do
+  = link_to "#{slug_showcase_url(@showcase.slug, @showcase)}", style: "text-decoration: none" do
     %span{style: "padding: 15px;background-color: #05A665;color: white;font-size: 14px;"}
       View #{@showcase.title}

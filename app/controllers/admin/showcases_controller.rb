@@ -21,7 +21,7 @@ class Admin::ShowcasesController < AdminController
   end
 
   def index
-    @showcases = Showcase.where("admin_created = ?", true).order(created_at: :desc)
+    @showcases = Showcase.admin_created.order(created_at: :desc)
     @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(30)
     respond_to do |format|
       format.html

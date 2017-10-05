@@ -18,7 +18,7 @@
           Edit as Admin...
         = link_to admin_showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5" do
           Delete as Admin...
-      %span.embed-link.pon.full-width.grey-fg.pull-left.small.padding5{"data-url" => "#{showcase_url(showcase)}", "data-title" => "#{showcase.title}"}= showcase.wishlist? ? "Embed Wish".html_safe : "Embed Showpiece".html_safe
+      %span.embed-link.pon.full-width.grey-fg.pull-left.small.padding5{"data-url" => "#{slug_showcase_url(showcase.slug, showcase)}", "data-title" => "#{showcase.title}"}= showcase.wishlist? ? "Embed Wish".html_safe : "Embed Showpiece".html_safe
     %span.pos-absolute{style: "right: 5px;top: 25px;"}
       - if showcase.achieved?
         .achieved-wish-sprite
@@ -72,15 +72,15 @@
           .carousel-inner
             - if showcase.backstory_image.present? && showcase.showpiece?
               .item.active
-                = link_to showcase_path(showcase), remote: true do
+                = link_to slug_showcase_path(showcase.slug, showcase), remote: true do
                   = cl_image_tag showcase.backstory_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
             - if showcase.image.present?
               .item{class: "#{showcase.backstory_image.blank? || !showcase.showpiece? ? 'active' : '' }"}
-                = link_to showcase_path(showcase), remote: true do
+                = link_to slug_showcase_path(showcase.slug, showcase), remote: true do
                   = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
             - if showcase.fullfilled_image.present? && !showcase.showpiece? && showcase.achieved?
               .item{class: "#{showcase.image.blank? && !showcase.showpiece? ? 'active' : '' }"}
-                = link_to showcase_path(showcase), remote: true do
+                = link_to slug_showcase_path(showcase.slug, showcase), remote: true do
                   = cl_image_tag showcase.fullfilled_image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
     - else
       %div.full-width.text-center.light-border.border2{style: "padding: 100px 20px"}
@@ -155,12 +155,12 @@
               %span.font12.grey-fg.pull-left Done?
       .col-xs-2.col-sm-2.pright0.pleft5
         - if current_user && showcase.owner?(current_user)
-          = link_to showcase_path(showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
+          = link_to slug_showcase_path(showcase.slug, showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
             .fa.fa-folder-o.grey-fg.pull-right{title: "Arrange Showcase"}
     .col-xs-12.col-sm-12.no-mar-pad.min-height0{class: "user-comments-#{showcase.id}"}
       - if feed == "yes"
         - if showcase.comments.count > 4
-          = link_to showcase_path(showcase), target: "_blank", class: "padding10 pbottom0 font12", style: "text-decoration: underline;" do
+          = link_to slug_showcase_path(showcase.slug, showcase), target: "_blank", class: "padding10 pbottom0 font12", style: "text-decoration: underline;" do
             View #{showcase.comments.count - 4} more #{(showcase.comments.count - 4) > 1 ? 'comments' : 'comment'}
         - showcase.comments.order(:created_at).last(4).each do |comment|
           = render partial: "showcases/comment", locals: {comment: comment}
@@ -181,9 +181,9 @@
       .col-xs-12.col-sm-12.padding5
         .col-xs-12.col-sm-12.bg-light-grey.padding10.show-video-iframe{"data-video-frame-div": "#video-link-#{showcase.id}" }
           %i.fa.fa-play.font16
-          %a{target:'_blank', href:"#{showcase.video_link}", class: "cc-dark-fg txt-underline"}
+          %a{target:'_blank', href:"#{showcase.video_link}", class: "cc-dark-fg txt-underline url_preview"}
             #{showcase.video_link}
-          = link_preview_content(showcase.video_link).html_safe
+          / = link_preview_content(showcase.video_link).html_safe
         .embed-responsive.embed-responsive-16by9{id: "video-link-#{showcase.id}"}
           = showcase.video_iframe.html_safe
     - if showcase.is_only_accessible_with_link? && showcase.user == current_user
@@ -211,7 +211,8 @@
             Gifting ended
         - else
           = form_for @cocotransfer, url: new_cocotransfer_path(@cocotransfer), method: :get do |f|
-            = f.hidden_field :showcase_id, value: showcase.id, name: 'showcase_id'
+            = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
+            = f.hidden_field :transferable_type, value: 'Showcase', name: 'transferable_type'
             .col-xs-12.col-sm-12.mbottom10.padding0
               %i.fa.fa-inr.font-bit-large.grey-fg.pull-left.mtop10.mleft15{style: "margin-right: -25px;"}
               = f.text_field :amount, name: 'amount', value: showcase.default_gift_amount.to_i,  placeholder: "", class: "form-control bg-white cc-dark-fg-border pleft30"

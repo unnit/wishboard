@@ -36,7 +36,7 @@
           Confirm
     .col-xs-12.col-sm-offset-2.col-sm-8.padding10#toggleGroup
       .col-xs-12.col-md-12.padding0.mtop10
-        = render partial: "cocotransfers/showcase_details", locals: {showcase: @cocotransfer.showcase, cocotransfer: @cocotransfer}
+        = render partial: "cocotransfers/showcase_details", locals: {cocotransfer: @cocotransfer}
       .col-xs-12.col-sm-12.padding0.ptop10.min-height0
         #error.full-width.pull-left.text-danger.bg-white{style: "font-weight: bold; margin-left: 5px;"}
       .col-xs-12.col-sm-12.mtop10.padding0.bg-white
@@ -165,7 +165,8 @@
 
       function replace_html(data){
         $("#amount").val(data.cocotransfer.amount);
-        $(".cocotransfer_display_amount").html(data.cocotransfer.amount);
+        $(".cocotransfer_display_amount").html(data.total_amount);
+        $("#merchantTxnId").val(data.cocotransfer.txnid);
         $("#merchantTxnId").val(data.cocotransfer.txnid);
         $("#requestSignature").val(data.security_signature);
         $("#returnUrl").val(data.return_url);

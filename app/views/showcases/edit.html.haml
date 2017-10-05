@@ -67,4 +67,35 @@
           }
         });
       });
+
+      wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
+
+      function wishpayCrowdfundingToggle(elementselector){
+        $wrap = $(elementselector).closest(".create-showcase");
+        $raiseFundFields = $wrap.find('.raise-funds-fields');
+        $wishpayFields = $wrap.find('.wishpay-fields');
+        $acceptFund = $("#showcase_accept_fund")
+
+        if($(elementselector).is(":checked")){
+          $acceptFund.prop('checked', false).prop('disabled', true);
+          $wishpayFields.removeClass("hidden");
+          $raiseFundFields.addClass('hidden');
+        }else{
+          $wishpayFields.addClass("hidden");
+          if( $acceptFund.attr('backend_disbaled') == "true"){
+          }else{
+            $acceptFund.prop('disabled', false);
+          }
+          if($acceptFund.is(":checked")){
+            $raiseFundFields.removeClass('hidden');
+          }else{
+            $raiseFundFields.addClass('hidden');
+          }
+        }
+      }
+
+      $(document).on('change', "#edit_showcase_#{@showcase.id} #showcase_wishpay_status", function() {
+        wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
+      })
+
     })

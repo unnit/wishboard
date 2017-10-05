@@ -1,0 +1,29 @@
+= content_for :title do
+  -title = "Wish Settings - Cocociti"
+.container-fluid.bg-light-grey.ptop50.mob-ptop100.pbottom50
+  .container.mtop10.padding0
+    .row
+      = render partial: "profiles/settings_layout"
+      .col-md-9
+        .panel.panel-default#profile_form
+          .panel-heading
+            %h4.mtop-v-5 Wish Settings
+          .panel-body
+            .col-sm-12
+              = form_for current_user.profile, url: update_wish_settings_profiles_path do |f|
+                .form-group
+                  - Profile::WISHPAY_CONDITIONS.each do |condition|
+                    %label.col-sm-4.col-xs-10.control-label.no-mar-pad
+                      = condition[0]
+                    .col-xs-2.col-sm-8.mbottom10
+                      = f.radio_button :wishpay_condition, condition[1]
+                    .clearfix
+                .form-group
+                  .col-xs-12.col-sm-12.text-center
+                    = submit_tag "Save", class: "btn save-button mtop10 white-fg violet-bg border2 j-loader-trigger-link"
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      $(".wish-sett").addClass("active");
+    });

@@ -93,6 +93,14 @@
                     %label.col-sm-2.control-label{:for => "textinput"} About
                     .col-sm-10
                       = f.text_area :about, class: "form-control textarea", rows: 4, placeholder: "About You", maxlength: 250
+                  .form-group
+                    %label.col-sm-2.col-xs-10.control-label
+                      Enable ProfilePay
+                      %span.website-color *&nbsp;&nbsp;
+                    .col-xs-2.col-sm-2.padding-mob0
+                      %label.pull-left.raise-toggle-switch.pon.mtop10.mob-mtop0
+                        = f.check_box :enable_profilepay
+                        %div
                   .form-group.set-prof-pic
                     %label.col-sm-2.control-label{:for => "textinput"} Profile Pic
                     .col-sm-10

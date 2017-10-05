@@ -29,6 +29,12 @@
             .btn.grey-fg.prof-sett
               %span.glyphicon.glyphicon-cog.pull-left
       %li.hidden-xs-inline.pull-right
+        - if ((current_user && current_user != user) || !current_user)
+          .text-center.padding0
+            = link_to new_cocotransfer_path(Cocotransfer.new, transferable_id: user.id, transferable_type:"User"),  method: :get do
+              .btn.no-mar-pad.loader-out-follow-button.follow-button{class: 'cc-dark-fg-border', style: "line-height: 0px;"}
+                %button{class: "btn padding0 bg-white font-medium cc-dark-fg"}
+                  Gift
         - if current_user && current_user != user
           .text-center.padding0{class: "follow-set-#{user.id}"}
             = link_to user_toggle_follow_path(user), remote: true, method: :post do

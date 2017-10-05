@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-
+  get 'home/display_preview'
   resources :cocotransfers,only: [:create, :new, :update] do
     member do
       get :checkout
+      get :transfer_success
     end
     collection do
       patch :get_payment_details
@@ -83,6 +84,7 @@ Rails.application.routes.draw do
       post :update_business
       post :update_address
       patch :update_social
+      patch :update_wish_settings
       get :username_available
       get :verify_mobile
       patch :get_otp
@@ -93,6 +95,8 @@ Rails.application.routes.draw do
       get :unlock_coin_wish
       get :verify_profile
       get :unlock_crowd_funding
+      get :convert_to_profile_money_form
+      post :convert_to_profile_money
     end
     member do
       post :delete_withdraw_request
@@ -108,6 +112,7 @@ Rails.application.routes.draw do
   get "settings/password", to: "profiles#password"
   get "settings/social", to: "profiles#social"
   get "settings/addressbook", to: "profiles#addressbook"
+  get "settings/wish", to: "profiles#wish_settings"
   get "dashboard", to: "profiles#dashboard"
   get :about, to: "home#about"
   get :terms, to: "home#terms"
@@ -189,8 +194,10 @@ Rails.application.routes.draw do
       post :callback
     end
   end
+
   match "showcases/:id", to: "showcases#show", via: "get"
   get "wish/private/:access_token", to: "showcases#private_showcase"
+  get ':slug/wish/:id/' => 'showcases#show', as: :slug_showcase
   resources :showcases, path: "wish", only: [:edit, :create, :update, :destroy, :show] do
     member do
       post :wow

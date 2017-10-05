@@ -1,0 +1,39 @@
+= content_for :title do
+  - title = "Giftbox - Cocociti"
+.container-fluid.ptop50.mob-ptop100.pattern-bg.pleft0.pright0{style: "min-height: 700px;"}
+  .container.padding0.mtop20.pbottom70
+    = render "profiles/giftbox/overall_stats"
+    .col-xs-12.col-sm-6.mtop30
+      .col-xs-12.col-sm-12.padding15.bg-white{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);border-radius: 5px;"}
+        = render "profiles/giftbox/crowdfunding_withdraw_request"
+    .col-xs-12.col-sm-6.mtop30
+      .col-xs-12.col-sm-12.padding15.bg-white{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);border-radius: 5px;"}
+        = render "profiles/giftbox/crowdfunding_withdraw_history"
+    .col-xs-12.col-sm-6.mtop30
+      .col-xs-12.col-sm-12.padding15.bg-white{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);border-radius: 5px;"}
+        = render "profiles/giftbox/profile_withdraw_history"
+    .col-xs-12.col-sm-6.mtop30
+      .col-xs-12.col-sm-12.padding15.bg-white{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);border-radius: 5px;"}
+        = render "profiles/giftbox/profile_transfers_history"
+
+:css
+  .histroy-header{
+    color: #c7d5de;text-shadow: 0px 0px 1px #c7d5de;letter-spacing: 1px;
+  }
+
+= content_for :extra_js do
+  :javascript
+    $(".j-gp-section, .j-pft-section, .j-gpw-section, .j-pfw-section").mCustomScrollbar({setHeight: 240});
+    $(document).ready(function(){
+      function loadtransferForm(showcase_id){
+        $.ajax({
+          type: 'post',
+          url: "/profiles/send_to_bank_form",
+          data: {showcase_id: showcase_id},
+          success: function(data) {}
+        });
+      }
+      $(document).on("click", ".j-wdrw-btn", function(){
+        loadtransferForm($(this).attr('data-showcase-id'))
+      })
+    })

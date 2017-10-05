@@ -73,8 +73,9 @@ class ShowcasesController < ApplicationController
     end
     if @showcase.save
       flash[:notice] = "#{@showcase.title} updated."
-      redirect_to showcase_path(@showcase)
+      redirect_to slug_showcase_path(@showcase.slug, @showcase)
     else
+      @showcase.wishpay_status = Showcase.find_by_id(@showcase.id).try(:wishpay_status)
       @showcase.accept_fund = Showcase.find_by_id(@showcase.id).try(:accept_fund)
       flash[:alert] = @showcase.errors.full_messages.join(", ")
       render :edit
@@ -273,7 +274,7 @@ class ShowcasesController < ApplicationController
     flash[:notice] =   @showcase.errors.any? ? "#{@showcase.errors.full_messages.join(',')}" : "Backstory added to #{@showcase.title} successfully"
     respond_to do |format|
       format.js { respond_to :js }
-      format.html { redirect_to showcase_path(@showcase) }
+      format.html { redirect_to slug_showcase_path(@showcase.slug, @showcase) }
     end
   end
 
@@ -304,7 +305,7 @@ class ShowcasesController < ApplicationController
     end
     respond_to do |format|
       format.js { respond_to :js }
-      format.html { redirect_to showcase_path(@showcase) }
+      format.html { redirect_to slug_showcase_path(@showcase.slug, @showcase) }
     end
   end
 
@@ -331,11 +332,15 @@ class ShowcasesController < ApplicationController
   end
 
   def showcase_params
-    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :all_tags, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :fundcategory_id, :beneficiary,:access_type, location_attributes: [:id, :name])
+    params.require(:showcase).permit( :title, :description, :target_date, :showcase_type, :all_tags, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :fundcategory_id, :beneficiary, :access_type, :wishpay_status, :projected_amount, location_attributes: [:id, :name])
   end
 
   def get_showcase
     @showcase = Showcase.find_by_id params[:id]
+    if !@showcase
+      redirect_to root_path
+      return
+    end
   end
 
   def authenticate_owner

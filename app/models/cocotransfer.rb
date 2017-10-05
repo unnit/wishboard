@@ -5,59 +5,150 @@ require 'openssl'
 require 'rubygems'
 require 'sms_service'
 class Cocotransfer < ApplicationRecord
+   # attr_accessor :use_wallet_amount
+  # attr_accessor :total_amount
+  has_many :fundreceived_notification
   has_many :txdetails
   belongs_to :fullfillment_contributer, class_name: "User", :foreign_key => :from_user_id
-  belongs_to :user, class_name: "User", :foreign_key => :user_id
-  belongs_to :showcase
-
-  validates :amount, :email, :phone, :phonecode, :showcase,  presence: true
+  # belongs_to :user, class_name: "User", :foreign_key => :user_id
+  belongs_to :transferable, polymorphic: true
+  # belongs_to :showcase
+  validates :transferable, :transferable_type, presence: true
+  validates :amount, :email, :phone, :phonecode,  presence: true
   validates :donor_name, presence: true, if: :not_hiding_identity
   validates :donor_name, length: {maximum: 150}
-  validate :is_valid_showcase, if: :showcase_not_blank
-  validates :amount, numericality: { only_integer: true, greater_than_or_equal_to: 10 }
+  validate :is_valid_showcase, if: [ :showcase_not_blank, :showcase_transfer? ]
+  validates :amount, numericality: { only_integer: true }
   validate :amount_should_not_less_than_or_greater_than
-
+  validate :wallet_amount_validations
+  validate :coin_conversion_validations
+  validates :transferable_type, inclusion: { in: :available_tranfer_types}
 
   scope :anonymous, -> {where(hide_identity: true)}
   scope :non_anonymous, -> {where(hide_identity: [false, nil])}
   scope :complete, -> {where(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i)}
   scope :successfully_paid, -> {where(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i)}
+ 
+  scope :showcase_gifting, -> {where(transferable_type: TRANSFER_TYPE[0][0])}
+  scope :profile_gifting, -> {where(transferable_type: TRANSFER_TYPE[1][0])}
+  scope :coin_transfers, -> {where("coin_amount > 0")}
+  # scope :wishpay_transfers, ->{joins(:showcases)}
+  # profile_gifting
 
+
+  TRANSFER_TYPE = [["Showcase", 0], ["User", 1]]
 
   HUMANIZED_ATTRIBUTES = {
     donor_name: "Name",
     showcase: "Wish"
   }
+
+  def is_wish_fullfillment?
+    self.applicable_for_wish_fullfillment? && self.total_amount == self.transferable.fullfillment_at_once_amount
+  end
+
+  def applicable_for_wish_fullfillment?
+   self.is_for_wishpay? && self.transferable.can_be_fullfilled_at_once?
+  end
+
+  def is_for_wishpay?
+    self.showcase_transfer? && self.transferable.is_wishpay?
+  end
+
+  def available_tranfer_types
+    TRANSFER_TYPE.map{|t| t[0]}
+  end
+
+  def total_amount
+    self.wallet_amount.to_i + self.amount.to_i + self.coin_amount.to_i
+  end
+
+   def wallet_amount_validations
+     if self.wallet_amount.to_i != 0 && self.wallet_amount.to_i  > fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
+      errors.add(:wallet_amount, "is invalid")
+    end
+  end
+
+   def coin_conversion_validations
+     if self.profile_transfer? && self.coin_amount.to_i > 0 
+       if self.fullfillment_contributer 
+         errors.add(:coin_amount, "is invalid") if self.coin_amount.to_i  > self.fullfillment_contributer.wallet.unused_coins
+       else
+          errors.add(:user, "is invalid") 
+       end
+      errors.add(:user, "is invalid") if( self.wallet_amount > 0 || self.amount > 0)
+    end
+  end
+
+  def get_wallet_amount_to_deduce(wallet_available_amount)
+    (wallet_available_amount >= self.amount) ? wallet_available_amount : self.amount
+  end
+
+  def get_online_paid_amount
+    self.amount - wallet_amount
+  end
+
+  def receiver
+     showcase_transfer? ? transferable.user : transferable
+  end
+
+  def showcase_title
+    transferable.try(:title).to_s
+  end
+
   def self.human_attribute_name(attr, options = {})
     HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
 
+  def showcase_transfer?
+    self.transferable_type == TRANSFER_TYPE[0][0]
+  end
+
+  def profile_transfer?
+    self.transferable_type == TRANSFER_TYPE[1][0]
+  end
+
   def showcase_not_blank
-    self.showcase
+    self.transferable
   end
 
   def is_valid_showcase
-    if showcase.is_admin_disabled?
+    if transferable.is_admin_disabled?
       errors.add(:showcase, "is disabled by admin")
-    elsif !showcase.is_for_raising_fund?
+    elsif !transferable.is_for_raising_fund? && !transferable.is_wishpay?
       errors.add(:showcase, "is not enabled to receiving fund")
-    elsif showcase.campaign_ended?
+    elsif transferable.campaign_ended?
       errors.add(:showcase, "campaign ended")
     end
   end
 
   def amount_should_not_less_than_or_greater_than
-    if self.amount && showcase.try(:min_amount_allowed).to_i > self.amount
-      errors.add(:amount, "allowed minimum is #{showcase.try(:min_amount_allowed).to_i} ")
-    end
-    if self.amount && self.amount > 1000000
-      errors.add(:amount, "allowed maximum is 1000000")
-    end
+   self.showcase_transfer? ? min_max_amount_showcase : min_max_amount_profile
   end
+
+  def min_max_amount_showcase
+    errors.add(:amount, "allowed minimum is #{transferable.try(:min_gift_amount_allowed).to_i} ") if (transferable.try(:min_gift_amount_allowed).to_i > self.total_amount)
+    errors.add(:amount, "allowed maximum is #{transferable.try(:max_gift_amount_allowed).to_i}")  if (self.total_amount && self.total_amount > transferable.try(:max_gift_amount_allowed).to_i)
+  end
+
+  def min_max_amount_profile
+    errors.add(:amount, "allowed minimum is #{transferable.try(:min_gift_amount_allowed).to_i} ") if (transferable.try(:min_gift_amount_allowed).to_i > self.total_amount)
+    errors.add(:amount, "allowed maximum is #{transferable.try(:max_gift_amount_allowed).to_i}")  if (self.total_amount && self.total_amount > transferable.try(:max_gift_amount_allowed).to_i)
+  end
+
 
   def display_donor_name
     self.is_anonymous? ? "Anonymous" : self.donor_name
   end
+
+  def display_profile_name
+   if  !self.is_anonymous? && fullfillment_contributer && self.display_donor_name == fullfillment_contributer.try(:name).to_s
+       return fullfillment_contributer.try(:profile).try(:slug)
+   else
+     return nil
+   end
+  end
+
 
   def not_hiding_identity
    return self.hide_identity != true
@@ -110,30 +201,45 @@ class Cocotransfer < ApplicationRecord
   end
 
 
-  def paid!(transaction_id, tamount)
-    update_columns transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: tamount
+
+  def paid_callbacks!
     create_invoice
-    FundreceivedNotification.create(user_id: self.showcase.user_id, cocotransfer: self )
+    FundreceivedNotification.create(user_id: self.receiver.try(:id), cocotransfer: self )
     inform_success_to_donor
-    inform_success_showcase_owner
+    inform_success_to_receiver
     inform_success_admin
     CocotransferMailer.success_inovoice(self, self.email).deliver_now
-    # CocotransferMailer.fund_reception_donor(self, self.email).deliver_now
-    CocotransferMailer.fund_reception_owner(self, self.showcase.user.email).deliver_now
+    CocotransferMailer.fund_reception_owner(self, self.receiver.email).deliver_now
+  end
+
+  def sms_params
+   return {amount: self.amount, total_amount: self.total_amount, fundraiser_name: self.receiver.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase_title, txnid: self.txnid}
   end
 
   def inform_success_to_donor
-    msg_customer = I18n.t('sms.cocotransfer.success.to_donor', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: showcase.title, txnid: self.txnid )
-    SmsService.send_sms(self.phone_with_prefix, msg_customer) if self.phone_with_prefix
+    if self.showcase_transfer?
+      msg_to_donor = I18n.t('sms.cocotransfer.success.showcase_to_donor', sms_params)
+    else ### assuming defalut to profile transfer
+      msg_to_donor = I18n.t('sms.cocotransfer.success.profile_to_donor', sms_params )
+    end
+     SmsService.send_sms(self.phone_with_prefix, msg_to_donor) if self.phone_with_prefix
   end
 
-  def inform_success_showcase_owner
-    msg_to_showcase_owner = I18n.t('sms.cocotransfer.success.to_fundraiser', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid )
-    SmsService.send_sms(self.showcase.user.profile.phone_with_prefix, msg_to_showcase_owner)
+  def inform_success_to_receiver
+    if self.showcase_transfer?
+      msg_to_receiver = I18n.t('sms.cocotransfer.success.showcase_to_fundraiser', sms_params )
+    else
+      msg_to_receiver = I18n.t('sms.cocotransfer.success.profile_to_fundraiser', sms_params )
+    end
+     SmsService.send_sms(self.receiver.profile.phone_with_prefix, msg_to_receiver)
   end
 
   def inform_success_admin
-    msg_coco_manager = I18n.t('sms.cocotransfer.success.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid )
+    if self.showcase_transfer?
+      msg_coco_manager =  I18n.t('sms.cocotransfer.success.showcase_to_cocomanager', sms_params )
+    else
+      msg_coco_manager =  I18n.t('sms.cocotransfer.success.profile_to_cocomanager', sms_params )
+    end
     GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
     SmsService.send_sms(number, msg_coco_manager)
     end
@@ -149,12 +255,12 @@ class Cocotransfer < ApplicationRecord
   end
 
   def failed_msg_to_customer(msg)
-    msg_customer =  I18n.t('sms.cocotransfer.failed.to_donor', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )
+    msg_customer =  I18n.t('sms.cocotransfer.failed.to_donor', amount: self.amount, fundraiser_name: self.receiver.profile.first_name, donor_name: self.display_donor_name, showcase_title: showcase_title, txnid: self.txnid, msg: msg  )
      SmsService.send_sms(self.phone_with_prefix,msg_customer) if self.phone_with_prefix
   end
 
   def failed_msg_to_admin(msg)
-    msg_coco_manager =  I18n.t('sms.cocotransfer.failed.to_cocomanager', amount: self.amount, fundraiser_name: self.showcase.user.profile.first_name, donor_name: self.display_donor_name, showcase_title: self.showcase.title, txnid: self.txnid, msg: msg  )
+    msg_coco_manager =  I18n.t('sms.cocotransfer.failed.to_cocomanager', amount: self.amount, fundraiser_name: self.receiver.profile.first_name, donor_name: self.display_donor_name, showcase_title: showcase_title, txnid: self.txnid, msg: msg  )
     GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
       SmsService.send_sms(number,msg_coco_manager)
     end
@@ -165,7 +271,7 @@ class Cocotransfer < ApplicationRecord
     email_message = "Your payment failed. Please try again."
     CocotransferMailer.fail(self, email_message).deliver_now
     # msg = "Sorry, Your payment failed as signaure verification failed. Please try again. ID: #{@cocotransfer.txnid}"
-    # msg_coco_manager = "#{@cocotransfer.showcase.title}- Payment failed as signature verification failed. Name: #{@cocotransfer.fullfillment_contributer.try(:name)} ID: #{@cocotransfer.txnid}. Mobile: #{@cocotransfer.phone}"
+    # msg_coco_manager = "#{@cocotransfer.showcase_title}- Payment failed as signature verification failed. Name: #{@cocotransfer.fullfillment_contributer.try(:name)} ID: #{@cocotransfer.txnid}. Mobile: #{@cocotransfer.phone}"
     # SmsService.send_sms(self.phone_with_prefix, msg)  if self.phone
     # GLOBAL_VARIABLES[:manager_mobile_nos].each do |number|
     #   SmsService.send_sms(number,msg_coco_manager)
@@ -185,6 +291,7 @@ class Cocotransfer < ApplicationRecord
     return Transaction::TRANSACTION_STATUS[4][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[4][1]
     return Transaction::TRANSACTION_STATUS[5][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[5][1]
     return Transaction::TRANSACTION_STATUS[6][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[6][1]
+    return ""
   end
 
   def display_status
@@ -214,6 +321,56 @@ class Cocotransfer < ApplicationRecord
   def denied?
     transaction_status.to_s == Transaction::TRANSACTION_STATUS[3][1]
   end
+  def success_txdetail
+  	self.txdetails.where(tx_id: self.txnid).success.first
+  end
+
+  def create_invoice
+  	self.update_column('invoice', "CF"+ self.updated_at.strftime('%d%m%y')+ self.id.to_s + rand.to_s[2..5])
+  end
+
+  def default_gift_amount
+   transferable.try(:default_gift_amount)
+  end
+
+  def send_email
+  	CocotransferMailer.success_inovoice(self, self.email).deliver_now
+  end
+
+  def is_only_wallet?
+    wallet_amount == wallet_amount.to_i + amount.to_i + coin_amount.to_i
+  end
+
+  def is_only_online?
+    amount == wallet_amount.to_i + amount.to_i + coin_amount.to_i
+  end
+
+  def is_coin_converted?
+    self.profile_transfer? && coin_amount.to_i > 0
+  end
+
+  def is_transferd_by?(user_id)
+    self.from_user_id == user_id
+  end
+
+  # def transfer_mode
+  #   transfer_modes = [[0, "only online"],[1, "only wallet"], [2, "coin conversion"], [3, "wallet money + online"]]
+  # end
+
+  def debited_through
+    if self.is_only_wallet?
+      return "Cocociti balance"
+    elsif self.is_only_online?
+      return self.success_txdetail.try(:debited_through).to_s
+    elsif self.is_coin_converted?
+       return "Coins"
+    elsif self.wallet_amount > 0
+        bank_credited_through = self.success_txdetail.try(:debited_through).to_s
+       "Cocociti balance + #{bank_credited_through}"
+    else
+       "--"
+    end
+  end
 
   def success_txdetail
   	self.txdetails.where(tx_id: self.txnid).success.first
@@ -232,4 +389,10 @@ class Cocotransfer < ApplicationRecord
     end while self.class.find_by(slug: slug)
   end
 
+  # after_create :update_user_id
+  # private
+
+  # def update_user_id
+  #   self.update_column :user_id, self.showcase.user_id if self.showcase_transfer?
+  # end
 end

@@ -2,7 +2,7 @@
   - title = "Giftbox - Cocociti"
 .container-fluid.ptop50.mob-ptop100.pattern-bg{style: "min-height: 700px;"}
   .container.mtop40.padding0
-    .col-xs-12.col-sm-12.col-md-6.text-center{style: "background-color: #ff958d;min-height:200px;"}
+    .col-xs-12.col-sm-12.col-md-4.text-center{style: "background-color: #ff958d;min-height:200px;"}
       .col-xs-12.col-sm-12.white-fg
         .mtop10{style:"height:55px;"}
           %i.fa.fa-gift{style: "font-size: 50px;"}
@@ -14,33 +14,65 @@
             Balance
           .col-xs-12.col-sm-12.no-mar-pad
             %i.fa.fa-inr
-            #{current_user.total_showcase_withdraw_available_amount}
+            #{current_user.total_crowdfunding_withdraw_available_amount}
         .col-xs-12.col-sm-4.no-mar-pad
           .col-xs-12.col-sm-12.no-mar-pad
             Total
           .col-xs-12.col-sm-12.no-mar-pad
             %i.fa.fa-inr
-            #{current_user.total_showcase_raised_amount}
+            #{current_user.total_crowdfunding_raised_amount}
         .col-xs-12.col-sm-4.no-mar-pad
           .col-xs-12.col-sm-12.no-mar-pad
             Withdrawn
           .col-xs-12.col-sm-12.no-mar-pad
             %i.fa.fa-inr
             #{current_user.withdraws.showcase_withdraws.complete_withdraws.sum(:coins).to_i}
+    .col-xs-12.col-sm-12.col-md-4.text-center{style: "background-color: #f9b590;min-height:200px;"}
+      .col-xs-12.col-sm-12.white-fg
+        .mtop10{style:"height:55px;"}
+          %i.fa.fa-gift{style: "font-size: 50px;"}
+        %span.inline-block.full-width.white-fg{style: "letter-spacing: 2px;"}
+          PROFILE GIFTING
+      .col-xs-12.col-sm-12.white-fg.font20
+        .col-xs-12.col-sm-4.no-mar-pad
+          .col-xs-12.col-sm-12.no-mar-pad
+            Balance
+          .col-xs-12.col-sm-12.no-mar-pad
+            %i.fa.fa-inr
+            #{current_user.total_profile_withdraw_available_amount}
+        .col-xs-12.col-sm-4.no-mar-pad
+          .col-xs-12.col-sm-12.no-mar-pad
+            Total
+          .col-xs-12.col-sm-12.no-mar-pad
+            %i.fa.fa-inr
+            #{current_user.total_profile_raised_amount}
+        .col-xs-12.col-sm-4.no-mar-pad
+          .col-xs-12.col-sm-12.no-mar-pad
+            Withdrawn
+          .col-xs-12.col-sm-12.no-mar-pad
+            %i.fa.fa-inr
+            #{current_user.withdraws.profile_withdraws.complete_withdraws.sum(:coins).to_i}
+        .col-xs-12.col-sm-12.col-md-12.no-map-pad
+          - if current_user.mobile_verified?
+            .wdrw-btn.send-to-bank-btn.pon.font16.mtop5.inline-block{style: "margin-left: 10px; display: inline-block; width: 160px;"} Withdraw Amount
+          - else
+            = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
+              .send-to-bank-btn.pon.font16.mtop5.inline-block{style: "margin-left: 10px; display: inline-block; width: 160px;"} Withdraw Amount
 
     / .col-xs-12.col-sm-12.col-md-6.padding10{style: "background-color: #ffa49d;height:200px;"}
     /   .col-xs-12.col-sm-12.text-center{style:"color: #ec827a;"}
     /     .total-coins-sprite.inline-block
-    .col-xs-12.col-sm-12.col-md-6.text-center{style: "background-color: #ffcbae;min-height:200px"}
+    .col-xs-12.col-sm-12.col-md-4.text-center{style: "background-color: #ffcbae;min-height:200px"}
       .col-xs-12.col-sm-12.text-center
         .mtop10{style:"height:55px;"}
           .no-mar-pad.inline-block
             .total-coins-sprite.inline-block{style: "float: left;"}
             - if current_user.mobile_verified?
-              .wdrw-btn.send-to-bank-btn.pon.font16.mtop5.inline-block{style: "margin-left: 10px; display: inline-block"} Withdraw Coins
+              = link_to convert_to_profile_money_form_profiles_path, remote: true do
+                .send-to-bank-btn.pon.font16.mtop5.inline-block{style: "margin-left: 10px; display: inline-block"} Convert Coins
             - else
               = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
-                .wdrw-btn.send-to-bank-btn.pon.font16.inline-display.mtop5 Withdraw Coins
+                .send-to-bank-btn.pon.font16.inline-display.mtop5 Convert Coins
         %span.inline-block.full-width.white-fg{style: "letter-spacing: 2px;"}
           COINS
       .col-xs-12.col-sm-12.no-mar-pad.text-center.white-fg.font20
@@ -104,7 +136,7 @@
             .col-xs-4.col-sm-4.no-mar-pad
               .btn.btn-primary.wdrw-btn{class: "#{ (showcase.available_withdraw_amount > 0) ? '' : 'disabled' }","data-amount" => "#{showcase.available_withdraw_amount}", "data-showcase-id" => "#{showcase.id}"} Withdraw
     .col-xs-12.col-sm-4.padding10.ptop0.mtop30
-      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad CROUDFUNDING WITHDRAWAL HISTORY
+      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad CROWDFUNDING WITHDRAWAL HISTORY
       .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}
         - @showcase_withdraws.each do |withdraw|
           %h5.no-mar-pad.padding10.border5.bg-shad.light-border
@@ -121,6 +153,53 @@
               Completed
             -elsif withdraw.rejected?
               Rejected
+    .col-xs-12.col-sm-4.padding10.ptop0.mtop30
+      %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad PROFILE HISTORY
+      .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}
+        %h6.font16 Withdrwas
+        -if @profile_withdraws.count == 0
+          %p.font14{style: "margin-left: 10px;"} No Withdraws to show
+        - @profile_withdraws.each do |withdraw|
+          %h5.no-mar-pad.padding10.border5.bg-shad.light-border
+            amount withdrawn -
+            = withdraw.coins
+            &nbsp;&nbsp;
+            Date -
+            = withdraw.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
+            &nbsp;&nbsp;
+            - if withdraw.open?
+              = link_to delete_withdraw_request_profile_path(withdraw), method: :post, data: { confirm: "Are you sure you want to delete your withdraw request?" }, class: "j-loader-trigger-link" do
+                Delete Request
+            - elsif withdraw.closed?
+              Completed
+            -elsif withdraw.rejected?
+              Rejected
+        %h6.font16 Transfers
+        -if @tranfered_cocotransfers.count == 0
+          %p.font14{style: "margin-left: 10px;"} No Transfers to show
+        - else
+          %table.table.table-condensed.table-hover.extra-small-font
+            %thead
+              %tr
+                %th
+                  Total
+                %th
+                  Wallet
+                %th
+                  Amount
+                %th 
+                  Datetime
+            %tbody
+              - @tranfered_cocotransfers.each do |cocotransfer|
+                %tr 
+                  %td
+                    #{cocotransfer.total_amount}
+                  %td
+                    #{cocotransfer.wallet_amount}
+                  %td
+                    #{cocotransfer.amount}
+                  %td
+                    = cocotransfer.created_at.in_time_zone("Kolkata").strftime("%d %b %Y %H:%M")
     .col-xs-12.col-sm-4.padding10.ptop0.mtop30
       %h4.no-mar-pad.padding10.full-width.text-center.border5.light-border.bg-shad COIN WITHDRAWAL HISTORY
       .col-xs-12.col-sm-12.no-mar-pad.mtop10{style: "height: 250px;overflow-y: auto;"}

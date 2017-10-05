@@ -1,6 +1,7 @@
 var before_height = $(".j-cm-scroll-wrap").height();
 $("#chat_messages").find(".j-cm-scroll-wrap").prepend("#{j render partial: "chat_rooms/chat_messages_wrapper", locals: {chat_messages: @chat_messages}}")
 customUnicodeToHtml('.j-chat_content_data');
+showLinkPreviews(".url_preview");
 var after_height = $(".j-cm-scroll-wrap").height();
 $("#chat_messages").scrollTop(after_height - before_height);
 $(".msg-loader").fadeOut();

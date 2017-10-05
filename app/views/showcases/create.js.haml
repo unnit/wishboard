@@ -1,7 +1,9 @@
 $(".loader-button").show();
 $(".loader-effect").hide();
-$(".messages").html("#{j(render 'layouts/messages')}")
+$(".messages").html("#{j(render 'layouts/messages')}");
+setTimeout(function(){$(".messages").empty();}, 8000);
 - if @showcase.errors.blank?
+  $(".j-coco-fixed-wrapper").hide();
   $("#showcase-modal2 .modal-dialog").html("#{j render partial: 'showcases/wish_success', locals: {showcase: @showcase}}");
   $("#showcase-modal2").addClass("violet-bg");
   $("#showcase-modal2").modal('show');

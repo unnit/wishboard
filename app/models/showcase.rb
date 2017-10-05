@@ -24,7 +24,7 @@ class Showcase < ApplicationRecord
   has_many :achieved_notifications, dependent: :destroy
   has_many :commenter_notifications, dependent: :destroy
   has_one :location, as: :locatable, dependent: :destroy
-  has_many :cocotransfers, dependent: :destroy
+  has_many :cocotransfers, as: :transferable, dependent: :destroy
   has_many :fullfillment_contributers, through: :cocotransfers, primary_key: "from_user_id", class_name: "User"
   has_many :withdraws
   accepts_nested_attributes_for :location
@@ -32,33 +32,33 @@ class Showcase < ApplicationRecord
   DEFAULT_AFTER_RATING = 0
   BACKSTORY_POSSIBLE_WISH_VALUES = [6, 8, 9, 11]
   WISH_PREFIX =
-  [["Visit", 0, "Places, trips, travel, tour | ex: Goa, Dubai", "I visited", "I wish to visit", "Wow! Where/What?", "Where are you planning to go?"],
-   ["Own", 1, "Things, pets, collectibles", "I own", "I wish to own", "Wow! What did you buy/own?", "What's that?"],
-   ["Eat", 2, "Foods, cuisine | ex: Pani Puri, Sushi, Italian", "I ate", "I wish to eat", "Wow! What did you have?", "What will you have?"],
-   ["Experience", 3, "An activity, events | ex: a paranormal activity, a live concert", "I experienced", "I wish to experience", "Wow! What did you experience?", "What do you wish to experience?"],
-   ["Watch", 4, "a movie , serial | ex: Titanic, Game of Thrones, a Netflix series", "I watched", "I wish to watch", "Wow! What did you watch?", "What do you wish to watch?"],
-   ["Meet", 5, "a person/celebrity | ex: Meet Michael Jackson (seriously?!), Sachin Tendulkar etc.", "I met", "I wish to meet", "Wow! Whom did you meet?", "Whom do you wish to meet?"],
-   ["Celeberate", 19, "birthday/festival | ex: celeberate friend's birthday, celeberate festival etc", "I celeberated", "I wish to celeberate", "Wow! What did you celeberate?", "Whom do you wish to celeberate?"],
-   ["Learn", 6, "a course/skills/language | ex: cooking, guitar, German", "I learned", "I wish to learn", "Wow! What did you learn?", "What do you wish to learn?"],
-   ["Read", 7, "a book | ex: Jungle Book, Twinkle, Sherlock holmes", "I read", "I wish to read", "Wow! What did you read?", "What do you wish to read?"],
-   ["Use", 8, "Rent, try, test, trial | ex: rent a bullet, test drive a BMW", "I used", "I wish to use", "Wow! What was that?", "What do you wish to use?"],
-   ["Upgrade", 9, "Gadgets, accessories, services | ex: Mobile, car, house", "I upgraded", "I wish to upgrade", "Wow! What was that?", "What do you wish to upgrade?"],
-   ["Donate", 10, "Giveaway items, charity, de-clutter | ex: books, clothes, gadgets", "I donated", "I wish to donate", "Wow! What did you donate?", "What (or to whom) do you wish to donate?"],
-   ["Change", 11, "job/school/a product/upgrade/buy/sell", "I changed", "I wish to change", "Wow! What was that?", "What do you wish to change?"],
-   ["Do", 12, "Your public to do lists, targets | ex: S=sthin , something", "I did", "I wish to do", "Wow! What was that?", "What do you wish to do?"],
-   ["Stop", 13, "a habit of yours, change a social behaviour| ex: quit smoking, stop corruption", "I stopped", "I wish to stop", "Wow! What was that?", "What do you wish to stop?"],
-   ["Achieve", 14, "anything| ex: your weekly, monthly, yearly goals", "I achieved", "I wish to achieve", "Wow! What's your achievement?", "What do you wish to achieve?"],
-   ["Support", 15, "a cause, an actor | ex: GreenPeace, Amitabh Bachan", "I supported", "I wish to support", "Wow! What did you support?", "What/whom do you wish to support?"],
-   ["Announce", 16, "milestones/revealations/swag| ex: a status update", "I announced", "I wish to announce", "Wow! What was the update?", "What do you wish to announce?"],
-   ["Confess", 17, "about something| ex: a high school or college event", "I confessed", "I wish to confess", "What was that?", "What do you wish to confess?"],
-   ["Type Your Own", 18, "Be creative & type your wish here directly | ex: anything!", "Others ", "Others", "Wow! Looks like that was a unique wish. Tell us? :)", "Wow! Looks like you have a uniques wish to share. What's that?"]]
-  WISH_PREFIX_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    [["Visit", 0, "Places, trips, travel, tour | ex: Goa, Dubai", "I visited", "I wish to visit", "Wow! Where/What?", "Where are you planning to go?"],
+     ["Own", 1, "Things, pets, collectibles", "I own", "I wish to own", "Wow! What did you buy/own?", "What's that?"],
+     ["Eat", 2, "Foods, cuisine | ex: Pani Puri, Sushi, Italian", "I ate", "I wish to eat", "Wow! What did you have?", "What will you have?"],
+     ["Experience", 3, "An activity, events | ex: a paranormal activity, a live concert", "I experienced", "I wish to experience", "Wow! What did you experience?", "What do you wish to experience?"],
+     ["Watch", 4, "a movie , serial | ex: Titanic, Game of Thrones, a Netflix series", "I watched", "I wish to watch", "Wow! What did you watch?", "What do you wish to watch?"],
+     ["Meet", 5, "a person/celebrity | ex: Meet Michael Jackson (seriously?!), Sachin Tendulkar etc.", "I met", "I wish to meet", "Wow! Whom did you meet?", "Whom do you wish to meet?"],
+     ["Celeberate", 19, "birthday/festival | ex: celeberate friend's birthday, celeberate festival etc", "I celeberated", "I wish to celeberate", "Wow! What did you celeberate?", "Whom do you wish to celeberate?"],
+     ["Learn", 6, "a course/skills/language | ex: cooking, guitar, German", "I learned", "I wish to learn", "Wow! What did you learn?", "What do you wish to learn?"],
+     ["Read", 7, "a book | ex: Jungle Book, Twinkle, Sherlock holmes", "I read", "I wish to read", "Wow! What did you read?", "What do you wish to read?"],
+     ["Use", 8, "Rent, try, test, trial | ex: rent a bullet, test drive a BMW", "I used", "I wish to use", "Wow! What was that?", "What do you wish to use?"],
+     ["Upgrade", 9, "Gadgets, accessories, services | ex: Mobile, car, house", "I upgraded", "I wish to upgrade", "Wow! What was that?", "What do you wish to upgrade?"],
+     ["Donate", 10, "Giveaway items, charity, de-clutter | ex: books, clothes, gadgets", "I donated", "I wish to donate", "Wow! What did you donate?", "What (or to whom) do you wish to donate?"],
+     ["Change", 11, "job/school/a product/upgrade/buy/sell", "I changed", "I wish to change", "Wow! What was that?", "What do you wish to change?"],
+     ["Do", 12, "Your public to do lists, targets | ex: S=sthin , something", "I did", "I wish to do", "Wow! What was that?", "What do you wish to do?"],
+     ["Stop", 13, "a habit of yours, change a social behaviour| ex: quit smoking, stop corruption", "I stopped", "I wish to stop", "Wow! What was that?", "What do you wish to stop?"],
+     ["Achieve", 14, "anything| ex: your weekly, monthly, yearly goals", "I achieved", "I wish to achieve", "Wow! What's your achievement?", "What do you wish to achieve?"],
+     ["Support", 15, "a cause, an actor | ex: GreenPeace, Amitabh Bachan", "I supported", "I wish to support", "Wow! What did you support?", "What/whom do you wish to support?"],
+     ["Announce", 16, "milestones/revealations/swag| ex: a status update", "I announced", "I wish to announce", "Wow! What was the update?", "What do you wish to announce?"],
+     ["Confess", 17, "about something| ex: a high school or college event", "I confessed", "I wish to confess", "What was that?", "What do you wish to confess?"],
+     ["Type Your Own", 18, "Be creative & type your wish here directly | ex: anything!", "Others ", "Others", "Wow! Looks like that was a unique wish. Tell us? :)", "Wow! Looks like you have a uniques wish to share. What's that?"]]
+    WISH_PREFIX_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
   COIN_WISH_PREFIX_VALUES = [0, 1, 2, 9, 10]
   SHOWCASE_TYPE = [["Showpiece", 0], ["Wish", 1], ["Instant", 2]]
   SHOWCASE_VALUES = [0, 1, 2]
   DISPLAY_SHOWCASE_TYPE = [["Future Wishes", 1, "<span class='pull-left dotted-bt-border'>You are showcasing a <span class='cc-dark-fg'>future wish (later)</span></span><i class='fa fa-angle-down angle-dwn-css'></i>"],
-  ["Momentary Wishes", 2, "<span class='pull-left dotted-bt-border'>You are showcasing a <span class='cc-dark-fg'>momentary wish (soon)</span></span><i class='fa fa-angle-down angle-dwn-css'></i>"],
-  ["Fulfilled Wishes", 0, "<span class='pull-left dotted-bt-border'>You are showcasing a <span class='cc-dark-fg'>fulfilled wish (past)</span></span><i class='fa fa-angle-down angle-dwn-css'></i>"]]
+                           ["Momentary Wishes", 2, "<span class='pull-left dotted-bt-border'>You are showcasing a <span class='cc-dark-fg'>momentary wish (soon)</span></span><i class='fa fa-angle-down angle-dwn-css'></i>"],
+                           ["Fulfilled Wishes", 0, "<span class='pull-left dotted-bt-border'>You are showcasing a <span class='cc-dark-fg'>fulfilled wish (past)</span></span><i class='fa fa-angle-down angle-dwn-css'></i>"]]
   ADMIN_STATUS_NAME = [["Active", 0], ["Inactive", 1]]
   ADMIN_STATUS = [0, 1]
   USER_STATUS_NAME = [["Started", 0], ["Completed", 1]]
@@ -73,6 +73,9 @@ class Showcase < ApplicationRecord
   ACCEESS_TYPE_NAME = [[0, 'Public'] ,[1, 'With link only']]
   CAMPAIGN_STATUS = [[0, "Started"], [1, "Ended"]]
   CAMPAIGN_STATUS_VALUES = [0, 1]
+  WISHPAY_STATUS = [0, 1]
+  WISHPAY_STATUS_VALUES = [[0, "Disabled"], [1, "Enabled"]]
+  NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK = 10
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
@@ -88,21 +91,31 @@ class Showcase < ApplicationRecord
   validates :beneficiary, length: {maximum: 200}, if: :is_for_raising_fund?
   validates :beneficiary, presence: true, if: :is_raising_for_others?
   validates :video_link, length: {maximum: 300}, if: :is_for_raising_fund?
-  validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 1000000, greater_than: 10, message: "should be between 0 and 1000000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
+  validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 1000000, greater_than: 10, message: "should be between 10 and 1000000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
   validate :accept_fund_option_should_not_change, if: :already_raised_some_amount
+  validate :accept_only_one_type_of_payment
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
   validate :date_range_for_target_date, unless: :target_date_blank?
+  validate :mobile_verifictaion
+  validate :max_number_of_wishes_per_week
 
-  scope :momentary, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
-  scope :wishes, -> {where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
-  scope :showpieces, -> {where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
+  scope :momentary, -> {user_created.where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[2], USER_STATUS[0])}
+  scope :wishes, -> {user_created.where("showcase_type = ? and user_status = ?", Showcase::SHOWCASE_VALUES[1], USER_STATUS[0])}
+  scope :showpieces, -> {user_created.where("showcase_type = ? or user_status = ?", Showcase::SHOWCASE_VALUES[0], USER_STATUS[1])}
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
   scope :recently_created, -> (n) {where("created_at > ?", (Time.now.utc - n.days).beginning_of_day)}
-  scope :user_coin_wishes, -> {where(["admin_created = false and coin_wish = true"])}
+  scope :user_coin_wishes, -> {user_created.coin_wishes}
   scope :public_accessible, -> {where("access_type in (?)", [ACCEESS_TYPE[0], nil])}
+  scope :non_crowdfunding, -> {user_created.non_coin.where(accept_fund: [nil, false])}
+  scope :wishpay, -> {where("wishpay_status in (?)", [WISHPAY_STATUS[1]])}
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
-  scope :active, -> {where(admin_status: [0, nil] )}
+  scope :active, -> {where(admin_status: [0, nil])}
   scope :approved, -> {public_accessible.active}
+  scope :user_created, -> {where(admin_created: [nil, false])}
+  scope :non_coin, -> {where(coin_wish: [nil ,false])}
+  scope :admin_generated, -> {where(admin_created: true)}
+  scope :coin_wishes,  -> {where(coin_wish: true)}
+  # scope :non_crowdfunding, -> {where("accept_fund = ? and admin_created = ? and coin_wish = ?", false, false, false)}
 
   HUMANIZED_ATTRIBUTES = {
     fundcategory_id: "Category",
@@ -110,6 +123,36 @@ class Showcase < ApplicationRecord
     showcase_type: "Wish Type",
     wish_prefix: "Wish Category"
   }
+
+  def max_number_of_wishes_per_week
+    if self.is_for_raising_fund? && self.new_record? && self.user && self.admin_created != true
+      if self.user.showcases.active_rasing_funds.where("created_at > #{(Time.zone.now - 168.hours)}" ).count >= NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK
+       errors.add(:number_of_wishesh_per_week, "must be at less than or equal to #{NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK}")
+      end
+   end
+ end
+
+  def mobile_verifictaion
+    if self.is_for_raising_fund? && !self.user.try(:profile).try(:mobile_verified)
+       errors.add(:user, "Mobile not verified")
+     end
+  end
+
+  def can_be_fullfilled_at_once?
+    self.projected_amount.present? && self.projected_amount > 0 && self.raised_amount == 0
+  end
+
+  def fullfillment_at_once_amount
+    self.can_be_fullfilled_at_once? ?  self.projected_amount.to_i : 0
+  end
+
+  def is_wishpay?
+    !(self.is_for_raising_fund?) && wishpay_status == WISHPAY_STATUS[1]
+  end
+
+  def can_accept_gift?
+    !self.is_admin_disabled? && ((self.is_for_raising_fund? && !self.campaign_ended?) || self.is_wishpay? )
+  end
 
   def date_range_for_target_date
     begin
@@ -147,7 +190,7 @@ class Showcase < ApplicationRecord
   end
 
   def private_access_url
-     GLOBAL_VARIABLES[:root_url] + "/showcase/private/#{access_token}"
+    GLOBAL_VARIABLES[:root_url] + "/showcase/private/#{access_token}"
   end
 
   def generate_accesss_token
@@ -175,7 +218,39 @@ class Showcase < ApplicationRecord
     self.tags.map(&:name).join(",")
   end
 
+  def accept_only_one_type_of_payment
+    errors.add(:wish, "can accept only one type of gift")  if (self.wishpay_status == WISHPAY_STATUS[1] && self.accept_fund == true)
+    errors.add(:wish, "coin wish can not accept gifts")  if ((self.wishpay_status == WISHPAY_STATUS[1] || self.accept_fund == true) && self.coin_wish == true)
+  end
+
+
+
+
+  # def set_wishpay_fields
+  #   if is_for_raising_fund?
+  #     self.wishpay_status = WISHPAY_STATUS[0]
+  #     self.projected_amount = nil
+  #   end
+  # end
+
+  # def set_crowdfunding_fields
+  #   if new_record && is_for_raising_fund?
+  #     self.wishpay_status = WISHPAY_STATUS[0]
+  #     self.projected_amount = nil
+  #   end
+  # end
+
+  def show_wishpay_edit_fields?
+     !(Showcase.find_by_id(self.id).try(:accept_fund) == true && already_raised_some_amount )
+  end
+
+  def wishpay_is_editable?
+     return false if Showcase.find_by_id(self.id).try(:accept_fund) == true && already_raised_some_amount
+     # Showcase.find_by_id(self.id).try(:wishpay_status) == WISHPAY_STATUS[1] && !already_raised_some_amount : true
+  end
+
   def accept_fund_is_editable?
+    return false if Showcase.find_by_id(self.id).try(:wishpay_status) == WISHPAY_STATUS[1] && already_raised_some_amount
     Showcase.find_by_id(self.id).try(:accept_fund) ? !already_raised_some_amount : true
   end
 
@@ -190,7 +265,7 @@ class Showcase < ApplicationRecord
   end
 
   def is_for_raising_fund?
-    self.accept_fund && self.accept_fund == true
+    return self.accept_fund && self.accept_fund == true
   end
 
   def is_goal_amount_not_blank?
@@ -234,7 +309,7 @@ class Showcase < ApplicationRecord
 
 
   def is_admin_disabled?
-     self.admin_status == ADMIN_STATUS_NAME[1][1]
+    self.admin_status == ADMIN_STATUS_NAME[1][1]
   end
 
   def admin_creation?
@@ -242,7 +317,7 @@ class Showcase < ApplicationRecord
   end
 
   def truncated_title
-    ActionController::Base.helpers.truncate self.title, length: 35
+    ActionController::Base.helpers.sanitize(ActionController::Base.helpers.truncate self.title, length: 35, escape: false).to_s
   end
 
   def can_only_rewish?
@@ -465,7 +540,7 @@ class Showcase < ApplicationRecord
   end
 
   def get_rating
-     after_rating ? after_rating : DEFAULT_AFTER_RATING
+    after_rating ? after_rating : DEFAULT_AFTER_RATING
   end
 
   def backstory_possible?
@@ -484,6 +559,10 @@ class Showcase < ApplicationRecord
     update_column :coin_wish_status, COIN_WISH_STATUS[1]
   end
 
+  def slug
+   return self.title.gsub(/\s+/, "_").gsub(/[^0-9A-Za-z\-\_]/, '')
+  end
+
   def can_be_withdrawn
     if  accept_fund && raised_amount > 0
       return true
@@ -493,15 +572,16 @@ class Showcase < ApplicationRecord
   end
 
   def available_withdraw_amount
-    return cocotransfers.complete.sum(:amount).to_i - withdraws.complete_withdraws.sum(:coins).to_i
+    return  raised_amount - withdraws.showcase_withdraws.complete_withdraws.sum(:coins).to_i
+    #return cocotransfers.showcase_gifting.complete.sum("amount + wallet_amount").to_i - withdraws.showcase_withdraws.complete_withdraws.sum(:coins).to_i
   end
 
   def raised_amount
-    return cocotransfers.complete.sum(:amount).to_i
+    return cocotransfers.showcase_gifting.complete.sum("amount + wallet_amount").to_i
   end
 
   def remaining_amount
-    (goal_amount.to_f - raised_amount.to_f) > 0 ? (goal_amount.to_f - raised_amount.to_f) : 0
+    (goal_amount.to_i - raised_amount.to_i) > 0 ? (goal_amount.to_i - raised_amount.to_i) : 0
   end
 
   def remaining_days
@@ -509,12 +589,12 @@ class Showcase < ApplicationRecord
   end
 
   def percentage_raised
-   percentage = ( raised_amount.to_f/goal_amount.to_f) * 100
-   percentage <= 100 ? percentage.to_f.ceil : 100
+    percentage = ( raised_amount.to_f/goal_amount.to_f) * 100
+    percentage <= 100 ? percentage.to_f.ceil : 100
   end
 
   def no_of_contributers
-    cocotransfers.complete.count
+    cocotransfers.showcase_gifting.complete.count
     #cocotransfers.complete.non_anonymous.pluck(:from_user_id).uniq.count +  cocotransfers.complete.anonymous.pluck(:from_user_id).count
   end
 
@@ -524,14 +604,47 @@ class Showcase < ApplicationRecord
   after_destroy :verify_wallet
 
   def default_min_amount
-    1
+    10
   end
 
-  def min_amount_allowed
-     default_min_amount
+  def default_max_amount
+    1000000
   end
+
+  def min_gift_amount_allowed
+    default_min_amount
+  end
+
+  def max_gift_amount_allowed
+    if self.is_wishpay?
+      (projected_amount.to_i > 0) ?  ( self.projected_amount - raised_amount) :  default_max_amount
+    elsif self.is_for_raising_fund?
+      default_max_amount
+    else
+      0
+    end
+  end
+
+  # def max_gift_amount_allowed
+  #   if is_wishpay?
+  #   if projected_amount.to_i > 0
+  #     if self.raised_amount > 0
+  #       self.projected_amount - raised_amount
+  #     else
+  #        self.projected_amount - raised_amount
+  #     end
+  #   else
+  #      default_max_amount
+  #   end
+  # end
+
+  before_destroy :can_be_deleted?
 
   private
+  def can_be_deleted?
+    self.already_raised_some_amount
+    errors.blank?
+  end
   def set_achieved
     update_column :achieved_at, created_at
   end

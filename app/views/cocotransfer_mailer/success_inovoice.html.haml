@@ -53,10 +53,10 @@
                                 %td{align: "left", style: "border-collapse:collapse;text-transform:capitalize;", valign: "top"}
                                   %span{style: "border-collapse:collapse;width:100%;text-wrap:normal;display:block;"} Paid to
                                   %span{style: "border-collapse:collapse;font-size:16px;font-weight:500;width:100%;text-wrap:normal;display:block"}
-                                    #{ @cocotransfer.showcase.user.name}
+                                    #{ @cocotransfer.receiver.name}
                                 %td{align: "left", style: "border-collapse:collapse;", valign: "middle", width: "32"}
                                 %td{align: "right", style: "border-collapse:collapse;font-size:20px;font-weight:500;", valign: "middle"}
-                                  ₹ #{@cocotransfer.amount}
+                                  ₹ #{@cocotransfer.total_amount}
                         / End of User name / Amount
                         / Transaction ID
                         %tr
@@ -93,9 +93,7 @@
                                 / Bank Account
                                 %td{align: "left", style: "border-collapse:collapse;font-weight:normal;text-wrap:normal;font-size:12px;", valign: "top"}
                                   %span{style: "border-collapse:collapse;font-size:13px;width:100%;text-wrap:normal;display:block;text-wrap:normal;"}
-                                    #{@cocotransfer.success_txdetail.try(:debited_through)}
-                                  %span{style: "border-collapse:collapse;width:100%;font-weight:normal;text-wrap:normal;display:block;text-wrap:normal;"}
-                                    bank
+                                    #{@cocotransfer.try(:debited_through)}
                                 / End of Bank Account
                         / End of Transaction Type
                       / End of Transaction Details

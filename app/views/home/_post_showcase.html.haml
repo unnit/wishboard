@@ -69,11 +69,21 @@
     .col-xs-12.col-sm-12.padding5.bg-white.border2.ps-sub-wrap-2.ps-box-shadow.hide-display{style: "margin-top: -130px;opacity: 0;"}
       %span.pos-absolute.font13.pon.ps-wrap-2-close.padding5{style: "top: 0; right: 0px;z-index: 1055;"} x
       .col-xs-7.col-sm-7.no-mar-pad
+        .col-xs-12.col-sm-12.padding5.height50
+          %label.pull-left.mtop5 Enable Payment&nbsp;&nbsp;
+          %label.raise-toggle-switch.mtop8.pull-left.pon
+            - if current_user.wishpay_enabled_globally?
+              = f.check_box :wishpay_status, checked: true
+            - else
+              = f.check_box :wishpay_status
+            %div
         .col-xs-12.col-sm-12.padding5.ps-desc-wrapper{style: "height: 166px;"}
           ~ f.text_area :description, placeholder: "Tell the story behind this wish?", class: "form-control coco-input-field pleft5", maxlength: 2500, rows: 1, style: "height: 156px;"
         .col-xs-12.col-sm-12.padding5{style: "min-height: 50px;"}
           = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-input form-control tm-input-inverse tm-input-typeahead coco-input-field", style: "height: 40px;"
       .col-xs-5.col-sm-5.no-mar-pad
+        .col-xs-12.col-sm-12.padding5.height50
+          = f.text_field :projected_amount, placeholder: "Projected Amount", class: "form-control coco-input-field pleft5", maxlength: 7
         .col-xs-12.col-sm-12.padding5.ps-photo-wrapper{style: "height: 122px;"}
           .col-xs-12.col-sm-12.text-center.photo-upload-wrapper
             .preview
@@ -92,7 +102,7 @@
       .col-xs-12.col-sm-12.padding5.text-right.ps-btn-wrapper.no-mar-pad
         %span.pull-right.ps-btn-wrapper.hide-display
           .white-fg.no-mar-pad.loader-out-showcase-button
-            = f.submit "Wish", class: "loader-button loader-in-showcase-button showcase-submit"
+            = f.submit "Wish", class: "loader-button loader-in-showcase-button showcase-submit j-showcase-more-submit"
             .loader-effect.loader-in-showcase-button.text-center{style: "display:none;padding-top: 4px;"}
               .ball-clip-rotate
                 %div

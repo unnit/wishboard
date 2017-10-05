@@ -1,0 +1,36 @@
+.col-xs-12.col-sm-4
+  .col-xs-12.col-sm-12.padding0.font20.white-fg.hidden-overflow{style: "background-image: linear-gradient(to right, #8E70EE 0%, #457FCB 100%);border-radius: 3px;padding: 15px;height: 204px;box-shadow: 0 9px 39px 0 rgba(0, 0, 0, 0.19), 0 5px 24px 0 rgba(0, 0, 0, 0.24);"}
+    %i.fa.fa-users.pos-absolute{style: "opacity: 0.3;font-size: 186px;right: -40px;bottom: -21px;"}
+    .col-xs-12.col-sm-12.no-mar-pad.weight-bold{style: "text-shadow: 0px 0px 2px #fff;"}
+      GROUP PAY
+    .col-xs-12.col-sm-12.no-mar-pad.font-medium{style: "text-shadow: 0px 0px 2px #fff;"}
+      %i.fa.fa-inr
+      Balance: #{current_user.total_crowdfunding_withdraw_available_amount}
+.col-xs-12.col-sm-4.mob-mtop10
+  .col-xs-12.col-sm-12.padding0.font20.white-fg.hidden-overflow{style: "background-image: linear-gradient(to right, #FF8562 0%, #FE68AB 100%);border-radius: 3px;padding: 15px;height: 204px;box-shadow: 0 9px 39px 0 rgba(0, 0, 0, 0.19), 0 5px 24px 0 rgba(0, 0, 0, 0.24);"}
+    %i.fa.fa-user.pos-absolute{style: "opacity: 0.3;font-size: 186px;right: -40px;bottom: -21px;"}
+    .col-xs-12.col-sm-12.no-mar-pad.weight-bold{style: "text-shadow: 0px 0px 2px #fff;"}
+      PROFILE
+    .col-xs-12.col-sm-12.no-mar-pad.font-medium{style: "text-shadow: 0px 0px 2px #fff;"}
+      %i.fa.fa-inr
+      Balance: #{current_user.total_profile_withdraw_available_amount}
+    .col-xs-12.col-sm-12.no-mar-pad
+      - if current_user.mobile_verified?
+        .j-wdrw-btn.send-to-bank-btn.pon.font16.mtop70.inline-block Withdraw Amount
+      - else
+        = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
+          .send-to-bank-btn.pon.font16.mtop70.inline-block Withdraw Amount
+.col-xs-12.col-sm-4.mob-mtop10
+  .col-xs-12.col-sm-12.padding0.font20.white-fg.hidden-overflow{style: "background-image: linear-gradient(to right, #EE70E9 0%, #8363F9 100%);border-radius: 3px;padding: 15px;height: 204px;box-shadow: 0 9px 39px 0 rgba(0, 0, 0, 0.19), 0 5px 24px 0 rgba(0, 0, 0, 0.24);"}
+    %i.fa.fa-circle.pos-absolute{style: "opacity: 0.3;font-size: 186px;right: -40px;bottom: -21px;"}
+    .col-xs-12.col-sm-12.no-mar-pad.weight-bold{style: "text-shadow: 0px 0px 2px #fff;"}
+      COINS
+    .col-xs-12.col-sm-12.no-mar-pad.font-medium{style: "text-shadow: 0px 0px 2px #fff;"}
+      Balance: #{current_user.wallet.unused_coins.to_i} coins
+    .col-xs-12.col-sm-12.no-mar-pad
+      - if current_user.mobile_verified?
+        = link_to convert_to_profile_money_form_profiles_path, remote: true do
+          .send-to-bank-btn.pon.font16.mtop70.inline-block Convert Coins
+      - else
+        = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
+          .send-to-bank-btn.pon.font16.inline-block.mtop70 Convert Coins

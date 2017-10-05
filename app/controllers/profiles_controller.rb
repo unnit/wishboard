@@ -95,6 +95,25 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def wish_settings
+  end
+
+  def update_wish_settings
+    profile = current_user.profile
+    profile.wishpay_condition = params[:profile][:wishpay_condition]
+    if current_user.profile.save
+      if params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[2] || params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[0]
+        current_user.showcases.non_crowdfunding.update_all(wishpay_status: Showcase::WISHPAY_STATUS[1])
+      elsif params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[3] || params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[1]
+        current_user.showcases.non_crowdfunding.update_all(wishpay_status: Showcase::WISHPAY_STATUS[0])
+      end
+      flash[:notice] = "Wish settings updated successfully"
+    else
+      flash[:alert] = profile.errors.full_messages.join(", ")
+    end
+    redirect_to settings_wish_path
+  end
+
   def password
   end
 
@@ -334,12 +353,21 @@ class ProfilesController < ApplicationController
     reload_wallet
     @showcase_withdraws = current_user.withdraws.showcase_withdraws.valid_withdraws
     @coin_withdraws = current_user.withdraws.coin_withdraws.valid_withdraws
+    @profile_withdraws = current_user.withdraws.profile_withdraws.valid_withdraws
+    @tranfered_cocotransfers = current_user.tranfered_cocotransfers.complete
+    @crowdfunding_showcases = current_user.showcases.active_rasing_funds
+    @crowdfunding_withdraws = current_user.withdraws.showcase_withdraws.valid_withdraws
+    @all_related_cocotransfers = User.all_cocotransfers(current_user.id).complete
+    render :giftbox
     # @withdraws = current_user.withdraw_history
   end
 
   def send_to_bank_form
     @showcase = Showcase.find_by_id(params[:showcase_id])
     @withdraws = current_user.withdraw_history
+    @withdraw = Withdraw.new
+    @withdraw.withdraw_type = params[:showcase_id]
+    @withdraw.showcase_id =  @showcase.try(:id)
     respond_to :js
   end
 
@@ -348,14 +376,15 @@ class ProfilesController < ApplicationController
     if @showcase && @showcase.user != current_user
       render js: "window.location = '#{root_path}'"
       return
-    elsif !current_user.can_withdraw?
-      render js: "window.location = '#{root_path}'"
-      return
+    # elsif !current_user.can_withdraw?
+    #   render js: "window.location = '#{root_path}'"
+    #   return
     end
-    reload_wallet
+    # reload_wallet
+
     @withdraw = Withdraw.new
     @withdraw.showcase_id = @showcase.try(:id)
-    @withdraw.withdraw_type = @showcase? Withdraw::WITHDRAW_TYPE[1] : Withdraw::WITHDRAW_TYPE[0]
+    @withdraw.withdraw_type = @showcase? Withdraw::WITHDRAW_TYPE[1] : Withdraw::WITHDRAW_TYPE[2]
     @withdraw.name = params[:name]
     @withdraw.coins = params[:coins].to_i.abs
     @withdraw.acc_no = params[:acc_no]
@@ -366,18 +395,51 @@ class ProfilesController < ApplicationController
     @withdraw.user = current_user
     @withdraw.status = Withdraw::STATUS[0]
     if @withdraw.save
-      if @withdraw.showcase
-      else
-        wallet = current_user.wallet
-        wallet.unused_coins = wallet.unused_coins.to_i - params[:coins].to_i
-        wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
-        wallet.save
-      end
+      # if @withdraw.showcase
+      # else
+      #   wallet = current_user.wallet
+      #   wallet.unused_coins = wallet.unused_coins.to_i - params[:coins].to_i
+      #   wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
+      #   wallet.save
+      # end
       flash[:notice] = "You have successfully initiated the withdrawal procedure. We will verify the details and update your account"
     else
       flash[:alert] = @withdraw.errors.full_messages.join(", ")
     end
     respond_to :js
+  end
+
+  def convert_to_profile_money_form
+    respond_to :js
+  end
+
+  def convert_to_profile_money
+    return redirect_to wallet_path unless current_user.can_convert_coins_to_profile?
+    reload_wallet
+    wallet = current_user.wallet
+    # ActiveRecord::Base.transaction do
+    #   wallet.lock!
+    #   wallet.used_coins = wallet.used_coins.to_i + wallet.unused_coins
+    #   wallet.unused_coins = 0
+    #   wallet.save
+    # end
+    # wallet.lock!
+    # return redirect_to wallet_path unless current_user.can_convert_coins_to_profile?
+    create_coin_cocotransfer(params[:coins].to_i)
+    if @cocotransfer.save
+      wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
+      wallet.unused_coins = 0
+      if wallet.save
+        @cocotransfer.update_column("transaction_status", Transaction::TRANSACTION_STATUS[2][1])
+        flash[:notice] = "You have successfully converted your coins to profile money"
+      else
+        flash[:alert] =  wallet.errors.full_messages.join(", ")
+      end
+    else
+     flash[:alert] =  @cocotransfer.errors.full_messages.join(", ")
+    end
+    return redirect_to wallet_path
+    # respond_to :js
   end
 
   def delete_withdraw_request
@@ -408,11 +470,11 @@ class ProfilesController < ApplicationController
     end
 
     def create_profile_params
-      params.require(:profile).permit(:first_name, :last_name, :image)
+      params.require(:profile).permit(:first_name, :last_name, :image, :enable_profilepay)
     end
 
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :about, location_attributes: [:id, :name])
+      params.require(:profile).permit(:first_name, :last_name, :gender, :date_of_birth, :image, :about, :enable_profilepay, :wishpay_condition, location_attributes: [:id, :name])
     end
 
     def business_params
@@ -430,6 +492,12 @@ class ProfilesController < ApplicationController
       wallet.unused_coins = 2
       wallet.used_coins = 0
       wallet.save
+    end
+
+    def create_coin_cocotransfer(amount)
+      @cocotransfer = Cocotransfer.new
+      @cocotransfer.assign_attributes(amount: 0, wallet_amount: 0, coin_amount: amount, transferable_id: current_user.id, from_user_id: current_user.id,  phonecode: current_user.profile.phonecode, phone: current_user.profile.phone, email: current_user.email, donor_name: current_user.name , transferable_type: Cocotransfer::TRANSFER_TYPE[1][0] )
+      @cocotransfer.save
     end
 
 end

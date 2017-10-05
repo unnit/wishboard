@@ -24,6 +24,10 @@ namespace :coco_tasks do
     end
   end
 
+  task add_transfer_type_to_old_cocotransfers: :environment do
+    Cocotransfer.where(transfer_type: nil).update_all(transfer_type: Cocotransfer::TRANSFER_TYPE[0][1])
+  end
+
   task add_access_type_to_old_showcases: :environment do
     Showcase.where(access_type: nil).update_all(access_type: 0)
   end

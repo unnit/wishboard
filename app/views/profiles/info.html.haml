@@ -34,6 +34,14 @@
                     = f.text_field :last_name, placeholder: "Last Name", class: "form-control", maxlength: 200, required: true
                 .form-group
                   %label.col-sm-3.col-xs-12.control-label.no-mar-pad
+                    Enable ProfilePay
+                    %span.website-color *&nbsp;&nbsp;
+                  .col-xs-12.col-sm-6.no-mar-pad
+                    %label.pull-left.mtop10.raise-toggle-switch.pon
+                      = f.check_box :enable_profilepay
+                      %div
+                .form-group
+                  %label.col-sm-3.col-xs-12.control-label.no-mar-pad
                     Invitation Code&nbsp;&nbsp;
                   .col-sm-3.col-xs-12.no-mar-pad
                     = text_field_tag :invited_code, "#{current_user.invited_code}", :placeholder => "Optional", class: "form-control", maxlength: 200

@@ -200,15 +200,15 @@ class User < ApplicationRecord
   end
 
   def total_transfered_amount
-   ( wallet_tranfered_amount + online_tranfered_amount).to_i
+   (wallet_tranfered_amount + online_tranfered_amount).to_i
   end
 
   def total_profile_withdraw_available_amount
-    return   total_profile_raised_amount - (profile_withdrawn_amount + wallet_tranfered_amount)
+    return total_profile_raised_amount - (profile_withdrawn_amount + wallet_tranfered_amount)
   end
 
   def wishpay_raised_amount
-    Cocotransfer.showcase_gifting.where(transferable_id: showcases.non_crowdfunding.pluck(:id)).sum("amount + wallet_amount")
+    Cocotransfer.showcase_gifting.complete.where(transferable_id: showcases.non_crowdfunding.pluck(:id)).sum("amount + wallet_amount")
   end
 
   def coin_converted_amount

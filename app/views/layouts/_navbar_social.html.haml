@@ -151,8 +151,11 @@
   - if @username_unlocked
     .col-xs-12.col-sm-6.col-sm-offset-3.mtop70.bg-white.border5.padding15
       = form_for current_user.profile, url: lock_settings_profiles_path , html: {class: "font-medium"} do |f|
-        %h4.border-bt-side.mtop0.pbottom10.mbottom20 Initialize your settings
-        .col-xs-12.col-sm-12.padding0.mbottom20
+        %h5.weight600.border-bt-side.mtop0.pbottom10.mbottom10 Heya! Reserve your most precious identity on the web, your Cocociti username.
+        .col-xs-12.col-sm-12.padding0.mbottom20.border-medium.border2
+          %p.font12.padding10
+            %i.fa.fa-info
+            Starting from today anyone can receive or send gifts on Cocociti either to profiles or to wishes of people who you care.To ensure safety of your payments, we need to lock your usernames. You can change one last time before you proceed from this screen.
           %label.col-xs-12.col-sm-3.control-label{:for => "textinput"}
             Username
             %span.website-color *
@@ -163,22 +166,33 @@
             %span.pull-left https://www.cocociti.com/
             %span.pull-left.username-url.lowercase
           .col-xs-12.col-sm-9.col-sm-offset-3.ptop10.font11.grey-fg
-            Note: Only hyphens and underscores are allowed. Please finalise your username.
-        .col-xs-12.col-sm-12.padding0.mbottom20
+            Note: Only alphabets, digits and underscores are allowed. Please finalise your username.
+        .col-xs-12.col-sm-12.padding0.mbottom20.border-medium.border2
+          %span.pull-left.full-width.extra-small-font.padding10
+            %i.fa.fa-info
+            %strong Profile Pay:
+            If you enable this, others will be able to gift you money to you by clicking the gift button on your profile page.
           %label.col-sm-3.col-xs-9.control-label
             Enable ProfilePay
             %span.website-color *&nbsp;&nbsp;
           .col-xs-3.col-sm-9
-            %label.pull-left.raise-toggle-switch.pon.mtop10.mob-mtop0
+            %label.pull-left.raise-toggle-switch.pon.mtop2.mob-mtop0
               = f.check_box :enable_profilepay
               %div
-        .col-xs-12.col-sm-12.padding0.mbottom20
+        .col-xs-12.col-sm-12.padding0.mbottom10.border-medium.border2
+          %span.pull-left.full-width.extra-small-font.padding10
+            %i.fa.fa-info
+            %strong WishPay:
+            If you enable WishPay for your wishes, other will be able to gift money to help you fulfil wishes. Select the following options to enable or disable WishPay for your wishes.
           - Profile::WISHPAY_CONDITIONS.each do |condition|
             %label.col-sm-3.col-xs-9.control-label
               = condition[0]
             .col-xs-3.col-sm-9.mbottom10
               = f.radio_button :wishpay_condition, condition[1]
             .clearfix
+        %span.pull-left.full-width.extra-small-font.padding10
+          %i.fa.fa-info
+          PS: You can enable or disable WishPay while creating a new wish or by editing an existing wish individually too.
         .col-xs-12.col-sm-12.padding0
           .col-xs-12.col-sm-12.text-center
             = submit_tag "Confirm", class: "btn btn-md weight600 mtop10 white-fg violet-bg border2 j-loader-trigger-link"

@@ -51,17 +51,17 @@ class User < ApplicationRecord
   has_one :profile, dependent: :destroy
   has_one :wallet, dependent: :destroy
   has_many :cocotransfers, as: :transferable, dependent: :destroy
-  has_many :tranfered_cocotransfers, class_name: "Cocotransfer", foreign_key: "from_user_id"
+  has_many :transferred_cocotransfers, class_name: "Cocotransfer", foreign_key: "from_user_id"
 
-  scope :all_cocotransfers, ->(user_id) {Cocotransfer.where("(transferable_type = ? and transferable_id = ? ) or (from_user_id = ? )", "User", user_id, user_id)}
+  scope :all_cocotransfers, ->(user_id) {Cocotransfer.joins("LEFT JOIN showcases on showcases.id = cocotransfers.transferable_id and cocotransfers.transferable_type = 'Showcase'").where("(transferable_type = ? and transferable_id = ?) or (from_user_id = ?) or (showcases.user_id = ?)", "User", user_id, user_id, user_id)}
 
   validates :invited_code, format: { with: /\A[a-zA-Z0-9]*\z/ }, if: :invited_code_present?
   DEFAULT_GIFT_AMOUNT = 10
   MIN_GIFT_AMOUNT_ALLOWED = 10
-  MAX_GIFT_AMOUNT_ALLOWED = 1000000
+  MAX_GIFT_AMOUNT_ALLOWED = 10000
 
   def all_cocotransfers
-    Cocotransfer.where("(transferable_type = ? and transferable_id = ? ) or (from_user_id = ? )", "User", self.id, self.id)
+    Cocotransfer.where("(transferable_type = ? and transferable_id = ?) or (from_user_id = ? )", "User", self.id, self.id)
   end
 
   def can_accept_gift?
@@ -192,11 +192,11 @@ class User < ApplicationRecord
   end
 
   def wallet_tranfered_amount
-    return tranfered_cocotransfers.complete.sum(:wallet_amount).to_i
+    return transferred_cocotransfers.complete.sum(:wallet_amount).to_i
   end
 
   def online_tranfered_amount
-    return tranfered_cocotransfers.complete.sum(:amount).to_i
+    return transferred_cocotransfers.complete.sum(:amount).to_i
   end
 
   def total_transfered_amount

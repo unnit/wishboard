@@ -1,6 +1,6 @@
 %td= cocotransfer.txnid
-%td= link_to cocotransfer.showcase.title, slug_showcase_path(cocotransfer.showcase.slug,cocotransfer.showcase.id), target: "_blank"
-%td= link_to cocotransfer.showcase.user.name, "#profile-#{cocotransfer.showcase.user.profile_id}", data: {toggle: "modal" }
+%td= link_to cocotransfer.transferable.title, slug_showcase_path(cocotransfer.transferable.slug, cocotransfer.transferable.id), target: "_blank"
+%td= link_to cocotransfer.transferable.user.name, "#profile-#{cocotransfer.transferable.user.profile_id}", data: {toggle: "modal" }
 %td= cocotransfer.donor_name
 %td= cocotransfer.created_at.strftime("%d %a %b, %Y %H:%M")
 %td= rupee cocotransfer.amount
@@ -9,7 +9,7 @@
   = link_to "#cocotrfrs-#{cocotransfer.id}", class: "btn btn-sm btn-success", data: {toggle: "modal"} do
     %span.glyphicon.glyphicon-eye-open
 
-= render partial: "admin/users/profile", locals: {profile: cocotransfer.showcase.user.profile}
+= render partial: "admin/users/profile", locals: {profile: cocotransfer.transferable.user.profile}
 
 .modal.profile-modal.fade{id: "cocotrfrs-#{cocotransfer.id}"}
   .modal-dialog
@@ -20,12 +20,12 @@
       .modal-body
         .col-sm-12.no-mar-pad
           .col-sm-4
-            = cl_image_tag cocotransfer.showcase.image, width: 253, height: 190, crop: :fill
+            = cl_image_tag cocotransfer.transferable.image, width: 253, height: 190, crop: :fill
           .col-sm-8
-            %strong= cocotransfer.showcase.title
+            %strong= cocotransfer.transferable.title
             %br
             %label Owner:
-            = cocotransfer.showcase.user.name
+            = cocotransfer.transferable.user.name
         .col-sm-12.no-mar-pad.mtop10
           %label.col-sm-4 Status
           .col-sm-8= cocotransfer.display_status

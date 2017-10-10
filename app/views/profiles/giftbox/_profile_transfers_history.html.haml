@@ -11,19 +11,27 @@
             .media-left
               %i.fa.fa-inr.white-fg.img-circle.box-shad{style: "background-color: #3AD1BE;padding: 5px 9px;box-shadow: 0 0px 0px 0 #3AD1BE, 0 6px 11px 0 #3AD1BE;"}
             .media-body
-              Converted Coins
+              %span.font-medium.black80-fg.inline-block Converted Coins
           -elsif cocotransfer.is_transferd_by?(current_user.id)
             .media-left
               %i.fa.fa-inr.white-fg.img-circle.box-shad{style: "background-color: #FB5234;padding: 5px 9px;box-shadow: 0 0px 0px 0 #FB5234, 0 6px 11px 0 #FB5234;"}
             .media-body
               %span.font-medium.black80-fg.inline-block Transfer to
-              %span.block-display.font11.grey-fg #{cocotransfer.receiver.name}
+              - if cocotransfer.showcase_transfer?
+                %span.block-display.font11.grey-fg
+                  #{truncate cocotransfer.transferable.title, length: 30}
+              - elsif cocotransfer.profile_transfer?
+                %span.block-display.font11.grey-fg
+                  #{cocotransfer.receiver.name}
+                  (@#{cocotransfer.receiver.slug})
           -else
             .media-left
               %i.fa.fa-inr.white-fg.img-circle.box-shad{style: "background-color: #3AD1BE;padding: 5px 9px;box-shadow: 0 0px 0px 0 #3AD1BE, 0 6px 11px 0 #3AD1BE;"}
             .media-body
               %span.font-medium.black80-fg.inline-block Received from
-              %span.block-display.font11.grey-fg #{cocotransfer.donor_name}
+              %span.block-display.font11.grey-fg
+                #{cocotransfer.donor_name}
+                (@#{cocotransfer.fullfillment_contributer.slug})
         .col-xs-4.col-sm-4.text-right.black80-fg
           %i.fa.fa-inr
           #{cocotransfer.total_amount}

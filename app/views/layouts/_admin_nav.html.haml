@@ -27,9 +27,9 @@
         %li{class: "dropdown"}
           =link_to "More", "#"
           .dropdown-content
-            = link_to "Categories", admin_categories_path
-            = link_to "Products", admin_products_path
-            = link_to "Transactions", admin_transactions_path
+            %div.padding10= link_to  "Categories", admin_categories_path, class: "internallink grey-fg"
+            %div.padding10= link_to "Products", admin_products_path,  class: "internallink grey-fg"
+            %div.padding10= link_to "Transactions", admin_transactions_path, class: "grey-fg"
         %li
           = link_to destroy_user_session_path, method: :delete do
             %span Sign out

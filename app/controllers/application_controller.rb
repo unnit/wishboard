@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception, prepend: true
 
-  skip_before_action :check_profile, if: :devise_controller?, raise: false
-  before_action :set_timezone, :check_user_status, :check_profile, :init_showcase
+  skip_before_action :check_profile, :check_username_locked, if: :devise_controller?, raise: false
+  before_action :set_timezone, :check_user_status, :check_profile, :check_username_locked, :init_showcase
   before_action :set_raven_context
   #before_action :check_interests
 
@@ -36,6 +36,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def check_username_locked
+    if current_user && current_user.profile && !current_user.profile.locked_username?
+      @username_unlocked = true
+    else
+      @username_unlocked = false
+    end
+  end
+
   def init_showcase
     @scase = Showcase.new
     @scase.build_location
@@ -49,8 +57,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_raven_context
-   Raven.user_context(id: session[:current_user_id]) # or anything else in session
-   Raven.extra_context(params: params.to_unsafe_h, url: request.url)
+    Raven.user_context(id: session[:current_user_id]) # or anything else in session
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 
   def set_social_layout
@@ -98,7 +106,7 @@ class ApplicationController < ActionController::Base
     'dst' => no,
     'text' => msg
     }
-    response = p.send_message(params)
+    p.send_message(params)
   end
 
 end

@@ -24,18 +24,19 @@
                         cannot be changed later.
                       - else
                         * marked fields are mandatory
-                  .form-group
-                    %label.col-xs-12.col-sm-2.control-label{:for => "textinput"}
-                      Username
-                      %span.website-color *
-                    .col-xs-12.col-sm-3
-                      = f.text_field :slug, :placeholder => "Username", class: "form-control username lowercase", maxlength: 30, required: true
-                    .col-xs-12.col-sm-3.uname-avail.padding10.pbottom0.grey-fg
-                    .col-xs-12.col-sm-10.col-sm-offset-2.ptop10
-                      %span.pull-left https://www.cocociti.com/
-                      %span.pull-left.username-url.lowercase
-                    .col-xs-12.col-sm-10.col-sm-offset-2.ptop10.font11.grey-fg
-                      Note: Only hyphens and underscores are allowed.
+                  /
+                    .form-group
+                      %label.col-xs-12.col-sm-2.control-label{:for => "textinput"}
+                        Username
+                        %span.website-color *
+                      .col-xs-12.col-sm-3
+                        =# f.text_field :slug, :placeholder => "Username", class: "form-control username lowercase", maxlength: 30, required: true
+                      .col-xs-12.col-sm-3.uname-avail.padding10.pbottom0.grey-fg
+                      .col-xs-12.col-sm-10.col-sm-offset-2.ptop10
+                        %span.pull-left https://www.cocociti.com/
+                        %span.pull-left.username-url.lowercase
+                      .col-xs-12.col-sm-10.col-sm-offset-2.ptop10.font11.grey-fg
+                        Note: Only hyphens and underscores are allowed.
                   .form-group
                     %label.col-sm-2.control-label{:for => "textinput"}
                       First Name

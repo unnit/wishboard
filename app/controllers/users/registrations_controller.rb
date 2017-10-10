@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 respond_to :js, :html
-skip_before_action :check_user_status, :check_profile, :check_interests, raise: false
+skip_before_action :check_user_status, :check_profile, :check_interests, :check_username_locked, raise: false
 # before_action :configure_sign_up_params, only: [:create]
 # before_action :configure_account_update_params, only: [:update]
 

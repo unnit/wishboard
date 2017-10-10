@@ -1,6 +1,6 @@
 class Users::ConfirmationsController < Devise::ConfirmationsController
 
-  skip_before_action :check_user_status, :check_profile, :check_interests, only: [:new, :show], raise: false
+  skip_before_action :check_user_status, :check_profile, :check_interests, :check_username_locked, only: [:new, :show], raise: false
 
   # GET /resource/confirmation/new
   def new

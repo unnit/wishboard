@@ -16,10 +16,10 @@
       Balance: #{current_user.total_profile_withdraw_available_amount}
     .col-xs-12.col-sm-12.no-mar-pad
       - if current_user.mobile_verified?
-        .j-wdrw-btn.send-to-bank-btn.pon.font16.mtop70.inline-block Withdraw Amount
+        .send-to-bank-btn.pon.font16.mtop70.inline-block{class: "#{current_user.total_profile_withdraw_available_amount > 0 ? 'j-wdrw-btn' : 'opacity-low'}"} Withdraw
       - else
         = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
-          .send-to-bank-btn.pon.font16.mtop70.inline-block Withdraw Amount
+          .send-to-bank-btn.pon.font16.mtop70.inline-block Withdraw
 .col-xs-12.col-sm-4.mob-mtop10
   .col-xs-12.col-sm-12.padding0.font20.white-fg.hidden-overflow{style: "background-image: linear-gradient(to right, #EE70E9 0%, #8363F9 100%);border-radius: 3px;padding: 15px;height: 204px;box-shadow: 0 9px 39px 0 rgba(0, 0, 0, 0.19), 0 5px 24px 0 rgba(0, 0, 0, 0.24);"}
     %i.fa.fa-circle.pos-absolute{style: "opacity: 0.3;font-size: 186px;right: -40px;bottom: -21px;"}
@@ -29,8 +29,11 @@
       Balance: #{current_user.wallet.unused_coins.to_i} coins
     .col-xs-12.col-sm-12.no-mar-pad
       - if current_user.mobile_verified?
-        = link_to convert_to_profile_money_form_profiles_path, remote: true do
-          .send-to-bank-btn.pon.font16.mtop70.inline-block Convert Coins
+        - if current_user.wallet.unused_coins.to_i > 0
+          = link_to convert_to_profile_money_form_profiles_path, remote: true do
+            .send-to-bank-btn.pon.font16.mtop70.inline-block Convert Coins to Cash
+        - else
+          .send-to-bank-btn.pon.font16.mtop70.inline-block.opacity-low Convert Coins to Cash
       - else
         = link_to verify_profile_profiles_path, class: "j-loader-trigger-link" do
-          .send-to-bank-btn.pon.font16.inline-block.mtop70 Convert Coins
+          .send-to-bank-btn.pon.font16.inline-block.mtop70 Convert Coins to Cash

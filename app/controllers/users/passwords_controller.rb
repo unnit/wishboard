@@ -1,5 +1,5 @@
 class Users::PasswordsController < Devise::PasswordsController
-  skip_before_action :check_user_status, :check_profile, :check_interests, raise: false
+  skip_before_action :check_user_status, :check_profile, :check_interests, :check_username_locked, raise: false
   before_action :set_social_layout, only: [:new, :create, :edit, :update]
   # GET /resource/password/new
   def new

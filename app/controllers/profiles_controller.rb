@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
   before_action :redirect_to_home, only: [:dashboard, :business_profile, :update_business]
   before_action :authenticate_user!
-  skip_before_action :check_profile, :check_interests, only: [:info, :create, :username_available], raise: false
+  skip_before_action :check_profile, :check_interests, :check_username_locked, only: [:info, :create, :username_available], raise: false
   before_action :set_profile, only: [:index, :social, :update_social, :update, :business_profile, :update_business, :dashboard]
   before_action :set_social_layout, except: [:dashboard, :info, :create]
   before_action :set_plain_layout, only: [:info, :create]
@@ -15,6 +15,7 @@ class ProfilesController < ApplicationController
   def create
     unless current_user.profile
       @profile = Profile.new(create_profile_params)
+      @profile.locked_username = true
       @profile.slug = params[:profile][:slug].downcase
       @profile.user = current_user
       @referrer = current_user.referrer if current_user.invited_code == params[:invited_code]
@@ -76,7 +77,7 @@ class ProfilesController < ApplicationController
         @profile.mobile_verified = false
       end
     end
-    @profile.slug = params[:profile][:slug].downcase
+    #@profile.slug = params[:profile][:slug].downcase
     @profile.image_absent = 'yes' if params[:image].blank?
     current_user.reload
     begin
@@ -93,6 +94,25 @@ class ProfilesController < ApplicationController
       render :index
       return
     end
+  end
+
+  def lock_settings
+    profile = current_user.profile
+    profile.slug = params[:profile][:slug].downcase
+    profile.locked_username = true
+    profile.enable_profilepay = params[:profile][:enable_profilepay]
+    profile.wishpay_condition = params[:profile][:wishpay_condition]
+    if current_user.profile.save
+      if params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[2] || params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[0]
+        current_user.showcases.non_crowdfunding.update_all(wishpay_status: Showcase::WISHPAY_STATUS[1])
+      elsif params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[3] || params[:profile][:wishpay_condition].to_i == Profile::WISHPAY_CONDITIONS_VALUES[1]
+        current_user.showcases.non_crowdfunding.update_all(wishpay_status: Showcase::WISHPAY_STATUS[0])
+      end
+      flash[:notice] = "Settings confirmed successfully"
+    else
+      flash[:alert] = profile.errors.full_messages.join(", ")
+    end
+    redirect_back(fallback_location: root_path)
   end
 
   def wish_settings
@@ -354,12 +374,11 @@ class ProfilesController < ApplicationController
     @showcase_withdraws = current_user.withdraws.showcase_withdraws.valid_withdraws
     @coin_withdraws = current_user.withdraws.coin_withdraws.valid_withdraws
     @profile_withdraws = current_user.withdraws.profile_withdraws.valid_withdraws
-    @tranfered_cocotransfers = current_user.tranfered_cocotransfers.complete
+    @transferred_cocotransfers = current_user.transferred_cocotransfers.complete.order(created_at: :desc)
     @crowdfunding_showcases = current_user.showcases.active_rasing_funds
     @crowdfunding_withdraws = current_user.withdraws.showcase_withdraws.valid_withdraws
-    @all_related_cocotransfers = User.all_cocotransfers(current_user.id).complete
+    @all_related_cocotransfers = User.all_cocotransfers(current_user.id).complete.order(created_at: :desc)
     render :giftbox
-    # @withdraws = current_user.withdraw_history
   end
 
   def send_to_bank_form
@@ -430,8 +449,8 @@ class ProfilesController < ApplicationController
       wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
       wallet.unused_coins = 0
       if wallet.save
-        @cocotransfer.update_column("transaction_status", Transaction::TRANSACTION_STATUS[2][1])
-        flash[:notice] = "You have successfully converted your coins to profile money"
+        @cocotransfer.update_column("transaction_status", Transaction::TRANSACTION_STATUS[0][1])
+        flash[:notice] = "You have successfully raised a request to convert your coins to cash."
       else
         flash[:alert] =  wallet.errors.full_messages.join(", ")
       end

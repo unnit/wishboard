@@ -18,7 +18,14 @@ Rails.application.routes.draw do
     get "users/admin_firebasenotifications", to: "users#admin_firebasenotifications", as: :admin_firebasenotifications
     post "users/send_new_firebase_notifications", to: "users#send_new_firebase_notification", as: :send_new_firebase_notifications
     root 'users#index'
-    resources :cocotransfers, only: [:index]
+    resources :cocotransfers do
+      collection do
+        get :grouppay_cocotransfers
+      end
+      member do
+        post :verify_coin_to_cash
+      end
+    end
     resources :users, only: [:index, :update] do
       collection do
         get :messages
@@ -85,6 +92,7 @@ Rails.application.routes.draw do
       post :update_address
       patch :update_social
       patch :update_wish_settings
+      patch :lock_settings
       get :username_available
       get :verify_mobile
       patch :get_otp

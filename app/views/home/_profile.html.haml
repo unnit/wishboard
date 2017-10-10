@@ -29,12 +29,6 @@
             .btn.grey-fg.prof-sett
               %span.glyphicon.glyphicon-cog.pull-left
       %li.hidden-xs-inline.pull-right
-        - if ((current_user && current_user != user) || !current_user)
-          .text-center.padding0
-            = link_to new_cocotransfer_path(Cocotransfer.new, transferable_id: user.id, transferable_type:"User"),  method: :get do
-              .btn.no-mar-pad.loader-out-follow-button.follow-button{class: 'cc-dark-fg-border', style: "line-height: 0px;"}
-                %button{class: "btn padding0 bg-white font-medium cc-dark-fg"}
-                  Gift
         - if current_user && current_user != user
           .text-center.padding0{class: "follow-set-#{user.id}"}
             = link_to user_toggle_follow_path(user), remote: true, method: :post do
@@ -51,6 +45,14 @@
                     %span
                     %span
                     %span
+      %li.hidden-xs-inline.pull-right.mright10
+        - if (current_user && !current_user.same_user?(user) && @profile.enable_profilepay && @profile.locked_username)
+          .text-center.padding0
+            = link_to new_cocotransfer_path(Cocotransfer.new, transferable_id: user.id, transferable_type: "User"),  method: :get do
+              .btn.no-mar-pad.loader-out-follow-button.follow-button.bg-white{class: 'cc-dark-fg-border', style: "line-height: 0px;"}
+                %button{class: "btn padding0 bg-white font-medium cc-dark-fg"}
+                  %i.fa.fa-rupee
+                  Gift
 .container-fluid
   .container.padding0
     .col-xs-12.col-sm-12.text-center.padding0.mbottom10{style: "border-bottom: 1px solid #e5e5e5;"}
@@ -105,11 +107,11 @@
           = (truncate user.location.name, length: 40)
       %h5.grey-fg= (truncate @profile.about, length: 250)
       %ul.mbottom10.padding0.visible-xs
-        %li.inline-block
+        %li.block-display
           - if current_user && current_user != user
             .text-center{class: "follow-set-#{user.id}"}
               = link_to user_toggle_follow_path(user), remote: true, method: :post do
-                .btn.no-mar-pad.loader-out-follow-button.follow-button.border5{class: "#{current_user.following?(user) ? 'green-border' : 'cc-dark-fg-border'}"}
+                .btn.no-mar-pad.loader-out-follow-button.follow-button.border2{class: "#{current_user.following?(user) ? 'green-border' : 'cc-dark-fg-border'}"}
                   %button{class: "btn loader-button loader-in-follow-button padding0 border5 bg-white font-medium #{current_user.following?(user) ? 'green-fg' : 'cc-dark-fg'}"}
                     - if current_user.following?(user)
                       Following
@@ -120,7 +122,15 @@
                   .loader-effect.btn.loader-in-follow-button{style: "display:none;padding-top: 3px;"}
                     .ball-clip-rotate{style: "height:22px;"}
                       %div.blue-border ...
-        %li.inline-block
+        %li.block-display.mtop10
+          - if (current_user && !current_user.same_user?(user) && @profile.enable_profilepay && @profile.locked_username)
+            .text-center.padding0
+              = link_to new_cocotransfer_path(Cocotransfer.new, transferable_id: user.id, transferable_type: "User"),  method: :get do
+                .btn.no-mar-pad.loader-out-follow-button.follow-button.bg-white.border2{class: 'cc-dark-fg-border', style: "line-height: 0px;"}
+                  %button{class: "btn padding0 bg-white font-medium cc-dark-fg"}
+                    %i.fa.fa-rupee
+                    Gift
+        %li.block-display
           - if current_user && current_user.same_user?(user)
             = link_to settings_path, class: "j-loader-trigger-link" do
               .btn.grey-fg.prof-sett

@@ -174,7 +174,7 @@
             %span.font12.grey-fg.pull-left.mtop2 Wish?
           .badge.bg-white.pull-left.pleft0.pright0.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
             = showcase.children.count
-          %span.done-this.pon.grey-fg.pull-left.pleft15{"data-id" => "#{showcase.id}"}
+          %span.done-this.pon.grey-fg.pull-left.pleft-10{"data-id" => "#{showcase.id}"}
             %i.fa.fa-check-square-o.pull-left.font17.mtop2
             %span.font12.grey-fg.pull-left.mtop2 Done?
       - if showcase.coin_wish?
@@ -185,42 +185,36 @@
       = link_to authenticate_path, class: "j-loader-trigger-link" do
         %span.pon.grey-fg.pull-left.pright5
           %i.fa.fa-clone.pull-left.mtop2{title: "Wish"}
-          /%span.font12.grey-fg.pull-left.mtop2 Wish?
+          %span.font12.grey-fg.pull-left.mtop2 Wish?
         .badge.pull-left.bg-light-grey.grey-fg.mtop2.mleft5.extra-small-font.mtop2.weight500{style: "display: #{showcase.children_any? ? 'inline-block' : 'none'}", title: "#{showcase.children_owner_names}"}
           = showcase.children.count
         %span.pon.grey-fg.pull-left.pleft-10
           %i.fa.fa-check-square-o.pull-left.font17.mtop2
           %span.font12.grey-fg.pull-left.mtop2 Done?
     - if showcase.is_wishpay?
-      %i.fa.fa-gift.pull-left.mleft5.font-bit-large.grey-fg.mtop2.j-wishpay-open.pon{style: "/*color: #ffb900;border: 1px solid #ffb900;border-radius: 30px;padding: 4px 5px;*/"}
-      .col-xs-12.col-sm-12.pos-absolute.hide-display.j-wishpay-wrap.bg-white.ptop10.pbottom10.btn-shadow{style: "top: -55px;right: 5px;border-radius: 35px;"}
+      %i.fa.fa-diamond.pull-left.mleft10.grey-fg.mtop2.j-wishpay-open.pon
+      .pos-absolute.hide-display.j-wishpay-wrap.bg-white.padding10.btn-shadow{style: "top: -50px;right: 94px;border-radius: 35px;width: auto;"}
         -if showcase.can_be_fullfilled_at_once?
           = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), html: {class: "inline-block"}, method: :get do |f|
             = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
             = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
             = f.hidden_field :gift_type, value: "fullfill", name: 'gift_type'
             .inline-block
-              = f.submit "Fullfill", class: "btn btn-sm cc-dark-fg-border transa cc-dark-fg", style: "background-color: transparent;width: 77.38px;border-radius: 16px;"
-              -# .amount_detail.extra-small-font
-              -#   %i.fa.fa-inr.grey-fg
-              -#   = showcase.fullfillment_at_once_amount
+              %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg{style: "background-color: transparent;border-radius: 16px;"}
+                /%i.fa.fa-star
+                %span.inline-block Fulfill
         = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), html: {class: "inline-block"}, method: :get do |f|
           = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
           = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
           .inline-block
-            = f.submit "Contribute", class: "btn btn-sm cc-dark-fg-border cc-dark-fg", style: "background-color: transparent;border-radius: 16px;"
-            -# .amount_detail.extra-small-font
-            -#   approximately
-            -#   %i.fa.fa-inr.grey-fg
-            -#   = showcase.min_gift_amount_allowed
-            -#   To
-            -#   %i.fa.fa-inr.grey-fg
-            -#   = showcase.max_gift_amount_allowed
+            %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg{style: "background-color: transparent;border-radius: 16px;"}
+              /%i.fa.fa-star-half-o.cc-dark-fg
+              %span.inline-block Contribute
   .col-xs-2.col-sm-2.pright0.pleft5
     - if current_user && showcase.owner?(current_user)
       = link_to slug_showcase_path(showcase.slug, showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do
         .fa.fa-folder-o.grey-fg.pull-right.font16{title: "Arrange Showcase"}
-    %i.fa.fa-share-alt-square.pull-right.pon.share_popup_icon.grey-fg{"aria-hidden" => "true", "data-showcase-id": "#{showcase.id}", title: "Share"}
+    %i.fa.fa-share.font-medium.mtop2.pull-right.pon.share_popup_icon.grey-fg{"aria-hidden" => "true", "data-showcase-id": "#{showcase.id}", title: "Share"}
     %div.share_popup
       .shareShowcaseRoundIcons{"data-id" => "#{showcase.id}", "data-showcase-id": "#{showcase.id}"}
 = render partial: "showcases/description_tabs", locals: {showcase: showcase}

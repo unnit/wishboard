@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   before_action :redirect_to_home, only: [:index, :bulk_bookings, :offers, :fansday]
-  skip_before_action :check_user_status, :check_profile, :check_interests, only: [:user_signup_confirmation], raise: false
+  skip_before_action :check_user_status, :check_profile, :check_interests, :check_username_locked, only: [:user_signup_confirmation], raise: false
   skip_before_action :check_interests, only: [:interests, :toggle_follow_interest, :follow_all_interest, :unfollow_all_interest], raise: false
   before_action :back_to_home, only: [:authenticate]
   before_action :authenticate_user!, except: [:myprofile, :myshowpieces, :mywishes, :mymomentary, :view_collection, :wiki, :following, :followers, :user_card, :bulk_bookings, :feed, :index, :offers, :about, :terms, :privacy, :contact, :goodness_and_open_source, :sitemap, :fansday, :authenticate, :jobs, :hackers, :cocopay, :refund, :mobile, :save_firebase_token, :display_preview]

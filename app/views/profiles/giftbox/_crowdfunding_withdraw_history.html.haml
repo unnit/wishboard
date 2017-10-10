@@ -8,7 +8,7 @@
       .col-xs-12.col-sm-12.pad-v-15.weight600{style: "border-bottom: 1px solid #f1f1f1;"}
         .col-xs-8.col-sm-8.no-mar-pad
           = link_to slug_showcase_path(withdraw.showcase.slug, withdraw.showcase) do
-            %span.pull-left.font-medium.black80-fg #{withdraw.showcase.truncated_title}
+            %span.pull-left.font-medium.black80-fg{title: "#{withdraw.showcase.title}", "data-toggle" => "tooltip", "data-placement" => "auto"} #{truncate withdraw.showcase.title, length: 25}
         .col-xs-4.col-sm-4.text-right
           %span.pull-right.font22
             - if withdraw.open?

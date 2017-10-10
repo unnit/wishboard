@@ -31,7 +31,7 @@ class CocotransfersController < ApplicationController
     vaild_showcase_transfer = (@showcase && @showcase.can_accept_gift?)
     valid_profile_transfer = @receiver && @receiver.can_accept_gift?
     # @cocotransfer.transferable_type = valid_profile_transfer ? Cocotransfer::TRANSFER_TYPE[1][1] : Cocotransfer::TRANSFER_TYPE[0][1]
-    if valid_profile_transfer || vaild_showcase_transfer  
+    if valid_profile_transfer || vaild_showcase_transfer
       assign_coco_attributes
     else
       redirect_to root_path
@@ -44,9 +44,8 @@ class CocotransfersController < ApplicationController
     @cocotransfer.fullfillment_contributer = current_user
     if @cocotransfer.save
       @cocotransfer.generate_txnid!
-
       if @cocotransfer.is_only_wallet?
-       return process_wallet_payment("html")  
+       return process_wallet_payment("html")
       else
        return redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
       end
@@ -55,9 +54,6 @@ class CocotransfersController < ApplicationController
       flash[:alert] = @cocotransfer.errors.full_messages.join(", ")
       render :new
     end
-  end
-
-  def show
   end
 
   def checkout
@@ -72,11 +68,11 @@ class CocotransfersController < ApplicationController
       if @cocotransfer.update_attributes(cocotransfer_params)
         @cocotransfer.generate_txnid!
         if @cocotransfer.is_only_wallet?
-         return process_wallet_payment("js")  
+         return process_wallet_payment("js")
         else
           render json: {cocotransfer: @cocotransfer, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url, success: true, total_amount: @cocotransfer.total_amount}
         end
-       
+
       else
         error_messages = @cocotransfer.errors.full_messages.join(", ")
         render json: {cocotransfer: @cocotransfer, success: false, error_messages: error_messages }
@@ -109,7 +105,7 @@ class CocotransfersController < ApplicationController
       wallet_amount = ((@cocotransfer.wallet_amount.to_i > 0)  && available_wallet_amount < @cocotransfer.wallet_amount.to_i ) ? available_wallet_amount : @cocotransfer.wallet_amount
       unless @cocotransfer.paid?
        @cocotransfer.update_columns(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: params[:amount], wallet_amount: wallet_amount) unless @cocotransfer.paid?
-       @cocotransfer.paid_callbacks! 
+       @cocotransfer.paid_callbacks!
       end
       redirect_to transfer_success_cocotransfer_path(@cocotransfer.slug)
       # render :payment_success

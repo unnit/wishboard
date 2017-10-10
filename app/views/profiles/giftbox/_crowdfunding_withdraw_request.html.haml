@@ -6,9 +6,20 @@
   .col-xs-12.col-sm-12.padding0.j-gp-section
     - @crowdfunding_showcases.each do |showcase|
       .col-xs-12.col-sm-12.pad-v-15.weight600{style: "border-bottom: 1px solid #f1f1f1;"}
-        = link_to slug_showcase_path(showcase.slug, showcase) do
-          %span.pull-left.font-medium.black80-fg #{showcase.truncated_title}
-        .btn.btn-sm.btn-v-outline.transition-effect.j-wdrw-btn.pull-right{class: "#{ (showcase.available_withdraw_amount > 0) ? '' : 'disabled' }","data-amount" => "#{showcase.available_withdraw_amount}", "data-showcase-id" => "#{showcase.id}"} Withdraw
-        %span.pull-right.mright20
-          %i.fa.fa-inr
-          #{showcase.available_withdraw_amount}
+        .col-xs-6.col-sm-6.pleft0
+          = link_to slug_showcase_path(showcase.slug, showcase) do
+            %span.pull-left.full-width.font-medium.black80-fg{title: "#{showcase.title}", "data-toggle" => "tooltip", "data-placement" => "auto"} #{truncate showcase.title, length: 25}
+          %span.block-display.font11.grey-fg
+            #{showcase.remaining_days} #{showcase.remaining_days > 1 || showcase.remaining_days == 0 ? 'days' : 'day'} to go
+        .col-xs-6.col-sm-6.pleft0.pright0
+          .btn.btn-sm.btn-v-outline.transition-effect.j-wdrw-btn.pull-right{class: "#{(showcase.available_withdraw_amount > 0) ? '' : 'disabled' }", "data-amount" => "#{showcase.available_withdraw_amount}", "data-showcase-id" => "#{showcase.id}"}
+            %i.fa.fa-arrow-down{title: "Withdraw", "data-toggle" => "tooltip", "data-placement" => "auto"}
+            %i.fa.fa-inr{title: "Withdraw", "data-toggle" => "tooltip", "data-placement" => "auto"}
+          %span.pull-right.mright20
+            %i.fa.fa-hourglass-end.light-grey-fg
+            %i.fa.fa-inr.font13
+            %span.font13.black80-fg #{showcase.raised_amount}
+          %span.pull-right.mright20
+            %i.fa.fa-hourglass.light-grey-fg
+            %i.fa.fa-inr.font13
+            %span.font13.black80-fg #{showcase.available_withdraw_amount}

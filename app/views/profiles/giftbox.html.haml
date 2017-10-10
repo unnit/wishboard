@@ -4,17 +4,43 @@
   .container.padding0.mtop20.pbottom70
     = render "profiles/giftbox/overall_stats"
     .col-xs-12.col-sm-6.mtop30
-      .col-xs-12.col-sm-12.padding15.bg-white{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);border-radius: 5px;"}
+      .col-xs-12.col-sm-12.padding15.bg-white.hidden-overflow.border5{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);"}
         = render "profiles/giftbox/crowdfunding_withdraw_request"
     .col-xs-12.col-sm-6.mtop30
-      .col-xs-12.col-sm-12.padding15.bg-white{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);border-radius: 5px;"}
+      .col-xs-12.col-sm-12.padding15.bg-white.hidden-overflow.border5{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);"}
         = render "profiles/giftbox/crowdfunding_withdraw_history"
     .col-xs-12.col-sm-6.mtop30
-      .col-xs-12.col-sm-12.padding15.bg-white{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);border-radius: 5px;"}
+      .col-xs-12.col-sm-12.padding15.bg-white.hidden-overflow.border5{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);"}
         = render "profiles/giftbox/profile_withdraw_history"
     .col-xs-12.col-sm-6.mtop30
-      .col-xs-12.col-sm-12.padding15.bg-white{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);border-radius: 5px;"}
+      .col-xs-12.col-sm-12.padding15.bg-white.hidden-overflow.border5{style: "height:300px;box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);"}
         = render "profiles/giftbox/profile_transfers_history"
+    .col-xs-12.col-sm-12
+      .col-xs-12.col-sm-12.bg-white.hidden-overflow.border5.mtop30.padding15{style: "box-shadow: 0px 0px 19px 0px rgba(0, 0, 0, 0.09);"}
+        %h5.histroy-header RULES
+        .col-xs-12.col-sm-12.no-mar-pad
+          %ul.pleft20
+            %li 1 click on a coin icon = ₹1 rupee (For your wishes & while gifting)
+            %li For each friend you invite to Cocociti, you get 2 coins. Isn't that awesome?
+            %li You can withdraw the coins earned to your bank account any time at the intervals of 10, 20, 50, 100 & in multiples of 200 thereafter
+            %li The first time you can withdraw when you reach ₹10, next time when you reach ₹20, then 50, 100 and 200 each time after your first 200.
+            %li
+              Withdrawals are only allowed for:
+              %br
+              1.Indian residents, in INR only.
+              %br
+              2. Users 18 and above with a valid bank account.
+            %li One bank account can be associated with one Cocociti account
+            %li Spammy events or engagement aimed at earning promotional coins will result in cancellation of any such coins earned.
+            %li Profile balance will be refunded if not withdrawn within two days.
+            %li Have questions? Don't worry, write to us at ayyo@cocociti.com and we'll be happy to help.
+            %br
+            %strong
+              P.S:
+            Coins are applicable to coin wishes and your personal wishes (Not if you rewish or select from popular wishes)
+            %br
+            %br
+            %span.font20.weight-bold Happy Wishing.
 
 :css
   .histroy-header{

@@ -76,6 +76,8 @@ class Showcase < ApplicationRecord
   WISHPAY_STATUS = [0, 1]
   WISHPAY_STATUS_VALUES = [[0, "Disabled"], [1, "Enabled"]]
   NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK = 10
+  MIN_GIFT_AMOUNT_ALLOWED = 10
+  MAX_GIFT_AMOUNT_ALLOWED = 10000
 
   validates :title, :showcase_type, :wish_prefix, presence: true
   validates :title, length: { maximum: 100 }
@@ -91,7 +93,7 @@ class Showcase < ApplicationRecord
   validates :beneficiary, length: {maximum: 200}, if: :is_for_raising_fund?
   validates :beneficiary, presence: true, if: :is_raising_for_others?
   validates :video_link, length: {maximum: 300}, if: :is_for_raising_fund?
-  validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 1000000, greater_than: 10, message: "should be between 10 and 1000000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
+  validates :goal_amount, numericality: {only_integer: true, less_than_or_equal_to: 1000000, greater_than: 500, message: "should be between 10 and 1000000"}, if: [:is_for_raising_fund? , :is_goal_amount_not_blank?]
   validate :accept_fund_option_should_not_change, if: :already_raised_some_amount
   validate :accept_only_one_type_of_payment
   validate :date_of_achievement_not_in_future, unless: :date_of_achievement_blank?
@@ -127,15 +129,15 @@ class Showcase < ApplicationRecord
   def max_number_of_wishes_per_week
     if self.is_for_raising_fund? && self.new_record? && self.user && self.admin_created != true
       if self.user.showcases.active_rasing_funds.where("created_at > #{(Time.zone.now - 168.hours)}" ).count >= NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK
-       errors.add(:number_of_wishesh_per_week, "must be at less than or equal to #{NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK}")
+        errors.add(:number_of_wishesh_per_week, "must be at less than or equal to #{NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK}")
       end
-   end
- end
+    end
+  end
 
   def mobile_verifictaion
     if self.is_for_raising_fund? && !self.user.try(:profile).try(:mobile_verified)
        errors.add(:user, "Mobile not verified")
-     end
+    end
   end
 
   def can_be_fullfilled_at_once?
@@ -603,40 +605,19 @@ class Showcase < ApplicationRecord
   after_create_commit :send_new_wish
   after_destroy :verify_wallet
 
-  def default_min_amount
-    10
-  end
-
-  def default_max_amount
-    1000000
-  end
-
   def min_gift_amount_allowed
-    default_min_amount
+    MIN_GIFT_AMOUNT_ALLOWED
   end
 
   def max_gift_amount_allowed
     if self.is_wishpay?
-      (projected_amount.to_i > 0) ?  ( self.projected_amount - raised_amount) :  default_max_amount
+      (projected_amount.to_i > 0) ?  ( self.projected_amount - raised_amount) :  MAX_GIFT_AMOUNT_ALLOWED
     elsif self.is_for_raising_fund?
-      default_max_amount
+      MAX_GIFT_AMOUNT_ALLOWED
     else
       0
     end
   end
-
-  # def max_gift_amount_allowed
-  #   if is_wishpay?
-  #   if projected_amount.to_i > 0
-  #     if self.raised_amount > 0
-  #       self.projected_amount - raised_amount
-  #     else
-  #        self.projected_amount - raised_amount
-  #     end
-  #   else
-  #      default_max_amount
-  #   end
-  # end
 
   before_destroy :can_be_deleted?
 
@@ -645,6 +626,7 @@ class Showcase < ApplicationRecord
     self.already_raised_some_amount
     errors.blank?
   end
+  
   def set_achieved
     update_column :achieved_at, created_at
   end

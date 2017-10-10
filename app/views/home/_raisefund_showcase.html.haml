@@ -201,10 +201,10 @@
           .progress-bar.cc-dark-bg{:style => "width: #{showcase.percentage_raised}%;"}
       .col-xs-6.col-sm-6.padding0.ptop10
         %span.pull-left.full-width.font11 FROM
-        %span.pull-left.full-width.font-medium.weight600 #{showcase.no_of_contributers} #{showcase.no_of_contributers == 1 ? 'Contributers' : 'Contributer'}
+        %span.pull-left.full-width.font-medium.weight600 #{showcase.no_of_contributers} #{showcase.no_of_contributers > 1 || showcase.no_of_contributers == 0 ? 'Contributers' : 'Contributer'}
       .col-xs-6.col-sm-6.padding0.ptop10
         %span.pull-left.full-width.font11 TIME LEFT
-        %span.pull-left.full-width.font-medium.weight600 #{showcase.remaining_days} #{showcase.remaining_days == 1 ? 'days' : 'day'} to go
+        %span.pull-left.full-width.font-medium.weight600 #{showcase.remaining_days} #{showcase.remaining_days > 1 || showcase.remaining_days == 0 ? 'days' : 'day'} to go
       .col-xs-12.col-sm-12.no-mar-pad.mtop20.padding0
         - if showcase.campaign_ended?
           .btn.cc-med-bg.white-fg.weight600.full-width.font20{style: "height: 45px;"}

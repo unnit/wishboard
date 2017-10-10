@@ -65,36 +65,36 @@
       - if showcase.show_wishpay_edit_fields?
         = f.check_box :wishpay_status, checked: showcase.is_wishpay?
       - else
-        = f.check_box :wishpay_status, checked: showcase.is_wishpay?, disabled: "disabled", backend_disbaled: true
-    .col-xs-6.col-sm-6.ptop10.height50
-      Enable Crowdfunding:
-      - if showcase.accept_fund_is_editable?
-        = f.check_box :accept_fund
-      - else
-        = f.check_box :accept_fund, disabled: "disabled", backend_disbaled: true
+        = f.check_box :wishpay_status, checked: showcase.is_wishpay?, disabled: "disabled", backend_disabled: true
+    - if current_user.crowdfunding_wishes_enabled? && current_user.mobile_verified?
+      .col-xs-6.col-sm-6.ptop10.height50
+        Enable Crowdfunding:
+        - if showcase.accept_fund_is_editable?
+          = f.check_box :accept_fund
+        - else
+          = f.check_box :accept_fund, disabled: "disabled", backend_disbaled: true
+      .col-xs-12.col-sm-12.raise-funds-fields{class: "#{showcase.is_for_raising_fund? ? '' : 'hidden'}"}
+        .col-xs-12.col-sm-6.pleft0.height50
+          = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field", maxlength: 7
+        .col-xs-12.col-sm-6.pright0.height50
+          = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date", readonly: true
+        .col-xs-12.col-sm-12.pleft0.pright0.ptop10
+          .col-xs-4.col-sm-3.pleft0
+            %label{for: "showcase_fundcategory_id"} Category
+          .col-xs-8.col-sm-9.padding0
+            = f.select :fundcategory_id, Fundcategory.all.map{|m| [m.name, m.id]}, {include_blank: 'Select category*'}, class: "form-control coco-select-box", style: "border-radius: 0px !important;"
+        .col-xs-12.col-sm-12.pleft0.pright0.ptop10
+          .col-xs-4.col-sm-3.pleft0.ptop10
+            %label Raising for:&nbsp;
+          .col-xs-8.col-sm-4.pleft0.pright10.ptop10
+            = f.collection_radio_buttons :raising_for, Showcase::RAISING_FOR, :first, :last do |b|
+              = b.radio_button(class: "pull-left", style: "margin-left: 6px;") + b.label(class: "pull-left mbottom0 mleft5")
+          .col-xs-8.col-xs-offset-4.col-sm-offset-0.col-sm-5.pleft0.pright0
+            = f.text_field :beneficiary, class: "form-control coco-input-field #{showcase.is_raising_for_others? ? '' : 'hidden'}", placeholder: "Beneficiary name*"
+        .col-xs-12.col-sm-12.height50.padding0.ptop10
+          = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field", maxlength: 200
   .col-xs-12.col-sm-12.ptop10.height50.wishpay-fields{class: "#{showcase.is_wishpay? ? '' : 'hidden'}"}
     .col-xs-12.col-sm-6.pleft0.height50
       = f.text_field :projected_amount, placeholder: "Projected Amount*", class: "form-control coco-input-field", maxlength: 7
-
-  .col-xs-12.col-sm-12.raise-funds-fields{class: "#{showcase.is_for_raising_fund? ? '' : 'hidden'}"}
-    .col-xs-12.col-sm-6.pleft0.height50
-      = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field", maxlength: 7
-    .col-xs-12.col-sm-6.pright0.height50
-      = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "Goal Date*", class: "form-control coco-input-field dt-of-achievement bg-white goal-target-date", readonly: true
-    .col-xs-12.col-sm-12.pleft0.pright0.ptop10
-      .col-xs-4.col-sm-3.pleft0
-        %label{for: "showcase_fundcategory_id"} Category
-      .col-xs-8.col-sm-9.padding0
-        = f.select :fundcategory_id, Fundcategory.all.map{|m| [m.name, m.id]}, {include_blank: 'Select category*'}, class: "form-control coco-select-box", style: "border-radius: 0px !important;"
-    .col-xs-12.col-sm-12.pleft0.pright0.ptop10
-      .col-xs-4.col-sm-3.pleft0.ptop10
-        %label Raising for:&nbsp;
-      .col-xs-8.col-sm-4.pleft0.pright10.ptop10
-        = f.collection_radio_buttons :raising_for, Showcase::RAISING_FOR, :first, :last do |b|
-          = b.radio_button(class: "pull-left", style: "margin-left: 6px;") + b.label(class: "pull-left mbottom0 mleft5")
-      .col-xs-8.col-xs-offset-4.col-sm-offset-0.col-sm-5.pleft0.pright0
-        = f.text_field :beneficiary, class: "form-control coco-input-field #{showcase.is_raising_for_others? ? '' : 'hidden'}", placeholder: "Beneficiary name*"
-    .col-xs-12.col-sm-12.height50.padding0.ptop10
-      = f.text_field :video_link, placeholder: "Video Link", class: "form-control coco-input-field", maxlength: 200
   .col-xs-12.col-sm-12.mtop20.text-center
     = f.submit "Update", class: "btn cc-dark-bg white-fg weight-bold j-loader-trigger-link showcase-update-submit"

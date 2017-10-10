@@ -1,6 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
 # before_action :configure_sign_in_params, only: [:create]
-  skip_before_action :check_user_status, :check_profile, :check_interests, raise: false
+  skip_before_action :check_user_status, :check_profile, :check_interests, :check_username_locked, raise: false
 
   # GET /resource/sign_in
   def new

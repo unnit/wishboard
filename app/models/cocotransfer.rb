@@ -28,7 +28,7 @@ class Cocotransfer < ApplicationRecord
   scope :non_anonymous, -> {where(hide_identity: [false, nil])}
   scope :complete, -> {where(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i)}
   scope :successfully_paid, -> {where(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i)}
- 
+
   scope :showcase_gifting, -> {where(transferable_type: TRANSFER_TYPE[0][0])}
   scope :profile_gifting, -> {where(transferable_type: TRANSFER_TYPE[1][0])}
   scope :coin_transfers, -> {where("coin_amount > 0")}
@@ -63,19 +63,19 @@ class Cocotransfer < ApplicationRecord
     self.wallet_amount.to_i + self.amount.to_i + self.coin_amount.to_i
   end
 
-   def wallet_amount_validations
-     if self.wallet_amount.to_i != 0 && self.wallet_amount.to_i  > fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
+  def wallet_amount_validations
+    if self.wallet_amount.to_i != 0 && self.wallet_amount.to_i  > fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
       errors.add(:wallet_amount, "is invalid")
     end
   end
 
-   def coin_conversion_validations
-     if self.profile_transfer? && self.coin_amount.to_i > 0 
-       if self.fullfillment_contributer 
-         errors.add(:coin_amount, "is invalid") if self.coin_amount.to_i  > self.fullfillment_contributer.wallet.unused_coins
-       else
-          errors.add(:user, "is invalid") 
-       end
+  def coin_conversion_validations
+    if self.profile_transfer? && self.coin_amount.to_i > 0
+      if self.fullfillment_contributer
+        errors.add(:coin_amount, "is invalid") if self.coin_amount.to_i  > self.fullfillment_contributer.wallet.unused_coins
+      else
+        errors.add(:user, "is invalid")
+      end
       errors.add(:user, "is invalid") if( self.wallet_amount > 0 || self.amount > 0)
     end
   end
@@ -246,7 +246,6 @@ class Cocotransfer < ApplicationRecord
     msg_coco_manager
   end
 
-
   def deliver_failed_transaction(msg)
     email_message = "Your payment failed. Please try again."
     CocotransferMailer.fail(self, email_message).deliver_now
@@ -281,7 +280,6 @@ class Cocotransfer < ApplicationRecord
   def phone_with_prefix
     (self.phone && self.phonecode) ? (self.phonecode + self.phone) : nil
   end
-
 
   def transaction_status_name
     return Transaction::TRANSACTION_STATUS[0][0] if transaction_status.to_s == Transaction::TRANSACTION_STATUS[0][1]

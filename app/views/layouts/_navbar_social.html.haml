@@ -147,4 +147,38 @@
 #cont-wrapper.modal.fade.padding0.ptop20
 .messages
 .pos-fixed.left10.bottom0.hidden-xs.j-live-notifications.pull-left.padding0.helvetica-font{style: "z-index: 1100;width: 22%;"}
-.col-xs-12.col-sm-12.full-width.pos-fixed.full-height.j-coco-fixed-wrapper.hide-display{style: "top:0;left:0;z-index:1051;background-color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0.6);"}
+.col-xs-12.col-sm-12.full-width.pos-fixed.full-height.j-coco-fixed-wrapper{style: "top:0;left:0;z-index:1051;background-color:rgb(0, 0, 0);background-color:rgba(0, 0, 0, 0.6);overflow-y: auto;", class: "#{@username_unlocked == true ? 'block-display' : 'hide-display'}"}
+  - if @username_unlocked
+    .col-xs-12.col-sm-6.col-sm-offset-3.mtop70.bg-white.border5.padding15
+      = form_for current_user.profile, url: lock_settings_profiles_path , html: {class: "font-medium"} do |f|
+        %h4.border-bt-side.mtop0.pbottom10.mbottom20 Initialize your settings
+        .col-xs-12.col-sm-12.padding0.mbottom20
+          %label.col-xs-12.col-sm-3.control-label{:for => "textinput"}
+            Username
+            %span.website-color *
+          .col-xs-12.col-sm-3
+            = f.text_field :slug, :placeholder => "Username", class: "form-control username lowercase", maxlength: 30, required: true
+          .col-xs-12.col-sm-6.uname-avail.padding10.pbottom0.grey-fg
+          .col-xs-12.col-sm-9.col-sm-offset-3.ptop10
+            %span.pull-left https://www.cocociti.com/
+            %span.pull-left.username-url.lowercase
+          .col-xs-12.col-sm-9.col-sm-offset-3.ptop10.font11.grey-fg
+            Note: Only hyphens and underscores are allowed. Please finalise your username.
+        .col-xs-12.col-sm-12.padding0.mbottom20
+          %label.col-sm-3.col-xs-9.control-label
+            Enable ProfilePay
+            %span.website-color *&nbsp;&nbsp;
+          .col-xs-3.col-sm-9
+            %label.pull-left.raise-toggle-switch.pon.mtop10.mob-mtop0
+              = f.check_box :enable_profilepay
+              %div
+        .col-xs-12.col-sm-12.padding0.mbottom20
+          - Profile::WISHPAY_CONDITIONS.each do |condition|
+            %label.col-sm-3.col-xs-9.control-label
+              = condition[0]
+            .col-xs-3.col-sm-9.mbottom10
+              = f.radio_button :wishpay_condition, condition[1]
+            .clearfix
+        .col-xs-12.col-sm-12.padding0
+          .col-xs-12.col-sm-12.text-center
+            = submit_tag "Confirm", class: "btn btn-md weight600 mtop10 white-fg violet-bg border2 j-loader-trigger-link"

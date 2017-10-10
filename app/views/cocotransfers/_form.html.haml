@@ -1,8 +1,6 @@
 .col-xs-12.col-sm-12.padding15.bg-white
-  / = hidden_field_tag :cocotransfer_id, cocotransfer.id, id: "cocotransfer_id"
   = form_for cocotransfer, remote: remote, html:{id: "cocotranfer_form"} do |f|
     = f.hidden_field :id, value: cocotransfer.id
-
     = f.hidden_field :transferable_id, value: cocotransfer.transferable_id
     = f.hidden_field :transferable_type, value: cocotransfer.transferable_type
     = f.hidden_field :wallet_amount, value: cocotransfer.wallet_amount
@@ -10,47 +8,49 @@
     = f.hidden_field :available_wallet_amount, value: current_user.try(:total_profile_withdraw_available_amount).to_i
     - fullfillment_at_once_amount = cocotransfer.is_for_wishpay? ?  cocotransfer.transferable.fullfillment_at_once_amount.to_i : 0
     = f.hidden_field :fullfillment_at_once_amount, value: fullfillment_at_once_amount
-
-    / = cocotransfer.wallet_amount + cocotransfer.amount
-    / = f.hidden_field :wallet_amount, value: cocotransfer.wallet_amount
-
+    %span.pull-left.mbottom20.extra-small-font
+      %i.fa.fa-info
+      Your contribution will be refunded if the recepient will not withdraw the same in two days.
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0
-        %span Amount
+        %span.font-medium Amount
         %i.fa.fa-inr
       .col-xs-12.col-sm-9.padding0
         = f.number_field :total_amount, required: true, placeholder: "Gift amount", min: cocotransfer.transferable.try(:min_gift_amount_allowed).to_i, max: cocotransfer.transferable.try(:max_gift_amount_allowed).to_i,  class: "form-control bg-white"
       -if cocotransfer.is_for_wishpay?
         .col-xs-12.col-sm-offset-3.col-sm-12.padding0#diplay-gift-type
           -if cocotransfer.is_wish_fullfillment?
-            You are fullfiling this wish
+            %span.dull-color-italic You are fullfiling this wish
+            %i.fa.fa-star.cc-dark-fg
           -else
-            You are contributing to this wish
+            %span.dull-color-italic You are contributing to this wish
+            %i.fa.fa-star-half-o.cc-dark-fg
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0
-        %span Use Wallet Amount
+        %span.font-medium Use Giftbox Amt
+        %i.fa.fa-archive
       .col-xs-12.col-sm-9.padding0.font10.pleft0
         = f.check_box :use_wallet_amount
         %i.fa.fa-inr
         %span#cocotransfer_wallet_amount_display
-          #{cocotransfer.wallet_amount} 
+          #{cocotransfer.wallet_amount}
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0
-        %span Payble Amount
+        %span.font-medium Add Amount
+        %i.fa.fa-inr
       .col-xs-12.col-sm-9.padding0.font10.pleft0
-        %i.fa.fa-inr 
+        %i.fa.fa-inr
         %span#cocotransfer_amount_display
-          #{@cocotransfer.amount} 
-
+          #{@cocotransfer.amount}
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0
-        %span Email
+        %span.font-medium Email
         %i.fa.fa-envelope-o
       .col-xs-12.col-sm-9.padding0
         = f.email_field :email, placeholder: "Email", class: "form-control bg-white"
     .col-xs-12.col-sm-12.padding0
       .col-xs-12.col-sm-3.pleft0
-        %span Contributer's Name
+        %span.font-medium Contributer's Name
         %i.fa.fa-user
       .col-xs-12.col-sm-9.padding0
         = f.text_field :donor_name, placeholder: "Contributer's Name", class: "form-control bg-white"
@@ -61,8 +61,8 @@
         %span.extra-small-font Stay anonymous
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-md-3.pleft0
-        %span Mobile
-        %i.fa.fa-mobile
+        %span.font-medium Mobile
+        %i.fa.fa-mobile.font22
       .col-xs-4.col-sm-3.padding0
         = select("cocotransfer", "phonecode", Country.all.collect {|c| [ "+" + c.phonecode+ "  ("+c.iso+")", c.phonecode ] },{:selected => current_user.try(:profile).try(:phonecode), include_blank: false}, {class: "form-control user-phone-prefix"})
       .col-xs-8.col-sm-6.pright0

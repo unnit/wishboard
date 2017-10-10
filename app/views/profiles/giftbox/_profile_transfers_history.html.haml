@@ -31,7 +31,7 @@
               %span.font-medium.black80-fg.inline-block Received from
               %span.block-display.font11.grey-fg
                 #{cocotransfer.donor_name}
-                (@#{cocotransfer.fullfillment_contributer.slug})
+                (@#{cocotransfer.fullfillment_contributer.slug if cocotransfer.fullfillment_contributer.present?})
         .col-xs-4.col-sm-4.text-right.black80-fg
           %i.fa.fa-inr
           #{cocotransfer.total_amount}

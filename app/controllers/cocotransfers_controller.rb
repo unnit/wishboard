@@ -101,18 +101,17 @@ class CocotransfersController < ApplicationController
       redirect_to transfer_success_cocotransfer_path(@cocotransfer.slug)
       # render :payment_success
     else
-      available_wallet_amount = @cocotransfer.fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
-      wallet_amount = ((@cocotransfer.wallet_amount.to_i > 0)  && available_wallet_amount < @cocotransfer.wallet_amount.to_i ) ? available_wallet_amount : @cocotransfer.wallet_amount
-      unless @cocotransfer.paid?
-       @cocotransfer.update_columns(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: params[:amount], wallet_amount: wallet_amount) unless @cocotransfer.paid?
-       @cocotransfer.paid_callbacks!
-      end
-      redirect_to transfer_success_cocotransfer_path(@cocotransfer.slug)
-      # render :payment_success
+      #available_wallet_amount = @cocotransfer.fullfillment_contributer.try(:total_profile_withdraw_available_amount).to_i
+      #wallet_amount = ((@cocotransfer.wallet_amount.to_i > 0)  && available_wallet_amount < @cocotransfer.wallet_amount.to_i ) ? available_wallet_amount : @cocotransfer.wallet_amount
+      #unless @cocotransfer.paid?
+       #@cocotransfer.update_columns(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: params[:amount], wallet_amount: wallet_amount) unless @cocotransfer.paid?
+       #@cocotransfer.paid_callbacks!
+      #end
+      #redirect_to transfer_success_cocotransfer_path(@cocotransfer.slug)
 
-      # @cocotransfer.deliver_failed_transaction(params["TxMsg"])
-      # flash[:alert] = "#{params["TxMsg"]}"
-      # redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
+      @cocotransfer.deliver_failed_transaction(params["TxMsg"])
+      flash[:alert] = "#{params["TxMsg"]}"
+      redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
     end
   end
 

@@ -175,10 +175,6 @@ class User < ApplicationRecord
     self == user
   end
 
-  # def can_withdraw_showcase_raised_amount?(showcase)
-  #   showcase.
-  # end
-
   def total_profile_raised_amount
     profile_gifting_raised_amount + wishpay_raised_amount + coin_converted_amount
   end
@@ -191,20 +187,20 @@ class User < ApplicationRecord
     return withdraws.profile_withdraws.complete_withdraws.sum(:coins).to_i
   end
 
-  def wallet_tranfered_amount
+  def wallet_transferred_amount
     return transferred_cocotransfers.complete.sum(:wallet_amount).to_i
   end
 
-  def online_tranfered_amount
+  def online_transferred_amount
     return transferred_cocotransfers.complete.sum(:amount).to_i
   end
 
-  def total_transfered_amount
-   (wallet_tranfered_amount + online_tranfered_amount).to_i
+  def total_transferred_amount
+   (wallet_transferred_amount + online_transferred_amount).to_i
   end
 
   def total_profile_withdraw_available_amount
-    return total_profile_raised_amount - (profile_withdrawn_amount + wallet_tranfered_amount)
+    return total_profile_raised_amount - (profile_withdrawn_amount + wallet_transferred_amount)
   end
 
   def wishpay_raised_amount
@@ -212,7 +208,7 @@ class User < ApplicationRecord
   end
 
   def coin_converted_amount
-     (cocotransfers.profile_gifting.complete.sum("coin_amount")).to_i
+    (cocotransfers.profile_gifting.complete.sum("coin_amount")).to_i
   end
 
   def total_crowdfunding_raised_amount

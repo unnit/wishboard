@@ -116,6 +116,7 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      $("#gift-button").removeClass("j-loader-trigger-link");
       var $toggleGroup = $('#toggleGroup');
       $toggleGroup.on('show.bs.collapse', '.collapse', function() {
         $toggleGroup.find('.collapse.in').collapse('hide');

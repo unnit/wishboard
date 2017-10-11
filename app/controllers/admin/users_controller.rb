@@ -55,7 +55,7 @@ class Admin::UsersController < AdminController
   end
 
   def withdraws
-    @withdraws = Withdraw.coin_withdraws.order(created_at: :desc).page(params[:withdraws]).per(30)
+    @withdraws = Withdraw.profile_withdraws.order(created_at: :desc).page(params[:withdraws]).per(30)
   end
 
   def crowdfunding_withdraws
@@ -75,11 +75,11 @@ class Admin::UsersController < AdminController
   end
 
   private
-    def set_user
-      @user = User.find(params[:id])
-    end
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    def user_params
-      params.require(:user).permit(:email, :role)
-    end
+  def user_params
+    params.require(:user).permit(:email, :role)
+  end
 end

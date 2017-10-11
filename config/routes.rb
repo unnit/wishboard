@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :cocotransfers do
       collection do
         get :grouppay_cocotransfers
+        get :coin_cocotransfers
       end
       member do
         post :verify_coin_to_cash

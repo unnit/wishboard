@@ -123,7 +123,7 @@ class Cocotransfer < ApplicationRecord
   end
 
   def amount_should_not_less_than_or_greater_than
-   self.showcase_transfer? ? min_max_amount_showcase : min_max_amount_profile
+    self.showcase_transfer? ? min_max_amount_showcase : min_max_amount_profile
   end
 
   def min_max_amount_showcase
@@ -142,13 +142,12 @@ class Cocotransfer < ApplicationRecord
   end
 
   def display_profile_name
-   if  !self.is_anonymous? && fullfillment_contributer && self.display_donor_name == fullfillment_contributer.try(:name).to_s
-       return fullfillment_contributer.try(:profile).try(:slug)
-   else
-     return nil
-   end
+    if !self.is_anonymous? && fullfillment_contributer && self.display_donor_name == fullfillment_contributer.try(:name).to_s
+      return fullfillment_contributer.try(:profile).try(:slug)
+    else
+      return nil
+    end
   end
-
 
   def not_hiding_identity
    return self.hide_identity != true
@@ -175,7 +174,6 @@ class Cocotransfer < ApplicationRecord
     (Rails.env.development? || Rails.env.staging?) ? 1 : self.amount
   end
 
-
   def icp_security_signature
     @secret_key  = CITRUS_CONFIG[:secret_key]
     @txn_id = self.txnid
@@ -188,9 +186,7 @@ class Cocotransfer < ApplicationRecord
     return @securitySignature
   end
 
-
   def security_signature
-    # return icp_security_signature
     @access_key = CITRUS_CONFIG[:merchant_access_key]
     @secret_key  = CITRUS_CONFIG[:secret_key]
     @txn_id = self.txnid
@@ -199,8 +195,6 @@ class Cocotransfer < ApplicationRecord
     @securitySignature= hmac_sha1(@data_string,@secret_key) # signature generated
     return @securitySignature
   end
-
-
 
   def paid_callbacks!
     create_invoice

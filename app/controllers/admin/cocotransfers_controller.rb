@@ -10,8 +10,8 @@ class Admin::CocotransfersController < AdminController
 
   def verify_coin_to_cash
     cocotransfer = Cocotransfer.find_by_id params[:id]
-    cocotransfer.update_attributes(:transaction_status, params[:transaction_status])
-    flash[:notice] = "Successfully created..."
+    cocotransfer.update_attributes(:transaction_status, params[:transaction_status]) unless cocotransfer.paid?
+    flash[:notice] = "Successfully updated..."
     respond_to :js
   end
 

@@ -58,7 +58,6 @@ class CocotransfersController < ApplicationController
 
   def checkout
     return redirect_to new_cocotransfer_path(amount: (@cocotransfer.wallet_amount.to_i + @cocotransfer.amount.to_i), transferable_type: @cocotransfer.transferable_type, transferable_id: @cocotransfer.transferable_id ) if @cocotransfer.paid?
-    return initiate_new_checkout  if @cocotransfer.paid?
     @cocotransfer.generate_txnid!
   end
 
@@ -72,7 +71,6 @@ class CocotransfersController < ApplicationController
         else
           render json: {cocotransfer: @cocotransfer, security_signature: @cocotransfer.security_signature, return_url: @cocotransfer.return_url, success: true, total_amount: @cocotransfer.total_amount}
         end
-
       else
         error_messages = @cocotransfer.errors.full_messages.join(", ")
         render json: {cocotransfer: @cocotransfer, success: false, error_messages: error_messages }
@@ -90,7 +88,7 @@ class CocotransfersController < ApplicationController
     save_txdetails
     # @showcase = @cocotransfer.showcase
     @secret_key = CITRUS_CONFIG[:secret_key]
-    @signature= @cocotransfer.hmac_sha1(@verification_data,@secret_key)
+    @signature= @cocotransfer.hmac_sha1(@verification_data, @secret_key)
     log_transaction_response
     handle_invalid_signature if @signature != params["signature"]
     if params["TxStatus"] == Transaction::PAYMENT_GATEWAY_STATUS[0]
@@ -108,7 +106,6 @@ class CocotransfersController < ApplicationController
        #@cocotransfer.paid_callbacks!
       #end
       #redirect_to transfer_success_cocotransfer_path(@cocotransfer.slug)
-
       @cocotransfer.deliver_failed_transaction(params["TxMsg"])
       flash[:alert] = "#{params["TxMsg"]}"
       redirect_to checkout_cocotransfer_path(@cocotransfer.slug)
@@ -192,9 +189,9 @@ class CocotransfersController < ApplicationController
    def set_wallet_and_online_amount
      available_profile_amount  = current_user.try(:total_profile_withdraw_available_amount)
      if params[:gift_type] == "fullfill" && @cocotransfer.showcase_transfer? && @cocotransfer.transferable.can_be_fullfilled_at_once?
-      total_amount = @cocotransfer.transferable.try(:fullfillment_at_once_amount).to_i
+       total_amount = @cocotransfer.transferable.try(:fullfillment_at_once_amount).to_i
      else
-      total_amount = !params[:amount].blank? && params[:amount].to_i > @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i ? params[:amount].to_i : @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i
+       total_amount = !params[:amount].blank? && params[:amount].to_i > @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i ? params[:amount].to_i : @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i
      end
      @cocotransfer.wallet_amount = (available_profile_amount >= total_amount )? total_amount : available_profile_amount
      @cocotransfer.amount = (total_amount - @cocotransfer.wallet_amount)

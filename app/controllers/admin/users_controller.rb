@@ -55,7 +55,7 @@ class Admin::UsersController < AdminController
   end
 
   def withdraws
-    @withdraws = Withdraw.profile_withdraws.order(created_at: :desc).page(params[:withdraws]).per(30)
+    @withdraws = Withdraw.non_showcase_withdraws.order(created_at: :desc).page(params[:withdraws]).per(30)
   end
 
   def crowdfunding_withdraws

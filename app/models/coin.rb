@@ -2,7 +2,7 @@ class Coin < ApplicationRecord
   belongs_to :user
   belongs_to :showcase
 
-  scope :promotional, -> {where promotional: true}
+  scope :promotional, -> {where("promotional = ? and active = ?", true, true)}
   after_create_commit :send_gift_coin_notification
   after_create_commit :deliver_firebase_notification
 

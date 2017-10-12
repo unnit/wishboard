@@ -59,8 +59,8 @@ class ChatRoomsController < ApplicationController
     @count = @chat_room.online_count
     @chat_messages = @chat_room.chat_messages.order(created_at: :desc).limit(20).reverse
     respond_to do |format|
+      format.html
       format.js {respond_to :js}
-      format.html {respond_to :html}
     end
   end
 

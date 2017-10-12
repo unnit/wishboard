@@ -13,10 +13,6 @@
 - else
   .col-xs-12.col-sm-12.padding0.mob-padding10.wish-success-wrapper
     .col-xs-12.col-sm-12.padding20.border2.text-center.white-fg.cc-hvy-dark-bg
-      - if (showcase.wishlist? || showcase.instant_wishlist?) && showcase.gift_coin_wish?
-        %span.full-width.mbottom20
-          %img{src: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/piggybank.gif", class: "img-responsive inline-block"}
-          %h4 Yay! First savings towards this wish is from our side.
       %span.full-width
         %h5
           Let the world know. Share it with your friends

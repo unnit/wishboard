@@ -40,13 +40,13 @@
                     .input-group
                       %span.input-group-addon
                         %i.fa.fa-envelope
-                      = f.text_field :email, placeholder: t("email_address", default: "Email Address"), class: "form-control login-email", "data-parsley-trigger" => "change", required: true
+                      = f.text_field :email, placeholder: t("email_address", default: "Email Address"), class: "form-control login-email", "data-parsley-trigger" => "change"
                 .form-group.clearfix
                   .col-sm-12
                     .input-group
                       %span.input-group-addon{style: "padding: 6px 13px;"}
                         %i.fa.fa-lock.font-bit-large
-                      = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+                      = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change"
                 .form-group.clearfix.mtop20.text-center
                   = link_to "Forgot password?", new_user_password_path, class: "font13 j-loader-trigger-link"
                 .form-group.clearfix.mbottom40
@@ -65,19 +65,19 @@
                     .input-group
                       %span.input-group-addon
                         %i.fa.fa-envelope
-                      = f.text_field :email, :autofocus => true, placeholder: t("email_address", default: "Email Address"), class: "form-control signup-email", "data-parsley-trigger" => "change", required: true
+                      = f.text_field :email, :autofocus => true, placeholder: t("email_address", default: "Email Address"), class: "form-control signup-email", "data-parsley-trigger" => "change"
                 .form-group.clearfix
                   .col-sm-12
                     .input-group
                       %span.input-group-addon{style: "padding: 6px 13px;"}
                         %i.fa.fa-lock.font-bit-large
-                      = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+                      = f.password_field :password, :placeholder => t('password', default: "Password"), class: "form-control", "data-parsley-trigger" => "change"
                 .form-group.clearfix
                   .col-sm-12
                     .input-group
                       %span.input-group-addon{style: "padding: 6px 13px;"}
                         %i.fa.fa-lock.font-bit-large
-                      = f.password_field :password_confirmation, :placeholder => t('password', default: "Confirm Password"), class: "form-control", "data-parsley-trigger" => "change", required: true
+                      = f.password_field :password_confirmation, :placeholder => t('password', default: "Confirm Password"), class: "form-control", "data-parsley-trigger" => "change"
                 .form-group.clearfix
                   .col-xs-12.col-sm-12.grey-fg.text-center
                     %span.font11 By continuing, you agree to the Terms of Service

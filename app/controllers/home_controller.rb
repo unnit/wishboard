@@ -456,10 +456,10 @@ class HomeController < ApplicationController
   end
 
   def save_firebase_token
-   @firebasetoken = FirebaseToken.where(token: params[:token], user_id: current_user.try(:id)).first_or_create if current_user
-   @firebasetoken.update_attributes(active: true) if @firebasetoken
-   FirebaseToken.where(token: params[:token]).where.not(user_id: current_user.id).update_all(active: false) if @firebasetoken && current_user
-   render json: {saved:  @firebasetoken ? true : false}
+    @firebasetoken = FirebaseToken.where(token: params[:token], user_id: current_user.try(:id)).first_or_create if current_user
+    @firebasetoken.update_attributes(active: true) if @firebasetoken
+    FirebaseToken.where(token: params[:token]).where.not(user_id: current_user.id).update_all(active: false) if @firebasetoken && current_user
+    render json: {saved:  @firebasetoken ? true : false}
   end
 
   def display_preview

@@ -449,8 +449,8 @@ class ProfilesController < ApplicationController
       wallet.used_coins = wallet.used_coins.to_i + params[:coins].to_i
       wallet.unused_coins = 0
       if wallet.save
-        @cocotransfer.update_column("transaction_status", Transaction::TRANSACTION_STATUS[0][1])
-        flash[:notice] = "You have successfully raised a request to convert your coins to cash."
+        @cocotransfer.update_column("transaction_status", Transaction::TRANSACTION_STATUS[2][1])
+        flash[:notice] = "You have successfully converted your coins to cash."
       else
         flash[:alert] =  wallet.errors.full_messages.join(", ")
       end

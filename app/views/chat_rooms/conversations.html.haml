@@ -50,7 +50,7 @@
         $(this).find(".badge").hide();
         $(this).find(".badge").text("0");
         $("#chat_messages_wrapper").html("<span class='full-width inline-block text-center'><i class='fa fa-spinner fa-spin font25 cc-dark-fg' style='margin-top: 40%'></i></span>")
-        $.ajax({url: "/chatrooms/"+$(this).data("chat-room-id")});
+        $.ajax({url: "/chatrooms/"+$(this).data("chat-room-id"), dataType: "script"});
       });
       if(#{@first_room.present? ? @first_room.chat_messages.count : 0} > 20){
         $("#chat_messages").on("scroll", function(){

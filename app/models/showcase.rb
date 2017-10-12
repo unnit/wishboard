@@ -601,7 +601,7 @@ class Showcase < ApplicationRecord
   end
 
   before_create :generate_accesss_token
-  after_create :create_showcase_notification, :promotional_offer, :set_achieved, :set_campaign_status
+  after_create :create_showcase_notification, :set_achieved, :set_campaign_status
   after_create_commit :send_new_wish
   after_destroy :verify_wallet
 
@@ -626,7 +626,7 @@ class Showcase < ApplicationRecord
     self.already_raised_some_amount
     errors.blank?
   end
-  
+
   def set_achieved
     update_column :achieved_at, created_at
   end

@@ -6,7 +6,7 @@
     %td= withdraw.user.name
     %td
       - if withdraw.coin_withdraw?
-        = "T: #{withdraw.user.wallet.total_coins.to_i}, VR: #{withdraw.user.verified_referrals}, CW: #{withdraw.user.coins_gifted}, PC: #{withdraw.user.promotional}"
+        = "T: #{withdraw.user.wallet.total_coins.to_i}, VR: #{withdraw.user.verified_referrals}, CW: #{withdraw.user.coins_gifted}, PC: #{withdraw.user.coins.promotional}"
       - else
         %i.fa.fa-inr
         = withdraw.user.total_profile_raised_amount

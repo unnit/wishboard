@@ -547,7 +547,7 @@ class Showcase < ApplicationRecord
   end
 
   def slug
-   return self.title.strip.gsub(/\s+/, "-").gsub(/[^0-9A-Za-z\-\_]/, '').present? ? self.title.strip.gsub(/\s+/, "-").gsub(/[^0-9A-Za-z\-\_]/, '').present? : 'w'
+   return self.title.strip.gsub(/\s+/, "-").gsub(/[^0-9A-Za-z\-\_]/, '').present? ? self.title.strip.gsub(/\s+/, "-").gsub(/[^0-9A-Za-z\-\_]/, '') : 'w'
   end
 
   def can_be_withdrawn

@@ -17,7 +17,7 @@ class AdminMailer < ApplicationMailer
 
   def new_showcase(showcase)
     @showcase = showcase
-    mail to: GLOBAL_VARIABLES[:manager_email_id_2], subject: "New Showcase: #{showcase.title}, Owner: #{showcase.user.name}"
+    mail to: GLOBAL_VARIABLES[:manager_email_id_2], subject: "New Wish: #{showcase.title}, Owner: #{showcase.user.name}"
   end
 
 end

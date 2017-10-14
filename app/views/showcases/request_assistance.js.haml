@@ -1,0 +1,3 @@
+$(".messages").html("#{j(render 'layouts/messages')}");
+$(".request-assistance-#{@showcase.id}").remove();
+$(".request-assistance-#{@showcase.id}").closest(".j-wishpay-wrap").hide();

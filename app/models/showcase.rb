@@ -27,6 +27,8 @@ class Showcase < ApplicationRecord
   has_many :cocotransfers, as: :transferable, dependent: :destroy
   has_many :fullfillment_contributers, through: :cocotransfers, primary_key: "from_user_id", class_name: "User"
   has_many :withdraws
+  has_many :assistance_requests
+  has_many :user_assistances, through: :assistance_requests, source: :user
   accepts_nested_attributes_for :location
 
   DEFAULT_AFTER_RATING = 0
@@ -224,23 +226,6 @@ class Showcase < ApplicationRecord
     errors.add(:wish, "can accept only one type of gift")  if (self.wishpay_status == WISHPAY_STATUS[1] && self.accept_fund == true)
     errors.add(:wish, "coin wish can not accept gifts")  if ((self.wishpay_status == WISHPAY_STATUS[1] || self.accept_fund == true) && self.coin_wish == true)
   end
-
-
-
-
-  # def set_wishpay_fields
-  #   if is_for_raising_fund?
-  #     self.wishpay_status = WISHPAY_STATUS[0]
-  #     self.projected_amount = nil
-  #   end
-  # end
-
-  # def set_crowdfunding_fields
-  #   if new_record && is_for_raising_fund?
-  #     self.wishpay_status = WISHPAY_STATUS[0]
-  #     self.projected_amount = nil
-  #   end
-  # end
 
   def show_wishpay_edit_fields?
      !(Showcase.find_by_id(self.id).try(:accept_fund) == true && already_raised_some_amount )
@@ -562,7 +547,7 @@ class Showcase < ApplicationRecord
   end
 
   def slug
-   return self.title.gsub(/\s+/, "_").gsub(/[^0-9A-Za-z\-\_]/, '')
+   return self.title.strip.gsub(/\s+/, "-").gsub(/[^0-9A-Za-z\-\_]/, '')
   end
 
   def can_be_withdrawn
@@ -575,7 +560,6 @@ class Showcase < ApplicationRecord
 
   def available_withdraw_amount
     return  raised_amount - withdraws.showcase_withdraws.complete_withdraws.sum(:coins).to_i
-    #return cocotransfers.showcase_gifting.complete.sum("amount + wallet_amount").to_i - withdraws.showcase_withdraws.complete_withdraws.sum(:coins).to_i
   end
 
   def raised_amount
@@ -611,7 +595,7 @@ class Showcase < ApplicationRecord
 
   def max_gift_amount_allowed
     if self.is_wishpay?
-      (projected_amount.to_i > 0) ?  ( self.projected_amount - raised_amount) :  MAX_GIFT_AMOUNT_ALLOWED
+      (projected_amount.to_i > 0) ?  (self.projected_amount - raised_amount) :  MAX_GIFT_AMOUNT_ALLOWED
     elsif self.is_for_raising_fund?
       MAX_GIFT_AMOUNT_ALLOWED
     else

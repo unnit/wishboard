@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  # before_action :redirect_to_home
+  before_action :redirect_to_home
   before_action :authenticate_user!, only: [:new, :create, :edit, :destroy, :rate, :review, :update, :remove_image, :update_available, :update_admin_approved]
   before_action :set_product, only: [:show, :edit, :rate, :review, :update, :destroy, :remove_image, :update_available, :get_price, :update_admin_approved]
   before_action :authenticate_owner, only: [:edit, :update, :destroy, :remove_image, :update_available]

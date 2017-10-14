@@ -47,11 +47,13 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :joined_chat_rooms, through: :memberships, source: :chat_room
   has_many :messaged_chat_rooms, -> {order("chat_messages.created_at DESC")}, through: :chat_messages, source: :chat_room
+  has_many :cocotransfers, as: :transferable, dependent: :destroy
+  has_many :transferred_cocotransfers, class_name: "Cocotransfer", foreign_key: "from_user_id"
+  has_many :assistance_requests
+  has_many :showcase_assistances, through: :assistance_requests, source: :showcase
 
   has_one :profile, dependent: :destroy
   has_one :wallet, dependent: :destroy
-  has_many :cocotransfers, as: :transferable, dependent: :destroy
-  has_many :transferred_cocotransfers, class_name: "Cocotransfer", foreign_key: "from_user_id"
 
   scope :all_cocotransfers, ->(user_id) {Cocotransfer.joins("LEFT JOIN showcases on showcases.id = cocotransfers.transferable_id and cocotransfers.transferable_type = 'Showcase'").where("(transferable_type = ? and transferable_id = ?) or (from_user_id = ?) or (showcases.user_id = ?)", "User", user_id, user_id, user_id)}
 

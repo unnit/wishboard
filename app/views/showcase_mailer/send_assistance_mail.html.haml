@@ -1,0 +1,112 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{content: "text/html; charset=UTF-8", "http-equiv" => "content-type"}/
+    %meta{content: "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{content: "Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.", name: "description"}/
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
+    %meta{content: "Cocociti | Share, find, fund & fulfill your wishes.", property: "og:title"}/
+    %meta{content: "https://www.cocociti.com/", property: "og:url"}/
+    %meta{content: "Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.", property: "og:description"}/
+    %title Cocociti | Share, find, fund &amp; fulfill your wishes!
+  %body{style: "margin:0;padding:0;"}
+    / Container
+    %table{border: "0", cellpadding: "0", cellspacing: "0", height: "100%", style: "border-collapse:collapse;table-layout:fixed;margin:0 auto;border-spacing:0;padding:0;height:100%!important;width:100%!important;font-weight:normal;color:#3e4152;font-family:'roboto',Arial, Helvetica, sans-serif;font-size:14px;line-height:1.4;", width: "100%"}
+      %tr
+        %td{style: "background:#ffffff;padding:16px 0;"}
+          %table{align: "center", border: "0", cellpadding: "0", cellspacing: "0", style: "max-width:600px;margin:auto;border-spacing:0;background:#673AB7;padding:4px;border-radius:16px;-moz-border-radius:16px;-ms-border-radius:16px;-o-border-radius:16px;-webkit-border-radius:16px;overflow:hidden", width: "100%"}
+            %tr
+              %td{style: "border-collapse:collapse;"}
+                / Email Holder
+                %table{align: "center", border: "", cellpadding: "0", cellspacing: "0", style: "margin:auto;border-spacing:0;background:white;border-radius:12px;-moz-border-radius:12px;-ms-border-radius:12px;-o-border-radius:12px;-webkit-border-radius:12px;overflow:hidden;border-collapse: collapse;", width: "100%"}
+                  / Row 01
+                  %tr
+                    %td{style: "border-collapse:collapse;"}
+                      / Header
+                      %table{bgcolor: "#ffffff", border: "0", cellpadding: "0", cellspacing: "0", style: "border-spacing:0;border-collapse:collapse;", width: "100%"}
+                        %tr
+                          %td{align: "left", style: "border-collapse:collapse; padding:16px 15px;", valign: "middle"}
+                            %table{bgcolor: "#ffffff", border: "0", cellpadding: "0", cellspacing: "0", style: "border-spacing:0;border-collapse:collapse", width: "100%"}
+                              %tr
+                                / Pe Icon
+                                %td{align: "left", style: "padding: 0;text-align:left;border-collapse:collapse;", valign: "middle"}
+                                  .header{style: "height: 70px;position:relative;top: 0;width: 100%;float:left;background-color:white;"}
+                                    .logo{style: "padding: 10px;padding-left:0px;;margin-left: 0px;"}
+                                      = link_to root_url, style: "text-decoration: none;" do
+                                        = image_tag("#{'https://www.cocociti.com/'}emails/coco-logo.png", alt: "", style: "float: left;")
+                                        %span{style: "color: #732db0;font-size: 22px;float: left;margin-top: 10px;margin-left: 5px;"} Cocociti
+                                / End of Pe Icon
+                                %td{align: "left", style: "border-collapse:collapse;", valign: "middle", width: "16"}  
+                                / Date / Time
+                                %td{align: "right", style: "0;text-align:right;border-collapse:collapse;font-size:12px;font-family:'roboto',Arial, Helvetica, sans-serif;outline:0;outline:none;border:0;border:none;", valign: "middle"}
+                                / End of Date / Time
+                      / End of Header
+                  / End of Row 01
+                  %tr{style: "border-bottom:0px solid #eaeaed;"}
+                    %td{style: "border-collapse:collapse; padding:32px;background:#ffffff; font-family:'roboto',Arial, Helvetica, sans-serif;text-align: left;"}
+                      %p{style: "padding:0;margin:0;"}
+                        Hello @#{@user.slug},
+                      %p
+                        Let the Cocociti Genie help you fulfill your wish. Just reply with point number from the below list. For example: If you want to get more information, please reply with 1 or  if you want get more details along with connecting to people with similar wishes; reply 1 & 6.
+                      %ul{style: "padding-left: 15px;"}
+                        %li{style: "list-style: none;"} 1. Get more information on this wish
+                        %li{style: "list-style: none;"} 2. Give me a free personal assistant to set reminders & follow up
+                        %li{style: "list-style: none;"} 3. Get instant mini loan for 15 days or explore EMI or long term loans
+                        %li{style: "list-style: none;"} 4. Connect me to service providers
+                        %li{style: "list-style: none;"} 5. Help me raise funds from my friends and social media followers
+                        %li{style: "list-style: none;"} 6. Help me connect to fellow Cocociti community users who want to do the same
+                        %li{style: "list-style: none;"} 7. Help me take a loan to fulfill this wish
+                      Wish Title:&nbsp;
+                      = link_to slug_showcase_url(@showcase.slug, @showcase), style: "text-decoration: none" do
+                        = @showcase.title
+                      %br
+                      Wish Owner:&nbsp;
+                      = @showcase.user.name
+                      %br
+                      - if @showcase.description.present?
+                        Wish Description:&nbsp;
+                        = @showcase.description
+                        %br
+                      - if @showcase.projected_amount.present?
+                        Wish Projected Amount:&nbsp;
+                        = @showcase.projected_amount
+                        %br
+                      - if @showcase.target_date.present?
+                        Wish Target Date:&nbsp;
+                        = @showcase.target_date
+                        %br
+                      - if @showcase.location.name.present?
+                        Wish Location:&nbsp;
+                        = @showcase.location.name
+                  / End of Content
+                  / Footer
+                  %tr
+                    %td{style: "border-collapse:collapse;padding:16px 32px; border: 0;border-top:1px solid #eaeaed;font-family:'roboto',Arial, Helvetica, sans-serif;font-size:12px;"}
+                      %table{align: "center", border: "0", cellpadding: "0", cellspacing: "0", width: "100%", style: "border-collapse:collapse;"}
+                        / Note
+                        %tr
+                          %td{:colspan => "3", style: "border-collapse:collapse;font-weight:normal;padding-top:10px;font-style:italic;color:#7e818c;"}
+                            Important Note: Cocociti or its merchant partners never ask for your Cocociti password, bank details or MPIN over email/phone. Please do not share your Cocociti password or MPIN with anyone. For any questions write to
+                            %a{href: "mailto:ayyo@cocociti.com", style: "color:#673ab7;", target: "_blank"} ayyo@cocociti.com
+                        / Links
+                        %tr
+                          %td{align: "left", style: "border-collapse:collapse;font-weight:normal;", valign: "middle"}
+                            %a{href: "#{root_url}", style: "color:#673ab7;font-size:12px;padding:4px;height:24px;display:inline-block;outline:0;outline:none;border:0;border:none;", target: "_blank"}
+                              www.coccociti.com
+                          %td{align: "left", style: "border-collapse:collapse;", valign: "middle", width: "16"}  
+                          %td{align: "right", style: "border-collapse:collapse;", valign: "middle"}
+                        / End of Links
+                        / End of Note
+                  %tr
+                    %td{style: "border-collapse:collapse;padding:16px 32px;border-top:1px solid #eaeaed;font-family:'roboto',Arial, Helvetica, sans-serif;font-size:12px; text-align: center;"}
+                      %p{style: "font-size:10px; line-height: 14px;"}
+                        %span{style: "font-size:10px; line-height: 14px; font-weight: bold; margin-bottom:0px;" }
+                          Cocociti Online Solutions Pvt Ltd.,
+                        %br/
+                        %span{style: "font-size:10px; line-height: 14px; margin-bottom:0px;"}
+                          BMP No.15, 4th Cross, Marappa Layout, C V Raman Nagar Bangalore, Karnataka - 560093
+                        %br/
+                        %span{style: "font-size:10px; line-height: 14px;"}
+                          CIN: U72900KA2014PTC077438 | PAN: AAFCC8502K
+                  / End of Footer
+                / End of Email Holder

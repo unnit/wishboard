@@ -1,6 +1,6 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete, :private]
-  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign]
+  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign, :request_assistance]
   before_action :check_end_campaign, only: [:edit, :update, :end_campaign]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
   before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :undo_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign]
@@ -319,6 +319,18 @@ class ShowcasesController < ApplicationController
     @showcase.update_column :campaign_status, Showcase::CAMPAIGN_STATUS_VALUES[1]
     flash[:notice] = "Gift collection for #{@showcase.title} completed successfully"
     redirect_to :back
+  end
+
+  def request_assistance
+    unless current_user.showcase_assistances.include?(@showcase)
+      current_user.assistance_requests.create(showcase_id: @showcase.id)
+      ShowcaseMailer.send_assistance_mail(current_user, @showcase).deliver_now
+      flash[:notice] = "Please check your registered email inbox."
+      respond_to :js
+    else
+      flash[:alert] = "You have already requested our assistance."
+      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}'"
+    end
   end
 
   private

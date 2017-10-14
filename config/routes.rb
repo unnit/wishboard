@@ -225,6 +225,7 @@ Rails.application.routes.draw do
       post :backstory_form
       post :update_backstory
       post :end_campaign
+      get :request_assistance
     end
     collection do
       get :gettags

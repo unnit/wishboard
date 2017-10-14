@@ -129,6 +129,36 @@
           .col-xs-4.col-sm-4.pright0
             = f.submit "Gift", class: "btn cc-dark-bg white-fg full-width"
 .col-xs-12.col-sm-12.border-two.padding10.bg-white.h40
+  - if (showcase.is_wishpay? && showcase.raised_amount < showcase.projected_amount.to_i) || !current_user.showcase_assistances.include?(showcase)
+    .pos-absolute.hide-display.j-wishpay-wrap.text-center.right0{style: "top: -50px;left: 20%;"}
+      .bg-white.padding10.btn-shadow.inline-block{style: "border-radius: 35px;"}
+        -if showcase.can_be_fullfilled_at_once?
+          .inline-block
+            = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), html: {class: "inline-block"}, method: :get do |f|
+              = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
+              = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
+              = f.hidden_field :gift_type, value: "fullfill", name: 'gift_type'
+              %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg.mright5{style: "background-color: transparent;border-radius: 16px;"}
+                /%i.fa.fa-star
+                %span.inline-block Fulfill
+        .inline-block
+          = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), html: {class: "inline-block"}, method: :get do |f|
+            = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
+            = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
+            %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg{style: "background-color: transparent;border-radius: 16px;"}
+              /%i.fa.fa-star-half-o.cc-dark-fg
+              %span.inline-block Contribute
+        - unless current_user.showcase_assistances.include?(showcase)
+          .inline-block{class: "request-assistance-#{showcase.id}"}
+            = link_to request_assistance_showcase_path(showcase), class: "j-request-link", remote: true do
+              %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg.mleft5{style: "background-color: transparent;border-radius: 16px;", "data-disable-with" => "Please wait"}
+                %i.fa.fa-superpowers.cc-dark-fg
+                %span.inline-block Assist
+            .loader-effect.btn.btn-sm{style: "display:none;"}
+              .loading_dots
+                %span
+                %span
+                %span
   - if current_user
     .col-xs-2.col-sm-2.pleft0.pright0
       = link_to wow_showcase_path(showcase), remote: true, method: :post, class: "wow-link-#{showcase.id} black-fg" do
@@ -191,25 +221,8 @@
         %span.pon.grey-fg.pull-left.pleft-10
           %i.fa.fa-check-square-o.pull-left.font17.mtop2
           %span.font12.grey-fg.pull-left.mtop2 Done?
-    - if showcase.is_wishpay?
+    - if (showcase.is_wishpay? && showcase.raised_amount < showcase.projected_amount.to_i) || !current_user.showcase_assistances.include?(showcase)
       %i.fa.fa-diamond.pull-left.mleft10.grey-fg.mtop2.j-wishpay-open.pon
-      .pos-absolute.hide-display.j-wishpay-wrap.bg-white.padding10.btn-shadow{style: "top: -50px;right: 94px;border-radius: 35px;width: auto;"}
-        -if showcase.can_be_fullfilled_at_once?
-          = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), html: {class: "inline-block"}, method: :get do |f|
-            = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
-            = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
-            = f.hidden_field :gift_type, value: "fullfill", name: 'gift_type'
-            .inline-block
-              %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg{style: "background-color: transparent;border-radius: 16px;"}
-                /%i.fa.fa-star
-                %span.inline-block Fulfill
-        = form_for Cocotransfer.new, url: new_cocotransfer_path(@cocotransfer), html: {class: "inline-block"}, method: :get do |f|
-          = f.hidden_field :transferable_id, value: showcase.id, name: 'transferable_id'
-          = f.hidden_field :transferable_type, value: "Showcase", name: 'transferable_type'
-          .inline-block
-            %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg{style: "background-color: transparent;border-radius: 16px;"}
-              /%i.fa.fa-star-half-o.cc-dark-fg
-              %span.inline-block Contribute
   .col-xs-2.col-sm-2.pright0.pleft5
     - if current_user && showcase.owner?(current_user)
       = link_to slug_showcase_path(showcase.slug, showcase, to_move: "yes", collection_id: "#{params[:showcase]}"), remote: true, class: "" do

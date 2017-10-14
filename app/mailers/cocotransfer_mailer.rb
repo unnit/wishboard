@@ -1,9 +1,9 @@
 class CocotransferMailer < ApplicationMailer
   # default bcc: "#{GLOBAL_VARIABLES[:manager_email_id_1]}"
-  layout false, only: [:success_inovoice]
+  layout false, only: [:success_inovoice, :fund_reception_owner]
   def success_inovoice(cocotransfer, email)
     @cocotransfer = cocotransfer
-    attachments[ invoicename =  "Cocociti" + "Payment.pdf"] = WickedPdf.new.pdf_from_string(
+    attachments["Cocociti-Invoice.pdf"] = WickedPdf.new.pdf_from_string(
     render_to_string(:pdf => "cocotransfers", :template => 'cocotransfers/paid_inovoice.html.haml'))
     mail(to: email, subject: 'Boom De Yada! Gifting successful!')
   end
@@ -19,7 +19,7 @@ class CocotransferMailer < ApplicationMailer
   	mail to: email, subject: "Boom De Yada! Gift money Rs.#{@cocotransfer.total_amount} credited!"
   end
 
-   def fail(cocotransfer, message)
+  def fail(cocotransfer, message)
     @cocotransfer = cocotransfer
     @message = message
     mail to: @cocotransfer.email, subject: "Your payment failed. Please try again."

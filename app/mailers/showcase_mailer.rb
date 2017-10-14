@@ -1,4 +1,5 @@
 class ShowcaseMailer < ApplicationMailer
+  layout false, only: [:send_assistance_mail]
 
   def new_showcase(follower_email, showcase)
     @showcase = showcase
@@ -32,6 +33,12 @@ class ShowcaseMailer < ApplicationMailer
     @coiner = coiner
     @showcase = showcase
     mail to: owner_email, subject: "#{coiner.name} gifted you a coin"
+  end
+
+  def send_assistance_mail(user, showcase)
+    @user = user
+    @showcase = showcase
+    mail from: "ayyo@cocociti.com", to: user.email, subject: "Assistance to fullfil '#{@showcase.truncated_title}'"
   end
 
 end

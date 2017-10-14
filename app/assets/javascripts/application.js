@@ -646,7 +646,7 @@ $(document).ready(function(){
   });
   //Wishpay option
   $(document).on("click", ".j-wishpay-open", function(){
-    $(this).closest(".showcase-ps-wrapper").find(".j-wishpay-wrap").show();
+    $(this).closest(".showcase-ps-wrapper").find(".j-wishpay-wrap").fadeToggle(100);
     $(".j-wishpay-wrap").not($(this).closest(".showcase-ps-wrapper").find(".j-wishpay-wrap")).each(function(){
       $(this).hide();
     });
@@ -659,6 +659,9 @@ $(document).ready(function(){
       $(".j-wishpay-wrap").hide();
     }
   });
+  $(document).on("click", ".j-request-link", function(){
+    $(this).hide().next(".loader-effect").show();
+  })
   // Edit photo in profile page
   $(document).on("mouseover", ".main-prof-pic,#edit-prof-pic", function(){
     $("#edit-prof-pic").show();

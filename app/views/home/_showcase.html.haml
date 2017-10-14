@@ -148,7 +148,7 @@
             %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg{style: "background-color: transparent;border-radius: 16px;"}
               /%i.fa.fa-star-half-o.cc-dark-fg
               %span.inline-block Contribute
-        - unless (current_user && !current_user.showcase_assistances.include?(showcase))
+        - if (current_user && !current_user.showcase_assistances.include?(showcase))
           .inline-block{class: "request-assistance-#{showcase.id}"}
             = link_to request_assistance_showcase_path(showcase), class: "j-request-link", remote: true do
               %button.btn.btn-sm.cc-dark-fg-border.cc-dark-fg.mleft5{style: "background-color: transparent;border-radius: 16px;", "data-disable-with" => "Please wait"}

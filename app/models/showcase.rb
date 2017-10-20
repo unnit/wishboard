@@ -143,7 +143,11 @@ class Showcase < ApplicationRecord
   end
 
   def can_be_fullfilled_at_once?
-    self.projected_amount.present? && self.projected_amount > 0 && self.raised_amount == 0
+    self.is_wishpay? && self.projected_amount.to_i > 0 && self.raised_amount == 0
+  end
+
+  def can_wishpay_contribute?
+    self.is_wishpay? && ((self.projected_amount.to_i > 0 && self.raised_amount < self.projected_amount.to_i) || (self.projected_amount.to_i == 0))
   end
 
   def fullfillment_at_once_amount

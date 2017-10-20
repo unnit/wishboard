@@ -25,7 +25,7 @@
             %i.fa.fa-angle-down.font16
         - else
           %span.cc-dark-fg-dotted-border.mleft5
-            = Showcase::WISH_PREFIX[18][3]
+            = Showcase::WISH_PREFIX[19][3]
             &nbsp;
             %i.fa.fa-angle-down.font16
       = text_field_tag :initial, "#{@showcase.title}", placeholder: "What's your wish?", class: "coco-input-field form-control inline-display pull-left ps-initial", style: "width: auto;border-bottom: none;"
@@ -58,7 +58,6 @@
   - unless @showcase.achieved? && (!@showcase.showpiece?)
     .col-xs-12.col-sm-5.ptop10.height50
       = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{showcase.is_for_raising_fund? ? 'hidden' : ''}", readonly: true
-
   .col-xs-12.col-sm-12.ptop10
     .col-xs-6.col-sm-6.ptop10.height50
       Enable Wishpay Payment:

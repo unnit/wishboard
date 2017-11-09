@@ -176,7 +176,7 @@ Rails.application.routes.draw do
   get "check_commenter/:id", to: "home#update_commenter_checked", as: :update_commenter_checked
   get "check_fundreceived/:id", to: "home#update_fundreceived_checked", as: :update_fundreceived_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
-  get "discovery/:id", to: "showcases#category_wishes", as: :discover_category
+  get "discover/:id", to: "showcases#category_wishes", as: :discover_category
   get "fansday", to: "home#fansday"
   get "conversations", to: "chat_rooms#conversations", as: :chat_messages
   get "home/get-wishes", to: "home#get_showcases", as: :get_showcases

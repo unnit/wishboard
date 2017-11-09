@@ -1,6 +1,6 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete, :private]
-  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign, :request_assistance]
+  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign, :request_assistance, :edit_category_wish, :rewish_category, :add_to_category, :submit_to_category]
   before_action :check_end_campaign, only: [:edit, :update, :end_campaign]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
   before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :undo_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign]
@@ -35,7 +35,7 @@ class ShowcasesController < ApplicationController
     else
       @showcase.user_status = Showcase::USER_STATUS[0]
     end
-    @showcase.admin_created = false
+    @showcase.wishpay_status = 0 if @showcase.is_for_raising_fund?
     if params[:image].present?
       preloaded = Cloudinary::PreloadedFile.new(params[:image])
       @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -224,6 +224,18 @@ class ShowcasesController < ApplicationController
     render json: @tags.map{|tag| tag.name}
   end
 
+  def getmaintags
+    q = params[:q].downcase
+    @tags = Tag.where("lower(name) like ? and tag_type = ?", "%#{q}%", Tag::TAG_TYPE_VALUES[0])
+    render json: @tags.map{|tag| tag.name}
+  end
+
+  def getsubtags
+    q = params[:q].downcase
+    @tags = Tag.where("lower(name) like ? and tag_type = ?", "%#{q}%", Tag::TAG_TYPE_VALUES[1])
+    render json: @tags.map{|tag| tag.name}
+  end
+
   def create_collection
     @collection = current_user.collections.build(name: params[:name])
     @collection.save
@@ -331,6 +343,85 @@ class ShowcasesController < ApplicationController
       flash[:alert] = "You have already requested our assistance."
       render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}'"
     end
+  end
+
+  def category_wishes
+    @category = Tag.find_by_name params[:id]
+    @category_wishes = @category.showcases.category_wishes
+  end
+
+  def edit_category_wish
+    respond_to :js
+  end
+
+  def rewish_category
+    @rewish_category  = current_user.showcases.build(showcase_params.except("location_attributes"))
+    @rewish_category.build_location
+    @rewish_category.location.name = params[:showcase][:location_attributes][:name]
+    if params[:image].present?
+      preloaded = Cloudinary::PreloadedFile.new(params[:image])
+      @rewish_category.image = preloaded.identifier unless preloaded.blank?
+    else
+      @rewish_category.image = @showcase.image
+    end
+    @rewish_category.parent = @showcase
+    @rewish_category.user_status = Showcase::USER_STATUS[0]
+    if @rewish_category.save
+      flash[:notice] = "Successfully wished"
+    else
+      flash[:error] = @rewish_category.errors.full_messages.join(", ")
+    end
+    respond_to :js
+  end
+
+  def new_category
+    @category_wish = Showcase.new
+    @category_wish.build_location
+    respond_to :js
+  end
+
+  def create_category
+    @showcase = current_user.showcases.build(showcase_params)
+    if params[:image].present?
+      preloaded = Cloudinary::PreloadedFile.new(params[:image])
+      @showcase.image = preloaded.identifier unless preloaded.blank?
+    end
+    @showcase.category_wish = true
+    current_user.admin? ? @showcase.admin_status = Showcase::ADMIN_STATUS[0] : @showcase.admin_status = Showcase::ADMIN_STATUS[1]
+    @showcase.wishpay_status = Showcase::WISHPAY_STATUS[0]
+    @showcase.accept_fund = false
+    if @showcase.save
+      flash[:notice] = "Wish created successfully. It will be updated after admin review."
+    else
+      flash[:alert] = @showcase.errors.full_messages.join(", ")
+    end
+    respond_to :js
+  end
+
+  def add_to_category
+    respond_to :js
+  end
+
+  def submit_to_category
+    @category_wish  = current_user.showcases.build(showcase_params.except("location_attributes"))
+    @category_wish.build_location
+    @category_wish.location.name = params[:showcase][:location_attributes][:name]
+    if params[:image].present?
+      preloaded = Cloudinary::PreloadedFile.new(params[:image])
+      @category_wish.image = preloaded.identifier unless preloaded.blank?
+    else
+      @category_wish.image = @showcase.image
+    end
+    @category_wish.parent = @showcase
+    @category_wish.category_wish = true
+    @category_wish.accept_fund = false
+    current_user.admin? ? @category_wish.admin_status = Showcase::ADMIN_STATUS[0] : @category_wish.admin_status = Showcase::ADMIN_STATUS[1]
+    if @category_wish.save
+      flash[:notice] = "Wish added successfully. It will be updated after admin review."
+    else
+      flash[:error] = @category_wish.errors.full_messages.join(", ")
+    end
+    respond_to :js
   end
 
   private

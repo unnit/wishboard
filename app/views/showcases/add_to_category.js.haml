@@ -1,0 +1,5 @@
+display_cont_wrapper("#{j render partial: "showcases/category_wish", locals: {showcase: @showcase, url: submit_to_category_showcase_path(@showcase)}}");
+$(".j-payment-fields").remove();
+showTag(".tm-category-input", "showcase[all_tags]", "#{@showcase.all_tags}".split(','), "gettags");
+$("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+reatch_cloundinary(".cloudinary-fileupload-category");

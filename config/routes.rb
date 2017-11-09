@@ -57,6 +57,7 @@ Rails.application.routes.draw do
       end
       collection do
         get :crowdfunding
+        get :user_discovery
       end
     end
   end
@@ -175,6 +176,7 @@ Rails.application.routes.draw do
   get "check_commenter/:id", to: "home#update_commenter_checked", as: :update_commenter_checked
   get "check_fundreceived/:id", to: "home#update_fundreceived_checked", as: :update_fundreceived_checked
   get "tags/:tag", to: "showcases#tagged_showcases", as: :tag
+  get "discovery/:id", to: "showcases#category_wishes", as: :discover_category
   get "fansday", to: "home#fansday"
   get "conversations", to: "chat_rooms#conversations", as: :chat_messages
   get "home/get-wishes", to: "home#get_showcases", as: :get_showcases
@@ -226,14 +228,22 @@ Rails.application.routes.draw do
       post :update_backstory
       post :end_campaign
       get :request_assistance
+      get :edit_category_wish
+      post :rewish_category
+      get :add_to_category
+      post :submit_to_category
     end
     collection do
       get :gettags
+      get :getmaintags
+      get :getsubtags
       get :autocomplete
       post :create_collection
       post :add
       post :multiple_rewish
       post :add_coin_wish
+      get :new_category
+      post :create_category
     end
   end
 

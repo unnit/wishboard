@@ -1,4 +1,3 @@
-.ps-wrapper{"data-pdate" => "#{DateTime.current}", "data-fdate" => "#{DateTime.current + 8.days}"}
 .container-fluid.ptop50.mob-ptop100.bg-light-grey.padding0{style: "min-height: 1000px;"}
   .container.padding0.ptop20.pbottom70.helvetica-font
     .col-xs-12.col-sm-6.col-sm-offset-3.light-border.bg-white.bg-shad.padding0.pbottom20
@@ -40,7 +39,9 @@
         .col-xs-12.col-sm-12.text-center.ptop10
           ~ f.text_area :description, placeholder: "Description", class: "form-control coco-input-field", maxlength: 1000
         .col-xs-12.col-sm-12.ptop20.pbottom10
-          = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
+          = f.text_field :main_tags, placeholder: "Main Tags (Use enter, comma or tab to separate)", class: "tm-admin-main-tag-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
+        .col-xs-12.col-sm-12.ptop20.pbottom10
+          = f.text_field :sub_tags, placeholder: "Sub Tags (Use enter, comma or tab to separate)", class: "tm-admin-sub-tag-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
         .col-xs-12.col-sm-7.ptop10.height50
           = f.fields_for :location do |lf|
             = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
@@ -48,7 +49,7 @@
           = f.text_field :target_date, placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white", readonly: true
         .col-xs-12.col-sm-3.mtop10
           %span.no-mar-pad.col-xs-12.col-sm-12
-            = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}", required: true
+            = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}", required: true, checked: true
             %label.mbottom0 Active
           %span.no-mar-pad.col-xs-12.col-sm-12
             = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[1]}", required: true
@@ -56,5 +57,15 @@
         .col-xs-4.col-sm-3.ptop10
           = f.check_box :coin_wish
           %label.mbottom0 Coin WIsh
+        .col-xs-8.col-sm-3.mtop10
+          = f.check_box :category_wish
+          %label.mbottom0 Category Wish
         .col-xs-12.col-sm-12.mtop10.text-center
           = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
+
+= content_for :extra_js do
+  :javascript
+    $(document).ready(function(){
+      showTag(".tm-admin-main-tag-input", "showcase[main_tags]", [], "getmaintags");
+      showTag(".tm-admin-sub-tag-input", "showcase[subtags]", [], "getsubtags");
+    })

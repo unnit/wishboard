@@ -47,6 +47,7 @@ class ApplicationController < ActionController::Base
   def init_showcase
     @scase = Showcase.new
     @scase.build_location
+    @category_tags = Tag.main
   end
 
   private

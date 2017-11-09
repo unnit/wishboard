@@ -762,61 +762,8 @@ $(document).ready(function(){
   else{
     var prefilled_tags = [];
   }
-  var tags = new Bloodhound({
-    datumTokenizer: function(datum) {
-      return Bloodhound.tokenizers.whitespace(datum.value);
-    },
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    remote: {
-      wildcard: '%QUERY',
-      url: '/wish/gettags?q=%QUERY',
-      transform: function(response) {
-        // Map the remote source JSON array to a JavaScript object array
-        return $.map(response, function(tags) {
-          return {
-            value: tags
-          };
-        });
-      }
-    }
-  });
-  blank_array = []
-  var tagApi = $(".tm-input").tagsManager({
-    hiddenTagListName: "showcase[all_tags]",
-    maxTags: 15,
-    prefilled: blank_array
-  });
-  var tagEditApi = $(".tm-edit-input").tagsManager({
-    hiddenTagListName: "showcase[all_tags]",
-    maxTags: 15,
-    prefilled: prefilled_tags
-  });
-  $(".tm-input").typeahead(null, {
-    display: 'value',
-    source: tags,
-  }).on('typeahead:selected', function (e, d) {
-      tagApi.tagsManager("pushTag", d.value);
-      $('.tm-input').typeahead('val', "");
-  });
-  $(".tm-edit-input").typeahead(null, {
-    display: 'value',
-    source: tags,
-  }).on('typeahead:selected', function (e, d) {
-      tagEditApi.tagsManager("pushTag", d.value);
-      $('.tm-edit-input').typeahead('val', "");
-  });
-  $(".tm-input").on('tm:hide', function() {
-    $(".tm-input.tt-hint").hide();
-  });
-  $(".tm-edit-input").on('tm:hide', function() {
-    $(".tm-edit-input.tt-hint").hide();
-  });
-  $(".tm-input").on('tm:show', function() {
-    $(".tm-input.tt-hint").show();
-  });
-  $(".tm-edit-input").on('tm:show', function() {
-    $(".tm-edit-input.tt-hint").show();
-  });
+  showTag(".tm-input", "showcase[all_tags]", prefilled_tags, "gettags");
+  showTag(".tm-edit-input", "showcase[all_tags]", prefilled_tags, "gettags");
   var showcases = new Bloodhound({
     datumTokenizer: function(datum) {
       return Bloodhound.tokenizers.whitespace(datum.value);
@@ -1552,12 +1499,12 @@ $(document).ready(function(){
     $wrap.text($wrap.text() === "1" ? "2" : "1");
   })
   //Bootsrap carouse slider mobile swipe
-  $(document).on("swiperight", "#myCarousel, #myMobileCarousel, #myCoinCarousel, #myCoinMobileCarousel, .description_carousel, .image_carousel", function() {
+  $(document).on("swiperight", "#myCarousel, #myMobileCarousel, #myCoinCarousel, #myCoinMobileCarousel, .description_carousel, .image_carousel, #myCategoryCarousel", function() {
     $(this).carousel('prev');
     $(this).find(".j-change-count").text($(this).find(".j-change-count").text() === "1" ? "2" : "1");
     $(".j-change-info").addClass("hidden-xs-inline");
   });
-  $(document).on("swipeleft", "#myCarousel, #myMobileCarousel, #myCoinCarousel, #myCoinMobileCarousel, .description_carousel, .image_carousel", function() {
+  $(document).on("swipeleft", "#myCarousel, #myMobileCarousel, #myCoinCarousel, #myCoinMobileCarousel, .description_carousel, .image_carousel, #myCategoryCarousel", function() {
     $(this).carousel('next');
     $(this).find(".j-change-count").text($(this).find(".j-change-count").text() === "1" ? "2" : "1");
     $(".j-change-info").addClass("hidden-xs-inline")
@@ -1613,7 +1560,6 @@ $(document).ready(function(){
    content = "<div class='col-xs-12 col-sm-6 col-sm-offset-3 mtop40 bg-white padding20 border5 font11'> <h3 class='full-width mbottom10 text-center txt-underline font16'>Allow or block browser notifications Chrome</h3> <ul> <li class='mbottom5'>At the top right, click More More and then Settings.</li> <li class='mbottom5'>At the bottom, click Advanced.</li> <li class='mbottom5'>Under 'Privacy and security,' click Content settings.</li> <li class='mbottom5'>Click Notifications.</li> <li class='mbottom5'>Search 'https://www.cocociti.com' & choose to block or allow notifications: </li> </ul> <h3 class='full-width mbottom10 text-center txt-underline font16'>Allow or block browser notifications FireFox</h3> <ul> <li class='mbottom5'>Go to the Firefox menu and select Preferences.</li> <li class='mbottom5'>Select the Content panel and click the Choose… button under Notifications.</li> <li class='mbottom5'>Select 'https://www.cocociti.com'. </li> <li class='mbottom5'>Click Remove Site.</li> </ul> <br><br> <strong>P.S:</strong> If you’re browsing in Incognito mode, you won’t get notifications. <br><br><strong>Keep Wishing.</strong> </div>"
    display_cont_wrapper(content);
   })
-
   $('form#admin_send_firebase_notifications').on('ajax:success', function(e, data, status, xhr){
     alert("Application sending Notifications in background");
     reEnableSubmitButton('admin_send_firebase_notifications_submit');
@@ -1621,31 +1567,23 @@ $(document).ready(function(){
     alert("something went wrong");
     reEnableSubmitButton('admin_send_firebase_notifications_submit');
   });
-
   $(document).on("click", ".show-video-iframe", function(e){
     e.preventDefault();
     videodiv_element = $(this).attr('data-video-frame-div');
     $(this).hide();
     $(videodiv_element).removeClass('hidden');
   });
-
   $(document).on("keyup", "form.new_cocotransfer #cocotransfer_total_amount", function(e){
    $(".cocotransfer_display_amount").html(($(this).val()));
   });
-
   $(document).on("keyup", "#cocotransfer_total_amount", function(e){
    setOnlineAndWalletAmount();
    setFullfillmentOrContribute();
   });
-
   $(document).on("change", "#cocotransfer_use_wallet_amount", function(e){
    setOnlineAndWalletAmount();
   });
-
   showLinkPreviews(".url_preview");
-
-
-
 });// eof document ready
 $(window).on("load", function(){
   //Setting footer proper for mac devices
@@ -1654,13 +1592,11 @@ $(window).on("load", function(){
   }
 })
 
-
-
 function showLinkPreviews(element_selector){
   $(element_selector+":not([data-linkpreview-added])").each(function() {
    var thisLinkPreview = this;
    appendLoader(thisLinkPreview);
-   var data = {linkurl: $(this).attr('href')  };
+   var data = {linkurl: $(this).attr('href')};
    $.ajax({
     type: 'GET',
     data: data,
@@ -1685,7 +1621,6 @@ function hideLoader(thisLinkPreview){
   $(thisLinkPreview).next(".link-preview-loader").remove();
 }
 
-
 function setFullfillmentOrContribute(){
   $currentAmount = parseInt($("#cocotransfer_total_amount").val());
   $fullfillmentAmount = parseInt($("#cocotransfer_fullfillment_at_once_amount").val());
@@ -1695,8 +1630,6 @@ function setFullfillmentOrContribute(){
       if($currentAmount == $fullfillmentAmount){setWishFullfillment(); }
       else{setWishContribute(); }
   }
-
-
 }
 function setWishFullfillment(){
   console.log("fullfilment");
@@ -1715,8 +1648,6 @@ function setWishContribute(){
   $giftButton.attr('data-disable-with', 'Gift');
   $diplayGiftType.html("You are contributing to this wish");
 }
-
-
 
 function setOnlineAndWalletAmount(){
   $currentAmount = parseInt($("#cocotransfer_total_amount").val());
@@ -1962,4 +1893,67 @@ function display_cont_wrapper(content){
   $("#cont-wrapper").html(content);
   $("#cont-wrapper").prepend("<span class='pull-right padding5 mbottom20' style='z-index: 1051;'><button type='button' data-dismiss='modal' class='pull-left btn grey-bg padding10' style='border-radius: 50%;'><span class='close-sprite pull-left'></button></span>");
   $("#cont-wrapper").modal("show");
+}
+function getTags(url){
+  var tags = new Bloodhound({
+    datumTokenizer: function(datum) {
+      return Bloodhound.tokenizers.whitespace(datum.value);
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+      wildcard: '%QUERY',
+      url: '/wish/'+url+'?q=%QUERY',
+      transform: function(response) {
+        // Map the remote source JSON array to a JavaScript object array
+        return $.map(response, function(tags) {
+          return {
+            value: tags
+          };
+        });
+      }
+    }
+  });
+  return tags;
+}
+function showTag(tagholder, taglist, prefilled_tags, url){
+  var tagApi = $(tagholder).tagsManager({
+    hiddenTagListName: taglist,
+    maxTags: 15,
+    prefilled: prefilled_tags
+  });
+  $(tagholder).typeahead(null, {
+    display: 'value',
+    source: getTags(url),
+  }).on('typeahead:selected', function (e, d) {
+      tagApi.tagsManager("pushTag", d.value);
+      $(tagholder).typeahead('val', "");
+  });
+  $(tagholder).on('tm:hide', function() {
+    $(tagholder+".tt-hint").hide();
+  });
+  $(tagholder).on('tm:show', function() {
+    $(tagholder+".tt-hint").show();
+  });
+}
+function wishpayCrowdfundingToggle(elementselector){
+  $wrap = $(elementselector).closest(".create-showcase");
+  $raiseFundFields = $wrap.find('.raise-funds-fields');
+  $wishpayFields = $wrap.find('.wishpay-fields');
+  $acceptFund = $wrap.find("#showcase_accept_fund")
+  if($(elementselector).is(":checked")){
+    $acceptFund.prop('checked', false).prop('disabled', true);
+    $wishpayFields.removeClass("hidden");
+    $raiseFundFields.addClass('hidden');
+  }else{
+    $wishpayFields.addClass("hidden");
+    if($acceptFund.attr('backend_disabled') == "true"){
+    }else{
+      $acceptFund.prop('disabled', false);
+    }
+    if($acceptFund.is(":checked")){
+      $raiseFundFields.removeClass('hidden');
+    }else{
+      $raiseFundFields.addClass('hidden');
+    }
+  }
 }

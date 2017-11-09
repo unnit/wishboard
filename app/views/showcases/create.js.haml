@@ -13,13 +13,10 @@ setTimeout(function(){$(".messages").empty();}, 8000);
   $(".showcase-ps-#{@showcase.id}").fadeIn("slow");
   $("#new-wish").html("#{j render partial: 'home/post_showcase', locals: {showcase: @scase}}")
   $("#shareShowcaseRoundIcons").jsSocials({url: "https://www.cocociti.com/wish/#{@showcase.id}",showLabel: false,showCount: false,shares: ["twitter", "facebook", "pinterest", "whatsapp"]});
-  var tags = new Bloodhound({datumTokenizer: function(datum) {return Bloodhound.tokenizers.whitespace(datum.value);},queryTokenizer: Bloodhound.tokenizers.whitespace,remote: {wildcard: '%QUERY',url: '/showcases/gettags?q=%QUERY',transform: function(response) {return $.map(response, function(tags) {return {value: tags};});}}});
-  blank_array = []
-  var tagApi = $(".tm-input").tagsManager({hiddenTagListName: "showcase[all_tags]",maxTags: 15,prefilled: blank_array});
-  $(".tm-input").typeahead(null, {display: 'value',source: tags,}).on('typeahead:selected', function (e, d) {tagApi.tagsManager("pushTag", d.value);$('.tm-input').typeahead('val', "");});
+  showTag(".tm-input", "showcase[all_tags]", [], "gettags");
   tagApi.tagsManager("empty");
   $(".prefix-scrollbar").mCustomScrollbar({setHeight: 298});
-  $(".cloudinary-fileupload").cloudinary_fileupload();
+  $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
   $('.cloudinary-fileupload-new').on('fileuploadprogress', function(e, data) {$(".ps-sub-wrap-2").fadeIn(50, function(){$(".ps-sub-wrap-2").animate({"opacity": "1", "margin-left": "10px", "margin-top": "-120px"}, 150);});$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find('.progress').css("display", "inline-block");console.log(data.loaded);$wrap.find('.progress-bar').css('width', Math.round((data.loaded * 100.0) / data.total) + '%');});
   $('.cloudinary-fileupload-new').on('cloudinarydone', function(e, data) {$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find(".file-input-button, .progress").hide();$wrap.find(".preview").show();$wrap.find('.preview').html($.cloudinary.image(data.result.public_id,{ format: data.result.format, version: data.result.version,crop: 'fill', width: 100, height: 100, class: 'img-responsive inline-display' }));$wrap.find('.progress-bar').css('width', '0%');$wrap.find(".preview-delete").show();$wrap.find(".error-ps-photo").fadeOut();return true;});
   $(".preview-delete").click(function(){$wrap = $(this).closest("#new_showcase").find(".photo-upload-wrapper");$wrap.find(".preview").empty();$wrap.find(".preview-delete, .preview").hide();$wrap.find(".file-input-button").show();})

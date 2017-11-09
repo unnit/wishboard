@@ -15,7 +15,11 @@
         %li{class: "#{'active' if controller_name=='users'}"}= link_to "Users", admin_users_path
         %li= link_to "Stats", admin_miscellaneous_index_path
         %li{class: "#{'active' if controller_name=='users'}"}= link_to "Messaging", messages_admin_users_path
-        %li{class: "#{'active' if controller_name=='showcases'}"}= link_to "Showcase", admin_showcases_path
+        %li{class: "dropdown"}
+          =link_to "Showcases", "#"
+          .dropdown-content
+            %div.padding10= link_to  "Admin Wishes", admin_showcases_path, class: "internallink grey-fg"
+            %div.padding10= link_to "User Discovery Wishes", user_discovery_admin_showcases_path,  class: "internallink grey-fg"
         %li{class: "dropdown"}
           =link_to "Crowdfunding", "#"
           .dropdown-content

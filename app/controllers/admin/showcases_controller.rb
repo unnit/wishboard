@@ -37,6 +37,7 @@ class Admin::ShowcasesController < AdminController
   def create
     @showcase = current_user.showcases.build(admin_wish_params)
     @showcase.admin_created = true
+    @showcase.all_tags = params[:showcase][:main_tags]+","+params[:showcase][:sub_tags]
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -57,6 +58,7 @@ class Admin::ShowcasesController < AdminController
   def update
     @showcase.build_location if @showcase.location.blank?
     @showcase.assign_attributes(admin_wish_params)
+    @showcase.all_tags = params[:showcase][:main_tags]+","+params[:showcase][:sub_tags]
     if params[:image].present?
      preloaded = Cloudinary::PreloadedFile.new(params[:image])
      @showcase.image = preloaded.identifier unless preloaded.blank?
@@ -82,10 +84,19 @@ class Admin::ShowcasesController < AdminController
     render "showcases/delete_comment"
   end
 
+  def user_discovery
+    @showcases = Showcase.user_category_wishes.order(created_at: :desc)
+    @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(30)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
   private
 
   def admin_wish_params
-    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :all_tags, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :admin_status, :coin_wish, :fundcategory_id, :beneficiary,:access_type, location_attributes: [:id, :name])
+    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :admin_status, :coin_wish, :fundcategory_id, :beneficiary, :access_type, :category_wish, location_attributes: [:id, :name])
   end
 
   def get_showcase

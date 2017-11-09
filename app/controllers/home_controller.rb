@@ -25,7 +25,7 @@ class HomeController < ApplicationController
       @showcases = feed_wishes.limit(8)
       @all_count = all_wishes(nil).count
       @all_showcases = all_wishes(nil).limit(8)
-      admin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = false"]
+      admin_wish_conditions = ["admin_created = true and category_wish = false and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = false"]
       unless current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq.blank?
         admin_wish_conditions[0]+=" and id not in (?) "
         admin_wish_conditions.push current_user.showcases.public_accessible.where("parent_id is not null").map{|s| s.parent_id}.uniq

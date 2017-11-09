@@ -71,7 +71,7 @@
         - if showcase.accept_fund_is_editable?
           = f.check_box :accept_fund
         - else
-          = f.check_box :accept_fund, disabled: "disabled", backend_disbaled: true
+          = f.check_box :accept_fund, disabled: "disabled", backend_disabled: true
       .col-xs-12.col-sm-12.raise-funds-fields{class: "#{showcase.is_for_raising_fund? ? '' : 'hidden'}"}
         .col-xs-12.col-sm-6.pleft0.height50
           = f.text_field :goal_amount, placeholder: "Goal Amount*", class: "form-control coco-input-field", maxlength: 7

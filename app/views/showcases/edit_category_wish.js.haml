@@ -1,0 +1,9 @@
+display_cont_wrapper("#{j render partial: "showcases/category_wish", locals: {showcase: @showcase, url: rewish_category_showcase_path(@showcase)}}");
+showTag(".tm-category-input", "showcase[all_tags]", "#{@showcase.all_tags}".split(','), "gettags");
+$("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
+reatch_cloundinary(".cloudinary-fileupload-category");
+:plain
+  wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
+  $(document).on('change', "#edit_showcase_#{@showcase.id} #showcase_wishpay_status", function() {
+    wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
+  })

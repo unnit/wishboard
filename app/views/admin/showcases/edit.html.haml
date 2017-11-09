@@ -49,7 +49,9 @@
         .col-xs-12.col-sm-12.text-center.ptop10
           ~ f.text_area :description, placeholder: "Tell the story behind this wish?", class: "form-control coco-input-field", maxlength: 1000
         .col-xs-12.col-sm-12.ptop20.pbottom10
-          = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-edit-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
+          = f.text_field :main_tags, placeholder: "Main Tags (Use enter, comma or tab to separate)", class: "tm-admin-main-tag-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
+        .col-xs-12.col-sm-12.ptop20.pbottom10
+          = f.text_field :sub_tags, placeholder: "Sub Tags (Use enter, comma or tab to separate)", class: "tm-admin-sub-tag-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
         .col-xs-12.col-sm-7.ptop10.height50
           = f.fields_for :location do |lf|
             = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
@@ -65,6 +67,9 @@
         .col-xs-4.col-sm-3.ptop10
           = f.check_box :coin_wish
           %label.mbottom0 Coin WIsh
+        .col-xs-8.col-sm-3.mtop10
+          = f.check_box :category_wish
+          %label.mbottom0 Category Wish
         .col-xs-12.col-sm-12.ptop10.height50
           Accept Fund:
           - if @showcase.accept_fund_is_editable?
@@ -97,6 +102,8 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      showTag(".tm-admin-main-tag-input", "showcase[main_tags]", #{@showcase.main_tags.split(",")}, "getmaintags");
+      showTag(".tm-admin-sub-tag-input", "showcase[sub_tags]", #{@showcase.sub_tags.split(",")}, "getsubtags");
       $wrap = $("#edit_showcase_"+#{@showcase.id});
       $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 3});
       $(document).on("click", ".showcase-update-submit", function(e){

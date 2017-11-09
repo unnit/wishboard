@@ -31,6 +31,8 @@ class Showcase < ApplicationRecord
   has_many :user_assistances, through: :assistance_requests, source: :user
   accepts_nested_attributes_for :location
 
+  attr_accessor :main_tags, :sub_tags
+
   DEFAULT_AFTER_RATING = 0
   BACKSTORY_POSSIBLE_WISH_VALUES = [6, 8, 9, 11]
   WISH_PREFIX =
@@ -109,7 +111,7 @@ class Showcase < ApplicationRecord
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
   scope :recently_created, -> (n) {where("created_at > ?", (Time.now.utc - n.days).beginning_of_day)}
   scope :user_coin_wishes, -> {user_created.coin_wishes}
-  scope :public_accessible, -> {where("access_type in (?)", [ACCEESS_TYPE[0], nil])}
+  scope :public_accessible, -> {where("access_type in (?) and category_wish = ?", [ACCEESS_TYPE[0], nil], false)}
   scope :non_crowdfunding, -> {user_created.non_coin.where(accept_fund: [nil, false])}
   scope :wishpay, -> {where("wishpay_status in (?)", [WISHPAY_STATUS[1]])}
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
@@ -119,6 +121,8 @@ class Showcase < ApplicationRecord
   scope :non_coin, -> {where(coin_wish: [nil ,false])}
   scope :admin_generated, -> {where(admin_created: true)}
   scope :coin_wishes,  -> {where(coin_wish: true)}
+  scope :category_wishes, -> {where(category_wish: true)}
+  scope :user_category_wishes, -> {where("category_wish = ? and admin_created = ?", true, false)}
   # scope :non_crowdfunding, -> {where("accept_fund = ? and admin_created = ? and coin_wish = ?", false, false, false)}
 
   HUMANIZED_ATTRIBUTES = {
@@ -130,8 +134,8 @@ class Showcase < ApplicationRecord
 
   def max_number_of_wishes_per_week
     if self.is_for_raising_fund? && self.new_record? && self.user && self.admin_created != true
-      if self.user.showcases.active_rasing_funds.where("created_at > #{(Time.zone.now - 168.hours)}" ).count >= NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK
-        errors.add(:number_of_wishesh_per_week, "must be at less than or equal to #{NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK}")
+      if self.user.showcases.active_rasing_funds.where("created_at > ?", Time.zone.now - 168.hours).count >= NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK
+        errors.add(:number_of_wishes_per_week, "must be at less than or equal to #{NUMBER_OF_CROUDFUNDING_WISHES_PER_WEEK}")
       end
     end
   end
@@ -226,9 +230,21 @@ class Showcase < ApplicationRecord
     self.tags.map(&:name).join(",")
   end
 
+  def main_tags
+    self.tags.main.map(&:name).join(",")
+  end
+
+  def sub_tags
+    self.tags.sub_tags.map(&:name).join(",")
+  end
+
   def accept_only_one_type_of_payment
-    errors.add(:wish, "can accept only one type of gift")  if (self.wishpay_status == WISHPAY_STATUS[1] && self.accept_fund == true)
-    errors.add(:wish, "coin wish can not accept gifts")  if ((self.wishpay_status == WISHPAY_STATUS[1] || self.accept_fund == true) && self.coin_wish == true)
+    errors.add(:wish, "can either enable wishpay or grouppay")  if (self.wishpay_status == WISHPAY_STATUS[1] && self.accept_fund == true)
+    errors.add(:coin_wish, "cannot accept gifts")  if ((self.wishpay_status == WISHPAY_STATUS[1] || self.accept_fund == true) && self.coin_wish == true)
+  end
+
+  def not_category_wish?
+    self.category_wish == false
   end
 
   def show_wishpay_edit_fields?
@@ -304,7 +320,7 @@ class Showcase < ApplicationRecord
   end
 
   def admin_creation?
-    admin_created == true
+    admin_created == true || category_wish == true
   end
 
   def truncated_title
@@ -626,7 +642,7 @@ class Showcase < ApplicationRecord
   end
 
   def create_showcase_notification
-    if !self.admin_created? && self.publicably_available?
+    if !self.admin_created? && self.publicably_available? && self.not_category_wish?
       user.followers.each do |follower|
         self.showcase_notifications.create(user_id: follower.id)
       end
@@ -651,7 +667,7 @@ class Showcase < ApplicationRecord
   end
 
   def send_new_wish
-    if !self.admin_created? & self.publicably_available?
+    if !self.admin_created? & self.publicably_available? && self.not_category_wish?
       @follower_ids = self.user.followers.pluck(:id)
       ShowcaseBroadcastJob.perform_later(self.id, @follower_ids)
     end

@@ -1,3 +1,4 @@
 - if @category_wish.errors.blank?
+  $(".add-to-category-#{@showcase.id}").remove();
   $("#cont-wrapper").html("").modal("hide");
 $(".messages").html("#{j(render 'layouts/messages')}");

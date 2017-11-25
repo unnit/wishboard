@@ -163,7 +163,15 @@ class Showcase < ApplicationRecord
   end
 
   def can_accept_gift?
-    !self.is_admin_disabled? && ((self.is_for_raising_fund? && !self.campaign_ended?) || self.is_wishpay? )
+    !self.is_admin_disabled? && ((self.is_for_raising_fund? && !self.campaign_ended?) || self.is_wishpay?)
+  end
+
+  def can_add_to_category?
+    if Showcase.find_by_parent_id(self.id).present?
+      return false
+    else
+      return true
+    end
   end
 
   def date_range_for_target_date

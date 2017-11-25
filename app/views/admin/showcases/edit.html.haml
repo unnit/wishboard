@@ -102,6 +102,7 @@
 = content_for :extra_js do
   :javascript
     $(document).ready(function(){
+      alert("hi");
       showTag(".tm-admin-main-tag-input", "showcase[main_tags]", #{@showcase.main_tags}.split(","), "getmaintags");
       showTag(".tm-admin-sub-tag-input", "showcase[sub_tags]", #{@showcase.sub_tags}.split(","), "getsubtags");
       $wrap = $("#edit_showcase_"+#{@showcase.id});

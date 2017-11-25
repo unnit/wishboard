@@ -1,3 +1,28 @@
+.container-fluid.ptop50.padding0.mob-ptop100.min-height1000.hidden{style: "background:#ebeced;"}
+  .col-xs-12.col-sm-12.bg-white
+    .container.padding15
+      .col-sm-10
+        #myCategoryCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}, data: {interval: false}}
+          .carousel-inner{role: "listbox"}
+            - @category_tags.each_slice(6).with_index do |category_tags, i|
+              .item{class: "#{'active' if i==0}"}
+                - category_tags.each do |category_tag|
+                  .col-sm-2
+                    .col-sm-12.no-mar-pad.text-center
+                      = link_to discover_category_path(category_tag.name) do
+                        .padding20.text-center.cc-dark-fg.btn-v-outline.transition-effect.inline-block.font25{style: "width: 104px; height: 86px;"}
+                          = category_tag.name.first.upcase
+                      .pull-left.full-width.cc-dark-fg.font12.mtop10
+                        = truncate category_tag.name, length: 30
+          %a.left.carousel-control.grey-fg{href: "#myCategoryCarousel", role: "button", "data-slide" => "prev", style: "background: transparent;width: 15px;"}
+            %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true, style: "font-size: 20px;"}
+            %span.sr-only Previous
+          %a.right.carousel-control.grey-fg{href: "#myCategoryCarousel", role: "button", "data-slide" => "next", style: "background: transparent;width: 15px;"}
+            %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true, style: "font-size: 20px;"}
+            %span.sr-only Next
+      .col-sm-2
+        = link_to new_category_showcases_path, remote: true do
+          .plus-sprite.pon{style: "margin-top: 0px;"}
 #cont-wrapper.modal.fade.padding0
 .container-fluid.ptop50.mob-ptop100.padding0.helvetica-font.pbottom50{style: "min-height: 1000px;"}
   .container.padding0

@@ -16,7 +16,8 @@
         Edit as Admin...
       = link_to admin_showcase_path(showcase), method: :delete, data: { confirm: "Are you sure you want to delete your #{showcase.showcase_type_name}?" }, class: "full-width grey-fg pull-left small padding5 j-loader-trigger-link" do
         Delete as Admin...
-      = link_to add_to_category_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5", remote: true do
+    - if current_user && showcase.can_add_to_category? && [1, 2].include?(current_user.id)
+      = link_to add_to_category_showcase_path(showcase), class: "full-width grey-fg pull-left small padding5 add-to-category-#{showcase.id}", remote: true do
         Add to Discovery...
     %span.embed-link.pon.full-width.grey-fg.pull-left.small.padding5{"data-url" => "#{slug_showcase_url(showcase.slug, showcase)}", "data-title" => "#{showcase.title}"}= showcase.wishlist? ? "Embed Wish".html_safe : "Embed Showpiece".html_safe
   %span.pos-absolute{style: "right: 5px;top: 25px;"}

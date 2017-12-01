@@ -6,3 +6,40 @@ $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wr
 $wrap.find(".type-holder").html("#{@showcase.showcase_type_label.html_safe}");
 $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
 reatch_cloundinary(".cloudinary-fileupload-category");
+:plain
+  $(document).on("click", ".showcase-update-submit", function(e){
+    $wrap = $("#edit_showcase_"+#{@showcase.id});
+    e.preventDefault();
+    $wrap.find("#showcase_title").val($wrap.find(".ps-initial").val());
+    $wrap.submit();
+  });
+  date_options = {format: 'dd-mm-yyyy', autoclose: true, minView: 2, pickerPosition: "bottom-right", startDate: "", endDate: "" };
+  if($wrap.find("#showcase_showcase_type").val() == 0){
+    if($wrap.find("#showcase_accept_fund").is(":checked")){
+      date_options["startDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
+    }else{
+      date_options["endDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
+    }
+  }
+  else if($wrap.find("#showcase_showcase_type").val() == 1){
+    date_options["startDate"] = new Date($(".ps-edit-wrapper").data("fdate"));
+  }
+  else if($wrap.find("#showcase_showcase_type").val() == 2){
+    date_options["endDate"] = new Date($(".ps-edit-wrapper").data("fdate"));
+    date_options["startDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
+  }
+  $wrap.find(".dt-of-achievement").datetimepicker(date_options);
+  date_options["startDate"] = "";
+  date_options["endDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
+  $(".after-date-of-achievement").datetimepicker(date_options)
+  wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
+  $(document).on('change', "#edit_showcase_#{@showcase.id} #showcase_wishpay_status", function() {
+    wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
+  })
+  var places_input_1= $('.pac-extra-input')[1];
+  var autocomplete = new google.maps.places.Autocomplete(places_input_1);
+  google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
+    if (e.keyCode == 13 && $('.pac-container:visible').length) {
+      e.preventDefault();
+    }
+  });

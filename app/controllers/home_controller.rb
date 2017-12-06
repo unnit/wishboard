@@ -240,7 +240,7 @@ class HomeController < ApplicationController
     add_breadcrumb "@#{@profile.slug}", myprofile_path(@profile.slug)
     add_breadcrumb "Showcases", myprofile_path(@profile.slug)
     if @user == current_user
-      @showcases = @user.showcases.user_created.order(achieved_at: :desc).limit(6)
+      @showcases = @user.showcases.user_created.non_category_wishes.order(achieved_at: :desc).limit(6)
     else
       @showcases = @user.showcases.approved.user_created.order(achieved_at: :desc).limit(6)
     end

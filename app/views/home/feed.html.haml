@@ -27,7 +27,7 @@
     .col-xs-12.col-sm-6.ptop15.padding-mob0.main-feed{class: "#{'hide-display' if params[:view] == "follow"}"}
       #new-wish
         = render partial: "post_showcase", locals: {showcase: @scase}
-      - if [1, 2].include? current_user.id
+      - if [1, 2, 2033, 1206, 359, 2621].include? current_user.id
         .col-xs-12.col-sm-12.mtop10.text-center
           = link_to new_category_showcases_path, remote: true do
             .fa.fa-plus-circle.font25

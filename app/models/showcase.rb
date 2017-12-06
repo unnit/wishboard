@@ -117,12 +117,13 @@ class Showcase < ApplicationRecord
   scope :non_public, -> {where(access_type: ACCEESS_TYPE[1])}
   scope :active, -> {where(admin_status: [0, nil])}
   scope :approved, -> {public_accessible.active}
-  scope :user_created, -> {where(admin_created: [nil, false])}
-  scope :non_coin, -> {where(coin_wish: [nil ,false])}
+  scope :user_created, -> {where(admin_created: false)}
+  scope :non_coin, -> {where(coin_wish: false)}
   scope :admin_generated, -> {where(admin_created: true)}
   scope :coin_wishes,  -> {where(coin_wish: true)}
   scope :category_wishes, -> {where(category_wish: true)}
   scope :user_category_wishes, -> {where("category_wish = ? and admin_created = ?", true, false)}
+  scope :non_category_wishes, -> {where(category_wish: false)}
   # scope :non_crowdfunding, -> {where("accept_fund = ? and admin_created = ? and coin_wish = ?", false, false, false)}
 
   HUMANIZED_ATTRIBUTES = {

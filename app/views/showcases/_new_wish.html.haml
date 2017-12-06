@@ -39,8 +39,8 @@
       = f.text_field :all_tags, placeholder: "Tags (Use enter, comma or tab to separate)", class: "tm-new-input form-control tm-input-inverse tm-input-typeahead coco-input-field"
     .col-xs-12.col-sm-7.ptop10.height50
       = f.fields_for :location do |lf|
-        = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
+        = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field new-loc-input", maxlength: 100
     .col-xs-12.col-sm-5.ptop10.height50
       = f.text_field :target_date, placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white", readonly: true
     .col-xs-12.col-sm-12.mtop10.text-center
-      = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
+      = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold"

@@ -36,7 +36,7 @@ reatch_cloundinary(".cloudinary-fileupload-category");
   $(document).on('change', "#edit_showcase_#{@showcase.id} #showcase_wishpay_status", function() {
     wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
   })
-  var places_input_1= $('.cat-loc-input')[1];
+  var places_input_1= $('.cat-loc-input')[0];
   var autocomplete = new google.maps.places.Autocomplete(places_input_1);
   google.maps.event.addDomListener(places_input_1, 'keydown', function(e) {
     if (e.keyCode == 13 && $('.pac-container:visible').length) {

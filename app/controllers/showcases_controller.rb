@@ -171,7 +171,7 @@ class ShowcasesController < ApplicationController
   end
 
   def tagged_showcases
-    @showcases = Showcase.public_accessible.tagged_with(params[:tag]).where("admin_created = ?", false)
+    @showcases = Showcase.public_accessible.tagged_with(params[:tag]).user_created
     @tag = params[:tag]
     if @showcases.blank?
       redirect_to root_path

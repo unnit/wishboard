@@ -57,6 +57,8 @@
             = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
         .col-xs-12.col-sm-5.ptop10.height50
           = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{@showcase.is_for_raising_fund? ? 'hidden' : ''}"
+        .col-xs-12.col-sm-12.ptop10.height50
+          = f.text_field :affiliate_link, placeholder: "Affiliate Link", class: "form-control coco-input-field"
         .col-xs-12.col-sm-3.mtop10
           %span.no-mar-pad.col-xs-12.col-sm-12
             = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}"

@@ -303,7 +303,7 @@ $(document).ready(function(){
 
     function psSubmit(title){
       if($wrap.find(".preview, .preview-edit").children().length == 0){
-        if($wrap.find("#showcase_description").val().trim() == "" && $wrap.find(".more-target-date").val().trim() == "" && $wrap.find("[name='showcase[all_tags]']").val().trim() == "" && $wrap.find("#showcase_location_attributes_name").val().trim() == ""
+        if($wrap.find(".j-new-wish").length && $wrap.find("#showcase_description").val().trim() == "" && $wrap.find(".more-target-date").val().trim() == "" && $wrap.find("[name='showcase[all_tags]']").val().trim() == "" && $wrap.find("#showcase_location_attributes_name").val().trim() == ""
          && $wrap.find("#showcase_projected_amount").val().trim() == ""){
           $(".j-coco-fixed-wrapper").show();
           $wrap.find(".ps-sub-wrap-2 .showcase-submit").removeClass("j-showcase-more-submit").addClass("j-showcase-more-submit").val("Skip & Wish");
@@ -1942,18 +1942,17 @@ function wishpayCrowdfundingToggle(elementselector){
   $acceptFund = $wrap.find("#showcase_accept_fund")
   if($(elementselector).is(":checked")){
     $acceptFund.prop('checked', false).prop('disabled', true);
-    $wishpayFields.removeClass("hidden");
     $raiseFundFields.addClass('hidden');
   }else{
     $wishpayFields.addClass("hidden");
-    if($acceptFund.attr('backend_disabled') == "true"){
-    }else{
+    if($acceptFund.attr('backend_disabled') != "true"){
       $acceptFund.prop('disabled', false);
     }
     if($acceptFund.is(":checked")){
       $raiseFundFields.removeClass('hidden');
     }else{
       $raiseFundFields.addClass('hidden');
+      $wishpayFields.removeClass("hidden");
     }
   }
 }

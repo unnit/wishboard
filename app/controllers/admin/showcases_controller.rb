@@ -36,6 +36,7 @@ class Admin::ShowcasesController < AdminController
 
   def create
     @showcase = current_user.showcases.build(admin_wish_params)
+    @showcase.build_location
     @showcase.admin_created = true
     @showcase.all_tags = params[:showcase][:main_tags]+","+params[:showcase][:sub_tags]
     if params[:image].present?
@@ -96,7 +97,7 @@ class Admin::ShowcasesController < AdminController
   private
 
   def admin_wish_params
-    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :wish_prefix, :accept_fund, :goal_amount, :raising_for, :video_link, :admin_status, :coin_wish, :fundcategory_id, :beneficiary, :access_type, :category_wish, location_attributes: [:id, :name])
+    params.require(:showcase).permit(:title, :description, :target_date, :showcase_type, :wish_prefix, :accept_fund, :affiliate_link, :goal_amount, :raising_for, :video_link, :admin_status, :coin_wish, :fundcategory_id, :beneficiary, :access_type, :category_wish, location_attributes: [:id, :name])
   end
 
   def get_showcase

@@ -47,6 +47,8 @@
             = lf.text_field :name, placeholder: "Where", class: "form-control coco-input-field pac-input", maxlength: 100
         .col-xs-12.col-sm-5.ptop10.height50
           = f.text_field :target_date, placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white", readonly: true
+        .col-xs-12.col-sm-12.ptop10.height50
+          = f.text_field :affiliate_link, placeholder: "Affiliate Link", class: "form-control coco-input-field"
         .col-xs-12.col-sm-3.mtop10
           %span.no-mar-pad.col-xs-12.col-sm-12
             = f.radio_button :admin_status, "#{Showcase::ADMIN_STATUS[0]}", required: true, checked: true
@@ -61,7 +63,7 @@
           = f.check_box :category_wish
           %label.mbottom0 Category Wish
         .col-xs-12.col-sm-12.mtop10.text-center
-          = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold"
+          = f.submit "Wish", class: "btn cc-dark-bg white-fg weight-bold showcase-submit"
 
 = content_for :extra_js do
   :javascript

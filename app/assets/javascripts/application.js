@@ -82,6 +82,7 @@ $(document).ready(function(){
         $wrap.find(".j-more, .j-img-wrapper").hide();
         $wrap.find(".goal-target-date").removeAttr("disabled").attr("readonly", true);
         $wrap.find(".more-target-date").addClass("hidden").removeAttr("readonly").attr("disabled", true);
+        $wrap.find("#showcase_projected_amount").addClass("hidden").val("");
         $wrap.find('.raise-funds-fields').removeClass('hidden');
         if($wrap.find("#showcase_showcase_type").val() == 0){
           date_options["startDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("pdate"));
@@ -96,6 +97,7 @@ $(document).ready(function(){
         $wrap.find(".j-more, .j-img-wrapper").show();
         $wrap.find(".goal-target-date").removeAttr("readonly").attr("disabled", true);
         $wrap.find(".more-target-date").removeClass("hidden").removeAttr("disabled").attr("readonly", true);
+        $wrap.find("#showcase_projected_amount").removeClass("hidden");
         $wrap.find('.raise-funds-fields').addClass('hidden');
         if($wrap.find("#showcase_showcase_type").val() == 0){
           date_options["endDate"] = new Date($wrap.find(".ps-wrapper, .ps-edit-wrapper").data("pdate"));
@@ -1652,7 +1654,6 @@ function setWishContribute(){
 function setOnlineAndWalletAmount(){
   $currentAmount = parseInt($("#cocotransfer_total_amount").val());
   $availableWalletAmount = parseInt($("#cocotransfer_available_wallet_amount").val());
-  console.log("current:"+ $currentAmount + "  availableWalletAmount:" );
   if ($("#cocotransfer_use_wallet_amount").is(":checked")){
     if ($availableWalletAmount >= $currentAmount){
       $("#cocotransfer_wallet_amount_display").html($currentAmount);
@@ -1938,21 +1939,15 @@ function showTag(tagholder, taglist, prefilled_tags, url){
 function wishpayCrowdfundingToggle(elementselector){
   $wrap = $(elementselector).closest(".create-showcase");
   $raiseFundFields = $wrap.find('.raise-funds-fields');
-  $wishpayFields = $wrap.find('.wishpay-fields');
   $acceptFund = $wrap.find("#showcase_accept_fund")
+  $wrap.find(".more-target-date").removeClass("hidden").removeAttr("disabled").attr("readonly", true);
+  $wrap.find("#showcase_projected_amount").removeClass("hidden");
   if($(elementselector).is(":checked")){
     $acceptFund.prop('checked', false).prop('disabled', true);
     $raiseFundFields.addClass('hidden');
   }else{
-    $wishpayFields.addClass("hidden");
     if($acceptFund.attr('backend_disabled') != "true"){
       $acceptFund.prop('disabled', false);
-    }
-    if($acceptFund.is(":checked")){
-      $raiseFundFields.removeClass('hidden');
-    }else{
-      $raiseFundFields.addClass('hidden');
-      $wishpayFields.removeClass("hidden");
     }
   }
 }

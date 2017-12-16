@@ -24,7 +24,12 @@ class CocotransfersController < ApplicationController
     @cocotransfer = Cocotransfer.new
     @cocotransfer.transferable_id = params[:transferable_id]
     @cocotransfer.transferable_type = params[:transferable_type]
-    @cocotransfer.use_wallet_amount = true
+    if current_user
+      @cocotransfer.use_wallet_amount = true
+    else
+      @cocotransfer.use_wallet_amount = false
+      @cocotransfer.wallet_amount = 0
+    end
     @showcase = Showcase.find_by_id(params[:transferable_id]) if @cocotransfer.showcase_transfer?
     @receiver = User.find_by_id(params[:transferable_id]) if @cocotransfer.profile_transfer?
     #vaild_showcase_transfer = (@showcase && @showcase.is_for_raising_fund? && !@showcase.is_admin_disabled? && !@showcase.campaign_ended?)
@@ -42,6 +47,10 @@ class CocotransfersController < ApplicationController
     @cocotransfer = Cocotransfer.new(cocotransfer_params)
     @cocotransfer.transaction_status = Transaction::TRANSACTION_STATUS[1][1]
     @cocotransfer.fullfillment_contributer = current_user
+    unless current_user
+      @cocotransfer.use_wallet_amount = false
+      @cocotransfer.wallet_amount = 0
+    end
     if @cocotransfer.save
       @cocotransfer.generate_txnid!
       if @cocotransfer.is_only_wallet?
@@ -193,7 +202,7 @@ class CocotransfersController < ApplicationController
      else
        total_amount = !params[:amount].blank? && params[:amount].to_i > @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i ? params[:amount].to_i : @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i
      end
-     @cocotransfer.wallet_amount = (available_profile_amount.to_i >= total_amount )? total_amount : available_profile_amount
+     @cocotransfer.wallet_amount = (available_profile_amount.to_i >= total_amount )? total_amount : available_profile_amount.to_i
      @cocotransfer.amount = (total_amount - @cocotransfer.wallet_amount.to_i)
    end
 

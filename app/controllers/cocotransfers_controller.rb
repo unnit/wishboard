@@ -193,14 +193,14 @@ class CocotransfersController < ApplicationController
      else
        total_amount = !params[:amount].blank? && params[:amount].to_i > @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i ? params[:amount].to_i : @cocotransfer.transferable.try(:min_gift_amount_allowed).to_i
      end
-     @cocotransfer.wallet_amount = (available_profile_amount >= total_amount )? total_amount : available_profile_amount
-     @cocotransfer.amount = (total_amount - @cocotransfer.wallet_amount)
+     @cocotransfer.wallet_amount = (available_profile_amount.to_i >= total_amount )? total_amount : available_profile_amount
+     @cocotransfer.amount = (total_amount - @cocotransfer.wallet_amount.to_i)
    end
 
-   def process_wallet_payment(response_formatt)
+   def process_wallet_payment(response_format)
      @cocotransfer.update_columns(transaction_status: Transaction::TRANSACTION_STATUS[2][1].to_i, amount: 0) unless @cocotransfer.paid?
      @cocotransfer.paid_callbacks!
-     if response_formatt == "html"
+     if response_format == "html"
         redirect_to transfer_success_cocotransfer_path(@cocotransfer.slug) and return true
      else
        render js: "window.location = '#{transfer_success_cocotransfer_path(@cocotransfer.slug)}'"

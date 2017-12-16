@@ -25,7 +25,7 @@
           -else
             %span.dull-color-italic You are contributing to this wish
             %i.fa.fa-star-half-o.cc-dark-fg
-    .col-xs-12.col-sm-12.mbottom20.padding0
+    .col-xs-12.col-sm-12.mbottom20.padding0{class: "#{current_user ? '' : 'hidden'}"}
       .col-xs-12.col-sm-3.pleft0
         %span.font-medium Use Giftbox Amt
         %i.fa.fa-archive
@@ -33,7 +33,7 @@
         = f.check_box :use_wallet_amount
         %i.fa.fa-inr
         %span#cocotransfer_wallet_amount_display
-          #{cocotransfer.wallet_amount}
+          #{cocotransfer.wallet_amount.to_i}
     .col-xs-12.col-sm-12.mbottom20.padding0
       .col-xs-12.col-sm-3.pleft0
         %span.font-medium Add Amount

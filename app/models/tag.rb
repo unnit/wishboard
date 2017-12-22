@@ -5,8 +5,6 @@ class Tag < ApplicationRecord
   has_many :users, through: :interests
   has_one :tag_image
 
-  mount_uploader :image, ImageUploader
-
   scope :featured, -> {where featured: true}
   scope :main, -> {where tag_type: TAG_TYPE_VALUES[0]}
   scope :sub_tags, -> {where tag_type: TAG_TYPE_VALUES[1]}

@@ -61,9 +61,10 @@
           %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         - if notification.showcase.category_wish
           .media-body
+            %span.font13 Your
             %span.weight600= truncate notification.showcase.title, length: 35
             %span.font13
-              has been approved.
+              was added to wish library.
         - else
           .media-body
             %span.weight600= truncate notification.showcase.user.name, length: 35

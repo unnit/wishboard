@@ -385,6 +385,7 @@ class ShowcasesController < ApplicationController
 
   def create_category
     @showcase = current_user.showcases.build(showcase_params)
+    @showcase.all_tags = @showcase.all_tags+",#{params[:category_id]}"
     if params[:image].present?
       preloaded = Cloudinary::PreloadedFile.new(params[:image])
       @showcase.image = preloaded.identifier unless preloaded.blank?

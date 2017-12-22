@@ -1,6 +1,8 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete, :private]
   before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign, :request_assistance, :edit_category_wish, :rewish_category, :add_to_category, :submit_to_category]
+  before_action :can_rewish_category, only: [:edit_category_wish, :rewish_category]
+  before_action :check_added_to_category, only: [:add_to_category, :submit_to_category]
   before_action :check_end_campaign, only: [:edit, :update, :end_campaign]
   before_action :re_eligibilty, only: [:rewish, :have_done_this]
   before_action :authenticate_owner, only: [:edit, :update, :destroy, :add, :undo_achieve_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign]
@@ -347,7 +349,8 @@ class ShowcasesController < ApplicationController
 
   def category_wishes
     @category = Tag.find_by_name params[:id]
-    @category_wishes = @category.showcases.category_wishes
+    ids = @category.showcases.category_wishes.map(&:id) - current_user.showcases.with_parent.map(&:parent_id)
+    @category_wishes = Showcase.where("id in (?)", ids)
   end
 
   def edit_category_wish
@@ -513,6 +516,17 @@ class ShowcasesController < ApplicationController
       redirect_to root_path
       return
     end
+  end
+
+  def check_added_to_category
+    unless @showcase.can_add_to_category?
+      flash[:alert] = "#{@showcase.title} already added to Discovery."
+      render js: "window.location = '#{GLOBAL_VARIABLES[:root_url]}'" and return
+    end
+  end
+
+  def can_rewish_category
+    render js: "location.reload()" and return if current_user.showcases.with_parent.map(&:parent_id).include?(@showcase.id)
   end
 
 end

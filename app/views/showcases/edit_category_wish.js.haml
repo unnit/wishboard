@@ -31,7 +31,6 @@ reatch_cloundinary(".cloudinary-fileupload-category");
   date_options["startDate"] = "";
   date_options["endDate"] = new Date($(".ps-edit-wrapper").data("pdate"));
   $(".after-date-of-achievement").datetimepicker(date_options)
-  wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
   $(document).on('change', "#edit_showcase_#{@showcase.id} #showcase_wishpay_status", function() {
     wishpayCrowdfundingToggle("#edit_showcase_#{@showcase.id} #showcase_wishpay_status");
   })

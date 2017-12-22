@@ -69,25 +69,31 @@
         .media.mtop0
           .media-left
             %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
-          .media-body
-            %span.weight600= truncate notification.showcase.user.name, length: 35
-            - if notification.showcase.wishlist? && notification.showcase.coin_wish?
+          - if notification.showcase.category_wish
+            .media-body
+              %span.weight600= truncate notification.showcase.title, length: 35
               %span.font13
-                has a new coin wish -
-            - elsif notification.showcase.wishlist?
-              %span.font13
-                has a new wish -
-            - elsif notification.showcase.instant_wishlist?
-              %span.font13
-                has a new momentary wish -
-            - else
-              %span.font13
-                fulfilled a wish -
-            %span.weight600= truncate notification.showcase.title, length: 35
-            %br
-            %span.extra-small-font
-              .fa.fa-clock-o
-              = time_ago_in_words(notification.created_at)
+                has been approved.
+          - else
+            .media-body
+              %span.weight600= truncate notification.showcase.user.name, length: 35
+              - if notification.showcase.wishlist? && notification.showcase.coin_wish?
+                %span.font13
+                  has a new coin wish -
+              - elsif notification.showcase.wishlist?
+                %span.font13
+                  has a new wish -
+              - elsif notification.showcase.instant_wishlist?
+                %span.font13
+                  has a new momentary wish -
+              - else
+                %span.font13
+                  fulfilled a wish -
+              %span.weight600= truncate notification.showcase.title, length: 35
+              %br
+              %span.extra-small-font
+                .fa.fa-clock-o
+                = time_ago_in_words(notification.created_at)
   - elsif notification.class.name == "AchievedNotification"
     .col-xs-12.padding10.ptop15.pbottom15.j-notif-single.hide-display.mtop10.mbottom10.cc-very-light{class: "live-notification-AchievedNotification-#{notification.id}"}
       .pos-absolute.top5.right5.font13.j-close-live.pon x

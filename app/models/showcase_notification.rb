@@ -22,7 +22,11 @@ class ShowcaseNotification < ApplicationRecord
   end
 
   def notification_text
-    "#{self.showcase.user.truncated_name} #{showcase_wish_type} #{self.showcase.truncated_title}"
+    if self.showcase.category_wish
+      "#{self.showcase.truncated_title} approved by admin"
+    else
+      "#{self.showcase.user.truncated_name} #{showcase_wish_type} #{self.showcase.truncated_title}"
+    end
   end
 
   def showcase_wish_type
@@ -38,6 +42,6 @@ class ShowcaseNotification < ApplicationRecord
   end
 
   def deliver_firebase_notification
-    FirebasenotificationBroadcastJob.perform_later(self.notification_title, self.notification_text, self.notification_url, self.notification_image_url,  self.user.id)
+    FirebasenotificationBroadcastJob.perform_later(self.notification_title, self.notification_text, self.notification_url, self.notification_image_url, self.user.id)
   end
 end

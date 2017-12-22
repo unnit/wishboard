@@ -124,6 +124,7 @@ class Showcase < ApplicationRecord
   scope :category_wishes, -> {where(category_wish: true)}
   scope :user_category_wishes, -> {where("category_wish = ? and admin_created = ?", true, false)}
   scope :non_category_wishes, -> {where(category_wish: false)}
+  scope :with_parent, -> {where("parent_id is not null")}
   # scope :non_crowdfunding, -> {where("accept_fund = ? and admin_created = ? and coin_wish = ?", false, false, false)}
 
   HUMANIZED_ATTRIBUTES = {
@@ -157,6 +158,10 @@ class Showcase < ApplicationRecord
 
   def fullfillment_at_once_amount
     self.can_be_fullfilled_at_once? ?  self.projected_amount.to_i : 0
+  end
+
+  def active?
+    admin_status.blank? || admin_status == ADMIN_STATUS[0]
   end
 
   def is_wishpay?

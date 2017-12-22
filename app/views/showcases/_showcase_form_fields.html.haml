@@ -58,9 +58,9 @@
   - unless @showcase.achieved? && (!@showcase.showpiece?)
     .col-xs-12.col-sm-5.ptop10.height50
       = f.text_field :target_date, value: "#{@showcase.changed_date}", placeholder: "When", class: "form-control coco-input-field dt-of-achievement bg-white more-target-date #{showcase.is_for_raising_fund? ? 'hidden' : ''}", readonly: true
-  .col-xs-12.col-sm-12.ptop10.height50.wishpay-fields
-    .col-xs-12.col-sm-7.pleft0.height50
-      = f.text_field :projected_amount, placeholder: "Projected Amount*", class: "form-control coco-input-field", maxlength: 7
+  .col-xs-12.col-sm-12.height50
+    .col-xs-12.col-sm-7.pleft0
+      = f.text_field :projected_amount, placeholder: "Projected Amount*", class: "form-control coco-input-field mtop10", maxlength: 7
   .col-xs-12.col-sm-12.ptop10
     .col-xs-6.col-sm-6.ptop10.height50
       Enable Wishpay Payment:

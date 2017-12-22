@@ -65,6 +65,9 @@ class Admin::ShowcasesController < AdminController
      @showcase.image = preloaded.identifier unless preloaded.blank?
     end
     if @showcase.save
+      if !@showcase.admin_created && @showcase.active?
+        ShowcaseNotification.where(user_id: @showcase.user_id, showcase_id: @showcase.id).first_or_create!
+      end
       flash[:notice] = "#{@showcase.title} updated successfully"
       redirect_to edit_admin_showcase_path
     else

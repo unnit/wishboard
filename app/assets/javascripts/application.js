@@ -1586,6 +1586,7 @@ $(document).ready(function(){
    setOnlineAndWalletAmount();
   });
   showLinkPreviews(".url_preview");
+  setDropZone();
 });// eof document ready
 $(window).on("load", function(){
   //Setting footer proper for mac devices
@@ -1751,7 +1752,15 @@ function save_rating(element, rating){
     error: function(data) {},
   });
 }
+function setDropZone(){
+  $('.cloudinary-fileupload').each(function () {
+    $(this).fileupload({
+        dropZone: $(this)
+    });
+  });
+}
 function reatch_cloundinary(elementselector){
+  setDropZone();
   $(elementselector).on('fileuploadprogress', function(e, data) {
     $wrap = $(this).closest("form").find('.photo-wrapper');
     $wrap.fadeIn();

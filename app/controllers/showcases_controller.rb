@@ -349,7 +349,7 @@ class ShowcasesController < ApplicationController
 
   def category_wishes
     @category = Tag.find_by_name params[:id]
-    ids = @category.showcases.category_wishes.map(&:id) - current_user.showcases.with_parent.map(&:parent_id)
+    ids = @category.showcases.category_wishes.active.map(&:id) - current_user.showcases.with_parent.map(&:parent_id)
     @category_wishes = Showcase.where("id in (?)", ids)
   end
 

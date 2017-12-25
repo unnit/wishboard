@@ -38,7 +38,7 @@ class Showcase < ApplicationRecord
   WISH_PREFIX =
     [["Visit", 0, "Places, trips, travel, tour | ex: Goa, Dubai", "I visited", "I wish to visit", "Wow! Where/What?", "Where are you planning to go?"],
      ["Own", 1, "Things, pets, collectibles", "I own", "I wish to own", "Wow! What did you buy/own?", "What's that?"],
-     ["Eat", 2, "Foods, cuisine | ex: Pani Puri, Sushi, Italian", "I ate", "I wish to eat", "Wow! What did you have?", "What will you have?"],
+     ["Have", 2, "Foods, cuisine | ex: Pani Puri, Sushi, Italian", "I had", "I wish to have", "Wow! What did you have?", "What will you have?"],
      ["Experience", 3, "An activity, events | ex: a paranormal activity, a live concert", "I experienced", "I wish to experience", "Wow! What did you experience?", "What do you wish to experience?"],
      ["Watch", 4, "a movie , serial | ex: Titanic, Game of Thrones, a Netflix series", "I watched", "I wish to watch", "Wow! What did you watch?", "What do you wish to watch?"],
      ["Meet", 5, "a person/celebrity | ex: Meet Michael Jackson (seriously?!), Sachin Tendulkar etc.", "I met", "I wish to meet", "Wow! Whom did you meet?", "Whom do you wish to meet?"],
@@ -55,8 +55,9 @@ class Showcase < ApplicationRecord
      ["Support", 15, "a cause, an actor | ex: GreenPeace, Amitabh Bachan", "I supported", "I wish to support", "Wow! What did you support?", "What/whom do you wish to support?"],
      ["Announce", 16, "milestones/revealations/swag| ex: a status update", "I announced", "I wish to announce", "Wow! What was the update?", "What do you wish to announce?"],
      ["Confess", 17, "about something| ex: a high school or college event", "I confessed", "I wish to confess", "What was that?", "What do you wish to confess?"],
+     ["Play", 20, "a game | ex: chess, guitar", "I Played", "I wish to play", "Wow! What did you play?", "What do you wish to play?"],
      ["Type Your Own", 18, "Be creative & type your wish here directly | ex: anything!", "Others ", "Others", "Wow! Looks like that was a unique wish. Tell us? :)", "Wow! Looks like you have a uniques wish to share. What's that?"]]
-    WISH_PREFIX_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    WISH_PREFIX_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   COIN_WISH_PREFIX_VALUES = [0, 1, 2, 9, 10]
   SHOWCASE_TYPE = [["Showpiece", 0], ["Wish", 1], ["Instant", 2]]
   SHOWCASE_VALUES = [0, 1, 2]
@@ -235,7 +236,7 @@ class Showcase < ApplicationRecord
   end
 
   def all_tags=(names)
-    self.tags = names.split(",").map do |name|
+    self.tags = names.split(",").reject(&:empty?).map do |name|
       Tag.where(name: name.strip).first_or_create!
     end
   end

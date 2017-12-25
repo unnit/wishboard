@@ -2,8 +2,13 @@
   -title = "Jobs - Cocociti"
 .container.ptop50.mob-ptop100{style: "min-height: 600px;"}
   .col-md-12.text-center.mtop20.mbottom20
-    %span.header-text.mbottom10 Jobs
+    %span.header-text.mbottom10.font25 JOIN THE TEAM
   .col-md-12.col-xs-12.mbottom40
+    %div.block-display.full-width.height50
+      %h4.mbottom20.weight600.cc-dark-fg.pull-left{style: "text-decoration: underline;"} Open Positions
+    %script{data: {startup: "cocociti"}, src: "https://angel.co/javascripts/embed_jobs.js", id: "angellist_embed", async: true}
+    = link_to "https://angel.co/cocociti/jobs/" do
+      .btn.btn-md.btn-v-outline.mbottom15.mtop20 Apply Now
     %h3.text-center We're on a mission.
     %strong How we work
     %p We emphasize teaching and learning at Cocociti, and there’s tons of room to grow. We strongly believe in the value of growing a diverse team and encourage people of all backgrounds, genders, ethnicities, abilities, and sexual orientations to apply.

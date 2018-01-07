@@ -112,8 +112,8 @@ class Showcase < ApplicationRecord
   scope :active_rasing_funds, -> {where("accept_fund = ?", true)}
   scope :recently_created, -> (n) {where("created_at > ?", (Time.now.utc - n.days).beginning_of_day)}
   scope :user_coin_wishes, -> {user_created.coin_wishes}
-  scope :public_accessible, -> {where("access_type in (?) and category_wish = ?", [ACCEESS_TYPE[0], nil], false)}
-  scope :active, -> {where("admin_status in (?)", [ADMIN_STATUS[0], nil])}
+  scope :public_accessible, -> {where("access_type = ? and category_wish = ?", ACCEESS_TYPE[0], false)}
+  scope :active, -> {where(admin_status: [0, nil])}
   scope :user_created, -> {where(admin_created: false)}
   scope :non_crowdfunding, -> {user_created.non_coin.where(accept_fund: [nil, false])}
   scope :wishpay, -> {where("wishpay_status in (?)", [WISHPAY_STATUS[1]])}

@@ -1,6 +1,6 @@
 .container.mtop30.padding15.bg-white{style: "max-width:637px;"}
   = form_for showcase, url: url, html: {class: "create-showcase"}, remote: true do |f|
-    = hidden_field_tag :category_id
+    = hidden_field_tag :tag_name
     .col-xs-12.col-sm-12.text-center.padding20.photo-wrapper
       .preview
       .preview-delete-fullfill.bg-white.pon.pos-absolute.font16.hide-display x

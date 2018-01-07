@@ -2,3 +2,4 @@
   $(".add-to-category-#{@showcase.id}").remove();
   $("#cont-wrapper").html("").modal("hide");
 $(".messages").html("#{j(render 'layouts/messages')}");
+setTimeout(function(){$(".messages").html("")}, 10000);

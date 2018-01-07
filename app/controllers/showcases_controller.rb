@@ -1,6 +1,6 @@
 class ShowcasesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :tagged_showcases, :results, :autocomplete, :private]
-  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign, :request_assistance, :edit_category_wish, :rewish_category, :add_to_category, :submit_to_category]
+  before_action :get_showcase, only: [:wow, :comment, :edit, :update, :destroy, :show, :info_wish, :add, :rewish, :have_done_this, :coin, :undo_achieve_wish, :add_coin_wish, :fullfillment_form, :update_fullfilment_details, :update_backstory, :backstory_form, :update_rating, :end_campaign, :request_assistance, :edit_category_wish, :rewish_category, :add_to_category, :submit_to_category]
   before_action :can_rewish_category, only: [:edit_category_wish, :rewish_category]
   before_action :check_added_to_category, only: [:add_to_category, :submit_to_category]
   before_action :check_end_campaign, only: [:edit, :update, :end_campaign]
@@ -116,6 +116,10 @@ class ShowcasesController < ApplicationController
       format.html
       format.js
     end
+  end
+
+  def info_wish
+    
   end
 
   def rewish
@@ -358,7 +362,7 @@ class ShowcasesController < ApplicationController
   end
 
   def rewish_category
-    @rewish_category  = current_user.showcases.build(showcase_params.except("location_attributes"))
+    @rewish_category = current_user.showcases.build(showcase_params.except("location_attributes"))
     @rewish_category.build_location
     @rewish_category.location.name = params[:showcase][:location_attributes][:name]
     if params[:image].present?
@@ -370,6 +374,8 @@ class ShowcasesController < ApplicationController
     @rewish_category.parent = @showcase
     @rewish_category.user_status = Showcase::USER_STATUS[0]
     if @rewish_category.save
+      collection = current_user.collections.where(name: params[:tag_name]).first_or_create!
+      CollectionShowcase.where(collection_id: collection.id, showcase_id: @rewish_category.id).first_or_create!
       flash[:notice] = "Successfully wished"
     else
       flash[:error] = @rewish_category.errors.full_messages.join(", ")
@@ -385,7 +391,7 @@ class ShowcasesController < ApplicationController
 
   def create_category
     @showcase = current_user.showcases.build(showcase_params)
-    @showcase.all_tags = @showcase.all_tags+",#{params[:category_id]}"
+    @showcase.all_tags = @showcase.all_tags+",#{params[:tag_name]}"
     if params[:image].present?
       preloaded = Cloudinary::PreloadedFile.new(params[:image])
       @showcase.image = preloaded.identifier unless preloaded.blank?

@@ -209,6 +209,7 @@ Rails.application.routes.draw do
   match "showcases/:id", to: "showcases#show", via: "get"
   get "wish/private/:access_token", to: "showcases#private_showcase"
   get ':slug/wish/:id/' => 'showcases#show', as: :slug_showcase
+  get "/wishdom/:slug" => "showcases#info_wish", as: :info_wish
   resources :showcases, path: "wish", only: [:edit, :create, :update, :destroy, :show] do
     member do
       post :wow

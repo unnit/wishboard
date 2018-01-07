@@ -1,6 +1,7 @@
 .container.mtop30.padding10.bg-white{style: "max-width:637px;"}
   = form_for showcase, url: url, remote: true, method: :post, html: { class: "create-showcase" } do |f|
     .col-xs-12.col-sm-12.no-mar-pad.mbottom10.text-center.photo-wrapper.hidden-overflow.ps-edit-wrapper{style: "max-height:480px;min-height: 150px;height: auto;", "data-pdate" => "#{DateTime.current.to_date}", "data-fdate" => "#{DateTime.current.to_date + 8.days}"}
+      = hidden_field_tag :tag_name
       .preview
         = cl_image_tag showcase.image, class: "img-responsive inline-display", height: 480, crop: :fill, gravity: :face, alt: showcase.title
       .preview-delete-fullfill.bg-white.pon.pos-absolute.font16{class: "#{@showcase.image.blank? ? 'hide-display' : 'block-display'}"} x

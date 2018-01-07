@@ -1,5 +1,5 @@
 display_cont_wrapper("#{j render partial: "showcases/new_wish", locals: {showcase: @category_wish, url: create_category_showcases_path}}");
-$("#category_id").val($(".j-category-name").data("tag-name"));
+$("#tag_name").val($(".j-category-name").data("tag-name"));
 showTag(".tm-new-input", "showcase[all_tags]", [], "gettags");
 $("input.cloudinary-fileupload[type=file]").cloudinary_fileupload();
 reatch_cloundinary(".cloudinary-fileupload-wish-new");

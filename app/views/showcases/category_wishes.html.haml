@@ -9,7 +9,7 @@
         .col-xs-12.col-sm-12.bg-white.no-mar-pad.border5.box-shad
           .pull-left.full-width.text-center
             = cl_image_tag category_wish.image, class: "img-responsive inline-display", width: 300, height: 225, crop: :fill, gravity: :face, alt: category_wish.title
-          .pull-left.full-width.padding10.font20.weight600
+          .pull-left.full-width.padding10.font20.weight600.pbottom0
             = truncate category_wish.title, length: 28
           .pull-left.full-width.mbottom5.padding10.font12
             = truncate category_wish.description, length: 180
@@ -17,3 +17,6 @@
             = link_to edit_category_wish_showcase_path(category_wish), remote: true do
               .btn.btn-v-outline.btn-md.transition-effect
                 Wish
+            = link_to info_wish_path(category_wish.slug), remote: true do
+              .btn.btn-v-outline.btn-md.transition-effect
+                Info

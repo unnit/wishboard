@@ -1,4 +1,5 @@
 display_cont_wrapper("#{j render partial: "showcases/category_wish", locals: {showcase: @showcase, url: rewish_category_showcase_path(@showcase)}}");
+$("#tag_name").val($(".j-category-name").data("tag-name"));
 showTag(".tm-category-input", "showcase[all_tags]", "#{@showcase.all_tags}".split(','), "gettags");
 $wrap = $("#edit_showcase_"+#{@showcase.id});
 $wrap.find(".ps-initial").css({"width": $wrap.find(".j-ps-holder").width() - $wrap.find(".prefix-holder").width() - 3});

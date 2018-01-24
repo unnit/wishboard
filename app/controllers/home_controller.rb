@@ -28,15 +28,15 @@ class HomeController < ApplicationController
       admin_wish_conditions = ["admin_created = true and category_wish = false and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = false"]
       unless current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq.blank?
         admin_wish_conditions[0]+=" and id not in (?) "
-        admin_wish_conditions.push current_user.showcases.public_accessible.where("parent_id is not null").map{|s| s.parent_id}.uniq
+        admin_wish_conditions.push current_user.showcases.where("parent_id is not null").map{|s| s.parent_id}.uniq
       end
-      @admin_showcases = Showcase.approved.where(admin_wish_conditions).order(created_at: :desc)
+      @admin_showcases = Showcase.where(admin_wish_conditions).order(created_at: :desc)
       coin_wish_conditions = ["admin_created = true and admin_status = #{Showcase::ADMIN_STATUS[0]} and coin_wish = true"]
       unless current_user.coin_wishes.map{|c| c.id}.uniq.blank?
         coin_wish_conditions[0]+=" and id not in (?) "
         coin_wish_conditions.push current_user.coin_wishes.map{|c| c.parent_id}.uniq
       end
-      @coin_wishes = Showcase.approved.where(coin_wish_conditions).order(created_at: :desc)
+      @coin_wishes = Showcase.where(coin_wish_conditions).order(created_at: :desc)
       #@users = User.joins(:profile).where.not(id:current_user.following.map(&:id).append(current_user.id), verified: false)
       #@users = Kaminari.paginate_array(@users).page(params[:users]).per(5)
       @top_performers = User.where("id in (?)", GLOBAL_VARIABLES[:top_performers])

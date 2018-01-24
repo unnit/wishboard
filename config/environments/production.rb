@@ -84,7 +84,7 @@ Rails.application.configure do
     :port           => "2525",
     :authentication => :plain,
     :user_name      => 'cocociti',#"app37675653@heroku.com",
-    :password       => 'FighterFire1@',#"r3pzc9eu1065",
+    :password       => 'DjangoRead1@',#"r3pzc9eu1065",
     :domain         => 'www.cocociti.com'
   }
 

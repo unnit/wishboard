@@ -43,6 +43,7 @@ gem 'pg'
 gem 'local_time', '~> 1.0', '>= 1.0.3'
 gem 'link-preview'
 gem 'forest_liana'
+gem 'puma', '~> 5.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

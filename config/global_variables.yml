@@ -1,7 +1,7 @@
 development:
   time_out: 15
-  root_url: "https://localhost"
-  transaction_return_url: "https://localhost/transactions/callback"
+  root_url: "http://localhost:3001"
+  transaction_return_url: "http://localhost:3001/transactions/callback"
   admin_mail: "ayyo@cocociti.com"
   notification_mail: "cocogeeks@gmail.com"
   manager_email_id_1: "t@cocociti.com"

@@ -40,7 +40,7 @@ gem "breadcrumbs_on_rails"
 gem 'searchkick', '~> 1.2', '>= 1.2.1'
 gem 'hpricot', '~> 0.8.6'
 gem 'file_validators'
-gem 'pg'
+gem 'pg', '~> 0.18'
 gem 'local_time', '~> 1.0', '>= 1.0.3'
 gem 'link-preview'
 gem 'forest_liana'

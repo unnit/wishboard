@@ -85,8 +85,8 @@ staging:
 
 production:
   time_out: 15
-  root_url: "https://www.cocociti.com"
-  transaction_return_url: "https://www.cocociti.com/transactions/callback"
+  root_url: "https://wish.cocociti.com"
+  transaction_return_url: "https://wish.cocociti.com/transactions/callback"
   admin_mail: "ayyo@cocociti.com"
   notification_mail: "cocogeeks@gmail.com"
   manager_email_id_1: "t@cocociti.com"

@@ -3,7 +3,7 @@ class ShowcaseNotification < ApplicationRecord
   belongs_to :user
   validate :non_private_showcase
   after_create_commit {NotificationBroadcastJob.perform_later(self.user)}
-  after_create_commit :deliver_firebase_notification
+  #after_create_commit :deliver_firebase_notification
 
   def non_private_showcase
     errors.add(:showcase, "is private") if showcase && showcase.is_only_accessible_with_link?
@@ -41,7 +41,7 @@ class ShowcaseNotification < ApplicationRecord
     end
   end
 
-  def deliver_firebase_notification
-    FirebasenotificationBroadcastJob.perform_later(self.notification_title, self.notification_text, self.notification_url, self.notification_image_url, self.user.id)
-  end
+  # def deliver_firebase_notification
+  #   FirebasenotificationBroadcastJob.perform_later(self.notification_title, self.notification_text, self.notification_url, self.notification_image_url, self.user.id)
+  # end
 end

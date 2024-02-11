@@ -1,5 +1,5 @@
 class Showcase < ApplicationRecord
-  searchkick autocomplete: ['title']
+  #searchkick autocomplete: ['title']
   belongs_to :user
   belongs_to :product
   belongs_to :parent, class_name: "Showcase"
@@ -621,7 +621,7 @@ class Showcase < ApplicationRecord
 
   before_create :generate_accesss_token
   after_create :create_showcase_notification, :set_achieved, :set_campaign_status
-  after_create_commit :send_new_wish
+  #after_create_commit :send_new_wish
   after_destroy :verify_wallet
 
   def min_gift_amount_allowed

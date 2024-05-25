@@ -8,27 +8,26 @@
       %h5.inline-block New Wishes
       %span.j-new_wishes_count.font-medium{"data-new-wishes-count": 0} (0)
 .container-fluid.ptop50.padding0.mob-ptop100.min-height1000{style: "background:#ebeced;"}
-  - if [1, 2, 359, 14].include?(current_user.id)
-    .col-xs-12.col-sm-12.bg-white.hidden-xs
-      .container.padding15
-        .col-sm-12
-          #myCategoryCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}, data: {interval: false}}
-            .carousel-inner{role: "listbox"}
-              - @category_tags.each_slice(6).with_index do |category_tags, i|
-                .item{class: "#{'active' if i==0}"}
-                  - category_tags.each do |category_tag|
-                    .col-sm-2
-                      .col-sm-12.no-mar-pad.text-center
-                        = link_to discover_category_path(category_tag.name) do
-                          = cl_image_tag category_tag.image, class: "img-circle", width: 100, height: 100, crop: :fill, gravity: :face, alt: category_tag.name
-                        .pull-left.full-width.cc-dark-fg.font12.mtop10
-                          = truncate category_tag.name.humanize, length: 30
-            %a.left.carousel-control.grey-fg{href: "#myCategoryCarousel", role: "button", "data-slide" => "prev", style: "background: transparent;width: 15px;"}
-              %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true, style: "font-size: 20px;"}
-              %span.sr-only Previous
-            %a.right.carousel-control.grey-fg{href: "#myCategoryCarousel", role: "button", "data-slide" => "next", style: "background: transparent;width: 15px;"}
-              %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true, style: "font-size: 20px;"}
-              %span.sr-only Next
+  .col-xs-12.col-sm-12.bg-white.hidden-xs
+    .container.padding15
+      .col-sm-12
+        #myCategoryCarousel.carousel.slide.hidden-xs{data: {ride: "carousel"}, data: {interval: false}}
+          .carousel-inner{role: "listbox"}
+            - @category_tags.each_slice(6).with_index do |category_tags, i|
+              .item{class: "#{'active' if i==0}"}
+                - category_tags.each do |category_tag|
+                  .col-sm-2
+                    .col-sm-12.no-mar-pad.text-center
+                      = link_to discover_category_path(category_tag.name) do
+                        = cl_image_tag category_tag.image, class: "img-circle", width: 100, height: 100, crop: :fill, gravity: :face, alt: category_tag.name
+                      .pull-left.full-width.cc-dark-fg.font12.mtop10
+                        = truncate category_tag.name.humanize, length: 30
+          %a.left.carousel-control.grey-fg{href: "#myCategoryCarousel", role: "button", "data-slide" => "prev", style: "background: transparent;width: 15px;"}
+            %span.glyphicon.glyphicon-chevron-left{"aria-hidden" => true, style: "font-size: 20px;"}
+            %span.sr-only Previous
+          %a.right.carousel-control.grey-fg{href: "#myCategoryCarousel", role: "button", "data-slide" => "next", style: "background: transparent;width: 15px;"}
+            %span.glyphicon.glyphicon-chevron-right{"aria-hidden" => true, style: "font-size: 20px;"}
+            %span.sr-only Next
   .container.padding0.helvetica-font
     .col-sm-3.hidden-xs.no-mar-pad.ptop15#lhs-feed
       = render partial: "user", locals: {user: current_user, card_padding: "0px", card_width: "100%"}

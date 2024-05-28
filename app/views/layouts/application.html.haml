@@ -41,7 +41,7 @@
     = stylesheet_link_tag "//fonts.googleapis.com/css?family=Open+Sans:400,600"
     %link{rel: "manifest", href: "/assets/service-worker/manifest.json"}
     = stylesheet_link_tag 'application', media: 'all'
-    = csrf_meta_tags
+    =# csrf_meta_tags
     - if @social_layout.present?
       %meta{name: "theme-color", content: "#732db0"}
     - elsif @auth_layout.present?

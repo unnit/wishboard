@@ -10,7 +10,7 @@ class Transaction < ApplicationRecord
   AUTH_ID = PLIVO_CONFIG[:auth_id]
   AUTH_TOKEN = PLIVO_CONFIG[:auth_token]
 
-  acts_as_messageable
+  #acts_as_messageable
   belongs_to :user
   belongs_to :product
 

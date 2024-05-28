@@ -5,7 +5,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :confirmable
-  acts_as_messageable
+  #acts_as_messageable
   has_many :firebase_tokens
   has_many :addresses, dependent: :destroy
   has_many :credentials, dependent: :destroy

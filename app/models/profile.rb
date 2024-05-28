@@ -1,5 +1,5 @@
 class Profile < ApplicationRecord
-  searchkick autocomplete: ['first_name', 'last_name', 'slug']
+  #searchkick autocomplete: ['first_name', 'last_name', 'slug']
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
   def slug_candidates
@@ -41,8 +41,8 @@ class Profile < ApplicationRecord
   validates :wishpay_condition, inclusion: {in: WISHPAY_CONDITIONS_VALUES, message: "should not be blank"}
 
   validates :gender, inclusion: { in: Profile::GENDER, message: "should not be blank" }, unless: :gender_blank?, on: :update
-  validates_date :date_of_birth, :before => lambda { 18.years.ago },
-                               :before_message => ": Must be at least 18 years old", on: :update, unless: :bday_blank?
+  #validates_date :date_of_birth, :before => lambda { 18.years.ago },
+                               #:before_message => ": Must be at least 18 years old", on: :update, unless: :bday_blank?
   validates :phone, uniqueness: true, on: :update, unless: :phone_blank?
   validates :phone, length: { is: 10, message: "should not be greater than 10 digits." }, on: :update, unless: :phone_blank?
   validates :phone, numericality: true, on: :update, unless: :phone_blank?

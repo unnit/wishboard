@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
-gem "algoliasearch-rails"
+ruby '3.3.0'
+
+gem "algoliasearch-rails", require: false
 gem 'bootstrap-generators'
 gem 'countries'
 gem 'momentjs-rails', '>= 2.9.0'
@@ -19,28 +21,30 @@ gem 'haml-rails'
 gem 'httparty'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
-gem 'mailboxer'
+gem 'mailboxer', require: false
 #gem 'mysql2'
-gem 'loofah', '~>2.19.1'
+gem 'loofah', '~> 2.0', '>= 2.0.3'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'remotipart'
 #gem 'rails', '4.2.3'
-gem 'rails', '5.0.2'
+#gem 'rails', '5.0.2'
+gem 'rails', '~> 7.1', '>= 7.1.3.3'
 gem 'ruby-hmac'
+gem 'rexml', '~> 3.2', '>= 3.2.5'
 gem 'sass-rails', '~> 5.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'uglifier', '>= 1.3.0'
 #gem "unicorn-rails"
 gem "jquery-fileupload-rails"
 gem 'sidekiq', '~> 4.0', '>= 4.0.1'
-gem 'validates_timeliness', '~> 3.0'
+gem 'validates_timeliness', '~> 3.0', require: false
 gem 'plivo'
 gem "breadcrumbs_on_rails"
-gem 'searchkick', '~> 1.2', '>= 1.2.1'
+gem 'searchkick', '~> 1.2', '>= 1.2.1', require: false
 gem 'hpricot', '~> 0.8.6'
 gem 'file_validators'
-gem 'pg', '~> 0.18'
+gem 'pg'
 gem 'local_time', '~> 1.0', '>= 1.0.3'
 gem 'link-preview'
 gem 'forest_liana'
@@ -65,7 +69,7 @@ group :production, :staging, :development do
   gem 'rails_12factor'
 end
 gem "sentry-raven"
-gem 'obscenity'
+gem 'obscenity', require: false
 gem 'fcm'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'

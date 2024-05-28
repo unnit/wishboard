@@ -15,6 +15,7 @@ module Cocociti
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
+    config.active_record.default_timezone = :local
     config.time_zone = 'Kolkata'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
@@ -32,9 +33,9 @@ module Cocociti
     config.to_prepare do
       ActionMailer::Base.helper "application"
     end
-    Obscenity.configure do |config|
-      config.blacklist   = "#{Rails.root}/config/blacklist.yml"
-      config.replacement = :stars
-    end
+    # Obscenity.configure do |config|
+    #   config.blacklist   = "#{Rails.root}/config/blacklist.yml"
+    #   config.replacement = :stars
+    # end
   end
 end

@@ -1,5 +1,5 @@
 class ChatRoom < ApplicationRecord
-  searchkick autocomplete: ['name']
+  #searchkick autocomplete: ['name']
   belongs_to :user
   belongs_to :main_category
   belongs_to :sub_category

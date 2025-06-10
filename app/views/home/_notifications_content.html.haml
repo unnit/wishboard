@@ -3,12 +3,12 @@
     = link_to update_wow_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
       .media
         .media-left
-          %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          %span= cl_image_tag notification.user&.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600= truncate notification.user.name, length: 35
+          %span.weight600= truncate notification.user&.name, length: 35
           %span.font13
             liked your wish -
-          %span.weight600= truncate notification.showcase.title, length: 35
+          %span.weight600= truncate notification.showcase&.title, length: 35
           %br
           %span.extra-small-font
             .fa.fa-clock-o
@@ -17,12 +17,12 @@
     = link_to update_coin_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
       .media
         .media-left
-          %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          %span= cl_image_tag notification.user&.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600= truncate notification.user.name, length: 35
+          %span.weight600= truncate notification.user&.name, length: 35
           %span.font13
             gifted a coin for wish -
-          %span.weight600= truncate notification.showcase.title, length: 35
+          %span.weight600= truncate notification.showcase&.title, length: 35
           %br
           %span.extra-small-font
             .fa.fa-clock-o
@@ -31,12 +31,12 @@
     = link_to update_comment_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
       .media
         .media-left
-          %span= cl_image_tag notification.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          %span= cl_image_tag notification.user&.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600= truncate notification.user.name, length: 35
+          %span.weight600= truncate notification.user&.name, length: 35
           %span.font13
             commented on your wish -
-          %span.weight600= truncate notification.showcase.title, length: 35
+            %span.weight600= truncate notification.showcase&.title, length: 35
           %br
           %span.extra-small-font
             .fa.fa-clock-o
@@ -45,9 +45,9 @@
     = link_to update_follower_checked_path(notification.follower), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
       .media
         .media-left
-          %span= cl_image_tag notification.follower.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          %span= cl_image_tag notification.follower&.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600= truncate notification.follower.name, length: 35
+          %span.weight600= truncate notification.follower&.name, length: 35
           %span.font13
             started following you
           %br
@@ -58,29 +58,29 @@
     = link_to update_showcase_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
       .media
         .media-left
-          %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
-        - if notification.showcase.category_wish
+          %span= cl_image_tag notification.showcase&.user&.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+        - if notification.showcase&.category_wish
           .media-body
             %span.font13 Your
-            %span.weight600= truncate notification.showcase.title, length: 35
+            %span.weight600= truncate notification.showcase&.title, length: 35
             %span.font13
               was added to wish library.
         - else
           .media-body
-            %span.weight600= truncate notification.showcase.user.name, length: 35
-            - if notification.showcase.wishlist? && notification.showcase.coin_wish?
+            %span.weight600= truncate notification.showcase&.user&.name, length: 35
+            - if notification.showcase&.wishlist? && notification.showcase&.coin_wish?
               %span.font13
                 has a new coin wish -
-            - elsif notification.showcase.wishlist?
+            - elsif notification.showcase&.wishlist?
               %span.font13
                 has a new wish -
-            - elsif notification.showcase.instant_wishlist?
+            - elsif notification.showcase&.instant_wishlist?
               %span.font13
                 has a new momentary wish -
             - else
               %span.font13
                 fulfilled a wish -
-            %span.weight600= truncate notification.showcase.title, length: 35
+            %span.weight600= truncate notification.showcase&.title, length: 35
             %br
             %span.extra-small-font
               .fa.fa-clock-o
@@ -89,11 +89,11 @@
     = link_to update_achieved_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
       .media
         .media-left
-          %span= cl_image_tag notification.showcase.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          %span= cl_image_tag notification.showcase&.user&.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600= truncate notification.showcase.user.name, length: 35
+          %span.weight600= truncate notification.showcase&.user&.name, length: 35
           %span.font13 completed
-          %span.weight600= truncate notification.showcase.title, length: 35
+          %span.weight600= truncate notification.showcase&.title, length: 35
           %span from wishlist.
           %br
           %span.extra-small-font
@@ -103,11 +103,11 @@
     = link_to update_commenter_checked_path(notification), class: "pull-left full-width padding10 border-bt-side-dark notif-single black80-fg #{'bg-dark-grey' if notification.checked?}" do
       .media
         .media-left
-          %span= cl_image_tag notification.comment.user.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
+          %span= cl_image_tag notification.comment&.user&.avatar, class: "img-circle", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
-          %span.weight600= truncate notification.comment.user.name, length: 35
+          %span.weight600= truncate notification.comment&.user&.name, length: 35
           %span.font13 also commented on
-          %span.weight600= truncate notification.showcase.title, length: 35
+          %span.weight600= truncate notification.showcase&.title, length: 35
           %br
           %span.extra-small-font
             .fa.fa-clock-o
@@ -124,11 +124,11 @@
             %span.img-circle.dark-grey-bg.text-center.pull-left{style: "height: 30px;padding-top: 4px;width:30px;"}
               = notification.cocotransfer.donor_name.first.upcase
           - elsif donor.present? && notification.cocotransfer.donor_name == donor.name
-            = cl_image_tag donor.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
+            = cl_image_tag donor&.avatar, class: "img-circle media-object", width: 30, height: 30, crop: :fill, gravity: :face
         .media-body
           %span.weight600= truncate notification.cocotransfer.display_donor_name, length: 35
           %span.font13 gifted you fresh funds for wish
-          %span.weight600= truncate notification.cocotransfer.showcase_title, length: 35
+          %span.weight600= truncate notification.cocotransfer&.showcase_title, length: 35
           %br
           %span.extra-small-font
             .fa.fa-clock-o

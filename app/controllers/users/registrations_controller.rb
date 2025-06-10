@@ -14,9 +14,10 @@ skip_before_action :check_user_status, :check_profile, :check_interests, :check_
       user.confirmation_sent_at = DateTime.current
       user.invited_code = params[:invited_code]
       user.invited_code = nil unless user.valid?
+      user.inactive = false
       user.save
       user.reload
-      UserMailer.account_token_with_instructions(user, token).deliver_now
+      #UserMailer.account_token_with_instructions(user, token).deliver_now
       sign_in(user, bypass: true)
     end
     @errors = resource.errors.full_messages

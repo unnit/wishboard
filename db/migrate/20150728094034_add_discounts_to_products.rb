@@ -1,4 +1,4 @@
-class AddDiscountsToProducts < ActiveRecord::Migration
+class AddDiscountsToProducts < ActiveRecord::Migration[7.2]
   def change
     add_column :products, :discount_3, :integer, default: 10
     add_column :products, :discount_10, :integer, default: 20

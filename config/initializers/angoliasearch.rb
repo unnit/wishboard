@@ -1,2 +1,0 @@
-ALGOLIA_CONFIG = YAML.load_file("#{Rails.root}/config/angolia.yml")[Rails.env].symbolize_keys
-#AlgoliaSearch.configuration = { application_id: ALGOLIA_CONFIG[:application_id], api_key: ALGOLIA_CONFIG[:api_key], pagination_backend: :kaminari }

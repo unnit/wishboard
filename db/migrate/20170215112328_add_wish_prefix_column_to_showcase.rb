@@ -1,4 +1,4 @@
-class AddWishPrefixColumnToShowcase < ActiveRecord::Migration
+class AddWishPrefixColumnToShowcase < ActiveRecord::Migration[7.2]
   def change
     add_column :showcases, :wish_prefix, :integer
   end

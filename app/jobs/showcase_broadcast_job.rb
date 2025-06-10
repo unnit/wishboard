@@ -12,7 +12,12 @@ class ShowcaseBroadcastJob < ApplicationJob
   	@showcase = Showcase.find(showcase_id)
   	user_ids.each do |user_id|
   		@user = User.find(user_id)
-  	  ActionCable.server.broadcast "user_#{user_id}",  showcase_content: render_showcase_partial(@showcase, @user)
+  	  ActionCable.server.broadcast(
+        "user_#{user_id}",
+        {
+          showcase_content: render_showcase_partial(@showcase, @user)
+        }
+      )
   	end
   end
 

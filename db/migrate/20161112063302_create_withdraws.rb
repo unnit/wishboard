@@ -1,4 +1,4 @@
-class CreateWithdraws < ActiveRecord::Migration
+class CreateWithdraws < ActiveRecord::Migration[7.2]
   def change
     create_table :withdraws do |t|
       t.integer :user_id

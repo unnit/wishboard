@@ -1,4 +1,4 @@
-class AddColumnsForNotification < ActiveRecord::Migration
+class AddColumnsForNotification < ActiveRecord::Migration[7.2]
   def change
     add_column :relationships, :checked, :boolean, default: false
     add_column :wows, :checked, :boolean, default: false

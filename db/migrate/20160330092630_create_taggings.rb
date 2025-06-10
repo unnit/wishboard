@@ -1,4 +1,4 @@
-class CreateTaggings < ActiveRecord::Migration
+class CreateTaggings < ActiveRecord::Migration[7.2]
   def change
     create_table :taggings do |t|
       t.integer :showcase_id, index: true

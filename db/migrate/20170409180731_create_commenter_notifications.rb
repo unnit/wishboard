@@ -1,4 +1,4 @@
-class CreateCommenterNotifications < ActiveRecord::Migration
+class CreateCommenterNotifications < ActiveRecord::Migration[7.2]
   def change
     create_table :commenter_notifications do |t|
       t.integer :user_id

@@ -1,4 +1,4 @@
-class CreateReviews < ActiveRecord::Migration
+class CreateReviews < ActiveRecord::Migration[7.2]
   def change
     create_table :reviews do |t|
       t.belongs_to :user, index: true, foreign_key: true

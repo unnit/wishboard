@@ -1,4 +1,4 @@
-class CreateBulkBookings < ActiveRecord::Migration
+class CreateBulkBookings < ActiveRecord::Migration[7.2]
   def change
     create_table :bulk_bookings do |t|
       t.string :email

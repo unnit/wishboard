@@ -1,4 +1,4 @@
-class CreateShowcases < ActiveRecord::Migration
+class CreateShowcases < ActiveRecord::Migration[7.2]
   def change
     create_table :showcases do |t|
       t.string :title

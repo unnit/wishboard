@@ -14,8 +14,8 @@ class ChatRoom < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 150 }
   #validates :wish_prefix, inclusion: {in: Showcase::WISH_PREFIX_VALUES, message: "not an accepted value."}, presence: true
-  validates :main_category_id, inclusion: {in: MainCategory.all.map(&:id), message: "not an accepted value"}, presence: true
-  validates :sub_category_id, inclusion: {in: SubCategory.all.map(&:id), message: "not an accepted value"}, presence: true
+  #validates :main_category_id, inclusion: {in: MainCategory.all.map(&:id), message: "not an accepted value"}, presence: true
+  #validates :sub_category_id, inclusion: {in: SubCategory.all.map(&:id), message: "not an accepted value"}, presence: true
   validate :chat_room_present
 
   HUMANIZED_ATTRIBUTES = {

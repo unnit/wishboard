@@ -37,7 +37,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'uglifier', '>= 1.3.0'
 #gem "unicorn-rails"
 gem "jquery-fileupload-rails"
-gem 'sidekiq', '~> 4.0', '>= 4.0.1'
 gem 'validates_timeliness', '~> 3.0', require: false
 gem 'plivo'
 gem "breadcrumbs_on_rails"
@@ -49,12 +48,11 @@ gem 'local_time', '~> 1.0', '>= 1.0.3'
 gem 'link-preview'
 gem 'forest_liana'
 gem 'puma', '~> 5.4'
+gem 'redis', '>= 4.8', '< 6.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'capistrano', '~> 3.4.0'
@@ -64,11 +62,13 @@ group :development, :test do
   gem 'capistrano-passenger'
 end
 
+gem 'dotenv-rails'
+
 group :production, :staging, :development do
   gem "rails_stdout_logging"
   gem 'rails_12factor'
 end
-gem "sentry-raven"
+# gem "sentry-raven"
 gem 'obscenity', require: false
 gem 'fcm'
 gem 'wkhtmltopdf-binary'

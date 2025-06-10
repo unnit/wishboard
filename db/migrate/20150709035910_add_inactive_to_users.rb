@@ -1,4 +1,4 @@
-class AddInactiveToUsers < ActiveRecord::Migration
+class AddInactiveToUsers < ActiveRecord::Migration[7.2]
   def change
     add_column :users, :inactive, :boolean, default: true
   end

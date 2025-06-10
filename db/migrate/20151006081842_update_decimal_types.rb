@@ -1,4 +1,4 @@
-class UpdateDecimalTypes < ActiveRecord::Migration
+class UpdateDecimalTypes < ActiveRecord::Migration[7.2]
   def change
     # change_column :products, :price, :decimal, :precision => 10, :scale => 1
     # change_column :products, :ship_price, :decimal, :precision => 10, :scale => 1

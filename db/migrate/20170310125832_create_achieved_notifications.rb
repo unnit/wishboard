@@ -1,4 +1,4 @@
-class CreateAchievedNotifications < ActiveRecord::Migration
+class CreateAchievedNotifications < ActiveRecord::Migration[7.2]
   def change
     create_table :achieved_notifications do |t|
       t.integer :user_id

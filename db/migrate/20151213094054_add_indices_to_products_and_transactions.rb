@@ -1,4 +1,4 @@
-class AddIndicesToProductsAndTransactions < ActiveRecord::Migration
+class AddIndicesToProductsAndTransactions < ActiveRecord::Migration[7.2]
   def change
     add_index :products, :parent_category
     add_index :products, :listing_type

@@ -7,5 +7,5 @@
           %span.cc-dark-fg
             = "@#{chat_message.user.slug}"
       .j-chat_content_data.hidden.cm-content
-        = match_url(sanitize((Obscenity.sanitize(chat_message.content).gsub("\n", "<br />")), attributes: ["href", "target"])).html_safe
+        = match_url(sanitize(chat_message.content.gsub("\n", "<br />"), attributes: ["href", "target"])).html_safe
       %span.grey70-fg.full-width.inline-block{style: "font-size:8px;", class: "chat-usr-name-#{chat_message.id} #{chat_message.user == current_user ? 'text-right' : 'text-left'}"}= local_time(chat_message.created_at, "%d %b %H:%M")

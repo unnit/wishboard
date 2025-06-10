@@ -46,16 +46,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    :address        => "smtp.sendgrid.net",
-    :port           => "587",
-    :authentication => :plain,
-    :user_name      => 'cocociti',#"app37675653@heroku.com",
-    :password       => 'FighterFire1@',#"r3pzc9eu1065",
-    :domain         => 'localhost'
-  }
-
-  config.action_mailer.default_url_options = { :host => 'https://localhost:443' }
 
   #config.action_cable.allowed_request_origins = ['https://localhost']
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker

@@ -1,4 +1,4 @@
-class AddColumnsOfPriceToTransactions < ActiveRecord::Migration
+class AddColumnsOfPriceToTransactions < ActiveRecord::Migration[7.2]
   def change
     add_column :transactions, :daily_rent, :integer, default: 0
     add_column :transactions, :days, :integer, default: 0

@@ -1,4 +1,4 @@
-class CreateShowcaseNotifications < ActiveRecord::Migration
+class CreateShowcaseNotifications < ActiveRecord::Migration[7.2]
   def change
     create_table :showcase_notifications do |t|
       t.integer :user_id

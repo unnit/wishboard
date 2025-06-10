@@ -1,4 +1,4 @@
-class AddHourlyColumnsToTransactions < ActiveRecord::Migration
+class AddHourlyColumnsToTransactions < ActiveRecord::Migration[7.2]
   def change
     add_column :transactions, :hours, :decimal, precision: 10, scale: 2, default: 0
     add_column :transactions, :hourly_rent, :integer, default: 0

@@ -79,18 +79,4 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    :address        => "smtp.sendgrid.net",
-    :port           => "2525",
-    :authentication => :plain,
-    :user_name      => 'cocociti',#"app37675653@heroku.com",
-    :password       => 'DjangoRead1@',#"r3pzc9eu1065",
-    :domain         => 'www.cocociti.com'
-  }
-
-  config.action_mailer.default_url_options = { :host => 'https://www.cocociti.com' }
-  Raven.configure do |config|
-    config.dsn = 'https://2be68211d1984d398e3961437df39945:2862153fbd61472db76717d8fa099feb@sentry.io/173077'
-    config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
-  end
 end

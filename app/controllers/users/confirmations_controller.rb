@@ -14,7 +14,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
         flash[:notice] = "Thank you, We have resent the mail. Please click the activate button in the mail to verify your email address."
         redirect_to confirmation_path
       else
-        flash[:notice] = "We have already verified your account. Enjoy Cocociti. Go Coco!!"
+        flash[:notice] = "We have already verified your account. Enjoy Wishboard. Go Coco!!"
         redirect_to root_path
         return
       end
@@ -46,7 +46,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
           unless current_user
             sign_in(user, bypass: true)
           end
-          flash[:notice] = "Your account has been verified successfully. Experience Cocociti. Go CoCo!!<br>Please help with us with few details to create your CoCo profile".html_safe
+          flash[:notice] = "Your account has been verified successfully. Experience Wishboard. Go CoCo!!<br>Please help with us with few details to create your CoCo profile".html_safe
           redirect_to info_path
           return
         else
@@ -55,7 +55,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
           return
         end
       else
-        flash[:notice] = "We have already verified your account. Enjoy Cocociti. Go Coco!!"
+        flash[:notice] = "We have already verified your account. Enjoy Wishboard. Go Coco!!"
         redirect_to root_path
         return
       end

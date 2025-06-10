@@ -1,4 +1,4 @@
-class ChangeDecimalToIntegerColumns < ActiveRecord::Migration
+class ChangeDecimalToIntegerColumns < ActiveRecord::Migration[7.2]
   def change
     change_column :products, :price, :integer
     change_column :products, :weekly_rent, :integer

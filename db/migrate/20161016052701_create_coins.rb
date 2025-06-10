@@ -1,4 +1,4 @@
-class CreateCoins < ActiveRecord::Migration
+class CreateCoins < ActiveRecord::Migration[7.2]
   def change
     create_table :coins do |t|
       t.integer :user_id

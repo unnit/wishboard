@@ -16,3 +16,4 @@ lib/emails-invited.csv
 #*******ruby version & gemset file
 .ruby-version
 .ruby-gemset
+.env*

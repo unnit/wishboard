@@ -1,4 +1,4 @@
-class AddShareColumnsToShowcase < ActiveRecord::Migration
+class AddShareColumnsToShowcase < ActiveRecord::Migration[7.2]
   def change
     add_column :showcases, :parent_id, :integer
     add_column :showcases, :grandparent_id, :integer

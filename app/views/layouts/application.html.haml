@@ -5,35 +5,23 @@
     %meta{:charset => "utf-8"}
     %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %link{rel: "icon", type: "image/x-icon", href: "/favicon.ico"}
     - if Rails.env.development? || request.fullpath == GLOBAL_VARIABLES[:hacker_relative_path]
       %meta{:name => "robots", :content => "noindex"}
-    %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}", :name => "description"}
+    %meta{:content => "#{content_for?(:meta_content) ? yield(:meta_content) : 'Wishboard is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}", :name => "description"}
     %meta{:content => "", :name => "author"}
-    %meta{name: "apple-mobile-web-app-capable", content: "yes"}
-    %meta{name: "apple-mobile-web-app-status-bar-style", content: "black"}
-    %meta{name: "apple-mobile-web-app-title", content: "Cocociti"}
-    %link{rel: "apple-touch-icon", href: "/assets/logo/logo-new-152.png"}
-    %meta{name: "msapplication-TileImage", content: "/assets/logo/logo-new-144.png"}
     %meta{name: "msapplication-TileColor", content: "#732db0"}
-    %meta{name: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
-    %meta{itemprop: "name", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Share, find, fund & fulfill your wishes."}"}
-    %meta{itemprop: "description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}"}
-    %meta{itemprop: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
-    %meta{name: "twitter:card", content: "summary"}
-    %meta{name: "twitter:title", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Share, find, fund & fulfill your wishes."}"}
-    %meta{name: "twitter:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}"}
-    %meta{name: "twitter:site", content: "@cocociti"}
-    %meta{name: "twitter:creator", content: "twitter:creator"}
-    %meta{name: "twitter:image:src", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
-    %meta{name: "og:title", content: "#{content_for?(:title) ? yield(:title) : "Cocociti | Share, find, fund & fulfill your wishes."}"}
-    %meta{name: "og:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Cocociti is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}"}
-    %meta{name: "og:image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/images/logo-violet.svg"}
+    %meta{name: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/logo.png"}
+    %meta{itemprop: "name", content: "#{content_for?(:title) ? yield(:title) : "Wishboard | Share, find, fund & fulfill your wishes."}"}
+    %meta{itemprop: "description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Wishboard is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}"}
+    %meta{itemprop: "image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/logo.png"}
+    %meta{name: "og:title", content: "#{content_for?(:title) ? yield(:title) : "Wishboard | Share, find, fund & fulfill your wishes."}"}
+    %meta{name: "og:description", content: "#{content_for?(:meta_content) ? yield(:meta_content) : 'Wishboard is a social network based on wishes. Make new friends, discuss, discover, share wishes, get free gifts, & raise funds to fulfill your wishes.'}"}
+    %meta{name: "og:image", content: "#{GLOBAL_VARIABLES[:root_url]}/assets/logo.png"}
     %meta{name: "og:url", content: "#{GLOBAL_VARIABLES[:root_url]}"}
-    %meta{name: "og:site_name", content: "Cocociti"}
-    %meta{name: "fb:admins", content: "cocociti"}
-    %meta{name: "fb:app_id", content: "363051183844429"}
-    %meta{name: "og:type", content: "website"}
-    %title= content_for?(:title) ? yield(:title) : "Cocociti | Share, find, fund & fulfill your wishes."
+    %meta{name: "og:site_name", content: "Wishboard"}
+    %title= content_for?(:title) ? yield(:title) : "Wishboard | Share, find, fund & fulfill your wishes."
+    
 
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
     /[if lt IE 9]
@@ -67,14 +55,11 @@
     - if @remove_footer.blank?
       = render partial: "layouts/footer"
     - if Rails.env.production? || Rails.env.staging?
-      = render partial: "layouts/sentry_config"
-    - if Rails.env.production?
-      = javascript_include_tag "//maps.googleapis.com/maps/api/js?key=AIzaSyBKouCyRuExAspdTSgCjQ1825AbI_8Fank&libraries=places"
-    - else
-      = javascript_include_tag "//maps.googleapis.com/maps/api/js?sensor=false&libraries=places"
+      =# render partial: "layouts/sentry_config"
+    = javascript_include_tag "//maps.googleapis.com/maps/api/js?sensor=false&libraries=places&v=weekly&modules=places"
     = javascript_include_tag "//gstatic.com/firebasejs/4.1.3/firebase.js"
     = javascript_include_tag 'application'
-    = javascript_include_tag "//mocha.citruspay.com/js/lib/citrus.min.js"
+    =# javascript_include_tag "//mocha.citruspay.com/js/lib/citrus.min.js"
     = yield :extra_js
     = javascript_include_tag "//apis.google.com/js/client.js"
     = cloudinary_js_config

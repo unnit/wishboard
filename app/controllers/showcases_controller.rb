@@ -15,7 +15,7 @@ class ShowcasesController < ApplicationController
 
   def results
     if params[:query].present?
-      @showcases = Showcase.public_accessible.search(params[:query])
+      @showcases = Showcase.public_accessible.where(title: params[:query])
       @showcases = Kaminari.paginate_array(@showcases).page(params[:showcases]).per(20)
     else
       @showcases = Showcase.public_accessible.all.order(created_at: :desc).page(params[:showcases]).per(20)

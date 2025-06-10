@@ -46,6 +46,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { :host => 'https://localhost:443' }
 
   #config.action_cable.allowed_request_origins = ['https://localhost']
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker

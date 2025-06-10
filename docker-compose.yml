@@ -5,7 +5,7 @@ services:
     image: postgres:15
     restart: always
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - shared-pgdata:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
@@ -14,10 +14,15 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    networks:
+      - shared-net
+
   redis:
     image: redis:7
     ports:
       - "6379:6379"
+    networks:
+      - shared-net
 
   web:
     build:
@@ -32,11 +37,21 @@ services:
     environment:
       RAILS_ENV: ${RAILS_ENV}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}:5432/${POSTGRES_DB}
+      DATABASE_HOST: db
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     depends_on:
       - db
       - redis
+    networks:
+      - shared-net
+
+volumes:
+  shared-pgdata:
+    name: shared-pgdata
+
+networks:
+  shared-net:
+    name: shared-net
 
   # lockgen:
   #   image: ruby:3.3.0
@@ -44,7 +59,3 @@ services:
   #     - .:/app
   #   working_dir: /app
   #   command: bash -c "gem install bundler && bundle install"
-    
-
-volumes:
-  pgdata:

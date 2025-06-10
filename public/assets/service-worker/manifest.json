@@ -2,23 +2,23 @@
   "name": "Wishboard",
   "short_name": "Wishboard",
   "icons": [{
-        "src": "https://wish.dtlabs.me/assets/logo/logo128.png",
+        "src": "https://wishboard.dtlabs.me/assets/logo/logo128.png",
         "type": "image/png",
         "sizes": "128x128"
       }, {
-      "src": "https://wish.dtlabs.me/assets/logo/logo144.png",
+      "src": "https://wishboard.dtlabs.me/assets/logo/logo144.png",
       "sizes": "144x144",
       "type": "image/png"
     }, {
-      "src": "https://wish.dtlabs.me/assets/logo/logo152.png",
+      "src": "https://wishboard.dtlabs.me/assets/logo/logo152.png",
       "sizes": "152x152",
       "type": "image/png"
     }, {
-      "src": "https://wish.dtlabs.me/assets/logo/logo192.png",
+      "src": "https://wishboard.dtlabs.me/assets/logo/logo192.png",
       "sizes": "192x192",
       "type": "image/png"
     }, {
-      "src": "https://wish.dtlabs.me/assets/logo/logo256.png",
+      "src": "https://wishboard.dtlabs.me/assets/logo/logo256.png",
       "sizes": "256x256",
       "type": "image/png"
     }],

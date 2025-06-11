@@ -15,3 +15,5 @@ lib/emails-invited.csv
 .ruby-version
 .ruby-gemset
 .env*
+.DS_Store
+**/.DS_Store

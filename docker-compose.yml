@@ -37,21 +37,13 @@ services:
     environment:
       RAILS_ENV: ${RAILS_ENV}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-      DATABASE_HOST: db
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}:5432/${POSTGRES_DB}
     depends_on:
       - db
       - redis
     networks:
       - shared-net
-
-volumes:
-  shared-pgdata:
-    name: shared-pgdata
-
-networks:
-  shared-net:
-    name: shared-net
 
   # lockgen:
   #   image: ruby:3.3.0
@@ -59,3 +51,11 @@ networks:
   #     - .:/app
   #   working_dir: /app
   #   command: bash -c "gem install bundler && bundle install"
+
+volumes:
+  shared-pgdata:
+    name: wishboard_pgdata
+
+networks:
+  shared-net:
+    name: shared-net

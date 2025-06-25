@@ -80,4 +80,6 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { :host => 'https://wishboard.dtlabs.me' }
+  config.action_cable.url = "wss://wishboard.dtlabs.me/cable"
+  config.action_cable.allowed_request_origins = [ 'https://wishboard.dtlabs.me' ]
 end

@@ -1053,6 +1053,11 @@ $(document).ready(function(){
     $(".signup-email").val($(".signup-email").val().toLowerCase());
     $(this).closest("form").submit();
   })
+
+  $(document).on("click", ".demo-login-btn", function(e){
+    $(this).text("Please Wait...");
+  })
+
   //Searching
   $(".search-form").submit(function(){
     $(this).find("#start_date_time").val($('#start_date_time_header').val());

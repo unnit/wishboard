@@ -56,6 +56,7 @@
                       .inline-block.font12.v-align-top.mtop2 Please Wait...
                       .ball-clip-rotate.inline-block
                         %div
+                    = link_to "Demo Login", users_demo_login_path, method: :post, class: "btn cc-dark-fg cc-dark-fg-border mtop10 full-width demo-login-btn"
           #home-sign-up.tab-pane.fade{class: "#{'active in' if params[:tab] == "signup"}"}
             .col-md-12.padding0.mtop40
               = form_for(User.new, :url => user_registration_path, remote: true, html: {"data-parsley-validate" => true, class: "agreement-require signup-form"}) do |f|

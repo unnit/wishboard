@@ -70,6 +70,10 @@ Rails.application.routes.draw do
     passwords: 'users/passwords',
     confirmations: 'users/confirmations'
   }
+
+  devise_scope :user do
+    post 'users/demo_login', to: 'users/sessions#demo_login'
+  end
   # The priority is based upon order of creation: first created -> highest priority.
 
   resources :products, only: [:new, :edit, :create, :update] do

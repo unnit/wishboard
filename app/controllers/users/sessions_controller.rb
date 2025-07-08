@@ -42,6 +42,18 @@ class Users::SessionsController < Devise::SessionsController
     super
   end
 
+  def demo_login
+    demo_user = User.find_by(email: "test@dtlabs.me")
+    if demo_user
+      sign_in(:user, demo_user)
+      flash[:notice] = "Logged in as Dheeraj T - Demo User"
+      redirect_to root_path
+    else
+      flash[:alert] = "Demo user not found."
+      redirect_to new_session_path(resource_name)
+    end
+  end
+
   # protected
 
   # You can put the params you want to permit in the empty array.

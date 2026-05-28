@@ -1,0 +1,3 @@
+production:
+  app_id: ENV['FB_APP_ID']
+  app_secret: ENV['FB_API_KEY']

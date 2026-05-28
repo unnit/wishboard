@@ -1,0 +1,3 @@
+production:
+  merchant_access_key: ENV['CITRUS_ACCESS_KEY']
+  secret_key: ENV['CITRUS_SECRET_KEY']

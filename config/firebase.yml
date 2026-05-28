@@ -1,0 +1,31 @@
+development:
+  server_key: ENV['FIREBASE_SERVER_KEY']
+  apiKey: ENV['FIREBASE_API_KEY']
+  authDomain: ENV['FIREBASE_AUTHDOMAIN']
+  databaseURL: ENV['FIREBASE_DB_URL']
+  projectId: ENV['FIREBASE_PROJECT_ID']
+  messagingSenderId: ENV['FIREBASE_MESSAGE_SENDER_ID']
+
+staging:
+  server_key: ENV['FIREBASE_SERVER_KEY']
+  apiKey: ENV['FIREBASE_API_KEY']
+  authDomain: ENV['FIREBASE_AUTHDOMAIN']
+  databaseURL: ENV['FIREBASE_DB_URL']
+  projectId: ENV['FIREBASE_PROJECT_ID']
+  messagingSenderId: ENV['FIREBASE_MESSAGE_SENDER_ID']
+
+test:
+  server_key: ENV['FIREBASE_SERVER_KEY']
+  apiKey: ENV['FIREBASE_API_KEY']
+  authDomain: ENV['FIREBASE_AUTHDOMAIN']
+  databaseURL: ENV['FIREBASE_DB_URL']
+  projectId: ENV['FIREBASE_PROJECT_ID']
+  messagingSenderId: ENV['FIREBASE_MESSAGE_SENDER_ID']
+
+production:
+  server_key: ENV['FIREBASE_SERVER_KEY']
+  apiKey: ENV['FIREBASE_API_KEY']
+  authDomain: ENV['FIREBASE_AUTHDOMAIN']
+  databaseURL: ENV['FIREBASE_DB_URL']
+  projectId: ENV['FIREBASE_PROJECT_ID']
+  messagingSenderId: ENV['FIREBASE_MESSAGE_SENDER_ID']

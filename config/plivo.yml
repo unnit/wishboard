@@ -1,0 +1,11 @@
+development:
+  auth_id: ENV['PLIVO_AUTH_ID']
+  auth_token: ENV['PLIVO_AUTH_TOKEN']
+
+staging:
+  auth_id: ENV['PLIVO_AUTH_ID']
+  auth_token: ENV['PLIVO_AUTH_TOKEN']
+
+production:
+  auth_id: ENV['PLIVO_AUTH_ID']
+  auth_token: ENV['PLIVO_AUTH_TOKEN']
